@@ -70,8 +70,10 @@ function ListTableParent() {
     return (
         <>
 
-            {isLoading && <h1>Looading ...</h1>}
-            {!isLoading && <ListTable columns={COLUMNS} dataList={data?.data} />}
+            {/* {isLoading && <h1>Looading ...</h1>} */}
+            {/* {!isLoading && <ListTable columns={COLUMNS} dataList={data?.data} />} */}
+            {<ListTable columns={COLUMNS} dataList='' />}
+            
         </>
     )
 }

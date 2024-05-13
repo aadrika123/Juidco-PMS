@@ -86,6 +86,24 @@ export default function ProjectApiList() {
         api_deleteApplication: `${baseUrl}/api/marriage/`,
         api_editMarriageApplication: `${baseUrl}/api/marriage/edit-application`,
 
+
+        //Sample-Demo Api for PMS
+        api_GetWaterTankerSearchData: `${baseUrl}/api/water-tanker/search-booking`, //search paramter from list
+        api_getWaterTankerBookingDetailsById: `${baseUrl}/api/water-tanker/get-booking-details-by-id `, //get -by -id
+        
+        //Api for PMS
+        api_addProcurement: `${baseUrl}/api/sr/pre-procurement `,
+
+        api_itemCategory: `${baseUrl}/api/master/category `,
+        // api_itemSubCategory: `${baseUrl}/api/master/sub-category/by-category/1ef878d1-3a0f-4986-bf6b-ce3fd5aa3c37 `,
+        api_itemSubCategory: `${baseUrl}/api/master/sub-category `,
+        api_itemBrand: `${baseUrl}/api/master/brand `,
+        api_fetchProcessor: `${baseUrl}/api/master/processor `,
+        api_fetchRam: `${baseUrl}/api/master/ram `,
+        api_fetchOperatingSystem: `${baseUrl}/api/master/os `,
+        api_fetchRom: `${baseUrl}/api/master/rom `,
+        api_fetchGraphics: `${baseUrl}/api/master/graphics `,
+
     }
 
 

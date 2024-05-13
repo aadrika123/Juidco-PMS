@@ -35,6 +35,14 @@ import ViewRejectApplication from './Components/Pages/PetRegistration/ViewEditAp
 import PetRegistrationPreviewList from './Components/Pages/PetRegistration/SearchApprovedPetApplication/PetRegistrationPreviewList';
 import ViewApprovedPreviewApplication from './Components/Pages/PetRegistration/ViewEditApplication/ViewApprovedPreviewApplication';
 import PetLicense from './Components/Pages/PetRegistration/PetPaymentReceipt/PetLicense';
+import AddPreProcurement from './Components/Pages/PMS/AddPreProcurement';
+import InventoryDashboard from './Components/Pages/PMS/InventoryDashboard';
+import InventoryProposalList from './Components/Pages/PMS/InventoryProposalList';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import AxiosInterceptors from '@/Components/Common/AxiosInterceptors';
+import ViewInventoryDetailsById from './Components/Pages/PMS/ViewInventoryDetailsById';
+
+const queryClient = new QueryClient();
 
 
 function App() {
@@ -90,16 +98,23 @@ function App() {
     { path: '/pet-payment-receipt/:transNo', element: <PetPaymentReceiptIndex /> },
     { path: '/pet-license/:id', element: <PetLicense/> },
     
+    //---------- PMS-Routes -----------------
+    { path: '/inventory-dashboard', element: <InventoryDashboard/> },
+    { path: '/add-pre-procurement', element: <AddPreProcurement/> },
+    { path: '/inventory-proposal', element: <InventoryProposalList/> },
+    { path: '/viewInventoryDetailsById/:id', element: <ViewInventoryDetailsById/> },
+    
     
 
   ]
 
   return (
+    <QueryClientProvider client={queryClient}>
     <>
 
       <Toaster />
 
-      <contextVar.Provider value={contextData}>
+      <contextVar.Provider value={contextData} axiosInstance={AxiosInterceptors}>
 
         <Routes>
 
@@ -122,6 +137,7 @@ function App() {
       </contextVar.Provider>
 
     </>
+    </QueryClientProvider>
   )
 }
 
