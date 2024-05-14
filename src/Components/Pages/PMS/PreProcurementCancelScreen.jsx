@@ -4,17 +4,17 @@
 //    Date - 29/09/2023
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - PreProcurementSubmittedScreen
-//    DESCRIPTION - PreProcurementSubmittedScreen
+//    Component  - PreProcurementCancelScreen
+//    DESCRIPTION - PreProcurementCancelScreen
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
 import PaymentDetailsSepticTank from "./PaymentDetailsSepticTank";
 import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
-import check from "@/Components/assets/check.svg";
+import cancel from "@/Components/assets/cancel.svg";
 import { useNavigate } from "react-router-dom";
 
-function PreProcurementSubmittedScreen(props) {
+function PreProcurementCancelScreen(props) {
   const navigate = useNavigate();
   const { formStyle } = ThemeStyleTanker();
 
@@ -30,14 +30,15 @@ function PreProcurementSubmittedScreen(props) {
   // };
 
   const handleClick = () => {
-    props?.submitForm()
-    navigate(`/inventory-proposal`);
-  };
-
-  const handleCancilClick = () => {
     // props?.submitForm()
     // navigate(`/add-pre-procurement`);
     window.location.reload();
+  };
+ 
+  const handleCancilClick = () => {
+    props?.setIsModalOpen2(false)
+    // navigate(`/add-pre-procurement`);
+    // window.location.reload();
   };
   return (
     <>
@@ -52,14 +53,14 @@ function PreProcurementSubmittedScreen(props) {
           <div class="absolute inset-0 hover:bg-white opacity-0 transition duration-700 hover:opacity-10"></div>
           <img
             className="max-w-full h-auto mx-auto animate-wiggle p-2 "
-            src={check}
+            src={cancel}
             alt="alt title"
           />
         </div>
         <div class=" flex-1">
           <div class="">
             <h3 class="text-xl  text-center  text-black font-openSans">
-            Are you Sure you want to Save
+            Are you Sure you want to Cancel
             </h3>
             {/* <h3 class="text-xl  text-center mb-3 text-gray-400 font-openSans font-semibold ">
               Booking no. - {props?.responseScreenData?.data?.bookingNo}
@@ -74,7 +75,7 @@ function PreProcurementSubmittedScreen(props) {
                 className={`bg-white border-blue-900 border text-blue-950 text-sm px-8 py-2 hover:bg-[#1A4D8C] hover:text-white  rounded leading-5 shadow-lg`}
                 onClick={handleCancilClick}
               >
-                Cancel
+                No
               </button>
             </div>
 
@@ -83,7 +84,7 @@ function PreProcurementSubmittedScreen(props) {
                 className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
                 onClick={handleClick}
               >
-                Continue
+                Yes
               </button>
             </div>
           </div>
@@ -99,4 +100,4 @@ function PreProcurementSubmittedScreen(props) {
   );
 }
 
-export default PreProcurementSubmittedScreen;
+export default PreProcurementCancelScreen;

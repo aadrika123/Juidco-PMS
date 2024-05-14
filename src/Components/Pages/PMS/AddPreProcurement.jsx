@@ -18,7 +18,7 @@ import axios from "axios";
 import ApiHeader from "@/Components/api/ApiHeader";
 import { toast } from "react-toastify";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PreProcurementSubmittedScreen from "./PreProcurementSubmittedScreen";
 import * as yup from "yup";
 import {
@@ -28,6 +28,7 @@ import {
   allowCharacterNumberInput,
 } from "@/Components/Common/PowerUps/PowerupFunctions";
 import ProjectApiList from "@/Components/api/ProjectApiList";
+import PreProcurementCancelScreen from "./PreProcurementCancelScreen";
 
 
 // import { click } from "@testing-library/user-event/dist/click";
@@ -38,14 +39,7 @@ function AddPreProcurement(props) {
     ThemeStyle();
 
   const {
-    api_getAllUlb,
-    api_getBookingDetailsById,
-    api_addSepticTank,
-    api_getWaterTankerMasterData,
-    api_locationListForSepticTank,
-    api_getWardList,
-    api_getBuildingTypeSepticTank,
-
+    
     api_addProcurement,
     api_itemCategory,
     api_itemSubCategory,
@@ -86,15 +80,21 @@ function AddPreProcurement(props) {
   const [romList, setRomList] = useState()
   const [graphicsList, setGraphicsList] = useState()
 
-
-console.log(graphicsList)
-
-
-
+  const [isModalOpen,setIsModalOpen] = useState(false)
+  const [isModalOpen2,setIsModalOpen2] = useState(false)
+  const [formData,setFormData] = useState()
 
 
+// console.log(graphicsList)
 
-  // ══════════════════════════════║🔰 form submission declaration 🔰║═══════════════════════════════════
+
+
+
+// const { id } = useParams();
+
+// console.log(category)
+
+// ══════════════════════════════║🔰 form submission declaration 🔰║═══════════════════════════════════
   const [declarationStatus, setdeclarationStatus] = useState();
   const handleDeclaration = () => {
     setdeclarationStatus((prev) => !prev);
@@ -120,6 +120,7 @@ console.log(graphicsList)
   // ══════════════════════════════║🔰 validationSchema 🔰║═══════════════════════════════════
   const validationSchema = yup.object({
     itemsubcategory: yup.string().required("itemsubcategory is required"),
+    itemcategory: yup.string().required("itemcategory is required"),
     processor: yup.string().required("processor is required"),
     brand: yup.string().required("brand is required"),
     ram: yup.string().required("ram is required"),
@@ -128,8 +129,8 @@ console.log(graphicsList)
     graphics: yup.string().required("graphics is required"),
     other_description: yup.string().required("other_description is required"),
     quantity: yup.number().required("quantity is required"),
-    Generation: yup.string().required("Generation is required"),
-    rate: yup.string().required("rate is required"),
+    // Generation: yup.string().required("Generation is required"),
+    rate: yup.number().required("rate is required"),
     // totalRate: yup.string().required("totalRate is required"),
   });
 
@@ -145,8 +146,8 @@ console.log(graphicsList)
     graphics: "",
     other_description: "",
     quantity: "",
-    Generation: "",
     rate: "",
+    // Generation: "",
     // totalRate: "",
   };
 
@@ -156,30 +157,32 @@ console.log(graphicsList)
     onSubmit: (values) => {
       console.log("click");
       console.log("procurement==============>>", values);
-      submitForm(values);
+      // submitForm(values);
+      setIsModalOpen(true)
+      setFormData(values)
     },
     validationSchema,
   });
 
-  // get ulb list
-  // useEffect(() => {
-    // axios
-    //   .get(api_getAllUlb)
-    //   .then(
-    //     (res) => (
-    //       console.log("ULB LIsts...", res.data.data),
-    //       setulbList(res?.data?.data)
-    //     )
-    //   )
-    //   .catch((err) => console.log("Error while fetching ulblist", err));
-  // }, []);
+
+   // ══════════════════════════════║🔰calculate the total rate🔰║═══════════════════════════════════
+const calculateTotalRate = () => {
+
+  const rate = Number(formik.values.rate)|| 0;
+  const quantity = Number(formik.values.quantity) || 0;
+  const totalRate = rate * quantity;
+  formik.setFieldValue('totalRate', totalRate);
+  console.log(totalRate,"tot Rate")
+
+};
+  
 
   useEffect(() => {
     const ulbId = localStorage.getItem("ulbId");
     setulbId(ulbId);
 
     fetchCategory();
-    fetchSubCategory();
+    // fetchSubCategory();
     fetchBrand();
     fetchProcessor();
     fetchRam();
@@ -189,9 +192,11 @@ console.log(graphicsList)
 
     calculateTotalRate();
 
-  }, [ulbData,formik.values.quantity,formik.values.rate]);
+  }, [ulbData,formik.values.quantity,formik.values.rate ]);
 
   // ══════════════════════════════║🔰 function to get ward list  🔰║═══════════════════════════════════
+
+  console.log(category,"category listing")
 
   const fetchCategory = () => {
 
@@ -205,9 +210,11 @@ console.log(graphicsList)
       });
   };
   
-  const fetchSubCategory = () => {
+  const fetchSubCategory = (e) => {
 
-    AxiosInterceptors.get(`${api_itemSubCategory}`, ApiHeader())
+    console.log(e?.target?.value)
+
+    AxiosInterceptors.get(`${api_itemSubCategory}/${e?.target?.value}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response.data.data);
         setSubCategory(response.data.data);
@@ -291,102 +298,57 @@ console.log(graphicsList)
   };
   
 
-  // const fetchbuildType = () => {
-  //   AxiosInterceptors.post(`${api_getBuildingTypeSepticTank}`, {}, ApiHeader())
-  //     .then(function (response) {
-  //       console.log("build====", response.data.data);
-  //       setbuildTypeVal(response?.data?.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log("errorrr.... ", error);
-  //     });
-  // };
-
-  //master data list
-  // useEffect(() => {
-  //   fetchMasterData();
-  // }, []);
-
-  // const fetchMasterData = () => {
-  //   const requestBody = {
-  //     deviceId: "resource",
-  //   };
-  //   console.log("request body category id", requestBody);
-  //   AxiosInterceptors.post(
-  //     `${api_getWaterTankerMasterData}`,
-  //     requestBody,
-  //     ApiHeader()
-  //   )
-  //     .then(function (response) {
-  //       console.log("master data", response.data);
-  //       setmasterData(response.data.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log("errorrr.... ", error);
-  //     });
-  // };
 
   // submit form
-  const submitForm = (data) => {
-    console.log("data in form", data);
+
+  const submitForm = () => {
+    console.log("data in form", formData);
     setisLoading(true);
     let url;
     let requestBody;
 
     url = api_addProcurement;
     requestBody = {
-      itemcategory: data?.itemcategory,
-      itemsubcategory: data?.itemsubcategory,
-      processor: data?.processor,
-      operatingsystem: data?.operatingsystem,
-      Generation: data?.Generation,
-      brand: data?.brand,
-      ram: data?.ram,
-      rom: data?.rom,
-      graphics: data?.graphics,
-      other_description: data?.other_description,
-      quantity: data?.quantity,
-      rate: data?.rate,
-      totalRate: data?.totalRate,
-      // ulbId: ulbId,
-      // applicantName: data?.applicantName,
-      // mobile: data?.mobileNo,
-      // address: data?.address,
-      // wardId: data?.wardNo,
-      // holdingNo: data?.holdingNo,
-      // capacityId: data?.capacity,
-      // roadWidth: data?.roadWidth,
-      // distance: data?.distance,
-      // cleaningDate: data?.cleaningDate,
-      // locationId: data?.location,
-      // buildingType: data?.buildingType,
+      category: formData?.itemcategory,
+      subcategory: formData?.itemsubcategory,
+      processor: formData?.processor,
+      os: formData?.operatingsystem,
+      brand: formData?.brand,
+      ram: formData?.ram,
+      rom: formData?.rom,
+      graphics: formData?.graphics,
+      other_description: formData?.other_description,
+      quantity: Number(formData?.quantity),
+      rate: Number(formData?.rate),
+      total_rate: Number(formData?.totalRate),
+    
     };
 
     // console.log(requestBody,"=======================>>>")
 
-    // AxiosInterceptors.post(`${url}`, requestBody, ApiHeader())
-    //   .then(function (response) {
-    //     console.log("response after data submitted", response?.data);
-    //     setresponseScreen(response?.data);
-    //     if (response?.data?.status === true) {
-    //       setisLoading(false);
-    //       notify(response?.data?.message, "success");
-    //       setdeclarationStatus(false);
+    AxiosInterceptors.post(`${url}`, requestBody, ApiHeader())
+      .then(function (response) {
+        console.log("response after data submitted", response?.data);
+        setresponseScreen(response?.data);
+        if (response?.data?.status === true) {
+          setisLoading(false);
+          notify(response?.data?.message, "success");
+          setdeclarationStatus(false);
 
-    //       // navigate('/tankerFormSubmitted')
-    //     } else {
-    //       setisLoading(false);
-    //       setdeclarationStatus(false);
-    //       const errorMsg = Object.keys(response?.data?.data);
-    //       setErrRes(errorMsg);
-    //       console.log(errorMsg, "====>>");
-    //       notify(response?.data?.message, "error");
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     console.log("errorrr.... ", error);
-    //     setdeclarationStatus(false);
-    //   });
+          // navigate('/tankerFormSubmitted')
+        } else {
+          setisLoading(false);
+          setdeclarationStatus(false);
+          const errorMsg = Object.keys(response?.data?.data);
+          setErrRes(errorMsg);
+          console.log(errorMsg, "====>>");
+          notify(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        console.log("errorrr.... ", error);
+        setdeclarationStatus(false);
+      });
 
     // AxiosInterceptors.post(`${url}`, requestBody, ApiHeader())
     //     .then(function (response) {
@@ -447,32 +409,32 @@ console.log(graphicsList)
 
   // ══════════════════════════════║🔰Validating Booking Date 🔰║═══════════════════════════════════
 
-  const verifyDateForBookingTanker = (value) => {
-    let currentDate = new Date();
-    currentDate.setDate(currentDate.getDate() + 1);
+  // const verifyDateForBookingTanker = (value) => {
+  //   let currentDate = new Date();
+  //   currentDate.setDate(currentDate.getDate() + 1);
 
-    let userSetDate = new Date(value);
+  //   let userSetDate = new Date(value);
 
-    // Convert both dates to UTC timestamps
-    const currentTimestamp = Date.UTC(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      currentDate.getDate()
-    );
-    const userTimestamp = Date.UTC(
-      userSetDate.getFullYear(),
-      userSetDate.getMonth(),
-      userSetDate.getDate()
-    );
+  //   // Convert both dates to UTC timestamps
+  //   const currentTimestamp = Date.UTC(
+  //     currentDate.getFullYear(),
+  //     currentDate.getMonth(),
+  //     currentDate.getDate()
+  //   );
+  //   const userTimestamp = Date.UTC(
+  //     userSetDate.getFullYear(),
+  //     userSetDate.getMonth(),
+  //     userSetDate.getDate()
+  //   );
 
-    if (userTimestamp < currentTimestamp) {
-      notify("Date must be 24 hours ahead of the current date", "error");
-      formik.setFieldValue("cleaningDate", "");
-      console.log("wrong time");
-    } else {
-      console.log("right time");
-    }
-  };
+  //   if (userTimestamp < currentTimestamp) {
+  //     notify("Date must be 24 hours ahead of the current date", "error");
+  //     formik.setFieldValue("cleaningDate", "");
+  //     console.log("wrong time");
+  //   } else {
+  //     console.log("right time");
+  //   }
+  // };
 
   const handleOnChange = (e) => {
     // console.log("target type", e.target.type);
@@ -581,46 +543,54 @@ console.log(graphicsList)
   };
 
   // ══════════════════════════════║🔰 function to get location by ulb  🔰║═══════════════════════════════════
-  const fetchLocationListByUlb = (data) => {
-    const requestBody = {
-      isInUlb: data,
-      ulbId,
-    };
-    console.log("request body category id", requestBody);
-    AxiosInterceptors.post(
-      `${api_locationListForSepticTank}`,
-      requestBody,
-      ApiHeader()
-    )
-      .then(function (response) {
-        console.log("location list", response.data.data);
-        setlocationList(response?.data?.data);
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-      });
-  };
+  // const fetchLocationListByUlb = (data) => {
+  //   const requestBody = {
+  //     isInUlb: data,
+  //     ulbId,
+  //   };
+  //   console.log("request body category id", requestBody);
+  //   AxiosInterceptors.post(
+  //     `${api_locationListForSepticTank}`,
+  //     requestBody,
+  //     ApiHeader()
+  //   )
+  //     .then(function (response) {
+  //       console.log("location list", response.data.data);
+  //       setlocationList(response?.data?.data);
+  //     })
+  //     .catch(function (error) {
+  //       console.log("errorrr.... ", error);
+  //     });
+  // };
 
   // console.log(category)
 
 
- // ══════════════════════════════║🔰calculate the total rate🔰║═══════════════════════════════════
-const calculateTotalRate = () => {
-
-  const rate = Number(formik.values.rate)|| 0;
-  const quantity = Number(formik.values.quantity) || 0;
-  const totalRate = rate * quantity;
-  formik.setFieldValue('totalRate', totalRate);
-  console.log(totalRate,"tot Rate")
-
-};
-
-
   // ══════════════════════════════║🔰responseScreen🔰║═══════════════════════════════════
-  if (responseScreen?.status == true) {
+  // if (responseScreen?.status == true) {
+  //   return (
+  //     <>
+  //       <PreProcurementSubmittedScreen responseScreenData={responseScreen} />
+  //     </>
+  //   );
+  // }
+
+  if (isModalOpen) {
     return (
       <>
-        <PreProcurementSubmittedScreen responseScreenData={responseScreen} />
+        <PreProcurementSubmittedScreen submitForm={submitForm} responseScreenData={formData} />
+      </>
+    );
+  }
+  
+  const openCancelModal = () =>{
+    setIsModalOpen2(true)
+  }
+
+  if (isModalOpen2) {
+    return (
+      <>
+        <PreProcurementCancelScreen setIsModalOpen2={setIsModalOpen2}  />
       </>
     );
   }
@@ -656,10 +626,14 @@ const calculateTotalRate = () => {
                       <select
                         {...formik.getFieldProps("itemcategory")}
                         className={`${inputStyle} inline-block w-full relative`}
+                        onChange={(e) => {
+                          formik.handleChange(e);
+                          fetchSubCategory(e)
+                        }}
                       >
                          <option selected>select</option>
-                          {category?.map((items) => (
-                            <option value={items?.id}>
+                          {category?.map((items,index) => (
+                            <option key={index} value={items?.id}>
                               {items?.name}
                             </option>
                           ))}
@@ -682,9 +656,11 @@ const calculateTotalRate = () => {
                         <select
                           {...formik.getFieldProps("itemsubcategory")}
                           className={`${inputStyle} inline-block w-full relative`}
+                          onChange={formik.handleChange}
+                          
                         >
                           <option selected>select</option>
-                          {subcategory?.map((items) => (
+                          {subcategory?.length && subcategory?.map((items) => (
                             <option value={items?.id}>
                               {items?.name}
                             </option>
@@ -709,6 +685,7 @@ const calculateTotalRate = () => {
                       <select
                           {...formik.getFieldProps("brand")}
                           className={`${inputStyle} inline-block w-full relative`}
+                          onChange={formik.handleChange}
                         >
                           <option selected>select</option>
                           {brand?.map((items) => (
@@ -736,6 +713,7 @@ const calculateTotalRate = () => {
                       <select
                           {...formik.getFieldProps("processor")}
                           className={`${inputStyle} inline-block w-full relative`}
+                          onChange={formik.handleChange}
                         >
                           <option selected>select</option>
                           {processor?.map((items) => (
@@ -763,6 +741,7 @@ const calculateTotalRate = () => {
                       <select
                         {...formik.getFieldProps("ram")}
                         className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
                       >
                         <option selected>select</option>
                         {ramList?.map((items) => (
@@ -786,6 +765,7 @@ const calculateTotalRate = () => {
                       <select
                         {...formik.getFieldProps("operatingsystem")}
                         className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
                       >
                         <option selected>select</option>
                         {OperatingSystem?.map((items) => (
@@ -833,6 +813,7 @@ const calculateTotalRate = () => {
                       <select
                         {...formik.getFieldProps("rom")}
                         className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
                       >
                         <option selected>select</option>
                         {romList?.map((items) => (
@@ -860,6 +841,7 @@ const calculateTotalRate = () => {
                       <select
                         {...formik.getFieldProps("graphics")}
                         className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
                       >
                         <option selected>select</option>
                         {graphicsList?.map((items) => (
@@ -970,49 +952,29 @@ const calculateTotalRate = () => {
 
                   </div>
 
-                  {/* <div className='flex space-x-4 pb-6 md:ml-12 lg:ml-12 ml-4 mt-4'>
-                    <input
-                      type='checkbox'
-                      name='declaration'
-                      className={``}
-                      onChange={handleDeclaration}
-                    />
-                    <h1 className='font-PublicSans text-sm text-start text-red-400 mt-4 '>
-                      I hereby declare that the above particulars of facts and
-                      information stated are true, correct and complete to the
-                      best of my belief and knowledge.
-                    </h1>
-                  </div> */}
-
                 </div>
                 
-                  <div className='pb-16 mr-8'>
+                  <div className='float-right pb-16 mr-8 space-x-5'>
+                    <button
+                      // type='submit'
+                      onClick={openCancelModal}
+                      className={`bg-white px-5 py-2 text-black rounded leading-5 shadow-lg  hover:bg-[#1A4D8C] hover:text-white border-blue-900 border  mb-10`}
+                    >
+                      Cancel
+                    </button>
+                  {/* </div> */}
+                
+                  {/* <div className='pb-16 mr-8'> */}
                     <button
                       type='submit'
-                      className={`${saveButtonColor} float-right mb-10`}
+                      className={`bg-[#1A4D8C] border-blue-900 border hover:bg-[#4478b7] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right mb-10`}
                     >
                       Save
                     </button>
                   </div>
                 
               </div>
-              {/* <div className='max-sm:hidden col-span-3 '>
-                <div className='bg-[#9A9AFF] rounded-xl w-48 h-[10rem] p-1 mx-auto mt-40 shadow-lg'>
-                  <div className='flex space-x-4'>
-                    <div className='mx-auto'>
-                      <img
-                        src='https://cdn-icons-png.flaticon.com/128/479/479399.png'
-                        className=' h-32 mx-auto'
-                      />
-                      <h1
-                        className={`text-sm  opacity-80 border px-4 border-white rounded-full text-white -mt-2 ml-2`}
-                      >
-                        Book septic tank
-                      </h1>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
+              
             </div>
           </div>
         </form>

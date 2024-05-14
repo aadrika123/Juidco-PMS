@@ -42,7 +42,7 @@ const ListTableParent = (props) => {
       typeof props.loader == "function" && props.loader(true);
     }
 
-    AxiosInterceptors.post(
+    AxiosInterceptors.get(
       props?.api,
       { ...props?.requestBody, perPage: perPageCount, page: pageCount },
       ApiHeader()
