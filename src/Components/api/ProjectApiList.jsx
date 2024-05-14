@@ -103,7 +103,9 @@ export default function ProjectApiList() {
         api_fetchRom: `${baseUrl}/api/master/rom `,
         api_fetchGraphics: `${baseUrl}/api/master/graphics `,
         
-        api_fetchProcurementList: `${baseUrl}/api/sr/pre-procurement `,
+        api_fetchProcurementList: `${baseUrl}/api/sr/pre-procurement`,
+        api_fetchProcurementDAList: `${baseUrl}/api/da/pre-procurement`,
+        api_fetchProcurementDetailById: `${baseUrl}/api/sr/pre-procurement`,
 
         
 

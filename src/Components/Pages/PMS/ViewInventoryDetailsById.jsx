@@ -20,7 +20,7 @@ const ViewInventoryDetailsById = () => {
   const [applicationFullData, setapplicationFullData] = useState();
   const [tableData, setTableData] = useState([]);
 
-  const { api_getWaterTankerBookingDetailsById } = ProjectApiList();
+  const { api_fetchProcurementDetailById } = ProjectApiList();
 
 
   let buttonStyle = 'font-bold p-2 border border-indigo-500 text-indigo-500 text-xs text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
@@ -31,11 +31,7 @@ const ViewInventoryDetailsById = () => {
     seterroState(false);
     setisLoading(true);
 
-    AxiosInterceptors.post(
-      api_getWaterTankerBookingDetailsById,
-      { applicationId: id },
-      ApiHeader()
-    )
+    AxiosInterceptors.get(`${api_fetchProcurementDetailById}/${id}`,{ },ApiHeader())
       .then(function (response) {
         console.log("view water tanker full details ...", response?.data?.data);
         if (response?.data?.status) {
@@ -58,6 +54,8 @@ const ViewInventoryDetailsById = () => {
   useEffect(() => {
     getApplicationDetail();
   }, []);
+
+  console.log(applicationFullData)
 
   return (
     <div>
@@ -90,7 +88,7 @@ const ViewInventoryDetailsById = () => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.booking_no)}
+                  {nullToNA(applicationFullData?.category.name)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 Item Category
@@ -99,7 +97,7 @@ const ViewInventoryDetailsById = () => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.applicant_name)}
+                  {nullToNA(applicationFullData?.subcategory?.name)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 Item Sub Category
@@ -108,7 +106,7 @@ const ViewInventoryDetailsById = () => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.mobile)}
+                  {nullToNA(applicationFullData?.brand?.name)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 Brand 
@@ -117,7 +115,7 @@ const ViewInventoryDetailsById = () => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold text-sm'>
-                  {nullToNA(applicationFullData?.email)}
+                  {nullToNA(applicationFullData?.processor?.name)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 Processor 
@@ -130,7 +128,7 @@ const ViewInventoryDetailsById = () => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.booking_no)}
+                  {nullToNA(applicationFullData?.ram?.capacity)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 RAM
@@ -139,7 +137,7 @@ const ViewInventoryDetailsById = () => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.applicant_name)}
+                  {nullToNA(applicationFullData?.rom?.capacity)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 ROM
@@ -148,16 +146,16 @@ const ViewInventoryDetailsById = () => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.mobile)}
+                  {nullToNA(applicationFullData?.graphics?.name)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                Generation
+                Graphics 
                 </div>
               </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold text-sm'>
-                  {nullToNA(applicationFullData?.email)}
+                  {nullToNA(applicationFullData?.os?.name)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 Operating System 
@@ -170,25 +168,7 @@ const ViewInventoryDetailsById = () => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.booking_no)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                Graphics 
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.applicant_name)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                Brand 
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.mobile)}
+                  {nullToNA(applicationFullData?.id)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 Item ID
@@ -197,20 +177,16 @@ const ViewInventoryDetailsById = () => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold text-sm'>
-                  {nullToNA(applicationFullData?.email)}
+                  {nullToNA(applicationFullData?.rate)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 Rate
                 </div>
               </div>
 
-            </div>
-
-            <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '>
-
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.booking_no)}
+                  {nullToNA(applicationFullData?.quantity)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 Quantity 
@@ -223,6 +199,28 @@ const ViewInventoryDetailsById = () => {
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 Total Rate  
+                </div>
+              </div>
+
+            </div>
+
+            <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '>
+
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold text-sm'>
+                  {/* {nullToNA(applicationFullData?.quantity)} */}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
+                {/* Quantity  */}
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold text-sm'>
+                  {/* {nullToNA(applicationFullData?.applicant_name)} */}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
+                {/* Total Rate   */}
                 </div>
               </div>
 
@@ -256,21 +254,21 @@ const ViewInventoryDetailsById = () => {
           <div className="h-[30px]"></div>
 
           <div className="space-x-5 flex justify-end mt-[6rem]">
-                  <button
+                  {/* <button
                     className={buttonStyle}
                     // onClick={() =>
                     //   navigate(`/paymentHistory/${id}/${"waterTanker"}`)
                     // }
                   >
                     Cancel
-                </button>
+                </button> */}
                   <button
                     className={buttonStyle}
-                    // onClick={() =>
-                    //   navigate(`/paymentHistory/${id}/${"waterTanker"}`)
-                    // }
+                    onClick={() =>
+                      navigate(-1)
+                    }
                   >
-                    Back to Stock Receiver 
+                    Back 
                 </button>
                   <button
                     className='font-bold p-2 border border-indigo-500 text-white text-xs sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700'
@@ -278,7 +276,7 @@ const ViewInventoryDetailsById = () => {
                     //   navigate(`/paymentHistory/${id}/${"waterTanker"}`)
                     // }
                   >
-                    Release for Tender
+                    Forward to DA
                 </button>
           </div>
 

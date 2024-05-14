@@ -19,7 +19,7 @@ const ListTableParent = (props) => {
   // 👉 State constants 👈
   const [perPageCount, setperPageCount] = useState(10);
   const [pageCount, setpageCount] = useState(1);
-  const [currentPage, setcurrentPage] = useState(0);
+  const [currentPage, setcurrentPage] = useState(1);
   const [lastPage, setlastPage] = useState(0);
   const [totalCount, settotalCount] = useState(0);
   const [exportData, setexportData] = useState();
@@ -28,6 +28,9 @@ const ListTableParent = (props) => {
   const [dataList, setdataList] = useState([]);
   const [loader, setloader] = useState(false);
   const [perPageData, setPerPageData] = useState(10);
+  const [pagination, setPagination] = useState({});
+
+  console.log(currentPage);
 
   // 👉 Function 1 👈
   const searchOldFun = () => {
@@ -43,18 +46,25 @@ const ListTableParent = (props) => {
     }
 
     AxiosInterceptors.get(
-      props?.api,
+      `${props?.api}?take=${perPageData}&page=${currentPage}`
+        .split(" ")
+        .join(""),
       { ...props?.requestBody, perPage: perPageCount, page: pageCount },
       ApiHeader()
     )
       .then((res) => {
         if (res?.data?.status == true) {
           console.log("success getting list => ", res);
+          console.log(
+            "success current page => ",
+            res?.data?.pagination?.currentPage
+          );
           props?.getData && props?.allData(res?.data?.data);
-          setdataList(res?.data?.data?.data);
-          settotalCount(res?.data?.data?.total);
-          setcurrentPage(res?.data?.data?.currentPage);
-          setlastPage(res?.data?.data?.lastPage);
+          setdataList(res?.data?.data);
+          setPagination(res?.data?.pagination);
+          settotalCount(res?.data?.pagination?.totalPage);
+          setcurrentPage(res?.data?.pagination?.currentPage);
+          setlastPage(res?.data?.pagination?.currentTake);
           seterrorState(false);
         } else {
           console.log("false error while getting list => ", res);
@@ -80,12 +90,19 @@ const ListTableParent = (props) => {
 
   // 👉 Function 2 👈
   const nextPageFun = () => {
-    setpageCount(currentPage + 1);
+    if (pagination?.next) {
+      setcurrentPage(pagination?.next?.page);
+      setPerPageData(pagination?.next?.take);
+    }
   };
 
   // 👉 Function 3 👈
   const prevPageFun = () => {
-    setpageCount(currentPage - 1);
+    // setpageCount(currentPage - 1);
+    if (pagination?.prev) {
+      setcurrentPage(pagination?.prev?.page);
+      setPerPageData(pagination?.prev?.take);
+    }
   };
 
   // 👉 Function 4 👈
@@ -192,12 +209,12 @@ const ListTableParent = (props) => {
 
   // 👉 Calling Function 1 on Data change 👈
   useEffect(() => {
-    if (props?.requestBody != null) {
-      setpageCount(1);
-      setperPageCount(10);
-      searchOldFun();
-    }
-  }, [props?.changeData]);
+    // if (props?.requestBody != null) {
+    setpageCount(1);
+    setperPageCount(10);
+    searchOldFun();
+    // }
+  }, [props?.changeData, currentPage, perPageData]);
 
   // 👉 Calling Function 1 when page no. or data per page change 👈
   useEffect(() => {
@@ -210,14 +227,14 @@ const ListTableParent = (props) => {
       {/* 👉 When error occured 👈 */}
       {errorState && (
         <div
-          className='bg-red-100 border border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center'
-          role='alert'
+          className="bg-red-100 border border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center"
+          role="alert"
         >
-          <strong className='font-bold'>Sorry! </strong>
-          <span className='block sm:inline'>
+          <strong className="font-bold">Sorry! </strong>
+          <span className="block sm:inline">
             Some error occured while fetching list. Please try again later.
           </span>
-          <span className='absolute top-0 bottom-0 right-0 px-4 py-3'></span>
+          <span className="absolute top-0 bottom-0 right-0 px-4 py-3"></span>
         </div>
       )}
 
@@ -229,7 +246,7 @@ const ListTableParent = (props) => {
 
       {/* 👉 Listtable Components 👈 */}
       {!loader && dataList?.length > 0 ? (
-        <div className='mb-10'>
+        <div className="mb-10">
           {/* 👉 Listtable 👈 */}
           <ListTable
             search={props?.search}
@@ -258,11 +275,11 @@ const ListTableParent = (props) => {
         <>
           {!loader && (
             <div
-              className='bg-red-100 border border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center'
-              role='alert'
+              className="bg-red-100 border border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center"
+              role="alert"
             >
-              <span className='block sm:inline'>Oops! No data available.</span>
-              <span className='absolute top-0 bottom-0 right-0 px-4 py-3'></span>
+              <span className="block sm:inline">Oops! No data available.</span>
+              <span className="absolute top-0 bottom-0 right-0 px-4 py-3"></span>
             </div>
           )}
         </>

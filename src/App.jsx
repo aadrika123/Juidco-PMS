@@ -41,6 +41,7 @@ import InventoryProposalList from './Components/Pages/PMS/InventoryProposalList'
 import { QueryClient, QueryClientProvider } from 'react-query';
 import AxiosInterceptors from '@/Components/Common/AxiosInterceptors';
 import ViewInventoryDetailsById from './Components/Pages/PMS/ViewInventoryDetailsById';
+import InventoryProposalListTabs from './Components/Pages/PMS/InventoryProposalListTabs';
 
 const queryClient = new QueryClient();
 
@@ -104,6 +105,7 @@ function App() {
     { path: '/inventory-proposal', element: <InventoryProposalList/> },
     { path: '/viewInventoryDetailsById/:id', element: <ViewInventoryDetailsById/> },
     
+    { path: '/inventory-proposal-tab', element: <InventoryProposalListTabs/> },
     
 
   ]
