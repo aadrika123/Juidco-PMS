@@ -17,16 +17,16 @@ import { FaChartPie } from "react-icons/fa";
 
 
 
-function InventoryProposalList() {
+function InventoryProposalList(props) {
   const navigate = useNavigate();
   // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
   const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
 
   // ══════════════════════════════║🔰 Api list used in this file  🔰║═══════════════════════════════════
-  const {
+  // const {
     
-    api_fetchProcurementList
-  } = ProjectApiList();
+  //   api_fetchProcurementList
+  // } = ProjectApiList();
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
@@ -69,33 +69,46 @@ function InventoryProposalList() {
       Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
-      Header: "Applicant Name",
-      accessor: "applicant_name",
+      Header: "Brand",
+      accessor: "brand",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.applicant_name}</div>
+        <div className='pr-2'>{cell.row.values.brand.name}</div>
       ),
     },
     {
-      Header: "Booking Date",
-      accessor: "booking_date",
+      Header: "Category",
+      accessor: "category",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.booking_date} </div>
+        <div className='pr-2'>{cell.row.values.category.name} </div>
       ),
     },
     {
-      Header: "Booking Number",
-      accessor: "booking_no",
+      Header: "Graphics",
+      accessor: "graphics",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.booking_no}</div>
+        <div className='pr-2'>{cell.row.values.graphics.name}</div>
       ),
     },
     {
-      Header: "Delivery Date",
-      accessor: "delivery_date",
+      Header: "OS",
+      accessor: "os",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.os.name}</div>
+      ),
     },
     {
-      Header: "Delivery Time",
-      accessor: "delivery_time",
+      Header: "Processor",
+      accessor: "processor",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.processor.name}</div>
+      ),
+    },
+    {
+      Header: "status",
+      accessor: "status",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.status.status}</div>
+      ),
     },
     {
       Header: "Action",
@@ -244,7 +257,9 @@ function InventoryProposalList() {
                 </div>
               </div>
             </form> */}
-            <div className=" flex space-x-3">
+            
+            {/* <div className=" flex space-x-3">
+              
               <button 
                 className={`flex pl-5 pr-5 pt-1 pb-1 text-black border border-[#4338ca] ${activeButton === 'inbox' ? 'bg-[#4338CA] text-white' : 'bg-white'}`}
                 onClick={() => setActiveButton('inbox')}
@@ -252,6 +267,7 @@ function InventoryProposalList() {
               <FaChartPie className="m-1 text-[1rem]" />
                 Inbox
               </button>
+
               <button 
                 className={`flex pl-5 pr-5 pt-1 pb-1 text-black border border-[#4338ca] ${activeButton === 'outbox' ? 'bg-[#4338CA] text-white' : 'bg-white'}`}
                 onClick={() => setActiveButton('outbox')}
@@ -259,8 +275,10 @@ function InventoryProposalList() {
               <FaChartPie className="m-1 text-[1rem]" />
                 Outbox
               </button>
-            </div>
-            <div>
+
+            </div> */}
+            
+            {/* <div>
               <button 
               className="bg-[#4338CA] pl-2 pr-4 pt-1 pb-1 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex "
               onClick={() =>
@@ -271,15 +289,16 @@ function InventoryProposalList() {
               <GoPlus className="m-1 text-[1rem]"/>
               Request Inventory
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
-        <div className='grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 mt-12 '>
+        
+        <div className='grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 '>
           <div className='col-span-12'>
             <>
             
               <ListTableParent
-                api={api_fetchProcurementList}
+                api={props.api}
                 columns={COLUMNS}
                 requestBody={requestBody} // sending body
                 changeData={changeData} // send action for new payload
