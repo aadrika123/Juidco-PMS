@@ -24,10 +24,8 @@ function InventoryProposalList() {
 
   // ══════════════════════════════║🔰 Api list used in this file  🔰║═══════════════════════════════════
   const {
-    api_getResourceList,
-    api_getSepticCapacityRateList,
-    api_GetAllListDetails,
-    api_GetWaterTankerSearchData,
+    
+    api_fetchProcurementList
   } = ProjectApiList();
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
@@ -281,7 +279,7 @@ function InventoryProposalList() {
             <>
             
               <ListTableParent
-                api={api_GetWaterTankerSearchData}
+                api={api_fetchProcurementList}
                 columns={COLUMNS}
                 requestBody={requestBody} // sending body
                 changeData={changeData} // send action for new payload
