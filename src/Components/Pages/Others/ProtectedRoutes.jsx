@@ -44,7 +44,7 @@ const ProtectedRoutes = () => {
                     </div>
 
                     {/* 👉 Side Bar 👈 */}
-                    <div className={'md:flex md:relative absolute top-[3.4rem] md:top-0 h-full'} style={{ zIndex: 999 }}>
+                    <div className={'md:flex md:relative absolute top-[3.4rem] bg-white md:top-0 h-full'} style={{ zIndex: 999 }}>
                         <DashboardSidebarIndex />
                     </div>
 

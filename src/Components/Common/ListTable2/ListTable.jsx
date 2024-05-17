@@ -19,6 +19,7 @@ import { CSVLink } from "react-csv";
 import GlobalFilter from "./GlobalFilter";
 import { format } from "date-fns";
 import { AiOutlineDoubleRight, AiOutlineDoubleLeft } from "react-icons/ai";
+import SideSection from "../SearchPanel/SidebarTailwind";
 
 function ListTable(props) {
   const [bounce, setbounce] = useState("hidden");
@@ -113,10 +114,10 @@ function ListTable(props) {
           </div>
           <div className='flex-1'>{props.children}</div>
         </div>
-      ) : (
-        <div className='flex mb-2 pb-2 items-end max-sm:p-2'>
+      ) : (<>
+        {/* <div className='flex mb-2 pb-2 items-end max-sm:p-2'>
           <div className='flex-initial opacity-50'>
-            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+            <GlobalFilter filter={props.searchFilter} setFilter={props.setSearchFilter} />
           </div>
           <div className='flex-initial ml-2'>
             <button
@@ -137,14 +138,20 @@ function ListTable(props) {
             </button>
           </div>
           <div className='flex-1'>{props.children}</div>
-        </div>
+        </div> */}
+        </>
       )}
       <div className='flex w-full'>
         <div className='flex-1'>
+        
           <span className='text-gray-600'>Total Result :&nbsp;</span>
           <span className='font-semibold'>{props?.totalCount}</span>{" "}
         </div>
       </div>
+
+      {/* <div>
+          <SideSection/>
+        </div> */}
 
       <div className='px-2 py-2 overflow-x-auto bg-white'>
         <div className='inline-block min-w-full overflow-hidden bg-white'>

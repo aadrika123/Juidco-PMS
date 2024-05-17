@@ -4,17 +4,17 @@
 //    Date - 29/09/2023
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - PreProcurementCancelScreen
-//    DESCRIPTION - PreProcurementCancelScreen
+//    Component  - PreProcurementSubmittedScreen
+//    DESCRIPTION - PreProcurementSubmittedScreen
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
-import PaymentDetailsSepticTank from "./PaymentDetailsSepticTank";
+import PaymentDetailsSepticTank from "./SuccessModal";
 import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
-import cancel from "@/Components/assets/cancel.svg";
+import check from "@/Components/assets/check.svg";
 import { useNavigate } from "react-router-dom";
 
-function PreProcurementCancelScreen(props) {
+function PreProcurementSubmittedScreen(props) {
   const navigate = useNavigate();
   const { formStyle } = ThemeStyleTanker();
 
@@ -30,15 +30,14 @@ function PreProcurementCancelScreen(props) {
   // };
 
   const handleClick = () => {
+    props?.submitForm()
+    navigate(`/sr-inventory-proposal`);
+  };
+
+  const handleCancilClick = () => {
     // props?.submitForm()
     // navigate(`/add-pre-procurement`);
     window.location.reload();
-  };
- 
-  const handleCancilClick = () => {
-    props?.setIsModalOpen2(false)
-    // navigate(`/add-pre-procurement`);
-    // window.location.reload();
   };
   return (
     <>
@@ -48,19 +47,19 @@ function PreProcurementCancelScreen(props) {
           applicationId={props?.responseScreenData?.data?.applicationId}
         />
       </div>
-      <div class={`${formStyle} w-2/3 mx-auto flex flex-col max-sm:w-full `}>
+      <div class={`${formStyle} w-1/2 mx-auto flex flex-col max-sm:w-full `}>
         <div class="relative overflow-hidden mt-10">
           <div class="absolute inset-0 hover:bg-white opacity-0 transition duration-700 hover:opacity-10"></div>
           <img
-            className="max-w-full h-auto mx-auto animate-wiggle p-2 "
-            src={cancel}
+            className="max-w-full h-[8rem] mx-auto animate-wiggle mb-5 "
+            src={check}
             alt="alt title"
           />
         </div>
         <div class=" flex-1">
           <div class="">
             <h3 class="text-xl  text-center  text-black font-openSans">
-            Are you Sure you want to Cancel
+            Are you Sure you want to Save
             </h3>
             {/* <h3 class="text-xl  text-center mb-3 text-gray-400 font-openSans font-semibold ">
               Booking no. - {props?.responseScreenData?.data?.bookingNo}
@@ -75,7 +74,7 @@ function PreProcurementCancelScreen(props) {
                 className={`bg-white border-blue-900 border text-blue-950 text-sm px-8 py-2 hover:bg-[#1A4D8C] hover:text-white  rounded leading-5 shadow-lg`}
                 onClick={handleCancilClick}
               >
-                No
+                Cancel
               </button>
             </div>
 
@@ -84,7 +83,7 @@ function PreProcurementCancelScreen(props) {
                 className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
                 onClick={handleClick}
               >
-                Yes
+                Continue
               </button>
             </div>
           </div>
@@ -100,4 +99,4 @@ function PreProcurementCancelScreen(props) {
   );
 }
 
-export default PreProcurementCancelScreen;
+export default PreProcurementSubmittedScreen;

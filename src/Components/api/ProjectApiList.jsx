@@ -93,9 +93,11 @@ export default function ProjectApiList() {
         
         //Api for PMS
         api_addProcurement: `${baseUrl}/api/sr/pre-procurement`,
+        api_editProcurement: `${baseUrl}/api/da/pre-procurement/edit`,
 
         api_itemCategory: `${baseUrl}/api/master/category `,
         api_itemSubCategory: `${baseUrl}/api/master/sub-category/by-category`,
+        api_itemSubCategoryAll: `${baseUrl}/api/master/sub-category`,
         api_itemBrand: `${baseUrl}/api/master/brand `,
         api_fetchProcessor: `${baseUrl}/api/master/processor `,
         api_fetchRam: `${baseUrl}/api/master/ram `,
@@ -104,8 +106,21 @@ export default function ProjectApiList() {
         api_fetchGraphics: `${baseUrl}/api/master/graphics `,
         
         api_fetchProcurementList: `${baseUrl}/api/sr/pre-procurement`,
-        api_fetchProcurementDAList: `${baseUrl}/api/da/pre-procurement`,
+        api_fetchProcurementDAList: `${baseUrl}/api/sr/pre-procurement/outbox`,
         api_fetchProcurementDetailById: `${baseUrl}/api/sr/pre-procurement`,
+        api_fetchOutboxProcurementDetailById: `${baseUrl}/api/sr/pre-procurement/outbox`,
+        api_postForwardToDA: `${baseUrl}/api/sr/pre-procurement/to-da`,
+        
+        
+        api_fetchProcurementDAListInbox: `${baseUrl}/api/da/pre-procurement`,
+        api_fetchProcurementDAListOutbox: `${baseUrl}/api/da/pre-procurement/outbox`,
+        api_fetchProcurementDADetailByIdinbox: `${baseUrl}/api/da/pre-procurement`,
+        api_fetchProcurementDADetailByIdOutbox: `${baseUrl}/api/da/pre-procurement/outbox`,
+        api_postBackToSR: `${baseUrl}/api/da/pre-procurement/to-sr`,
+        api_postReleaseTender: `${baseUrl}/api/da/pre-procurement/release-tender`,
+        api_postRejectTender: `${baseUrl}/api/da/pre-procurement/reject`,
+        api_postDaEditTender: `${baseUrl}/api/da/pre-procurement/edit`,
+        
 
         
 

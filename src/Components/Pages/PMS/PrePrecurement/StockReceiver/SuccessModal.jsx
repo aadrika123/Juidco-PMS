@@ -4,8 +4,8 @@
 //    Date - 29/09/2023
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - PaymentDetailsSepticTank
-//    DESCRIPTION - PaymentDetailsSepticTank
+//    Component  - SuccessModal
+//    DESCRIPTION - SuccessModal
 //    FUNCTIONS - submitForm,        
 //    API USED  - api_getSepticTankDetailsById,  api_getSepticTankOrderIdForPayment    
 //////////////////////////////////////////////////////////////////////////////////////
@@ -37,7 +37,7 @@ const customStyles = {
     },
 };
 
-function PaymentDetailsSepticTank(props) {
+function SuccessModal(props) {
 
     // ══════════════════════════════║🔰 CUSTOM STYLE 🔰║═══════════════════════════════════
     const { labelStyle, formStyle } = ThemeStyleTanker()
@@ -192,4 +192,4 @@ function PaymentDetailsSepticTank(props) {
     )
 }
 
-export default PaymentDetailsSepticTank
+export default SuccessModal

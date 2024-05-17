@@ -9,7 +9,7 @@ import BarLoader from "@/Components/Common/Loaders/BarLoader";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { RotatingLines } from "react-loader-spinner";
 import { RiFilter2Line } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 import { GoPlus } from "react-icons/go";
 import { FaChartPie } from "react-icons/fa";
@@ -19,14 +19,12 @@ import { FaChartPie } from "react-icons/fa";
 
 function InventoryProposalList(props) {
   const navigate = useNavigate();
-  // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
-  const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
+  const {module} = useParams()
 
-  // ══════════════════════════════║🔰 Api list used in this file  🔰║═══════════════════════════════════
-  // const {
-    
-  //   api_fetchProcurementList
-  // } = ProjectApiList();
+  console.log(props.page,"page========>")
+  // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
+
+  const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
@@ -69,10 +67,10 @@ function InventoryProposalList(props) {
       Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
-      Header: "Brand",
-      accessor: "brand",
+      Header: "Order No",
+      accessor: "order_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.brand.name}</div>
+        <div className="pr-2">{cell.row.values.order_no}</div>
       ),
     },
     {
@@ -83,31 +81,53 @@ function InventoryProposalList(props) {
       ),
     },
     {
-      Header: "Graphics",
-      accessor: "graphics",
+      Header: "Sub Category",
+      accessor: "subcategory",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.graphics.name}</div>
+        <div className='pr-2'>{cell.row.values.subcategory.name} </div>
       ),
     },
     {
-      Header: "OS",
-      accessor: "os",
+      Header: "Brand",
+      accessor: "brand",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.os.name}</div>
+        <div className='pr-2'>{cell.row.values.brand.name}</div>
       ),
     },
-    {
-      Header: "Processor",
-      accessor: "processor",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.processor.name}</div>
-      ),
-    },
+    // {
+    //   Header: "Graphics",
+    //   accessor: "graphics",
+    //   Cell: ({ cell }) => (
+    //     <div className='pr-2'>{cell.row.values.graphics.name}</div>
+    //   ),
+    // },
+    // {
+    //   Header: "OS",
+    //   accessor: "os",
+    //   Cell: ({ cell }) => (
+    //     <div className='pr-2'>{cell.row.values.os.name}</div>
+    //   ),
+    // },
+    // {
+    //   Header: "Processor",
+    //   accessor: "processor",
+    //   Cell: ({ cell }) => (
+    //     <div className='pr-2'>{cell.row.values.processor.name}</div>
+    //   ),
+    // },
     {
       Header: "status",
       accessor: "status",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.status.status}</div>
+        <div className="pr-2">
+        <p className="font-bold text-yellow-800">{cell.row.values.status.status == -1 && 'Back to SR'}</p>
+        <p className="font-bold text-red-500">{cell.row.values.status.status == -2 && 'Rejected'}</p>
+        <p className="font-bold text-blue-800">{cell.row.values.status.status == 0 && 'Pending'}</p>
+        <p className="font-bold text-blue-800">{cell.row.values.status.status == 1 && "DA's Inbox"}</p>
+        <p className="font-bold text-green-800">{cell.row.values.status.status == 2 && "Release for Tender"}</p>
+        <p className="font-bold text-green-500">{cell.row.values.status.status == 3 && "Stock Receaved"}</p>
+        <p className="font-bold text-green-500">{cell.row.values.status.status == 4 && "Stock Verified"}</p>
+        </div>
       ),
     },
     {
@@ -118,11 +138,10 @@ function InventoryProposalList(props) {
           <button
             className='bg-indigo-500 text-white px-2 py-1'
             onClick={() =>
-              navigate(`/ViewInventoryDetailsById/${cell.row.values.id}`)
+              navigate(`/da-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`)
             }
           >
             View
-            {/* <RiDeleteBack2Line className='inline ml-2 text-red-400 font-semibold text-lg cursor-pointer hover:text-red-700 relative hover:scale-150 -mt-4' /> */}
           </button>
         </>
       ),
