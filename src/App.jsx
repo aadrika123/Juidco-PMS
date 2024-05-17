@@ -35,13 +35,16 @@ import ViewRejectApplication from './Components/Pages/PetRegistration/ViewEditAp
 import PetRegistrationPreviewList from './Components/Pages/PetRegistration/SearchApprovedPetApplication/PetRegistrationPreviewList';
 import ViewApprovedPreviewApplication from './Components/Pages/PetRegistration/ViewEditApplication/ViewApprovedPreviewApplication';
 import PetLicense from './Components/Pages/PetRegistration/PetPaymentReceipt/PetLicense';
-import AddPreProcurement from './Components/Pages/PMS/AddPreProcurement';
-import InventoryDashboard from './Components/Pages/PMS/InventoryDashboard';
-import InventoryProposalList from './Components/Pages/PMS/InventoryProposalList';
+import AddPreProcurement from './Components/Pages/PMS/PrePrecurement/StockReceiver/AddPreProcurement';
+import InventoryDashboard from './Components/Pages/PMS/PrePrecurement/StockReceiver/InventoryDashboard';
+import InventoryProposalList from './Components/Pages/PMS/PrePrecurement/StockReceiver/InventoryProposalList';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import AxiosInterceptors from '@/Components/Common/AxiosInterceptors';
-import ViewInventoryDetailsById from './Components/Pages/PMS/ViewInventoryDetailsById';
-import InventoryProposalListTabs from './Components/Pages/PMS/InventoryProposalListTabs';
+import ViewInventoryDetailsById from './Components/Pages/PMS/PrePrecurement/StockReceiver/ViewInventoryDetailsById';
+import InventoryProposalListTabs from './Components/Pages/PMS/PrePrecurement/StockReceiver/InventoryProposalListTabs';
+import InventoryProposalListTabsDa from './Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/InventoryProposalListTabsDa';
+import ViewInventoryDetailsByIdDa from './Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/ViewInventoryDetailsByIdDa';
+import EditPreProcurement from './Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/EditPreProcurement';
 
 const queryClient = new QueryClient();
 
@@ -100,12 +103,18 @@ function App() {
     { path: '/pet-license/:id', element: <PetLicense/> },
     
     //---------- PMS-Routes -----------------
-    { path: '/inventory-dashboard', element: <InventoryDashboard/> },
-    { path: '/add-pre-procurement', element: <AddPreProcurement/> },
-    { path: '/inventory-proposal', element: <InventoryProposalList/> },
-    { path: '/viewInventoryDetailsById/:id', element: <ViewInventoryDetailsById/> },
     
-    { path: '/inventory-proposal-tab', element: <InventoryProposalListTabs/> },
+    //------------ Stock Receiver ---------------
+    { path: '/sr-inventory-dashboard', element: <InventoryDashboard/> },
+    { path: '/sr-add-pre-procurement', element: <AddPreProcurement/> },
+    { path: '/sr-viewInventoryDetailsById/:id/:page', element: <ViewInventoryDetailsById/> },
+    { path: '/sr-inventory-proposal', element: <InventoryProposalListTabs/> },
+    
+    
+    //------------ DA ---------------
+    { path: '/da-inventory-proposal', element: <InventoryProposalListTabsDa/> },
+    { path: '/da-viewInventoryDetailsById/:id/:page', element: <ViewInventoryDetailsByIdDa/> },
+    { path: '/da-edit-pre-procurement/:id', element: <EditPreProcurement/> },
     
 
   ]

@@ -14,6 +14,11 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import { CSVDownload } from "react-csv";
 import ShimmerEffectInline from "@/Components/Common/Loaders/ShimmerEffectInline";
+import GlobalFilter from "./GlobalFilter";
+import { AiOutlineArrowDown } from "react-icons/ai";
+import { FiFilter } from "react-icons/fi";
+import SearchPanel from "../SearchPanel/SearchPanel";
+import SideSection from "../SearchPanel/SidebarTailwind";
 
 const ListTableParent = (props) => {
   // 👉 State constants 👈
@@ -29,14 +34,32 @@ const ListTableParent = (props) => {
   const [loader, setloader] = useState(false);
   const [perPageData, setPerPageData] = useState(10);
   const [pagination, setPagination] = useState({});
+  const [searchFilter, setSearchFilter] = useState("");
+  const [bounce, setbounce] = useState("hidden");
+  const [isFilterPanelOpen, setFilterPanelOpen] = useState(false);
+  const [searchPanelItemValues, setSearchPanelItemValues] = useState({});
+  const [filter, setFilter] = useState({});
 
-  console.log(currentPage);
+  const searchPanelItems = [
+    { name: "project_proposal_no", caption: "Project Proposal Number" },
+  ];
+
+  const toggleFilterPanel = () => {
+    setFilterPanelOpen((prevState) => !prevState);
+  };
+
+  // console.log(currentPage);
 
   // 👉 Function 1 👈
   const searchOldFun = () => {
     seterrorState(false);
 
     setloader(true);
+
+    console.log(
+      props?.requestBody,
+      "==============props?.requestBody search old"
+    );
 
     if (
       props?.requestBody?.length &&
@@ -45,8 +68,23 @@ const ListTableParent = (props) => {
       typeof props.loader == "function" && props.loader(true);
     }
 
+    const returnCategoryFilter = (fieldName, caragotyFilter) => {
+      if (caragotyFilter?.length === 0) {
+        return;
+      }
+      const filtered = caragotyFilter.map((item) => [`${fieldName}=${item}`]);
+      return filtered.join("&");
+    };
+    // console.log(returnCategoryFilter());
+
     AxiosInterceptors.get(
-      `${props?.api}?take=${perPageData}&page=${currentPage}`
+      `${props?.api}?
+      take=${perPageData}&page=${currentPage}
+      &search=${searchFilter}
+      &${returnCategoryFilter("category", filter?.category || [])}
+      &${returnCategoryFilter("subcategory", filter?.subcategory || [])}
+      &${returnCategoryFilter("brand", filter?.brand || [])}
+      `
         .split(" ")
         .join(""),
       { ...props?.requestBody, perPage: perPageCount, page: pageCount },
@@ -212,7 +250,7 @@ const ListTableParent = (props) => {
     // if (props?.requestBody != null) {
     setpageCount(1);
     setperPageCount(10);
-    searchOldFun();
+    // searchOldFun();
     // }
   }, [props?.changeData, currentPage, perPageData]);
 
@@ -220,7 +258,40 @@ const ListTableParent = (props) => {
   useEffect(() => {
     setloader(true);
     searchOldFun();
-  }, [pageCount, perPageCount]);
+    console.log(searchFilter, "searfilter------------>");
+  }, [pageCount, perPageCount, searchFilter]);
+
+  //=---------------------- Search Panel----------------------------
+  // useEffect(() => {
+  //   console.log(projectProposalData);
+
+  //   setTotalResults(projectProposalData?.count);
+
+  //   //update the items for the table
+  //   setProjectProposals(projectProposalData?.records);
+
+  //   // populate the items to be displayed in the search panel
+  //   const project_proposal_nos = projectProposalData?.project_proposal_no?.map((item) => item.project_proposal_no);
+  //   if (project_proposal_nos) setSearchPanelItemValues({ ...searchPanelItemValues, project_proposal_no: project_proposal_nos });
+
+  // }, [projectProposalData]);
+
+  const onFilterChange = (filters) => {
+    // console.log("Filters updated: ", filters);
+    const q = qs.stringify(filters);
+    setSearchQuery(q);
+  };
+
+  const onRemoveFilter = () => {
+    console.log("Filters removed!");
+    setSearchQuery("");
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const useFilter = () => {
+    searchOldFun();
+  };
 
   return (
     <>
@@ -244,46 +315,99 @@ const ListTableParent = (props) => {
       {/* 👉 Loader 👈 */}
       {loader && <ShimmerEffectInline />}
 
-      {/* 👉 Listtable Components 👈 */}
-      {!loader && dataList?.length > 0 ? (
-        <div className="mb-10">
-          {/* 👉 Listtable 👈 */}
-          <ListTable
-            search={props?.search}
-            currentPage={currentPage}
-            lastPage={lastPage}
-            goFirst={firstPageFun}
-            goLast={lastPageFun}
-            count1={totalCount}
-            columns={props?.columns}
-            dataList={dataList}
-            exportStatus={props?.exportStatus}
-            perPage={perPageCount}
-            perPageC={perPageFun}
-            totalCount={totalCount}
-            nextPage={nextPageFun}
-            prevPage={prevPageFun}
-            exportDataF={exportDataFun}
-            exportData={exportData}
-            gotoPage={(val) => gotoPageFun(val)}
-            perPageData={perPageData}
-            setPerPageData={setPerPageData}
-          />
-        </div>
-      ) : (
-        // 👉 When no data available 👈
-        <>
-          {!loader && (
-            <div
-              className="bg-red-100 border border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center"
-              role="alert"
+      <div className="flex flex-col">
+        <div className="flex mb-2 pb-2 items-end max-sm:p-2 justify-end w-full">
+          {/* <div hidden={!isFilterPanelOpen} className="w-[25%] h-[75vh] overflow-y-auto overflow-x-hidden hide-scrollbar">
+          <SearchPanel onClose={toggleFilterPanel} items={searchPanelItems} values={searchPanelItemValues} onFilterChange={onFilterChange} onNoFilter={onRemoveFilter} />
+        </div> */}
+
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="bg-blue-900 text-white px-4 py-2 rounded mr-2"
+          >
+            <FiFilter />
+          </button>
+          <div className="flex-initial opacity-50">
+            <GlobalFilter filter={searchFilter} setFilter={setSearchFilter} />
+          </div>
+          <div className="flex-initial ml-2">
+            <button
+              className="bg-green-600 px-3 pr-3  drop-shadow-lg rounded-sm py-1 text-white hover:shadow-2xl hover:bg-slate-800 text-center relative"
+              onMouseEnter={() => setbounce("")}
+              onMouseLeave={() => setbounce("hidden")}
+              onClick={exportDataFun}
             >
-              <span className="block sm:inline">Oops! No data available.</span>
-              <span className="absolute top-0 bottom-0 right-0 px-4 py-3"></span>
-            </div>
+              Export
+              <div
+                className={
+                  bounce +
+                  " absolute h-full top-3 text-sm left-0 text-center animate-bounce"
+                }
+              >
+                <AiOutlineArrowDown />
+              </div>
+            </button>
+          </div>
+          <div className="flex-1">{props.children}</div>
+        </div>
+
+        {/* 👉 Listtable Components 👈 */}
+        <div className="flex">
+          {isOpen && (
+            <SideSection
+              setIsOpen={setIsOpen}
+              filter={filter}
+              setFilter={setFilter}
+              useFilter={useFilter}
+            />
           )}
-        </>
-      )}
+
+          {!loader && dataList?.length > 0 ? (
+            <div className="mb-10">
+              {/* 👉 Listtable 👈 */}
+
+              <ListTable
+                search={props?.search}
+                currentPage={currentPage}
+                lastPage={lastPage}
+                goFirst={firstPageFun}
+                goLast={lastPageFun}
+                count1={totalCount}
+                columns={props?.columns}
+                dataList={dataList}
+                exportStatus={props?.exportStatus}
+                perPage={perPageCount}
+                perPageC={perPageFun}
+                totalCount={totalCount}
+                nextPage={nextPageFun}
+                prevPage={prevPageFun}
+                exportDataF={exportDataFun}
+                exportData={exportData}
+                gotoPage={(val) => gotoPageFun(val)}
+                perPageData={perPageData}
+                setPerPageData={setPerPageData}
+                searchFilter={searchFilter}
+                setSearchFilter={setSearchFilter}
+              />
+            </div>
+          ) : (
+            // 👉 When no data available 👈
+            <>
+              {!loader && (
+                <div
+                  className="bg-red-100 border border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center"
+                  role="alert"
+                >
+                  <span className="block sm:inline">
+                    Oops! No data available.
+                  </span>
+                  <span className="absolute top-0 bottom-0 right-0 px-4 py-3"></span>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
     </>
   );
 };

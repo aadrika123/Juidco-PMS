@@ -68,7 +68,7 @@ function Login() {
 
                     fetchMenuList()
                     setheartBeatCounter(prev => prev + 1)
-                    navigate('/home') //navigate to home page after login
+                    navigate('/sr-inventory-dashboard') //navigate to home page after login
 
                     toast.success("Login Successfull")
 

@@ -601,8 +601,8 @@ const calculateTotalRate = () => {
           <div className=''>
             <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
               <div className='col-span-12  w-full mb-20'>
-                <div className=' ml-4 p-4 mt-4'>
-                  <h1 className={`${headingStyle} text-right`}>Pre Procurement Proposal</h1>
+                <div className=' ml-4 p-2 mt-4'>
+                  <h1 className={`${headingStyle} text-left pb-5 pl-6`}>Pre Procurement Proposal</h1>
                   {/* <h1 className={`${labelStyle} `}>
                     Maintaining a healthy home: Confirming my septic tank
                     service.
@@ -619,7 +619,7 @@ const calculateTotalRate = () => {
                     <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Item Category 
-                        <span className='text-sm text-red-500'>
+                        <span className='text-xl text-red-500 pl-1'>
                           *
                         </span>{" "}
                       </label>
@@ -649,8 +649,8 @@ const calculateTotalRate = () => {
                     <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                         <label className={`${labelStyle} inline-block mb-2`}>
                         Items Sub Category
-                        <span className='text-sm text-red-500'>
-                          *
+                        <span className='text-xl text-red-500 pl-1'>
+                           *
                         </span>
                         </label>
                         <select
@@ -782,29 +782,30 @@ const calculateTotalRate = () => {
                     </div>
 
                   </div>
+
                   {/* row 4 */}
                   <div class='valid-form flex flex-wrap flex-row -mx-4'>
                     
-                    {/* <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                     <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
-                      Generation
+                      Graphics 
                       </label>
                       <select
-                        {...formik.getFieldProps("Generation")}
+                        {...formik.getFieldProps("graphics")}
                         className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
                       >
                         <option selected>select</option>
-                        <option>one</option>
-                        {locationList?.map((items) => (
-                          <option value={items?.id}>{items?.Generation}</option>
+                        {graphicsList?.map((items) => (
+                          <option value={items?.id}>{items?.name}-{items?.vram}</option>
                         ))}
                       </select>
                       <p className='text-red-500 text-xs '>
-                        {formik.touched.Generation && formik.errors.Generation
-                          ? formik.errors.Generation
+                        {formik.touched.graphics && formik.errors.graphics
+                          ? formik.errors.graphics
                           : null}
                       </p>
-                    </div> */}
+                    </div>
 
                     <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
@@ -834,35 +835,14 @@ const calculateTotalRate = () => {
                   {/* row 5 */}
                   <div class='valid-form flex flex-wrap flex-row -mx-4'>
                     
-                    <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                      Graphics 
-                      </label>
-                      <select
-                        {...formik.getFieldProps("graphics")}
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
-                      >
-                        <option selected>select</option>
-                        {graphicsList?.map((items) => (
-                          <option value={items?.id}>{items?.name}-{items?.vram}</option>
-                        ))}
-                      </select>
-                      <p className='text-red-500 text-xs '>
-                        {formik.touched.graphics && formik.errors.graphics
-                          ? formik.errors.graphics
-                          : null}
-                      </p>
-                    </div>
-
-                    <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                    <div class='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                       Others Description
                       </label>
-                      <input
+                      <textarea
                         type='text'
                         name='other_description'
-                        className={`${inputStyle} inline-block w-full relative`}
+                        className={`${inputStyle} inline-block w-full relative h-20`}
                         onChange={formik.handleChange}
                         value={formik.values.other_description}
                       />
