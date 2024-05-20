@@ -90,7 +90,7 @@ function Login() {
     // 3 CHANGE FOR SINGLE AUTH
     const fetchMenuList = () => {
         let requestBody = {
-            moduleId: 9
+            moduleId: 17
         }
         console.log("request body", requestBody)
 

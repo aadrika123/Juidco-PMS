@@ -73,7 +73,7 @@ const TopHeader = (props) => {
           </div>
         </div>
 
-        <div className=" w-1/3 ml-2 flex items-center">
+        <div className="flex w-1/2">
           <span
             onClick={() => openModal2()}
             className="bg-gray-200 px-4 py-1 cursor-pointer hover:shadow-md"
@@ -84,7 +84,7 @@ const TopHeader = (props) => {
         
         <div className="flex items-center sm:gap-4 gap-2">
           <span className="sm:visible flex items-center ">
-          <h1>Procurement Management System</h1>
+          <h1 className='pr-4 font-bold text-[1.3rem]'>Procurement Management System</h1>
             <Tooltip anchorId="logout" className="z-50" />
             <button
               id="logout"
