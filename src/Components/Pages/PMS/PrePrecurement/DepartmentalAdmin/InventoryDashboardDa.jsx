@@ -4,8 +4,8 @@
 //    Date - 11/05/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - InventoryDashboard
-//    DESCRIPTION - InventoryDashboard     
+//    Component  - InventoryDashboardDa
+//    DESCRIPTION - InventoryDashboardDa     
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useEffect, useState } from 'react'
@@ -26,7 +26,7 @@ import {TempAnimation, TempAnimation2,DeadStockAnimation,
   IncreaseAnimation} from "@/Components/temp"
 import Lottie from 'react-lottie';
 
-function InventoryDashboard() {
+function InventoryDashboardDa() {
     const { labelStyle, headingStyle} = ThemeStyle()
     const { api_UlbDashboard } = ProjectApiList()
 
@@ -261,4 +261,4 @@ function InventoryDashboard() {
     );
 }
 
-export default InventoryDashboard
+export default InventoryDashboardDa

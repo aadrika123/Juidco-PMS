@@ -121,27 +121,36 @@ const [categorySelected,setCategorySelected] = useState([]);
   
 
   const validationSchema = yup.object({
-    itemcategory: yup.string().required("itemcategory is required"),
-    itemsubcategory: yup.string().required("itemsubcategory is required"),
-    brand: yup.string().required("brand is required"),
+    itemcategory: yup.string().required("item category is required"),
+    itemsubcategory: yup.string().required("item subcategory is required"),
+    // fieldRequired: yup.string().required("This Field is required"),
+    // brand: yup.string().required("brand is required"),
 
-    processor: yup.string().required("processor is required"),
-    ram: yup.string().required("ram is required"),
-    operatingsystem: yup.string().required("operatingsystem is required"),
-    rom: yup.string().required("rom is required"),
-    graphics: yup.string().required("graphics is required"),
+    // processor: yup.string().required("processor is required"),
+    // ram: yup.string().required("ram is required"),
+    // operatingsystem: yup.string().required("operatingsystem is required"),
+    // rom: yup.string().required("rom is required"),
+    // graphics: yup.string().required("graphics is required"),
     
     
-    colour: yup.string().required("Color is required"),
-    material: yup.string().required("Material  aterial is required"),
-    dimension: yup.string().required("Dimension  aterial is required"),
-    room_type: yup.string().required("Room type  aterial is required"),
-    included_components: yup.string().required("Included components is required"),
-    size: yup.string().required("Size is required"),
-    recomended_uses: yup.string().required("Recomended_uses is required"),
-    bristle: yup.string().required("Bristle is required"),
-    weight: yup.string().required("Weight is required"),
-    number_of_items: yup.string().required("No of items is required"),
+    // colour: yup.string().required("Color is required"),
+    // material: yup.string().required("Material  aterial is required"),
+    // dimension: yup.string().required("Dimension  aterial is required"),
+    // room_type: yup.string().required("Room type  aterial is required"),
+    // included_components: yup.string().required("Included components is required"),
+    // size: yup.string().required("Size is required"),
+    // recomended_uses: yup.string().required("Recomended_uses is required"),
+    // bristle: yup.string().required("Bristle is required"),
+    // weight: yup.string().required("Weight is required"),
+
+    // number_of_items: yup.string().required("No of items is required"),
+    
+    // number_of_items: yup.string().when("itemcategory", {
+    //   is: "",
+    //   then: yup.string().required("Must enter email address")
+    // }),
+
+
     other_description: yup.string().required("Other description is required"),
     rate: yup.number().required("Rate is required"),
     quantity: yup.number().required("Quantity is required"),
@@ -212,7 +221,7 @@ const [categorySelected,setCategorySelected] = useState([]);
       setIsModalOpen(true);
       setFormData(values);
     },
-    // validationSchema,
+    validationSchema,
   });
 
   const furniture = [
@@ -712,7 +721,7 @@ const [categorySelected,setCategorySelected] = useState([]);
                       onChange={formik.handleChange}
                     >
                       <option selected>select</option>
-                      <option selected>one</option>
+                     
                       {subcategory?.length &&
                         subcategory?.map((items) => (
                           <option value={items?.id}>{items?.name}</option>
@@ -728,6 +737,7 @@ const [categorySelected,setCategorySelected] = useState([]);
                   </div>
 
                   {categorySelected?.map((obj) => (
+                    
                     <div className=" flex flex-wrap w-1/2">
                       <div class="px-4 w-full mb-4">
                         <label className={`${labelStyle} inline-block mb-2`}>
@@ -743,9 +753,9 @@ const [categorySelected,setCategorySelected] = useState([]);
                         />
 
                         <p className="text-red-500 text-xs ">
-                          {formik.touched.number_of_items &&
-                          formik.errors.number_of_items
-                            ? formik.errors.number_of_items
+                          {formik.touched[obj.name] &&
+                          formik.errors[obj.name]
+                            ? formik.errors[obj.name]
                             : null}
                         </p>
                       </div>

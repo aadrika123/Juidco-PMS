@@ -45,6 +45,7 @@ import InventoryProposalListTabs from './Components/Pages/PMS/PrePrecurement/Sto
 import InventoryProposalListTabsDa from './Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/InventoryProposalListTabsDa';
 import ViewInventoryDetailsByIdDa from './Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/ViewInventoryDetailsByIdDa';
 import EditPreProcurement from './Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/EditPreProcurement';
+import InventoryDashboardDa from './Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/InventoryDashboardDa';
 
 const queryClient = new QueryClient();
 
@@ -106,15 +107,16 @@ function App() {
     
     //------------ Stock Receiver ---------------
     { path: '/sr-inventory-dashboard', element: <InventoryDashboard/> },
-    { path: '/sr-add-pre-procurement', element: <AddPreProcurement/> },
-    { path: '/sr-viewInventoryDetailsById/:id/:page', element: <ViewInventoryDetailsById/> },
     { path: '/sr-inventory-proposal', element: <InventoryProposalListTabs/> },
+    { path: '/sr-viewInventoryDetailsById/:id/:page', element: <ViewInventoryDetailsById/> },
+    { path: '/sr-add-pre-procurement', element: <AddPreProcurement/> },
     
     
     //------------ DA ---------------
+    { path: '/da-inventory-dashboard', element: <InventoryDashboardDa/> },
     { path: '/da-inventory-proposal', element: <InventoryProposalListTabsDa/> },
-    { path: '/da-viewInventoryDetailsById/:id/:page', element: <ViewInventoryDetailsByIdDa/> },
     { path: '/da-edit-pre-procurement/:id', element: <EditPreProcurement/> },
+    { path: '/da-viewInventoryDetailsById/:id/:page', element: <ViewInventoryDetailsByIdDa/> },
     
 
   ]
