@@ -12,6 +12,8 @@ import PermittedModuleCard from './PermittedModuleCard';
 import { Tooltip } from 'react-tooltip';
 import { BsBell } from 'react-icons/bs';
 import NotificationComponent from './NotificationComponent';
+import { BiMenuAltLeft } from "react-icons/bi";
+
 
 
 const TopHeader = (props) => {
@@ -61,17 +63,20 @@ const TopHeader = (props) => {
           <span className='font-semibold text-xl '>{brand_tag}</span>
           <div onClick={() => {
             settoggleBar(!toggleBar)
-          }}>
-            <span className='cursor-pointer text-gray-700 text-xl' ><AiOutlineBars /></span>
+          }}
+          className='ml-[8rem]'>
+            <span className='cursor-pointer text-gray-700 text-xl' ><BiMenuAltLeft className='text-2xl' /></span>
           </div>
         </div>
-        <div className=' w-full ml-2 flex items-center'><span onClick={() => openModal2()} className='bg-gray-200 px-4 py-1 cursor-pointer hover:shadow-md'>Modules</span> </div>
+
+        <div className=' w-full ml-2 flex items-center'>
+        <span onClick={() => openModal2()} className='bg-gray-200 px-4 py-1 cursor-pointer hover:shadow-md'>Modules</span> <span className='pl-4 font-bold text-xl'>Procurement Management System </span> </div>
         <div className='flex items-center sm:gap-4 gap-2'>
           <span className='sm:visible flex items-center '>
           <Tooltip anchorId="logout" className='z-50' />
-            <button id='logout' data-tooltip-content="Log Out" onClick={() => openModal()} className='text-2xl font-semibold'><BiLogOutCircle /></button></span>
+            <button id='logout' data-tooltip-content="Log Out" onClick={() => openModal()} className='text-2xl font-semibold bg-[#4338CA] text-white rounded p-1'><BiLogOutCircle /></button></span>
           <Tooltip anchorId="notification_icon" className='z-50' />
-          <BsBell id='notification_icon' data-tooltip-content="Show all notifications." onClick={() => setnotificationState(true)} className="cursor-pointer inline text-2xl font-semibold" />
+          <BsBell id='notification_icon' data-tooltip-content="Show all notifications." onClick={() => setnotificationState(true)} className="cursor-pointer inline text-2xl font-semibold text-[#4338CA]" />
         </div>
       </div>
 

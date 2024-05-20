@@ -9,10 +9,12 @@ import { MdTag } from "react-icons/md";
 import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 import { contextVar } from '@/Components/context/contextVar'
 import { CloudCog } from "lucide-react";
+import ForwardToDAConfirmationModal from "./FOrwardToDAConfirmationModal";
+
 // import ListTable from "src/Components/Common/ListTable/ListTable";
 // import PaymentHistory from "src/Components/Common/PaymentHistory/PaymentHistory";
 
-const ViewInventoryDetailsById = (props) => {
+const   ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
   const { id, page} = useParams();
   console.log("param", id);
@@ -22,6 +24,7 @@ const ViewInventoryDetailsById = (props) => {
   const [isLoading, setisLoading] = useState(false);
   const [applicationFullData, setapplicationFullData] = useState();
   const [tableData, setTableData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     api_fetchProcurementDetailById,
@@ -32,7 +35,7 @@ const ViewInventoryDetailsById = (props) => {
      // Accessing context for notifications
      const { notify } = useContext(contextVar);
 
-  let buttonStyle = ' mr-3 font-bold pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
+  let buttonStyle = ' mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
 
   useEffect(() => {
     getApplicationDetail();
@@ -71,6 +74,10 @@ const ViewInventoryDetailsById = (props) => {
         setisLoading(false);
       });
   };
+
+  const forwardDAModal = () =>{
+    setIsModalOpen(true);
+  }
  
   const forwardToDA = () => {
     // seterroState(false);
@@ -87,7 +94,7 @@ const ViewInventoryDetailsById = (props) => {
           toast.success(response?.data?.message,"success");
           setTimeout(() => {
             navigate("/sr-inventory-proposal");
-          }, 2000);
+          }, 3000);
           console.log(response?.data?.message,"Forwadede to DA--->>")
 
         } else {
@@ -105,6 +112,17 @@ const ViewInventoryDetailsById = (props) => {
       });
 
   };
+
+  if (isModalOpen) {
+    return (
+      <>
+        <ForwardToDAConfirmationModal
+          forwardToDA={forwardToDA}
+          // responseScreenData={formData}
+        />
+      </>
+    );
+  }
 
  
 
@@ -136,6 +154,13 @@ const ViewInventoryDetailsById = (props) => {
             <MdTag className='inline' /> Basic Details
           </h1> */}
           <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5'>
+
+          {!applicationFullData?.remark?.length == 0 &&
+          <div className="p-5">
+            <h1 className="font-bold text-base text-red-500">Remark <span className="text-black">:</span> 
+            <span className="text-sm pt-2 font-light text-red-500"> {nullToNA(applicationFullData?.remark)}</span></h1>
+          </div>
+          }
           
             <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4 mt-[1.5rem]'>
 
@@ -220,15 +245,6 @@ const ViewInventoryDetailsById = (props) => {
             <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.id)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                Item ID
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold text-sm'>
                   {nullToNA(applicationFullData?.rate)}
                 </div>
@@ -248,10 +264,20 @@ const ViewInventoryDetailsById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.rate)}
+                  {nullToNA(applicationFullData?.total_rate)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 Total Rate  
+                </div>
+              </div>
+
+              
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold text-sm'>
+                  {/* {nullToNA(applicationFullData?.id)} */}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
+                {/* Item ID */}
                 </div>
               </div>
 
@@ -301,15 +327,10 @@ const ViewInventoryDetailsById = (props) => {
 
           <div className="p-5">
             <h1 className="font-bold text-sm">Other Description</h1>
-            <p className="text-xs pt-2">Sed vitae urna non justo eleifend fermentum. Vivamus sit amet magna nec lacus feugiat vestibulum. Nullam vel efficitur nisl. Integer auctor sapien at nulla consequat, in luctus quam ultricies. Duis dapibus enim sed leo malesuada, in</p>
+            <p className="text-sm pt-2">{nullToNA(applicationFullData?.other_description)}</p>
           </div>
 
-          {!applicationFullData?.remark?.length == 0 &&
-          <div className="p-5">
-            <h1 className="font-bold text-base text-blue-900">Remark : 
-            <span className="text-sm pt-2 font-light text-green-500"> {nullToNA(applicationFullData?.remark)}</span></h1>
-          </div>
-          }
+          
           
           <div className="h-[30px]"></div>
 
@@ -328,8 +349,8 @@ const ViewInventoryDetailsById = (props) => {
 
                 {page == 'inbox' && applicationFullData?.status?.status !== -2 &&
                   <button
-                    className='font-bold p-2 border border-indigo-500 text-white text-xs sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700'
-                    onClick={forwardToDA}
+                    className=' p-2 border border-indigo-500 text-white text-xs sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]'
+                    onClick={forwardDAModal}
                   >
                     Forward to DA
                 </button>
@@ -338,145 +359,7 @@ const ViewInventoryDetailsById = (props) => {
 
           </div>
 
-          {/* Vehicle  details */}
-          {/* <h1 className='px-1 font-semibold font-serif mt-10 text-gray-500'>
-            <MdTag className='inline' /> Vehicle Booking & Details
-          </h1> */}
-          {/* <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 mb-4 pl-10 max-sm:flex max-sm:flex-col'>
-            <div className='  '>
-
-              <div className='flex mb-10 max-sm:mb-2 max-sm:flex-col max-sm:space-y-2'>
-
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold text-sm'>
-                    {nullToNA(applicationFullData?.booking_date)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                    Booking Date
-                  </div>
-                </div>
-
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold text-sm'>
-                    {nullToNA(applicationFullData?.delivery_date)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                    Delivery date
-                  </div>
-                </div>
-
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold text-sm'>
-                    {nullToNA(applicationFullData?.delivery_time)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                    Delivery Time
-                  </div>
-                </div>
-
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold text-sm'>
-                    {nullToNA(applicationFullData?.driver_name)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                    Driver Name
-                  </div>
-                </div>
-
-              </div>
-
-              <div className='flex max-sm:flex-col max-sm:space-y-2'>
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold text-sm'>
-                    {nullToNA(applicationFullData?.driver_mobile)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                    Driver Mobile No.
-                  </div>
-                </div>
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold text-sm'>
-                    {nullToNA(applicationFullData?.vehicle_no)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                    Vehicle No.
-                  </div>
-                </div>
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold text-sm'>
-                    {nullToNA(applicationFullData?.agency_name)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                    Agency Name
-                  </div>
-                </div>
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold text-sm'>
-                    {nullToNA(applicationFullData?.capacity)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                    Capacity
-                  </div>
-                </div>
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold text-sm'>
-                    {nullToNA(applicationFullData?.hydration_center_name)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                    Hydration Center Name
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> */}
-
-          {/* {applicationFullData?.tran_dtls.length != 0 && (
-              <div className='w-full flex justify-end mt-8'>
-                <button
-                  className=' font-bold sm:px-6 px-1 py-2 border border-indigo-500 text-indigo-500 text-xs sm:text-sm leading-tight uppercase rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
-                  onClick={() =>
-                    navigate(`/paymentHistory/${id}/${"waterTanker"}`)
-                  }
-                >
-                  Payment History
-                </button>
-              </div>
-            )} */}
-
-          
-              {/* Payment Details */}
-            {/* <>
-              <h1 className='px-1 font-semibold font-serif  text-gray-500'>
-                <MdTag className='inline' /> Payment Details
-              </h1>
-              <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4'>
-                <div className='flex my-8 md:px-8'>
-                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] text-gray-500 text-md'>
-                      Payment Amount Due
-                    </div>
-                    <div className='md:w-auto w-[50%] font-semibold text-lg'>
-                      {nullToNA(applicationFullData?.payment_amount)}
-                    </div>
-                  </div>
-
-                  <div>
-                    {" "}
-                    <button
-                      type='submit'
-                      className='w-full font-bold sm:px-6 px-1.5 py-2 bg-indigo-500 text-white text-xs sm:text-sm leading-tight uppercase rounded  hover:bg-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl border border-white'
-                      onClick={() =>
-                        navigate(`/tanker-payment/${id}/${"waterTanker"}`)
-                      }
-                    >
-                      <span className='sm:mr-2 mr-1'>Pay </span>
-                      {indianAmount(applicationFullData?.payment_amount)}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </> */}
-          
+                   
         </div>
       </div>
     </div>

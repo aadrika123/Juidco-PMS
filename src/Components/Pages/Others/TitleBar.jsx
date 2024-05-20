@@ -37,7 +37,7 @@ function TitleBar(props) {
                     <span className="cursor-pointer hover:text-[#122031] text-[#1A4D8C]" onClick={backFunction}><BiLeftArrowAlt className="inline font-semibold" />Back</span>
                 </div>
                 <div className="flex justify-right items-center text-xl font-semibold text-[#1A4D8C]">
-                    <BsColumnsGap className="inline mr-2" />{props?.titleText}
+                    {/* <BsColumnsGap className="inline mr-2" />{props?.titleText} */}
                 </div>
             </div>
             <hr />

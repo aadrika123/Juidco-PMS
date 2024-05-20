@@ -4,22 +4,22 @@
 //    Date - 29/09/2023
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - PreProcurementSubmittedScreen
-//    DESCRIPTION - PreProcurementSubmittedScreen
+//    Component  - ForwardToDAConfirmationModal
+//    DESCRIPTION - ForwardToDAConfirmationModal
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
-// import PaymentDetailsSepticTank from "./SuccessModal";
+import PaymentDetailsSepticTank from "./SuccessModal";
 import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
 import check from "@/Components/assets/check.svg";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import cancel from "@/Components/assets/cancel.svg";
 
-function PreProcurementSubmittedScreen(props) {
+function ForwardToDAConfirmationModal(props) {
   const navigate = useNavigate();
   const { formStyle } = ThemeStyleTanker();
 
   const [openPaymentModal, setOpenPaymentModal] = useState(0);
-  // const {id, page} = useParams()
 
   // console.log("Res Dataaaaaaaa", props?.responseScreenData);
 
@@ -31,9 +31,8 @@ function PreProcurementSubmittedScreen(props) {
   // };
 
   const handleClick = () => {
-    props?.submitForm()
-    // navigate(`/da-viewInventoryDetailsById/${id}/${page}`);
-    navigate(-1)
+    props?.forwardToDA()
+    navigate(`/sr-inventory-proposal`);
   };
 
   const handleCancilClick = () => {
@@ -44,25 +43,26 @@ function PreProcurementSubmittedScreen(props) {
   return (
     <>
       <div>
-        {/* <PaymentDetailsSepticTank
+        <PaymentDetailsSepticTank
           openPaymentModal={openPaymentModal}
           applicationId={props?.responseScreenData?.data?.applicationId}
-        /> */}
-      </div><div className="fixed inset-0 flex items-center justify-center z-50">
+        />
+      </div>
+      <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
       <div className="bg-white w-1/2 mx-auto flex flex-col max-sm:w-full z-10  rounded">
         <div class="relative overflow-hidden mt-10">
           <div class="absolute inset-0 hover:bg-white opacity-0 transition duration-700 hover:opacity-10"></div>
           <img
             className="max-w-full h-[8rem] mx-auto animate-wiggle mb-5 "
-            src={check}
+            src={cancel}
             alt="alt title"
           />
         </div>
         <div class=" flex-1">
           <div class="">
             <h3 class="text-xl  text-center  text-black font-openSans">
-            Are you Sure you want to Edit
+           Are you sure, <br /> You want to Forward this Application to DA ?
             </h3>
             {/* <h3 class="text-xl  text-center mb-3 text-gray-400 font-openSans font-semibold ">
               Booking no. - {props?.responseScreenData?.data?.bookingNo}
@@ -103,4 +103,4 @@ function PreProcurementSubmittedScreen(props) {
   );
 }
 
-export default PreProcurementSubmittedScreen;
+export default ForwardToDAConfirmationModal;

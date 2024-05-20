@@ -30,7 +30,6 @@ import {
 import ProjectApiList from "@/Components/api/ProjectApiList";
 // import PreProcurementCancelScreen from "./PreProcurementCancelScreen";
 
-
 // import { click } from "@testing-library/user-event/dist/click";
 // import { C } from "dist/assets/index-1a86ca5c";
 
@@ -39,7 +38,6 @@ function EditPreProcurement(props) {
     ThemeStyle();
 
   const {
-    
     api_addProcurement,
     api_itemCategory,
     api_itemSubCategory,
@@ -50,8 +48,7 @@ function EditPreProcurement(props) {
     api_fetchRom,
     api_fetchGraphics,
     api_fetchProcurementDADetailByIdinbox,
-    api_editProcurement
-
+    api_editProcurement,
   } = ProjectApiList();
 
   const currentDate = new Date().toISOString().split("T")[0];
@@ -74,31 +71,30 @@ function EditPreProcurement(props) {
   // const [ulbdata2, setulbData2] =useState();
   const [ulbId, setulbId] = useState();
 
-  const [category, setCategory] = useState()
-  const [subcategory, setSubCategory] = useState()
-  const [brand, setBrand] = useState()
-  const [processor, setProcessor] = useState()
-  const [ramList, setRamList] = useState()
-  const [OperatingSystem, setOperatingSystem] = useState()
-  const [romList, setRomList] = useState()
-  const [graphicsList, setGraphicsList] = useState()
+  const [category, setCategory] = useState();
+  const [subcategory, setSubCategory] = useState();
+  const [brand, setBrand] = useState();
+  const [processor, setProcessor] = useState();
+  const [ramList, setRamList] = useState();
+  const [OperatingSystem, setOperatingSystem] = useState();
+  const [romList, setRomList] = useState();
+  const [graphicsList, setGraphicsList] = useState();
 
-  const [isModalOpen,setIsModalOpen] = useState(false)
-  const [isModalOpen2,setIsModalOpen2] = useState(false)
-  const [formData,setFormData] = useState()
-  const [applicationFullData,setapplicationFullData] = useState()
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [formData, setFormData] = useState();
+  const [applicationFullData, setapplicationFullData] = useState();
+  const [categoryId, setCategoryId] = useState();
+  const [categorySelected, setCategorySelected] = useState([]);
+  
 
+  console.log(applicationFullData);
 
-console.log(applicationFullData?.order_no)
+  const { id } = useParams();
 
+  console.log(id);
 
-
-
-const { id } = useParams();
-
-console.log(id)
-
-// ══════════════════════════════║🔰 form submission declaration 🔰║═══════════════════════════════════
+  // ══════════════════════════════║🔰 form submission declaration 🔰║═══════════════════════════════════
   const [declarationStatus, setdeclarationStatus] = useState();
   const handleDeclaration = () => {
     setdeclarationStatus((prev) => !prev);
@@ -121,6 +117,7 @@ console.log(id)
     }
   };
 
+  
   // ══════════════════════════════║🔰 validationSchema 🔰║═══════════════════════════════════
   const validationSchema = yup.object({
     itemsubcategory: yup.string().required("itemsubcategory is required"),
@@ -138,21 +135,60 @@ console.log(id)
     // totalRate: yup.string().required("totalRate is required"),
   });
 
+
+  console.log(applicationFullData);
   // intitial value
   const initialValues = {
     itemcategory: applicationFullData?.category?.id,
     itemsubcategory: applicationFullData?.subcategory?.id,
-    brand: applicationFullData?.brand?.id,
-    processor: applicationFullData?.processor?.id,
-    ram: applicationFullData?.ram?.id,
-    operatingsystem: applicationFullData?.os?.id,
-    rom: applicationFullData?.rom?.id,
-    graphics: applicationFullData?.graphics?.id,
+    brand: applicationFullData?.brand,
+    processor: applicationFullData?.processor,
+    ram: applicationFullData?.ram,
+    operatingsystem: applicationFullData?.os,
+    rom: applicationFullData?.rom,
+    graphics: applicationFullData?.graphics,
     other_description: applicationFullData?.other_description,
-    quantity: applicationFullData?.quantity?.id,
-    rate: applicationFullData?.rate?.id,
-    // Generation: "",
-    // totalRate: "",
+    quantity: applicationFullData?.quantity,
+    rate: applicationFullData?.rate,
+
+    //Furniture values
+    number_of_items: applicationFullData?.number_of_items,
+    brand: applicationFullData?.brand,
+    colour: applicationFullData?.colour,
+    material: applicationFullData?.material,
+    product_dimensions: applicationFullData?.product_dimensions,
+    room_type: applicationFullData?.room_type,
+    included_components: applicationFullData?.included_components,
+    size: applicationFullData?.size,
+    
+    //CleaningSupplies
+    number_of_items: applicationFullData?.number_of_items,
+    brand: applicationFullData?.brand,
+    colour: applicationFullData?.colour,
+    recommendedUsedProducts: applicationFullData?.recommendedUsedProducts,
+    handle_material: applicationFullData?.handle_material,
+    bristle: applicationFullData?.bristle,
+    
+    // safetySecurity
+    number_of_items: applicationFullData?.number_of_items,
+    brand: applicationFullData?.brand,
+    weight: applicationFullData?.weight,
+    recommendedUsedProducts: applicationFullData?.recommendedUsedProducts,
+    
+    // maintenanceAndRepair
+    number_of_items: applicationFullData?.number_of_items,
+    brand: applicationFullData?.brand,
+    colour: applicationFullData?.colour,
+    maintenamce_material: applicationFullData?.maintenamce_material,
+    items_dimensions: applicationFullData?.items_dimensions,
+    items_weight: applicationFullData?.items_weight,
+    
+    // uniform
+    number_of_items: applicationFullData?.number_of_items,
+    brand: applicationFullData?.brand,
+    colour: applicationFullData?.colour,
+    maintenamce_material: applicationFullData?.maintenamce_material,
+    
   };
 
   const formik = useFormik({
@@ -162,31 +198,71 @@ console.log(id)
       console.log("click");
       console.log("procurement==============>>", values);
       // submitForm(values);
-      setIsModalOpen(true)
-      setFormData(values)
+      setIsModalOpen(true);
+      setFormData(values);
     },
-    validationSchema,
+    // validationSchema,
   });
 
+  const furniture = [
+    { label: "Number of Items", name: "number_of_items" },
+    { label: "Brand", name: "brand" },
+    { label: "Colour", name: "colour" },
+    { label: "Material", name: "material" },
+    { label: "Product Dimensions", name: "product_dimensions" },
+    { label: "Room Type", name: "room_type" },
+    { label: "Included Components", name: "included_components" },
+    { label: "Size", name: "size" },
+  ];
 
-   // ══════════════════════════════║🔰calculate the total rate🔰║═══════════════════════════════════
-const calculateTotalRate = () => {
+  const cleaningSupplies = [
+    { label: "Number of Items", name: "number_of_items" },
+    { label: "Brand", name: "brand" },
+    { label: "Colour", name: "colour" },
+    { label: "Recommended Uses For Product", name: "recomended_uses" },
+    { label: "Handle Material	", name: "material" },
+    { label: "Bristle", name: "bristle" },
+  ];
 
-  const rate = Number(formik.values.rate)|| 0;
-  const quantity = Number(formik.values.quantity) || 0;
-  const totalRate = rate * quantity;
-  formik.setFieldValue('totalRate', totalRate);
-  console.log(totalRate,"tot Rate")
+  const safetySecurity = [
+    { label: "Number of Items", name: "number_of_items" },
+    { label: "Brand", name: "brand" },
+    { label: "Weight", name: "weight" },
+    { label: "Dimension", name: "dimension" },
+  ];
 
-};
-  
+  const maintenanceAndRepair = [
+    { label: "Number of Items", name: "number_of_items" },
+    { label: "Brand", name: "brand" },
+    { label: "Colour", name: "colour" },
+    { label: "Material	", name: "material" },
+    { label: "Dimension", name: "dimension" },
+    { label: "Items Weight", name: "weight" },
+  ];
+
+  const uniform = [
+    { label: "Number of Items", name: "number_of_items" },
+    { label: "Brand", name: "brand" },
+    { label: "Colour", name: "colour" },
+    { label: "Material	", name: "material" },
+  ];
+
+  // ══════════════════════════════║🔰calculate the total rate🔰║═══════════════════════════════════
+  const calculateTotalRate = () => {
+    const rate = Number(formik.values.rate) || 0;
+    const quantity = Number(formik.values.quantity) || 0;
+    const totalRate = rate * quantity;
+    formik.setFieldValue("totalRate", totalRate);
+    console.log(totalRate, "tot Rate");
+  };
 
   useEffect(() => {
     const ulbId = localStorage.getItem("ulbId");
     setulbId(ulbId);
 
     fetchCategory();
-    fetchSubCategory();
+    console.log(categoryId,"categoryId======================>>>")
+    getApplicationDetail();
     fetchBrand();
     fetchProcessor();
     fetchRam();
@@ -194,22 +270,19 @@ const calculateTotalRate = () => {
     fetchRom();
     fetchGraphics();
 
-    getApplicationDetail();
-    
+   
+  //  fetchSubCategory(categoryId);
   }, [ulbData]);
-  
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     calculateTotalRate();
-    
-  },[formik.values.quantity,formik.values.rate ])
+  }, [formik.values.quantity, formik.values.rate]);
 
   // ══════════════════════════════║🔰 function to get ward list  🔰║═══════════════════════════════════
 
-  console.log(category,"category listing")
+  console.log(category, "category listing");
 
   const fetchCategory = () => {
-
     AxiosInterceptors.get(`${api_itemCategory}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response.data.data);
@@ -219,12 +292,14 @@ const calculateTotalRate = () => {
         console.log("errorrr.... ", error);
       });
   };
-  
-  const fetchSubCategory = (e) => {
 
-    console.log(e?.target?.value)
+  const fetchSubCategory = (value) => {
+    console.log(value);
 
-    AxiosInterceptors.get(`${api_itemSubCategory}/${e?.target?.value}`, ApiHeader())
+    AxiosInterceptors.get(
+      `${api_itemSubCategory}/${value}`,
+      ApiHeader()
+    )
       .then(function (response) {
         console.log("item Categor", response.data.data);
         setSubCategory(response.data.data);
@@ -233,9 +308,8 @@ const calculateTotalRate = () => {
         console.log("errorrr.... ", error);
       });
   };
-  
-  const fetchBrand = () => {
 
+  const fetchBrand = () => {
     AxiosInterceptors.get(`${api_itemBrand}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response.data.data);
@@ -245,10 +319,8 @@ const calculateTotalRate = () => {
         console.log("errorrr.... ", error);
       });
   };
-  
-  
-  const fetchProcessor = () => {
 
+  const fetchProcessor = () => {
     AxiosInterceptors.get(`${api_fetchProcessor}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response.data.data);
@@ -258,9 +330,8 @@ const calculateTotalRate = () => {
         console.log("errorrr.... ", error);
       });
   };
-  
-  const fetchRam = () => {
 
+  const fetchRam = () => {
     AxiosInterceptors.get(`${api_fetchRam}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response.data.data);
@@ -270,9 +341,8 @@ const calculateTotalRate = () => {
         console.log("errorrr.... ", error);
       });
   };
-  
-  const fetchOperatingSystem = () => {
 
+  const fetchOperatingSystem = () => {
     AxiosInterceptors.get(`${api_fetchOperatingSystem}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response.data.data);
@@ -282,9 +352,8 @@ const calculateTotalRate = () => {
         console.log("errorrr.... ", error);
       });
   };
-  
-  const fetchRom = () => {
 
+  const fetchRom = () => {
     AxiosInterceptors.get(`${api_fetchRom}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response.data.data);
@@ -294,9 +363,8 @@ const calculateTotalRate = () => {
         console.log("errorrr.... ", error);
       });
   };
-  
-  const fetchGraphics = () => {
 
+  const fetchGraphics = () => {
     AxiosInterceptors.get(`${api_fetchGraphics}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response.data.data);
@@ -306,7 +374,7 @@ const calculateTotalRate = () => {
         console.log("errorrr.... ", error);
       });
   };
-  
+
   const getApplicationDetail = () => {
     let url = api_fetchProcurementDADetailByIdinbox;
 
@@ -320,12 +388,23 @@ const calculateTotalRate = () => {
     //   url = api_fetchProcurementDADetailByIdOutbox
     // }
 
-    AxiosInterceptors.get(`${url}/${id}`,{ },ApiHeader())
+    AxiosInterceptors.get(`${url}/${id}`, {}, ApiHeader())
       .then(function (response) {
         console.log("view application full details ...", response?.data?.data);
+        // console.log("view application full details ...", response?.data?.data?.category?.name);
         if (response?.data?.status) {
+          const categoryName = response.data?.data?.category?.name;
+          fetchSubCategory(response.data?.data?.category?.id)
+          setCategoryId(response.data?.data?.category?.id)
+          console.log(categoryName,"categoryName==============>>>>>")
           setapplicationFullData(response?.data?.data);
           // setTableData(response?.data?.data?.tran_dtls);
+          categoryName == "Furniture" && setCategorySelected(furniture);
+          categoryName == "Cleaning Supplies" && setCategorySelected(cleaningSupplies);
+          categoryName == "Safety and Security" && setCategorySelected(safetySecurity);
+          categoryName == "Uniforms" && setCategorySelected(uniform);
+          categoryName == "Maintainance and Repaire" && setCategorySelected(maintenanceAndRepair);
+          
           setisLoading(false);
         } else {
           toast.error("Error while getting details...");
@@ -352,24 +431,51 @@ const calculateTotalRate = () => {
     requestBody = {
       id: applicationFullData?.id,
       order_no: applicationFullData?.order_no,
+      
+      // category: formData?.itemcategory,
+      // subcategory: formData?.itemsubcategory,
+      // processor: formData?.processor,
+      // os: formData?.operatingsystem,
+      // brand: formData?.brand,
+      // ram: formData?.ram,
+      // rom: formData?.rom,
+      // graphics: formData?.graphics,
+      // other_description: formData?.other_description,
+      // quantity: Number(formData?.quantity),
+      // rate: Number(formData?.rate),
+      // total_rate: Number(formData?.totalRate),
+
       category: formData?.itemcategory,
       subcategory: formData?.itemsubcategory,
+
       processor: formData?.processor,
-      os: formData?.operatingsystem,
-      brand: formData?.brand,
       ram: formData?.ram,
+      os: formData?.operatingsystem,
       rom: formData?.rom,
       graphics: formData?.graphics,
+      
+      
+      brand: formData?.brand,
+      colour: formData?.colour,
+      material: formData?.material,
+      dimension: formData?.dimension,
+      room_type: formData?.room_type,
+      included_components: formData?.included_components,
+      size: formData?.size,
+      recomended_uses: formData?.recomended_uses,
+      bristle: formData?.bristle,
+      weight: formData?.weight,
+      number_of_items: Number(formData?.number_of_items),
       other_description: formData?.other_description,
-      quantity: Number(formData?.quantity),
+      
       rate: Number(formData?.rate),
+      quantity: Number(formData?.quantity),
       total_rate: Number(formData?.totalRate),
-    
     };
 
     // console.log(requestBody,"=======================>>>")
 
-    AxiosInterceptors.post(`${url}`,requestBody, ApiHeader())
+    AxiosInterceptors.post(`${url}`, requestBody, ApiHeader())
       .then(function (response) {
         console.log("response after data submitted", response?.data);
         setresponseScreen(response?.data);
@@ -445,7 +551,7 @@ const calculateTotalRate = () => {
     return (
       <>
         <BarLoader />
-        <div className='min-h-screen'></div>
+        <div className="min-h-screen"></div>
       </>
     );
   }
@@ -497,7 +603,6 @@ const calculateTotalRate = () => {
     {
       name == "isWithinUlb" && fetchLocationListByUlb(value);
     }
-
 
     // {
     //   name == "itemcategory" &&
@@ -608,7 +713,6 @@ const calculateTotalRate = () => {
 
   // console.log(category)
 
-
   // ══════════════════════════════║🔰responseScreen🔰║═══════════════════════════════════
   // if (responseScreen?.status == true) {
   //   return (
@@ -621,14 +725,17 @@ const calculateTotalRate = () => {
   if (isModalOpen) {
     return (
       <>
-        <PreProcurementSubmittedScreen submitForm={submitForm} responseScreenData={formData} />
+        <PreProcurementSubmittedScreen
+          submitForm={submitForm}
+          responseScreenData={formData}
+        />
       </>
     );
   }
-  
-  const openCancelModal = () =>{
-    setIsModalOpen2(true)
-  }
+
+  const openCancelModal = () => {
+    setIsModalOpen2(true);
+  };
 
   // if (isModalOpen2) {
   //   return (
@@ -641,85 +748,105 @@ const calculateTotalRate = () => {
     <>
       <div className={`${formStyle}`}>
         <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-          <div className=''>
-            <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
-              <div className='col-span-12  w-full mb-20'>
-                <div className=' ml-4 p-4 mt-4'>
-                  <h1 className={`${headingStyle} text-right`}>Pre Procurement Proposal</h1>
+          <div className="">
+            <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
+              <div className="col-span-12  w-full mb-20">
+                <div className=" ml-4 p-4 mt-4">
+                  <h1 className={`${headingStyle} text-right`}>
+                    Pre Procurement Proposal
+                  </h1>
                   {/* <h1 className={`${labelStyle} `}>
                     Maintaining a healthy home: Confirming my septic tank
                     service.
                   </h1> */}
                 </div>
-                <div className='hidden md:block lg:block'>
-                  <hr className='border w-full border-gray-200' />
+                <div className="hidden md:block lg:block">
+                  <hr className="border w-full border-gray-200" />
                 </div>
 
-                <div className='p-12 -mt-4'>
-                  {/* row 1 */}
-                  <div class='valid-form flex flex-wrap flex-row -mx-4'>
-                    
-                    <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                        Item Category 
-                        <span className='text-sm text-red-500'>
-                          *
-                        </span>{" "}
-                      </label>
-                      <select
-                        {...formik.getFieldProps("itemcategory")}
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={(e) => {
-                          formik.handleChange(e);
-                          fetchSubCategory(e)
-                        }}
-                      >
-                         {/* <option selected>select</option> */}
-                          {category?.map((items,index) => (
-                            <option key={index} value={items?.id}>
-                              {items?.name}
-                            </option>
-                          ))}
-                      </select>
-                      <p className='text-red-500 text-xs '>
-                        {formik.touched.itemcategory && formik.errors.itemcategory
-                          ? formik.errors.itemcategory
-                          : null}
-                      </p>
-                    </div>
+                <div className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4">
+                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                    <label className={`${labelStyle} inline-block mb-2`}>
+                      Item Category
+                      <span className="text-sm text-red-500">*</span>{" "}
+                    </label>
+                    <select
+                      {...formik.getFieldProps("itemcategory")}
+                      className={`${inputStyle} inline-block w-full relative`}
+                      onChange={(e) => {
+                        formik.handleChange(e);
+                        fetchSubCategory(e.target.value);
+                        
+                      }}
+                    >
+                      {category?.map((items, index) => (
+                        <option key={index} value={items?.id}>
+                          {items?.name}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="text-red-500 text-xs ">
+                      {formik.touched.itemcategory && formik.errors.itemcategory
+                        ? formik.errors.itemcategory
+                        : null}
+                    </p>
+                  </div>
 
-                    
-                    <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                    <label className={`${labelStyle} inline-block mb-2`}>
+                      Items Sub Category
+                      <span className="text-sm text-red-500">*</span>
+                    </label>
+                    <select
+                      {...formik.getFieldProps("itemsubcategory")}
+                      className={`${inputStyle} inline-block w-full relative`}
+                      onChange={formik.handleChange}
+                    >
+                      {/* <option selected>select</option> */}
+                      {subcategory?.length &&
+                        subcategory?.map((items) => (
+                          <option value={items?.id}>{items?.name}</option>
+                        ))}
+                    </select>
+
+                    <p className="text-red-500 text-xs ">
+                      {formik.touched.itemsubcategory &&
+                      formik.errors.itemsubcategory
+                        ? formik.errors.itemsubcategory
+                        : null}
+                    </p>
+                  </div>
+
+{console.log(categorySelected,"catego===========sel")}
+                  {categorySelected?.map((obj) => (
+                    <div className=" flex flex-wrap w-1/2">
+                      <div class="px-4 w-full mb-4">
                         <label className={`${labelStyle} inline-block mb-2`}>
-                        Items Sub Category
-                        <span className='text-sm text-red-500'>
-                          *
-                        </span>
+                          {obj.label}
                         </label>
-                        <select
-                          {...formik.getFieldProps("itemsubcategory")}
+
+                        <input
+                          type="text"
+                          name={obj.name}
+                          {...formik.getFieldProps(obj.name)}
                           className={`${inputStyle} inline-block w-full relative`}
                           onChange={formik.handleChange}
-                          
-                        >
-                          {/* <option selected>select</option> */}
-                          {subcategory?.length && subcategory?.map((items) => (
-                            <option value={items?.id}>
-                              {items?.name}
-                            </option>
-                          ))}
-                        </select>
-                        
-                        <p className='text-red-500 text-xs '>
-                          {formik.touched.itemsubcategory && formik.errors.itemsubcategory
-                            ? formik.errors.itemsubcategory
+                          value={formik.values[obj.name]}
+                        />
+
+                        <p className="text-red-500 text-xs ">
+                          {formik.touched.number_of_items &&
+                          formik.errors.number_of_items
+                            ? formik.errors.number_of_items
                             : null}
                         </p>
+                      </div>
                     </div>
-                  
-                  </div>
+                  ))}
+
+                  {/* </div> */}
                   {/* row 2 */}
-                  <div class='valid-form flex flex-wrap flex-row -mx-4'>
+                  {/* <div class='valid-form flex flex-wrap flex-row -mx-4'>
                     <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                       Brand
@@ -730,7 +857,7 @@ const calculateTotalRate = () => {
                           className={`${inputStyle} inline-block w-full relative`}
                           onChange={formik.handleChange}
                         >
-                          {/* <option selected>select</option> */}
+                          
                           {brand?.map((items) => (
                             <option value={items?.id}>
                               {items?.name}
@@ -758,7 +885,7 @@ const calculateTotalRate = () => {
                           className={`${inputStyle} inline-block w-full relative`}
                           onChange={formik.handleChange}
                         >
-                          {/* <option selected>select</option> */}
+                          
                           {processor?.map((items) => (
                             <option value={items?.id}>
                               {items?.name}
@@ -772,10 +899,10 @@ const calculateTotalRate = () => {
                       </p>
                     </div>
 
-                  </div>
+                  </div> */}
 
                   {/* row 3 */}
-                  <div class='valid-form flex flex-wrap flex-row -mx-4'>
+                  {/* <div class='valid-form flex flex-wrap flex-row -mx-4'>
                     
                     <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
@@ -786,7 +913,7 @@ const calculateTotalRate = () => {
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
                       >
-                        {/* <option selected>select</option> */}
+                        
                         {ramList?.map((items) => (
                           <option value={items?.id}>
                             {items?.capacity}
@@ -810,7 +937,7 @@ const calculateTotalRate = () => {
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
                       >
-                        {/* <option selected>select</option> */}
+                        
                         {OperatingSystem?.map((items) => (
                           <option value={items?.id}>
                             {items?.name}
@@ -824,10 +951,10 @@ const calculateTotalRate = () => {
                       </p>
                     </div>
 
-                  </div>
+                  </div> */}
 
                   {/* row 4 */}
-                  <div class='valid-form flex flex-wrap flex-row -mx-4'>
+                  {/* <div class='valid-form flex flex-wrap flex-row -mx-4'>
                     
                      <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
@@ -838,7 +965,7 @@ const calculateTotalRate = () => {
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
                       >
-                        {/* <option selected>select</option> */}
+                        
                         {graphicsList?.map((items) => (
                           <option value={items?.id}>{items?.name}-{items?.vram}</option>
                         ))}
@@ -859,7 +986,7 @@ const calculateTotalRate = () => {
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
                       >
-                        {/* <option selected>select</option> */}
+                        
                         {romList?.map((items) => (
                           <option value={items?.id}>{items?.type}-{items?.capacity}</option>
                         ))}
@@ -874,9 +1001,9 @@ const calculateTotalRate = () => {
                       
                     </div>
 
-                  </div>
+                  </div> */}
                   {/* row 5 */}
-                  <div class='valid-form flex flex-wrap flex-row -mx-4'>
+                  {/* <div class='valid-form flex flex-wrap flex-row -mx-4'>
                     
                     <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
@@ -899,51 +1026,70 @@ const calculateTotalRate = () => {
                       
                     </div>
 
-                  </div>
+                  </div> */}
                   {/* row 6 */}
-                  <div class='valid-form flex flex-wrap flex-row -mx-4'>
-                    
-                    <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+
+                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4 ">
+                    <label className={`${labelStyle} inline-block mb-2`}>
+                      Others Description
+                    </label>
+                    <textarea
+                      type="text"
+                      name="other_description"
+                      className={`${inputStyle} inline-block w-full relative h-20`}
+                      onChange={formik.handleChange}
+                      value={formik.values.other_description}
+                    />
+
+                    <p className="text-red-500 text-xs ">
+                      {formik.touched.other_description &&
+                      formik.errors.other_description
+                        ? formik.errors.other_description
+                        : null}
+                    </p>
+                  </div>
+
+                  <div class="valid-form flex flex-wrap flex-row ">
+                    <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
                       <label className={`${labelStyle} inline-block mb-2`}>
-                      Quantity 
+                        Quantity
                       </label>
-                      
+
                       <div className="flex space-x-5">
-                          <input
-                              type='number'
-                              name='rate'
-                              className={`${inputStyle} inline-block w-full relative`}
-                              onChange={(e) => {
-                                formik.handleChange(e);
-                                calculateTotalRate();
-                              }}
-                              value={formik.values.rate}
-                              placeholder="Rate"
-                            />
-                            <p>X</p>
-                            <input
-                              type='number'
-                              name='quantity'
-                              className={`${inputStyle} inline-block w-full relative`}
-                              onChange={(e) => {
-                                formik.handleChange(e);
-                                calculateTotalRate();
-                              }}
-                              value={formik.values.quantity}
-                              placeholder="Quantity"
-                            />
-                            <p>=</p>
-                            <input
-                              type='number'
-                              name='totalRate'
-                              className={`${inputStyle} inline-block w-full relative`}
-                              // onChange={formik.handleChange}
-                              value={formik.values.totalRate}
-                              placeholder="Total Rate"
-                              disabled
-                            />
+                        <input
+                          type="number"
+                          name="rate"
+                          className={`${inputStyle} inline-block w-full relative`}
+                          onChange={(e) => {
+                            formik.handleChange(e);
+                            calculateTotalRate();
+                          }}
+                          value={formik.values.rate}
+                          placeholder="Rate"
+                        />
+                        <p>X</p>
+                        <input
+                          type="number"
+                          name="quantity"
+                          className={`${inputStyle} inline-block w-full relative`}
+                          onChange={(e) => {
+                            formik.handleChange(e);
+                            calculateTotalRate();
+                          }}
+                          value={formik.values.quantity}
+                          placeholder="Quantity"
+                        />
+                        <p>=</p>
+                        <input
+                          type="number"
+                          name="totalRate"
+                          className={`${inputStyle} inline-block w-full relative`}
+                          value={formik.values.totalRate}
+                          placeholder="Total Rate"
+                          disabled
+                        />
                       </div>
-                      <p className='text-red-500 text-xs '>
+                      <p className="text-red-500 text-xs ">
                         {formik.touched.quantity && formik.errors.quantity
                           ? formik.errors.quantity
                           : null}
@@ -972,32 +1118,28 @@ const calculateTotalRate = () => {
                         Duration must be more than 24 hours of current time
                       </p>
                     </div> */}
-
                   </div>
-
                 </div>
-                
-                  <div className='float-right pb-16 mr-8 space-x-5'>
-                    <button
-                      // type='submit'
-                      onClick={openCancelModal}
-                      className={`bg-white px-5 py-2 text-black rounded leading-5 shadow-lg  hover:bg-[#1A4D8C] hover:text-white border-blue-900 border  mb-10`}
-                    >
-                      Cancel
-                    </button>
+
+                <div className="float-right pb-16 mr-8 space-x-5">
+                  <button
+                    // type='submit'
+                    onClick={openCancelModal}
+                    className={`bg-white px-5 py-2 text-black rounded leading-5 shadow-lg  hover:bg-[#4338CA] hover:text-white border-blue-900 border  mb-10`}
+                  >
+                    Cancel
+                  </button>
                   {/* </div> */}
-                
+
                   {/* <div className='pb-16 mr-8'> */}
-                    <button
-                      type='submit'
-                      className={`bg-[#1A4D8C] border-blue-900 border hover:bg-[#4478b7] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right mb-10`}
-                    >
-                      Save
-                    </button>
-                  </div>
-                
+                  <button
+                    type="submit"
+                    className={`bg-[#4338CA] border-blue-900 border hover:bg-[#393287] px-7 py-2 text-white  rounded leading-5 shadow-lg float-right mb-10`}
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
-              
             </div>
           </div>
         </form>

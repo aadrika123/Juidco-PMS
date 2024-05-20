@@ -48,8 +48,11 @@ function PreProcurementCancelScreen(props) {
           applicationId={props?.responseScreenData?.data?.applicationId}
         /> */}
       </div>
-      <div class={`${formStyle} w-1/2 mx-auto flex flex-col max-sm:w-full `}>
-        <div class="relative overflow-hidden mt-10">
+      <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div className="w-screen absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm overflow-auto"></div>
+      {/* <div className="z-20 h-screen w-screen backdrop-blur-sm justify-center items-center overflow-auto"></div> */}
+      <div className="bg-white w-1/2 mx-auto flex flex-col max-sm:w-full z-10  rounded">
+        <div className="relative overflow-hidden mt-10">
           <div class="absolute inset-0 hover:bg-white opacity-0 transition duration-700 hover:opacity-10"></div>
           <img
             className="max-w-full h-[8rem] mx-auto animate-wiggle mb-5 "
@@ -72,7 +75,7 @@ function PreProcurementCancelScreen(props) {
           <div className="flex justify-center space-x-5">
             <div>
               <button
-                className={`bg-white border-blue-900 border text-blue-950 text-sm px-8 py-2 hover:bg-[#1A4D8C] hover:text-white  rounded leading-5 shadow-lg`}
+                className={`bg-white border-blue-900 border text-blue-950 text-sm px-8 py-2 hover:bg-[#4338CA] hover:text-white  rounded leading-5 shadow-lg`}
                 onClick={handleCancilClick}
               >
                 No
@@ -81,7 +84,7 @@ function PreProcurementCancelScreen(props) {
 
             <div class="">
               <button
-                className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
+                className={`bg-[#4338CA] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
                 onClick={handleClick}
               >
                 Yes
@@ -96,6 +99,10 @@ function PreProcurementCancelScreen(props) {
           </div>
         </div>
       </div>
+
+      </div>
+
+      
     </>
   );
 }
