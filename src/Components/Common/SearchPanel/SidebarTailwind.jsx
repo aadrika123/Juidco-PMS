@@ -20,7 +20,6 @@ import { RxCross2 } from "react-icons/rx";
 const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   const [categoryList, setCategoryList] = useState([]);
   const [subCategoryList, setSubCategoryList] = useState([]);
-  const [brandList, setBrandList] = useState([]);
 
   const { api_itemCategory, api_itemSubCategoryAll, api_itemBrand } =
     ProjectApiList();
@@ -53,21 +52,9 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
       });
   };
 
-  const fetchBrand = async () => {
-    AxiosInterceptors.get(`${api_itemBrand}`.split(" ").join(""), ApiHeader())
-      .then((data) => {
-        setBrandList(data?.data?.data);
-        console.log(data?.data?.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   useEffect(() => {
     fetchCategory();
     fetchSubCategory();
-    fetchBrand();
   }, []);
 
   const handleOnchange = (fieldName, id) => {
@@ -136,25 +123,6 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
                     label={item?.name}
                     onChange={() => {
                       handleOnchange("subcategory", item?.id);
-                    }}
-                  />
-                ))}
-              </FormGroup>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              Brand
-            </AccordionSummary>
-            <AccordionDetails>
-              <FormGroup>
-                {brandList.map((item, index) => (
-                  <FormControlLabel
-                    key={index}
-                    control={<Checkbox />}
-                    label={item?.name}
-                    onChange={() => {
-                      handleOnchange("brand", item?.id);
                     }}
                   />
                 ))}

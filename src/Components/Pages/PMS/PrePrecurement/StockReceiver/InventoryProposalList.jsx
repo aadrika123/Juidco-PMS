@@ -19,9 +19,9 @@ import { FaChartPie } from "react-icons/fa";
 
 function InventoryProposalList(props) {
   const navigate = useNavigate();
-  const {module} = useParams()
+  const { module } = useParams()
 
-  console.log(props.page,"page========>")
+  console.log(props.page, "page========>")
   // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
 
   const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
@@ -60,7 +60,7 @@ function InventoryProposalList(props) {
 
 
 
-  
+
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
@@ -96,19 +96,19 @@ function InventoryProposalList(props) {
         <div className='pr-2'>{cell.row.values.brand || "N/A"}</div>
       ),
     },
-    
+
     {
       Header: "status",
       accessor: "status",
       Cell: ({ cell }) => (
         <div className="pr-2">
-        <p className="font-bold text-yellow-800">{cell.row.values.status.status == -1 && 'Back to SR'}</p>
-        <p className="font-bold text-red-500">{cell.row.values.status.status == -2 && 'Rejected'}</p>
-        <p className="font-bold text-blue-800">{cell.row.values.status.status == 0 && 'Pending'}</p>
-        <p className="font-bold text-blue-800">{cell.row.values.status.status == 1 && "DA's Inbox"}</p>
-        <p className="font-bold text-green-800">{cell.row.values.status.status == 2 && "Release for Tender"}</p>
-        <p className="font-bold text-green-500">{cell.row.values.status.status == 3 && "Stock Receaved"}</p>
-        <p className="font-bold text-green-500">{cell.row.values.status.status == 4 && "Stock Verified"}</p>
+          <p className="font-bold text-yellow-800">{cell.row.values.status.status == -1 && 'Revised'}</p>
+          <p className="font-bold text-red-500">{cell.row.values.status.status == -2 && 'Rejected'}</p>
+          <p className="font-bold text-blue-800">{cell.row.values.status.status == 0 && 'Pending'}</p>
+          <p className="font-bold text-blue-800">{cell.row.values.status.status == 1 && "DA's Inbox"}</p>
+          <p className="font-bold text-green-800">{cell.row.values.status.status == 2 && "Released for Tender"}</p>
+          <p className="font-bold text-green-500">{cell.row.values.status.status == 3 && "Stock Received"}</p>
+          <p className="font-bold text-green-500">{cell.row.values.status.status == 4 && "Stock Verified"}</p>
         </div>
       ),
     },
@@ -150,6 +150,16 @@ function InventoryProposalList(props) {
     );
   }
 
+  const tableSelector = (page) => {
+    switch (page) {
+      case "inbox":
+        return "SRIN"
+      case "outbox":
+        return "SROUT"
+      default:
+        return "SRIN"
+    }
+  }
 
 
   return (
@@ -161,17 +171,18 @@ function InventoryProposalList(props) {
             
           </div>
         </div> */}
-        
+
         <div className='grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 '>
           <div className='col-span-12'>
             <>
-            
+
               <ListTableParent
+                table={tableSelector(props?.page)}
                 api={props.api}
                 columns={COLUMNS}
                 requestBody={requestBody} // sending body
                 changeData={changeData} // send action for new payload
-                showDiv = {true}
+                showDiv={true}
               />
             </>
           </div>
