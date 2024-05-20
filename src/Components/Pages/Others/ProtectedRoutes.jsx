@@ -50,12 +50,12 @@ const ProtectedRoutes = () => {
 
                     <div className='flex-1 h-full w-[60%] relative overflow-auto border md:border-none' onClick={() => window.innerWidth <= 763 && settoggleBar(false)}>
 
-                        <div className=" px-2 md:px-10 md:mt-0">
+                        <div className=" md:mt-0">
                         <TitleBar titleBarVisibility={titleBarVisibility} titleText={titleText} />
                         </div>
 
                         {/* 👉 Checking Authentication to show outlets or navigate to login 👈 */}
-                        <div className={` md:px-5 md:my-2 pt-6 md:pt-4 `}>
+                        <div className={` md:px-5 pt-3 `}>
                             {(getLocalStorageItem('token') != 'null' && getLocalStorageItem('token') != null) ? <Outlet /> : navigate('/')}
                             
                             {/* 👉 Bottom Space 👈 */}

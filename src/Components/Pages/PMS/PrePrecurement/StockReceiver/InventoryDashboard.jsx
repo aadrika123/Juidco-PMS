@@ -190,7 +190,7 @@ function InventoryDashboard() {
 
             <div className="bg-[#4338CA] text-white w-full rounded p-3 space-y-10 cursor-pointer">
               <div className="flex">
-                <h1 className="font-bold">Remaning Stock</h1>
+                <h1 className="font-bold">Remaining Stock</h1>
                 <Lottie options={lowStockAnimation} height={50} width={100} />
               </div>
               <div className="flex justify-between">

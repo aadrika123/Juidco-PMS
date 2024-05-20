@@ -8,15 +8,15 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // 👉 Importing Packages 👈
-import React, { useContext } from 'react'
-import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
-import './SideBar.css'
-import 'animate.css'
+import React, { useContext } from 'react';
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import './SideBar.css';
+import 'animate.css';
 import { MdOutlineDashboard, MdOutlineSpaceDashboard } from 'react-icons/md';
-import { contextVar } from '@/Components/context/contextVar'
+import { contextVar } from '@/Components/context/contextVar';
 import { BsBuildings, BsCaretRight } from 'react-icons/bs';
-import { FcBusinessman } from 'react-icons/fc'
+import { FcBusinessman } from 'react-icons/fc';
 
 const SideBar = (props) => {
 
@@ -32,7 +32,8 @@ const SideBar = (props) => {
   let tcolor = 'gray'      // text color
 
   // 👉 CSS constants 👈
-  const dropMenuBtn = `block w-full pl-7 py-2 px-6 clear-both whitespace-nowrap text-sm hover:bg-${mcolor}-700 hover:text-${tcolor}-100 rounded-md text-sm animate__animated animate__fadeIn animate__faster `
+  const dropMenuBtn = `block w-full pl-7 py-2 px-6 clear-both whitespace-nowrap text-sm hover:bg-${mcolor}-700 hover:text-${tcolor}-100 rounded-md text-white text-sm animate__animated animate__fadeIn animate__faster `
+  
   const mobileMenuBtn = `block py-3 px-4 hover:bg-${mcolor}-700 hover:text-${tcolor}-100 rounded-md animate__animated animate__fadeIn animate__faster `
   const open1 = `animate__animated animate__slideInLeft animate__faster bg-${bg}-100 w-[16.5rem] `
   const open3 = `animate__animated animate__fadeInLeft animate__faster `

@@ -33,14 +33,14 @@ function TitleBar(props) {
     return (
         <>
             <div className="flex flex-row  py-2 justify-center items-center pr-2 sm:pr-0 z-40">
-                <div className="flex-1 flex pl-2 text-gray-700">
+                <div className="flex-1 flex pl-5 text-gray-700">
                     <span className="cursor-pointer hover:text-[#122031] text-[#1A4D8C]" onClick={backFunction}><BiLeftArrowAlt className="inline font-semibold" />Back</span>
                 </div>
                 <div className="flex justify-right items-center text-xl font-semibold text-[#1A4D8C]">
-                    {/* <BsColumnsGap className="inline mr-2" />{props?.titleText} */}
                 </div>
+                    {/* <BsColumnsGap className="inline mr-2" />{props?.titleText} */}
             </div>
-            <hr />
+            <hr className="w-[100rem]" />
         </>
     )
 }

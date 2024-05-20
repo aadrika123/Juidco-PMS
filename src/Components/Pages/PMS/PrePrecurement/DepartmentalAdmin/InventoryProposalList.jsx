@@ -94,6 +94,7 @@ function InventoryProposalList(props) {
         <div className='pr-2'>{cell.row.values.brand || 'N/A'}</div>
     ),
     },
+    
     // {
     //   Header: "Graphics",
     //   accessor: "graphics",
@@ -128,6 +129,13 @@ function InventoryProposalList(props) {
         <p className="font-bold text-green-500">{cell.row.values.status.status == 3 && "Stock Receaved"}</p>
         <p className="font-bold text-green-500">{cell.row.values.status.status == 4 && "Stock Verified"}</p>
         </div>
+      ),
+    },
+    {
+      Header: "Remark",
+      accessor: "remark",
+      Cell: ({ cell }) => (
+        <div className='pr-2 text-green-800 truncate w-14'>{cell.row.values.remark || "N/A"}</div>
       ),
     },
     {
