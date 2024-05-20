@@ -323,7 +323,7 @@ const ListTableParent = (props) => {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="bg-blue-900 text-white px-4 py-2 rounded mr-2"
+            className="border border-[#4338CA] text-[#4338CA] hover:bg-[#423a9a] hover:text-white px-4 py-2 rounded mr-2"
           >
             <FiFilter />
           </button>
@@ -332,7 +332,7 @@ const ListTableParent = (props) => {
           </div>
           <div className="flex-initial ml-2">
             <button
-              className="bg-green-600 px-3 pr-3  drop-shadow-lg rounded-sm py-1 text-white hover:shadow-2xl hover:bg-slate-800 text-center relative"
+              className="bg-green-600 px-3 pr-3  drop-shadow-lg rounded-sm py-1 text-white hover:shadow-2xl hover:bg-slate-600 text-center relative "
               onMouseEnter={() => setbounce("")}
               onMouseLeave={() => setbounce("hidden")}
               onClick={exportDataFun}
@@ -351,7 +351,7 @@ const ListTableParent = (props) => {
           <div className="flex-1">{props.children}</div>
         </div>
 
-        {/* 👉 Listtable Components 👈 */}
+        {/* 👉 Filter Component 👈 */}
         <div className="flex">
           {isOpen && (
             <SideSection
@@ -363,7 +363,7 @@ const ListTableParent = (props) => {
           )}
 
           {!loader && dataList?.length > 0 ? (
-            <div className="mb-10">
+            <div className="mb-10 ml-2">
               {/* 👉 Listtable 👈 */}
 
               <ListTable
@@ -387,6 +387,7 @@ const ListTableParent = (props) => {
                 perPageData={perPageData}
                 setPerPageData={setPerPageData}
                 searchFilter={searchFilter}
+                showDiv={props.showDiv}
                 setSearchFilter={setSearchFilter}
               />
             </div>

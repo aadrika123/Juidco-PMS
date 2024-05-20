@@ -18,7 +18,7 @@ const InventoryProposalListTabs = () => {
   return (
     <div className="container mx-auto bg-white rounded">
     <div>
-        <h1 className='text-[35px] text-right pb-5 pr-5 font-bold'>Inventory Proposal</h1>
+        <h1 className='text-[35px] text-right pb-5 pr-5 font-bold pt-5'>Inventory Proposal</h1>
     </div>
       <div>
               {/* <button 

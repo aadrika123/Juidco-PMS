@@ -190,12 +190,14 @@ function ListTable(props) {
                   >
                     {row?.cells?.map((cell, index) => {
                       return (
+                        <>
                         <td
                           {...cell.getCellProps()}
                           className='px-2 py-2 text-sm text-left'
                         >
                           {cell.render("Cell")}
                         </td>
+                        </>
                       );
                     })}
                   </tr>
@@ -204,6 +206,7 @@ function ListTable(props) {
               <tr>
                 <td></td>
               </tr>
+             
             </tbody>
           </table>
           <div className='mt-3 grid grid-cols-12 items-center'>

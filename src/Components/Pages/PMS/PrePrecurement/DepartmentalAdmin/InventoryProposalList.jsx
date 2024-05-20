@@ -90,9 +90,9 @@ function InventoryProposalList(props) {
     {
       Header: "Brand",
       accessor: "brand",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.brand.name}</div>
-      ),
+      Cell: ({ cell }) => (      // console.log(cell.row.values,"===================celllllll")
+        <div className='pr-2'>{cell.row.values.brand || 'N/A'}</div>
+    ),
     },
     // {
     //   Header: "Graphics",
@@ -136,7 +136,7 @@ function InventoryProposalList(props) {
       Cell: ({ cell }) => (
         <>
           <button
-            className='bg-indigo-500 text-white px-2 py-1'
+            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
               navigate(`/da-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`)
             }

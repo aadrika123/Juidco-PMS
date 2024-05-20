@@ -13,6 +13,9 @@ import Button from "@mui/material/Button";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
+import { FiFilter } from "react-icons/fi";
+import { RxCross2 } from "react-icons/rx";
+
 
 const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   const [categoryList, setCategoryList] = useState([]);
@@ -87,25 +90,18 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   };
 
   return (
-    <div className="relative ">
+    <div className="relative  ">
       <div
         className={`h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out w-64 p-4 border border-gray-300 rounded`}
       >
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-thin text-gray-600">Filters</h2>
-          <button onClick={() => setIsOpen(false)} className="text-red-500">
-            X
+          <h2 className="text-xl font-thin text-gray-600 flex"><FiFilter className="pt-1 mt-.8" />Filters</h2>
+          <button onClick={() => setIsOpen(false)} className="text-black text-xl hover:bg-[#4338CA] hover:text-white rounded">
+          <RxCross2 />
+
           </button>
         </div>
         <hr class="h-[2px] w-full bg-gray-200 mb-4 border-none" />
-        {/* <div className="mt-4">
-          <label className="block mb-2 text-gray-700">Search</label>
-          <input
-            type="text"
-            className="w-full px-3 py-2 border rounded"
-            placeholder="Search..."
-          />
-        </div> */}
 
         <div>
           <Accordion  >
@@ -173,9 +169,9 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
               width: "100%",
               mt: "1rem",
               ':hover': {
-          backgroundColor: 'blue',  // Change this to your desired hover color
-          color: 'white',           // Optional: change text color on hover
-          borderColor: 'black',     // Optional: change border color on hover
+              backgroundColor: 'blue',  // Change this to your desired hover color
+              color: 'white',           // Optional: change text color on hover
+              borderColor: 'black',     // Optional: change border color on hover
         }
             }}
             onClick={useFilter}

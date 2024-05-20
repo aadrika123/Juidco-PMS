@@ -42,7 +42,7 @@ const ViewInventoryDetailsById = (props) => {
      // Accessing context for notifications
      const { notify } = useContext(contextVar);
 
-  let buttonStyle = ' mr-10 pb-3 pl-6 pr-6 pt-3 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
+  let buttonStyle = ' mr-1 pb-3 pl-6 pr-6 pt-3 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
 
   let buttonStyle2 = ' p-2 border border-indigo-500 text-white text-xs sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700'
   
@@ -229,16 +229,19 @@ const ViewInventoryDetailsById = (props) => {
             <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View Procurement Request{" "}
             </h2>
 
-          {page == 'inbox' && 
-
-            <button className={buttonStyle} onClick={()=>{navigate(`/da-edit-pre-procurement/${id}`)}}>Edit</button>
-
-          }
+          
           </div>
           {/* <h1 className='px-1 font-semibold font-serif  text-gray-500'>
             <MdTag className='inline' /> Basic Details
           </h1> */}
           <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5'>
+
+          {!applicationFullData?.remark?.length == 0 &&
+          <div className="p-5">
+            <h1 className="font-bold text-base text-red-500">Remark <span className="text-black">:</span> 
+            <span className="text-sm pt-2 font-light text-red-500"> {nullToNA(applicationFullData?.remark)}</span></h1>
+          </div>
+          }
           
             <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4 mt-[1.5rem]'>
 
@@ -322,14 +325,6 @@ const ViewInventoryDetailsById = (props) => {
 
             <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.id)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
-                Item ID
-                </div>
-              </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold text-sm'>
@@ -351,10 +346,20 @@ const ViewInventoryDetailsById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold text-sm'>
-                  {nullToNA(applicationFullData?.rate)}
+                  {nullToNA(applicationFullData?.total_rate)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
                 Total Rate  
+                </div>
+              </div>
+
+              
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold text-sm'>
+                  {/* {nullToNA(applicationFullData?.id)} */}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-500 text-xs'>
+                {/* Item ID */}
                 </div>
               </div>
 
@@ -402,9 +407,9 @@ const ViewInventoryDetailsById = (props) => {
 
           
 
-          <div className="p-5">
+            <div className="p-5">
             <h1 className="font-bold text-sm">Other Description</h1>
-            <p className="text-xs pt-2">Sed vitae urna non justo eleifend fermentum. Vivamus sit amet magna nec lacus feugiat vestibulum. Nullam vel efficitur nisl. Integer auctor sapien at nulla consequat, in luctus quam ultricies. Duis dapibus enim sed leo malesuada, in</p>
+            <p className="text-sm pt-2">{nullToNA(applicationFullData?.other_description)}</p>
           </div>
           
           <div className="h-[30px]"></div>
@@ -422,6 +427,11 @@ const ViewInventoryDetailsById = (props) => {
                 </button>
                 }
 
+                {page == 'inbox' && 
+
+            <button className={buttonStyle} onClick={()=>{navigate(`/da-edit-pre-procurement/${id}`)}}>Edit</button>
+
+          }
                 
                 {page == 'inbox' &&
                 <>                  

@@ -52,7 +52,8 @@ const SideBar = (props) => {
       {/* 👉 ======Main Section========== 👈 */}
       <header className={(toggleBar ? open1 : close1) + ` relative select-none transition-all duration-200 h-full text-${tcolor}-800 pt-2 border-r border-${bg}-200`}>
 
-        {<div class={(toggleBar ? open3 : close3) + ` bg-${bg}-100 w-full inset-0 `} id="mobile-menu">
+        {
+          <div class={(toggleBar ? open3 : close3) + ` bg-${bg}-100 w-full inset-0 `} id="mobile-menu">
 
           <nav id="mobile-nav" class="flex flex-col ltr:right-0 rtl:left-0 w-full top-0 py-4 ">
 
