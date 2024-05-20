@@ -82,7 +82,7 @@ const ListTableParent = (props) => {
       take=${perPageData}&page=${currentPage}
       &search=${searchFilter}
       &${returnCategoryFilter("category", filter?.category || [])}
-      &${returnCategoryFilter("subcategory", filter?.subcategory || [])}
+      &${returnCategoryFilter("scategory", filter?.subcategory || [])}
       &${returnCategoryFilter("brand", filter?.brand || [])}
       `
         .split(" ")
@@ -249,8 +249,8 @@ const ListTableParent = (props) => {
   useEffect(() => {
     // if (props?.requestBody != null) {
     setpageCount(1);
-    setperPageCount(10);
-    // searchOldFun();
+    // setperPageCount(10);
+    searchOldFun();
     // }
   }, [props?.changeData, currentPage, perPageData]);
 
@@ -258,7 +258,7 @@ const ListTableParent = (props) => {
   useEffect(() => {
     setloader(true);
     searchOldFun();
-    console.log(searchFilter, "searfilter------------>");
+    // console.log(searchFilter, "searfilter------------>");
   }, [pageCount, perPageCount, searchFilter]);
 
   //=---------------------- Search Panel----------------------------
@@ -389,6 +389,7 @@ const ListTableParent = (props) => {
                 searchFilter={searchFilter}
                 showDiv={props.showDiv}
                 setSearchFilter={setSearchFilter}
+                pagination={pagination}
               />
             </div>
           ) : (

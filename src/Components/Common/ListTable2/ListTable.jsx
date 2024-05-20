@@ -75,20 +75,20 @@ function ListTable(props) {
   };
 
   const nextPageFun = () => {
-    if (props?.lastPage != props?.currentPage) {
+    if (props?.pagination?.next) {
       props.nextPage();
     }
   };
 
   const prevPageFun = () => {
-    if (props?.currentPage != 1) {
+    if (props?.pagination?.prev) {
       props.prevPage();
     }
   };
 
-  {
-    console.log(props.perPageData, "perPageC==>");
-  }
+  // {
+  //   console.log(props.perPageData, "perPageC==>");
+  // }
 
   return (
     <>
@@ -145,7 +145,7 @@ function ListTable(props) {
         <div className='flex-1'>
         
           <span className='text-gray-600'>Total Result :&nbsp;</span>
-          <span className='font-semibold'>{props?.totalCount}</span>{" "}
+          <span className='font-semibold'>{props?.pagination?.totalResult}</span>{" "}
         </div>
       </div>
 
@@ -258,7 +258,7 @@ function ListTable(props) {
               <span>
                 page {""}
                 <strong>
-                  {props?.currentPage} of {props?.lastPage}
+                  {props?.pagination?.currentPage} of {props?.pagination?.totalPage}
                 </strong>
                 {""}
               </span>
@@ -277,11 +277,11 @@ function ListTable(props) {
               <abbr title='Previous Page'>
                 <button
                   className={
-                    (props?.currentPage == 1 ? "opacity-50" : "opacity-100") +
+                    (!props?.pagination?.prev ? "opacity-50" : "opacity-100") +
                     " text-xl hover:bg-sky-300 hover:text-white cursor-pointer"
                   }
                   onClick={() => prevPageFun()}
-                  disabled={props?.currentPage == 1 && true}
+                  disabled={props?.pagination?.prev == 1 && true}
                 >
                   ⬅️
                 </button>
@@ -289,13 +289,13 @@ function ListTable(props) {
               <abbr title='Next Page'>
                 <button
                   className={
-                    (props?.currentPage == props?.lastPage
+                    (!props?.pagination?.next
                       ? "opacity-50"
                       : "opacity-100") +
                     " text-xl hover:bg-sky-300 hover:text-white cursor-pointer"
                   }
                   onClick={() => nextPageFun()}
-                  disabled={props?.currentPage == props?.lastPage && true}
+                  disabled={props?.pagination?.next == props?.lastPage && true}
                 >
                   ➡️
                 </button>
