@@ -13,6 +13,8 @@ import { getLocalStorageItem, setLocalStorageItem, setLocalStorageItemStrigified
 import ulb_data from '@/Components/Common/DynamicData';
 import { checkErrorMessage } from '@/Components/Common/PowerupFunctions';
 import { contextVar } from '@/Components/context/contextVar';
+import {Login1} from "@/Components/temp";
+import Lottie from 'react-lottie';
 
 const { api_login, api_getFreeMenuList } = ProjectApiList()
 
@@ -119,6 +121,16 @@ function Login() {
 
 
     }
+
+
+    const loginAnimation = {
+        loop: true,
+        autoplay: true, 
+        animationData: Login1,
+        rendererSettings: {
+          preserveAspectRatio: 'xMidYMid slice'
+        }
+      }
 
     return (
         <>
@@ -317,7 +329,10 @@ function Login() {
                                 <div className="text-center mt-6 lg:mt-0">
 
                                     {/* <img src={img} alt="welcome" className="max-w-full h-auto mx-auto" /> */}
-                                    <img src="https://res.cloudinary.com/djkewhhqs/image/upload/v1708499439/JUIDCO_IMAGE/Juidco%20svg%20file/Trade_Blue_4_qy3kj6.svg" alt="welcome" className="w-full h-72" />
+                                    {/* <img src="https://res.cloudinary.com/djkewhhqs/image/upload/v1708499439/JUIDCO_IMAGE/Juidco%20svg%20file/Trade_Blue_4_qy3kj6.svg" alt="welcome" className="w-full h-72" /> */}
+
+                                    <Lottie options={loginAnimation} height={300} width={500} />
+
                                     <div className="px-4 mt-2">
                                         <h1 className="text-bold text-2xl mb-2">Serve Citizen Services with Ease of Access</h1>
                                         <p className="text-base mb-4 text-gray-500">Manage citizen government services with easy of access and serve them in no time. </p>

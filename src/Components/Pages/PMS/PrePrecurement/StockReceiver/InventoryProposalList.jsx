@@ -102,7 +102,7 @@ function InventoryProposalList(props) {
       accessor: "status",
       Cell: ({ cell }) => (
         <div className="pr-2">
-          <p className="font-bold text-yellow-800">{cell.row.values.status.status == -1 && 'Revised'}</p>
+          <p className="font-bold text-yellow-800">{cell.row.values.status.status == -1 && 'Back from DA'}</p>
           <p className="font-bold text-red-500">{cell.row.values.status.status == -2 && 'Rejected'}</p>
           <p className="font-bold text-blue-800">{cell.row.values.status.status == 0 && 'Pending'}</p>
           <p className="font-bold text-blue-800">{cell.row.values.status.status == 1 && "DA's Inbox"}</p>
@@ -110,6 +110,13 @@ function InventoryProposalList(props) {
           <p className="font-bold text-green-500">{cell.row.values.status.status == 3 && "Stock Received"}</p>
           <p className="font-bold text-green-500">{cell.row.values.status.status == 4 && "Stock Verified"}</p>
         </div>
+      ),
+    },
+    {
+      Header: "Remark",
+      accessor: "remark",
+      Cell: ({ cell }) => (
+        <div className='pr-2 text-green-800 truncate'>{cell.row.values.remark || "N/A"}</div>
       ),
     },
     {
