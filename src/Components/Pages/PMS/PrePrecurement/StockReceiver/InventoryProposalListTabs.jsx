@@ -12,7 +12,7 @@ const InventoryProposalListTabs = () => {
   const {
     
     api_fetchProcurementList,
-    api_fetchProcurementDAList
+    api_fetchProcurementDAList,
   } = ProjectApiList();
 
   return (

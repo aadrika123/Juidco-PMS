@@ -167,6 +167,17 @@ function InventoryProposalList(props) {
   }
 
 
+  const tableSelector = (page) => {
+    switch (page) {
+      case "inbox":
+        return "DAIN"
+      case "outbox":
+        return "DAOUT"
+      default:
+        return "DAIN"
+    }
+  }
+
 
   return (
     <>
@@ -317,6 +328,7 @@ function InventoryProposalList(props) {
             <>
             
               <ListTableParent
+                table={tableSelector(props?.page)}
                 api={props.api}
                 columns={COLUMNS}
                 requestBody={requestBody} // sending body

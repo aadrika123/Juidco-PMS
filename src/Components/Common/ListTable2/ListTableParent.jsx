@@ -19,6 +19,7 @@ import { AiOutlineArrowDown } from "react-icons/ai";
 import { FiFilter } from "react-icons/fi";
 import SearchPanel from "../SearchPanel/SearchPanel";
 import SideSection from "../SearchPanel/SidebarTailwind";
+import ProjectApiList from "@/Components/api/ProjectApiList";
 
 const ListTableParent = (props) => {
   // 👉 State constants 👈
@@ -39,6 +40,11 @@ const ListTableParent = (props) => {
   const [isFilterPanelOpen, setFilterPanelOpen] = useState(false);
   const [searchPanelItemValues, setSearchPanelItemValues] = useState({});
   const [filter, setFilter] = useState({});
+
+  const {
+
+    api_exportcsv
+  } = ProjectApiList();
 
   const searchPanelItems = [
     { name: "project_proposal_no", caption: "Project Proposal Number" },
@@ -218,20 +224,25 @@ const ListTableParent = (props) => {
 
   // 👉 Function 9 👈
   const exportDataFun = () => {
+    const date = new Date()
     setloader(true);
     setcsvStatus(false);
-
+    console.log(props?.table)
     AxiosInterceptors.post(
-      props?.api,
-      { ...props?.requestBody, perPage: totalCount },
+      api_exportcsv,
+      {
+        table: props?.table
+      },
       ApiHeader()
     )
       .then((res) => {
-        if (res?.data?.status == true) {
-          setexportData(makeExportFun(res?.data?.data?.data));
-          downloadFun();
-        } else {
-        }
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${props?.table}-${date.getDate()}${date.getMonth()}${date.getFullYear()}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
 
         setloader(false);
       })
