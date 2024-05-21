@@ -158,7 +158,7 @@ function App() {
     
     //---------- Post-Procurement -------------------------
     { path: "/sr-post-inventory", element: <PostProcurementHome /> },
-    { path: "/sr-viewPostInvtDetailsById/:id/:page", element: <ViewPostInvtDetailsById /> },
+    { path: "/sr-post-InvtDetailsById/:id/:page", element: <ViewPostInvtDetailsById /> },
     
 
   ];

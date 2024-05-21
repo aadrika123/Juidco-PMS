@@ -55,7 +55,7 @@ const   ViewInventoryDetailsById = (props) => {
       url = api_fetchOutboxProcurementDetailById
     }
 
-    AxiosInterceptors.get(`${url}/${id}`,{ },ApiHeader())
+    AxiosInterceptors.get(`${url}/${id}`,ApiHeader())
       .then(function (response) {
         console.log("view water tanker full details ...", response?.data?.data);
         if (response?.data?.status) {
