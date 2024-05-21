@@ -41,10 +41,7 @@ const ListTableParent = (props) => {
   const [searchPanelItemValues, setSearchPanelItemValues] = useState({});
   const [filter, setFilter] = useState({});
 
-  const {
-
-    api_exportcsv
-  } = ProjectApiList();
+  const { api_exportcsv } = ProjectApiList();
 
   const searchPanelItems = [
     { name: "project_proposal_no", caption: "Project Proposal Number" },
@@ -224,22 +221,24 @@ const ListTableParent = (props) => {
 
   // 👉 Function 9 👈
   const exportDataFun = () => {
-    const date = new Date()
+    const date = new Date();
     setloader(true);
     setcsvStatus(false);
-    console.log(props?.table)
+    console.log(props?.table);
     AxiosInterceptors.post(
       api_exportcsv,
       {
-        table: props?.table
+        table: props?.table,
       },
       ApiHeader()
     )
       .then((res) => {
         const url = window.URL.createObjectURL(new Blob([res.data]));
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = url;
-        a.download = `${props?.table}-${date.getDate()}${date.getMonth()}${date.getFullYear()}.csv`;
+        a.download = `${
+          props?.table
+        }-${date.getDate()}${date.getMonth()}${date.getFullYear()}.csv`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -309,41 +308,38 @@ const ListTableParent = (props) => {
       {/* 👉 When error occured 👈 */}
       {errorState && (
         <div
-          className="bg-red-100 border border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center"
-          role="alert"
+          className='bg-red-100 border border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center'
+          role='alert'
         >
-          <strong className="font-bold">Sorry! </strong>
-          <span className="block sm:inline">
+          <strong className='font-bold'>Sorry! </strong>
+          <span className='block sm:inline'>
             Some error occured while fetching list. Please try again later.
           </span>
-          <span className="absolute top-0 bottom-0 right-0 px-4 py-3"></span>
+          <span className='absolute top-0 bottom-0 right-0 px-4 py-3'></span>
         </div>
       )}
 
       {/* 👉 Download CSV 👈 */}
       {csvStatus && <CSVDownload data={exportData} />}
 
-      {/* 👉 Loader 👈 */}
-      {loader && <ShimmerEffectInline />}
-
-      <div className="flex flex-col">
-        <div className="flex mb-2 pb-2 items-end max-sm:p-2 justify-end w-full">
+      <div className='flex flex-col'>
+        <div className='flex mb-2 pb-2 items-end max-sm:p-2 justify-end w-full'>
           {/* <div hidden={!isFilterPanelOpen} className="w-[25%] h-[75vh] overflow-y-auto overflow-x-hidden hide-scrollbar">
           <SearchPanel onClose={toggleFilterPanel} items={searchPanelItems} values={searchPanelItemValues} onFilterChange={onFilterChange} onNoFilter={onRemoveFilter} />
         </div> */}
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="border border-[#4338CA] text-[#4338CA] hover:bg-[#423a9a] hover:text-white px-4 py-2 rounded mr-2"
+            className='border border-[#4338CA] text-[#4338CA] hover:bg-[#423a9a] hover:text-white px-4 py-2 rounded mr-2'
           >
             <FiFilter />
           </button>
-          <div className="flex-initial opacity-50">
+          <div className='flex-initial opacity-50'>
             <GlobalFilter filter={searchFilter} setFilter={setSearchFilter} />
           </div>
-          <div className="flex-initial ml-2">
+          <div className='flex-initial ml-2'>
             <button
-              className="bg-green-600 px-3 pr-3  drop-shadow-lg rounded-sm py-1 text-white hover:shadow-2xl hover:bg-slate-600 text-center relative "
+              className='bg-green-600 px-3 pr-3  drop-shadow-lg rounded-sm py-1 text-white hover:shadow-2xl hover:bg-slate-600 text-center relative '
               onMouseEnter={() => setbounce("")}
               onMouseLeave={() => setbounce("hidden")}
               onClick={exportDataFun}
@@ -359,22 +355,25 @@ const ListTableParent = (props) => {
               </div>
             </button>
           </div>
-          <div className="flex-1">{props.children}</div>
+          <div className='flex-1'>{props.children}</div>
         </div>
 
         {/* 👉 Filter Component 👈 */}
-        <div className="flex">
-          {isOpen && (
-            <SideSection
-              setIsOpen={setIsOpen}
-              filter={filter}
-              setFilter={setFilter}
-              useFilter={useFilter}
-            />
-          )}
+        {isOpen && (
+          <SideSection
+            setIsOpen={setIsOpen}
+            filter={filter}
+            setFilter={setFilter}
+            useFilter={useFilter}
+          />
+        )}
+
+        <div className='flex'>
+          {/* 👉 Loader 👈 */}
+          {loader && <ShimmerEffectInline />}
 
           {!loader && dataList?.length > 0 ? (
-            <div className="mb-10 ml-2">
+            <div className='mb-10 ml-2'>
               {/* 👉 Listtable 👈 */}
 
               <ListTable
@@ -408,13 +407,11 @@ const ListTableParent = (props) => {
             <>
               {!loader && (
                 <div
-                  className="bg-red-100 border border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center"
-                  role="alert"
+                  className='bg-red-100 border border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center'
+                  role='alert'
                 >
-                  <span className="block sm:inline">
-                    Oops! No data available.
-                  </span>
-                  <span className="absolute top-0 bottom-0 right-0 px-4 py-3"></span>
+                  <span className='block sm:inline'>No data available.</span>
+                  <span className='absolute top-0 bottom-0 right-0 px-4 py-3'></span>
                 </div>
               )}
             </>
