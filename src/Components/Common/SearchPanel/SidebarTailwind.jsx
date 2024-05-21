@@ -83,7 +83,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
       >
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-thin text-gray-600 flex"><FiFilter className="pt-1 mt-.8" />Filters</h2>
-          <button onClick={() => setIsOpen(false)} className="text-black text-xl hover:bg-[#4338CA] hover:text-white rounded">
+          <button onClick={() => setIsOpen(false)} className="text-xl hover:bg-[#4338CA] bg-[#4338CA] text-white hover:text-white rounded">
           <RxCross2 />
 
           </button>
@@ -137,7 +137,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
               width: "100%",
               mt: "1rem",
               ':hover': {
-              backgroundColor: 'blue',  // Change this to your desired hover color
+              backgroundColor: '#4338CA',  // Change this to your desired hover color
               color: 'white',           // Optional: change text color on hover
               borderColor: 'black',     // Optional: change border color on hover
         }

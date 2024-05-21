@@ -36,6 +36,8 @@ import PetRegistrationPreviewList from './Components/Pages/PetRegistration/Searc
 import ViewApprovedPreviewApplication from './Components/Pages/PetRegistration/ViewEditApplication/ViewApprovedPreviewApplication';
 import PetLicense from './Components/Pages/PetRegistration/PetPaymentReceipt/PetLicense';
 import AddPreProcurement from './Components/Pages/PMS/PrePrecurement/StockReceiver/AddPreProcurement';
+import RejectedListTabs from './Components/Pages/PMS/PrePrecurement/StockReceiver/RejectedListTabs';
+import ReleasedListTabs from './Components/Pages/PMS/PrePrecurement/StockReceiver/ReleasedListTabs';
 import InventoryDashboard from './Components/Pages/PMS/PrePrecurement/StockReceiver/InventoryDashboard';
 import InventoryProposalList from './Components/Pages/PMS/PrePrecurement/StockReceiver/InventoryProposalList';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -110,6 +112,8 @@ function App() {
     { path: '/sr-inventory-proposal', element: <InventoryProposalListTabs/> },
     { path: '/sr-viewInventoryDetailsById/:id/:page', element: <ViewInventoryDetailsById/> },
     { path: '/sr-add-pre-procurement', element: <AddPreProcurement/> },
+    { path: '/sr-rejectedlist', element: <RejectedListTabs /> },
+    { path: '/sr-releasedlist', element: <ReleasedListTabs /> },
     
     
     //------------ DA ---------------
