@@ -87,6 +87,7 @@ const ListTableParent = (props) => {
       &${returnCategoryFilter("category", filter?.category || [])}
       &${returnCategoryFilter("scategory", filter?.subcategory || [])}
       &${returnCategoryFilter("brand", filter?.brand || [])}
+      &${returnCategoryFilter("status", filter?.status || [])}
       `
         .split(" ")
         .join(""),

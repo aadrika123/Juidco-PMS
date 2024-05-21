@@ -21,6 +21,41 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   const [categoryList, setCategoryList] = useState([]);
   const [subCategoryList, setSubCategoryList] = useState([]);
 
+  const statusList = [
+    {
+      name: "Pending",
+      value: 0
+    },
+    {
+      name: "DA's Inbox",
+      value: 1
+    },
+    {
+      name: "Released for Tender",
+      value: 2
+    },
+    {
+      name: "Stock Received",
+      value: 3
+    },
+    {
+      name: "Stock Verified",
+      value: 4
+    },
+    {
+      name: "Back from DA",
+      value: -1
+    },
+    {
+      name: "Rejected",
+      value: -2
+    },
+    {
+      name: "Revised",
+      value: 69
+    },
+  ]
+
   const { api_itemCategory, api_itemSubCategoryAll, api_itemBrand } =
     ProjectApiList();
 
@@ -84,7 +119,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-thin text-gray-600 flex"><FiFilter className="pt-1 mt-.8" />Filters</h2>
           <button onClick={() => setIsOpen(false)} className="text-xl hover:bg-[#4338CA] bg-[#4338CA] text-white hover:text-white rounded">
-          <RxCross2 />
+            <RxCross2 />
 
           </button>
         </div>
@@ -129,6 +164,25 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
               </FormGroup>
             </AccordionDetails>
           </Accordion>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              Status
+            </AccordionSummary>
+            <AccordionDetails>
+              <FormGroup>
+                {statusList.map((item, index) => (
+                  <FormControlLabel
+                    key={index}
+                    control={<Checkbox />}
+                    label={item?.name}
+                    onChange={() => {
+                      handleOnchange("status", item?.value);
+                    }}
+                  />
+                ))}
+              </FormGroup>
+            </AccordionDetails>
+          </Accordion>
 
           <Button
 
@@ -137,10 +191,10 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
               width: "100%",
               mt: "1rem",
               ':hover': {
-              backgroundColor: '#4338CA',  // Change this to your desired hover color
-              color: 'white',           // Optional: change text color on hover
-              borderColor: 'black',     // Optional: change border color on hover
-        }
+                backgroundColor: '#4338CA',  // Change this to your desired hover color
+                color: 'white',           // Optional: change text color on hover
+                borderColor: 'black',     // Optional: change border color on hover
+              }
             }}
             onClick={useFilter}
           >
