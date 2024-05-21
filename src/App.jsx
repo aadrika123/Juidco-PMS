@@ -51,6 +51,7 @@ import InventoryDashboardDa from "./Components/Pages/PMS/PrePrecurement/Departme
 
 //postprocurement
 import PostProcurementHome from "./Components/Pages/PMS/PostPrecurement/StockReceiver/PostProcurementHome";
+import ViewPostInvtDetailsById from "./Components/Pages/PMS/PostPrecurement/StockReceiver/ViewPostInvtDetailsById";
 
 const queryClient = new QueryClient();
 
@@ -138,29 +139,28 @@ function App() {
 
     //---------- PMS-Routes -----------------
 
+
+    //---------- Pre-Procurement -------------------------
     //------------ Stock Receiver ---------------
     { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
     { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
-    {
-      path: "/sr-viewInventoryDetailsById/:id/:page",
-      element: <ViewInventoryDetailsById />,
-    },
+    { path: "/sr-viewInventoryDetailsById/:id/:page", element: <ViewInventoryDetailsById />},
     { path: "/sr-add-pre-procurement", element: <AddPreProcurement /> },
     { path: "/sr-rejectedlist", element: <RejectedListTabs /> },
     { path: "/sr-releasedlist", element: <ReleasedListTabs /> },
-    { path: "/sr-post-inventory", element: <PostProcurementHome /> },
-
+    
     //------------ DA ---------------
     { path: "/da-inventory-dashboard", element: <InventoryDashboardDa /> },
-    {
-      path: "/da-inventory-proposal",
-      element: <InventoryProposalListTabsDa />,
-    },
+    { path: "/da-inventory-proposal", element: <InventoryProposalListTabsDa />}, 
     { path: "/da-edit-pre-procurement/:id", element: <EditPreProcurement /> },
-    {
-      path: "/da-viewInventoryDetailsById/:id/:page",
-      element: <ViewInventoryDetailsByIdDa />,
-    },
+    { path: "/da-viewInventoryDetailsById/:id/:page", element: <ViewInventoryDetailsByIdDa /> },
+    
+    
+    //---------- Post-Procurement -------------------------
+    { path: "/sr-post-inventory", element: <PostProcurementHome /> },
+    { path: "/sr-viewPostInvtDetailsById/:id/:page", element: <ViewPostInvtDetailsById /> },
+    
+
   ];
 
   return (

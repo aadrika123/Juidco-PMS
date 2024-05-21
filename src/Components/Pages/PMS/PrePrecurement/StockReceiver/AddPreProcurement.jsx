@@ -677,19 +677,19 @@ const [categorySelected,setCategorySelected] = useState([]);
                         formik.handleChange(e);
                         fetchSubCategory(e);
                         e.target.value ==
-                          "e37b33c2-d812-45b1-8e89-f2073ffba2fb" &&
+                          "6c3d223e-23f2-43dd-a77f-694c983a5238" &&
                           setCategorySelected(furniture);
                         e.target.value ==
-                          "70824560-2d75-4a9c-b9bd-e3234675c7c2" &&
+                          "757925fb-2fd0-4a6f-abdf-e4bfab8e97b8" &&
                           setCategorySelected(cleaningSupplies);
                         e.target.value ==
-                          "459df96d-27ad-40a0-86cb-2241043a2c77" &&
+                          "d7fd2a11-587e-4533-a0ef-2ebe675ad99a" &&
                           setCategorySelected(maintenanceAndRepair);
                         e.target.value ==
-                          "2c7f0309-d99a-46a5-a07d-2263c6682e77" &&
+                          "fded7e9c-a757-464d-8b97-8048e2fab96e" &&
                           setCategorySelected(safetySecurity);
                         e.target.value ==
-                          "f14fb5da-0565-4e04-b98e-fb96cb06135c" &&
+                          "a1892bfa-01e7-4501-8287-8b704609c003" &&
                           setCategorySelected(uniform);
 
                         // console.log(e.target.value, "---------------->");
