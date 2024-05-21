@@ -40,6 +40,7 @@ const ViewPostInvtDetailsById = (props) => {
     api_postRejectTender,
     api_postDaEditTender
   } = ProjectApiList();
+  
 
      // Accessing context for notifications
      const { notify } = useContext(contextVar);
