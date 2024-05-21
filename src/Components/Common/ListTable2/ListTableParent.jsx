@@ -90,7 +90,7 @@ const ListTableParent = (props) => {
       `
         .split(" ")
         .join(""),
-      { ...props?.requestBody, perPage: perPageCount, page: pageCount },
+      // { ...props?.requestBody},
       ApiHeader()
     )
       .then((res) => {
