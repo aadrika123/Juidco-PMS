@@ -144,13 +144,13 @@ const   ViewInventoryDetailsById = (props) => {
           
           <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5'>
 
-          <div className="pl-8 text-[1rem] font-bold">
-            <h1 className="">Order No <span className="text-black">:</span> 
-            <span className=""> {nullToNA(applicationFullData?.order_no)}</span></h1>
+          <div className="pl-8 text-[1rem] text-[#4338CA]">
+            <h1 className="">Procurement request No <span className="text-black">:</span> 
+            <span className="font-bold"> {nullToNA(applicationFullData?.order_no)}</span></h1>
           </div>
 
           {!applicationFullData?.remark?.length == 0 &&
-          <div className="p-5 pl-8">
+          <div className="pb-5 pl-8">
             <h1 className="font-bold text-base text-red-500">Remark <span className="text-black">:</span> 
             <span className="text-sm pt-2 font-light text-red-500"> {nullToNA(applicationFullData?.remark)}</span></h1>
           </div>

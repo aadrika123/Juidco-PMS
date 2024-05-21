@@ -330,7 +330,7 @@ const ListTableParent = (props) => {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className='border border-[#4338CA] text-[#4338CA] hover:bg-[#423a9a] hover:text-white px-4 py-2 rounded mr-2'
+            className='border border-[#4338CA] text-[#4338CA] hover:bg-[#4338CA] hover:text-white px-4 py-2 rounded mr-2'
           >
             <FiFilter />
           </button>
@@ -407,7 +407,7 @@ const ListTableParent = (props) => {
             <>
               {!loader && (
                 <div
-                  className='bg-red-100 border border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center'
+                  className='bg-red-100 border w-full flex justify-center ml-2 items-center border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center'
                   role='alert'
                 >
                   <span className='block sm:inline'>No data available.</span>
