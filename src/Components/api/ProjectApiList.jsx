@@ -92,36 +92,36 @@ export default function ProjectApiList() {
         api_getWaterTankerBookingDetailsById: `${baseUrl}/api/water-tanker/get-booking-details-by-id `, //get -by -id
         
         //Api for PMS
-        api_addProcurement: `${baseUrl}/api/sr/pre-procurement`,
-        api_editProcurement: `${baseUrl}/api/da/pre-procurement/edit`,
+        api_addProcurement: `${baseUrl}/api/pms/pms/sr/pre-procurement`,
+        api_editProcurement: `${baseUrl}/api/pms/da/pre-procurement/edit`,
 
-        api_itemCategory: `${baseUrl}/api/master/category `,
-        api_itemSubCategory: `${baseUrl}/api/master/sub-category/by-category`,
-        api_itemSubCategoryAll: `${baseUrl}/api/master/sub-category`,
-        api_itemBrand: `${baseUrl}/api/master/brand `,
-        api_fetchProcessor: `${baseUrl}/api/master/processor `,
-        api_fetchRam: `${baseUrl}/api/master/ram `,
-        api_fetchOperatingSystem: `${baseUrl}/api/master/os `,
-        api_fetchRom: `${baseUrl}/api/master/rom `,
-        api_fetchGraphics: `${baseUrl}/api/master/graphics `,
+        api_itemCategory: `${baseUrl}/api/pms/master/category `,
+        api_itemSubCategory: `${baseUrl}/api/pms/master/sub-category/by-category`,
+        api_itemSubCategoryAll: `${baseUrl}/api/pms/master/sub-category`,
+        api_itemBrand: `${baseUrl}/api/pms/master/brand `,
+        api_fetchProcessor: `${baseUrl}/api/pms/master/processor `,
+        api_fetchRam: `${baseUrl}/api/pms/master/ram `,
+        api_fetchOperatingSystem: `${baseUrl}/api/pms/master/os `,
+        api_fetchRom: `${baseUrl}/api/pms/master/rom `,
+        api_fetchGraphics: `${baseUrl}/api/pms/master/graphics `,
         
-        api_fetchProcurementList: `${baseUrl}/api/sr/pre-procurement`,
-        api_fetchProcurementDAList: `${baseUrl}/api/sr/pre-procurement/outbox`,
-        api_fetchProcurementDetailById: `${baseUrl}/api/sr/pre-procurement`,
-        api_fetchOutboxProcurementDetailById: `${baseUrl}/api/sr/pre-procurement/outbox`,
-        api_postForwardToDA: `${baseUrl}/api/sr/pre-procurement/to-da`,
+        api_fetchProcurementList: `${baseUrl}/api/pms/sr/pre-procurement`,
+        api_fetchProcurementDAList: `${baseUrl}/api/pms/sr/pre-procurement/outbox`,
+        api_fetchProcurementDetailById: `${baseUrl}/api/pms/sr/pre-procurement`,
+        api_fetchOutboxProcurementDetailById: `${baseUrl}/api/pms/sr/pre-procurement/outbox`,
+        api_postForwardToDA: `${baseUrl}/api/pms/sr/pre-procurement/to-da`,
         
         
-        api_fetchProcurementDAListInbox: `${baseUrl}/api/da/pre-procurement`,
-        api_fetchProcurementDAListOutbox: `${baseUrl}/api/da/pre-procurement/outbox`,
-        api_fetchProcurementDADetailByIdinbox: `${baseUrl}/api/da/pre-procurement`,
-        api_fetchProcurementDADetailByIdOutbox: `${baseUrl}/api/da/pre-procurement/outbox`,
-        api_postBackToSR: `${baseUrl}/api/da/pre-procurement/to-sr`,
-        api_postReleaseTender: `${baseUrl}/api/da/pre-procurement/release-tender`,
-        api_postRejectTender: `${baseUrl}/api/da/pre-procurement/reject`,
-        api_postDaEditTender: `${baseUrl}/api/da/pre-procurement/edit`,
+        api_fetchProcurementDAListInbox: `${baseUrl}/api/pms/da/pre-procurement`,
+        api_fetchProcurementDAListOutbox: `${baseUrl}/api/pms/da/pre-procurement/outbox`,
+        api_fetchProcurementDADetailByIdinbox: `${baseUrl}/api/pms/da/pre-procurement`,
+        api_fetchProcurementDADetailByIdOutbox: `${baseUrl}/api/pms/da/pre-procurement/outbox`,
+        api_postBackToSR: `${baseUrl}/api/pms/da/pre-procurement/to-sr`,
+        api_postReleaseTender: `${baseUrl}/api/pms/da/pre-procurement/release-tender`,
+        api_postRejectTender: `${baseUrl}/api/pms/da/pre-procurement/reject`,
+        api_postDaEditTender: `${baseUrl}/api/pms/da/pre-procurement/edit`,
 
-        api_exportcsv: `${baseUrl}/api/download`,
+        api_exportcsv: `${baseUrl}/api/pms/download`,
         
 
         

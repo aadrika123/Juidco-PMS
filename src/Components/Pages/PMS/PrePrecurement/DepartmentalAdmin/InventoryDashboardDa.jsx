@@ -220,7 +220,7 @@ function InventoryDashboardDa() {
 
           {/* Charts */}
           <div className="mt-10">
-            <h1 className="font-bold  text-[1.5rem] pb-5">
+            <h1 className="font-bold  text-[1.5rem] pt-5 pl-5 pb-5">
               Inventory Performance
             </h1>
             <Chart
