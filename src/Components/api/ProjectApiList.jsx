@@ -92,7 +92,7 @@ export default function ProjectApiList() {
         api_getWaterTankerBookingDetailsById: `${baseUrl}/api/water-tanker/get-booking-details-by-id `, //get -by -id
         
         //Api for PMS
-        api_addProcurement: `${baseUrl}/api/pms/pms/sr/pre-procurement`,
+        api_addProcurement: `${baseUrl}/api/pms/sr/pre-procurement`,
         api_editProcurement: `${baseUrl}/api/pms/da/pre-procurement/edit`,
 
         api_itemCategory: `${baseUrl}/api/pms/master/category `,
@@ -110,6 +110,8 @@ export default function ProjectApiList() {
         api_fetchProcurementDetailById: `${baseUrl}/api/pms/sr/pre-procurement`,
         api_fetchOutboxProcurementDetailById: `${baseUrl}/api/pms/sr/pre-procurement/outbox`,
         api_postForwardToDA: `${baseUrl}/api/pms/sr/pre-procurement/to-da`,
+        api_fetchProcurementRejectedList: `${baseUrl}/api/pms/sr/pre-procurement/rejected`,
+        api_fetchProcurementReleasedList: `${baseUrl}/api/pms/sr/pre-procurement/released`,
         
         
         api_fetchProcurementDAListInbox: `${baseUrl}/api/pms/da/pre-procurement`,
