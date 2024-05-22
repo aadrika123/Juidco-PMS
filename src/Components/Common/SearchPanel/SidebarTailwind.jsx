@@ -79,7 +79,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   return (
     <div className="relative  ">
       <div
-        className={`h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out w-64 p-4 border border-gray-300 rounded`}
+        className={`h-full mt-[8rem] bg-white shadow-lg transform transition-transform duration-300 ease-in-out w-64 p-4 border border-gray-300 rounded`}
       >
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-thin text-gray-600 flex"><FiFilter className="pt-1 mt-.8" />Filters</h2>
