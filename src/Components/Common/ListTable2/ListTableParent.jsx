@@ -17,7 +17,6 @@ import ShimmerEffectInline from "@/Components/Common/Loaders/ShimmerEffectInline
 import GlobalFilter from "./GlobalFilter";
 import { AiOutlineArrowDown } from "react-icons/ai";
 import { FiFilter } from "react-icons/fi";
-import SearchPanel from "../SearchPanel/SearchPanel";
 import SideSection from "../SearchPanel/SidebarTailwind";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 
@@ -50,6 +49,10 @@ const ListTableParent = (props) => {
   const toggleFilterPanel = () => {
     setFilterPanelOpen((prevState) => !prevState);
   };
+
+  //animation for open and close filter bar
+  const open1 = `animate__animated animate__slideInLeft animate__faster `;
+  const close1 = `w-0 sm:w-3 animate__animated animate__fadeOutLeft animate__faster transition-all delay-150`;
 
   // console.log(currentPage);
 
@@ -322,100 +325,105 @@ const ListTableParent = (props) => {
       {/* 👉 Download CSV 👈 */}
       {csvStatus && <CSVDownload data={exportData} />}
 
-      <div className='flex flex-col'>
-        <div className='flex mb-2 pb-2 items-end max-sm:p-2 justify-end w-full'>
-          {/* <div hidden={!isFilterPanelOpen} className="w-[25%] h-[75vh] overflow-y-auto overflow-x-hidden hide-scrollbar">
-          <SearchPanel onClose={toggleFilterPanel} items={searchPanelItems} values={searchPanelItemValues} onFilterChange={onFilterChange} onNoFilter={onRemoveFilter} />
-        </div> */}
-
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className='border border-[#4338CA] text-[#4338CA] hover:bg-[#4338CA] hover:text-white px-4 py-2 rounded mr-2'
-          >
-            <FiFilter />
-          </button>
-          <div className='flex-initial opacity-50'>
-            <GlobalFilter filter={searchFilter} setFilter={setSearchFilter} />
-          </div>
-          <div className='flex-initial ml-2'>
-            <button
-              className='bg-green-600 px-3 pr-3  drop-shadow-lg rounded-sm py-1 text-white hover:shadow-2xl hover:bg-slate-600 text-center relative '
-              onMouseEnter={() => setbounce("")}
-              onMouseLeave={() => setbounce("hidden")}
-              onClick={exportDataFun}
-            >
-              Export
-              <div
-                className={
-                  bounce +
-                  " absolute h-full top-3 text-sm left-0 text-center animate-bounce"
-                }
-              >
-                <AiOutlineArrowDown />
-              </div>
-            </button>
-          </div>
-          <div className='flex-1'>{props.children}</div>
-        </div>
-
-        {/* 👉 Filter Component 👈 */}
+      <div className='flex gap-2'>
+        {/* 👉 Filter sidebar Component 👈 */}
         {isOpen && (
-          <SideSection
-            setIsOpen={setIsOpen}
-            filter={filter}
-            setFilter={setFilter}
-            useFilter={useFilter}
-          />
+          <div className={isOpen ? open1 : close1}>
+            <SideSection
+              setIsOpen={setIsOpen}
+              filter={filter}
+              setFilter={setFilter}
+              useFilter={useFilter}
+            />
+          </div>
         )}
-
-        <div className='flex'>
-          {/* 👉 Loader 👈 */}
-          {loader && <ShimmerEffectInline />}
-
-          {!loader && dataList?.length > 0 ? (
-            <div className='mb-10 ml-2'>
-              {/* 👉 Listtable 👈 */}
-
-              <ListTable
-                search={props?.search}
-                currentPage={currentPage}
-                lastPage={lastPage}
-                goFirst={firstPageFun}
-                goLast={lastPageFun}
-                count1={totalCount}
-                columns={props?.columns}
-                dataList={dataList}
-                exportStatus={props?.exportStatus}
-                perPage={perPageCount}
-                perPageC={perPageFun}
-                totalCount={totalCount}
-                nextPage={nextPageFun}
-                prevPage={prevPageFun}
-                exportDataF={exportDataFun}
-                exportData={exportData}
-                gotoPage={(val) => gotoPageFun(val)}
-                perPageData={perPageData}
-                setPerPageData={setPerPageData}
-                searchFilter={searchFilter}
-                showDiv={props.showDiv}
-                setSearchFilter={setSearchFilter}
-                pagination={pagination}
-              />
-            </div>
-          ) : (
-            // 👉 When no data available 👈
-            <>
-              {!loader && (
-                <div
-                  className='bg-red-100 border w-full flex justify-center ml-2 items-center border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center'
-                  role='alert'
+        <div className='flex flex-col gap-6 w-full'>
+          {/* filter and serachbar */}
+          <div className='w-full flex justify-end '>
+            <div className='flex mb-2 pb-2 items-end max-sm:p-2 justify-end'>
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className='border border-[#4338CA] text-[#4338CA] hover:bg-[#4338CA] hover:text-white px-4 py-2 rounded mr-2'
+              >
+                <FiFilter />
+              </button>
+              <div className='flex-initial opacity-50'>
+                <GlobalFilter
+                  filter={searchFilter}
+                  setFilter={setSearchFilter}
+                />
+              </div>
+              <div className='flex-initial ml-2'>
+                <button
+                  className='bg-green-600 px-3 pr-3  drop-shadow-lg rounded-sm py-1 text-white hover:shadow-2xl hover:bg-slate-600 text-center relative '
+                  onMouseEnter={() => setbounce("")}
+                  onMouseLeave={() => setbounce("hidden")}
+                  onClick={exportDataFun}
                 >
-                  <span className='block sm:inline'>No data available.</span>
-                  <span className='absolute top-0 bottom-0 right-0 px-4 py-3'></span>
-                </div>
-              )}
-            </>
-          )}
+                  Export
+                  <div
+                    className={
+                      bounce +
+                      " absolute h-full top-3 text-sm left-0 text-center animate-bounce"
+                    }
+                  >
+                    <AiOutlineArrowDown />
+                  </div>
+                </button>
+              </div>
+              <div className='flex-1'>{props.children}</div>
+            </div>
+          </div>
+          {/* table */}
+          <div className='flex w-full'>
+            {/* 👉 Loader 👈 */}
+            {loader && <ShimmerEffectInline />}
+
+            {!loader && dataList?.length > 0 ? (
+              <div className='mb-10 ml-2'>
+                {/* 👉 Listtable 👈 */}
+
+                <ListTable
+                  search={props?.search}
+                  currentPage={currentPage}
+                  lastPage={lastPage}
+                  goFirst={firstPageFun}
+                  goLast={lastPageFun}
+                  count1={totalCount}
+                  columns={props?.columns}
+                  dataList={dataList}
+                  exportStatus={props?.exportStatus}
+                  perPage={perPageCount}
+                  perPageC={perPageFun}
+                  totalCount={totalCount}
+                  nextPage={nextPageFun}
+                  prevPage={prevPageFun}
+                  exportDataF={exportDataFun}
+                  exportData={exportData}
+                  gotoPage={(val) => gotoPageFun(val)}
+                  perPageData={perPageData}
+                  setPerPageData={setPerPageData}
+                  searchFilter={searchFilter}
+                  showDiv={props.showDiv}
+                  setSearchFilter={setSearchFilter}
+                  pagination={pagination}
+                />
+              </div>
+            ) : (
+              // 👉 When no data available 👈
+              <>
+                {!loader && (
+                  <div
+                    className='bg-red-100 border w-full flex justify-center ml-2 items-center border-red-400 text-red-700 py-3 rounded relative text-center'
+                    role='alert'
+                  >
+                    <span className='block sm:inline'>No data available.</span>
+                    <span className='absolute top-0 bottom-0 right-0 px-4 py-3'></span>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </>
