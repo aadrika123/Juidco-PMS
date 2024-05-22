@@ -4,8 +4,8 @@
 //    Date - 29/09/2023
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - PreProcurementSubmittedScreen
-//    DESCRIPTION - PreProcurementSubmittedScreen
+//    Component  - ReceivedInvtSubmittedScreen
+//    DESCRIPTION - ReceivedInvtSubmittedScreen
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
@@ -14,7 +14,7 @@ import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
 import check from "@/Components/assets/check.svg";
 import { useNavigate } from "react-router-dom";
 
-function PreProcurementSubmittedScreen(props) {
+function ReceivedInvtSubmittedScreen(props) {
   const navigate = useNavigate();
   const { formStyle } = ThemeStyleTanker();
 
@@ -29,7 +29,8 @@ function PreProcurementSubmittedScreen(props) {
   const handleCancilClick = () => {
     // props?.submitForm()
     // navigate(`/add-pre-procurement`);
-    window.location.reload();
+    props?.setIsModalOpen(false)
+    // window.location.reload();
   };
   return (
     <>
@@ -53,7 +54,7 @@ function PreProcurementSubmittedScreen(props) {
         <div class=" flex-1">
           <div class="">
             <h3 class="text-xl  text-center  text-black font-openSans">
-            Are you Sure you want to Save
+            Are you Sure you want to Add Inventory ?
             </h3>
             {/* <h3 class="text-xl  text-center mb-3 text-gray-400 font-openSans font-semibold ">
               Booking no. - {props?.responseScreenData?.data?.bookingNo}
@@ -94,4 +95,4 @@ function PreProcurementSubmittedScreen(props) {
   );
 }
 
-export default PreProcurementSubmittedScreen;
+export default ReceivedInvtSubmittedScreen;

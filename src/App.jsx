@@ -52,6 +52,12 @@ import InventoryDashboardDa from "./Components/Pages/PMS/PrePrecurement/Departme
 //postprocurement
 import PostProcurementHome from "./Components/Pages/PMS/PostPrecurement/StockReceiver/PostProcurementHome";
 import ViewPostInvtDetailsById from "./Components/Pages/PMS/PostPrecurement/StockReceiver/ViewPostInvtDetailsById";
+import ViewReceivedInvtById from "./Components/Pages/PMS/ReceivedInventory/StockReciever/ViewReceivedInvtById";
+import PostPrecurementListTabsDa from "./Components/Pages/PMS/PostPrecurement/DepartmentalAdmin/PostPrecurementListTabsDa";
+import PostPreDetailsById from "./Components/Pages/PMS/PostPrecurement/DepartmentalAdmin/PostPreDetailsById";
+import ReceivedInvtHome from "./Components/Pages/PMS/ReceivedInventory/StockReciever/ReceivedInvtHome";
+import ReceivedInvtHomeDa from "./Components/Pages/PMS/ReceivedInventory/DepartmentalAdmin/ReceivedInvtHomeDa";
+import ViewReceivedInvtByIdDa from "./Components/Pages/PMS/ReceivedInventory/DepartmentalAdmin/ViewReceivedInvtByIdDa";
 
 const queryClient = new QueryClient();
 
@@ -98,49 +104,51 @@ function App() {
 
   // 👉 Routes Json 👈
   const allRoutes = [
-    { path: "/transfer", element: <TransferPage /> },
-    { path: "/change-password", element: <ChangePassword /> },
+    // { path: "/transfer", element: <TransferPage /> },
+    // { path: "/change-password", element: <ChangePassword /> },
     // { path: '/home', element: <PetDashboard /> },
-    { path: "/home", element: <PetRegDashboard /> },
-    { path: "/pet-workflow", element: <PetRegWorkflowEntry /> },
-    { path: "/search-pet-registration", element: <SearchPetApplicationForm /> },
-    {
-      path: "/search-approved-pet-registration",
-      element: <SearchApprovedPetApplication />,
-    },
-    {
-      path: "/PetRegistrationPreviewList/:registration_id",
-      element: <PetRegistrationPreviewList />,
-    },
-    {
-      path: "/viewPreviewApplication/:id",
-      element: <ViewApprovedPreviewApplication />,
-    },
-    {
-      path: "/search-rejected-pet-registration",
-      element: <SearchRejectPetApplication />,
-    },
-    { path: "/approved-pet-application", element: <ApprovedPetApplication /> },
-    { path: "/reject-pet-application", element: <RejectPetApplication /> },
-    { path: "/pet-registration", element: <PetRegistrationIndex /> },
-    { path: "/pet-renewal/:id", element: <PetRenewalFormIndex /> },
-    { path: "/viewPetApplication/:id", element: <ViewPetApplication /> },
-    { path: "/viewRejectApplication/:id", element: <ViewRejectApplication /> },
-    {
-      path: "/viewApprovedApplication/:id",
-      element: <ViewApprovedApplication />,
-    },
-    { path: "/pet-payment-offline/:id", element: <PetOfflinePayment /> },
-    {
-      path: "/pet-payment-receipt/:transNo",
-      element: <PetPaymentReceiptIndex />,
-    },
-    { path: "/pet-license/:id", element: <PetLicense /> },
+    // { path: "/home", element: <PetRegDashboard /> },
+    // { path: "/pet-workflow", element: <PetRegWorkflowEntry /> },
+    // { path: "/search-pet-registration", element: <SearchPetApplicationForm /> },
+    // {
+    //   path: "/search-approved-pet-registration",
+    //   element: <SearchApprovedPetApplication />,
+    // },
+    // {
+    //   path: "/PetRegistrationPreviewList/:registration_id",
+    //   element: <PetRegistrationPreviewList />,
+    // },
+    // {
+    //   path: "/viewPreviewApplication/:id",
+    //   element: <ViewApprovedPreviewApplication />,
+    // },
+    // {
+    //   path: "/search-rejected-pet-registration",
+    //   element: <SearchRejectPetApplication />,
+    // },
+    // { path: "/approved-pet-application", element: <ApprovedPetApplication /> },
+    // { path: "/reject-pet-application", element: <RejectPetApplication /> },
+    // { path: "/pet-registration", element: <PetRegistrationIndex /> },
+    // { path: "/pet-renewal/:id", element: <PetRenewalFormIndex /> },
+    // { path: "/viewPetApplication/:id", element: <ViewPetApplication /> },
+    // { path: "/viewRejectApplication/:id", element: <ViewRejectApplication /> },
+    // {
+    //   path: "/viewApprovedApplication/:id",
+    //   element: <ViewApprovedApplication />,
+    // },
+    // { path: "/pet-payment-offline/:id", element: <PetOfflinePayment /> },
+    // {
+    //   path: "/pet-payment-receipt/:transNo",
+    //   element: <PetPaymentReceiptIndex />,
+    // },
+    // { path: "/pet-license/:id", element: <PetLicense /> },
 
     //---------- PMS-Routes -----------------
 
 
-    //---------- Pre-Procurement -------------------------
+    
+     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
+
     //------------ Stock Receiver ---------------
     { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
     { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
@@ -156,11 +164,32 @@ function App() {
     { path: "/da-viewInventoryDetailsById/:id/:page", element: <ViewInventoryDetailsByIdDa /> },
     
     
-    //---------- Post-Procurement -------------------------
+  
+    
+     /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
+     
+    //------------ Stock Receiver ---------------
     { path: "/sr-post-inventory", element: <PostProcurementHome /> },
     { path: "/sr-post-InvtDetailsById/:id/:page", element: <ViewPostInvtDetailsById /> },
     
-
+    //------------ DA ---------------
+    { path: "/da-post-precurement", element: <PostPrecurementListTabsDa />}, 
+    { path: "/da-post-precurementbyid/:id/:page", element: <PostPreDetailsById /> },
+    
+    
+    
+    /////////////////////////{*** Received-Inventory ***}//////////////////////////////////////
+    
+    //------------ Stock Receiver ---------------
+    
+    { path: "/sr-received-inventory", element: <ReceivedInvtHome /> },
+    { path: "/sr-received-InvtDetailsById/:id/:page", element: <ViewReceivedInvtById /> },
+    
+    //------------ DA ---------------
+    { path: "/da-received-inventory", element: <ReceivedInvtHomeDa /> },
+    { path: "/da-received-InvtDetailsById/:id/:page", element: <ViewReceivedInvtByIdDa /> },
+    
+    
   ];
 
   return (
