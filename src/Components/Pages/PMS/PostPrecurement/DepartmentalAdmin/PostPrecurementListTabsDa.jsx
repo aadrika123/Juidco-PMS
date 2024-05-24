@@ -15,12 +15,15 @@ const PostPrecurementListTabsDa = () => {
   } = ProjectApiList();
 
   return (
-    <div className='container mx-auto bg-white rounded border border-blue-500 mt-6'>
-      <div>
+    <div className="container mx-auto bg-white rounded border border-blue-500 mt-6">
+    <div>
+        <h1 className='text-[35px] text-right pb-5 pr-5 font-bold pt-5'>Inventory Proposal</h1>
+    </div>
+      {/* <div>
         <h1 className='text-[35px] text-right pb-5 pr-5 font-bold pt-5'>
           Inventory Proposal
         </h1>
-      </div>
+      </div> */}
       <div>
         {/* <button 
               className="bg-[#4338CA] pl-2 pr-4 pt-3 pb-3 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right "

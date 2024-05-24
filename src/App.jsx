@@ -58,6 +58,7 @@ import PostPreDetailsById from "./Components/Pages/PMS/PostPrecurement/Departmen
 import ReceivedInvtHome from "./Components/Pages/PMS/ReceivedInventory/StockReciever/ReceivedInvtHome";
 import ReceivedInvtHomeDa from "./Components/Pages/PMS/ReceivedInventory/DepartmentalAdmin/ReceivedInvtHomeDa";
 import ViewReceivedInvtByIdDa from "./Components/Pages/PMS/ReceivedInventory/DepartmentalAdmin/ViewReceivedInvtByIdDa";
+import InventoryDashboardDa2 from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/InventoryDashboardDa2";
 
 const queryClient = new QueryClient();
 
@@ -143,6 +144,9 @@ function App() {
     // },
     // { path: "/pet-license/:id", element: <PetLicense /> },
 
+
+
+
     //---------- PMS-Routes -----------------
 
 
@@ -158,7 +162,8 @@ function App() {
     { path: "/sr-releasedlist", element: <ReleasedListTabs /> },
     
     //------------ DA ---------------
-    { path: "/da-inventory-dashboard", element: <InventoryDashboardDa /> },
+    // { path: "/da-inventory-dashboard", element: <InventoryDashboardDa /> },
+    { path: "/da-inventory-dashboard", element: <InventoryDashboardDa2 /> },
     { path: "/da-inventory-proposal", element: <InventoryProposalListTabsDa />}, 
     { path: "/da-edit-pre-procurement/:id", element: <EditPreProcurement /> },
     { path: "/da-viewInventoryDetailsById/:id/:page", element: <ViewInventoryDetailsByIdDa /> },

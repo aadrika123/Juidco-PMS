@@ -234,7 +234,7 @@ const PostPreDetailsById = (props) => {
       setIsModalOpen(true);
       setFormData(values);
     },
-    validationSchema,
+    // validationSchema,
   });
 
   const handleOnChange = (e) => {
