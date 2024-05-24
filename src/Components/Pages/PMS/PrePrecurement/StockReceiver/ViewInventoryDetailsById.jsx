@@ -133,16 +133,16 @@ const   ViewInventoryDetailsById = (props) => {
       <div className=''>
         
         {/* Basic Details */}
-        <div className=''>
+        <div className='mt-6'>
 
-          <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 '>
+          <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 '>
             <h2 className='font-semibold text-xl flex justify-start'>
             <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View Procurement Request{" "}
             </h2>
 
           </div>
           
-          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5'>
+          <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
 
           <div className="pl-8 text-[1rem] text-[#4338CA]">
             <h1 className="">Procurement request No <span className="text-black">:</span> 

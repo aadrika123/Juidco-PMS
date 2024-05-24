@@ -18,7 +18,7 @@ const RejectedListTabs = () => {
   } = ProjectApiList();
 
   return (
-    <div className="container mx-auto bg-white rounded">
+    <div className="container mx-auto bg-white rounded border border-blue-500 mt-6">
     <div>
         <h1 className='text-[30px] text-right pb-2 pr-10 pt-5 font-bold'> Rejected List </h1>
     </div>

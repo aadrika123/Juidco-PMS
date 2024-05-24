@@ -7,7 +7,7 @@ export default function ThemeStyle() {
         labelStyle: 'text-md text-gray-1000 opacity-80 ',
         headingStyle: 'text-3xl text-gray-900 opacity-90 font-bold mt-4',
         titleStyle: 'text-xl text-[#454646] opacity-80 font-semibold ',
-        formStyle: 'border border-gray-200 shadow-md shadow-gray-300 rounded-lg  bg-white  ',
+        formStyle: 'shadow-md shadow-gray-300 rounded-lg  bg-white  ',
     }
 
     return style

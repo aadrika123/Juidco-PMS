@@ -16,7 +16,7 @@ const InventoryProposalListTabs = () => {
   } = ProjectApiList();
 
   return (
-    <div className="container mx-auto bg-white rounded">
+    <div className="container mx-auto bg-white rounded border border-blue-500 mt-6">
     <div>
         <h1 className='text-[35px] text-right pb-5 pr-5 font-bold pt-5'>Inventory Proposal</h1>
     </div>

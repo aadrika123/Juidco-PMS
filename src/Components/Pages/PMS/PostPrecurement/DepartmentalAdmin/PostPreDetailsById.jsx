@@ -320,21 +320,21 @@ const PostPreDetailsById = (props) => {
     <div>
       <div className=''>
         {/* Basic Details */}
-        <div className=''>
-          <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 '>
-            <h2 className='font-semibold text-xl flex justify-start'>
-              <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View
+        <div className="mt-6">
+          <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 ">
+            <h2 className="font-semibold text-xl flex justify-start">
+              <MdTag className="inline pt-1 text-[1.5rem] text-sky-700" /> View
               Procurement Request{" "}
             </h2>
           </div>
           {/* <h1 className='px-1 font-semibold font-serif  text-gray-500'>
             <MdTag className='inline' /> Basic Details
           </h1> */}
-          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5'>
-            <div className='pl-8 text-[1rem] text-[#4338CA]'>
-              <h1 className=''>
-                Procurement request No <span className='text-black'>:</span>
-                <span className='font-bold'>
+          <div className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
+            <div className="pl-8 text-[1rem] text-[#4338CA]">
+              <h1 className="">
+                Procurement request No <span className="text-black">:</span>
+                <span className="font-bold">
                   {" "}
                   {nullToNA(applicationFullData?.order_no)}
                 </span>
@@ -623,24 +623,32 @@ const PostPreDetailsById = (props) => {
 
           {/* Inventory Details form */}
 
-          <div className={`${formStyle} mt-14`}>
-            <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-              <div className=''>
-                <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
-                  <div className='col-span-12  w-full mb-20'>
-                    <div className=' ml-4 p-2 mt-4'>
-                      <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
-                        Inventory Details
-                      </h1>
-                    </div>
+            <div className={`${formStyle} mt-8 border border-blue-500`}>
+              <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
+                <div className="">
+                  <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
+                    <div className="col-span-12  w-full mb-20">
+                      <div className=" ml-4 p-2 mt-4">
+                        <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
+                          Inventory Details
+                        </h1>
+                        {/* <h1 className={`${labelStyle} `}>
+                          Maintaining a healthy home: Confirming my septic tank
+                          service.
+                        </h1> */}
+                      </div>
+                      {/* <div className="hidden md:block lg:block">
+                        <hr className="border w-full border-gray-200" />
+                      </div> */}
 
-                    <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
-                      <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                        <div class='px-4 w-full mb-4'>
-                          <label className={`${labelStyle} inline-block mb-2`}>
-                            Supplier Name{" "}
-                            <span className='text-red-500'>*</span>
-                          </label>
+                      <div className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4">
+
+                          
+                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                            <div class="px-4 w-full mb-4">
+                              <label className={`${labelStyle} inline-block mb-2`}>
+                                Supplier Name <span className="text-red-500">*</span>
+                              </label>
 
                           <input
                             type='text'
