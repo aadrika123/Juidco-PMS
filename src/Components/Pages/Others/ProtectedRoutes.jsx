@@ -36,7 +36,7 @@ const ProtectedRoutes = () => {
         {/* 👉 Main Screen 👈 */}
             <div className='relative flex justify-center items-center h-[100vh] w-full '>
                 
-                <div className='flex flex-row flex-wrap w-full md:w-[100%] h-full md:h-[100%] bg-[#eff2f7] drop-shadow-[0_15px_15px_rgba(0,0,0,0.25)] overflow-clip '>
+                <div className='flex flex-row flex-wrap w-full md:w-[100%] h-full md:h-[100%] bg-[#F9FAFC] drop-shadow-[0_15px_15px_rgba(0,0,0,0.25)] overflow-clip '>
 
                     {/* 👉 Top header 👈 */}
                    <div className="w-full">

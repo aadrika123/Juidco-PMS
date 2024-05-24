@@ -12,6 +12,7 @@ import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import ReceivedInvtSubmittedScreen from "./REceivedInvtSubmittedScreen";
+import SRPostProcurementCancelScreen from "./SRPostProcurementCancelScreen";
 // import StockReceiverModal from "./StockReceiverModal";
 // import ReleaseTenderModal from "./ReleaseTenderModal";
 // import DaRejectModal from "./DaRejectModal";
@@ -34,6 +35,7 @@ const ViewReceivedInvtById = (props) => {
   const [isModalOpen2, setIsModalOpen2] = useState(false)
   const [isModalOpen3, setIsModalOpen3] = useState(false)
   const [remark,setRemark] = useState('')
+  const [cancelModal,setCancelModal] = useState(false)
 
   const {
     
@@ -336,6 +338,18 @@ const ViewReceivedInvtById = (props) => {
     );
   }
 
+  if (cancelModal) {
+    return (
+      <>
+        <SRPostProcurementCancelScreen
+          // submitForm={submitForm}
+          // responseScreenData={formData}
+          setCancelModal={setCancelModal}
+        />
+      </>
+    );
+  }
+
   // if (isModalOpen3) {
   //   return (
   //     <>
@@ -367,8 +381,8 @@ const ViewReceivedInvtById = (props) => {
     <div>
       <div className="">
         {/* Basic Details */}
-        <div className="">
-          <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 ">
+        <div className="mt-6">
+          <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 ">
             <h2 className="font-semibold text-xl flex justify-start">
               <MdTag className="inline pt-1 text-[1.5rem] text-sky-700" /> View
               Procurement Request{" "}
@@ -377,7 +391,7 @@ const ViewReceivedInvtById = (props) => {
           {/* <h1 className='px-1 font-semibold font-serif  text-gray-500'>
             <MdTag className='inline' /> Basic Details
           </h1> */}
-          <div className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5">
+          <div className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
             <div className="pl-8 text-[1rem] text-[#4338CA]">
               <h1 className="">
                 Procurement request No <span className="text-black">:</span>
@@ -656,7 +670,7 @@ const ViewReceivedInvtById = (props) => {
 
           {/* Inventory Details form */}
 
-            <div className={`${formStyle} mt-14`}>
+            <div className={`${formStyle} mt-8 border border-blue-500`}>
               <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
                 <div className="">
                   <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
@@ -684,7 +698,7 @@ const ViewReceivedInvtById = (props) => {
                               </label>
 
                               <input
-                                type="text"
+                                type="number"
                                 name='totalStock'
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
@@ -707,7 +721,7 @@ const ViewReceivedInvtById = (props) => {
                               </label>
 
                               <input
-                                type="text"
+                                type="number"
                                 name='totalStock'
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
@@ -730,7 +744,7 @@ const ViewReceivedInvtById = (props) => {
                               </label>
 
                               <input
-                                type="text"
+                                type="number"
                                 name='totalStock'
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
@@ -753,7 +767,7 @@ const ViewReceivedInvtById = (props) => {
                               </label>
 
                               <input
-                                type="text"
+                                type="number"
                                 name='totalStock'
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
@@ -796,7 +810,7 @@ const ViewReceivedInvtById = (props) => {
                               
                               <button 
                                 className={buttonStyle} 
-                                onClick=''>
+                                onClick={()=>{setCancelModal(true)}}>
                                 Cancel
                               </button>
 

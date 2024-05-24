@@ -18,6 +18,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
+import DaPostProcurementCancelScreen from "./DaPostProcurementCancelScreen";
+import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
 // import StockReceiverModal from "./StockReceiverModal";
 // import ReleaseTenderModal from "./ReleaseTenderModal";
 // import DaRejectModal from "./DaRejectModal";
@@ -40,6 +42,8 @@ const ViewReceivedInvtByIdDa = (props) => {
   const [isModalOpen2, setIsModalOpen2] = useState(false)
   const [isModalOpen3, setIsModalOpen3] = useState(false)
   const [remark,setRemark] = useState('')
+  const [cancelModal, setCancelModal] = useState(false)
+  const [imageModal, setImageModal] = useState(false)
 
   const {
     
@@ -341,40 +345,36 @@ const ViewReceivedInvtByIdDa = (props) => {
       </>
     );
   }
-
-  // if (isModalOpen3) {
-  //   return (
-  //     <>
-  //       <DaRejectModal postRejectTender={postRejectTender} setRemark={setRemark} setIsModalOpen3={setIsModalOpen3}/>
-  //     </>
-  //   );
-  // }
-
-  // if (isModalOpen) {
-  //   return (
-  //     <>
-  //       <StockReceiverModal postBackToSR={postBackToSR} setRemark={setRemark} setIsModalOpen={setIsModalOpen}/>
-  //     </>
-  //   );
-  // }
+  if (cancelModal) {
+    return (
+      <>
+        <DaPostProcurementCancelScreen
+          setCancelModal={setCancelModal}
+        />
+      </>
+    );
+  }
   
-  // if (isModalOpen2) {
-  //   return (
-  //     <>
-  //       <ReleaseTenderModal postReleaseTender={postReleaseTender} setIsModalOpen2={setIsModalOpen2}/>
-  //     </>
-  //   );
-  // }
- 
+  if (imageModal) {
+    return (
+      <>
+        <ImageModal
+          imageModal={imageModal}
+          setImageModal={setImageModal}
+        />
+      </>
+    );
+  }
 
+  
   // console.log(applicationFullData)
 
   return (
     <div>
       <div className="">
         {/* Basic Details */}
-        <div className="">
-          <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 ">
+        <div className="mt-6">
+          <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-600 ">
             <h2 className="font-semibold text-xl flex justify-start">
               <MdTag className="inline pt-1 text-[1.5rem] text-sky-700" /> View
               Procurement Request{" "}
@@ -385,7 +385,7 @@ const ViewReceivedInvtByIdDa = (props) => {
           </h1> */}
 
 
-          <div className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5">
+          <div className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-600">
             <div className="pl-8 text-[1rem] text-[#4338CA]">
               <h1 className="">
                 Procurement request No <span className="text-black">:</span>
@@ -394,6 +394,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                   {nullToNA(applicationFullData?.order_no)}
                 </span>
               </h1>
+              
             </div>
 
             {!applicationFullData?.remark?.length == 0 && (
@@ -664,7 +665,7 @@ const ViewReceivedInvtByIdDa = (props) => {
 
           {/* Additional Details */}
 
-          <div className="py-6 mt-14 bg-white rounded-lg shadow-xl p-4 space-y-5 ">
+          <div className="py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 ">
 
             <div className=" ml-1 p-2">
               <h1 className={`${headingStyle} text-[1.5rem] text-left pb-2 pl-6`}>
@@ -724,7 +725,7 @@ const ViewReceivedInvtByIdDa = (props) => {
               </div>
 
 
-              <div className="h-[30px]"></div>
+              <div className="h-[80px]"></div>
             </div>
           </div>
 
@@ -732,7 +733,7 @@ const ViewReceivedInvtByIdDa = (props) => {
             
           {page == 'outbox' && 
 
-          <div className="mt-14">
+          <div className="mt-8 ">
             <Accordion >
               <AccordionSummary
               style={{backgroundColor:"#4338CA",color:"white", borderRadius:"5px"}}
@@ -773,7 +774,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                               </tr>
                           </thead>
                           <tbody>
-                              <tr class="bg-white">
+                              <tr class="bg-white border-b-2">
                                   <td class="px-6 py-4">
                                       25-05-24
                                   </td>
@@ -787,7 +788,12 @@ const ViewReceivedInvtByIdDa = (props) => {
                                   309
                                   </td>
                                   <td class="px-6 py-4">
-                                  <p className="text-blue-900 underline font-bold cursor-pointer">View</p>
+                                  <p 
+                                  className="text-blue-900 underline font-bold cursor-pointer"
+                                  onClick={()=>{setImageModal(true)}}
+                                  >
+                                  View
+                                  </p>
                                   </td>
                                   <td class="px-6 py-4">
                                   34
@@ -821,7 +827,7 @@ const ViewReceivedInvtByIdDa = (props) => {
 
           
           {page == 'outbox' && 
-          <div className="py-6 mt-14 bg-white rounded-lg shadow-xl p-4 space-y-5 ">
+          <div className="py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 ">
 
             <div className=" ml-1 p-2">
               <h1 className={`${headingStyle} text-[1.5rem] text-left pb-2 pl-6`}>
@@ -884,7 +890,7 @@ const ViewReceivedInvtByIdDa = (props) => {
           {/* Received Details form */}
 
           {page == 'inbox' && 
-            <div className={`${formStyle} mt-14`}>
+            <div className={`${formStyle} mt-8 border border-blue-600`}>
               <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
                 <div className="">
                   <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
@@ -909,7 +915,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                               </label>
 
                               <input
-                                type="text"
+                                type="number"
                                 name='totalQuantity'
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
@@ -955,7 +961,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                               </label>
 
                               <input
-                                type="text"
+                                type="number"
                                 name='receivedQuantity'
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
@@ -978,7 +984,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                               </label>
 
                               <input
-                                type="text"
+                                type="number"
                                 name='remQuantity'
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
@@ -1021,7 +1027,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                               
                               <button 
                                 className={buttonStyle} 
-                                onClick=''>
+                                onClick={()=>{setCancelModal(true)}}>
                                 Cancel
                               </button>
 
@@ -1043,7 +1049,9 @@ const ViewReceivedInvtByIdDa = (props) => {
          
           }
 
-          <div className="space-x-5 flex justify-end mr-[3rem] mt-[1rem]">
+
+          {page == 'outbox' && 
+          <div className="space-x-5 flex justify-end mt-[1rem]">
 
               <button 
                 className={buttonStyle2}
@@ -1052,6 +1060,7 @@ const ViewReceivedInvtByIdDa = (props) => {
               </button>
 
           </div>
+          }
           
         </div>
       </div>

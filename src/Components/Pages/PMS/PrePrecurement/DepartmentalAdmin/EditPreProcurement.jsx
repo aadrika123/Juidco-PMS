@@ -205,46 +205,46 @@ function EditPreProcurement(props) {
   });
 
   const furniture = [
-    { label: "Number of Items", name: "number_of_items" },
-    { label: "Brand", name: "brand" },
-    { label: "Colour", name: "colour" },
-    { label: "Material", name: "material" },
-    { label: "Product Dimensions", name: "product_dimensions" },
-    { label: "Room Type", name: "room_type" },
-    { label: "Included Components", name: "included_components" },
-    { label: "Size", name: "size" },
+    { label: "Number of Items", name: "number_of_items", type:"number" },
+    { label: "Brand", name: "brand", type:"text" },
+    { label: "Colour", name: "colour", type:"text" },
+    { label: "Material", name: "material", type:"text" },
+    { label: "Product Dimensions", name: "product_dimensions", type:"text" },
+    { label: "Room Type", name: "room_type", type:"text" },
+    { label: "Included Components", name: "included_components", type:"text" },
+    { label: "Size", name: "size", type:"number" },
   ];
 
   const cleaningSupplies = [
-    { label: "Number of Items", name: "number_of_items" },
-    { label: "Brand", name: "brand" },
-    { label: "Colour", name: "colour" },
-    { label: "Recommended Uses For Product", name: "recomended_uses" },
-    { label: "Handle Material	", name: "material" },
-    { label: "Bristle", name: "bristle" },
+    { label: "Number of Items", name: "number_of_items", type:"number" },
+    { label: "Brand", name: "brand", type:"text" },
+    { label: "Colour", name: "colour", type:"text" },
+    { label: "Recommended Uses For Product", name: "recomended_uses", type:"text" },
+    { label: "Handle Material	", name: "material", type:"text" },
+    { label: "Bristle", name: "bristle", type:"text" },
   ];
 
   const safetySecurity = [
-    { label: "Number of Items", name: "number_of_items" },
-    { label: "Brand", name: "brand" },
-    { label: "Weight", name: "weight" },
-    { label: "Dimension", name: "dimension" },
+    { label: "Number of Items", name: "number_of_items", type:"number" },
+    { label: "Brand", name: "brand", type:"text" },
+    { label: "Weight", name: "weight", type:"number" },
+    { label: "Dimension", name: "dimension", type:"text" },
   ];
 
   const maintenanceAndRepair = [
-    { label: "Number of Items", name: "number_of_items" },
-    { label: "Brand", name: "brand" },
-    { label: "Colour", name: "colour" },
-    { label: "Material	", name: "material" },
-    { label: "Dimension", name: "dimension" },
-    { label: "Items Weight", name: "weight" },
+    { label: "Number of Items", name: "number_of_items", type:"number" },
+    { label: "Brand", name: "brand", type:"text" },
+    { label: "Colour", name: "colour", type:"text" },
+    { label: "Material	", name: "material", type:"text" },
+    { label: "Dimension", name: "dimension", type:"text" },
+    { label: "Items Weight", name: "weight", type:"number" },
   ];
 
   const uniform = [
-    { label: "Number of Items", name: "number_of_items" },
-    { label: "Brand", name: "brand" },
-    { label: "Colour", name: "colour" },
-    { label: "Material	", name: "material" },
+    { label: "Number of Items", name: "number_of_items", type:"number" },
+    { label: "Brand", name: "brand", type:"text" },
+    { label: "Colour", name: "colour", type:"text" },
+    { label: "Material	", name: "material", type:"text" },
   ];
 
   // ══════════════════════════════║🔰calculate the total rate🔰║═══════════════════════════════════
@@ -746,7 +746,7 @@ function EditPreProcurement(props) {
   // }
   return (
     <>
-      <div className={`${formStyle}`}>
+      <div className={`${formStyle} border border-blue-500 mt-7`}>
         <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
           <div className="">
             <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
@@ -1121,11 +1121,11 @@ function EditPreProcurement(props) {
                   </div>
                 </div>
 
-                <div className="float-right pb-16 mr-8 space-x-5">
+                <div className="float-right mr-8 space-x-5">
                   <button
                     // type='submit'
                     onClick={openCancelModal}
-                    className={`bg-white px-5 py-2 text-black rounded leading-5 shadow-lg  hover:bg-[#4338CA] hover:text-white border-blue-900 border  mb-10`}
+                    className={`bg-white px-5 py-2 text-black rounded leading-5 shadow-lg  hover:bg-[#4338CA] hover:text-white border-blue-900 border  `}
                   >
                     Cancel
                   </button>
@@ -1134,7 +1134,7 @@ function EditPreProcurement(props) {
                   {/* <div className='pb-16 mr-8'> */}
                   <button
                     type="submit"
-                    className={`bg-[#4338CA] border-blue-900 border hover:bg-[#393287] px-7 py-2 text-white  rounded leading-5 shadow-lg float-right mb-10`}
+                    className={`bg-[#4338CA] border-blue-900 border hover:bg-[#393287] px-7 py-2 text-white  rounded leading-5 shadow-lg float-right`}
                   >
                     Save
                   </button>

@@ -401,8 +401,8 @@ if (isModalOpen2) {
     <div>
       <div className="">
         {/* Basic Details */}
-        <div className="">
-          <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 ">
+        <div className="mt-6">
+          <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 ">
             <h2 className="font-semibold text-xl flex justify-start">
               <MdTag className="inline pt-1 text-[1.5rem] text-sky-700" /> View
               Procurement Request{" "}
@@ -411,7 +411,7 @@ if (isModalOpen2) {
           {/* <h1 className='px-1 font-semibold font-serif  text-gray-500'>
             <MdTag className='inline' /> Basic Details
           </h1> */}
-          <div className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5">
+          <div className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
             <div className="pl-8 text-[1rem] text-[#4338CA]">
               <h1 className="">
                 Procurement request No <span className="text-black">:</span>
@@ -690,7 +690,7 @@ if (isModalOpen2) {
 
           {/* Inventory Details form */}
 
-            <div className={`${formStyle} mt-14`}>
+            <div className={`${formStyle} mt-8 border border-blue-500`}>
               <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
                 <div className="">
                   <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
@@ -764,7 +764,7 @@ if (isModalOpen2) {
                               </label>
 
                               <input
-                                type="text"
+                                type="number"
                                 name='finalRate'
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
@@ -787,7 +787,7 @@ if (isModalOpen2) {
                               </label>
 
                               <input
-                                type="text"
+                                type="number"
                                 name='gstPer'
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}

@@ -152,7 +152,7 @@ function InventoryDashboard() {
 
     return (
       <>
-        <div className="container mx-auto p-4 ">
+        <div className="container mx-auto p-4 mt-6">
           <h1 className="font-bold  text-[2rem] pb-5">Inventory Dashboard</h1>
 
           <div className="flex justify-between space-x-3">
