@@ -12,6 +12,12 @@ import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import ReceivedInvtSubmittedScreen from "./ReceivedInvtSubmittedScreenDa";
+import Accordion from '@mui/material/Accordion';
+import AccordionActions from '@mui/material/AccordionActions';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Button from '@mui/material/Button';
 // import StockReceiverModal from "./StockReceiverModal";
 // import ReleaseTenderModal from "./ReleaseTenderModal";
 // import DaRejectModal from "./DaRejectModal";
@@ -85,13 +91,13 @@ const ViewReceivedInvtByIdDa = (props) => {
           setTableData(response?.data?.data?.tran_dtls);
           setisLoading(false);
         } else {
-          toast.error("Error while getting details...");
+          // toast.error("Error while getting details...");
           seterroState(true);
         }
       })
       .catch(function (error) {
         console.log("==2 details by id error...", error);
-        toast.error("Error while getting details...");
+        // toast.error("Error while getting details...");
         seterroState(true);
         setisLoading(false);
       });
@@ -722,10 +728,162 @@ const ViewReceivedInvtByIdDa = (props) => {
             </div>
           </div>
 
+          {/* Receiving No */}
+            
+          {page == 'outbox' && 
+
+          <div className="mt-14">
+            <Accordion >
+              <AccordionSummary
+              style={{backgroundColor:"#4338CA",color:"white", borderRadius:"5px"}}
+                expandIcon={<ExpandMoreIcon className="text-white"/>}
+                aria-controls="panel1-content"
+                id="panel1-header"
+              >
+                Receiving No
+              </AccordionSummary>
+              <AccordionDetails>
 
 
+                {/* table */}
+
+                  <div class="relative overflow-x-auto">
+                      <table class="w-full text-sm text-left rtl:text-right">
+                          <thead class="text-xs uppercase bg-gray-200">
+                              <tr>
+                                  <th scope="col" class="px-6 py-3">
+                                      Date
+                                  </th>
+                                  <th scope="col" class="px-6 py-3">
+                                      Receiving no
+                                  </th>
+                                  <th scope="col" class="px-6 py-3">
+                                      Total Quantity
+                                  </th>
+                                  <th scope="col" class="px-6 py-3">
+                                      Received Quantity
+                                  </th>
+                                  <th scope="col" class="px-6 py-3">
+                                      View Doc
+                                  </th>
+                                  
+                                  <th scope="col" class="px-6 py-3">
+                                      Remaning Quantity
+                                  </th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr class="bg-white">
+                                  <td class="px-6 py-4">
+                                      25-05-24
+                                  </td>
+                                  <td class="px-6 py-4">
+                                  123456789
+                                  </td>
+                                  <td class="px-6 py-4">
+                                  343
+                                  </td>
+                                  <td class="px-6 py-4">
+                                  309
+                                  </td>
+                                  <td class="px-6 py-4">
+                                  <p className="text-blue-900 underline font-bold cursor-pointer">View</p>
+                                  </td>
+                                  <td class="px-6 py-4">
+                                  34
+                                  </td>
+                                  
+                              </tr>
+                              
+                             
+                          </tbody>
+                          <tfoot>
+                              <tr class="font-semibold text-gray-900 dark:text-white">
+                                  <th scope="row" class="px-6 py-3 text-base">Total</th>
+                                  <td class="px-6 py-3">3</td>
+                                  <td class="px-6 py-3">21,000</td>
+                              </tr>
+                          </tfoot>
+                      </table>
+                  </div>
+
+                {/* table */}
+
+                
+              </AccordionDetails>
+            </Accordion>
+          </div>
+
+        }
+          
+
+          {/* Additional Details */}
+
+          
+          {page == 'outbox' && 
+          <div className="py-6 mt-14 bg-white rounded-lg shadow-xl p-4 space-y-5 ">
+
+            <div className=" ml-1 p-2">
+              <h1 className={`${headingStyle} text-[1.5rem] text-left pb-2 pl-6`}>
+              Received Inventory
+              </h1>
+            </div>
+
+            <div className="grid grid-cols-4 gap-4 ml-14">
+             
+              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">
+                  {/* {nullToNA(applicationFullData?.category.name)} */}
+                  123
+                </div>
+                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  Total Quantity 
+                </div>
+              </div>
+
+              
+              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">
+                  {/* {nullToNA(applicationFullData?.subcategory?.name)} */}
+                  123
+                </div>
+                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  Date
+                </div>
+              </div>
+
+              
+              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">
+                  {/* {nullToNA(applicationFullData?.subcategory?.name)} */}
+                  123
+                </div>
+                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  Received Quantity
+                </div>
+              </div>
+
+              
+              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">
+                  {/* {nullToNA(applicationFullData?.subcategory?.name)} */}
+                  123
+                </div>
+                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  Remaning Quantity
+                </div>
+              </div>
+
+          
+              <div className="h-[30px]"></div>
+            </div>
+          </div>
+          }
+
+          
           {/* Received Details form */}
 
+          {page == 'inbox' && 
             <div className={`${formStyle} mt-14`}>
               <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
                 <div className="">
@@ -883,7 +1041,17 @@ const ViewReceivedInvtByIdDa = (props) => {
               </form>
               </div>
          
+          }
 
+          <div className="space-x-5 flex justify-end mr-[3rem] mt-[1rem]">
+
+              <button 
+                className={buttonStyle2}
+                onClick={()=>{navigate(-1)}}>
+                Back
+              </button>
+
+          </div>
           
         </div>
       </div>
