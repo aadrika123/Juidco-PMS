@@ -4,10 +4,10 @@ import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 import { MdTag } from "react-icons/md";
 import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
-import { contextVar } from '@/Components/context/contextVar'
+import { contextVar } from "@/Components/context/contextVar";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
 
@@ -25,7 +25,7 @@ import { FaDivide } from "react-icons/fa";
 
 const PostPreDetailsById = (props) => {
   const navigate = useNavigate();
-  const { id, page} = useParams();
+  const { id, page } = useParams();
   console.log("param", id);
 
   console.log("page========>", page);
@@ -34,52 +34,52 @@ const PostPreDetailsById = (props) => {
   const [isLoading, setisLoading] = useState(false);
   const [applicationFullData, setapplicationFullData] = useState();
   const [tableData, setTableData] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isModalOpen2, setIsModalOpen2] = useState(false)
-  const [isModalOpen3, setIsModalOpen3] = useState(false)
-  const [remark,setRemark] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const [remark, setRemark] = useState("");
+  const [isGstAdded, setIsGstAdded] = useState(false);
 
   const {
-    
-    api_fetchProcurementDetailById,
+    api_fetchPostProcurementDetailById,
     api_fetchOutboxProcurementDetailById,
     api_postBackToSR,
     api_postReleaseTender,
     api_postRejectTender,
-    api_postDaEditTender
+    api_postDaEditTender,
   } = ProjectApiList();
 
   const { saveButtonColor, inputStyle, labelStyle, headingStyle, formStyle } =
     ThemeStyle();
-  
 
-     // Accessing context for notifications
-     const { notify } = useContext(contextVar);
+  // Accessing context for notifications
+  const { notify } = useContext(contextVar);
 
-  let buttonStyle = '  pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
+  let buttonStyle =
+    "  pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
-  let buttonStyle2 = ' mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700'
-  
-  let buttonStyle3 = ' pb-2 pl-4 pr-4 pt-2 border border-yellow-400 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-yellow-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-yellow-700'
+  let buttonStyle2 =
+    " mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
- 
+  let buttonStyle3 =
+    " pb-2 pl-4 pr-4 pt-2 border border-yellow-400 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-yellow-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-yellow-700";
+
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
     let url;
     seterroState(false);
     setisLoading(true);
 
-    
-    if(page == 'inbox'){
-      url = api_fetchProcurementDetailById
+    if (page == "inbox") {
+      url = api_fetchPostProcurementDetailById;
     }
-    if(page == 'outbox'){
-      url = api_fetchOutboxProcurementDetailById
+    if (page == "outbox") {
+      url = api_fetchOutboxProcurementDetailById;
     }
 
-    AxiosInterceptors.get(`${url}/${id}`,{ },ApiHeader())
+    AxiosInterceptors.get(`${url}/${id}`, ApiHeader())
       .then(function (response) {
-        console.log("view water tanker full details ...", response?.data?.data);
+        console.log("view post da details by id...", response?.data?.data);
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
           setTableData(response?.data?.data?.tran_dtls);
@@ -97,33 +97,34 @@ const PostPreDetailsById = (props) => {
       });
   };
 
-  const postBackToSRModal =()=>{
-    setIsModalOpen(true)
-  }
-  const postReleaseTenderModal =()=>{
-    setIsModalOpen2(true)
-  }
-  const postRejectTenderModal =()=>{
-    setIsModalOpen3(true)
-  }
- 
+  const postBackToSRModal = () => {
+    setIsModalOpen(true);
+  };
+  const postReleaseTenderModal = () => {
+    setIsModalOpen2(true);
+  };
+  const postRejectTenderModal = () => {
+    setIsModalOpen3(true);
+  };
+
   const postRejectTender = () => {
-
     setisLoading(true);
-    console.log(remark,"Remark==========>>")
+    console.log(remark, "Remark==========>>");
 
-    AxiosInterceptors.post(`${api_postRejectTender}`, {"preProcurement":[id],"remark":remark} , ApiHeader())
+    AxiosInterceptors.post(
+      `${api_postRejectTender}`,
+      { preProcurement: [id], remark: remark },
+      ApiHeader()
+    )
       .then(function (response) {
         console.log("Forwarded to DA", response?.data);
-        console.log(response?.data?.st,"upper Status")
+        console.log(response?.data?.st, "upper Status");
         if (response?.data?.status == true) {
           setisLoading(false);
-          toast.success(response?.data?.message,"success");
+          toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/da-inventory-proposal");
           }, 2000);
-         
-
         } else {
           setisLoading(false);
           const errorMsg = Object.keys(response?.data?.data);
@@ -133,27 +134,26 @@ const PostPreDetailsById = (props) => {
       })
       .catch(function (error) {
         console.log("errorrr.... ", error);
-       
       });
-
   };
   const postBackToSR = () => {
-
     setisLoading(true);
-    console.log(remark,"Remark==========>>")
+    console.log(remark, "Remark==========>>");
 
-    AxiosInterceptors.post(`${api_postBackToSR}`, {"preProcurement":[id],"remark":remark} , ApiHeader())
+    AxiosInterceptors.post(
+      `${api_postBackToSR}`,
+      { preProcurement: [id], remark: remark },
+      ApiHeader()
+    )
       .then(function (response) {
         console.log("Forwarded to DA", response?.data);
-        console.log(response?.data?.st,"upper Status")
+        console.log(response?.data?.st, "upper Status");
         if (response?.data?.status == true) {
           setisLoading(false);
-          toast.success(response?.data?.message,"success");
+          toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/da-inventory-proposal");
           }, 2000);
-         
-
         } else {
           setisLoading(false);
           const errorMsg = Object.keys(response?.data?.data);
@@ -163,29 +163,29 @@ const PostPreDetailsById = (props) => {
       })
       .catch(function (error) {
         console.log("errorrr.... ", error);
-       
       });
-
   };
-  
+
   const postReleaseTender = () => {
     // seterroState(false);
     setisLoading(true);
-  
 
-    AxiosInterceptors.post(`${api_postReleaseTender}`, {"preProcurement":[id]} , ApiHeader())
+    AxiosInterceptors.post(
+      `${api_postReleaseTender}`,
+      { preProcurement: [id] },
+      ApiHeader()
+    )
       .then(function (response) {
         console.log("Forwarded to DA", response?.data);
-        console.log(response?.data?.st,"upper Status")
+        console.log(response?.data?.st, "upper Status");
         if (response?.data?.status == true) {
           setisLoading(false);
-          console.log(response?.data?.message,"-------------->>")
-          toast.success(response?.data?.message,"success");
+          console.log(response?.data?.message, "-------------->>");
+          toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/da-inventory-proposal");
           }, 2000);
-          console.log(response?.data?.message,"Forwadede to DA--->>")
-
+          console.log(response?.data?.message, "Forwadede to DA--->>");
         } else {
           setisLoading(false);
           // setdeclarationStatus(false);
@@ -199,72 +199,29 @@ const PostPreDetailsById = (props) => {
         console.log("errorrr.... ", error);
         // setdeclarationStatus(false);
       });
-
   };
 
-
   const validationSchema = yup.object({
-    itemcategory: yup.string().required("item category is required"),
-    itemsubcategory: yup.string().required("item subcategory is required"),
-    
-    other_description: yup.string().required("Other description is required"),
+    supplier_name: yup.string().required("Supplier name is required"),
+    gst_no: yup.string().required("Gst number is required"),
+    final_rate: yup.string().required("final rate is required"),
+    gst: yup.number().required("Gst percentage is required"),
     rate: yup.number().required("Rate is required"),
-    quantity: yup.number().required("Quantity is required"),
+    // quantity: yup.number().required("Quantity is required"),
+    total_quantity: yup.number().required("Total Quantity is required"),
+    total_price: yup.number().required("Total Price is required"),
+    unit_price: yup.number().required("Unit Price is required"),
   });
 
   // intitial value
   const initialValues = {
-    itemcategory: "",
-    itemsubcategory: "",
-    brand: "",
-    processor: "",
-    ram: "",
-    operatingsystem: "",
-    rom: "",
-    graphics: "",
-    other_description: "",
-    quantity: "",
-    rate: "",
-    
-    //Furniture values
-    number_of_items: "",
-    brand: "",
-    colour: "",
-    material: "",
-    product_dimensions: "",
-    room_type: "",
-    included_components: "",
-    size: "",
-    
-    //CleaningSupplies
-    number_of_items: "",
-    brand: "",
-    colour: "",
-    recommendedUsedProducts: "",
-    handle_material: "",
-    bristle: "",
-    
-    // safetySecurity
-    number_of_items: "",
-    brand: "",
-    weight: "",
-    recommendedUsedProducts: "",
-    
-    // maintenanceAndRepair
-    number_of_items: "",
-    brand: "",
-    colour: "",
-    maintenamce_material: "",
-    items_dimensions: "",
-    items_weight: "",
-    
-    // uniform
-    number_of_items: "",
-    brand: "",
-    colour: "",
-    maintenamce_material: "",
-        
-
+    supplier_name: "",
+    gst_no: "",
+    final_rate: "",
+    gst: "",
+    total_quantity: applicationFullData?.pre_procurement?.quantity,
+    unit_price: "",
+    is_gst_added: false,
   };
 
   const formik = useFormik({
@@ -277,171 +234,135 @@ const PostPreDetailsById = (props) => {
       setIsModalOpen(true);
       setFormData(values);
     },
-    // validationSchema,
+    validationSchema,
   });
 
-
   const handleOnChange = (e) => {
-    // console.log("target type", e.target.type);
-    // console.log("check box name", e.target.name);
-
     let name = e.target.name;
     let value = e.target.value;
 
     console.log("target value checked", e.target.checked);
-
     {
-      name == "cleaningDate" && verifyDateForBookingTanker(value);
+      name == "is_gst_added" && gstcheckboxHandler();
     }
-    {
-      name == "isWithinUlb" && setulbAreaVal(value);
-    }
-    {
-      name == "isWithinUlb" && fetchLocationListByUlb(value);
-    }
-    {
-      name == "quantity" &&
-        formik.setFieldValue(
-          "quantity",
-          allowNumberInput(value, formik.values.quantity, 100)
-        );
-    }
-    {
-      name == "rate" &&
-        formik.setFieldValue(
-          "rate",
-          allowNumberInput(value, formik.values.rate, 100)
-        );
-    }
-    {
-      name == "totalRate" &&
-        formik.setFieldValue(
-          "totalRate",
-          allowNumberInput(value, formik.values.totalRate, 100)
-        );
-    }
+    // {
+    //   name == "quantity" &&
+    //     formik.setFieldValue(
+    //       "quantity",
+    //       allowNumberInput(value, formik.values.quantity, 100)
+    //     );
+    // }
+    // {
+    //   name == "rate" &&
+    //     formik.setFieldValue(
+    //       "rate",
+    //       allowNumberInput(value, formik.values.rate, 100)
+    //     );
+    // }
+    // {
+    //   name == "totalRate" &&
+    //     formik.setFieldValue(
+    //       "totalRate",
+    //       allowNumberInput(value, formik.values.totalRate, 100)
+    //     );
+    // }
   };
-
 
   useEffect(() => {
     getApplicationDetail();
     calculateTotalRate();
-    
-  }, [ formik.values.quantity, formik.values.rate]);
-
-
+  }, []);
 
   // -------------------- Calculate Total Quantity -------------------------------
 
   const calculateTotalRate = () => {
-    const rate = Number(formik.values.rate) || 0;
-    const quantity = Number(formik.values.quantity) || 0;
-    const totalRate = rate / quantity;
-    formik.setFieldValue("totalRate", totalRate);
-    console.log(totalRate, "tot Rate");
+    const totalPrice = Number(formik.values.final_rate) || 0;
+    const totalQuantity = Number(formik.values.total_quantity) || 0;
+
+    const unitRate = totalPrice / totalQuantity;
+
+    if (formik.values.is_gst_added)
+      formik.setFieldValue("unit_price", unitRate);
+    console.log(unitRate, "unitRate===>");
   };
 
-// ------------cancel modal-----------------------------
+  // ------------cancel modal-----------------------------
 
-const openCancelModal = () => {
-  setIsModalOpen2(true);
-};
+  const openCancelModal = () => {
+    setIsModalOpen2(true);
+  };
 
-if (isModalOpen2) {
-  return (
-    <>
+  const gstcheckboxHandler = () => {
+    setIsGstAdded((prev) => !prev);
+  };
+
+  if (isModalOpen2) {
+    return (
+      <>
         <PreProcurementCancelScreen setIsModalOpen2={setIsModalOpen2} />
       </>
     );
   }
-  
+
   // ------------save modal-----------------------------
 
   if (isModalOpen) {
     return (
       <>
-        <PreProcurementSubmittedScreen
-          // submitForm={submitForm}
-          // responseScreenData={formData}
-          setIsModalOpen={setIsModalOpen}
-        />
+        <PreProcurementSubmittedScreen setIsModalOpen={setIsModalOpen} />
       </>
     );
   }
-  
-
-  // if (isModalOpen3) {
-  //   return (
-  //     <>
-  //       <DaRejectModal postRejectTender={postRejectTender} setRemark={setRemark} setIsModalOpen3={setIsModalOpen3}/>
-  //     </>
-  //   );
-  // }
-
-  // if (isModalOpen) {
-  //   return (
-  //     <>
-  //       <StockReceiverModal postBackToSR={postBackToSR} setRemark={setRemark} setIsModalOpen={setIsModalOpen}/>
-  //     </>
-  //   );
-  // }
-  
-  // if (isModalOpen2) {
-  //   return (
-  //     <>
-  //       <ReleaseTenderModal postReleaseTender={postReleaseTender} setIsModalOpen2={setIsModalOpen2}/>
-  //     </>
-  //   );
-  // }
- 
 
   // console.log(applicationFullData)
 
   return (
     <div>
-      <div className="">
+      <div className=''>
         {/* Basic Details */}
-        <div className="">
-          <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 ">
-            <h2 className="font-semibold text-xl flex justify-start">
-              <MdTag className="inline pt-1 text-[1.5rem] text-sky-700" /> View
+        <div className=''>
+          <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 '>
+            <h2 className='font-semibold text-xl flex justify-start'>
+              <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View
               Procurement Request{" "}
             </h2>
           </div>
           {/* <h1 className='px-1 font-semibold font-serif  text-gray-500'>
             <MdTag className='inline' /> Basic Details
           </h1> */}
-          <div className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5">
-            <div className="pl-8 text-[1rem] text-[#4338CA]">
-              <h1 className="">
-                Procurement request No <span className="text-black">:</span>
-                <span className="font-bold">
+          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5'>
+            <div className='pl-8 text-[1rem] text-[#4338CA]'>
+              <h1 className=''>
+                Procurement request No <span className='text-black'>:</span>
+                <span className='font-bold'>
                   {" "}
                   {nullToNA(applicationFullData?.order_no)}
                 </span>
               </h1>
             </div>
 
-            {!applicationFullData?.remark?.length == 0 && (
-              <div className="pb-5 pl-8">
-                <h1 className="font-bold text-base text-red-500">
-                  Remark <span className="text-black">:</span>
-                  <span className="text-sm pt-2 font-light text-red-500">
+            {/* {!applicationFullData?.remark?.length == 0 && (
+              <div className='pb-5 pl-8'>
+                <h1 className='font-bold text-base text-red-500'>
+                  Remark <span className='text-black'>:</span>
+                  <span className='text-sm pt-2 font-light text-red-500'>
                     {" "}
                     {nullToNA(applicationFullData?.remark)}
                   </span>
                 </h1>
               </div>
-            )}
+            )} */}
 
-            <div className="grid grid-cols-4 gap-4 ml-8">
+            <div className='grid grid-cols-4 gap-4 ml-8'>
               {/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
-                  {nullToNA(applicationFullData?.category.name)}
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(
+                    applicationFullData?.pre_procurement?.category.name
+                  )}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Item Category
                 </div>
               </div>
@@ -450,43 +371,45 @@ if (isModalOpen2) {
 
               {/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
-                  {nullToNA(applicationFullData?.subcategory?.name)}
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(
+                    applicationFullData?.pre_procurement?.subcategory?.name
+                  )}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Item Sub Category
                 </div>
               </div>
 
               {/* } */}
 
-              {applicationFullData?.category?.name ==
+              {applicationFullData?.pre_procurement?.category?.name ==
                 ("Uniforms" ||
                   "Maintainance and Repaire" ||
                   "Safety and Security" ||
                   "Cleaning Supplies" ||
                   "Furniture") && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(applicationFullData?.brand)}
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
+                    {nullToNA(applicationFullData?.pre_procurement?.brand)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Brand
                   </div>
                 </div>
               )}
 
-              {applicationFullData?.category?.name ==
+              {applicationFullData?.pre_procurement?.category?.name ==
                 ("Uniforms" ||
                   "Maintainance and Repaire" ||
                   "Cleaning Supplies" ||
                   "Furniture") && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-semibold ">
-                    {nullToNA(applicationFullData?.colour)}
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-semibold '>
+                    {nullToNA(applicationFullData?.pre_procurement?.colour)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Colour
                   </div>
                 </div>
@@ -496,50 +419,54 @@ if (isModalOpen2) {
 
               {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
 
-              {applicationFullData?.category?.name ==
+              {applicationFullData?.pre_procurement?.category?.name ==
                 ("Uniforms" ||
                   "Maintainance and Repaire" ||
                   "Furniture" ||
                   "Cleaning Supplies") && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(applicationFullData?.material)}
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
+                    {nullToNA(applicationFullData?.pre_procurement?.material)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Material
                   </div>
                 </div>
               )}
 
-              {applicationFullData?.category?.name ==
+              {applicationFullData?.pre_procurement?.category?.name ==
                 ("Maintainance and Repaire" || "Safety and Security") && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(applicationFullData?.dimension)}
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
+                    {nullToNA(applicationFullData?.pre_procurement?.dimension)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Dimension
                   </div>
                 </div>
               )}
 
-              {applicationFullData?.category?.name == "Furniture" && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(applicationFullData?.room_type)}
+              {applicationFullData?.pre_procurement?.category?.name ==
+                "Furniture" && (
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
+                    {nullToNA(applicationFullData?.pre_procurement?.room_type)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Room Type
                   </div>
                 </div>
               )}
 
-              {applicationFullData?.category?.name == "Furniture" && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-semibold ">
-                    {nullToNA(applicationFullData?.included_components)}
+              {applicationFullData?.pre_procurement?.category?.name ==
+                "Furniture" && (
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-semibold '>
+                    {nullToNA(
+                      applicationFullData?.pre_procurement?.included_components
+                    )}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Included Components
                   </div>
                 </div>
@@ -549,46 +476,51 @@ if (isModalOpen2) {
 
               {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
 
-              {applicationFullData?.category?.name == "Furniture" && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(applicationFullData?.size)}
+              {applicationFullData?.pre_procurement?.category?.name ==
+                "Furniture" && (
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
+                    {nullToNA(applicationFullData?.pre_procurement?.size)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     size
                   </div>
                 </div>
               )}
 
-              {applicationFullData?.category?.name == "Cleaning Supplies" && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(applicationFullData?.recomended_uses)}
+              {applicationFullData?.pre_procurement?.category?.name ==
+                "Cleaning Supplies" && (
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
+                    {nullToNA(
+                      applicationFullData?.pre_procurement?.recomended_uses
+                    )}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Recomended Uses
                   </div>
                 </div>
               )}
 
-              {applicationFullData?.category?.name == "Cleaning Supplies" && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(applicationFullData?.bristle)}
+              {applicationFullData?.pre_procurement?.category?.name ==
+                "Cleaning Supplies" && (
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
+                    {nullToNA(applicationFullData?.pre_procurement?.bristle)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Bristle
                   </div>
                 </div>
               )}
 
-              {applicationFullData?.category?.name ==
+              {applicationFullData?.pre_procurement?.category?.name ==
                 ("Maintainance and Repaire" || "Safety and Security") && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-semibold ">
-                    {nullToNA(applicationFullData?.weight)}
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-semibold '>
+                    {nullToNA(applicationFullData?.pre_procurement?.weight)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Weight
                   </div>
                 </div>
@@ -598,38 +530,40 @@ if (isModalOpen2) {
 
               {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-semibold ">
-                  {nullToNA(applicationFullData?.rate)}
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-semibold '>
+                  {nullToNA(applicationFullData?.pre_procurement?.rate)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Rate
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
-                  {nullToNA(applicationFullData?.quantity)}
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(applicationFullData?.pre_procurement?.quantity)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Quantity
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
-                  {nullToNA(applicationFullData?.total_rate)}
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(applicationFullData?.pre_procurement?.total_rate)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Total Rate
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
-                  {nullToNA(applicationFullData?.number_of_items)}
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(
+                    applicationFullData?.pre_procurement?.number_of_items
+                  )}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   No of Items
                 </div>
               </div>
@@ -638,283 +572,241 @@ if (isModalOpen2) {
 
               {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {/* {nullToNA(applicationFullData?.quantity)} */}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   {/* Quantity  */}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {/* {nullToNA(applicationFullData?.applicant_name)} */}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   {/* Total Rate   */}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {/* {nullToNA(applicationFullData?.mobile)} */}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   {/* Brand  */}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-semibold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-semibold '>
                   {/* {nullToNA(applicationFullData?.email)} */}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   {/* Processor  */}
                 </div>
               </div>
             </div>
 
-            <div className="p-5 pl-8">
-              <h1 className="font-bold ">Other Description</h1>
-              <p className=" pt-2">
-                {nullToNA(applicationFullData?.other_description)}
+            <div className='p-5 pl-8'>
+              <h1 className='font-bold '>Other Description</h1>
+              <p className=' pt-2'>
+                {nullToNA(
+                  applicationFullData?.pre_procurement?.other_description
+                )}
               </p>
             </div>
 
-            <div className="h-[30px]"></div>
+            <div className='h-[30px]'></div>
           </div>
-          
-
-
 
           {/* Inventory Details form */}
 
-            <div className={`${formStyle} mt-14`}>
-              <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-                <div className="">
-                  <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
-                    <div className="col-span-12  w-full mb-20">
-                      <div className=" ml-4 p-2 mt-4">
-                        <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
-                          Inventory Details
-                        </h1>
-                        {/* <h1 className={`${labelStyle} `}>
-                          Maintaining a healthy home: Confirming my septic tank
-                          service.
-                        </h1> */}
+          <div className={`${formStyle} mt-14`}>
+            <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
+              <div className=''>
+                <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
+                  <div className='col-span-12  w-full mb-20'>
+                    <div className=' ml-4 p-2 mt-4'>
+                      <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
+                        Inventory Details
+                      </h1>
+                    </div>
+
+                    <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
+                      <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                        <div class='px-4 w-full mb-4'>
+                          <label className={`${labelStyle} inline-block mb-2`}>
+                            Supplier Name{" "}
+                            <span className='text-red-500'>*</span>
+                          </label>
+
+                          <input
+                            type='text'
+                            name='supplier_name'
+                            className={`${inputStyle} inline-block w-full relative`}
+                            onChange={formik.handleChange}
+                            value={formik.values.supplier_name}
+                          />
+
+                          <p className='text-red-500 text-xs '>
+                            {formik.touched.supplier_name &&
+                            formik.errors.supplier_name
+                              ? formik.errors.supplier_name
+                              : null}
+                          </p>
+                        </div>
                       </div>
-                      {/* <div className="hidden md:block lg:block">
-                        <hr className="border w-full border-gray-200" />
-                      </div> */}
 
-                      <div className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4">
+                      <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                        <div class='px-4 w-full mb-4'>
+                          <label className={`${labelStyle} inline-block mb-2`}>
+                            GST No
+                          </label>
 
-                          
-                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                            <div class="px-4 w-full mb-4">
-                              <label className={`${labelStyle} inline-block mb-2`}>
-                                Supplier Name <span className="text-red-500">*</span>
-                              </label>
+                          <input
+                            type='text'
+                            name='gst_no'
+                            className={`${inputStyle} inline-block w-full relative`}
+                            onChange={formik.handleChange}
+                            value={formik.values.gst_no}
+                          />
 
-                              <input
-                                type="text"
-                                name='supplier'
-                                className={`${inputStyle} inline-block w-full relative`}
-                                onChange={formik.handleChange}
-                                value={formik.values.supplier}
-                              />
+                          <p className='text-red-500 text-xs '>
+                            {formik.touched.gst_no && formik.errors.gst_no
+                              ? formik.errors.gst_no
+                              : null}
+                          </p>
+                        </div>
+                      </div>
 
-                              <p className="text-red-500 text-xs ">
-                                {formik.touched.supplier &&
-                                formik.errors.supplier
-                                  ? formik.errors.supplier
-                                  : null}
-                              </p>
-                            </div>
+                      <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                        <div class='px-4 w-full mb-4'>
+                          <label className={`${labelStyle} inline-block mb-2`}>
+                            Final Rate
+                          </label>
+
+                          <input
+                            type='text'
+                            name='final_rate'
+                            className={`${inputStyle} inline-block w-full relative`}
+                            onChange={formik.handleChange}
+                            value={formik.values.final_rate}
+                          />
+
+                          <p className='text-red-500 text-xs '>
+                            {formik.touched.final_rate &&
+                            formik.errors.final_rate
+                              ? formik.errors.final_rate
+                              : null}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                        <div class='px-4 w-full mb-4'>
+                          <label className={`${labelStyle} inline-block mb-2`}>
+                            GST%
+                          </label>
+
+                          <input
+                            type='text'
+                            name='gst'
+                            className={`${inputStyle} inline-block w-full relative`}
+                            onChange={formik.handleChange}
+                            value={formik.values.gst}
+                          />
+                          <div className='flex mt-2'>
+                            <input
+                              type='checkbox'
+                              // name='is_gst_added'
+                              // value={formik.values.is_gst_added}
+                              checked={isGstAdded}
+                              // checked={formik.values.is_gst_added}
+                              // onChange={gstcheckboxHandler}
+                              onChange={() => setIsGstAdded((prev) => !prev)}
+                              // onClick={() => setIsGstAdded((prev) => !prev)}
+                            />{" "}
+                            <p className='text-sm pl-2'>add GST in Bill</p>
                           </div>
 
-                          <div className=" form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                            <div class="px-4 w-full mb-4">
-                              <label className={`${labelStyle} inline-block mb-2`}>
-                                GST No
-                              </label>
+                          <p className='text-red-500 text-xs'>
+                            {formik.touched.gst && formik.errors.gst
+                              ? formik.errors.gst
+                              : null}
+                          </p>
+                        </div>
+                      </div>
 
-                              <input
-                                type="text"
-                                name='gstNo'
-                                className={`${inputStyle} inline-block w-full relative`}
-                                onChange={formik.handleChange}
-                                value={formik.values.gstNo}
-                              />
-
-                              <p className="text-red-500 text-xs ">
-                                {formik.touched.gstNo &&
-                                formik.errors.gstNo
-                                  ? formik.errors.gstNo
-                                  : null}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className=" form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                            <div class="px-4 w-full mb-4">
-                              <label className={`${labelStyle} inline-block mb-2`}>
-                                Final Rate
-                              </label>
-
-                              <input
-                                type="text"
-                                name='finalRate'
-                                className={`${inputStyle} inline-block w-full relative`}
-                                onChange={formik.handleChange}
-                                value={formik.values.finalRate}
-                              />
-
-                              <p className="text-red-500 text-xs ">
-                                {formik.touched.finalRate &&
-                                formik.errors.finalRate
-                                  ? formik.errors.finalRate
-                                  : null}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className=" form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                            <div class="px-4 w-full mb-4">
-                              <label className={`${labelStyle} inline-block mb-2`}>
-                                GST%
-                              </label>
-
-                              <input
-                                type="text"
-                                name='gstPer'
-                                className={`${inputStyle} inline-block w-full relative`}
-                                onChange={formik.handleChange}
-                                value={formik.values.gstPer}
-                              />
-                              <div className="flex mt-2">
-                              <input type="checkbox" /> <p className="text-sm pl-2">add GST in Bill</p>
-                              </div>
-
-
-                              <p className="text-red-500 text-xs">
-                                {formik.touched.gstPer &&
-                                formik.errors.gstPer
-                                  ? formik.errors.gstPer
-                                  : null}
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* <div className=" form-group flex-shrink max-w-full px-4 w-full mb-4 ml-4 mr-4">
-                              <label className={`${labelStyle} inline-block mb-2`}>
-                                Others Description
-                              </label>
-                              <textarea
-                                type="text"
-                                name="other_description"
-                                className={`${inputStyle} inline-block w-full relative h-20`}
-                                onChange={formik.handleChange}
-                                value={formik.values.other_description}
-                              />
-
-                              <p className="text-red-500 text-xs ">
-                                {formik.touched.other_description &&
-                                formik.errors.other_description
-                                  ? formik.errors.other_description
-                                  : null}
-                              </p>
-                          </div> */}
-
-                      <div className=" ml-2 p-2 mt-4 w-full">
+                      <div className=' ml-2 p-2 mt-4 w-full'>
                         <h1 className={`${headingStyle} text-left pb-10`}>
                           Calculation
                         </h1>
-                      
-                      
 
-                      <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                    {/* <label className={`${labelStyle} inline-block mb-2`}>
-                      Quantity
-                    </label> */}
+                        <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                          <div className='flex space-x-5'>
+                            <input
+                              type='number'
+                              name='rate'
+                              className={`${inputStyle} inline-block w-full relative`}
+                              // onChange={(e) => {
+                              //   formik.handleChange(e);
+                              //   calculateTotalRate();
+                              // }}
+                              disabled
+                              value={formik.values.final_rate}
+                              placeholder='Total Price'
+                            />
+                            <FaDivide className='text-[4rem] pb-5' />
+                            <input
+                              type='number'
+                              name='total_quantity'
+                              className={`${inputStyle} inline-block w-full relative`}
+                              // onChange={(e) => {
+                              //   formik.handleChange(e);
+                              //   calculateTotalRate();
+                              // }}
+                              disabled
+                              value={formik.values.total_quantity}
+                              placeholder='Total Quantity'
+                            />
 
-                      <div className="flex space-x-5">
-                      <input
-                        type="number"
-                        name="rate"
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={(e) => {
-                          formik.handleChange(e);
-                          calculateTotalRate();
-                        }}
-                        value={formik.values.rate}
-                        placeholder="Total Quantity"
-                      />
-                      
-                      <FaDivide className="text-[4rem] pb-5" />
-                      <input
-                        type="number"
-                        name="quantity"
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={(e) => {
-                          formik.handleChange(e);
-                          calculateTotalRate();
-                        }}
-                        value={formik.values.quantity}
-                        placeholder="Total Price"
-                      />
-                      <p className="text-[1.5rem]">=</p>
-                      <input
-                        type="number"
-                        name="totalRate"
-                        className={`${inputStyle} inline-block w-full relative`}
-                        // onChange={formik.handleChange}
-                        value={formik.values.totalRate}
-                        placeholder="Per Quantity"
-                        disabled
-                      />
-                    </div>
-                    <p className="text-red-500 text-xs ">
-                      {formik.touched.quantity && formik.errors.quantity
-                        ? formik.errors.quantity
-                        : null}
-                    </p>
-                  </div>
-
-                  </div>
-
-                          
-                      </div>
-
-                      <div className="space-x-5 flex justify-end mr-[3rem]">
-                              
-                              <button 
-                                className={buttonStyle} 
-                                onClick={openCancelModal}
-                                >
-                                Cancel
-                              </button>
-
-                              <button 
-                                type="submit"
-                                className={buttonStyle2}
-                                >
-                                Save
-                              </button>
-
-                      </div>
-
-                        
+                            <p className='text-[1.5rem]'>=</p>
+                            <input
+                              type='number'
+                              name='unit_price'
+                              className={`${inputStyle} inline-block w-full relative`}
+                              // onChange={formik.handleChange}
+                              value={formik.values.unit_price}
+                              placeholder='Per Price'
+                              disabled
+                            />
+                          </div>
+                          <p className='text-red-500 text-xs '>
+                            {formik.touched.total_quantity &&
+                            formik.errors.total_quantity
+                              ? formik.errors.total_quantity
+                              : null}
+                          </p>
+                        </div>
                       </div>
                     </div>
+
+                    <div className='space-x-5 flex justify-end mr-[3rem]'>
+                      <button className={buttonStyle} onClick={openCancelModal}>
+                        Cancel
+                      </button>
+
+                      <button type='submit' className={buttonStyle2}>
+                        Save
+                      </button>
+                    </div>
                   </div>
-                
-              </form>
+                </div>
               </div>
-         
-
-          
+            </form>
+          </div>
         </div>
       </div>
     </div>
