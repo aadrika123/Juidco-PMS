@@ -16,7 +16,6 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import { FiFilter } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 
-
 const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   const [categoryList, setCategoryList] = useState([]);
   const [subCategoryList, setSubCategoryList] = useState([]);
@@ -77,21 +76,26 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   };
 
   return (
-    <div className="relative  ">
+    <div className='relative  '>
       <div
-        className={`h-full mt-[8rem] bg-white shadow-lg transform transition-transform duration-300 ease-in-out w-64 p-4 border border-gray-300 rounded`}
+        className={`h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out w-64 p-4 border border-gray-300 rounded`}
       >
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-thin text-gray-600 flex"><FiFilter className="pt-1 mt-.8" />Filters</h2>
-          <button onClick={() => setIsOpen(false)} className="text-xl hover:bg-[#4338CA] bg-[#4338CA] text-white hover:text-white rounded">
-          <RxCross2 />
-
+        <div className='flex justify-between items-center'>
+          <h2 className='text-xl font-thin text-gray-600 flex'>
+            <FiFilter className='pt-1 mt-.8' />
+            Filters
+          </h2>
+          <button
+            onClick={() => setIsOpen(false)}
+            className='text-xl hover:bg-[#4338CA] bg-[#4338CA] text-white hover:text-white rounded'
+          >
+            <RxCross2 />
           </button>
         </div>
-        <hr class="h-[2px] w-full bg-gray-200 mb-4 border-none" />
+        <hr class='h-[2px] w-full bg-gray-200 mb-4 border-none' />
 
         <div>
-          <Accordion  >
+          <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               Category
             </AccordionSummary>
@@ -131,16 +135,15 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
           </Accordion>
 
           <Button
-
-            variant="outlined"
+            variant='outlined'
             sx={{
               width: "100%",
               mt: "1rem",
-              ':hover': {
-              backgroundColor: '#4338CA',  // Change this to your desired hover color
-              color: 'white',           // Optional: change text color on hover
-              borderColor: 'black',     // Optional: change border color on hover
-        }
+              ":hover": {
+                backgroundColor: "#4338CA", // Change this to your desired hover color
+                color: "white", // Optional: change text color on hover
+                borderColor: "black", // Optional: change border color on hover
+              },
             }}
             onClick={useFilter}
           >

@@ -81,11 +81,11 @@ function AddPreProcurement(props) {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
-  const [successModal, setSuccessModal] = useState(false)
+  const [successModal, setSuccessModal] = useState(false);
   const [formData, setFormData] = useState();
-const [categoryName, setCategoryName] = useState();
-const [categorySelected,setCategorySelected] = useState([]);
-    const [orderNo, setOrderNo] = useState();
+  const [categoryName, setCategoryName] = useState();
+  const [categorySelected, setCategorySelected] = useState([]);
+  const [orderNo, setOrderNo] = useState();
 
   // console.log(graphicsList)
 
@@ -118,8 +118,6 @@ const [categorySelected,setCategorySelected] = useState([]);
 
   // ══════════════════════════════║🔰 validationSchema 🔰║═══════════════════════════════════
 
-  
-
   const validationSchema = yup.object({
     itemcategory: yup.string().required("item category is required"),
     itemsubcategory: yup.string().required("item subcategory is required"),
@@ -131,8 +129,7 @@ const [categorySelected,setCategorySelected] = useState([]);
     // operatingsystem: yup.string().required("operatingsystem is required"),
     // rom: yup.string().required("rom is required"),
     // graphics: yup.string().required("graphics is required"),
-    
-    
+
     // colour: yup.string().required("Color is required"),
     // material: yup.string().required("Material  aterial is required"),
     // dimension: yup.string().required("Dimension  aterial is required"),
@@ -144,16 +141,14 @@ const [categorySelected,setCategorySelected] = useState([]);
     // weight: yup.string().required("Weight is required"),
 
     // number_of_items: yup.string().required("No of items is required"),
-    
+
     // number_of_items: yup.string().when("itemcategory", {
     //   is: "",
     //   then: yup.string().required("Must enter email address")
     // }),
 
-
     other_description: yup.string().required("Other description is required"),
     rate: yup.number().required("Rate is required"),
-    quantity: yup.number().required("Quantity is required"),
   });
 
   // intitial value
@@ -169,7 +164,7 @@ const [categorySelected,setCategorySelected] = useState([]);
     other_description: "",
     quantity: "",
     rate: "",
-    
+
     //Furniture values
     number_of_items: "",
     brand: "",
@@ -179,7 +174,7 @@ const [categorySelected,setCategorySelected] = useState([]);
     room_type: "",
     included_components: "",
     size: "",
-    
+
     //CleaningSupplies
     number_of_items: "",
     brand: "",
@@ -187,13 +182,13 @@ const [categorySelected,setCategorySelected] = useState([]);
     recommendedUsedProducts: "",
     handle_material: "",
     bristle: "",
-    
+
     // safetySecurity
     number_of_items: "",
     brand: "",
     weight: "",
     recommendedUsedProducts: "",
-    
+
     // maintenanceAndRepair
     number_of_items: "",
     brand: "",
@@ -201,14 +196,12 @@ const [categorySelected,setCategorySelected] = useState([]);
     maintenamce_material: "",
     items_dimensions: "",
     items_weight: "",
-    
+
     // uniform
     number_of_items: "",
     brand: "",
     colour: "",
     maintenamce_material: "",
-        
-
   };
 
   const formik = useFormik({
@@ -233,7 +226,6 @@ const [categorySelected,setCategorySelected] = useState([]);
     { label: "Room Type", name: "room_type" },
     { label: "Included Components", name: "included_components" },
     { label: "Size", name: "size" },
-  
   ];
 
   const cleaningSupplies = [
@@ -243,7 +235,6 @@ const [categorySelected,setCategorySelected] = useState([]);
     { label: "Recommended Uses For Product", name: "recomended_uses" },
     { label: "Handle Material	", name: "material" },
     { label: "Bristle", name: "bristle" },
-   
   ];
 
   const safetySecurity = [
@@ -251,7 +242,6 @@ const [categorySelected,setCategorySelected] = useState([]);
     { label: "Brand", name: "brand" },
     { label: "Weight", name: "weight" },
     { label: "Dimension", name: "dimension" },
-
   ];
 
   const maintenanceAndRepair = [
@@ -261,21 +251,19 @@ const [categorySelected,setCategorySelected] = useState([]);
     { label: "Material	", name: "material" },
     { label: "Dimension", name: "dimension" },
     { label: "Items Weight", name: "weight" },
-
   ];
-  
+
   const uniform = [
     { label: "Number of Items", name: "number_of_items" },
     { label: "Brand", name: "brand" },
     { label: "Colour", name: "colour" },
     { label: "Material	", name: "material" },
-
   ];
 
   // ══════════════════════════════║🔰calculate the total rate🔰║═══════════════════════════════════
   const calculateTotalRate = () => {
     const rate = Number(formik.values.rate) || 0;
-    const quantity = Number(formik.values.quantity) || 0;
+    const quantity = Number(formik.values.number_of_items) || 0;
     const totalRate = rate * quantity;
     formik.setFieldValue("totalRate", totalRate);
     console.log(totalRate, "tot Rate");
@@ -395,7 +383,6 @@ const [categorySelected,setCategorySelected] = useState([]);
   };
 
   // submit form
-
   const submitForm = () => {
     console.log("data in form", formData);
     setisLoading(true);
@@ -412,8 +399,7 @@ const [categorySelected,setCategorySelected] = useState([]);
       os: formData?.operatingsystem,
       rom: formData?.rom,
       graphics: formData?.graphics,
-      
-      
+
       brand: formData?.brand,
       colour: formData?.colour,
       material: formData?.material,
@@ -426,13 +412,13 @@ const [categorySelected,setCategorySelected] = useState([]);
       weight: formData?.weight,
       number_of_items: Number(formData?.number_of_items),
       other_description: formData?.other_description,
-      
+
       rate: Number(formData?.rate),
-      quantity: Number(formData?.quantity),
+      quantity: Number(formData?.number_of_items),
       total_rate: Number(formData?.totalRate),
     };
 
-    console.log(requestBody,"=======================>>>")
+    console.log(requestBody, "=======================>>>");
 
     AxiosInterceptors.post(`${url}`, requestBody, ApiHeader())
       .then(function (response) {
@@ -441,10 +427,10 @@ const [categorySelected,setCategorySelected] = useState([]);
         setresponseScreen(response?.data);
         if (response?.data?.status === true) {
           setisLoading(false);
-          setSuccessModal(true)
+          setSuccessModal(true);
           notify(response?.data?.message, "success");
           setdeclarationStatus(false);
-          setOrderNo(response?.data?.order_no)
+          setOrderNo(response?.data?.order_no);
 
           // navigate('/tankerFormSubmitted')
         } else {
@@ -466,7 +452,7 @@ const [categorySelected,setCategorySelected] = useState([]);
     return (
       <>
         <BarLoader />
-        <div className="min-h-screen"></div>
+        <div className='min-h-screen'></div>
       </>
     );
   }
@@ -519,6 +505,13 @@ const [categorySelected,setCategorySelected] = useState([]);
       name == "isWithinUlb" && fetchLocationListByUlb(value);
     }
     {
+      name == "brand" &&
+        formik.setFieldValue(
+          "quantity",
+          allowCharacterInput(value, formik.values.brand)
+        );
+    }
+    {
       name == "quantity" &&
         formik.setFieldValue(
           "quantity",
@@ -552,7 +545,7 @@ const [categorySelected,setCategorySelected] = useState([]);
       </>
     );
   }
-  
+
   if (successModal) {
     return (
       <>
@@ -562,12 +555,9 @@ const [categorySelected,setCategorySelected] = useState([]);
           orderNo={orderNo}
           // applicationId={props?.responseScreenData?.data?.applicationId}
         />
-        
       </>
     );
   }
-
-  
 
   const openCancelModal = () => {
     setIsModalOpen2(true);
@@ -584,10 +574,10 @@ const [categorySelected,setCategorySelected] = useState([]);
     <>
       <div className={`${formStyle}`}>
         <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-          <div className="">
-            <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
-              <div className="col-span-12  w-full mb-20">
-                <div className=" ml-4 p-2 mt-4">
+          <div className=''>
+            <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
+              <div className='col-span-12  w-full mb-20'>
+                <div className=' ml-4 p-2 mt-4'>
                   <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
                     Pre Procurement Proposal
                   </h1>
@@ -596,15 +586,15 @@ const [categorySelected,setCategorySelected] = useState([]);
                     service.
                   </h1> */}
                 </div>
-                <div className="hidden md:block lg:block">
-                  <hr className="border w-full border-gray-200" />
+                <div className='hidden md:block lg:block'>
+                  <hr className='border w-full border-gray-200' />
                 </div>
 
-                <div className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4">
-                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
+                  <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Item Category
-                      <span className="text-xl text-red-500 pl-1">*</span>{" "}
+                      <span className='text-xl text-red-500 pl-1'>*</span>{" "}
                     </label>
                     <select
                       {...formik.getFieldProps("itemcategory")}
@@ -632,24 +622,24 @@ const [categorySelected,setCategorySelected] = useState([]);
                       }}
                     >
                       <option selected>select</option>
-                      
+
                       {category?.map((items, index) => (
                         <option key={index} value={items?.id}>
                           {items?.name}
                         </option>
                       ))}
                     </select>
-                    <p className="text-red-500 text-xs ">
+                    <p className='text-red-500 text-xs '>
                       {formik.touched.itemcategory && formik.errors.itemcategory
                         ? formik.errors.itemcategory
                         : null}
                     </p>
                   </div>
 
-                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                  <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Items Sub Category
-                      <span className="text-xl text-red-500 pl-1">*</span>
+                      <span className='text-xl text-red-500 pl-1'>*</span>
                     </label>
                     <select
                       {...formik.getFieldProps("itemsubcategory")}
@@ -657,14 +647,14 @@ const [categorySelected,setCategorySelected] = useState([]);
                       onChange={formik.handleChange}
                     >
                       <option selected>select</option>
-                     
+
                       {subcategory?.length &&
                         subcategory?.map((items) => (
                           <option value={items?.id}>{items?.name}</option>
                         ))}
                     </select>
 
-                    <p className="text-red-500 text-xs ">
+                    <p className='text-red-500 text-xs '>
                       {formik.touched.itemsubcategory &&
                       formik.errors.itemsubcategory
                         ? formik.errors.itemsubcategory
@@ -673,24 +663,22 @@ const [categorySelected,setCategorySelected] = useState([]);
                   </div>
 
                   {categorySelected?.map((obj) => (
-                    
-                    <div className=" flex flex-wrap w-1/2">
-                      <div class="px-4 w-full mb-4">
+                    <div className=' flex flex-wrap w-1/2'>
+                      <div class='px-4 w-full mb-4'>
                         <label className={`${labelStyle} inline-block mb-2`}>
                           {obj.label}
                         </label>
 
                         <input
-                          type="text"
+                          type='text'
                           name={obj.name}
                           className={`${inputStyle} inline-block w-full relative`}
                           onChange={formik.handleChange}
                           value={formik.values[obj.name]}
                         />
 
-                        <p className="text-red-500 text-xs ">
-                          {formik.touched[obj.name] &&
-                          formik.errors[obj.name]
+                        <p className='text-red-500 text-xs '>
+                          {formik.touched[obj.name] && formik.errors[obj.name]
                             ? formik.errors[obj.name]
                             : null}
                         </p>
@@ -698,20 +686,19 @@ const [categorySelected,setCategorySelected] = useState([]);
                     </div>
                   ))}
 
-
-                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4">
+                  <div class='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Others Description
                     </label>
                     <textarea
-                      type="text"
-                      name="other_description"
+                      type='text'
+                      name='other_description'
                       className={`${inputStyle} inline-block w-full relative h-20`}
                       onChange={formik.handleChange}
                       value={formik.values.other_description}
                     />
 
-                    <p className="text-red-500 text-xs ">
+                    <p className='text-red-500 text-xs '>
                       {formik.touched.other_description &&
                       formik.errors.other_description
                         ? formik.errors.other_description
@@ -720,58 +707,56 @@ const [categorySelected,setCategorySelected] = useState([]);
                   </div>
                 </div>
 
-                <div class="valid-form flex flex-wrap flex-row mx-8">
-                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                <div class='valid-form flex flex-wrap flex-row mx-8'>
+                  <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Quantity
                     </label>
 
-                    <div className="flex space-x-5">
+                    <div className='flex space-x-5'>
                       <input
-                        type="number"
-                        name="rate"
+                        type='number'
+                        name='rate'
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={(e) => {
                           formik.handleChange(e);
                           calculateTotalRate();
                         }}
                         value={formik.values.rate}
-                        placeholder="Rate"
+                        placeholder='Rate'
                       />
                       <p>X</p>
                       <input
-                        type="number"
-                        name="quantity"
+                        type='number'
+                        name='quantity'
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={(e) => {
                           formik.handleChange(e);
                           calculateTotalRate();
                         }}
-                        value={formik.values.quantity}
-                        placeholder="Quantity"
+                        value={formik.values.number_of_items}
+                        placeholder='Quantity'
                       />
                       <p>=</p>
                       <input
-                        type="number"
-                        name="totalRate"
+                        type='number'
+                        name='totalRate'
                         className={`${inputStyle} inline-block w-full relative`}
                         // onChange={formik.handleChange}
                         value={formik.values.totalRate}
-                        placeholder="Total Rate"
+                        placeholder='Total Rate'
                         disabled
                       />
                     </div>
-                    <p className="text-red-500 text-xs ">
+                    <p className='text-red-500 text-xs '>
                       {formik.touched.quantity && formik.errors.quantity
                         ? formik.errors.quantity
                         : null}
                     </p>
                   </div>
-
-                  
                 </div>
 
-                <div className="float-right pb-16 mr-8 space-x-5">
+                <div className='float-right pb-16 mr-8 space-x-5'>
                   <button
                     // type='submit'
                     onClick={openCancelModal}
@@ -783,7 +768,7 @@ const [categorySelected,setCategorySelected] = useState([]);
 
                   {/* <div className='pb-16 mr-8'> */}
                   <button
-                    type="submit"
+                    type='submit'
                     className={`bg-[#4338CA] border-blue-900 border hover:bg-[#4478b7] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right mb-10`}
                   >
                     Save

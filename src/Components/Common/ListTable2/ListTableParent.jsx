@@ -328,7 +328,7 @@ const ListTableParent = (props) => {
       <div className='flex gap-2'>
         {/* 👉 Filter sidebar Component 👈 */}
         {isOpen && (
-          <div className={isOpen ? open1 : close1}>
+          <div className={`${isOpen ? open1 : close1} mt-4`}>
             <SideSection
               setIsOpen={setIsOpen}
               filter={filter}
