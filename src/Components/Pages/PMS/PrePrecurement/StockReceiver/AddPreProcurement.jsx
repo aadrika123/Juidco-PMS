@@ -275,7 +275,7 @@ function AddPreProcurement(props) {
     fetchProcessor();
 
     fetchCategory();
-    fetchSubCategory();
+    // fetchSubCategory();
     fetchBrand();
     fetchRam();
     fetchOperatingSystem();
