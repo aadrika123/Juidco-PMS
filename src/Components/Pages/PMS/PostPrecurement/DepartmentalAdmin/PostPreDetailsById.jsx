@@ -245,6 +245,9 @@ const PostPreDetailsById = (props) => {
     {
       name == "is_gst_added" && gstcheckboxHandler();
     }
+    {
+      name == "final_rate" && calculateTotalRate(value);
+    }
     // {
     //   name == "quantity" &&
     //     formik.setFieldValue(
@@ -268,23 +271,28 @@ const PostPreDetailsById = (props) => {
     // }
   };
 
-  useEffect(() => {
-    getApplicationDetail();
-    calculateTotalRate();
-  }, []);
-
-  // -------------------- Calculate Total Quantity -------------------------------
-
-  const calculateTotalRate = () => {
-    const totalPrice = Number(formik.values.final_rate) || 0;
+  const calculateTotalRate = (finalRate, gstVal, state) => {
+    console.log(state, "state===========");
+    let totalPrice = Number(finalRate) || 0;
     const totalQuantity = Number(formik.values.total_quantity) || 0;
 
-    const unitRate = totalPrice / totalQuantity;
+    if (isGstAdded == true && (formik.values.gst || gstVal) > 0) {
+      totalPrice = totalPrice + (Number(formik.values.gst) / 100) * totalPrice;
+      let perValue = Number(totalPrice) / totalQuantity;
 
-    if (formik.values.is_gst_added)
+      formik.setFieldValue("unit_price", perValue);
+    } else {
+      const unitRate = totalPrice / totalQuantity;
       formik.setFieldValue("unit_price", unitRate);
-    console.log(unitRate, "unitRate===>");
+    }
   };
+
+  useEffect(() => {
+    getApplicationDetail();
+    calculateTotalRate(formik.values.final_rate, formik.values.gst, isGstAdded);
+  }, [isGstAdded, formik.values.final_rate, formik.values.gst]);
+
+  // -------------------- Calculate Total Quantity -------------------------------
 
   // ------------cancel modal-----------------------------
 
@@ -320,21 +328,21 @@ const PostPreDetailsById = (props) => {
     <div>
       <div className=''>
         {/* Basic Details */}
-        <div className="mt-6">
-          <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 ">
-            <h2 className="font-semibold text-xl flex justify-start">
-              <MdTag className="inline pt-1 text-[1.5rem] text-sky-700" /> View
+        <div className='mt-6'>
+          <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 '>
+            <h2 className='font-semibold text-xl flex justify-start'>
+              <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View
               Procurement Request{" "}
             </h2>
           </div>
           {/* <h1 className='px-1 font-semibold font-serif  text-gray-500'>
             <MdTag className='inline' /> Basic Details
           </h1> */}
-          <div className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
-            <div className="pl-8 text-[1rem] text-[#4338CA]">
-              <h1 className="">
-                Procurement request No <span className="text-black">:</span>
-                <span className="font-bold">
+          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
+            <div className='pl-8 text-[1rem] text-[#4338CA]'>
+              <h1 className=''>
+                Procurement request No <span className='text-black'>:</span>
+                <span className='font-bold'>
                   {" "}
                   {nullToNA(applicationFullData?.order_no)}
                 </span>
@@ -623,32 +631,31 @@ const PostPreDetailsById = (props) => {
 
           {/* Inventory Details form */}
 
-            <div className={`${formStyle} mt-8 border border-blue-500`}>
-              <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-                <div className="">
-                  <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
-                    <div className="col-span-12  w-full mb-20">
-                      <div className=" ml-4 p-2 mt-4">
-                        <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
-                          Inventory Details
-                        </h1>
-                        {/* <h1 className={`${labelStyle} `}>
+          <div className={`${formStyle} mt-8 border border-blue-500`}>
+            <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
+              <div className=''>
+                <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
+                  <div className='col-span-12  w-full mb-20'>
+                    <div className=' ml-4 p-2 mt-4'>
+                      <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
+                        Inventory Details
+                      </h1>
+                      {/* <h1 className={`${labelStyle} `}>
                           Maintaining a healthy home: Confirming my septic tank
                           service.
                         </h1> */}
-                      </div>
-                      {/* <div className="hidden md:block lg:block">
+                    </div>
+                    {/* <div className="hidden md:block lg:block">
                         <hr className="border w-full border-gray-200" />
                       </div> */}
 
-                      <div className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4">
-
-                          
-                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                            <div class="px-4 w-full mb-4">
-                              <label className={`${labelStyle} inline-block mb-2`}>
-                                Supplier Name <span className="text-red-500">*</span>
-                              </label>
+                    <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
+                      <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                        <div class='px-4 w-full mb-4'>
+                          <label className={`${labelStyle} inline-block mb-2`}>
+                            Supplier Name{" "}
+                            <span className='text-red-500'>*</span>
+                          </label>
 
                           <input
                             type='text'
@@ -728,12 +735,16 @@ const PostPreDetailsById = (props) => {
                           <div className='flex mt-2'>
                             <input
                               type='checkbox'
-                              // name='is_gst_added'
-                              // value={formik.values.is_gst_added}
                               checked={isGstAdded}
-                              // checked={formik.values.is_gst_added}
-                              // onChange={gstcheckboxHandler}
-                              onChange={() => setIsGstAdded((prev) => !prev)}
+                              onChange={() => {
+                                const newState = !isGstAdded;
+                                setIsGstAdded(newState);
+                                calculateTotalRate(
+                                  formik.values.final_rate,
+                                  formik.values.gst,
+                                  newState
+                                );
+                              }}
                               // onClick={() => setIsGstAdded((prev) => !prev)}
                             />{" "}
                             <p className='text-sm pl-2'>add GST in Bill</p>
@@ -756,7 +767,7 @@ const PostPreDetailsById = (props) => {
                           <div className='flex space-x-5'>
                             <input
                               type='number'
-                              name='rate'
+                              name='final_rate'
                               className={`${inputStyle} inline-block w-full relative`}
                               // onChange={(e) => {
                               //   formik.handleChange(e);
