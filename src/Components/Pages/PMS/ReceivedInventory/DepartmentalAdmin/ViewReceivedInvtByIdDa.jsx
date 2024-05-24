@@ -745,7 +745,6 @@ const ViewReceivedInvtByIdDa = (props) => {
               </AccordionSummary>
               <AccordionDetails>
 
-
                 {/* table */}
 
                   <div class="relative overflow-x-auto">

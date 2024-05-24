@@ -115,7 +115,7 @@ const ViewInventoryDetailsById = (props) => {
           toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/da-inventory-proposal");
-          }, 2000);
+          }, 1000);
         } else {
           setisLoading(false);
           const errorMsg = Object.keys(response?.data?.data);
@@ -144,7 +144,7 @@ const ViewInventoryDetailsById = (props) => {
           toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/da-inventory-proposal");
-          }, 2000);
+          }, 1000);
         } else {
           setisLoading(false);
           const errorMsg = Object.keys(response?.data?.data);
@@ -173,9 +173,9 @@ const ViewInventoryDetailsById = (props) => {
           setisLoading(false);
           console.log(response?.data?.message, "-------------->>");
           toast.success(response?.data?.message, "success");
-          // setTimeout(() => {
-          //   navigate("/da-inventory-proposal");
-          // }, 2000);
+          setTimeout(() => {
+            navigate("/da-inventory-proposal");
+          }, 1000);
           console.log(response?.data?.message, "Forwadede to DA--->>");
         } else {
           setisLoading(false);
