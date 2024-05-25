@@ -14,6 +14,7 @@ import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
 import cancel from "@/Components/assets/cancel.svg";
 import uploadImg from "@/Components/assets/uploadImg.png";
 import { useNavigate } from "react-router-dom";
+import { LuCloudy } from "react-icons/lu";
 
 function StockReceiverModal(props) {
   const navigate = useNavigate();
@@ -58,19 +59,49 @@ function StockReceiverModal(props) {
 
       <div className='fixed inset-0 flex items-center justify-center z-[5000]'>
         <div className='absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm'></div>
-        <div className='bg-white px-16 mx-auto flex flex-col max-sm:w-full z-10  rounded'>
-          <div class='relative overflow-hidden mt-5'>
-            <div class='absolute inset-0 hover:bg-white opacity-0 transition duration-700 hover:opacity-10'></div>
-            <img
-              className='max-w-full h-[6rem] mx-auto animate-wiggle mb-5 '
-              src={cancel}
-              alt='alt title'
-            />
+        <div className='bg-white px-5 mx-auto flex flex-col max-sm:w-full z-10  rounded'>
+          <div class='relative overflow-hidden mt-5 flex'>
+            <div>
+            <LuCloudy className="text-[2.5rem] p-2 mr-3 mt-1 border-[2px] rounded-full" />
+            </div>
+            <div >
+            <h1>Upload Remark & Files</h1>
+            <p className="text-[12px] text-gray-400">Enter & Upload the files of your choice</p>
+            </div>
           </div>
+
+          <hr className="w-full mt-3" />
+
+          <div className='mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col'>
+
+              <div className='rounded-md mt-8'>
+
+              <LuCloudy className="text-[1.5rem]" />
+                {/* <img
+                  src={uploadImg}
+                  alt='upload doc icon'
+                  width={50}
+                  height={50}
+                /> */}
+              </div>
+            <h3 class='text-xl text-black font-openSans'>choose a file </h3>
+            <h1 className="text-gray-400 text-sm">JPEG, PNG, PDG, and MP4 formats, up to 50MB</h1>
+              <div className="mb-8">
+                <input type='file' className='hidden' ref={inputFileRef} />
+                <button
+                  className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
+                  onClick={handleUploadDoc}
+                >
+                  Browse File
+                </button>
+              </div>
+            
+          </div>
+
           <div>
             <div className=''>
-              <h3 className='text-xl text-black font-openSans'>
-                Please Enter Remark for Stock Receiver
+              <h3 className='text-sm text-black font-openSans'>
+                Remarks
               </h3>
               {/* <h3 class="text-xl  text-center mb-3 text-gray-400 font-openSans font-semibold ">
               Booking no. - {props?.responseScreenData?.data?.bookingNo}
@@ -87,29 +118,7 @@ function StockReceiverModal(props) {
             </div>
           </div>
 
-          <div className='mb-10'>
-            <h3 class='text-xl text-black font-openSans'>Upload your File </h3>
-
-            <div className='flex items-end gap-6 mb-6'>
-              <div className='border-[3px] border-dashed border-gray-600 w-1/3 p-6 rounded-md my-2'>
-                <img
-                  src={uploadImg}
-                  alt='upload doc icon'
-                  width={100}
-                  height={100}
-                />
-              </div>
-              <div>
-                <input type='file' className='hidden' ref={inputFileRef} />
-                <button
-                  className={`bg-white border-blue-900 border text-blue-950 text-sm px-2 py-2 hover:bg-[#1A4D8C] hover:text-white  rounded leading-5 shadow-lg`}
-                  onClick={handleUploadDoc}
-                >
-                  Upload Doc
-                </button>
-              </div>
-            </div>
-          </div>
+          
 
           <div className='flex flex-col'>
             <div className='flex gap-4 justify-end'>
@@ -130,8 +139,8 @@ function StockReceiverModal(props) {
 
             <div>
               <h1 className='text-center pt-5'>
-                <span className='text-red-600 text-xl'>*</span> By Clicking
-                Continue your data will be Processed
+                {/* <span className='text-red-600 text-xl'>*</span> By Clicking
+                Continue your data will be Processed */}
               </h1>
             </div>
           </div>
