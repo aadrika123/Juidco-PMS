@@ -67,6 +67,7 @@ function Login() {
                 if (response.data.status == true) {
                     setLocalStorageItem('token', response?.data?.data?.token)
                     setLocalStorageItemStrigified('userDetails', response?.data?.data?.userDetails)
+                    setLocalStorageItem('ulbId', response?.data?.data?.userDetails?.ulb_id)
 
                     fetchMenuList()
                     setheartBeatCounter(prev => prev + 1)
