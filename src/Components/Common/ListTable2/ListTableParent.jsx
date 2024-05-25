@@ -46,10 +46,6 @@ const ListTableParent = (props) => {
     { name: "project_proposal_no", caption: "Project Proposal Number" },
   ];
 
-  const toggleFilterPanel = () => {
-    setFilterPanelOpen((prevState) => !prevState);
-  };
-
   //animation for open and close filter bar
   const open1 = `animate__animated animate__slideInLeft animate__faster `;
   const close1 = `w-0 sm:w-3 animate__animated animate__fadeOutLeft animate__faster transition-all delay-150`;
@@ -58,9 +54,8 @@ const ListTableParent = (props) => {
 
   // 👉 Function 1 👈
   const searchOldFun = () => {
-    seterrorState(false);
-
     setloader(true);
+    seterrorState(false);
 
     console.log(
       props?.requestBody,
@@ -260,10 +255,12 @@ const ListTableParent = (props) => {
 
   // 👉 Calling Function 1 on Data change 👈
   useEffect(() => {
+    setloader(true);
     // if (props?.requestBody != null) {
     setpageCount(1);
     // setperPageCount(10);
     searchOldFun();
+    setloader(false);
     // }
   }, [props?.changeData, currentPage, perPageData]);
 
@@ -407,6 +404,7 @@ const ListTableParent = (props) => {
                   showDiv={props.showDiv}
                   setSearchFilter={setSearchFilter}
                   pagination={pagination}
+                  loader={loader}
                 />
               </div>
             ) : (
