@@ -1,4 +1,14 @@
-import { useState, useEffect, useContext } from "react";
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Almaash Alam
+//    Version - 1.0
+//    Date - 23/05/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - SRPostProcurementCancelScreen
+//    DESCRIPTION - SRPostProcurementCancelScreen
+//////////////////////////////////////////////////////////////////////////////////////
+
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -7,12 +17,15 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import toast from 'react-hot-toast';
 import { MdTag } from "react-icons/md";
 import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
-import { contextVar } from '@/Components/context/contextVar'
+// import { contextVar } from '@/Components/context/contextVar'
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import ReceivedInvtSubmittedScreen from "./REceivedInvtSubmittedScreen";
 import SRPostProcurementCancelScreen from "./SRPostProcurementCancelScreen";
+import { contextVar } from '@/Components/context/contextVar'
+import { useContext } from 'react'
+import TitleBar from "@/Components/Pages/Others/TitleBar";
 // import StockReceiverModal from "./StockReceiverModal";
 // import ReleaseTenderModal from "./ReleaseTenderModal";
 // import DaRejectModal from "./DaRejectModal";
@@ -52,7 +65,8 @@ const ViewReceivedInvtById = (props) => {
   
 
      // Accessing context for notifications
-     const { notify } = useContext(contextVar);
+     const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText, notify } = useContext(contextVar)
+
 
   let buttonStyle = '  pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
 
@@ -379,6 +393,9 @@ const ViewReceivedInvtById = (props) => {
 
   return (
     <div>
+    <div className="">
+    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Inventory Proposal Details"} />
+    </div>
       <div className="">
         {/* Basic Details */}
         <div className="mt-6">

@@ -1,4 +1,15 @@
-import { useState, useEffect, useContext } from "react";
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Almaash alam
+//    Version - 1.0
+//    Date - 24/05/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - ViewPostInvtDetailsById
+//    DESCRIPTION - ViewPostInvtDetailsById     
+//////////////////////////////////////////////////////////////////////////////////////
+
+
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -7,7 +18,14 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import toast from 'react-hot-toast';
 import { MdTag } from "react-icons/md";
 import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
+// import { contextVar } from '@/Components/context/contextVar'
+// import { contextVar } from '@/Components/context/contextVar'
+import { useContext } from 'react'
+// import TitleBar from "@/Components/Pages/Others/TitleBar";
+
 import { contextVar } from '@/Components/context/contextVar'
+// import { useContext } from 'react'
+import TitleBar from "@/Components/Pages/Others/TitleBar";
 // import StockReceiverModal from "./StockReceiverModal";
 // import ReleaseTenderModal from "./ReleaseTenderModal";
 // import DaRejectModal from "./DaRejectModal";
@@ -43,7 +61,9 @@ const ViewPostInvtDetailsById = (props) => {
   
 
      // Accessing context for notifications
-     const { notify } = useContext(contextVar);
+     const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText ,notify} = useContext(contextVar)
+
+   
 
   let buttonStyle = '  pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
 
@@ -226,6 +246,10 @@ const ViewPostInvtDetailsById = (props) => {
   return (
     <div>
       <div className="">
+
+      <div className="">
+    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Inventory Proposal Details"} />
+    </div>
         {/* Basic Details */}
         <div className="mt-6">
           <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 ">
@@ -238,6 +262,20 @@ const ViewPostInvtDetailsById = (props) => {
             <MdTag className='inline' /> Basic Details
           </h1> */}
           <div className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
+
+          <div className="flex justify-between">
+
+          {!applicationFullData?.remark?.length == 0 && (
+              <div className="pb-5 pl-8">
+                <h1 className="font-bold text-base text-green-600">
+                  Remark <span className="text-black">:</span>
+                  <span className="text-sm pt-2 font-light text-green-600">
+                    {" "}
+                    {nullToNA(applicationFullData?.remark)}
+                  </span>
+                </h1>
+              </div>
+            )}
             <div className="pl-8 text-[1rem] text-[#4338CA]">
               <h1 className="">
                 Procurement request No <span className="text-black">:</span>
@@ -248,17 +286,8 @@ const ViewPostInvtDetailsById = (props) => {
               </h1>
             </div>
 
-            {!applicationFullData?.remark?.length == 0 && (
-              <div className="pb-5 pl-8">
-                <h1 className="font-bold text-base text-red-500">
-                  Remark <span className="text-black">:</span>
-                  <span className="text-sm pt-2 font-light text-red-500">
-                    {" "}
-                    {nullToNA(applicationFullData?.remark)}
-                  </span>
-                </h1>
-              </div>
-            )}
+           
+            </div>
 
             <div className="grid grid-cols-4 gap-4 ml-8">
               {/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}

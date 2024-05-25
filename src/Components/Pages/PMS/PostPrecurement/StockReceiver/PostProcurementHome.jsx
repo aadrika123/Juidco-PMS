@@ -1,3 +1,14 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Almaash alam
+//    Version - 1.0
+//    Date - 24/05/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - PostProcurementHome
+//    DESCRIPTION - PostProcurementHome     
+//////////////////////////////////////////////////////////////////////////////////////
+
+
 // src/components/PostProcurementHome.js
 import React, { useState } from "react";
 import { GoPlus } from "react-icons/go";
@@ -5,6 +16,9 @@ import { useNavigate } from "react-router-dom";
 import InventoryProposalList from "./InventoryProposalList";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaChartPie } from "react-icons/fa";
+import { contextVar } from '@/Components/context/contextVar'
+import { useContext } from 'react'
+import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 const PostProcurementHome = () => {
   const [activeTab, setActiveTab] = useState("inbox");
@@ -12,8 +26,16 @@ const PostProcurementHome = () => {
   const { api_fetchProcurementList, api_fetchProcurementDAList } =
     ProjectApiList();
 
+    const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar)
+
   return (
-    <div className='container mx-auto bg-white rounded border border-blue-500 mt-6'>
+
+    <>
+      <div className="">
+    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Inventory Proposal List"} />
+    </div>
+    
+    <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
       <div>
         <h1 className='text-[30px] text-right pb-2 pr-5 pt-2 font-bold'>
           Inventory Proposal
@@ -75,6 +97,7 @@ const PostProcurementHome = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 
