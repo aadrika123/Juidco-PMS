@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 //    Author - Almaash alam
 //    Version - 1.0
-//    Date - 11/05/2024
+//    Date - 22/05/2024
 //    Revision - 1
 //    Project - JUIDCO
 //    Component  - InventoryDashboard
@@ -25,6 +25,9 @@ import {TempAnimation, TempAnimation2,DeadStockAnimation,
   ReorderAnimation,
   IncreaseAnimation} from "@/Components/temp"
 import Lottie from 'react-lottie';
+import { contextVar } from '@/Components/context/contextVar'
+import { useContext } from 'react'
+import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 function InventoryDashboard() {
     const { labelStyle, headingStyle} = ThemeStyle()
@@ -37,6 +40,8 @@ function InventoryDashboard() {
     const [ulbData, setulbData] = useState()
     const [activeTab,setActiveTab] = useState('weekly')
 
+    const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar)
+ 
     // get details by to update
     useEffect(() => {
         fetchUlbData()
@@ -153,6 +158,10 @@ function InventoryDashboard() {
 
     return (
       <>
+
+<div className="">
+    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Inventory Dashboard"} />
+    </div>
         <div className="container mx-auto p-4 mt-6">
           <h1 className="font-bold  text-[2rem] pb-5">Inventory Dashboard</h1>
 

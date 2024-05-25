@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Almaash Alam
+//    Version - 1.0
+//    Date - 24/05/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - ReceivedInvtHomeDa
+//    DESCRIPTION - ReceivedInvtHomeDa
+//////////////////////////////////////////////////////////////////////////////////////
+
 // src/components/ReceivedInvtHomeDa.js
 import React, { useState } from "react";
 import { GoPlus } from "react-icons/go";
@@ -14,7 +24,7 @@ const ReceivedInvtHomeDa = () => {
     ProjectApiList();
 
   return (
-    <div className='container mx-auto bg-white rounded border border-blue-500 mt-6'>
+    <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
       <div>
         <h1 className='text-[30px] text-right pb-2 pr-5 pt-2 font-bold'>
           Inventory Proposal

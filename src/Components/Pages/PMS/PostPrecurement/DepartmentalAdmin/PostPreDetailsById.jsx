@@ -1,4 +1,14 @@
-import { useState, useEffect, useContext } from "react";
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Dimple Kumari
+//    Version - 1.0
+//    Date - 25/05/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - PostPreDetailsById
+//    DESCRIPTION - PostPreDetailsById
+/////////////////////////////////////////////////////////////////////////////
+
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -373,6 +383,12 @@ const PostPreDetailsById = (props) => {
 
   return (
     <div>
+      <div className=''>
+        <TitleBar
+          titleBarVisibility={titleBarVisibility}
+          titleText={"Inventory Proposal Details"}
+        />
+      </div>
       <div className=''>
         {/* Basic Details */}
         <div className='mt-6'>

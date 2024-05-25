@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Almaash alam
+//    Version - 1.0
+//    Date - 21/05/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - ViewInventoryDetailsById
+//    DESCRIPTION - ViewInventoryDetailsById     
+//////////////////////////////////////////////////////////////////////////////////////
+
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
@@ -8,8 +18,10 @@ import toast from 'react-hot-toast';
 import { MdTag } from "react-icons/md";
 import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 import { contextVar } from '@/Components/context/contextVar'
+// import { useContext } from 'react'
 import { CloudCog } from "lucide-react";
 import ForwardToDAConfirmationModal from "./FOrwardToDAConfirmationModal";
+import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 // import ListTable from "src/Components/Common/ListTable/ListTable";
 // import PaymentHistory from "src/Components/Common/PaymentHistory/PaymentHistory";
@@ -34,6 +46,8 @@ const   ViewInventoryDetailsById = (props) => {
 
      // Accessing context for notifications
      const { notify } = useContext(contextVar);
+
+     const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar)
 
   let buttonStyle = ' mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
 
@@ -130,6 +144,10 @@ const   ViewInventoryDetailsById = (props) => {
 
   return (
     <div>
+
+<div className="">
+    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Inventory Proposal Details"} />
+    </div>
       <div className=''>
         
         {/* Basic Details */}
@@ -143,18 +161,23 @@ const   ViewInventoryDetailsById = (props) => {
           </div>
           
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
+          
+
+
+          <div className="flex justify-between">
+        
+          {!applicationFullData?.remark?.length == 0 &&
+          <div className="pb-5 pl-8">
+            <h1 className="font-bold text-base text-green-600">Remark <span className="text-black">:</span> 
+            <span className="text-sm pt-2 font-light text-green-600"> {nullToNA(applicationFullData?.remark)}</span></h1>
+          </div>
+          }
 
           <div className="pl-8 text-[1rem] text-[#4338CA]">
             <h1 className="">Procurement request No <span className="text-black">:</span> 
             <span className="font-bold"> {nullToNA(applicationFullData?.order_no)}</span></h1>
           </div>
-
-          {!applicationFullData?.remark?.length == 0 &&
-          <div className="pb-5 pl-8">
-            <h1 className="font-bold text-base text-red-500">Remark <span className="text-black">:</span> 
-            <span className="text-sm pt-2 font-light text-red-500"> {nullToNA(applicationFullData?.remark)}</span></h1>
           </div>
-          }
           
           
             {/* <div className='flex flex-wrap justify-between gap-y-2 space-x-5 pl-4 mt-[1.5rem]'> */}
@@ -430,9 +453,20 @@ const   ViewInventoryDetailsById = (props) => {
                     Back 
                 </button>
 
+                {(applicationFullData?.status?.status == -1 || applicationFullData?.status?.status == -2 ) && (
+                <button
+                  className={buttonStyle}
+                  onClick={() => {
+                    navigate(`/da-edit-pre-procurement/${id}`);
+                  }}
+                >
+                  Edit
+                </button>
+              )}
+
                 {/* {applicationFullData?.status?.status == -2 && "sdfv" } */}
 
-                {page == 'inbox' && applicationFullData?.status?.status !== -2 &&
+                {page == 'inbox' && (applicationFullData?.status?.status == -1 || applicationFullData?.status?.status == -2 )  &&
                   <button
                     className=' p-2 border border-indigo-500 text-white text-xs sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]'
                     onClick={forwardDAModal}

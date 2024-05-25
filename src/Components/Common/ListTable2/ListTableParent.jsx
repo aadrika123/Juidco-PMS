@@ -340,7 +340,7 @@ const ListTableParent = (props) => {
         <div className='flex flex-col gap-6 w-full'>
           {/* filter and serachbar */}
           <div className='w-full flex justify-end '>
-            <div className='flex mb-2 pb-2 items-end max-sm:p-2 justify-end'>
+            <div className='flex items-end max-sm:p-2 justify-end'>
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className='border border-[#4338CA] text-[#4338CA] hover:bg-[#4338CA] hover:text-white px-4 py-2 rounded mr-2'

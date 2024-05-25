@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Almaash Alam
+//    Version - 1.0
+//    Date - 25/05/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - InventoryProposalList
+//    DESCRIPTION - InventoryProposalList
+//////////////////////////////////////////////////////////////////////////////////////
+
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";

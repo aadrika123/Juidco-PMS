@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Almaash Alam
+//    Version - 1.0
+//    Date - 22/05/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - ReceivedInvtHome
+//    DESCRIPTION - ReceivedInvtHome
+//////////////////////////////////////////////////////////////////////////////////////
+
 // src/components/ReceivedInvtHome.js
 import React, { useState } from "react";
 import { GoPlus } from "react-icons/go";
@@ -6,6 +16,9 @@ import { useNavigate } from "react-router-dom";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaChartPie } from "react-icons/fa";
 import ReceivedInvtList from "./ReceivedInvtList";
+import { contextVar } from '@/Components/context/contextVar'
+import { useContext } from 'react'
+import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 const ReceivedInvtHome = () => {
   const [activeTab, setActiveTab] = useState("inbox");
@@ -13,8 +26,15 @@ const ReceivedInvtHome = () => {
   const { api_fetchProcurementList, api_fetchProcurementDAList } =
     ProjectApiList();
 
+    const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar)
+
   return (
-    <div className='container mx-auto bg-white rounded border border-blue-500 mt-6'>
+    <>
+      <div className="">
+    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Inventory Proposal List"} />
+    </div>
+    
+    <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
       <div>
         <h1 className='text-[30px] text-right pb-2 pr-5 pt-2 font-bold'>
           Inventory Proposal
@@ -76,6 +96,7 @@ const ReceivedInvtHome = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 
