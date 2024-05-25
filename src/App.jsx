@@ -1,9 +1,3 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// 👉 Author      : R U Bharti
-// 👉 Component   : App.js
-// 👉 Status      : Open
-// 👉 Description : This screen is designed for waive off demand.
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // 👉 Importing Packages 👈
 import "animate.css";
@@ -167,7 +161,6 @@ function App() {
     { path: "/da-inventory-proposal", element: <InventoryProposalListTabsDa />}, 
     { path: "/da-edit-pre-procurement/:id", element: <EditPreProcurement /> },
     { path: "/da-viewInventoryDetailsById/:id/:page", element: <ViewInventoryDetailsByIdDa /> },
-    
     
   
     
