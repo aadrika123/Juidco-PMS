@@ -76,13 +76,13 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   };
 
   return (
-    <div className='relative  '>
+    <div className='relative h-full '>
       <div
         className={`h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out w-64 p-4 border border-gray-300 rounded`}
       >
         <div className='flex justify-between items-center'>
           <h2 className='text-xl font-thin text-gray-600 flex'>
-            <FiFilter className='pt-1 mt-.8' />
+            <FiFilter className=' mt-1 mr-2 text-blue-900' />
             Filters
           </h2>
           <button
@@ -96,7 +96,13 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
 
         <div>
           <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}
+            sx={{
+              border: "1px solid white",
+              boxShadow: "none", 
+                           
+            }}
+            >
               Category
             </AccordionSummary>
             <AccordionDetails>
@@ -115,7 +121,13 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
             </AccordionDetails>
           </Accordion>
           <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}
+            sx={{
+              border: "1px solid white",
+              boxShadow: "none", 
+                           
+            }}
+            >
               Sub Category
             </AccordionSummary>
             <AccordionDetails>
@@ -139,9 +151,10 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
             sx={{
               width: "100%",
               mt: "1rem",
+              backgroundColor: "#4338CA",
+              color: "white",
               ":hover": {
-                backgroundColor: "#4338CA", // Change this to your desired hover color
-                color: "white", // Optional: change text color on hover
+                backgroundColor: "#09319C", // Change this to your desired hover color
                 borderColor: "black", // Optional: change border color on hover
               },
             }}

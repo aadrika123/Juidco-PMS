@@ -50,9 +50,9 @@ const ProtectedRoutes = () => {
 
                     <div className='flex-1 h-full w-[60%] relative overflow-auto border md:border-none' onClick={() => window.innerWidth <= 763 && settoggleBar(false)}>
 
-                        <div className=" md:mt-0">
+                        {/* <div className=" md:mt-0">
                         <TitleBar titleBarVisibility={titleBarVisibility} titleText={titleText} />
-                        </div>
+                        </div> */}
 
                         {/* 👉 Checking Authentication to show outlets or navigate to login 👈 */}
                         <div className={` md:px-5 pt-3 `}>

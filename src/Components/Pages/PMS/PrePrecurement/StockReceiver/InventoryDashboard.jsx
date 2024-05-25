@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 //    Author - Almaash alam
 //    Version - 1.0
-//    Date - 11/05/2024
+//    Date - 21/05/2024
 //    Revision - 1
 //    Project - JUIDCO
 //    Component  - InventoryDashboard
@@ -25,6 +25,9 @@ import {TempAnimation, TempAnimation2,DeadStockAnimation,
   ReorderAnimation,
   IncreaseAnimation} from "@/Components/temp"
 import Lottie from 'react-lottie';
+import TitleBar from '@/Components/Pages/Others/TitleBar';
+import { contextVar } from '@/Components/context/contextVar'
+import { useContext } from 'react'
 
 function InventoryDashboard() {
     const { labelStyle, headingStyle} = ThemeStyle()
@@ -36,6 +39,8 @@ function InventoryDashboard() {
     const [agencyData, setagencyData] = useState()
     const [ulbData, setulbData] = useState()
     const [activeTab,setActiveTab] = useState('weekly')
+
+    const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar)
 
     // get details by to update
     useEffect(() => {
@@ -153,17 +158,23 @@ function InventoryDashboard() {
 
     return (
       <>
+
+<div className="">
+    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Inventory Dashboard"} />
+    </div>
         <div className="container mx-auto p-4 mt-6">
           <h1 className="font-bold  text-[2rem] pb-5">Inventory Dashboard</h1>
 
           <div className="flex justify-between space-x-3">
             <div className="bg-[#4338CA] text-white w-full rounded p-3 space-y-10 cursor-pointer">
+
               <div className="flex justify-between">
                 <h1 className="font-bold">Total Stock</h1>
                 <div className="justify-end">
                   <Lottie options={increaseAnimation} height={50} width={100} />
                 </div>
               </div>
+
               <div className="flex justify-between">
                 <h1 className="">
                   769 <span className="text-[0.8rem]">(3%)</span>
@@ -172,6 +183,7 @@ function InventoryDashboard() {
                   {/* <FaArrowCircleRight className="mt-2 text-[1.5rem] hover:text-blue-500" /> */}
                 </div>
               </div>
+              
             </div>
 
             <div className="bg-[#4338CA] text-white w-full rounded p-3 space-y-10 cursor-pointer">
@@ -219,7 +231,7 @@ function InventoryDashboard() {
           </div>
 
           {/* Charts */}
-          <div className="mt-10 bg-white rounded-lg border border-blue-500">
+          <div className="mt-10 bg-white rounded-lg shadow-xl border border-blue-500">
             <h1 className="font-bold  text-[1.5rem] pt-5 pl-5 pb-5">
               Inventory Performance
             </h1>

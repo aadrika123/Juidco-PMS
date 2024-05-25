@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////////////
 //    Author - Almaash Alam
 //    Version - 1.0
-//    Date - 30/09/2023
+//    Date - 22/05/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - TankerBookingScreen
-//    DESCRIPTION - TankerBookingScreen
+//    Component  - EditPreProcurement
+//    DESCRIPTION - EditPreProcurement
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useEffect, useState } from "react";
@@ -28,6 +28,9 @@ import {
   allowCharacterNumberInput,
 } from "@/Components/Common/PowerUps/PowerupFunctions";
 import ProjectApiList from "@/Components/api/ProjectApiList";
+import { contextVar } from '@/Components/context/contextVar'
+import { useContext } from 'react'
+import TitleBar from "@/Components/Pages/Others/TitleBar";
 // import PreProcurementCancelScreen from "./PreProcurementCancelScreen";
 
 // import { click } from "@testing-library/user-event/dist/click";
@@ -50,6 +53,9 @@ function EditPreProcurement(props) {
     api_fetchProcurementDADetailByIdinbox,
     api_editProcurement,
   } = ProjectApiList();
+
+  const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar) 
+
 
   const currentDate = new Date().toISOString().split("T")[0];
 
@@ -603,70 +609,90 @@ function EditPreProcurement(props) {
     {
       name == "isWithinUlb" && fetchLocationListByUlb(value);
     }
-
-    // {
-    //   name == "itemcategory" &&
-    //     formik.setFieldValue(
-    //       "itemcategory",
-    //       allowCharacterInput(value, formik.values.itemcategory, 100)
-    //     );
-    // }
-    // {
-    //   name == "brand" &&
-    //     formik.setFieldValue(
-    //       "brand",
-    //       allowMailInput(value, formik.values.brand, 100)
-    //     );
-    // }
-    // {
-    //   name == "processor" &&
-    //     formik.setFieldValue(
-    //       "processor",
-    //       allowMailInput(value, formik.values.processor, 100)
-    //     );
-    // }
-    // {
-    //   name == "ram" &&
-    //     formik.setFieldValue(
-    //       "ram",
-    //       allowMailInput(value, formik.values.ram, 100)
-    //     );
-    // }
-    // {
-    //   name == "operatingsystem" &&
-    //     formik.setFieldValue(
-    //       "operatingsystem",
-    //       allowMailInput(value, formik.values.operatingsystem, 100)
-    //     );
-    // }
-    // {
-    //   name == "Generation" &&
-    //     formik.setFieldValue(
-    //       "Generation",
-    //       allowMailInput(value, formik.values.Generation, 100)
-    //     );
-    // }
-    // {
-    //   name == "rom" &&
-    //     formik.setFieldValue(
-    //       "rom",
-    //       allowMailInput(value, formik.values.rom, 100)
-    //     );
-    // }
-    // {
-    //   name == "graphics" &&
-    //     formik.setFieldValue(
-    //       "graphics",
-    //       allowMailInput(value, formik.values.graphics, 100)
-    //     );
-    // }
-    // {
-    //   name == "other_description" &&
-    //     formik.setFieldValue(
-    //       "other_description",
-    //       allowMailInput(value, formik.values.other_description, 100)
-    //     );
-    // }
+    {
+      name == "colour" &&
+        formik.setFieldValue(
+          "colour",
+          allowCharacterInput(value, formik.values.colour,50)
+        );
+    }
+    {
+      name == "material" &&
+        formik.setFieldValue(
+          "material",
+          allowCharacterInput(value, formik.values.material,50)
+        );
+    }
+    {
+      name == "product_dimensions" &&
+        formik.setFieldValue(
+          "product_dimensions",
+          allowCharacterNumberInput(value, formik.values.product_dimensions,50)
+        );
+    }
+    {
+      name == "room_type" &&
+        formik.setFieldValue(
+          "room_type",
+          allowCharacterInput(value, formik.values.room_type,50)
+        );
+      }
+    {
+      name == "included_components" &&
+        formik.setFieldValue(
+          "included_components",
+          allowCharacterInput(value, formik.values.included_components,50)
+        );
+    }
+    {
+      name == "recomended_uses" &&
+        formik.setFieldValue(
+          "recomended_uses",
+          allowCharacterInput(value, formik.values.recomended_uses,50)
+        );
+    }
+    {
+      name == "bristle" &&
+        formik.setFieldValue(
+          "bristle",
+          allowCharacterInput(value, formik.values.bristle,50)
+        );
+    }
+    {
+      name == "size" &&
+        formik.setFieldValue(
+          "size",
+          allowNumberInput(value, formik.values.size, 100)
+        );
+    }
+    {
+      name == "weight" &&
+        formik.setFieldValue(
+          "weight",
+          allowNumberInput(value, formik.values.weight, 100)
+        );
+    }
+    {
+      name == "dimension" &&
+        formik.setFieldValue(
+          "dimension",
+          allowNumberInput(value, formik.values.dimension, 100)
+        );
+    }
+    {
+      name == "number_of_items" &&
+        formik.setFieldValue(
+          "number_of_items",
+          allowNumberInput(value, formik.values.number_of_items,100)
+        );
+    }
+    {
+      name == "brand" &&
+        formik.setFieldValue(
+          "brand",
+          allowCharacterNumberInput(value, formik.values.brand,50)
+        );
+    }
     {
       name == "quantity" &&
         formik.setFieldValue(
@@ -746,7 +772,11 @@ function EditPreProcurement(props) {
   // }
   return (
     <>
-      <div className={`${formStyle} border border-blue-500 mt-7`}>
+
+    <div className="">
+    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Edit Pre Procurement"} />
+    </div>
+      <div className={`${formStyle} border border-blue-500 mt-7 shadow-xl`}>
         <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
           <div className="">
             <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
@@ -778,6 +808,7 @@ function EditPreProcurement(props) {
                         fetchSubCategory(e.target.value);
                         
                       }}
+                      disabled="true"
                     >
                       {category?.map((items, index) => (
                         <option key={index} value={items?.id}>

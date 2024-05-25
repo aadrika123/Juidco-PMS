@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////////////
-//    Author - Almaash Alam
+//    Author - Almaash alam
 //    Version - 1.0
-//    Date - 30/09/2023
+//    Date - 21/05/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - TankerBookingScreen
-//    DESCRIPTION - TankerBookingScreen
+//    Component  - AddPreProcurement
+//    DESCRIPTION - AddPreProcurement     
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useEffect, useState } from "react";
@@ -30,6 +30,10 @@ import {
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import PreProcurementCancelScreen from "./PreProcurementCancelScreen";
 import SuccessModal from "./SuccessModal";
+import { contextVar } from '@/Components/context/contextVar'
+import { useContext } from 'react'
+import TitleBar from "@/Components/Pages/Others/TitleBar";
+
 // import { onChange } from "react-toastify/dist/core/store";
 
 // import { click } from "@testing-library/user-event/dist/click";
@@ -38,6 +42,8 @@ import SuccessModal from "./SuccessModal";
 function AddPreProcurement(props) {
   const { saveButtonColor, inputStyle, labelStyle, headingStyle, formStyle } =
     ThemeStyle();
+
+    const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar)
 
   const {
     api_addProcurement,
@@ -188,6 +194,7 @@ function AddPreProcurement(props) {
     brand: "",
     weight: "",
     recommendedUsedProducts: "",
+    dimension: "",
 
     // maintenanceAndRepair
     number_of_items: "",
@@ -216,6 +223,12 @@ function AddPreProcurement(props) {
     },
     validationSchema,
   });
+
+// =========================================================
+
+  
+
+  // /===========================================================
 
   const furniture = [
     { label: "Number of Items", name: "number_of_items", type:"number" },
@@ -505,10 +518,87 @@ function AddPreProcurement(props) {
       name == "isWithinUlb" && fetchLocationListByUlb(value);
     }
     {
+      name == "colour" &&
+        formik.setFieldValue(
+          "colour",
+          allowCharacterInput(value, formik.values.colour,50)
+        );
+    }
+    {
+      name == "material" &&
+        formik.setFieldValue(
+          "material",
+          allowCharacterInput(value, formik.values.material,50)
+        );
+    }
+    {
+      name == "product_dimensions" &&
+        formik.setFieldValue(
+          "product_dimensions",
+          allowCharacterNumberInput(value, formik.values.product_dimensions,50)
+        );
+    }
+    {
+      name == "room_type" &&
+        formik.setFieldValue(
+          "room_type",
+          allowCharacterInput(value, formik.values.room_type,50)
+        );
+      }
+    {
+      name == "included_components" &&
+        formik.setFieldValue(
+          "included_components",
+          allowCharacterInput(value, formik.values.included_components,50)
+        );
+    }
+    {
+      name == "recomended_uses" &&
+        formik.setFieldValue(
+          "recomended_uses",
+          allowCharacterInput(value, formik.values.recomended_uses,50)
+        );
+    }
+    {
+      name == "bristle" &&
+        formik.setFieldValue(
+          "bristle",
+          allowCharacterInput(value, formik.values.bristle,50)
+        );
+    }
+    {
+      name == "size" &&
+        formik.setFieldValue(
+          "size",
+          allowNumberInput(value, formik.values.size, 100)
+        );
+    }
+    {
+      name == "weight" &&
+        formik.setFieldValue(
+          "weight",
+          allowNumberInput(value, formik.values.weight, 100)
+        );
+    }
+    {
+      name == "dimension" &&
+        formik.setFieldValue(
+          "dimension",
+          allowNumberInput(value, formik.values.dimension, 100)
+        );
+    }
+    {
+      name == "number_of_items" &&
+        formik.setFieldValue(
+          "number_of_items",
+          allowNumberInput(value, formik.values.number_of_items,100)
+        );
+    }
+    {
       name == "brand" &&
         formik.setFieldValue(
-          "quantity",
-          allowCharacterInput(value, formik.values.brand)
+          "brand",
+          allowCharacterNumberInput(value, formik.values.brand,50)
         );
     }
     {
@@ -571,14 +661,19 @@ function AddPreProcurement(props) {
   }
   return (
     <>
-      <div className={`${formStyle} border border-blue-500 mt-6`}>
+
+    <div className="">
+    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Pre Procurement Proposal"} />
+    </div>
+
+      <div className={`${formStyle} border border-blue-500 mt-6 shadow-lg`}>
         <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
           <div className=''>
             <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
               <div className='col-span-12  w-full mb-20'>
-                <div className=' ml-4 p-2 mt-4'>
-                  <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
-                    Pre Procurement Proposal
+                <div className=' ml-4 p-2'>
+                  <h1 className={`${headingStyle} text-right pb-5 p-6`}>
+                    Add Pre Procurement
                   </h1>
                   {/* <h1 className={`${labelStyle} `}>
                     Maintaining a healthy home: Confirming my septic tank
@@ -784,4 +879,4 @@ function AddPreProcurement(props) {
   );
 }
 
-export default AddPreProcurement;
+export default AddPreProcurement 
