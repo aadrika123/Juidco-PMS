@@ -5,7 +5,7 @@
 //    Revision - 1
 //    Project - JUIDCO
 //    Component  - PostPreDetailsById
-//    DESCRIPTION - PostPreDetailsById     
+//    DESCRIPTION - PostPreDetailsById
 /////////////////////////////////////////////////////////////////////////////
 
 import { useState, useEffect } from "react";
@@ -20,21 +20,15 @@ import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 import { contextVar } from "@/Components/context/contextVar";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
-// import { contextVar } from '@/Components/context/contextVar'
-import { useContext } from 'react'
-import TitleBar from "@/Components/Pages/Others/TitleBar";
-
 import * as yup from "yup";
 import PreProcurementCancelScreen from "./PostProcurementCancelScreen";
 import PreProcurementSubmittedScreen from "./PreProcurementSubmittedScreen";
 
 import { FaDivide } from "react-icons/fa";
-// import StockReceiverModal from "./StockReceiverModal";
-// import ReleaseTenderModal from "./ReleaseTenderModal";
-// import DaRejectModal from "./DaRejectModal";
-
-// import ListTable from "src/Components/Common/ListTable/ListTable";
-// import PaymentHistory from "src/Components/Common/PaymentHistory/PaymentHistory";
+import {
+  allowCharacterInput,
+  allowNumberInput,
+} from "@/Components/Common/PowerUps/PowerupFunctions";
 
 const PostPreDetailsById = (props) => {
   const navigate = useNavigate();
@@ -50,11 +44,13 @@ const PostPreDetailsById = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const [payload, setPayload] = useState({});
   const [remark, setRemark] = useState("");
   const [isGstAdded, setIsGstAdded] = useState(false);
 
   const {
     api_fetchPostProcurementDetailById,
+    api_postPostProcurementDaAdditionalDetails,
     api_fetchOutboxProcurementDetailById,
     api_postBackToSR,
     api_postReleaseTender,
@@ -62,12 +58,7 @@ const PostPreDetailsById = (props) => {
     api_postDaEditTender,
   } = ProjectApiList();
 
-  const { saveButtonColor, inputStyle, labelStyle, headingStyle, formStyle } =
-    ThemeStyle();
-
-  // Accessing context for notifications
-  const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText, notify } = useContext(contextVar)
-
+  const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
 
   let buttonStyle =
     "  pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -75,8 +66,76 @@ const PostPreDetailsById = (props) => {
   let buttonStyle2 =
     " mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
-  let buttonStyle3 =
-    " pb-2 pl-4 pr-4 pt-2 border border-yellow-400 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-yellow-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-yellow-700";
+  // formik
+  const validationSchema = yup.object({
+    supplier_name: yup.string().required("Supplier name is required"),
+    gst_no: yup.string().required("Gst number is required"),
+    final_rate: yup.string().required("final rate is required"),
+    // gst: yup.number().required("Gst percentage is required"),
+    // rate: yup.number().required("Rate is required"),
+    total_quantity: yup.number().required("Total Quantity is required"),
+    // total_price: yup.number().required("Total Price is required"),
+    unit_price: yup.number().required("Unit Price is required"),
+  });
+
+  const initialValues = {
+    supplier_name: "",
+    gst_no: "",
+    final_rate: "",
+    gst: "",
+    total_quantity: applicationFullData?.pre_procurement?.quantity,
+    unit_price: "",
+    // is_gst_added: false,
+    total_price: "",
+  };
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      console.log("procurement==============>>", values);
+      // submitForm(values);
+      setPayload(values);
+      setIsModalOpen(true);
+    },
+    validationSchema,
+  });
+
+  // intitial value
+
+  const handleOnChange = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    console.log("target value checked", e.target.checked);
+    {
+      name == "is_gst_added" && gstcheckboxHandler();
+    }
+    {
+      name == "final_rate" && calculateTotalRate(value);
+    }
+    {
+      name == "final_rate" &&
+        formik.setFieldValue(
+          "final_rate",
+          allowNumberInput(value, formik.values.final_rate, 100)
+        );
+    }
+    {
+      name == "supplier_name" &&
+        formik.setFieldValue(
+          "supplier_name",
+          allowCharacterInput(value, formik.values.supplier_name, 30)
+        );
+    }
+    {
+      name == "gst" &&
+        formik.setFieldValue(
+          "gst",
+          allowNumberInput(value, formik.values.gst, 15)
+        );
+    }
+  };
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
@@ -97,6 +156,48 @@ const PostPreDetailsById = (props) => {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
           setTableData(response?.data?.data?.tran_dtls);
+          setisLoading(false);
+        } else {
+          toast.error("Error while getting details...");
+          seterroState(true);
+        }
+      })
+      .catch(function (error) {
+        console.log("==2 details by id error...", error);
+        toast.error("Error while getting details...");
+        seterroState(true);
+        setisLoading(false);
+      });
+  };
+
+  //on form submit additional details
+  const submitAdditionalDetails = () => {
+    let url;
+    seterroState(false);
+    setisLoading(true);
+
+    if (page == "inbox") {
+      url = api_postPostProcurementDaAdditionalDetails;
+    }
+    // if (page == "outbox") {
+    //   url = api_fetchOutboxProcurementDetailById;
+    // }
+
+    let body = {
+      ...payload,
+      id,
+      order_no: applicationFullData.order_no,
+      is_gst_added: isGstAdded,
+    };
+    console.log(body, "body======>>>");
+
+    AxiosInterceptors.post(`${url}`, { ...body }, ApiHeader())
+      .then(function (response) {
+        console.log("view post da details by id...", response?.data?.data);
+        if (response?.data?.status) {
+          toast.success("Successfully Data sent!!");
+          // setapplicationFullData(response?.data?.data);
+          // setTableData(response?.data?.data?.tran_dtls);
           setisLoading(false);
         } else {
           toast.error("Error while getting details...");
@@ -215,89 +316,28 @@ const PostPreDetailsById = (props) => {
       });
   };
 
-  const validationSchema = yup.object({
-    supplier_name: yup.string().required("Supplier name is required"),
-    gst_no: yup.string().required("Gst number is required"),
-    final_rate: yup.string().required("final rate is required"),
-    gst: yup.number().required("Gst percentage is required"),
-    rate: yup.number().required("Rate is required"),
-    // quantity: yup.number().required("Quantity is required"),
-    total_quantity: yup.number().required("Total Quantity is required"),
-    total_price: yup.number().required("Total Price is required"),
-    unit_price: yup.number().required("Unit Price is required"),
-  });
-
-  // intitial value
-  const initialValues = {
-    supplier_name: "",
-    gst_no: "",
-    final_rate: "",
-    gst: "",
-    total_quantity: applicationFullData?.pre_procurement?.quantity,
-    unit_price: "",
-    is_gst_added: false,
-  };
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    enableReinitialize: true,
-    onSubmit: (values) => {
-      console.log("click");
-      console.log("procurement==============>>", values);
-      // submitForm(values);
-      setIsModalOpen(true);
-      setFormData(values);
-    },
-    // validationSchema,
-  });
-
-  const handleOnChange = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-
-    console.log("target value checked", e.target.checked);
-    {
-      name == "is_gst_added" && gstcheckboxHandler();
-    }
-    {
-      name == "final_rate" && calculateTotalRate(value);
-    }
-    // {
-    //   name == "quantity" &&
-    //     formik.setFieldValue(
-    //       "quantity",
-    //       allowNumberInput(value, formik.values.quantity, 100)
-    //     );
-    // }
-    // {
-    //   name == "rate" &&
-    //     formik.setFieldValue(
-    //       "rate",
-    //       allowNumberInput(value, formik.values.rate, 100)
-    //     );
-    // }
-    // {
-    //   name == "totalRate" &&
-    //     formik.setFieldValue(
-    //       "totalRate",
-    //       allowNumberInput(value, formik.values.totalRate, 100)
-    //     );
-    // }
-  };
-
   const calculateTotalRate = (finalRate, gstVal, state) => {
-    console.log(state, "state===========");
     let totalPrice = Number(finalRate) || 0;
     const totalQuantity = Number(formik.values.total_quantity) || 0;
+    let roundedGstValue;
+    if (state == true && (formik.values.gst || gstVal) > 0) {
+      //calculating gst value
+      const gstValue =
+        (1 + Number(formik.values.gst) / 100) * formik.values.final_rate;
+      roundedGstValue = Math.round(gstValue * 100) / 100;
 
-    if (isGstAdded == true && (formik.values.gst || gstVal) > 0) {
-      totalPrice = totalPrice + (Number(formik.values.gst) / 100) * totalPrice;
-      let perValue = Number(totalPrice) / totalQuantity;
+      //calculating unitprice value
+      let unitPrice = Number(roundedGstValue) / Number(totalQuantity);
+      const roundedUnitPrice = Math.round(unitPrice * 100) / 100;
 
-      formik.setFieldValue("unit_price", perValue);
+      //setting values
+      formik.setFieldValue("total_price", roundedGstValue);
+      formik.setFieldValue("unit_price", roundedUnitPrice);
     } else {
-      const unitRate = totalPrice / totalQuantity;
-      formik.setFieldValue("unit_price", unitRate);
+      formik.setFieldValue("total_price", totalPrice);
+      let unitPrice = Number(totalPrice) / Number(totalQuantity);
+      const roundedUnitPrice = Math.round(unitPrice * 100) / 100;
+      formik.setFieldValue("unit_price", roundedUnitPrice);
     }
   };
 
@@ -331,7 +371,10 @@ const PostPreDetailsById = (props) => {
   if (isModalOpen) {
     return (
       <>
-        <PreProcurementSubmittedScreen setIsModalOpen={setIsModalOpen} />
+        <PreProcurementSubmittedScreen
+          setIsModalOpen={setIsModalOpen}
+          submitAdditionalDetails={submitAdditionalDetails}
+        />
       </>
     );
   }
@@ -340,9 +383,12 @@ const PostPreDetailsById = (props) => {
 
   return (
     <div>
-     <div className="">
-    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Inventory Proposal Details"} />
-    </div>
+      <div className=''>
+        <TitleBar
+          titleBarVisibility={titleBarVisibility}
+          titleText={"Inventory Proposal Details"}
+        />
+      </div>
       <div className=''>
         {/* Basic Details */}
         <div className='mt-6'>
@@ -550,10 +596,6 @@ const PostPreDetailsById = (props) => {
                   </div>
                 </div>
               )}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold '>
@@ -784,14 +826,14 @@ const PostPreDetailsById = (props) => {
                           <div className='flex space-x-5'>
                             <input
                               type='number'
-                              name='final_rate'
+                              name='total_price'
                               className={`${inputStyle} inline-block w-full relative`}
                               // onChange={(e) => {
                               //   formik.handleChange(e);
                               //   calculateTotalRate();
                               // }}
                               disabled
-                              value={formik.values.final_rate}
+                              value={formik.values.total_price}
                               placeholder='Total Price'
                             />
                             <FaDivide className='text-[4rem] pb-5' />
