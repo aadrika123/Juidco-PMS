@@ -51,7 +51,7 @@ const SideBar = (props) => {
       <header
         className={
           (toggleBar ? open1 : close1) +
-          ` relative select-none transition-all duration-200 h-full text-${tcolor}-800 pt-2 border-r border-${bg}-200`
+          ` relative select-none transition-all duration-200 h-full text-${tcolor}-800 pt-2 border-r border-${bg}-200 shadow-2xl`
         }
       >
         {
