@@ -40,8 +40,7 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 // import { C } from "dist/assets/index-1a86ca5c";
 
 function AddPreProcurement(props) {
-  const { saveButtonColor, inputStyle, labelStyle, headingStyle, formStyle } =
-    ThemeStyle();
+  const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
 
     const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar)
 
@@ -68,10 +67,7 @@ function AddPreProcurement(props) {
   const [responseScreen, setresponseScreen] = useState();
   const [ulbData, setulbData] = useState();
   const [wardList, setwardList] = useState();
-  const [locationList, setlocationList] = useState();
-  const [capacityData, setcapacityData] = useState();
   const [ulbAreaVal, setulbAreaVal] = useState();
-  const [buildTypeVal, setbuildTypeVal] = useState();
   const [errRes, setErrRes] = useState();
   // const [ulbdata2, setulbData2] =useState();
   const [ulbId, setulbId] = useState();
@@ -89,7 +85,6 @@ function AddPreProcurement(props) {
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [formData, setFormData] = useState();
-  const [categoryName, setCategoryName] = useState();
   const [categorySelected, setCategorySelected] = useState([]);
   const [orderNo, setOrderNo] = useState();
 
@@ -231,46 +226,50 @@ function AddPreProcurement(props) {
   // /===========================================================
 
   const furniture = [
-    { label: "Number of Items", name: "number_of_items", type:"number" },
-    { label: "Brand", name: "brand", type:"text" },
-    { label: "Colour", name: "colour", type:"text" },
-    { label: "Material", name: "material", type:"text" },
-    { label: "Product Dimensions", name: "product_dimensions", type:"text" },
-    { label: "Room Type", name: "room_type", type:"text" },
-    { label: "Included Components", name: "included_components", type:"text" },
-    { label: "Size", name: "size", type:"number" },
+    { label: "Number of Items", name: "number_of_items", type: "number" },
+    { label: "Brand", name: "brand", type: "text" },
+    { label: "Colour", name: "colour", type: "text" },
+    { label: "Material", name: "material", type: "text" },
+    { label: "Product Dimensions", name: "product_dimensions", type: "text" },
+    { label: "Room Type", name: "room_type", type: "text" },
+    { label: "Included Components", name: "included_components", type: "text" },
+    { label: "Size", name: "size", type: "text" },
   ];
 
   const cleaningSupplies = [
-    { label: "Number of Items", name: "number_of_items", type:"number" },
-    { label: "Brand", name: "brand", type:"text" },
-    { label: "Colour", name: "colour", type:"text" },
-    { label: "Recommended Uses For Product", name: "recomended_uses", type:"text" },
-    { label: "Handle Material	", name: "material", type:"text" },
-    { label: "Bristle", name: "bristle", type:"text" },
+    { label: "Number of Items", name: "number_of_items", type: "number" },
+    { label: "Brand", name: "brand", type: "text" },
+    { label: "Colour", name: "colour", type: "text" },
+    {
+      label: "Recommended Uses For Product",
+      name: "recomended_uses",
+      type: "text",
+    },
+    { label: "Handle Material	", name: "material", type: "text" },
+    { label: "Bristle", name: "bristle", type: "text" },
   ];
 
   const safetySecurity = [
-    { label: "Number of Items", name: "number_of_items", type:"number" },
-    { label: "Brand", name: "brand", type:"text" },
-    { label: "Weight", name: "weight", type:"number" },
-    { label: "Dimension", name: "dimension", type:"text" },
+    { label: "Number of Items", name: "number_of_items", type: "number" },
+    { label: "Brand", name: "brand", type: "text" },
+    { label: "Weight", name: "weight", type: "number" },
+    { label: "Dimension", name: "dimension", type: "text" },
   ];
 
   const maintenanceAndRepair = [
-    { label: "Number of Items", name: "number_of_items", type:"number" },
-    { label: "Brand", name: "brand", type:"text" },
-    { label: "Colour", name: "colour", type:"text" },
-    { label: "Material	", name: "material", type:"text" },
-    { label: "Dimension", name: "dimension", type:"text" },
-    { label: "Items Weight", name: "weight", type:"number" },
+    { label: "Number of Items", name: "number_of_items", type: "number" },
+    { label: "Brand", name: "brand", type: "text" },
+    { label: "Colour", name: "colour", type: "text" },
+    { label: "Material	", name: "material", type: "text" },
+    { label: "Dimension", name: "dimension", type: "text" },
+    { label: "Items Weight", name: "weight", type: "number" },
   ];
 
   const uniform = [
-    { label: "Number of Items", name: "number_of_items", type:"number" },
-    { label: "Brand", name: "brand", type:"text" },
-    { label: "Colour", name: "colour", type:"text" },
-    { label: "Material	", name: "material", type:"text" },
+    { label: "Number of Items", name: "number_of_items", type: "number" },
+    { label: "Brand", name: "brand", type: "text" },
+    { label: "Colour", name: "colour", type: "text" },
+    { label: "Material	", name: "material", type: "text" },
   ];
 
   // ══════════════════════════════║🔰calculate the total rate🔰║═══════════════════════════════════
@@ -404,6 +403,7 @@ function AddPreProcurement(props) {
 
     url = api_addProcurement;
     requestBody = {
+      ulb_id: ulbId,
       category: formData?.itemcategory,
       subcategory: formData?.itemsubcategory,
 
@@ -422,7 +422,7 @@ function AddPreProcurement(props) {
       size: formData?.size,
       recomended_uses: formData?.recomended_uses,
       bristle: formData?.bristle,
-      weight: formData?.weight,
+      weight: String(formData?.weight),
       number_of_items: Number(formData?.number_of_items),
       other_description: formData?.other_description,
 
@@ -457,6 +457,8 @@ function AddPreProcurement(props) {
       })
       .catch(function (error) {
         console.log("errorrr.... ", error);
+        setisLoading(false);
+        notify("Something went wrong!");
         setdeclarationStatus(false);
       });
   };
@@ -757,7 +759,6 @@ function AddPreProcurement(props) {
                   </div>
 
                   {categorySelected?.map((obj) => (
-
                     <div className=' flex flex-wrap w-1/2'>
                       <div class='px-4 w-full mb-4'>
                         <label className={`${labelStyle} inline-block mb-2`}>
@@ -779,7 +780,6 @@ function AddPreProcurement(props) {
                         </p>
                       </div>
                     </div>
-
                   ))}
 
                   <div class='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4'>
