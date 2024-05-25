@@ -466,7 +466,7 @@ const   ViewInventoryDetailsById = (props) => {
 
                 {/* {applicationFullData?.status?.status == -2 && "sdfv" } */}
 
-                {page == 'inbox' && (applicationFullData?.status?.status == -1 || applicationFullData?.status?.status == -2 )  &&
+                {page == 'inbox'  &&
                   <button
                     className=' p-2 border border-indigo-500 text-white text-xs sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]'
                     onClick={forwardDAModal}
