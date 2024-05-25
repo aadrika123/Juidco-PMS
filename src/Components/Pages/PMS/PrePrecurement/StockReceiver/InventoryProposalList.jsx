@@ -36,10 +36,6 @@ function InventoryProposalList(props) {
   const [requestBody, setRequestBody] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
-  const [activeButton, setActiveButton] = useState("inbox");
-
-  let testDate = new Date().toLocaleDateString("in-IN");
-  let todayDate = moment(testDate).format("DD-MM-YYYY");
 
   const validationSchema = yup.object({
     // fromDate: yup.string().required("Field Required"),
@@ -118,7 +114,7 @@ function InventoryProposalList(props) {
             {cell.row.values.status.status == 2 && "Released for Tender"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 3 && "Stock Received"}
+            {cell.row.values.status.status == 3 && "Supplier Assigned"}
           </p>
           <p className='font-bold text-green-500'>
             {cell.row.values.status.status == 4 && "Stock Verified"}
