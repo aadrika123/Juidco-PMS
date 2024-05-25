@@ -5,7 +5,7 @@
 //    Revision - 1
 //    Project - JUIDCO
 //    Component  - AddPreProcurement
-//    DESCRIPTION - AddPreProcurement     
+//    DESCRIPTION - AddPreProcurement
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useEffect, useState } from "react";
@@ -30,8 +30,8 @@ import {
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import PreProcurementCancelScreen from "./PreProcurementCancelScreen";
 import SuccessModal from "./SuccessModal";
-import { contextVar } from '@/Components/context/contextVar'
-import { useContext } from 'react'
+import { contextVar } from "@/Components/context/contextVar";
+import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 // import { onChange } from "react-toastify/dist/core/store";
@@ -42,7 +42,8 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 function AddPreProcurement(props) {
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
 
-    const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar)
+  const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } =
+    useContext(contextVar);
 
   const {
     api_addProcurement,
@@ -219,9 +220,7 @@ function AddPreProcurement(props) {
     validationSchema,
   });
 
-// =========================================================
-
-  
+  // =========================================================
 
   // /===========================================================
 
@@ -523,49 +522,49 @@ function AddPreProcurement(props) {
       name == "colour" &&
         formik.setFieldValue(
           "colour",
-          allowCharacterInput(value, formik.values.colour,50)
+          allowCharacterInput(value, formik.values.colour, 50)
         );
     }
     {
       name == "material" &&
         formik.setFieldValue(
           "material",
-          allowCharacterInput(value, formik.values.material,50)
+          allowCharacterInput(value, formik.values.material, 50)
         );
     }
     {
       name == "product_dimensions" &&
         formik.setFieldValue(
           "product_dimensions",
-          allowCharacterNumberInput(value, formik.values.product_dimensions,50)
+          allowCharacterNumberInput(value, formik.values.product_dimensions, 50)
         );
     }
     {
       name == "room_type" &&
         formik.setFieldValue(
           "room_type",
-          allowCharacterInput(value, formik.values.room_type,50)
+          allowCharacterInput(value, formik.values.room_type, 50)
         );
-      }
+    }
     {
       name == "included_components" &&
         formik.setFieldValue(
           "included_components",
-          allowCharacterInput(value, formik.values.included_components,50)
+          allowCharacterInput(value, formik.values.included_components, 50)
         );
     }
     {
       name == "recomended_uses" &&
         formik.setFieldValue(
           "recomended_uses",
-          allowCharacterInput(value, formik.values.recomended_uses,50)
+          allowCharacterInput(value, formik.values.recomended_uses, 50)
         );
     }
     {
       name == "bristle" &&
         formik.setFieldValue(
           "bristle",
-          allowCharacterInput(value, formik.values.bristle,50)
+          allowCharacterInput(value, formik.values.bristle, 50)
         );
     }
     {
@@ -593,14 +592,14 @@ function AddPreProcurement(props) {
       name == "number_of_items" &&
         formik.setFieldValue(
           "number_of_items",
-          allowNumberInput(value, formik.values.number_of_items,100)
+          allowNumberInput(value, formik.values.number_of_items, 100)
         );
     }
     {
       name == "brand" &&
         formik.setFieldValue(
           "brand",
-          allowCharacterNumberInput(value, formik.values.brand,50)
+          allowCharacterNumberInput(value, formik.values.brand, 50)
         );
     }
     {
@@ -663,10 +662,12 @@ function AddPreProcurement(props) {
   }
   return (
     <>
-
-    <div className="">
-    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Pre Procurement Proposal"} />
-    </div>
+      <div className=''>
+        <TitleBar
+          titleBarVisibility={titleBarVisibility}
+          titleText={"Pre Procurement Proposal"}
+        />
+      </div>
 
       <div className={`${formStyle} border border-blue-500 mt-6 shadow-lg`}>
         <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
@@ -879,4 +880,4 @@ function AddPreProcurement(props) {
   );
 }
 
-export default AddPreProcurement 
+export default AddPreProcurement;
