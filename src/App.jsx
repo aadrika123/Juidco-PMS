@@ -162,7 +162,6 @@ function App() {
     { path: "/da-edit-pre-procurement/:id", element: <EditPreProcurement /> },
     { path: "/da-viewInventoryDetailsById/:id/:page", element: <ViewInventoryDetailsByIdDa /> },
     
-    
   
     
      /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
