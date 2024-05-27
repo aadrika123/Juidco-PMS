@@ -8,7 +8,7 @@
 //    DESCRIPTION - PostPreDetailsById
 /////////////////////////////////////////////////////////////////////////////
 
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -24,11 +24,13 @@ import * as yup from "yup";
 import PreProcurementCancelScreen from "./PostProcurementCancelScreen";
 import PreProcurementSubmittedScreen from "./PreProcurementSubmittedScreen";
 
+
 import { FaDivide } from "react-icons/fa";
 import {
   allowCharacterInput,
   allowNumberInput,
 } from "@/Components/Common/PowerUps/PowerupFunctions";
+import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 const PostPreDetailsById = (props) => {
   const navigate = useNavigate();
@@ -60,6 +62,8 @@ const PostPreDetailsById = (props) => {
 
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
 
+  const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText ,notify} = useContext(contextVar)
+
   let buttonStyle =
     "  pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
     
@@ -88,13 +92,14 @@ const PostPreDetailsById = (props) => {
     unit_price: "",
     // is_gst_added: false,
     total_price: "",
+
   };
 
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log("procurement==============>>", values);
+      console.log("Additional details==============>>", values);
       // submitForm(values);
       setPayload(values);
       setIsModalOpen(true);
@@ -325,11 +330,11 @@ const PostPreDetailsById = (props) => {
       //calculating gst value
       const gstValue =
         (1 + Number(formik.values.gst) / 100) * formik.values.final_rate;
-      roundedGstValue = Math.round(gstValue * 100) / 100;
+      roundedGstValue = Math.floor(gstValue * 100) / 100;
 
       //calculating unitprice value
       let unitPrice = Number(roundedGstValue) / Number(totalQuantity);
-      const roundedUnitPrice = Math.round(unitPrice * 100) / 100;
+      const roundedUnitPrice = Math.floor(unitPrice * 100) / 100;
 
       //setting values
       formik.setFieldValue("total_price", roundedGstValue);
@@ -337,7 +342,7 @@ const PostPreDetailsById = (props) => {
     } else {
       formik.setFieldValue("total_price", totalPrice);
       let unitPrice = Number(totalPrice) / Number(totalQuantity);
-      const roundedUnitPrice = Math.round(unitPrice * 100) / 100;
+      const roundedUnitPrice = Math.floor(unitPrice * 100) / 100;
       formik.setFieldValue("unit_price", roundedUnitPrice);
     }
   };
@@ -700,14 +705,9 @@ const PostPreDetailsById = (props) => {
                       <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
                         Inventory Details
                       </h1>
-                      {/* <h1 className={`${labelStyle} `}>
-                          Maintaining a healthy home: Confirming my septic tank
-                          service.
-                        </h1> */}
+                     
                     </div>
-                    {/* <div className="hidden md:block lg:block">
-                        <hr className="border w-full border-gray-200" />
-                      </div> */}
+                    
 
                     <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
                       <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
@@ -792,7 +792,22 @@ const PostPreDetailsById = (props) => {
                             onChange={formik.handleChange}
                             value={formik.values.gst}
                           />
+
+                          {/* <select
+                            {...formik.getFieldProps("itemsubcategory")}
+                            className={`${inputStyle} inline-block w-full relative`}
+                            onChange={formik.handleChange}
+                          >
+                            <option selected>select</option>
+                            <option select>5%</option>
+                            <option select>12%</option>
+                            <option select>18%</option>
+                            <option select>28%</option>
+
+                          </select> */}
                           <div className='flex mt-2'>
+
+                          
                             <input
                               type='checkbox'
                               checked={isGstAdded}
