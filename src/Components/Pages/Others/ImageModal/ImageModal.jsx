@@ -9,56 +9,41 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
-// import PaymentDetailsSepticTank from "./PaymentDetailsSepticTank";
-import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
 import cancel from "@/Components/assets/user copy.png";
-import { useNavigate } from "react-router-dom";
 
 function ImageModal(props) {
-  const navigate = useNavigate();
-  const { formStyle } = ThemeStyleTanker();
-
   const [openPaymentModal, setOpenPaymentModal] = useState(0);
 
-  // console.log("Res Dataaaaaaaa", props?.responseScreenData);
-
-  // const handlePayment = () => {
-  //   console.log("clicked====pay button");
-  //   navigate(
-  //     `/tanker-payment/${props?.responseScreenData?.data?.applicationId}/septicTanker`
-  //   );
-  // };
-
-  // const handleClick = () => {
-  //   window.location.reload();
-  //   // props?.submitForm()
-  //   // navigate(`/add-pre-procurement`);
-  // };
- 
   const handleCancilClick = () => {
-    props?.setImageModal(false)
+    props?.setImageModal(false);
     // navigate(`/add-pre-procurement`);
     // window.location.reload();
   };
   return (
     <>
-      
-    
-
-      <div className={`fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-opacity ${props.imageModal ? 'opacity-100' : 'opacity-0 pointer-events-none'} z-[1000]`}>
-      <div className={`bg-white rounded-lg p-8 shadow-lg relative transform transition-transform ${props.imageModal ? 'scale-100 modal-pop' : 'scale-95'}`}>
-        <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-700" onClick={handleCancilClick}>
-          <p className="text-3xl pr-3">&times;</p>
-        </button>
-        <img
-            className="max-w-full h-[8rem] animate-wiggle mb-5 "
+      <div
+        className={`fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-opacity ${
+          props.imageModal ? "opacity-100" : "opacity-0 pointer-events-none"
+        } z-[1000]`}
+      >
+        <div
+          className={`bg-white rounded-lg p-8 shadow-lg relative transform transition-transform ${
+            props.imageModal ? "scale-100 modal-pop" : "scale-95"
+          }`}
+        >
+          <button
+            className='absolute top-2 right-2 text-gray-500 hover:text-gray-700'
+            onClick={handleCancilClick}
+          >
+            <p className='text-3xl pr-3'>&times;</p>
+          </button>
+          <img
+            className='max-w-full h-[8rem] animate-wiggle mb-5 '
             src={cancel}
-            alt="alt title"
+            alt='alt title'
           />
+        </div>
       </div>
-    </div>
-
-      
     </>
   );
 }
