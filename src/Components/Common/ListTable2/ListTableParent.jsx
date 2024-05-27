@@ -57,11 +57,6 @@ const ListTableParent = (props) => {
     setloader(true);
     seterrorState(false);
 
-    console.log(
-      props?.requestBody,
-      "==============props?.requestBody search old"
-    );
-
     if (
       props?.requestBody?.length &&
       Object.keys(props?.requestBody).length !== 0
@@ -256,38 +251,21 @@ const ListTableParent = (props) => {
   // 👉 Calling Function 1 on Data change 👈
   useEffect(() => {
     setloader(true);
-    // if (props?.requestBody != null) {
     setpageCount(1);
-    // setperPageCount(10);
-    searchOldFun();
     setloader(false);
     // }
   }, [props?.changeData, currentPage, perPageData]);
 
-  // 👉 Calling Function 1 when page no. or data per page change 👈
   useEffect(() => {
+    //adding debouncing in search query
     setloader(true);
-    searchOldFun();
-    // console.log(searchFilter, "searfilter------------>");
+    const getData = setTimeout(() => {
+      searchOldFun();
+    }, 1000);
+    return () => clearTimeout(getData);
   }, [pageCount, perPageCount, searchFilter]);
 
-  //=---------------------- Search Panel----------------------------
-  // useEffect(() => {
-  //   console.log(projectProposalData);
-
-  //   setTotalResults(projectProposalData?.count);
-
-  //   //update the items for the table
-  //   setProjectProposals(projectProposalData?.records);
-
-  //   // populate the items to be displayed in the search panel
-  //   const project_proposal_nos = projectProposalData?.project_proposal_no?.map((item) => item.project_proposal_no);
-  //   if (project_proposal_nos) setSearchPanelItemValues({ ...searchPanelItemValues, project_proposal_no: project_proposal_nos });
-
-  // }, [projectProposalData]);
-
   const onFilterChange = (filters) => {
-    // console.log("Filters updated: ", filters);
     const q = qs.stringify(filters);
     setSearchQuery(q);
   };
