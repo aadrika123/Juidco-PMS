@@ -20,7 +20,7 @@ import ReceivedInvtList from "./ReceivedInvtListDa";
 const ReceivedInvtHomeDa = () => {
   const [activeTab, setActiveTab] = useState("inbox");
   const navigate = useNavigate();
-  const { api_fetchProcurementList, api_fetchProcurementDAList } =
+  const { api_fetchDaReceivedInvtListInbox, api_fetchDaReceivedInvtListOutbox } =
     ProjectApiList();
 
   return (
@@ -64,7 +64,7 @@ const ReceivedInvtHomeDa = () => {
           <div>
             <ReceivedInvtList
               page='inbox'
-              api={api_fetchProcurementList}
+              api={api_fetchDaReceivedInvtListInbox}
             />
           </div>
         )}
@@ -72,7 +72,7 @@ const ReceivedInvtHomeDa = () => {
           <div>
             <ReceivedInvtList
               page='outbox'
-              api={api_fetchProcurementDAList}
+              api={api_fetchDaReceivedInvtListOutbox}
             />
           </div>
         )}
