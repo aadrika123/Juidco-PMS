@@ -142,7 +142,7 @@ function ReceivedInvtList(props) {
             {cell.row.values.status.status == 2 && "Release for Tender"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 3 && "Stock Received"}
+            {cell.row.values.status.status == 3 && "Supplier Assigned"}
           </p>
           <p className='font-bold text-green-500'>
             {cell.row.values.status.status == 4 && "Stock Verified"}
