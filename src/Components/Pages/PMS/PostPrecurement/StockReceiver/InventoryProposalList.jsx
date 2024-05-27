@@ -5,7 +5,7 @@
 //    Revision - 1
 //    Project - JUIDCO
 //    Component  - InventoryProposalList
-//    DESCRIPTION - InventoryProposalList     
+//    DESCRIPTION - InventoryProposalList
 /////////////////////////////////////////////////////////////////////////////
 
 import { useFormik } from "formik";
@@ -121,7 +121,7 @@ function InventoryProposalList(props) {
             {cell.row.values.status.status == 2 && "Released for Tender"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 3 && "Stock Received"}
+            {cell.row.values.status.status == 3 && "Supplier Assigned"}
           </p>
           <p className='font-bold text-green-500'>
             {cell.row.values.status.status == 4 && "Stock Verified"}

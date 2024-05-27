@@ -121,6 +121,7 @@ export default function ProjectApiList() {
     //post
     api_fetchPostProcurementDetailById: `${baseUrl}/api/pms/da/post-procurement`,
     api_fetchPostProcurementDAListInbox: `${baseUrl}/api/pms/da/post-procurement`,
+    api_fetchPostProcurementDAListOutbox: `${baseUrl}/api/pms/da/post-procurement/outbox`,
     api_postPostProcurementDaAdditionalDetails: `${baseUrl}/api/pms/da/post-procurement/save-additional-details`,
   };
 

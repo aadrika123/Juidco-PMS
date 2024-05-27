@@ -254,7 +254,7 @@ const ListTableParent = (props) => {
     setpageCount(1);
     setloader(false);
     // }
-  }, [props?.changeData, currentPage, perPageData]);
+  }, [currentPage, perPageData]);
 
   useEffect(() => {
     //adding debouncing in search query
