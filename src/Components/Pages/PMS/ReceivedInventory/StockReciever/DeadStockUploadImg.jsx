@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////////////
 //    Author - Almaash Alam
 //    Version - 1.0
-//    Date - 24/05/2024
+//    Date - 27/05/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - StockReceiverModal
-//    DESCRIPTION - StockReceiverModal
+//    Component  - DeadStockUploadImg
+//    DESCRIPTION - DeadStockUploadImg
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState, useRef } from "react";
@@ -16,7 +16,7 @@ import uploadImg from "@/Components/assets/uploadImg.png";
 import { useNavigate } from "react-router-dom";
 import { LuCloudy } from "react-icons/lu";
 
-function StockReceiverModal(props) {
+function DeadStockUploadImg(props) {
   const navigate = useNavigate();
   const inputFileRef = useRef();
   const { formStyle } = ThemeStyleTanker();
@@ -34,13 +34,13 @@ function StockReceiverModal(props) {
 
   const handleClick = () => {
     props?.postBackToSR();
-    navigate(`/sr-inventory-proposal`);
+    // navigate(`/sr-inventory-proposal`);
   };
 
   const handleCancilClick = () => {
     // props?.submitForm()
     // navigate(`/add-pre-procurement`);
-    props.setIsModalOpen(false);
+    props.setDeadStockImg(false);
   };
   const handleUploadDoc = () => {
     inputFileRef.current.click();
@@ -65,14 +65,14 @@ function StockReceiverModal(props) {
             <LuCloudy className="text-[2.5rem] p-2 mr-3 mt-1 border-[2px] rounded-full" />
             </div>
             <div >
-            <h1>Upload Remark & Files</h1>
+            <h1>Upload Dead Stock Image</h1>
             <p className="text-[12px] text-gray-400">Enter & Upload the files of your choice</p>
             </div>
           </div>
 
           <hr className="w-full mt-3" />
 
-          <div className='mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col'>
+          <div className='mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col w-full'>
 
               <div className='rounded-md mt-8'>
 
@@ -85,7 +85,7 @@ function StockReceiverModal(props) {
                 /> */}
               </div>
             <h3 class='text-xl text-black font-openSans'>choose a file </h3>
-            <h1 className="text-gray-400 text-sm">JPEG, PNG, PDG, and MP4 formats, up to 50MB</h1>
+            <h1 className="text-gray-400 text-sm px-6">JPEG, PNG, PDG, and MP4 formats, up to 50MB</h1>
               <div className="mb-8">
                 <input type='file' className='hidden' ref={inputFileRef} />
                 <button
@@ -98,14 +98,12 @@ function StockReceiverModal(props) {
             
           </div>
 
-          <div>
+          {/* <div>
             <div className=''>
               <h3 className='text-sm text-black font-openSans'>
                 Remarks
               </h3>
-              {/* <h3 class="text-xl  text-center mb-3 text-gray-400 font-openSans font-semibold ">
-              Booking no. - {props?.responseScreenData?.data?.bookingNo}
-            </h3> */}
+              
             </div>
             <div className='flex justify-center mb-6 mt-2'>
               <textarea
@@ -116,7 +114,7 @@ function StockReceiverModal(props) {
                 required
               />
             </div>
-          </div>
+          </div> */}
 
           
 
@@ -150,4 +148,4 @@ function StockReceiverModal(props) {
   );
 }
 
-export default StockReceiverModal;
+export default DeadStockUploadImg;

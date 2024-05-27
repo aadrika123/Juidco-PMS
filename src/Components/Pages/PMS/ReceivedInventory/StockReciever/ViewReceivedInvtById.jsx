@@ -26,6 +26,7 @@ import SRPostProcurementCancelScreen from "./SRPostProcurementCancelScreen";
 import { contextVar } from '@/Components/context/contextVar'
 import { useContext } from 'react'
 import TitleBar from "@/Components/Pages/Others/TitleBar";
+import DeadStockUploadImg from "./DeadStockUploadImg";
 // import StockReceiverModal from "./StockReceiverModal";
 // import ReleaseTenderModal from "./ReleaseTenderModal";
 // import DaRejectModal from "./DaRejectModal";
@@ -49,6 +50,7 @@ const ViewReceivedInvtById = (props) => {
   const [isModalOpen3, setIsModalOpen3] = useState(false)
   const [remark,setRemark] = useState('')
   const [cancelModal,setCancelModal] = useState(false)
+  const [deadStockImg,setDeadStockImg] = useState(false)
 
   const {
     
@@ -359,6 +361,19 @@ const ViewReceivedInvtById = (props) => {
           // submitForm={submitForm}
           // responseScreenData={formData}
           setCancelModal={setCancelModal}
+        />
+      </>
+    );
+  }
+  
+  
+  if (deadStockImg) {
+    return (
+      <>
+        <DeadStockUploadImg
+          // submitForm={submitForm}
+          // responseScreenData={formData}
+          setDeadStockImg={setDeadStockImg}
         />
       </>
     );
@@ -778,11 +793,12 @@ const ViewReceivedInvtById = (props) => {
                           </div>
 
                           <div className=" form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                            <div class="px-4 w-full mb-4">
+                            <div class=" relative px-4 w-full mb-4">
                               <label className={`${labelStyle} inline-block mb-2`}>
                                 Dead Stock
                               </label>
-
+                              
+                            
                               <input
                                 type="number"
                                 name='totalStock'
@@ -790,6 +806,13 @@ const ViewReceivedInvtById = (props) => {
                                 onChange={formik.handleChange}
                                 value={formik.values.totalStock}
                               />
+
+                            <button 
+                                // className={`${buttonStyle} absolute`} 
+                                className={`text-white absolute end-6 mt-[6px] bg-blue-700 hover:bg-blue-800 rounded text-[12px] px-5 py-[5px]`} 
+                                onClick={()=>{setDeadStockImg(true)}}>
+                                Upload Reference Image
+                              </button>
 
                               <p className="text-red-500 text-xs ">
                                 {formik.touched.totalStock &&
@@ -799,8 +822,9 @@ const ViewReceivedInvtById = (props) => {
                               </p>
                             </div>
                           </div>
+                          
 
-                          <div className=" form-group flex-shrink max-w-full px-4 w-full mb-4 ml-4 mr-4">
+                          <div className="form-group flex-shrink max-w-full ml-4 px-4 w-full md:w-1/2 mb-4">
                               <label className={`${labelStyle} inline-block mb-2`}>
                                 Others Description
                               </label>
@@ -820,6 +844,29 @@ const ViewReceivedInvtById = (props) => {
                               </p>
                           </div>
 
+                          
+                          {/* <div className="form-group flex-shrink px-4 md:w-1/3 mb-4">
+                            <div class="px-4 w-full mb-4">
+                              <label className={`${labelStyle} inline-block mb-2`}>
+                               
+                              </label> <br />
+
+                              <button 
+                                className={buttonStyle} 
+                                onClick={()=>{setDeadStockImg(true)}}>
+                                Upload Dead Stock Image
+                              </button>
+
+                              <p className="text-red-500 text-xs ">
+                                {formik.touched.totalStock &&
+                                formik.errors.totalStock
+                                  ? formik.errors.totalStock
+                                  : null}
+                              </p>
+                            </div>
+                          </div> */}
+
+                       
                           
                       </div>
 
