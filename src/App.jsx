@@ -53,6 +53,7 @@ import ReceivedInvtHome from "./Components/Pages/PMS/ReceivedInventory/StockReci
 import ReceivedInvtHomeDa from "./Components/Pages/PMS/ReceivedInventory/DepartmentalAdmin/ReceivedInvtHomeDa";
 import ViewReceivedInvtByIdDa from "./Components/Pages/PMS/ReceivedInventory/DepartmentalAdmin/ViewReceivedInvtByIdDa";
 import InventoryDashboardDa2 from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/InventoryDashboardDa2";
+import SrEditPreProcurement from "./Components/Pages/PMS/PrePrecurement/StockReceiver/SrEditPreProcurement";
 
 const queryClient = new QueryClient();
 
@@ -152,6 +153,7 @@ function App() {
     { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
     { path: "/sr-viewInventoryDetailsById/:id/:page", element: <ViewInventoryDetailsById />},
     { path: "/sr-add-pre-procurement", element: <AddPreProcurement /> },
+    { path: "/sr-edit-pre-procurement/:id", element: <SrEditPreProcurement /> },
     { path: "/sr-rejectedlist", element: <RejectedListTabs /> },
     { path: "/sr-releasedlist", element: <ReleasedListTabs /> },
     
@@ -170,7 +172,7 @@ function App() {
      { path: "/da-post-precurement", element: <PostPrecurementListTabsDa />}, 
      { path: "/da-post-precurementbyid/:id/:page", element: <PostPreDetailsById /> },
 
-     
+
     //------------ Stock Receiver ---------------
     { path: "/sr-post-inventory", element: <PostProcurementHome /> },
     { path: "/sr-post-InvtDetailsById/:id/:page", element: <ViewPostInvtDetailsById /> },

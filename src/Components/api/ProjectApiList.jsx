@@ -88,6 +88,7 @@ export default function ProjectApiList() {
     //Api for PMS
     api_addProcurement: `${baseUrl}/api/pms/sr/pre-procurement`,
     api_editProcurement: `${baseUrl}/api/pms/da/pre-procurement/edit`,
+    api_editSrProcurement: `${baseUrl}/api/pms/sr/pre-procurement/edit`,
 
     api_itemCategory: `${baseUrl}/api/pms/master/category `,
     api_itemSubCategory: `${baseUrl}/api/pms/master/sub-category/by-category`,

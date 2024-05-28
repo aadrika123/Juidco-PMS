@@ -438,7 +438,7 @@ const ViewInventoryDetailsById = (props) => {
                 <button
                   className={buttonStyle}
                   onClick={() => {
-                    navigate(`/da-edit-pre-procurement/${id}`);
+                    navigate(`/sr-edit-pre-procurement/${id}`);
                   }}
                 >
                   Edit

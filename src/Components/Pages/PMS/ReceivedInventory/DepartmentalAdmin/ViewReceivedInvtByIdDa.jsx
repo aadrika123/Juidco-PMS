@@ -247,7 +247,8 @@ const ViewReceivedInvtByIdDa = (props) => {
           setRemark={setRemark}
           setImageDoc={setImageDoc}
           setIsModalOpen={setIsModalOpen}
-          preview={setPreview}
+          // preview={preview}
+          // setPreview={setPreview}
         />
       </>
     );

@@ -23,6 +23,7 @@ function StockReceiverModal(props) {
   const { formStyle } = ThemeStyleTanker();
 
   const [openPaymentModal, setOpenPaymentModal] = useState(0);
+  const [preview, setPreview] = useState();
 
   // console.log("Res Dataaaaaaaa", props?.responseScreenData);
 
@@ -65,30 +66,29 @@ function StockReceiverModal(props) {
           <hr className='w-full mt-3' />
 
           <div className='mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col'>
+
+            { preview == null ? <> 
             <div className='rounded-md mt-8'>
               <LuCloudy className='text-[1.5rem]' />
-              {/* <img
-                  src={uploadImg}
-                  alt='upload doc icon'
-                  width={50}
-                  height={50}
-                /> */}
             </div>
             <h3 class='text-xl text-black font-openSans'>choose a file </h3>
             <h1 className='text-gray-400 text-sm'>
               JPEG, PNG, PDG, and MP4 formats, up to 50MB
             </h1>
+            </> : <img src={preview} alt="Image Preview" style={{ width: '200px', height: 'auto', marginTop: '20px' }} />}
+            
+
             <div className='mb-8'>
               <input type='file' className='hidden' ref={inputFileRef} 
-              onChange={ (e) => props?.setImageDoc(e.target.files[0])} 
-              
-              // onChange={ (e) => {
-              //     const file = e.target.files[0];
-              //     if (file) {
-              //       setImage(file);
-              //       setPreview(URL.createObjectURL(file));
-              //     }
-              // }} 
+              // onChange={ (e) => props?.setImageDoc(e.target.files[0])} 
+
+              onChange={ (e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    props?.setImageDoc(file);
+                    setPreview(URL.createObjectURL(file));
+                  }
+              }} 
 
               />
 
@@ -100,6 +100,8 @@ function StockReceiverModal(props) {
               </button>
             </div>
           </div>
+
+          {/* <img src={preview} alt="Image Preview" style={{ width: '300px', height: 'auto' }} /> */}
 
           <div>
             <div className=''>
