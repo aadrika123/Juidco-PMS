@@ -261,7 +261,7 @@ const ListTableParent = (props) => {
     setloader(true);
     const getData = setTimeout(() => {
       searchOldFun();
-    }, 1000);
+    }, 500);
     return () => clearTimeout(getData);
   }, [pageCount, perPageCount, searchFilter]);
 

@@ -106,7 +106,7 @@ export default function ProjectApiList() {
     api_postForwardToDA: `${baseUrl}/api/pms/sr/pre-procurement/to-da`,
     api_fetchProcurementRejectedList: `${baseUrl}/api/pms/sr/pre-procurement/rejected`,
     api_fetchProcurementReleasedList: `${baseUrl}/api/pms/sr/pre-procurement/released`,
-    
+
     api_fetchProcurementDAListInbox: `${baseUrl}/api/pms/da/pre-procurement`,
     api_fetchProcurementDAListOutbox: `${baseUrl}/api/pms/da/pre-procurement/outbox`,
     api_fetchProcurementDADetailByIdinbox: `${baseUrl}/api/pms/da/pre-procurement`,
@@ -115,9 +115,9 @@ export default function ProjectApiList() {
     api_postReleaseTender: `${baseUrl}/api/pms/da/pre-procurement/release-tender`,
     api_postRejectTender: `${baseUrl}/api/pms/da/pre-procurement/reject`,
     api_postDaEditTender: `${baseUrl}/api/pms/da/pre-procurement/edit`,
-    
+
     api_exportcsv: `${baseUrl}/api/pms/download`,
-    
+
     //post
     api_fetchPostProcurementDetailById: `${baseUrl}/api/pms/da/post-procurement`,
     api_fetchPostProcurementDAListInbox: `${baseUrl}/api/pms/da/post-procurement`,
@@ -125,10 +125,9 @@ export default function ProjectApiList() {
     api_postPostProcurementDaAdditionalDetails: `${baseUrl}/api/pms/da/post-procurement/save-additional-details`,
     api_fetchDaReceivedInvtListInbox: `${baseUrl}/api/pms/da/rec-inv`,
     api_fetchDaReceivedInvtListOutbox: `${baseUrl}/api/pms/da/rec-inv/outbox`,
-    
+
     api_fetchDaReceivedInvtDetailById: `${baseUrl}/api/pms/da/rec-inv`,
     api_postDaReceivedInvtDetail: `${baseUrl}/api/pms/da/rec-inv/receive`,
-
   };
 
   return apiList;
