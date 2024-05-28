@@ -162,13 +162,14 @@ const ViewReceivedInvtByIdDa = (props) => {
     if (receivedQuantity <= recQuantityValueRange) {
       formik.setFieldValue("received_quantity", receivedQuantity);
 
-      const remQuantityValue = applicationFullData?.total_quantity- (applicationFullData?.total_receivings + Number(receivedQuantity))
-      console.log(remQuantityValue,"remQuantityValue",applicationFullData?.total_quantity,"applicationFullData?.total_quantity",applicationFullData?.total_receivings,"applicationFullData?.total_receivings",receivedQuantity,"receivedQuantity")
+      const remQuantityValue = applicationFullData?.total_quantity - (applicationFullData?.total_receivings + Number(receivedQuantity))
+      // console.log(remQuantityValue,"remQuantityValue",applicationFullData?.total_quantity,"applicationFullData?.total_quantity",applicationFullData?.total_receivings,"applicationFullData?.total_receivings",receivedQuantity,"receivedQuantity")
 
       formik.setFieldValue("remaining_quantity",remQuantityValue)
     } else {
       toast.error("Received Quantity should not exceed the total quantity");
       formik.setFieldValue("received_quantity", 0);
+      formik.setFieldValue("remaining_quantity",0)
     }
     // const remaining = formik.values.total_quantity - recQuantity;
     // formik.setFieldValue("", remaining);
