@@ -180,6 +180,7 @@ function ListTable(props) {
                 prepareRow(row);
                 return (
                   <tr
+                    key={index}
                     {...row.getRowProps()}
                     className='bg-white hover:bg-slate-100 border-b border-gray-200'
                   >

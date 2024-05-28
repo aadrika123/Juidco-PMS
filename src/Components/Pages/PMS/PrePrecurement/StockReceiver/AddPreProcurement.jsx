@@ -9,21 +9,18 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useEffect, useState } from "react";
-import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
 
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
-import axios from "axios";
 import ApiHeader from "@/Components/api/ApiHeader";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import { useNavigate, useParams } from "react-router-dom";
 import PreProcurementSubmittedScreen from "./PreProcurementSubmittedScreen";
 import * as yup from "yup";
 import {
   allowCharacterInput,
-  allowMailInput,
+  allowNumberMultiplyInput,
   allowNumberInput,
   allowCharacterNumberInput,
 } from "@/Components/Common/PowerUps/PowerupFunctions";
@@ -33,17 +30,14 @@ import SuccessModal from "./SuccessModal";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
-
-// import { onChange } from "react-toastify/dist/core/store";
-
-// import { click } from "@testing-library/user-event/dist/click";
-// import { C } from "dist/assets/index-1a86ca5c";
+// import { ToastContainer, toast } from "react-toastify";
 
 function AddPreProcurement(props) {
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
 
-  const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } =
-    useContext(contextVar);
+  const { titleBarVisibility } = useContext(contextVar);
+
+  // const notify = () => toast("Successfully Submitted ");
 
   const {
     api_addProcurement,
@@ -57,20 +51,12 @@ function AddPreProcurement(props) {
     api_fetchGraphics,
   } = ProjectApiList();
 
-  const currentDate = new Date().toISOString().split("T")[0];
-
-  const [ulbList, setulbList] = useState();
   const [isLoading, setisLoading] = useState(false);
-  const [listDetails, setlistDetails] = useState();
-  const [masterData, setmasterData] = useState();
-  const [tabIndex, settabIndex] = useState(0);
 
   const [responseScreen, setresponseScreen] = useState();
   const [ulbData, setulbData] = useState();
-  const [wardList, setwardList] = useState();
   const [ulbAreaVal, setulbAreaVal] = useState();
   const [errRes, setErrRes] = useState();
-  // const [ulbdata2, setulbData2] =useState();
   const [ulbId, setulbId] = useState();
 
   const [category, setCategory] = useState();
@@ -89,23 +75,12 @@ function AddPreProcurement(props) {
   const [categorySelected, setCategorySelected] = useState([]);
   const [orderNo, setOrderNo] = useState();
 
-  // console.log(graphicsList)
-
-  // const { id } = useParams();
-
-  // console.log(category)
-
   // ══════════════════════════════║🔰 form submission declaration 🔰║═══════════════════════════════════
   const [declarationStatus, setdeclarationStatus] = useState();
   const handleDeclaration = () => {
     setdeclarationStatus((prev) => !prev);
     console.log(declarationStatus, "declarationStatus=============");
   };
-
-  // console.log("list id props received", props?.listId);
-  // console.log("list id props type", props?.listType);
-
-  const navigate = useNavigate();
 
   //activating notification
   const notify = (toastData, type) => {
@@ -222,8 +197,6 @@ function AddPreProcurement(props) {
 
   // =========================================================
 
-  // /===========================================================
-
   const furniture = [
     { label: "Number of Items", name: "number_of_items", type: "number" },
     { label: "Brand", name: "brand", type: "text" },
@@ -281,17 +254,17 @@ function AddPreProcurement(props) {
   };
 
   useEffect(() => {
+    // notify();
     const ulbId = localStorage.getItem("ulbId");
     setulbId(ulbId);
-    fetchProcessor();
 
+    // fetchProcessor();
     fetchCategory();
-    // fetchSubCategory();
-    fetchBrand();
-    fetchRam();
-    fetchOperatingSystem();
-    fetchRom();
-    fetchGraphics();
+    // fetchBrand();
+    // fetchRam();
+    // fetchOperatingSystem();
+    // fetchRom();
+    // fetchGraphics();
 
     calculateTotalRate();
   }, [ulbData, formik.values.quantity, formik.values.rate]);
@@ -327,71 +300,71 @@ function AddPreProcurement(props) {
       });
   };
 
-  const fetchBrand = () => {
-    AxiosInterceptors.get(`${api_itemBrand}`, ApiHeader())
-      .then(function (response) {
-        console.log("item Categor", response.data.data);
-        setBrand(response.data.data);
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-      });
-  };
+  // const fetchBrand = () => {
+  //   AxiosInterceptors.get(`${api_itemBrand}`, ApiHeader())
+  //     .then(function (response) {
+  //       console.log("item Categor", response.data.data);
+  //       setBrand(response.data.data);
+  //     })
+  //     .catch(function (error) {
+  //       console.log("errorrr.... ", error);
+  //     });
+  // };
 
-  const fetchProcessor = () => {
-    AxiosInterceptors.get(`${api_fetchProcessor}`, ApiHeader())
-      .then(function (response) {
-        console.log("item Categor", response.data.data);
-        setProcessor(response.data.data);
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-      });
-  };
+  // const fetchProcessor = () => {
+  //   AxiosInterceptors.get(`${api_fetchProcessor}`, ApiHeader())
+  //     .then(function (response) {
+  //       console.log("item Categor", response.data.data);
+  //       setProcessor(response.data.data);
+  //     })
+  //     .catch(function (error) {
+  //       console.log("errorrr.... ", error);
+  //     });
+  // };
 
-  const fetchRam = () => {
-    AxiosInterceptors.get(`${api_fetchRam}`, ApiHeader())
-      .then(function (response) {
-        console.log("item Categor", response.data.data);
-        setRamList(response.data.data);
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-      });
-  };
+  // const fetchRam = () => {
+  //   AxiosInterceptors.get(`${api_fetchRam}`, ApiHeader())
+  //     .then(function (response) {
+  //       console.log("item Categor", response.data.data);
+  //       setRamList(response.data.data);
+  //     })
+  //     .catch(function (error) {
+  //       console.log("errorrr.... ", error);
+  //     });
+  // };
 
-  const fetchOperatingSystem = () => {
-    AxiosInterceptors.get(`${api_fetchOperatingSystem}`, ApiHeader())
-      .then(function (response) {
-        console.log("item Categor", response.data.data);
-        setOperatingSystem(response.data.data);
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-      });
-  };
+  // const fetchOperatingSystem = () => {
+  //   AxiosInterceptors.get(`${api_fetchOperatingSystem}`, ApiHeader())
+  //     .then(function (response) {
+  //       console.log("item Categor", response.data.data);
+  //       setOperatingSystem(response.data.data);
+  //     })
+  //     .catch(function (error) {
+  //       console.log("errorrr.... ", error);
+  //     });
+  // };
 
-  const fetchRom = () => {
-    AxiosInterceptors.get(`${api_fetchRom}`, ApiHeader())
-      .then(function (response) {
-        console.log("item Categor", response.data.data);
-        setRomList(response.data.data);
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-      });
-  };
+  // const fetchRom = () => {
+  //   AxiosInterceptors.get(`${api_fetchRom}`, ApiHeader())
+  //     .then(function (response) {
+  //       console.log("item Categor", response.data.data);
+  //       setRomList(response.data.data);
+  //     })
+  //     .catch(function (error) {
+  //       console.log("errorrr.... ", error);
+  //     });
+  // };
 
-  const fetchGraphics = () => {
-    AxiosInterceptors.get(`${api_fetchGraphics}`, ApiHeader())
-      .then(function (response) {
-        console.log("item Categor", response.data.data);
-        setGraphicsList(response.data.data);
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-      });
-  };
+  // const fetchGraphics = () => {
+  //   AxiosInterceptors.get(`${api_fetchGraphics}`, ApiHeader())
+  //     .then(function (response) {
+  //       console.log("item Categor", response.data.data);
+  //       setGraphicsList(response.data.data);
+  //     })
+  //     .catch(function (error) {
+  //       console.log("errorrr.... ", error);
+  //     });
+  // };
 
   // submit form
   const submitForm = () => {
@@ -441,6 +414,7 @@ function AddPreProcurement(props) {
           setisLoading(false);
           setSuccessModal(true);
           notify(response?.data?.message, "success");
+          // notify();
           setdeclarationStatus(false);
           setOrderNo(response?.data?.order_no);
 
@@ -471,39 +445,7 @@ function AddPreProcurement(props) {
     );
   }
 
-  // ══════════════════════════════║🔰Validating Booking Date 🔰║═══════════════════════════════════
-
-  // const verifyDateForBookingTanker = (value) => {
-  //   let currentDate = new Date();
-  //   currentDate.setDate(currentDate.getDate() + 1);
-
-  //   let userSetDate = new Date(value);
-
-  //   // Convert both dates to UTC timestamps
-  //   const currentTimestamp = Date.UTC(
-  //     currentDate.getFullYear(),
-  //     currentDate.getMonth(),
-  //     currentDate.getDate()
-  //   );
-  //   const userTimestamp = Date.UTC(
-  //     userSetDate.getFullYear(),
-  //     userSetDate.getMonth(),
-  //     userSetDate.getDate()
-  //   );
-
-  //   if (userTimestamp < currentTimestamp) {
-  //     notify("Date must be 24 hours ahead of the current date", "error");
-  //     formik.setFieldValue("cleaningDate", "");
-  //     console.log("wrong time");
-  //   } else {
-  //     console.log("right time");
-  //   }
-  // };
-
   const handleOnChange = (e) => {
-    // console.log("target type", e.target.type);
-    // console.log("check box name", e.target.name);
-
     let name = e.target.name;
     let value = e.target.value;
 
@@ -585,7 +527,7 @@ function AddPreProcurement(props) {
       name == "dimension" &&
         formik.setFieldValue(
           "dimension",
-          allowNumberInput(value, formik.values.dimension, 100)
+          allowNumberMultiplyInput(value, formik.values.dimension, 100)
         );
     }
     {
@@ -662,6 +604,8 @@ function AddPreProcurement(props) {
   }
   return (
     <>
+      {/* <ToastContainer position='top-right' autoClose={3000} /> */}
+
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
@@ -678,17 +622,13 @@ function AddPreProcurement(props) {
                   <h1 className={`${headingStyle} text-right pb-5 p-6`}>
                     Add Pre Procurement
                   </h1>
-                  {/* <h1 className={`${labelStyle} `}>
-                    Maintaining a healthy home: Confirming my septic tank
-                    service.
-                  </h1> */}
                 </div>
                 <div className='hidden md:block lg:block'>
                   <hr className='border w-full border-gray-200' />
                 </div>
 
                 <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
-                  <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Item Category
                       <span className='text-xl text-red-500 pl-1'>*</span>{" "}
@@ -718,7 +658,7 @@ function AddPreProcurement(props) {
                         // console.log(e.target.value, "---------------->");
                       }}
                     >
-                      <option selected>select</option>
+                      <option defaultValue={"select"}>select</option>
 
                       {category?.map((items, index) => (
                         <option key={index} value={items?.id}>
@@ -733,7 +673,7 @@ function AddPreProcurement(props) {
                     </p>
                   </div>
 
-                  <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Items Sub Category
                       <span className='text-xl text-red-500 pl-1'>*</span>
@@ -743,11 +683,13 @@ function AddPreProcurement(props) {
                       className={`${inputStyle} inline-block w-full relative`}
                       onChange={formik.handleChange}
                     >
-                      <option selected>select</option>
+                      <option defaultValue={"select"}>select</option>
 
                       {subcategory?.length &&
                         subcategory?.map((items) => (
-                          <option value={items?.id}>{items?.name}</option>
+                          <option key={items?.id} value={items?.id}>
+                            {items?.name}
+                          </option>
                         ))}
                     </select>
 
@@ -759,9 +701,9 @@ function AddPreProcurement(props) {
                     </p>
                   </div>
 
-                  {categorySelected?.map((obj) => (
-                    <div className=' flex flex-wrap w-1/2'>
-                      <div class='px-4 w-full mb-4'>
+                  {categorySelected?.map((obj, index) => (
+                    <div className=' flex flex-wrap w-1/2' key={index}>
+                      <div className='px-4 w-full mb-4'>
                         <label className={`${labelStyle} inline-block mb-2`}>
                           {obj.label}
                         </label>
@@ -783,7 +725,7 @@ function AddPreProcurement(props) {
                     </div>
                   ))}
 
-                  <div class='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4'>
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Others Description
                     </label>
@@ -804,8 +746,8 @@ function AddPreProcurement(props) {
                   </div>
                 </div>
 
-                <div class='valid-form flex flex-wrap flex-row mx-8'>
-                  <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                <div className='valid-form flex flex-wrap flex-row mx-8'>
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Quantity
                     </label>

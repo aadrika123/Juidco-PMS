@@ -33,11 +33,11 @@ function DeadStockUploadImg(props) {
   // };
 
   const handleClick = () => {
-    props?.postBackToSR();
+    // props?.postBackToSR();
     // navigate(`/sr-inventory-proposal`);
   };
 
-  const handleCancilClick = () => {
+  const handleCancelClick = () => {
     // props?.submitForm()
     // navigate(`/add-pre-procurement`);
     props.setDeadStockImg(false);
@@ -62,40 +62,41 @@ function DeadStockUploadImg(props) {
         <div className='bg-white px-5 mx-auto flex flex-col max-sm:w-full z-10  rounded'>
           <div class='relative overflow-hidden mt-5 flex'>
             <div>
-            <LuCloudy className="text-[2.5rem] p-2 mr-3 mt-1 border-[2px] rounded-full" />
+              <LuCloudy className='text-[2.5rem] p-2 mr-3 mt-1 border-[2px] rounded-full' />
             </div>
-            <div >
-            <h1>Upload Dead Stock Image</h1>
-            <p className="text-[12px] text-gray-400">Enter & Upload the files of your choice</p>
+            <div>
+              <h1>Upload Dead Stock Image</h1>
+              <p className='text-[12px] text-gray-400'>
+                Enter & Upload the files of your choice
+              </p>
             </div>
           </div>
 
-          <hr className="w-full mt-3" />
+          <hr className='w-full mt-3' />
 
           <div className='mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col w-full'>
-
-              <div className='rounded-md mt-8'>
-
-              <LuCloudy className="text-[1.5rem]" />
-                {/* <img
+            <div className='rounded-md mt-8'>
+              <LuCloudy className='text-[1.5rem]' />
+              {/* <img
                   src={uploadImg}
                   alt='upload doc icon'
                   width={50}
                   height={50}
                 /> */}
-              </div>
+            </div>
             <h3 class='text-xl text-black font-openSans'>choose a file </h3>
-            <h1 className="text-gray-400 text-sm px-6">JPEG, PNG, PDG, and MP4 formats, up to 50MB</h1>
-              <div className="mb-8">
-                <input type='file' className='hidden' ref={inputFileRef} />
-                <button
-                  className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
-                  onClick={handleUploadDoc}
-                >
-                  Browse File
-                </button>
-              </div>
-            
+            <h1 className='text-gray-400 text-sm px-6'>
+              JPEG, PNG, PDG, and MP4 formats, up to 50MB
+            </h1>
+            <div className='mb-8'>
+              <input type='file' className='hidden' ref={inputFileRef} />
+              <button
+                className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
+                onClick={handleUploadDoc}
+              >
+                Browse File
+              </button>
+            </div>
           </div>
 
           {/* <div>
@@ -116,13 +117,11 @@ function DeadStockUploadImg(props) {
             </div>
           </div> */}
 
-          
-
           <div className='flex flex-col'>
             <div className='flex gap-4 justify-end'>
               <button
                 className={`bg-white border-blue-900 border text-blue-950 text-sm px-6 py-2 hover:bg-[#1A4D8C] hover:text-white  rounded leading-5 shadow-lg`}
-                onClick={handleCancilClick}
+                onClick={handleCancelClick}
               >
                 Cancel
               </button>
