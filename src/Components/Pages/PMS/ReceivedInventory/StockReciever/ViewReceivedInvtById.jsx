@@ -24,6 +24,7 @@ import SRPostProcurementCancelScreen from "./SRPostProcurementCancelScreen";
 import { contextVar } from "@/Components/context/contextVar";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import DeadStockUploadImg from "./DeadStockUploadImg";
+import { allowNumberInput } from "@/Components/Common/PowerUps/PowerupFunctions";
 
 const ViewReceivedInvtById = (props) => {
   const navigate = useNavigate();
@@ -37,19 +38,16 @@ const ViewReceivedInvtById = (props) => {
   const [applicationFullData, setapplicationFullData] = useState();
   const [tableData, setTableData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpen2, setIsModalOpen2] = useState(false);
-  const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [remark, setRemark] = useState("");
   const [cancelModal, setCancelModal] = useState(false);
   const [deadStockImg, setDeadStockImg] = useState(false);
+  const [payload, setPayload] = useState({});
+  const [imageDoc, setImageDoc] = useState();
 
   const {
-    api_fetchProcurementDetailById,
-    api_fetchOutboxProcurementDetailById,
-    api_postBackToSR,
-    api_postReleaseTender,
-    api_postRejectTender,
-    api_postDaEditTender,
+    api_fetchSrReceivedInvtListInbox,
+    api_fetchSrReceivedInvtListOutbox,
+    api_postSrAddInvt,
   } = ProjectApiList();
 
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
@@ -63,10 +61,6 @@ const ViewReceivedInvtById = (props) => {
   let buttonStyle2 =
     " mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
-  useEffect(() => {
-    getApplicationDetail();
-  }, []);
-
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
     let url;
@@ -74,15 +68,15 @@ const ViewReceivedInvtById = (props) => {
     setisLoading(true);
 
     if (page == "inbox") {
-      url = api_fetchProcurementDetailById;
+      url = api_fetchSrReceivedInvtListInbox;
     }
     if (page == "outbox") {
-      url = api_fetchOutboxProcurementDetailById;
+      url = api_fetchSrReceivedInvtListOutbox;
     }
 
-    AxiosInterceptors.get(`${url}/${id}`, {}, ApiHeader())
+    AxiosInterceptors.get(`${url}/${id}`, ApiHeader())
       .then(function (response) {
-        console.log("view water tanker full details ...", response?.data?.data);
+        console.log("view sr rec-inv id details ...", response?.data?.data);
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
           setTableData(response?.data?.data?.tran_dtls);
@@ -100,34 +94,42 @@ const ViewReceivedInvtById = (props) => {
       });
   };
 
-  const postBackToSRModal = () => {
-    setIsModalOpen(true);
-  };
-  const postReleaseTenderModal = () => {
-    setIsModalOpen2(true);
-  };
-  const postRejectTenderModal = () => {
-    setIsModalOpen3(true);
-  };
-
-  const postRejectTender = () => {
+  const postAddtoInventory = () => {
     setisLoading(true);
-    console.log(remark, "Remark==========>>");
+    let body = {
+      ...payload,
+      order_no: applicationFullData?.order_no,
+      img: imageDoc,
+    };
 
-    AxiosInterceptors.post(
-      `${api_postRejectTender}`,
-      { preProcurement: [id], remark: remark },
-      ApiHeader()
-    )
+    let formDataPayload = new FormData();
+
+    for (let key in body) {
+      formDataPayload.append(key, body[key]);
+    }
+
+    //headers for file data format
+    let token2 = window.localStorage.getItem("token");
+    const header = {
+      timeout: 60000,
+      headers: {
+        Authorization: `Bearer ${token2}`,
+        Accept: "multipart/form-data",
+        "Content-Type": "multipart/form-data",
+        "API-KEY": "eff41ef6-d430-4887-aa55-9fcf46c72c99",
+      },
+    };
+
+    AxiosInterceptors.post(`${api_postSrAddInvt}`, formDataPayload, header)
       .then(function (response) {
-        console.log("Forwarded to DA", response?.data);
+        console.log("Added to inventory", response?.data);
         console.log(response?.data?.st, "upper Status");
         if (response?.data?.status == true) {
           setisLoading(false);
           toast.success(response?.data?.message, "success");
           setTimeout(() => {
-            navigate("/da-inventory-proposal");
-          }, 2000);
+            navigate("/sr-received-inventory");
+          }, 1000);
         } else {
           setisLoading(false);
           const errorMsg = Object.keys(response?.data?.data);
@@ -136,80 +138,18 @@ const ViewReceivedInvtById = (props) => {
         }
       })
       .catch(function (error) {
+        setisLoading(false);
+        toast.error("Something went wrong", "error");
         console.log("errorrr.... ", error);
-      });
-  };
-  const postBackToSR = () => {
-    setisLoading(true);
-    console.log(remark, "Remark==========>>");
-
-    AxiosInterceptors.post(
-      `${api_postBackToSR}`,
-      { preProcurement: [id], remark: remark },
-      ApiHeader()
-    )
-      .then(function (response) {
-        console.log("Forwarded to DA", response?.data);
-        console.log(response?.data?.st, "upper Status");
-        if (response?.data?.status == true) {
-          setisLoading(false);
-          toast.success(response?.data?.message, "success");
-          setTimeout(() => {
-            navigate("/da-inventory-proposal");
-          }, 2000);
-        } else {
-          setisLoading(false);
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-      });
-  };
-
-  const postReleaseTender = () => {
-    // seterroState(false);
-    setisLoading(true);
-
-    AxiosInterceptors.post(
-      `${api_postReleaseTender}`,
-      { preProcurement: [id] },
-      ApiHeader()
-    )
-      .then(function (response) {
-        console.log("Forwarded to DA", response?.data);
-        console.log(response?.data?.st, "upper Status");
-        if (response?.data?.status == true) {
-          setisLoading(false);
-          console.log(response?.data?.message, "-------------->>");
-          toast.success(response?.data?.message, "success");
-          setTimeout(() => {
-            navigate("/da-inventory-proposal");
-          }, 2000);
-          console.log(response?.data?.message, "Forwadede to DA--->>");
-        } else {
-          setisLoading(false);
-          // setdeclarationStatus(false);
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
-          console.log(errorMsg, "====>>");
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-        // setdeclarationStatus(false);
       });
   };
 
   const validationSchema = yup.object({
-    totalStock: yup.number().required("item category is required"),
-    receivedStock: yup.number().required("item subcategory is required"),
-    remarks: yup.string().required("Other description is required"),
-    remStock: yup.number().required("Quantity is required"),
-    deadStock: yup.number(),
+    totalStock: yup.number().required("Total Stock is required"),
+    receivedStock: yup.number().required("Received Stock is required"),
+    remarks: yup.string().required("Remarks is required"),
+    remStock: yup.number().required("Remaining Stock is required"),
+    dead_stock: yup.number(),
     // deadStockImg: yup.mixed().when("deadStock", {
     //   is: (value) => value !== undefined && value !== null && value !== 0,
     //   then: yup
@@ -227,10 +167,10 @@ const ViewReceivedInvtById = (props) => {
 
   // intitial value
   const initialValues = {
-    totalStock: null,
-    receivedStock: null,
+    totalStock: applicationFullData?.total_quantity,
+    receivedStock: applicationFullData?.total_receivings,
     remarks: "",
-    remStock: null,
+    remStock: applicationFullData?.total_remaining,
   };
 
   const formik = useFormik({
@@ -241,10 +181,23 @@ const ViewReceivedInvtById = (props) => {
       console.log("procurement==============>>", values);
       // submitForm(values);
       setIsModalOpen(true);
+      setPayload(values);
       // setFormData(values);
     },
     validationSchema,
   });
+
+  const calculateRemainingStock = (deadStockValue) => {
+    let deadStock = Number(deadStockValue);
+    console.log(deadStock, "deadStock====>");
+    if (deadStock) {
+      let remaining =
+        applicationFullData?.total_quantity -
+        (applicationFullData?.total_receivings - deadStock);
+
+      formik.setFieldValue("remStock", remaining);
+    }
+  };
 
   const handleOnChange = (e) => {
     // console.log("target type", e.target.type);
@@ -256,43 +209,41 @@ const ViewReceivedInvtById = (props) => {
     console.log("target value checked", e.target.checked);
 
     {
-      name == "cleaningDate" && verifyDateForBookingTanker(value);
-    }
-    {
-      name == "isWithinUlb" && setulbAreaVal(value);
-    }
-    {
-      name == "isWithinUlb" && fetchLocationListByUlb(value);
-    }
-    {
-      name == "quantity" &&
+      name == "totalStock" &&
         formik.setFieldValue(
-          "quantity",
+          "totalStock",
           allowNumberInput(value, formik.values.quantity, 100)
         );
     }
     {
-      name == "rate" &&
+      name == "receivedStock" &&
         formik.setFieldValue(
-          "rate",
+          "receivedStock",
           allowNumberInput(value, formik.values.rate, 100)
         );
     }
     {
-      name == "totalRate" &&
+      name == "remStock" &&
         formik.setFieldValue(
-          "totalRate",
+          "remStock",
           allowNumberInput(value, formik.values.totalRate, 100)
         );
     }
+    {
+      name == "dead_stock" && calculateRemainingStock(value);
+    }
   };
+
+  useEffect(() => {
+    getApplicationDetail();
+    // calculateRemainingStock(formik.values.dead_stock);
+  }, []);
 
   if (isModalOpen) {
     return (
       <>
         <ReceivedInvtSubmittedScreen
-          // submitForm={submitForm}
-          // responseScreenData={formData}
+          postAddtoInventory={postAddtoInventory}
           setIsModalOpen={setIsModalOpen}
         />
       </>
@@ -315,39 +266,13 @@ const ViewReceivedInvtById = (props) => {
     return (
       <>
         <DeadStockUploadImg
-          // submitForm={submitForm}
-          // responseScreenData={formData}
+          postAddtoInventory={postAddtoInventory}
+          setImageDoc={setImageDoc}
           setDeadStockImg={setDeadStockImg}
         />
       </>
     );
   }
-
-  // if (isModalOpen3) {
-  //   return (
-  //     <>
-  //       <DaRejectModal postRejectTender={postRejectTender} setRemark={setRemark} setIsModalOpen3={setIsModalOpen3}/>
-  //     </>
-  //   );
-  // }
-
-  // if (isModalOpen) {
-  //   return (
-  //     <>
-  //       <StockReceiverModal postBackToSR={postBackToSR} setRemark={setRemark} setIsModalOpen={setIsModalOpen}/>
-  //     </>
-  //   );
-  // }
-
-  // if (isModalOpen2) {
-  //   return (
-  //     <>
-  //       <ReleaseTenderModal postReleaseTender={postReleaseTender} setIsModalOpen2={setIsModalOpen2}/>
-  //     </>
-  //   );
-  // }
-
-  // console.log(applicationFullData)
 
   return (
     <div>
@@ -397,7 +322,9 @@ const ViewReceivedInvtById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.category.name)}
+                  {nullToNA(
+                    applicationFullData?.pre_procurement?.category?.name
+                  )}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Item Category
@@ -410,7 +337,9 @@ const ViewReceivedInvtById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.subcategory?.name)}
+                  {nullToNA(
+                    applicationFullData?.pre_procurement?.subcategory?.name
+                  )}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Item Sub Category
@@ -419,7 +348,7 @@ const ViewReceivedInvtById = (props) => {
 
               {/* } */}
 
-              {applicationFullData?.category?.name ==
+              {applicationFullData?.pre_procurement?.category?.name ==
                 ("Uniforms" ||
                   "Maintainance and Repaire" ||
                   "Safety and Security" ||
@@ -427,7 +356,7 @@ const ViewReceivedInvtById = (props) => {
                   "Furniture") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.brand)}
+                    {nullToNA(applicationFullData?.pre_procurement?.brand)}
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Brand
@@ -435,14 +364,14 @@ const ViewReceivedInvtById = (props) => {
                 </div>
               )}
 
-              {applicationFullData?.category?.name ==
+              {applicationFullData?.pre_procurement?.category?.name ==
                 ("Uniforms" ||
                   "Maintainance and Repaire" ||
                   "Cleaning Supplies" ||
                   "Furniture") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-semibold '>
-                    {nullToNA(applicationFullData?.colour)}
+                    {nullToNA(applicationFullData?.pre_procurement?.colour)}
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Colour
@@ -454,14 +383,14 @@ const ViewReceivedInvtById = (props) => {
 
               {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
 
-              {applicationFullData?.category?.name ==
+              {applicationFullData?.pre_procurement?.category?.name ==
                 ("Uniforms" ||
                   "Maintainance and Repaire" ||
                   "Furniture" ||
                   "Cleaning Supplies") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.material)}
+                    {nullToNA(applicationFullData?.pre_procurement?.material)}
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Material
@@ -469,11 +398,11 @@ const ViewReceivedInvtById = (props) => {
                 </div>
               )}
 
-              {applicationFullData?.category?.name ==
+              {applicationFullData?.pre_procurement?.category?.name ==
                 ("Maintainance and Repaire" || "Safety and Security") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.dimension)}
+                    {nullToNA(applicationFullData?.pre_procurement?.dimension)}
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Dimension
@@ -481,10 +410,11 @@ const ViewReceivedInvtById = (props) => {
                 </div>
               )}
 
-              {applicationFullData?.category?.name == "Furniture" && (
+              {applicationFullData?.pre_procurement?.category?.name ==
+                "Furniture" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.room_type)}
+                    {nullToNA(applicationFullData?.pre_procurement?.room_type)}
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Room Type
@@ -492,10 +422,13 @@ const ViewReceivedInvtById = (props) => {
                 </div>
               )}
 
-              {applicationFullData?.category?.name == "Furniture" && (
+              {applicationFullData?.pre_procurement?.category?.name ==
+                "Furniture" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-semibold '>
-                    {nullToNA(applicationFullData?.included_components)}
+                    {nullToNA(
+                      applicationFullData?.pre_procurement?.included_components
+                    )}
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Included Components
@@ -507,10 +440,11 @@ const ViewReceivedInvtById = (props) => {
 
               {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
 
-              {applicationFullData?.category?.name == "Furniture" && (
+              {applicationFullData?.pre_procurement?.category?.name ==
+                "Furniture" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.size)}
+                    {nullToNA(applicationFullData?.pre_procurement?.size)}
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     size
@@ -518,10 +452,13 @@ const ViewReceivedInvtById = (props) => {
                 </div>
               )}
 
-              {applicationFullData?.category?.name == "Cleaning Supplies" && (
+              {applicationFullData?.pre_procurement?.category?.name ==
+                "Cleaning Supplies" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.recomended_uses)}
+                    {nullToNA(
+                      applicationFullData?.pre_procurement?.recomended_uses
+                    )}
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Recomended Uses
@@ -529,7 +466,8 @@ const ViewReceivedInvtById = (props) => {
                 </div>
               )}
 
-              {applicationFullData?.category?.name == "Cleaning Supplies" && (
+              {applicationFullData?.pre_procurement?.category?.name ==
+                "Cleaning Supplies" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(applicationFullData?.bristle)}
@@ -540,11 +478,11 @@ const ViewReceivedInvtById = (props) => {
                 </div>
               )}
 
-              {applicationFullData?.category?.name ==
+              {applicationFullData?.pre_procurement?.category?.name ==
                 ("Maintainance and Repaire" || "Safety and Security") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-semibold '>
-                    {nullToNA(applicationFullData?.weight)}
+                    {nullToNA(applicationFullData?.pre_procurement?.weight)}
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Weight
@@ -558,7 +496,7 @@ const ViewReceivedInvtById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold '>
-                  {nullToNA(applicationFullData?.rate)}
+                  {nullToNA(applicationFullData?.unit_price)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Rate per quantity
@@ -567,7 +505,7 @@ const ViewReceivedInvtById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.quantity)}
+                  {nullToNA(applicationFullData?.total_quantity)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Quantity
@@ -576,7 +514,7 @@ const ViewReceivedInvtById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.total_rate)}
+                  {nullToNA(applicationFullData?.pre_procurement?.total_rate)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Total Rate
@@ -589,6 +527,15 @@ const ViewReceivedInvtById = (props) => {
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   No of Items
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(applicationFullData?.pre_procurement?.dimension)}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
+                  Dimensions
                 </div>
               </div>
 
@@ -636,7 +583,9 @@ const ViewReceivedInvtById = (props) => {
             <div className='p-5 pl-8'>
               <h1 className='font-bold '>Other Description</h1>
               <p className=' pt-2'>
-                {nullToNA(applicationFullData?.other_description)}
+                {nullToNA(
+                  applicationFullData?.pre_procurement?.other_description
+                )}
               </p>
             </div>
 
@@ -671,7 +620,7 @@ const ViewReceivedInvtById = (props) => {
                           </label>
 
                           <input
-                            type='number'
+                            disabled
                             name='totalStock'
                             className={`${inputStyle} inline-block w-full relative`}
                             onChange={formik.handleChange}
@@ -694,8 +643,8 @@ const ViewReceivedInvtById = (props) => {
                           </label>
 
                           <input
-                            type='number'
                             name='receivedStock'
+                            disabled
                             className={`${inputStyle} inline-block w-full relative`}
                             onChange={formik.handleChange}
                             value={formik.values.receivedStock}
@@ -717,7 +666,6 @@ const ViewReceivedInvtById = (props) => {
                           </label>
 
                           <input
-                            type='number'
                             name='remStock'
                             className={`${inputStyle} inline-block w-full relative`}
                             onChange={formik.handleChange}
@@ -739,11 +687,10 @@ const ViewReceivedInvtById = (props) => {
                           </label>
 
                           <input
-                            type='number'
-                            name='deadStock'
+                            name='dead_stock'
                             className={`${inputStyle} inline-block w-full relative`}
                             onChange={formik.handleChange}
-                            value={formik.values.deadStock}
+                            value={formik.values.dead_stock}
                           />
 
                           <button
@@ -757,9 +704,9 @@ const ViewReceivedInvtById = (props) => {
                           </button>
 
                           <p className='text-red-500 text-xs '>
-                            {formik.touched.totalStock &&
-                            formik.errors.totalStock
-                              ? formik.errors.totalStock
+                            {formik.touched.dead_stock &&
+                            formik.errors.dead_stock
+                              ? formik.errors.dead_stock
                               : null}
                           </p>
                         </div>
@@ -795,7 +742,7 @@ const ViewReceivedInvtById = (props) => {
                         Cancel
                       </button>
 
-                      <button className={buttonStyle2} onClick=''>
+                      <button className={buttonStyle2} type='submit'>
                         Add To Inventory
                       </button>
                     </div>
