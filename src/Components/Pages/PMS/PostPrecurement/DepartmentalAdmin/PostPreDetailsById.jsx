@@ -884,7 +884,7 @@ const PostPreDetailsById = (props) => {
           )}
 
           {page == "outbox" && (
-            <div className='py-6 mt-2 bg-white rounded-lg shadow-xl px-10 border border-blue-500'>
+            <div className='py-6 mt-8 bg-white rounded-lg shadow-xl px-10 border border-blue-500'>
               <h2 className='text-2xl font-semibold text-gray-600 mb-4'>
                 Additional Details
               </h2>

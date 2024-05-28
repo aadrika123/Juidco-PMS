@@ -79,7 +79,19 @@ function StockReceiverModal(props) {
               JPEG, PNG, PDG, and MP4 formats, up to 50MB
             </h1>
             <div className='mb-8'>
-              <input type='file' className='hidden' ref={inputFileRef} onChange={(e) => props?.setImageDoc(e.target.files[0])}/>
+              <input type='file' className='hidden' ref={inputFileRef} 
+              onChange={ (e) => props?.setImageDoc(e.target.files[0])} 
+              
+              // onChange={ (e) => {
+              //     const file = e.target.files[0];
+              //     if (file) {
+              //       setImage(file);
+              //       setPreview(URL.createObjectURL(file));
+              //     }
+              // }} 
+
+              />
+
               <button
                 className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
                 onClick={handleUploadDoc}

@@ -46,11 +46,14 @@ const ViewReceivedInvtByIdDa = (props) => {
   const [remark, setRemark] = useState("");
   const [cancelModal, setCancelModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
-  const [imageDoc, setImageDoc] = useState();
   const [ulbId, setUlbId] = useState("");
+  const [imageDoc, setImageDoc] = useState();
+  const [preview, setPreview] = useState();
+
 
   const {
     api_fetchDaReceivedInvtDetailById,
+    api_fetchDaReceivedInvtListOutboxId,
     api_postDaReceivedInvtDetail,
     // api_postBackToSR,
     // api_postReleaseTender,
@@ -126,7 +129,7 @@ const ViewReceivedInvtByIdDa = (props) => {
       url = api_fetchDaReceivedInvtDetailById;
     }
     if (page == "outbox") {
-      url = api_fetchOutboxProcurementDetailById;
+      url = api_fetchDaReceivedInvtListOutboxId;
     }
 
     AxiosInterceptors.get(`${url}/${id}`, {}, ApiHeader())
@@ -244,6 +247,7 @@ const ViewReceivedInvtByIdDa = (props) => {
           setRemark={setRemark}
           setImageDoc={setImageDoc}
           setIsModalOpen={setIsModalOpen}
+          preview={setPreview}
         />
       </>
     );
@@ -264,7 +268,8 @@ const ViewReceivedInvtByIdDa = (props) => {
     );
   }
 
-  // console.log(applicationFullData?.order_no)
+  console.log(applicationFullData?.total_quantity)
+  console.log(applicationFullData?.total_receivings)
   // console.log(ulbId)
 
   return (
@@ -805,7 +810,8 @@ const ViewReceivedInvtByIdDa = (props) => {
 
           {/* Received Details form */}
 
-          {page == "inbox" && (
+          {page != "outbox" && applicationFullData?.total_quantity !== (applicationFullData?.total_receivings || null) && (
+            
             <div className={`${formStyle} mt-8 border border-blue-600`}>
               <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
                 <div className="">
