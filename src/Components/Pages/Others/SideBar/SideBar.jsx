@@ -56,20 +56,22 @@ const SideBar = (props) => {
       >
         {
           <div
-            class={
+            className={
               (toggleBar ? open3 : close3) + ` bg-${bg}-100 w-full inset-0 `
             }
             id='mobile-menu'
           >
             <nav
               id='mobile-nav'
-              class='flex flex-col ltr:right-0 rtl:left-0 w-full top-0 py-4 '
+              className='flex flex-col ltr:right-0 rtl:left-0 w-full top-0 py-4 '
             >
-              <div class={`mb-auto text-sm 2xl:text-base text-${tcolor}-800`}>
+              <div
+                className={`mb-auto text-sm 2xl:text-base text-${tcolor}-800`}
+              >
                 {/* 👉 ========logo========== 👈 */}
-                <div class='text-center mb-4'>
+                <div className='text-center mb-4'>
                   <div
-                    class={`text-xl text-${tcolor}-800 flex flex-col items-start justify-center relative`}
+                    className={`text-xl text-${tcolor}-800 flex flex-col items-start justify-center relative`}
                   >
                     <span className='flex justify-center w-full'>
                       {" "}
@@ -90,9 +92,12 @@ const SideBar = (props) => {
                 </div>
 
                 {/* 👉 =====menus======  👈*/}
-                <div class=' text-sm px-4 overflow-y-auto scrollbar-width-10 scrollbar-track-blue-100 scrollbar-thumb-blue-700 scrollbar-thumb-rounded-full scrollbar-thumb-hover-blue-500 transition-all duration-200'>
-                  <nav class='relative flex flex-wrap items-center justify-between overflow-x-hidden'>
-                    <ul id='side-menu' class='w-full float-none flex flex-col'>
+                <div className=' text-sm px-4 overflow-y-auto scrollbar-width-10 scrollbar-track-blue-100 scrollbar-thumb-blue-700 scrollbar-thumb-rounded-full scrollbar-thumb-hover-blue-500 transition-all duration-200'>
+                  <nav className='relative flex flex-wrap items-center justify-between overflow-x-hidden'>
+                    <ul
+                      id='side-menu'
+                      className='w-full float-none flex flex-col'
+                    >
                       {props?.menu?.map((item) => (
                         <>
                           <li
@@ -139,7 +144,7 @@ const SideBar = (props) => {
 
                             {item?.children?.length > 0 &&
                               dropName == item?.name && (
-                                <ul class='block rounded rounded-t-none top-full py-0.5 ltr:text-left rtl:text-right mb-4 bg-[#133e71]'>
+                                <ul className='block rounded rounded-t-none top-full py-0.5 ltr:text-left rtl:text-right mb-4 bg-[#133e71]'>
                                   {item?.children?.map((elem) => (
                                     <>
                                       <li

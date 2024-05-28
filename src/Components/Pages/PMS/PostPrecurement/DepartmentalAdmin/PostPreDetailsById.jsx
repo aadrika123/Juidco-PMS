@@ -584,7 +584,7 @@ const PostPreDetailsById = (props) => {
                   {nullToNA(applicationFullData?.pre_procurement?.rate)}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-                  Rate
+                  Rate per quantity
                 </div>
               </div>
 
