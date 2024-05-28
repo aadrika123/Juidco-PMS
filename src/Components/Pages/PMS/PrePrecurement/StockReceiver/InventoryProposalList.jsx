@@ -117,7 +117,10 @@ function InventoryProposalList(props) {
             {cell.row.values.status.status == 3 && "Supplier Assigned"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 4 && "Stock Verified"}
+            {cell.row.values.status.status == 4 && "Incomplete stocks received"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 5 && "Stocks received"}
           </p>
         </div>
       ),

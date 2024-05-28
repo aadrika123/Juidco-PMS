@@ -5,7 +5,7 @@
 //    Revision - 1
 //    Project - JUIDCO
 //    Component  - InventoryProposalList
-//    DESCRIPTION - InventoryProposalList     
+//    DESCRIPTION - InventoryProposalList
 /////////////////////////////////////////////////////////////////////////////
 
 import { useFormik } from "formik";
@@ -24,14 +24,11 @@ import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 import { GoPlus } from "react-icons/go";
 import { FaChartPie } from "react-icons/fa";
 
-
-
-
 function InventoryProposalList(props) {
   const navigate = useNavigate();
-  const {module} = useParams()
+  const { module } = useParams();
 
-  console.log(props.page,"page========>")
+  console.log(props.page, "page========>");
   // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
 
   const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
@@ -42,7 +39,7 @@ function InventoryProposalList(props) {
   const [requestBody, setRequestBody] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
-  const [activeButton, setActiveButton] = useState('inbox');
+  const [activeButton, setActiveButton] = useState("inbox");
 
   let testDate = new Date().toLocaleDateString("in-IN");
   let todayDate = moment(testDate).format("DD-MM-YYYY");
@@ -68,8 +65,6 @@ function InventoryProposalList(props) {
     validationSchema,
   });
 
-  
-
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
     {
@@ -80,7 +75,7 @@ function InventoryProposalList(props) {
       Header: "Order No",
       accessor: "order_no",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.order_no}</div>
+        <div className='pr-2'>{cell.row.values.order_no}</div>
       ),
     },
     {
@@ -100,11 +95,11 @@ function InventoryProposalList(props) {
     {
       Header: "Brand",
       accessor: "brand",
-      Cell: ({ cell }) => (      // console.log(cell.row.values,"===================celllllll")
-        <div className='pr-2'>{cell.row.values.brand || 'N/A'}</div>
-    ),
+      Cell: (
+        { cell } // console.log(cell.row.values,"===================celllllll")
+      ) => <div className='pr-2'>{cell.row.values.brand || "N/A"}</div>,
     },
-    
+
     // {
     //   Header: "Graphics",
     //   accessor: "graphics",
@@ -130,14 +125,31 @@ function InventoryProposalList(props) {
       Header: "status",
       accessor: "status",
       Cell: ({ cell }) => (
-        <div className="pr-2">
-        <p className="font-bold text-yellow-800">{cell.row.values.status.status == -1 && 'Back to SR'}</p>
-        <p className="font-bold text-red-500">{cell.row.values.status.status == -2 && 'Rejected'}</p>
-        <p className="font-bold text-blue-800">{cell.row.values.status.status == 0 && 'Pending'}</p>
-        <p className="font-bold text-blue-800">{cell.row.values.status.status == 1 && "DA's Inbox"}</p>
-        <p className="font-bold text-green-800">{cell.row.values.status.status == 2 && "Release for Tender"}</p>
-        <p className="font-bold text-green-500">{cell.row.values.status.status == 3 && "Stock Receaved"}</p>
-        <p className="font-bold text-green-500">{cell.row.values.status.status == 4 && "Stock Verified"}</p>
+        <div className='pr-2'>
+          <p className='font-bold text-yellow-800'>
+            {cell.row.values.status.status == -1 && "Back to SR"}
+          </p>
+          <p className='font-bold text-red-500'>
+            {cell.row.values.status.status == -2 && "Rejected"}
+          </p>
+          <p className='font-bold text-blue-800'>
+            {cell.row.values.status.status == 0 && "Pending"}
+          </p>
+          <p className='font-bold text-blue-800'>
+            {cell.row.values.status.status == 1 && "DA's Inbox"}
+          </p>
+          <p className='font-bold text-green-800'>
+            {cell.row.values.status.status == 2 && "Release for Tender"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 3 && "Stock Receaved"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 4 && "Incomplete stocks received"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 5 && "Stocks received"}
+          </p>
         </div>
       ),
     },
@@ -145,7 +157,9 @@ function InventoryProposalList(props) {
       Header: "Remark",
       accessor: "remark",
       Cell: ({ cell }) => (
-        <div className='pr-2 text-green-800 truncate w-14'>{cell.row.values.remark || "N/A"}</div>
+        <div className='pr-2 text-green-800 truncate w-14'>
+          {cell.row.values.remark || "N/A"}
+        </div>
       ),
     },
     {
@@ -156,7 +170,9 @@ function InventoryProposalList(props) {
           <button
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
-              navigate(`/da-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`)
+              navigate(
+                `/da-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`
+              )
             }
           >
             View
@@ -184,33 +200,28 @@ function InventoryProposalList(props) {
     );
   }
 
-
   const tableSelector = (page) => {
     switch (page) {
       case "inbox":
-        return "DAIN"
+        return "DAIN";
       case "outbox":
-        return "DAOUT"
+        return "DAOUT";
       default:
-        return "DAIN"
+        return "DAIN";
     }
-  }
-
+  };
 
   return (
     <>
       {loader && <BarLoader />}
       <div className='container mx-auto p-4'>
         <div className=''>
-          <div className='flex justify-between'>
-            
-          </div>
+          <div className='flex justify-between'></div>
         </div>
-        
+
         <div className='grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 '>
           <div className='col-span-12'>
             <>
-            
               <ListTableParent
                 table={tableSelector(props?.page)}
                 api={props.api}
