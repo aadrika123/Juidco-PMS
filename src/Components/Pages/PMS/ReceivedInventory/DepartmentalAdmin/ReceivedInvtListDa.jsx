@@ -153,15 +153,15 @@ function ReceivedInvtList(props) {
         </div>
       ),
     },
-    {
-      Header: "Remark",
-      accessor: "remark",
-      Cell: ({ cell }) => (
-        <div className='pr-2 text-green-800 truncate w-14'>
-          {cell.row.values.remark || "N/A"}
-        </div>
-      ),
-    },
+    // {
+    //   Header: "Remark",
+    //   accessor: "remark",
+    //   Cell: ({ cell }) => (
+    //     <div className='pr-2 text-green-800 truncate w-14'>
+    //       {cell.row.values.remark || "N/A"}
+    //     </div>
+    //   ),
+    // },
     {
       Header: "Action",
       accessor: "id",

@@ -115,7 +115,11 @@ function StockReceiverModal(props) {
                 name={props.remarks}
                 className='border border-[#5448dd] rounded w-[28rem] h-[5rem]'
                 placeholder=' Enter Remarks...'
-                onChange={(e) => props?.setRemark(e.target.value)}
+                // onChange={(e) => props?.setRemark(e.target.value)}
+                onChange={(e) => props?.setFormData((prev)=>({
+                  ...prev,
+                  remark:e.target.value
+                }))}
                 required
               />
             </div>

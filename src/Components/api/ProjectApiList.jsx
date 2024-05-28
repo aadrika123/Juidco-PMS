@@ -125,11 +125,17 @@ export default function ProjectApiList() {
     api_fetchPostProcurementDAListOutbox: `${baseUrl}/api/pms/da/post-procurement/outbox`,
     api_postPostProcurementDaAdditionalDetails: `${baseUrl}/api/pms/da/post-procurement/save-additional-details`,
     api_fetchDaReceivedInvtListInbox: `${baseUrl}/api/pms/da/rec-inv`,
+
+    //inventory
     api_fetchDaReceivedInvtListOutbox: `${baseUrl}/api/pms/da/rec-inv/outbox`,
     api_fetchDaReceivedInvtListOutboxId: `${baseUrl}/api/pms/da/rec-inv/outbox`,
-
     api_fetchDaReceivedInvtDetailById: `${baseUrl}/api/pms/da/rec-inv`,
     api_postDaReceivedInvtDetail: `${baseUrl}/api/pms/da/rec-inv/receive`,
+
+    //sr
+    api_fetchSrReceivedInvtListInbox: `${baseUrl}/api/pms/sr/rec-inv`,
+    api_fetchSrReceivedInvtListOutbox: `${baseUrl}/api/pms/sr/rec-inv/outbox`,
+    api_postSrAddInvt: `${baseUrl}/api/pms/sr/rec-inv/add-to-inv`,
   };
 
   return apiList;

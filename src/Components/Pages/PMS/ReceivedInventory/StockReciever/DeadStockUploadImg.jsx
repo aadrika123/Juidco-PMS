@@ -9,30 +9,13 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState, useRef } from "react";
-// import PaymentDetailsSepticTank from "./SuccessModal";
-import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
-import cancel from "@/Components/assets/cancel.svg";
-import uploadImg from "@/Components/assets/uploadImg.png";
-import { useNavigate } from "react-router-dom";
 import { LuCloudy } from "react-icons/lu";
 
 function DeadStockUploadImg(props) {
-  const navigate = useNavigate();
   const inputFileRef = useRef();
-  const { formStyle } = ThemeStyleTanker();
-
-  const [openPaymentModal, setOpenPaymentModal] = useState(0);
-
-  // console.log("Res Dataaaaaaaa", props?.responseScreenData);
-
-  // const handlePayment = () => {
-  //   console.log("clicked====pay button");
-  //   navigate(
-  //     `/tanker-payment/${props?.responseScreenData?.data?.applicationId}/septicTanker`
-  //   );
-  // };
 
   const handleClick = () => {
+    props?.postAddtoInventory();
     // props?.postBackToSR();
     // navigate(`/sr-inventory-proposal`);
   };
@@ -44,19 +27,10 @@ function DeadStockUploadImg(props) {
   };
   const handleUploadDoc = () => {
     inputFileRef.current.click();
-    // props?.submitForm()
-    // navigate(`/add-pre-procurement`);
-    // props.setIsModalOpen(false);
   };
+
   return (
     <>
-      <div>
-        {/* <PaymentDetailsSepticTank
-          openPaymentModal={openPaymentModal}
-          applicationId={props?.responseScreenData?.data?.applicationId}
-        /> */}
-      </div>
-
       <div className='fixed inset-0 flex items-center justify-center z-[5000]'>
         <div className='absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm'></div>
         <div className='bg-white px-5 mx-auto flex flex-col max-sm:w-full z-10  rounded'>
@@ -77,19 +51,18 @@ function DeadStockUploadImg(props) {
           <div className='mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col w-full'>
             <div className='rounded-md mt-8'>
               <LuCloudy className='text-[1.5rem]' />
-              {/* <img
-                  src={uploadImg}
-                  alt='upload doc icon'
-                  width={50}
-                  height={50}
-                /> */}
             </div>
             <h3 class='text-xl text-black font-openSans'>choose a file </h3>
             <h1 className='text-gray-400 text-sm px-6'>
               JPEG, PNG, PDG, and MP4 formats, up to 50MB
             </h1>
             <div className='mb-8'>
-              <input type='file' className='hidden' ref={inputFileRef} />
+              <input
+                type='file'
+                className='hidden'
+                ref={inputFileRef}
+                onChange={(e) => props?.setImageDoc(e.target.files[0])}
+              />
               <button
                 className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
                 onClick={handleUploadDoc}
