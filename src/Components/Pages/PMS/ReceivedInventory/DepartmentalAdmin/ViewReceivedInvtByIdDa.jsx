@@ -27,7 +27,6 @@ import ThemeStyle from "@/Components/Common/ThemeStyle";
 import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
 import { contextVar } from "@/Components/context/contextVar";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
-import { allowNumberInput } from "@/Components/Common/PowerUps/PowerupFunctions";
 
 const ViewReceivedInvtByIdDa = (props) => {
   const navigate = useNavigate();
@@ -41,24 +40,18 @@ const ViewReceivedInvtByIdDa = (props) => {
   const [applicationFullData, setapplicationFullData] = useState();
   const [formData, setFormData] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpen2, setIsModalOpen2] = useState(false);
-  const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [remark, setRemark] = useState("");
   const [cancelModal, setCancelModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
   const [ulbId, setUlbId] = useState("");
   const [imageDoc, setImageDoc] = useState();
   const [preview, setPreview] = useState();
-
+  const [imageUrl, setImageUrl] = useState("");
 
   const {
     api_fetchDaReceivedInvtDetailById,
     api_fetchDaReceivedInvtListOutboxId,
     api_postDaReceivedInvtDetail,
-    // api_postBackToSR,
-    // api_postReleaseTender,
-    // api_postRejectTender,
-    // api_postDaEditTender,
   } = ProjectApiList();
 
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
@@ -90,7 +83,6 @@ const ViewReceivedInvtByIdDa = (props) => {
     // remarks: "",
     // imageDoc: "",
   };
-
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -152,8 +144,7 @@ const ViewReceivedInvtByIdDa = (props) => {
       });
   };
 
-
-//cal remaining quantity and managing rec quantity validation
+  //cal remaining quantity and managing rec quantity validation
   const remainingQuanityCalc = (receivedQuantity) => {
     let recQuantity;
 
@@ -161,23 +152,25 @@ const ViewReceivedInvtByIdDa = (props) => {
     receivedQuantity && (recQuantity = Number(receivedQuantity) || 0);
 
     const recQuantityValueRange =
-    applicationFullData?.total_quantity - applicationFullData?.total_receivings;
+      applicationFullData?.total_quantity -
+      applicationFullData?.total_receivings;
     if (receivedQuantity <= recQuantityValueRange) {
       formik.setFieldValue("received_quantity", receivedQuantity);
 
-      const remQuantityValue = applicationFullData?.total_quantity - (applicationFullData?.total_receivings + Number(receivedQuantity))
+      const remQuantityValue =
+        applicationFullData?.total_quantity -
+        (applicationFullData?.total_receivings + Number(receivedQuantity));
       // console.log(remQuantityValue,"remQuantityValue",applicationFullData?.total_quantity,"applicationFullData?.total_quantity",applicationFullData?.total_receivings,"applicationFullData?.total_receivings",receivedQuantity,"receivedQuantity")
 
-      formik.setFieldValue("remaining_quantity",remQuantityValue)
+      formik.setFieldValue("remaining_quantity", remQuantityValue);
     } else {
       toast.error("Received Quantity should not exceed the total quantity");
       formik.setFieldValue("received_quantity", 0);
-      formik.setFieldValue("remaining_quantity",0)
+      formik.setFieldValue("remaining_quantity", 0);
     }
     // const remaining = formik.values.total_quantity - recQuantity;
     // formik.setFieldValue("", remaining);
   };
-
 
   //post received inventory details----------
   const postReceivedInventoryDetails = () => {
@@ -240,9 +233,6 @@ const ViewReceivedInvtByIdDa = (props) => {
     return (
       <>
         <ReceivedInvtSubmittedScreen
-          // submitForm={submitForm}
-          // responseScreenData={formData}
-          // submit
           submitFunc={postReceivedInventoryDetails}
           setRemark={setRemark}
           setImageDoc={setImageDoc}
@@ -264,37 +254,41 @@ const ViewReceivedInvtByIdDa = (props) => {
   if (imageModal) {
     return (
       <>
-        <ImageModal imageModal={imageModal} setImageModal={setImageModal} />
+        <ImageModal
+          imageModal={imageModal}
+          setImageModal={setImageModal}
+          imageUrl={imageUrl}
+        />
       </>
     );
   }
 
-  console.log(applicationFullData?.total_quantity)
-  console.log(applicationFullData?.total_receivings)
+  console.log(applicationFullData?.total_quantity);
+  console.log(applicationFullData?.total_receivings);
   // console.log(ulbId)
 
   return (
     <div>
-      <div className="">
+      <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Inventory Details"}
         />
       </div>
-      <div className="">
+      <div className=''>
         {/* Basic Details */}
-        <div className="mt-6">
-          <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-600 ">
-            <h2 className="font-semibold text-xl flex justify-start">
-              <MdTag className="inline pt-1 text-[1.5rem] text-sky-700" /> View
+        <div className='mt-6'>
+          <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-600 '>
+            <h2 className='font-semibold text-xl flex justify-start'>
+              <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View
               Procurement Request{" "}
             </h2>
           </div>
-          <div className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-600">
-            <div className="pl-8 text-[1rem] text-[#4338CA]">
-              <h1 className="">
-                Procurement request No <span className="text-black">:</span>
-                <span className="font-bold">
+          <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-600'>
+            <div className='pl-8 text-[1rem] text-[#4338CA]'>
+              <h1 className=''>
+                Procurement request No <span className='text-black'>:</span>
+                <span className='font-bold'>
                   {" "}
                   {nullToNA(applicationFullData?.order_no)}
                 </span>
@@ -302,10 +296,10 @@ const ViewReceivedInvtByIdDa = (props) => {
             </div>
 
             {!applicationFullData?.remark?.length == 0 && (
-              <div className="pb-5 pl-8">
-                <h1 className="font-bold text-base text-red-500">
-                  Remark <span className="text-black">:</span>
-                  <span className="text-sm pt-2 font-light text-red-500">
+              <div className='pb-5 pl-8'>
+                <h1 className='font-bold text-base text-red-500'>
+                  Remark <span className='text-black'>:</span>
+                  <span className='text-sm pt-2 font-light text-red-500'>
                     {" "}
                     {nullToNA(applicationFullData?.remark)}
                   </span>
@@ -313,16 +307,16 @@ const ViewReceivedInvtByIdDa = (props) => {
               </div>
             )}
 
-            <div className="grid grid-cols-4 gap-4 ml-14">
+            <div className='grid grid-cols-4 gap-4 ml-14'>
               {/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(
                     applicationFullData?.pre_procurement?.category?.name
                   )}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Item Category
                 </div>
               </div>
@@ -331,13 +325,13 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               {/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(
                     applicationFullData?.pre_procurement?.subcategory?.name
                   )}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Item Sub Category
                 </div>
               </div>
@@ -350,11 +344,11 @@ const ViewReceivedInvtByIdDa = (props) => {
                   "Safety and Security" ||
                   "Cleaning Supplies" ||
                   "Furniture") && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(applicationFullData?.pre_procurement?.brand)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Brand
                   </div>
                 </div>
@@ -365,11 +359,11 @@ const ViewReceivedInvtByIdDa = (props) => {
                   "Maintainance and Repaire" ||
                   "Cleaning Supplies" ||
                   "Furniture") && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-semibold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-semibold '>
                     {nullToNA(applicationFullData?.pre_procurement?.colour)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Colour
                   </div>
                 </div>
@@ -384,11 +378,11 @@ const ViewReceivedInvtByIdDa = (props) => {
                   "Maintainance and Repaire" ||
                   "Furniture" ||
                   "Cleaning Supplies") && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(applicationFullData?.pre_procurement?.material)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Material
                   </div>
                 </div>
@@ -396,11 +390,11 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               {applicationFullData?.pre_procurement?.category?.name ==
                 ("Maintainance and Repaire" || "Safety and Security") && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(applicationFullData?.pre_procurement?.dimension)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Dimension
                   </div>
                 </div>
@@ -408,11 +402,11 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               {applicationFullData?.pre_procurement?.category?.name ==
                 "Furniture" && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(applicationFullData?.pre_procurement?.room_type)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Room Type
                   </div>
                 </div>
@@ -420,13 +414,13 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               {applicationFullData?.pre_procurement?.category?.name ==
                 "Furniture" && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-semibold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-semibold '>
                     {nullToNA(
                       applicationFullData?.pre_procurement?.included_components
                     )}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Included Components
                   </div>
                 </div>
@@ -438,11 +432,11 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               {applicationFullData?.pre_procurement?.category?.name ==
                 "Furniture" && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(applicationFullData?.pre_procurement?.size)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     size
                   </div>
                 </div>
@@ -450,13 +444,13 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               {applicationFullData?.pre_procurement?.category?.name ==
                 "Cleaning Supplies" && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(
                       applicationFullData?.pre_procurement?.recomended_uses
                     )}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Recomended Uses
                   </div>
                 </div>
@@ -464,11 +458,11 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               {applicationFullData?.pre_procurement?.category?.name ==
                 "Cleaning Supplies" && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(applicationFullData?.pre_procurement?.bristle)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Bristle
                   </div>
                 </div>
@@ -476,11 +470,11 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               {applicationFullData?.pre_procurement?.category?.name ==
                 ("Maintainance and Repaire" || "Safety and Security") && (
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-semibold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-semibold '>
                     {nullToNA(applicationFullData?.pre_procurement?.weight)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Weight
                   </div>
                 </div>
@@ -490,40 +484,40 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-semibold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-semibold '>
                   {nullToNA(applicationFullData?.pre_procurement?.rate)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Rate
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(applicationFullData?.pre_procurement?.quantity)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Quantity
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(applicationFullData?.pre_procurement?.total_rate)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Total Rate
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(
                     applicationFullData?.pre_procurement?.number_of_items
                   )}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   No of Items
                 </div>
               </div>
@@ -532,59 +526,59 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {/* {nullToNA(applicationFullData?.quantity)} */}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   {/* Quantity  */}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {/* {nullToNA(applicationFullData?.applicant_name)} */}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   {/* Total Rate   */}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {/* {nullToNA(applicationFullData?.mobile)} */}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   {/* Brand  */}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-semibold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-semibold '>
                   {/* {nullToNA(applicationFullData?.email)} */}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   {/* Processor  */}
                 </div>
               </div>
             </div>
 
-            <div className="p-5 pl-14">
-              <h1 className="font-bold ">Other Description</h1>
-              <p className=" pt-2">
+            <div className='p-5 pl-14'>
+              <h1 className='font-bold '>Other Description</h1>
+              <p className=' pt-2'>
                 {nullToNA(
                   applicationFullData?.pre_procurement?.other_description
                 )}
               </p>
             </div>
 
-            <div className="h-[30px]"></div>
+            <div className='h-[30px]'></div>
           </div>
 
           {/* Additional Details */}
 
-          <div className="py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 ">
-            <div className=" ml-1 p-2">
+          <div className='py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 '>
+            <div className=' ml-1 p-2'>
               <h1
                 className={`${headingStyle} text-[1.5rem] text-left pb-2 pl-6`}
               >
@@ -592,87 +586,87 @@ const ViewReceivedInvtByIdDa = (props) => {
               </h1>
             </div>
 
-            <div className="grid grid-cols-4 gap-4 ml-14">
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+            <div className='grid grid-cols-4 gap-4 ml-14'>
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(applicationFullData?.supplier_name)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Supplier Name
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(applicationFullData?.gst_no)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   GST No
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(applicationFullData?.final_rate)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Final Rate
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(applicationFullData?.gst)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   GST %
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(applicationFullData?.total_price)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Total Price
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(applicationFullData?.total_quantity)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Total Quantity
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(applicationFullData?.total_receivings)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Total Received Items
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(applicationFullData?.unit_price)}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Unit Price
                 </div>
               </div>
 
-              <div className="h-[80px]"></div>
+              <div className='h-[80px]'></div>
             </div>
           </div>
 
           {/* Receiving No */}
 
           {page == "outbox" && (
-            <div className="mt-8 ">
+            <div className='mt-8 '>
               <Accordion>
                 <AccordionSummary
                   style={{
@@ -680,66 +674,76 @@ const ViewReceivedInvtByIdDa = (props) => {
                     color: "white",
                     borderRadius: "5px",
                   }}
-                  expandIcon={<ExpandMoreIcon className="text-white" />}
-                  aria-controls="panel1-content"
-                  id="panel1-header"
+                  expandIcon={<ExpandMoreIcon className='text-white' />}
+                  aria-controls='panel1-content'
+                  id='panel1-header'
                 >
                   Receiving No
                 </AccordionSummary>
                 <AccordionDetails>
                   {/* table */}
 
-                  <div class="relative overflow-x-auto">
-                    <table class="w-full text-sm text-left rtl:text-right">
-                      <thead class="text-xs uppercase bg-gray-200">
+                  <div class='relative overflow-x-auto'>
+                    <table class='w-full text-sm text-left rtl:text-right'>
+                      <thead class='text-xs uppercase bg-gray-200'>
                         <tr>
-                          <th scope="col" class="px-6 py-3">
+                          <th scope='col' class='px-6 py-3'>
                             Date
                           </th>
-                          <th scope="col" class="px-6 py-3">
+                          <th scope='col' class='px-6 py-3'>
                             Receiving no
                           </th>
-                          <th scope="col" class="px-6 py-3">
+                          <th scope='col' class='px-6 py-3'>
                             Total Quantity
                           </th>
-                          <th scope="col" class="px-6 py-3">
+                          <th scope='col' class='px-6 py-3'>
                             Received Quantity
                           </th>
-                          <th scope="col" class="px-6 py-3">
+                          <th scope='col' class='px-6 py-3'>
                             View Doc
                           </th>
 
-                          <th scope="col" class="px-6 py-3">
+                          <th scope='col' class='px-6 py-3'>
                             Remaining Quantity
                           </th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr class="bg-white border-b-2">
-                          <td class="px-6 py-4">25-05-24</td>
-                          <td class="px-6 py-4">123456789</td>
-                          <td class="px-6 py-4">343</td>
-                          <td class="px-6 py-4">309</td>
-                          <td class="px-6 py-4">
-                            <p
-                              className="text-blue-900 underline font-bold cursor-pointer"
-                              onClick={() => {
-                                setImageModal(true);
-                              }}
-                            >
-                              View
-                            </p>
-                          </td>
-                          <td class="px-6 py-4">34</td>
-                        </tr>
-                      </tbody>
+                      {applicationFullData?.receivings.map((data) => (
+                        <tbody>
+                          <tr class='bg-white border-b-2'>
+                            <td class='px-6 py-4'>{data?.date}</td>
+                            <td class='px-6 py-4'>{data?.receiving_no}</td>
+                            <td class='px-6 py-4'>
+                              {applicationFullData?.total_quantity}
+                            </td>
+                            <td class='px-6 py-4'>{data?.received_quantity}</td>
+                            <td class='px-6 py-4'>
+                              <p
+                                className='text-blue-900 underline font-bold cursor-pointer'
+                                onClick={() => {
+                                  setImageUrl(
+                                    data?.receiving_image[0]?.imageUrl
+                                  );
+                                  setImageModal(true);
+                                }}
+                              >
+                                View
+                              </p>
+                            </td>
+                            <td class='px-6 py-4'>
+                              {data?.remaining_quantity}
+                            </td>
+                          </tr>
+                        </tbody>
+                      ))}
+
                       <tfoot>
-                        <tr class="font-semibold text-gray-900 dark:text-white">
-                          <th scope="row" class="px-6 py-3 text-base">
+                        <tr class='font-semibold text-gray-900 dark:text-white'>
+                          <th scope='row' class='px-6 py-3 text-base'>
                             Total
                           </th>
-                          <td class="px-6 py-3">3</td>
-                          <td class="px-6 py-3">21,000</td>
+                          <td class='px-6 py-3'>3</td>
+                          <td class='px-6 py-3'>21,000</td>
                         </tr>
                       </tfoot>
                     </table>
@@ -754,8 +758,8 @@ const ViewReceivedInvtByIdDa = (props) => {
           {/* Additional Details */}
 
           {page == "outbox" && (
-            <div className="py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 ">
-              <div className=" ml-1 p-2">
+            <div className='py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 '>
+              <div className=' ml-1 p-2'>
                 <h1
                   className={`${headingStyle} text-[1.5rem] text-left pb-2 pl-6`}
                 >
@@ -763,192 +767,193 @@ const ViewReceivedInvtByIdDa = (props) => {
                 </h1>
               </div>
 
-              <div className="grid grid-cols-4 gap-4 ml-14">
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+              <div className='grid grid-cols-4 gap-4 ml-14'>
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {/* {nullToNA(applicationFullData?.category.name)} */}
                     123
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Total Quantity
                   </div>
                 </div>
 
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {/* {nullToNA(applicationFullData?.pre_procurement?.category?.name)} */}
                     123
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Date
                   </div>
                 </div>
 
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {/* {nullToNA(applicationFullData?.pre_procurement?.category?.name)} */}
                     123
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Received Quantity
                   </div>
                 </div>
 
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {/* {nullToNA(applicationFullData?.pre_procurement?.category?.name)} */}
                     123
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Remaining Quantity
                   </div>
                 </div>
 
-                <div className="h-[30px]"></div>
+                <div className='h-[30px]'></div>
               </div>
             </div>
           )}
 
           {/* Received Details form */}
 
-          {page != "outbox" && applicationFullData?.total_quantity !== (applicationFullData?.total_receivings || null) && (
-            
-            <div className={`${formStyle} mt-8 border border-blue-600`}>
-              <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-                <div className="">
-                  <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
-                    <div className="col-span-12  w-full mb-20">
-                      <div className=" ml-4 p-2 mt-4">
-                        <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
-                          Received Inventory
-                        </h1>
-                      </div>
-                      <div className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4">
-                        <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                          <div class="px-4 w-full mb-4">
-                            <label
-                              className={`${labelStyle} inline-block mb-2`}
-                            >
-                              Total Quantity
-                            </label>
+          {page != "outbox" &&
+            applicationFullData?.total_quantity !==
+              (applicationFullData?.total_receivings || null) && (
+              <div className={`${formStyle} mt-8 border border-blue-600`}>
+                <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
+                  <div className=''>
+                    <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
+                      <div className='col-span-12  w-full mb-20'>
+                        <div className=' ml-4 p-2 mt-4'>
+                          <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
+                            Received Inventory
+                          </h1>
+                        </div>
+                        <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
+                          <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                            <div class='px-4 w-full mb-4'>
+                              <label
+                                className={`${labelStyle} inline-block mb-2`}
+                              >
+                                Total Quantity
+                              </label>
 
-                            <input
-                              type="number"
-                              name="total_quantity"
-                              className={`${inputStyle} inline-block w-full relative`}
-                              onChange={formik.handleChange}
-                              value={formik.values.total_quantity}
-                              readOnly
-                            />
+                              <input
+                                type='number'
+                                name='total_quantity'
+                                className={`${inputStyle} inline-block w-full relative`}
+                                onChange={formik.handleChange}
+                                value={formik.values.total_quantity}
+                                readOnly
+                              />
 
-                            <p className="text-red-500 text-xs ">
-                              {formik.touched.total_quantity &&
-                              formik.errors.total_quantity
-                                ? formik.errors.total_quantity
-                                : null}
-                            </p>
+                              <p className='text-red-500 text-xs '>
+                                {formik.touched.total_quantity &&
+                                formik.errors.total_quantity
+                                  ? formik.errors.total_quantity
+                                  : null}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                            <div class='px-4 w-full mb-4'>
+                              <label
+                                className={`${labelStyle} inline-block mb-2`}
+                              >
+                                Date
+                              </label>
+
+                              <input
+                                type='date'
+                                name='date'
+                                className={`${inputStyle} inline-block w-full relative`}
+                                onChange={formik.handleChange}
+                                value={formik.values.date}
+                              />
+
+                              <p className='text-red-500 text-xs '>
+                                {formik.touched.date && formik.errors.date
+                                  ? formik.errors.date
+                                  : null}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                            <div class='px-4 w-full mb-4'>
+                              <label
+                                className={`${labelStyle} inline-block mb-2`}
+                              >
+                                Received Quantity
+                              </label>
+
+                              <input
+                                type='number'
+                                name='received_quantity'
+                                className={`${inputStyle} inline-block w-full relative`}
+                                onChange={formik.handleChange}
+                                value={formik.values.received_quantity}
+                              />
+
+                              <p className='text-red-500 text-xs '>
+                                {formik.touched.received_quantity &&
+                                formik.errors.received_quantity
+                                  ? formik.errors.received_quantity
+                                  : null}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                            <div class='px-4 w-full mb-4'>
+                              <label
+                                className={`${labelStyle} inline-block mb-2`}
+                              >
+                                Remaining Quantity
+                              </label>
+
+                              <input
+                                type='number'
+                                name='remaining_quantity'
+                                disabled
+                                className={`${inputStyle} inline-block w-full relative`}
+                                onChange={formik.handleChange}
+                                value={formik.values.remaining_quantity}
+                              />
+
+                              <p className='text-red-500 text-xs '>
+                                {formik.touched.remaining_quantity &&
+                                formik.errors.remaining_quantity
+                                  ? formik.errors.remaining_quantity
+                                  : null}
+                              </p>
+                            </div>
                           </div>
                         </div>
 
-                        <div className=" form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                          <div class="px-4 w-full mb-4">
-                            <label
-                              className={`${labelStyle} inline-block mb-2`}
-                            >
-                              Date
-                            </label>
+                        <div className='space-x-5 flex justify-end mr-[3rem]'>
+                          <button
+                            className={buttonStyle}
+                            onClick={() => {
+                              setCancelModal(true);
+                            }}
+                          >
+                            Cancel
+                          </button>
 
-                            <input
-                              type="date"
-                              name="date"
-                              className={`${inputStyle} inline-block w-full relative`}
-                              onChange={formik.handleChange}
-                              value={formik.values.date}
-                            />
-
-                            <p className="text-red-500 text-xs ">
-                              {formik.touched.date && formik.errors.date
-                                ? formik.errors.date
-                                : null}
-                            </p>
-                          </div>
+                          <button className={buttonStyle2} onClick=''>
+                            Conitnue
+                          </button>
                         </div>
-
-                        <div className=" form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                          <div class="px-4 w-full mb-4">
-                            <label
-                              className={`${labelStyle} inline-block mb-2`}
-                            >
-                              Received Quantity
-                            </label>
-
-                            <input
-                              type="number"
-                              name="received_quantity"
-                              className={`${inputStyle} inline-block w-full relative`}
-                              onChange={formik.handleChange}
-                              value={formik.values.received_quantity}
-                            />
-
-                            <p className="text-red-500 text-xs ">
-                              {formik.touched.received_quantity &&
-                              formik.errors.received_quantity
-                                ? formik.errors.received_quantity
-                                : null}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className=" form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                          <div class="px-4 w-full mb-4">
-                            <label
-                              className={`${labelStyle} inline-block mb-2`}
-                            >
-                              Remaining Quantity
-                            </label>
-
-                            <input
-                              type="number"
-                              name="remaining_quantity"
-                              disabled
-                              className={`${inputStyle} inline-block w-full relative`}
-                              onChange={formik.handleChange}
-                              value={formik.values.remaining_quantity}
-                            />
-
-                            <p className="text-red-500 text-xs ">
-                              {formik.touched.remaining_quantity &&
-                              formik.errors.remaining_quantity
-                                ? formik.errors.remaining_quantity
-                                : null}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="space-x-5 flex justify-end mr-[3rem]">
-                        <button
-                          className={buttonStyle}
-                          onClick={() => {
-                            setCancelModal(true);
-                          }}
-                        >
-                          Cancel
-                        </button>
-
-                        <button className={buttonStyle2} onClick="">
-                          Conitnue
-                        </button>
                       </div>
                     </div>
                   </div>
-                </div>
-              </form>
-            </div>
-          )}
+                </form>
+              </div>
+            )}
 
           {page == "outbox" && (
-            <div className="space-x-5 flex justify-end mt-[1rem]">
+            <div className='space-x-5 flex justify-end mt-[1rem]'>
               <button
                 className={buttonStyle2}
                 onClick={() => {
