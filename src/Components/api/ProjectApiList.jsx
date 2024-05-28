@@ -125,6 +125,7 @@ export default function ProjectApiList() {
     api_postPostProcurementDaAdditionalDetails: `${baseUrl}/api/pms/da/post-procurement/save-additional-details`,
     api_fetchDaReceivedInvtListInbox: `${baseUrl}/api/pms/da/rec-inv`,
     api_fetchDaReceivedInvtListOutbox: `${baseUrl}/api/pms/da/rec-inv/outbox`,
+    api_fetchDaReceivedInvtListOutboxId: `${baseUrl}/api/pms/da/rec-inv/outbox`,
     
     api_fetchDaReceivedInvtDetailById: `${baseUrl}/api/pms/da/rec-inv`,
     api_postDaReceivedInvtDetail: `${baseUrl}/api/pms/da/rec-inv/receive`,
