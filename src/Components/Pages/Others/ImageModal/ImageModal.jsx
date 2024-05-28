@@ -12,8 +12,6 @@ import React, { useState } from "react";
 import cancel from "@/Components/assets/user copy.png";
 
 function ImageModal(props) {
-  const [openPaymentModal, setOpenPaymentModal] = useState(0);
-
   const handleCancilClick = () => {
     props?.setImageModal(false);
     // navigate(`/add-pre-procurement`);
@@ -38,8 +36,8 @@ function ImageModal(props) {
             <p className='text-3xl pr-3'>&times;</p>
           </button>
           <img
-            className='max-w-full h-[8rem] animate-wiggle mb-5 '
-            src={cancel}
+            className='max-w-full h-[20rem] animate-wiggle mb-5 '
+            src={props?.imageUrl}
             alt='alt title'
           />
         </div>

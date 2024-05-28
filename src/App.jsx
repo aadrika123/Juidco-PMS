@@ -166,14 +166,16 @@ function App() {
     
      /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
      
+     //------------ DA ---------------
+     { path: "/da-post-precurement", element: <PostPrecurementListTabsDa />}, 
+     { path: "/da-post-precurementbyid/:id/:page", element: <PostPreDetailsById /> },
+
+     
     //------------ Stock Receiver ---------------
     { path: "/sr-post-inventory", element: <PostProcurementHome /> },
     { path: "/sr-post-InvtDetailsById/:id/:page", element: <ViewPostInvtDetailsById /> },
     
-    //------------ DA ---------------
-    { path: "/da-post-precurement", element: <PostPrecurementListTabsDa />}, 
-    { path: "/da-post-precurementbyid/:id/:page", element: <PostPreDetailsById /> },
-    
+
     
 
     
