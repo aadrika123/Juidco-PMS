@@ -9,15 +9,12 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { LuCloudy } from "react-icons/lu";
 import { allowCharacterNumberInput } from "@/Components/Common/PowerupFunctions";
+import toast from "react-hot-toast";
 
 function StockReceiverModal(props) {
-  const navigate = useNavigate();
   const inputFileRef = useRef();
-
-  const [openPaymentModal, setOpenPaymentModal] = useState(0);
   const [preview, setPreview] = useState();
 
   const handleClick = () => {
@@ -30,6 +27,47 @@ function StockReceiverModal(props) {
   const handleUploadDoc = () => {
     inputFileRef.current.click();
   };
+
+  //image validation with file type and size limit
+  const imageHandler = (e) => {
+    const validExtensions = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "application/pdf",
+    ];
+
+    const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
+
+    const file = e.target.files[0];
+    if (!file) {
+      return toast.error("No File Selected");
+    }
+
+    // Check the file type
+    if (!validExtensions.includes(file.type)) {
+      toast.error(
+        "Invalid file type. Please select a JPG, JPEG, PNG or PDF file."
+      );
+      e.target.value = ""; // Clear the input
+      return;
+    }
+
+    // Check the file size
+    if (file.size > maxSizeInBytes) {
+      toast.error("File size exceeds 2MB. Please select a smaller file.");
+      e.target.value = ""; // Clear the input
+      return;
+    }
+
+    if (file) {
+      console.log(file.size, "=========file size");
+      props?.setImageDoc(file);
+      console.log(URL.createObjectURL(file), "==========url");
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
   return (
     <>
       <div className='fixed inset-0 flex items-center justify-center z-[5000]'>
@@ -50,30 +88,31 @@ function StockReceiverModal(props) {
           <hr className='w-full mt-3' />
 
           <div className='mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col'>
-
-            { preview == null ? <> 
-            <div className='rounded-md mt-8'>
-              <LuCloudy className='text-[1.5rem]' />
-            </div>
-            <h3 class='text-xl text-black font-openSans'>Choose a file </h3>
-            <h1 className='text-gray-400 text-sm'>
-              JPEG, PNG, JPG, and PDF formats, up to 2MB
-            </h1>
-            </> : <img src={preview} alt="Image Preview" style={{ width: '200px', height: 'auto', marginTop: '20px' }} />}
-            
+            {preview == null ? (
+              <>
+                <div className='rounded-md mt-8'>
+                  <LuCloudy className='text-[1.5rem]' />
+                </div>
+                <h3 class='text-xl text-black font-openSans'>Choose a file </h3>
+                <h1 className='text-gray-400 text-sm'>
+                  JPEG, PNG, JPG, and PDF formats, up to 2MB
+                </h1>
+              </>
+            ) : (
+              <img
+                src={preview}
+                alt='Image Preview'
+                style={{ width: "200px", height: "auto", marginTop: "20px" }}
+              />
+            )}
 
             <div className='mb-8'>
-              <input type='file' className='hidden' ref={inputFileRef} 
-              // onChange={ (e) => props?.setImageDoc(e.target.files[0])} 
-
-              onChange={ (e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    props?.setImageDoc(file);
-                    setPreview(URL.createObjectURL(file));
-                  }
-              }} 
-
+              <input
+                type='file'
+                accept='.jpg, .jpeg, .pdf .png'
+                className='hidden'
+                ref={inputFileRef}
+                onChange={(e) => imageHandler(e)}
               />
 
               <button
@@ -84,24 +123,26 @@ function StockReceiverModal(props) {
               </button>
             </div>
           </div>
-
-          {/* <img src={preview} alt="Image Preview" style={{ width: '300px', height: 'auto' }} /> */}
-
           <div>
             <div className=''>
               <h3 className='text-sm text-black font-openSans'>Remarks</h3>
-             
             </div>
             <div className='flex justify-center mb-6 mt-2'>
               <textarea
                 name={props.remarks}
                 className='border border-[#5448dd] rounded w-[28rem] h-[5rem]'
                 placeholder=' Enter Remarks...'
-                // onChange={(e) => props?.setRemark(e.target.value)}
-                onChange={(e) => { allowCharacterNumberInput(e.target.value, e.target.value, 1000) ;props?.setFormData((prev)=>({
-                  ...prev,
-                  remark:e.target.value
-                }))}}
+                onChange={(e) => {
+                  allowCharacterNumberInput(
+                    e.target.value,
+                    e.target.value,
+                    1000
+                  );
+                  props?.setFormData((prev) => ({
+                    ...prev,
+                    remark: e.target.value,
+                  }));
+                }}
                 required
               />
             </div>
@@ -117,18 +158,16 @@ function StockReceiverModal(props) {
               </button>
 
               <button
-                className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
+                className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
                 onClick={handleClick}
+                disabled={props?.formData.remark == ""}
               >
                 Save
               </button>
             </div>
 
             <div>
-              <h1 className='text-center pt-5'>
-                {/* <span className='text-red-600 text-xl'>*</span> By Clicking
-                Continue your data will be Processed */}
-              </h1>
+              <h1 className='text-center pt-5'></h1>
             </div>
           </div>
         </div>
