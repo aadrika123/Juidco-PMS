@@ -102,10 +102,6 @@ const ViewReceivedInvtByIdDa = (props) => {
     {
       name == "received_quantity" && remainingQuanityCalc(value);
     }
-    // {
-    //   name == "remark" &&
-    //     allowCharacterNumberInput(value, formik.values.remark, 1000);
-    // }
   };
 
   useEffect(() => {
@@ -243,6 +239,7 @@ const ViewReceivedInvtByIdDa = (props) => {
           formData={formData}
           setFormData={setFormData}
           setImageDoc={setImageDoc}
+          imageDoc={imageDoc}
           setIsModalOpen={setIsModalOpen}
           remark={formik.values.remark}
         />
@@ -704,39 +701,39 @@ const ViewReceivedInvtByIdDa = (props) => {
                 <AccordionDetails>
                   {/* table */}
 
-                  <div class='relative overflow-x-auto'>
-                    <table class='w-full text-sm text-left rtl:text-right'>
-                      <thead class='text-xs uppercase bg-gray-200'>
+                  <div className='relative overflow-x-auto'>
+                    <table className='w-full text-sm text-left rtl:text-right'>
+                      <thead className='text-xs uppercase bg-gray-200'>
                         <tr>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope='col' className='px-6 py-3'>
                             Date
                           </th>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope='col' className='px-6 py-3'>
                             Receiving no
                           </th>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope='col' className='px-6 py-3'>
                             Total Quantity
                           </th>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope='col' className='px-6 py-3'>
                             Received Quantity
                           </th>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope='col' className='px-6 py-3'>
                             View Doc
                           </th>
 
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope='col' className='px-6 py-3'>
                             Remaining Quantity
                           </th>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope='col' className='px-6 py-3'>
                             Remark
                           </th>
                         </tr>
                       </thead>
                       {applicationFullData?.receivings.map((data) => (
                         <tbody>
-                          <tr class='bg-white border-b-2'>
-                            {/* <td class='px-6 py-4'>{data?.date}</td> */}
-                            <td class='px-6 py-4'>
+                          <tr className='bg-white border-b-2'>
+                            {/* <td className='px-6 py-4'>{data?.date}</td> */}
+                            <td className='px-6 py-4'>
                               {data?.date
                                 .split("T")[0]
                                 .split("-")
@@ -744,12 +741,14 @@ const ViewReceivedInvtByIdDa = (props) => {
                                 .join("-")}
                             </td>
 
-                            <td class='px-6 py-4'>{data?.receiving_no}</td>
-                            <td class='px-6 py-4'>
+                            <td className='px-6 py-4'>{data?.receiving_no}</td>
+                            <td className='px-6 py-4'>
                               {applicationFullData?.total_quantity}
                             </td>
-                            <td class='px-6 py-4'>{data?.received_quantity}</td>
-                            <td class='px-6 py-4'>
+                            <td className='px-6 py-4'>
+                              {data?.received_quantity}
+                            </td>
+                            <td className='px-6 py-4'>
                               <p
                                 className='text-blue-900 underline font-bold cursor-pointer'
                                 onClick={() => {
@@ -762,21 +761,21 @@ const ViewReceivedInvtByIdDa = (props) => {
                                 View
                               </p>
                             </td>
-                            <td class='px-6 py-4'>
+                            <td className='px-6 py-4'>
                               {data?.remaining_quantity}
                             </td>
-                            <td class='px-6 py-4'>{data?.remark}</td>
+                            <td className='px-6 py-4'>{data?.remark}</td>
                           </tr>
                         </tbody>
                       ))}
 
                       <tfoot>
-                        <tr class='font-semibold text-gray-900 dark:text-white'>
-                          <th scope='row' class='px-6 py-3 text-base'>
+                        <tr className='font-semibold text-gray-900 dark:text-white'>
+                          <th scope='row' className='px-6 py-3 text-base'>
                             Total
                           </th>
-                          <td class='px-6 py-3'>3</td>
-                          <td class='px-6 py-3'>21,000</td>
+                          <td className='px-6 py-3'>3</td>
+                          <td className='px-6 py-3'>21,000</td>
                         </tr>
                       </tfoot>
                     </table>
@@ -859,7 +858,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                         </div>
                         <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-8'>
                           <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                            <div class='px-4 w-full mb-4'>
+                            <div className='px-4 w-full mb-4'>
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
@@ -885,7 +884,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                           </div>
 
                           <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                            <div class='px-4 w-full mb-4'>
+                            <div className='px-4 w-full mb-4'>
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
@@ -910,7 +909,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                           </div>
 
                           <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                            <div class='px-4 w-full mb-4'>
+                            <div className='px-4 w-full mb-4'>
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
@@ -935,7 +934,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                           </div>
 
                           <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                            <div class='px-4 w-full mb-4'>
+                            <div className='px-4 w-full mb-4'>
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
@@ -971,7 +970,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                             Cancel
                           </button>
 
-                          <button className={buttonStyle2} onClick=''>
+                          <button className={buttonStyle2} type='submit'>
                             Conitnue
                           </button>
                         </div>

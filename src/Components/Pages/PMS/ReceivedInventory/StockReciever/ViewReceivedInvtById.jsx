@@ -267,6 +267,7 @@ const ViewReceivedInvtById = (props) => {
       <>
         <DeadStockUploadImg
           postAddtoInventory={postAddtoInventory}
+          imageDoc={imageDoc}
           setImageDoc={setImageDoc}
           setDeadStockImg={setDeadStockImg}
         />
