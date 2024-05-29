@@ -296,12 +296,14 @@ const ViewReceivedInvtByIdDa = (props) => {
           </div> */}
           
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-600 ' >
+          
           <div className="">
-          <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start'>
+          <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
               {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
               View Procurement Request{" "}
             </h2>
           </div>
+          
             <div className='pl-8 text-[1rem] text-[#4338CA]'>
               <h1 className=''>
                 Procurement Request No <span className='text-black'>:</span>
@@ -595,13 +597,13 @@ const ViewReceivedInvtByIdDa = (props) => {
           {/* Additional Details */}
 
           <div className='py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 '>
-            <div className=' ml-1 p-2'>
-              <h1
-                className={`${headingStyle} text-[1.5rem] text-left pb-2 pl-6`}
-              >
-                Additional Details
-              </h1>
-            </div>
+            
+            <div className="">
+          <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+              {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
+              Additional Details
+            </h2>
+          </div>
 
             <div className='grid grid-cols-4 gap-4 ml-9'>
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
@@ -790,13 +792,16 @@ const ViewReceivedInvtByIdDa = (props) => {
 
           {page == "outbox" && (
             <div className='py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 '>
-              <div className=' ml-1 p-2'>
-                <h1
-                  className={`${headingStyle} text-[1.5rem] text-left pb-2 pl-6`}
-                >
-                  Received Inventory
-                </h1>
-              </div>
+              
+
+              <div className="">
+          <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+              {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
+              Received Inventory
+            </h2>
+          </div>
+
+              
 
               <div className='grid grid-cols-4 gap-4 ml-8'>
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
@@ -848,7 +853,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                     <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
                       <div className='col-span-12  w-full mb-20'>
                         <div className=' ml-4 p-2 mt-4'>
-                          <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
+                          <h1 className={`${headingStyle} text-left p-2 pl-6 bg-[#4338ca] text-white rounded-md`}>
                             Received Inventory
                           </h1>
                         </div>
@@ -980,7 +985,9 @@ const ViewReceivedInvtByIdDa = (props) => {
           {/* {page == "outbox" && ( */}
             <div className='space-x-5 flex justify-end mt-[1rem]'>
 
+            {page == 'outbox' && 
             <button onClick={handlePrint} className={`${buttonStyle}`} >Print</button>
+            }
 
               <button
                 className={buttonStyle2}

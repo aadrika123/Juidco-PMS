@@ -267,7 +267,7 @@ const ViewInventoryDetailsById = (props) => {
           <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500' id="printable-content">
 
           <div className="">
-          <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start'>
+          <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
               {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
               View Procurement Request{" "}
             </h2>

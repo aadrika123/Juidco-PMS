@@ -62,7 +62,7 @@ function ForwardToDAConfirmationModal(props) {
         <div class=" flex-1">
           <div class="">
             <h3 class="text-xl  text-center  text-black font-openSans">
-           Are you sure, <br /> You want to Forward this Application to DA ?
+           Are you sure, <br /> You want to forward this application to DA ?
             </h3>
             {/* <h3 class="text-xl  text-center mb-3 text-gray-400 font-openSans font-semibold ">
               Booking no. - {props?.responseScreenData?.data?.bookingNo}

@@ -102,7 +102,8 @@ function StockReceiverModal(props) {
               <img
                 src={preview}
                 alt='Image Preview'
-                style={{ width: "200px", height: "auto", marginTop: "20px" }}
+                // style={{ width: "200px", height: "auto", marginTop: "20px", border: "2px", borderColor: "blue" }}
+                className="w-[200px] h-auto mt-[20px] border border-indigo-400 rounded"
               />
             )}
 
@@ -130,7 +131,7 @@ function StockReceiverModal(props) {
             <div className='flex justify-center mb-6 mt-2'>
               <textarea
                 name={props.remarks}
-                className='border border-[#5448dd] rounded w-[28rem] h-[5rem]'
+                className='border border-[#5448dd] rounded w-[28rem] h-[5rem] p-2'
                 placeholder=' Enter Remarks...'
                 onChange={(e) => {
                   allowCharacterNumberInput(
