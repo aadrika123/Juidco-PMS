@@ -56,10 +56,10 @@ const ViewReceivedInvtById = (props) => {
   const { titleBarVisibility } = useContext(contextVar);
 
   let buttonStyle =
-    "  pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
+    "pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
   let buttonStyle2 =
-    " mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
+    "mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
@@ -285,16 +285,24 @@ const ViewReceivedInvtById = (props) => {
       <div className=''>
         {/* Basic Details */}
         <div className='mt-6'>
-          <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 '>
+          {/* <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 '>
             <h2 className='font-semibold text-xl flex justify-start'>
               <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View
               Procurement Request{" "}
             </h2>
-          </div>
+          </div> */}
           {/* <h1 className='px-1 font-semibold font-serif  text-gray-500'>
             <MdTag className='inline' /> Basic Details
           </h1> */}
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
+
+          <div className="">
+          <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start'>
+              {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
+              View Procurement Request{" "}
+            </h2>
+          </div>
+
             <div className='pl-8 text-[1rem] text-[#4338CA]'>
               <h1 className=''>
                 Procurement Request No <span className='text-black'>:</span>
@@ -600,7 +608,7 @@ const ViewReceivedInvtById = (props) => {
                 <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
                   <div className='col-span-12  w-full mb-20'>
                     <div className=' ml-4 p-2 mt-4'>
-                      <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
+                      <h1 className={`${headingStyle} text-left pb-2 pl-6`}>
                         Inventory Details
                       </h1>
                       {/* <h1 className={`${labelStyle} `}>
@@ -712,7 +720,7 @@ const ViewReceivedInvtById = (props) => {
                         </div>
                       </div>
 
-                      <div className='form-group flex-shrink max-w-full ml-4 px-4 w-full md:w-1/2 mb-4'>
+                      <div className='form-group flex-shrink max-w-full ml-4 px-4 w-full md:w-1/2'>
                         <label className={`${labelStyle} inline-block mb-2`}>
                           Remarks
                         </label>
@@ -746,6 +754,7 @@ const ViewReceivedInvtById = (props) => {
                         Add To Inventory
                       </button>
                     </div>
+                    
                   </div>
                 </div>
               </div>

@@ -44,3 +44,31 @@ body {
     animation: modal-pop 0.3s ease-out;
   }
   
+
+  /* print.css */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-content, #printable-content * {
+    visibility: visible;
+  }
+  #printable-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  /* Ensure headers and footers do not overlap */
+  header, footer {
+    display: none;
+  }
+  /* Avoid page break within content blocks */
+  .avoid-page-break {
+    page-break-inside: avoid;
+  }
+  /* Page break after certain sections if needed */
+  .page-break {
+    page-break-after: always;
+  }
+}

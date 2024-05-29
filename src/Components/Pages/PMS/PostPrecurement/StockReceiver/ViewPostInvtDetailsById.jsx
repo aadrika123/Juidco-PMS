@@ -243,6 +243,10 @@ const ViewPostInvtDetailsById = (props) => {
 
   // console.log(applicationFullData)
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div>
       <div className="">
@@ -251,17 +255,23 @@ const ViewPostInvtDetailsById = (props) => {
     <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Inventory Proposal Details"} />
     </div>
         {/* Basic Details */}
-        <div className="mt-6">
-          <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 ">
+        <div className="mt-6" id="printable-content">
+          {/* <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 ">
             <h2 className="font-semibold text-xl flex justify-start">
               <MdTag className="inline pt-1 text-[1.5rem] text-sky-700" /> View
               Procurement Request{" "}
             </h2>
-          </div>
-          {/* <h1 className='px-1 font-semibold font-serif  text-gray-500'>
-            <MdTag className='inline' /> Basic Details
-          </h1> */}
+          </div> */}
+          
           <div className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
+
+          <div className="">
+          <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start'>
+              {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
+              View Procurement Request{" "}
+            </h2>
+          </div>
+
 
           <div className="flex justify-between">
 
@@ -541,8 +551,8 @@ const ViewPostInvtDetailsById = (props) => {
           </div>
 
           <div className="py-6 mt-10 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
-            <h2 className="font-semibold text-xl flex justify-start pb-8">
-              <MdTag className="inline pt-1 text-[1.5rem] text-sky-700" />{" "}
+            <h2 className="font-semibold text-2xl flex justify-start pb-8 pt-2 pl-8">
+              {/* <MdTag className="inline pt-1 text-[1.5rem] text-sky-700" />{" "} */}
               Inventory Details{" "}
             </h2>
 
@@ -589,7 +599,10 @@ const ViewPostInvtDetailsById = (props) => {
             </div>
           </div>
 
+        </div>
           <div className="space-x-5 flex justify-end mt-[3rem]">
+          <button onClick={handlePrint} className={buttonStyle} >Print</button>
+
             <button className={buttonStyle} onClick={() => navigate(-1)}>
               Back
             </button>
@@ -623,7 +636,6 @@ const ViewPostInvtDetailsById = (props) => {
             </button>
 
           </div>
-        </div>
       </div>
     </div>
   );

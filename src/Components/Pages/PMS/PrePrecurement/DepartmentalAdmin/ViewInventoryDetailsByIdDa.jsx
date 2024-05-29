@@ -244,6 +244,10 @@ const ViewInventoryDetailsById = (props) => {
 
   // console.log(applicationFullData)
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div>
     <div className="">
@@ -252,16 +256,22 @@ const ViewInventoryDetailsById = (props) => {
       <div className=''>
         {/* Basic Details */}
         <div className='mt-6'>
-          <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500'>
+
+          {/* <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500'>
             <h2 className='font-semibold text-xl flex justify-start'>
               <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View
               Procurement Request{" "}
             </h2>
           </div>
-          {/* <h1 className='px-1 font-semibold font-serif  text-gray-500'>
-            <MdTag className='inline' /> Basic Details
-          </h1> */}
-          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
+           */}
+          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500' id="printable-content">
+
+          <div className="">
+          <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start'>
+              {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
+              View Procurement Request{" "}
+            </h2>
+          </div>
 
           <div className="flex justify-between">
             
@@ -540,7 +550,10 @@ const ViewInventoryDetailsById = (props) => {
 
             <div className='h-[30px]'></div>
 
-            <div className='space-x-5 flex justify-end mt-[6rem]'>
+          </div>
+            <div className='space-x-5 flex justify-end mt-[2rem]'>
+            <button onClick={handlePrint} className={buttonStyle} >Print</button>
+
               {page == "outbox" && (
                 <button className={buttonStyle} onClick={() => navigate(-1)}>
                   Back
@@ -579,8 +592,9 @@ const ViewInventoryDetailsById = (props) => {
                   </button>
                 </>
               )}
+
+              
             </div>
-          </div>
         </div>
       </div>
     </div>

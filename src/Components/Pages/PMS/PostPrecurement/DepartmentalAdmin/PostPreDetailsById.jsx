@@ -384,6 +384,12 @@ const PostPreDetailsById = (props) => {
 
   // console.log(applicationFullData)
 
+
+    const handlePrint = () => {
+      window.print();
+    };
+
+
   return (
     <div>
       <div className="">
@@ -394,14 +400,24 @@ const PostPreDetailsById = (props) => {
       </div>
       <div className="">
         {/* Basic Details */}
-        <div className="mt-6">
-          <div className="flex justify-between mt-2 bg-[#4338CA] text-white rounded-lg shadow-xl p-4 border border-blue-500 ">
+        <div className="mt-6"  id="printable-content">
+          
+          {/* <div className="flex justify-between mt-2 bg-[#4338CA] text-white rounded-lg shadow-xl p-4 border border-blue-500 ">
             <h2 className="font-semibold text-xl flex justify-start">
               <MdTag className="inline pt-1 text-[1.5rem] text-white" /> View
               Procurement Request{" "}
             </h2>
-          </div>
+          </div> */}
+
           <div className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
+
+            <div className="">
+            <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start'>
+                {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
+                View Procurement Request{" "}
+              </h2>
+            </div>
+
             <div className="pl-8 text-[1rem] text-[#4338CA]">
               <h1 className="">
                 Procurement Request No <span className="text-black">:</span>
@@ -674,8 +690,8 @@ const PostPreDetailsById = (props) => {
                 <div className="">
                   <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
                     <div className="col-span-12  w-full mb-20">
-                      <div className=" ml-4 p-2 mt-4">
-                        <h1 className={`${headingStyle} text-left pb-5 pl-6`}>
+                      <div className=" ml-4 p-2 mt-2">
+                        <h1 className={`${headingStyle} text-left pb-2 pt-2 pl-6`}>
                           Inventory Details
                         </h1>
                       </div>
@@ -810,7 +826,7 @@ const PostPreDetailsById = (props) => {
                           </div>
                         </div>
 
-                        <div className=" ml-2 p-2 mt-4 w-full">
+                        <div className=" ml-2 p-2 w-full">
                           <h1 className={`${headingStyle} text-left pb-10`}>
                             Calculation
                           </h1>
@@ -832,7 +848,7 @@ const PostPreDetailsById = (props) => {
                                   placeholder="Total Price"
                                 />
                               </div>
-                              <FaDivide className="text-[2.5rem] pb-5" />
+                              <FaDivide className="text-[2.5rem]  pt-5 mt-3" />
                               <div className="space-y-2">
                                 <label>Total Quantity</label>
                                 <input
@@ -849,7 +865,7 @@ const PostPreDetailsById = (props) => {
                                 />
                               </div>
 
-                              <p className="text-[2rem]">=</p>
+                              <p className="text-[2rem] pt-5 mt-3">=</p>
                               <div className="space-y-2">
                                 <label>Unit Price</label>
                                 <input
@@ -976,6 +992,9 @@ const PostPreDetailsById = (props) => {
               </div>
             </div>
           )}
+        </div>
+        <div className="flex justify-end mt-3">
+        <button onClick={handlePrint} className={buttonStyle} >Print</button>
         </div>
       </div>
     </div>
