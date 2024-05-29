@@ -63,7 +63,7 @@ function StockReceiverModal(props) {
     if (file) {
       console.log(file.size, "=========file size");
       props?.setImageDoc(file);
-      console.log(URL.createObjectURL(file), "==========url");
+      console.log(file, "==========file");
       setPreview(URL.createObjectURL(file));
     }
   };
@@ -88,7 +88,7 @@ function StockReceiverModal(props) {
           <hr className='w-full mt-3' />
 
           <div className='mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col'>
-            {preview == null ? (
+            {preview == null && (
               <>
                 <div className='rounded-md mt-8'>
                   <LuCloudy className='text-[1.5rem]' />
@@ -98,7 +98,9 @@ function StockReceiverModal(props) {
                   JPEG, PNG, JPG, and PDF formats, up to 2MB
                 </h1>
               </>
-            ) : (
+            )}
+
+            {props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
               <img
                 src={preview}
                 alt='Image Preview'
@@ -106,7 +108,15 @@ function StockReceiverModal(props) {
               />
             )}
 
-            <div className='mb-8'>
+            {props?.imageDoc?.type.includes("pdf") && (
+              <iframe
+                src={preview}
+                alt='Image Previewss'
+                style={{ marginTop: "20px", width: "400px", height: "250px" }}
+              />
+            )}
+
+            <div className='mb-4'>
               <input
                 type='file'
                 accept='.jpg, .jpeg, .pdf .png'
@@ -115,6 +125,9 @@ function StockReceiverModal(props) {
                 onChange={(e) => imageHandler(e)}
               />
 
+              <p className='text-red-500 text-sm m-2'>
+                {props?.imageDoc?.name}
+              </p>
               <button
                 className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
                 onClick={handleUploadDoc}
@@ -127,7 +140,7 @@ function StockReceiverModal(props) {
             <div className=''>
               <h3 className='text-sm text-black font-openSans'>Remarks</h3>
             </div>
-            <div className='flex justify-center mb-6 mt-2'>
+            <div className='flex justify-center mb-6'>
               <textarea
                 name={props.remarks}
                 className='border border-[#5448dd] rounded w-[28rem] h-[5rem]'

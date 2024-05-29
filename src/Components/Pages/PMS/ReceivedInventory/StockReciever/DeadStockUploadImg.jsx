@@ -10,6 +10,7 @@
 
 import React, { useState, useRef } from "react";
 import { LuCloudy } from "react-icons/lu";
+import toast from "react-hot-toast";
 
 function DeadStockUploadImg(props) {
   const inputFileRef = useRef();
@@ -18,17 +19,53 @@ function DeadStockUploadImg(props) {
 
   const handleClick = () => {
     props?.postAddtoInventory();
-    // props?.postBackToSR();
-    // navigate(`/sr-inventory-proposal`);
   };
 
   const handleCancelClick = () => {
-    // props?.submitForm()
-    // navigate(`/add-pre-procurement`);
     props.setDeadStockImg(false);
   };
   const handleUploadDoc = () => {
     inputFileRef.current.click();
+  };
+
+  //image validation with file type and size limit
+  const imageHandler = (e) => {
+    const validExtensions = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "application/pdf",
+    ];
+
+    const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
+
+    const file = e.target.files[0];
+    if (!file) {
+      return toast.error("No File Selected");
+    }
+
+    // Check the file type
+    if (!validExtensions.includes(file.type)) {
+      toast.error(
+        "Invalid file type. Please select a JPG, JPEG, PNG or PDF file."
+      );
+      e.target.value = ""; // Clear the input
+      return;
+    }
+
+    // Check the file size
+    if (file.size > maxSizeInBytes) {
+      toast.error("File size exceeds 2MB. Please select a smaller file.");
+      e.target.value = ""; // Clear the input
+      return;
+    }
+
+    if (file) {
+      console.log(file.size, "=========file size");
+      props?.setImageDoc(file);
+      console.log(file, "==========file");
+      setPreview(URL.createObjectURL(file));
+    }
   };
 
   return (
@@ -51,29 +88,47 @@ function DeadStockUploadImg(props) {
           <hr className='w-full mt-3' />
 
           <div className='mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col w-full'>
-          { preview == null ? <> 
-            <div className='rounded-md mt-8'>
-              <LuCloudy className='text-[1.5rem]' />
-            </div>
-            <h3 class='text-xl text-black font-openSans'>choose a file </h3>
-            <h1 className='text-gray-400 text-sm'>
-              JPEG, PNG, PDG, and MP4 formats, up to 50MB
-            </h1>
-            </> : <img src={preview} alt="Image Preview" style={{ width: '200px', height: 'auto', marginTop: '20px' }} />}
+            {preview == null && (
+              <>
+                <div className='rounded-md mt-8'>
+                  <LuCloudy className='text-[1.5rem]' />
+                </div>
+                <h3 class='text-xl text-black font-openSans'>Choose a file </h3>
+                <h1 className='text-gray-400 text-sm'>
+                  JPEG, PNG, JPG, and PDF formats, up to 2MB
+                </h1>
+              </>
+            )}
+
+            {props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
+              <img
+                src={preview}
+                alt='Image Preview'
+                style={{ width: "200px", height: "auto", marginTop: "20px" }}
+              />
+            )}
+
+            {props?.imageDoc?.type.includes("pdf") && (
+              <iframe
+                src={preview}
+                alt='Image Previewss'
+                style={{ marginTop: "20px", width: "400px", height: "250px" }}
+              />
+            )}
+
             <div className='mb-8'>
               <input
                 type='file'
+                accept='.jpg, .jpeg, .pdf .png'
                 className='hidden'
                 ref={inputFileRef}
-                // onChange={(e) => props?.setImageDoc(e.target.files[0])}
-                onChange={ (e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    props?.setImageDoc(file);
-                    setPreview(URL.createObjectURL(file));
-                  }
-              }} 
+                onChange={(e) => imageHandler(e)}
               />
+
+              <p className='text-red-500 text-sm m-2'>
+                {props?.imageDoc?.name}
+              </p>
+
               <button
                 className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
                 onClick={handleUploadDoc}
@@ -82,24 +137,6 @@ function DeadStockUploadImg(props) {
               </button>
             </div>
           </div>
-
-          {/* <div>
-            <div className=''>
-              <h3 className='text-sm text-black font-openSans'>
-                Remarks
-              </h3>
-              
-            </div>
-            <div className='flex justify-center mb-6 mt-2'>
-              <textarea
-                name='sr_remark'
-                className='border border-[#5448dd] rounded w-[28rem] h-[5rem]'
-                placeholder=' Enter Remarks...'
-                onChange={(e) => props.setRemark(e.target.value)}
-                required
-              />
-            </div>
-          </div> */}
 
           <div className='flex flex-col'>
             <div className='flex gap-4 justify-end'>
@@ -119,10 +156,7 @@ function DeadStockUploadImg(props) {
             </div>
 
             <div>
-              <h1 className='text-center pt-5'>
-                {/* <span className='text-red-600 text-xl'>*</span> By Clicking
-                Continue your data will be Processed */}
-              </h1>
+              <h1 className='text-center pt-5'></h1>
             </div>
           </div>
         </div>
