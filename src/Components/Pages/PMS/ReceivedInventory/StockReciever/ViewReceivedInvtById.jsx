@@ -96,6 +96,15 @@ const ViewReceivedInvtById = (props) => {
 
   const postAddtoInventory = () => {
     setisLoading(true);
+    if (
+      (formik.values.dead_stock != 0 || formik.values.dead_stock != "") &&
+      (imageDoc == "undefined" || imageDoc == null)
+    ) {
+      return toast.error("Please upload dead stock image");
+    }
+
+    console.log(imageDoc, "imageDoc======>>>");
+
     let body = {
       ...payload,
       order_no: applicationFullData?.order_no,
@@ -146,7 +155,7 @@ const ViewReceivedInvtById = (props) => {
 
   const validationSchema = yup.object({
     totalStock: yup.number().required("Total Stock is required"),
-    receivedStock: yup.number().required("Received Stock is required"),
+    receivedStock: yup.number(),
     remarks: yup.string().required("Remarks is required"),
     remStock: yup.number().required("Remaining Stock is required"),
     dead_stock: yup.number(),
@@ -168,21 +177,27 @@ const ViewReceivedInvtById = (props) => {
   // intitial value
   const initialValues = {
     totalStock: applicationFullData?.total_quantity,
-    receivedStock: applicationFullData?.total_receivings,
+    receivedStock: applicationFullData?.total_receivings || 0,
     remarks: "",
     remStock: applicationFullData?.total_remaining,
+    dead_stock: "",
   };
 
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log("click");
+      //validation for dead stock image
+      if (
+        (formik.values.dead_stock != 0 || formik.values.dead_stock != "") &&
+        (imageDoc == "undefined" || imageDoc == null)
+      ) {
+        return toast.error("Please upload dead stock image");
+      }
+
       console.log("procurement==============>>", values);
-      // submitForm(values);
       setIsModalOpen(true);
       setPayload(values);
-      // setFormData(values);
     },
     validationSchema,
   });
@@ -193,8 +208,16 @@ const ViewReceivedInvtById = (props) => {
     if (deadStock) {
       let remaining =
         applicationFullData?.total_quantity -
-        (applicationFullData?.total_receivings - deadStock);
+        (formik.values.receivedStock - deadStock);
 
+      console.log(
+        applicationFullData?.total_quantity,
+        "applicationFullData?.total_quantity",
+        formik.values.receivedStock,
+        "applicationFullData?.total_receivings",
+        deadStock,
+        "deadStock"
+      );
       formik.setFieldValue("remStock", remaining);
     }
   };
@@ -253,11 +276,7 @@ const ViewReceivedInvtById = (props) => {
   if (cancelModal) {
     return (
       <>
-        <SRPostProcurementCancelScreen
-          // submitForm={submitForm}
-          // responseScreenData={formData}
-          setCancelModal={setCancelModal}
-        />
+        <SRPostProcurementCancelScreen setCancelModal={setCancelModal} />
       </>
     );
   }
@@ -296,13 +315,12 @@ const ViewReceivedInvtById = (props) => {
             <MdTag className='inline' /> Basic Details
           </h1> */}
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
-
-          <div className="">
-          <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-              {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
-              View Procurement Request{" "}
-            </h2>
-          </div>
+            <div className=''>
+              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+                {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
+                View Procurement Request{" "}
+              </h2>
+            </div>
 
             <div className='pl-8 text-[1rem] text-[#4338CA]'>
               <h1 className=''>
@@ -609,12 +627,12 @@ const ViewReceivedInvtById = (props) => {
                 <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
                   <div className='col-span-12  w-full mb-20'>
                     <div className=' ml-4 p-2 mt-4'>
-                      <h1 className={`${headingStyle} text-left p-2 pl-6 bg-[#4338ca] text-white rounded-md`}>
+                      <h1
+                        className={`${headingStyle} text-left p-2 pl-6 bg-[#4338ca] text-white rounded-md`}
+                      >
                         Inventory Details
                       </h1>
-                      
                     </div>
-                   
 
                     <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
                       <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
@@ -750,7 +768,6 @@ const ViewReceivedInvtById = (props) => {
                         Add To Inventory
                       </button>
                     </div>
-                    
                   </div>
                 </div>
               </div>
