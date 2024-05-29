@@ -294,6 +294,7 @@ const ViewReceivedInvtByIdDa = (props) => {
               Procurement Request{" "}
             </h2>
           </div> */}
+          
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-600 ' >
           <div className="">
           <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start'>
