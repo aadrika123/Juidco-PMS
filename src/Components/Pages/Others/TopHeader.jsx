@@ -23,7 +23,6 @@ const TopHeader = (props) => {
   const [isLoading, setisLoading] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
   const [notificationState, setnotificationState] = useState(false);
-  const [ulbName, setUlbName] = useState("");
 
   const { toggleBar, settoggleBar, userDetails } = useContext(contextVar);
 
@@ -125,7 +124,7 @@ const TopHeader = (props) => {
           onClick={closeModal}
         ></div>
 
-        <div className='border bg-white z-50 px-6 py-4 flex flex-col gap-4 animate__animated animate__slideInLeft animate__faster'>
+        <div className='border bg-white z-50 px-6 py-4 flex flex-col gap-4 animate__animated animate__slideInLeft animate__faster rounded-md'>
           <div className='flex items-center gap-6'>
             <div className='flex flex-col gap-2'>
               <span className='text-red-500  block rounded-full drop-shadow-md shadow-red-300 ml-24'>
@@ -139,13 +138,13 @@ const TopHeader = (props) => {
           </div>
           <div className='flex justify-end gap-2'>
             <button
-              className='text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-1 text-sm '
+              className='text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2 text-sm rounded-md'
               onClick={closeModal}
             >
               No
             </button>
             <button
-              className='text-white bg-red-500 hover:bg-red-600 px-4 py-1 text-sm '
+              className='text-white bg-red-500 hover:bg-red-600 px-4 py-2 text-sm rounded-md'
               onClick={LogOutUser}
             >
               Yes

@@ -307,16 +307,16 @@ const ListTableParent = (props) => {
                   isHovered ? "opacity-100 visible" : "opacity-0 invisible"
                 }`}
               >
-                <button className={`${exportBtnStyle} font-semibold text-sm`}>
+                <button className={`${exportBtnStyle} font-semibold text-xs`}>
                   PDF
                 </button>
                 <button
-                  className={`${exportBtnStyle} font-semibold text-sm`}
+                  className={`${exportBtnStyle} font-semibold text-xs`}
                   onClick={exportDataFun}
                 >
                   CSV
                 </button>
-                <button className={`${exportBtnStyle} font-semibold text-sm`}>
+                <button className={`${exportBtnStyle} font-semibold text-xs`}>
                   XLV
                 </button>
               </div>

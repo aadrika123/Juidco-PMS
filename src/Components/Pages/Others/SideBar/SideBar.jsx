@@ -31,7 +31,7 @@ const SideBar = (props) => {
   let tcolor = "gray"; // text color
 
   // 👉 CSS constants 👈
-  const dropMenuBtn = `block w-full pl-7 py-2 px-6 clear-both whitespace-nowrap text-sm hover:bg-${mcolor}-700 hover:text-${tcolor}-100 rounded-md text-white text-sm animate__animated animate__fadeIn animate__faster `;
+  const dropMenuBtn = `block w-full pl-7 py-3 px-6 clear-both whitespace-nowrap text-sm hover:bg-${mcolor}-700 hover:text-${tcolor}-100 rounded-md text-sm animate__animated animate__fadeIn animate__faster `;
 
   const mobileMenuBtn = `block py-3 px-4 hover:bg-${mcolor}-700 hover:text-${tcolor}-100 rounded-md animate__animated animate__fadeIn animate__faster `;
   const open1 = `animate__animated animate__slideInLeft animate__faster bg-${bg}-100 w-[16.5rem] `;
@@ -101,7 +101,7 @@ const SideBar = (props) => {
                       {props?.menu?.map((item) => (
                         <>
                           <li
-                            className='relative cursor-pointer mb-1'
+                            className='relative cursor-pointer mb-4'
                             onClick={() => {
                               window.innerWidth <= 763 &&
                                 item?.children?.length == 0 &&
@@ -144,11 +144,11 @@ const SideBar = (props) => {
 
                             {item?.children?.length > 0 &&
                               dropName == item?.name && (
-                                <ul className='block rounded rounded-t-none top-full py-0.5 ltr:text-left rtl:text-right mb-4 bg-[#133e71]'>
+                                <ul className='block rounded rounded-t-none top-full py-0.5 ltr:text-left rtl:text-right'>
                                   {item?.children?.map((elem) => (
                                     <>
                                       <li
-                                        className={`relative cursor-pointer`}
+                                        className={`relative cursor-pointer mb-1`}
                                         onClick={() => {
                                           window.innerWidth <= 763 &&
                                             settoggleBar(!toggleBar);
@@ -158,10 +158,10 @@ const SideBar = (props) => {
                                           to={elem?.path}
                                           className={({ isActive }) =>
                                             (isActive
-                                              ? ` bg-${mcolor}-700 text-${tcolor}-100 `
-                                              : " ") +
+                                              ? `bg-${mcolor}-700 text-${tcolor}-100 `
+                                              : ``) +
                                             `${dropMenuBtn} ` +
-                                            "flex gap-3 items-center"
+                                            "flex gap-3 items-center "
                                           }
                                         >
                                           <span>
