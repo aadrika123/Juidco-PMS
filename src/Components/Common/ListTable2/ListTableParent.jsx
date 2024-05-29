@@ -19,6 +19,7 @@ import { AiOutlineArrowDown } from "react-icons/ai";
 import { FiFilter } from "react-icons/fi";
 import SideSection from "../SearchPanel/SidebarTailwind";
 import ProjectApiList from "@/Components/api/ProjectApiList";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const ListTableParent = (props) => {
   // 👉 State constants 👈
@@ -36,9 +37,9 @@ const ListTableParent = (props) => {
   const [pagination, setPagination] = useState({});
   const [searchFilter, setSearchFilter] = useState("");
   const [bounce, setbounce] = useState("hidden");
-  const [isFilterPanelOpen, setFilterPanelOpen] = useState(false);
-  const [searchPanelItemValues, setSearchPanelItemValues] = useState({});
   const [filter, setFilter] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const { api_exportcsv } = ProjectApiList();
 
@@ -253,7 +254,6 @@ const ListTableParent = (props) => {
     setloader(true);
     setpageCount(1);
     setloader(false);
-    // }
   }, [currentPage, perPageData]);
 
   useEffect(() => {
@@ -265,21 +265,11 @@ const ListTableParent = (props) => {
     return () => clearTimeout(getData);
   }, [pageCount, perPageCount, searchFilter]);
 
-  const onFilterChange = (filters) => {
-    const q = qs.stringify(filters);
-    setSearchQuery(q);
-  };
-
-  const onRemoveFilter = () => {
-    console.log("Filters removed!");
-    setSearchQuery("");
-  };
-
-  const [isOpen, setIsOpen] = useState(false);
-
   const useFilter = () => {
     searchOldFun();
   };
+
+  const exportBtnStyle = ` bg-[#F7881F] text-white px-2 rounded-md flex items-center gap-4 hover:bg-orange-600`;
 
   return (
     <>
@@ -300,55 +290,82 @@ const ListTableParent = (props) => {
       {/* 👉 Download CSV 👈 */}
       {csvStatus && <CSVDownload data={exportData} />}
 
-      <div className='flex gap-2'>
-        {/* 👉 Filter sidebar Component 👈 */}
-        {isOpen && (
-          <div className={`${isOpen ? open1 : close1} mt-16`}>
-            <SideSection
-              setIsOpen={setIsOpen}
-              filter={filter}
-              setFilter={setFilter}
-              useFilter={useFilter}
-            />
-          </div>
-        )}
-        <div className='flex flex-col gap-6 w-full'>
-          {/* filter and serachbar */}
-          <div className='w-full flex justify-end '>
-            <div className='flex items-end max-sm:p-2 justify-end'>
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className='border border-[#4338CA] text-[#4338CA] hover:bg-[#4338CA] hover:text-white px-4 py-2 rounded mr-2'
-              >
-                <FiFilter />
+      <div className='space-y-8'>
+        <div className='w-full flex justify-between'>
+          <div className='w-full flex justify-between'>
+            <div
+              className='flex justify-between gap-4 py-2'
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <button className={exportBtnStyle}>
+                Export
+                <FaArrowRightLong color='white' size={10} />
               </button>
-              <div className='flex-initial opacity-50'>
-                <GlobalFilter
-                  filter={searchFilter}
-                  setFilter={setSearchFilter}
-                />
-              </div>
-              <div className='flex-initial ml-2'>
+              <div
+                className={`flex gap-2 transition-opacity duration-300 ${
+                  isHovered ? "opacity-100 visible" : "opacity-0 invisible"
+                }`}
+              >
+                <button className={`${exportBtnStyle} font-semibold text-sm`}>
+                  PDF
+                </button>
                 <button
-                  className='bg-green-600 px-3 pr-3  drop-shadow-lg rounded-sm py-1 text-white hover:shadow-2xl hover:bg-slate-600 text-center relative '
-                  onMouseEnter={() => setbounce("")}
-                  onMouseLeave={() => setbounce("hidden")}
+                  className={`${exportBtnStyle} font-semibold text-sm`}
                   onClick={exportDataFun}
                 >
-                  Export
-                  <div
-                    className={
-                      bounce +
-                      " absolute h-full top-3 text-sm left-0 text-center animate-bounce"
-                    }
-                  >
-                    <AiOutlineArrowDown />
-                  </div>
+                  CSV
+                </button>
+                <button className={`${exportBtnStyle} font-semibold text-sm`}>
+                  XLV
                 </button>
               </div>
-              <div className='flex-1'>{props.children}</div>
             </div>
           </div>
+
+          <div className='flex items-end max-sm:p-2 justify-end'>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className='border border-[#4338CA] text-[#4338CA] hover:bg-[#4338CA] hover:text-white px-4 py-2 rounded mr-2'
+            >
+              <FiFilter />
+            </button>
+            <div className='flex-initial opacity-50'>
+              <GlobalFilter filter={searchFilter} setFilter={setSearchFilter} />
+            </div>
+            {/* <div className='flex-initial ml-2'>
+              <button
+                className='bg-green-600 px-3 pr-3  drop-shadow-lg rounded-sm py-1 text-white hover:shadow-2xl hover:bg-slate-600 text-center relative '
+                onMouseEnter={() => setbounce("")}
+                onMouseLeave={() => setbounce("hidden")}
+                onClick={exportDataFun}
+              >
+                Export
+                <div
+                  className={
+                    bounce +
+                    " absolute h-full top-3 text-sm left-0 text-center animate-bounce"
+                  }
+                >
+                  <AiOutlineArrowDown />
+                </div>
+              </button>
+            </div> */}
+            <div className='flex-1'>{props.children}</div>
+          </div>
+        </div>
+        <div className='flex w-full space-x-2'>
+          {/* 👉 Filter sidebar Component 👈 */}
+          {isOpen && (
+            <div className={`${isOpen ? open1 : close1} mt-2`}>
+              <SideSection
+                setIsOpen={setIsOpen}
+                filter={filter}
+                setFilter={setFilter}
+                useFilter={useFilter}
+              />
+            </div>
+          )}
           {/* table */}
           <div className='flex w-full'>
             {/* 👉 Loader 👈 */}
