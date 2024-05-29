@@ -9,16 +9,12 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useEffect, useState } from "react";
-import ThemeStyle from "@/Components/Common/ThemeStyle";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import { useNavigate } from "react-router-dom";
-// import waterTanker from '../../Components/Media/waterTanker.png'
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
 //---------------------pms------------------------------
-import { FaArrowCircleRight } from "react-icons/fa";
 import Chart from "react-apexcharts";
 import {
   TempAnimation,
@@ -36,15 +32,11 @@ import { useContext } from "react";
 function InventoryDashboard() {
   const { api_UlbDashboard } = ProjectApiList();
 
-  const navigate = useNavigate();
-  const [tabIndex, settabIndex] = useState(0);
   const [isLoading, setisLoading] = useState(false);
-  const [agencyData, setagencyData] = useState();
   const [ulbData, setulbData] = useState();
   const [activeTab, setActiveTab] = useState("weekly");
 
-  const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } =
-    useContext(contextVar);
+  const { titleBarVisibility } = useContext(contextVar);
 
   // get details by to update
   useEffect(() => {
@@ -183,26 +175,21 @@ function InventoryDashboard() {
       <div className='container mx-auto p-4 mt-6'>
         <h1 className='font-bold  text-[2rem] pb-5'>Inventory Dashboard</h1>
 
-        <div className='flex justify-between space-x-3'>
-          <div className='bg-[#4338CA] text-white w-full rounded p-3 space-y-10 cursor-pointer'>
-            <div className='flex justify-between'>
+        <div className='flex justify-between space-x-3 gap-2'>
+          <div className='bg-[#4338CA] text-white w-full rounded p-3 space-y-4 cursor-pointer flex'>
+            <div className='w-2/3 h-full flex flex-col justify-between'>
               <h1 className='font-bold'>Total Stock</h1>
-              <div className='justify-end'>
-                <Lottie options={increaseAnimation} height={50} width={100} />
-              </div>
-            </div>
-
-            <div className='flex justify-between'>
               <h1 className=''>
                 769 <span className='text-[0.8rem]'>(3%)</span>
               </h1>
-              <div className='justify-end'>
-                {/* <FaArrowCircleRight className="mt-2 text-[1.5rem] hover:text-blue-500" /> */}
-              </div>
+            </div>
+
+            <div className='flex justify-top w-[55px] h-[70px] mt-1'>
+              <Lottie options={increaseAnimation} className='w-full h-full' />
             </div>
           </div>
 
-          <div className='bg-[#4338CA] text-white w-full rounded p-3 space-y-10 cursor-pointer'>
+          <div className='bg-[#4338CA] text-white w-full rounded p-3 space-y-4 cursor-pointer'>
             <div className='flex'>
               <h1 className='font-bold'>Stock Movement</h1>
               <Lottie options={reorderAnimation} height={50} width={100} />
@@ -216,7 +203,7 @@ function InventoryDashboard() {
             </div>
           </div>
 
-          <div className='bg-[#4338CA] text-white w-full rounded p-3 space-y-10 cursor-pointer'>
+          <div className='bg-[#4338CA] text-white w-full rounded p-3 space-y-4 cursor-pointer'>
             <div className='flex'>
               <h1 className='font-bold'>Remaining Stock</h1>
               <Lottie options={lowStockAnimation} height={50} width={100} />
@@ -229,7 +216,7 @@ function InventoryDashboard() {
             </div>
           </div>
 
-          <div className='bg-[#4338CA] text-white w-full rounded p-3 space-y-10 cursor-pointer'>
+          <div className='bg-[#4338CA] text-white w-full rounded p-3 space-y-4 cursor-pointer'>
             <div className='flex'>
               <h1 className='font-bold'>Dead Stock</h1>
               <Lottie options={deadStockAnimation} height={50} width={100} />
