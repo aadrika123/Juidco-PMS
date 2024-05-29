@@ -19,9 +19,10 @@ import ReceivedInvtList from "./ReceivedInvtListDa";
 
 const ReceivedInvtHomeDa = () => {
   const [activeTab, setActiveTab] = useState("inbox");
-  const navigate = useNavigate();
-  const { api_fetchDaReceivedInvtListInbox, api_fetchDaReceivedInvtListOutbox } =
-    ProjectApiList();
+  const {
+    api_fetchDaReceivedInvtListInbox,
+    api_fetchDaReceivedInvtListOutbox,
+  } = ProjectApiList();
 
   return (
     <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
@@ -30,7 +31,6 @@ const ReceivedInvtHomeDa = () => {
           Inventory Proposal
         </h1>
       </div>
-    
 
       <div className='flex ml-5'>
         <button

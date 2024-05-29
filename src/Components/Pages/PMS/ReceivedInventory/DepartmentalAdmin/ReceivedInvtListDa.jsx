@@ -39,10 +39,6 @@ function ReceivedInvtList(props) {
   const [requestBody, setRequestBody] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
-  const [activeButton, setActiveButton] = useState("inbox");
-
-  let testDate = new Date().toLocaleDateString("in-IN");
-  let todayDate = moment(testDate).format("DD-MM-YYYY");
 
   const validationSchema = yup.object({
     // fromDate: yup.string().required("Field Required"),
@@ -187,8 +183,6 @@ function ReceivedInvtList(props) {
     setRequestBody(data);
     setchangeData((prev) => prev + 1);
   };
-
-  // const commonInputStyle = `form-control block w-full px-2 py-1 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none shadow-md`;
 
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {
