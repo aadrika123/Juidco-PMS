@@ -136,6 +136,11 @@ const ViewInventoryDetailsById = (props) => {
 
   // console.log(applicationFullData?.category?.name)
 
+
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div>
       <div className=''>
@@ -145,19 +150,29 @@ const ViewInventoryDetailsById = (props) => {
         />
       </div>
       <div className=''>
+
+      <div className="flex justify-end">
+      
+      
+      {/* <div id="printable-content">
+        <h1>This is the content to print</h1>
+        <p>More content...</p>
+      </div> */}
+    </div>
         {/* Basic Details */}
-        <div className='mt-6'>
-          {/* <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 '>
-            
-          </div> */}
+        <div className='mt-6' >
 
-          <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
-            <div className='flex justify-between'>
-            <h2 className='font-semibold text-xl flex justify-start'>
-              <MdTag className='pt-1 text-[1.5rem] text-sky-700' /> View
-              Procurement Request{" "}
+          <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500' id="printable-content">
+          
+          <div className="">
+          <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start'>
+              {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
+              View Procurement Request{" "}
             </h2>
+          </div>
 
+            <div className='flex justify-between'>
+            
               {!applicationFullData?.remark?.length == 0 && (
                 <div className='pb-5 pl-8'>
                   <h1 className='font-bold text-base text-green-600'>
@@ -432,7 +447,8 @@ const ViewInventoryDetailsById = (props) => {
 
             <div className='h-[30px]'></div>
 
-            <div className='space-x-5 flex justify-end mt-[6rem]'>
+          </div>
+            <div className='space-x-5 flex justify-end mt-[2rem]'>
               <button className={buttonStyle} onClick={() => navigate(-1)}>
                 Back
               </button>
@@ -460,8 +476,9 @@ const ViewInventoryDetailsById = (props) => {
                     Forward to DA
                   </button>
                 )}
+
+                <button onClick={handlePrint} className='mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl' >Print</button>
             </div>
-          </div>
         </div>
       </div>
     </div>

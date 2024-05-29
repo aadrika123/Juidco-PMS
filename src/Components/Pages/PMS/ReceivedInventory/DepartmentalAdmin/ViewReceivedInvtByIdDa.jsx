@@ -269,6 +269,11 @@ const ViewReceivedInvtByIdDa = (props) => {
   console.log(applicationFullData?.receivings);
   // console.log(ulbId)
 
+
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div>
       <div className=''>
@@ -279,14 +284,21 @@ const ViewReceivedInvtByIdDa = (props) => {
       </div>
       <div className=''>
         {/* Basic Details */}
-        <div className='mt-6'>
-          <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-600 '>
+        <div className='mt-6' id="printable-content">
+          {/* <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-600 '>
             <h2 className='font-semibold text-xl flex justify-start'>
               <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View
               Procurement Request{" "}
             </h2>
+          </div> */}
+          
+          <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-600 ' >
+          <div className="">
+          <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start'>
+              {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
+              View Procurement Request{" "}
+            </h2>
           </div>
-          <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-600'>
             <div className='pl-8 text-[1rem] text-[#4338CA]'>
               <h1 className=''>
                 Procurement Request No <span className='text-black'>:</span>
@@ -309,7 +321,7 @@ const ViewReceivedInvtByIdDa = (props) => {
               </div>
             )}
 
-            <div className='grid grid-cols-4 gap-4 ml-14'>
+            <div className='grid grid-cols-4 gap-4 ml-8'>
               {/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
@@ -565,7 +577,7 @@ const ViewReceivedInvtByIdDa = (props) => {
               </div>
             </div>
 
-            <div className='p-5 pl-14'>
+            <div className='p-5 pl-8'>
               <h1 className='font-bold '>Other Description</h1>
               <p className=' pt-2'>
                 {nullToNA(
@@ -588,7 +600,7 @@ const ViewReceivedInvtByIdDa = (props) => {
               </h1>
             </div>
 
-            <div className='grid grid-cols-4 gap-4 ml-14'>
+            <div className='grid grid-cols-4 gap-4 ml-9'>
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   {nullToNA(applicationFullData?.supplier_name)}
@@ -663,7 +675,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                 </div>
               </div>
 
-              <div className='h-[80px]'></div>
+              <div className='h-[40px]'></div>
             </div>
           </div>
 
@@ -785,7 +797,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                 </h1>
               </div>
 
-              <div className='grid grid-cols-4 gap-4 ml-14'>
+              <div className='grid grid-cols-4 gap-4 ml-8'>
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold text-xl'>
                     {applicationFullData?.total_quantity
@@ -839,7 +851,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                             Received Inventory
                           </h1>
                         </div>
-                        <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
+                        <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-8'>
                           <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                             <div className='px-4 w-full mb-4'>
                               <label
@@ -964,8 +976,11 @@ const ViewReceivedInvtByIdDa = (props) => {
               </div>
             )}
 
-          {page == "outbox" && (
+          {/* {page == "outbox" && ( */}
             <div className='space-x-5 flex justify-end mt-[1rem]'>
+
+            <button onClick={handlePrint} className={`${buttonStyle}`} >Print</button>
+
               <button
                 className={buttonStyle2}
                 onClick={() => {
@@ -975,7 +990,9 @@ const ViewReceivedInvtByIdDa = (props) => {
                 Back
               </button>
             </div>
-          )}
+          {/* )} */}
+
+            
         </div>
       </div>
     </div>
