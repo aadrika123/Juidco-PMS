@@ -56,10 +56,10 @@ const ViewReceivedInvtById = (props) => {
   const { titleBarVisibility } = useContext(contextVar);
 
   let buttonStyle =
-    "pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
+    "pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-md leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
   let buttonStyle2 =
-    "mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]";
+    "mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-md sm:text-md leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]";
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
@@ -311,7 +311,7 @@ const ViewReceivedInvtById = (props) => {
               Procurement Request{" "}
             </h2>
           </div> */}
-          {/* <h1 className='px-1 font-semibold font-serif  text-gray-500'>
+          {/* <h1 className='px-1 font-semibold font-serif  text-gray-800'>
             <MdTag className='inline' /> Basic Details
           </h1> */}
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
@@ -322,10 +322,10 @@ const ViewReceivedInvtById = (props) => {
               </h2>
             </div>
 
-            <div className='pl-8 text-[1rem] text-[#4338CA]'>
-              <h1 className=''>
+            <div className='pl-8 pb-5 text-[1.2rem] text-[#4338CA]'>
+              <h1 className='font-bold'>
                 Procurement Request No <span className='text-black'>:</span>
-                <span className='font-bold'>
+                <span className='font-light'>
                   {" "}
                   {nullToNA(applicationFullData?.order_no)}
                 </span>
@@ -336,7 +336,7 @@ const ViewReceivedInvtById = (props) => {
               <div className='pb-5 pl-8'>
                 <h1 className='font-bold text-base text-red-500'>
                   Remark <span className='text-black'>:</span>
-                  <span className='text-sm pt-2 font-light text-red-500'>
+                  <span className='text-md pt-2 font-light text-red-500'>
                     {" "}
                     {nullToNA(applicationFullData?.remark)}
                   </span>
@@ -349,12 +349,12 @@ const ViewReceivedInvtById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
+                  Item Category
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(
                     applicationFullData?.pre_procurement?.category?.name
                   )}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-                  Item Category
                 </div>
               </div>
 
@@ -364,12 +364,12 @@ const ViewReceivedInvtById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
+                  Item Sub Category
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(
                     applicationFullData?.pre_procurement?.subcategory?.name
                   )}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-                  Item Sub Category
                 </div>
               </div>
 
@@ -383,10 +383,10 @@ const ViewReceivedInvtById = (props) => {
                   "Furniture") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.pre_procurement?.brand)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Brand
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.pre_procurement?.brand)}
                   </div>
                 </div>
               )}
@@ -398,10 +398,10 @@ const ViewReceivedInvtById = (props) => {
                   "Furniture") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-semibold '>
-                    {nullToNA(applicationFullData?.pre_procurement?.colour)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Colour
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.pre_procurement?.colour)}
                   </div>
                 </div>
               )}
@@ -417,10 +417,10 @@ const ViewReceivedInvtById = (props) => {
                   "Cleaning Supplies") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.pre_procurement?.material)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Material
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.pre_procurement?.material)}
                   </div>
                 </div>
               )}
@@ -429,10 +429,10 @@ const ViewReceivedInvtById = (props) => {
                 ("Maintainance and Repaire" || "Safety and Security") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.pre_procurement?.dimension)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Dimension
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.pre_procurement?.dimension)}
                   </div>
                 </div>
               )}
@@ -441,10 +441,10 @@ const ViewReceivedInvtById = (props) => {
                 "Furniture" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.pre_procurement?.room_type)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Room Type
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.pre_procurement?.room_type)}
                   </div>
                 </div>
               )}
@@ -453,12 +453,12 @@ const ViewReceivedInvtById = (props) => {
                 "Furniture" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-semibold '>
+                    Included Components
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                     {nullToNA(
                       applicationFullData?.pre_procurement?.included_components
                     )}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-                    Included Components
                   </div>
                 </div>
               )}
@@ -471,10 +471,10 @@ const ViewReceivedInvtById = (props) => {
                 "Furniture" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.pre_procurement?.size)}
+                    Size
                   </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-                    size
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.pre_procurement?.size)}
                   </div>
                 </div>
               )}
@@ -483,13 +483,13 @@ const ViewReceivedInvtById = (props) => {
                 "Cleaning Supplies" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
+                    Recomended Uses
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                     {nullToNA(
                       applicationFullData?.pre_procurement?.recomended_uses
                     )}
                   </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-                    Recomended Uses
-                  </div>
                 </div>
               )}
 
@@ -497,10 +497,10 @@ const ViewReceivedInvtById = (props) => {
                 "Cleaning Supplies" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.bristle)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Bristle
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.bristle)}
                   </div>
                 </div>
               )}
@@ -509,10 +509,10 @@ const ViewReceivedInvtById = (props) => {
                 ("Maintainance and Repaire" || "Safety and Security") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-semibold '>
-                    {nullToNA(applicationFullData?.pre_procurement?.weight)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Weight
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.pre_procurement?.weight)}
                   </div>
                 </div>
               )}
@@ -523,46 +523,46 @@ const ViewReceivedInvtById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold '>
-                  {nullToNA(applicationFullData?.unit_price)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Rate per quantity
                 </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.unit_price)}
+                </div>
               </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.total_quantity)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Quantity
                 </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.total_quantity)}
+                </div>
               </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.pre_procurement?.total_rate)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Total Rate
                 </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.pre_procurement?.total_rate)}
+                </div>
               </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.number_of_items)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   No of Items
                 </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.number_of_items)}
+                </div>
               </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.pre_procurement?.dimension)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Dimensions
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.pre_procurement?.dimension)}
                 </div>
               </div>
 
@@ -574,7 +574,7 @@ const ViewReceivedInvtById = (props) => {
                 <div className='md:w-auto w-[50%] font-bold '>
                   {/* {nullToNA(applicationFullData?.quantity)} */}
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {/* Quantity  */}
                 </div>
               </div>
@@ -583,7 +583,7 @@ const ViewReceivedInvtById = (props) => {
                 <div className='md:w-auto w-[50%] font-bold '>
                   {/* {nullToNA(applicationFullData?.applicant_name)} */}
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {/* Total Rate   */}
                 </div>
               </div>
@@ -592,7 +592,7 @@ const ViewReceivedInvtById = (props) => {
                 <div className='md:w-auto w-[50%] font-bold '>
                   {/* {nullToNA(applicationFullData?.mobile)} */}
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {/* Brand  */}
                 </div>
               </div>
@@ -601,7 +601,7 @@ const ViewReceivedInvtById = (props) => {
                 <div className='md:w-auto w-[50%] font-semibold '>
                   {/* {nullToNA(applicationFullData?.email)} */}
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {/* Processor  */}
                 </div>
               </div>
