@@ -59,7 +59,7 @@ const ViewReceivedInvtById = (props) => {
     "pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
   let buttonStyle2 =
-    "mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
+    "mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]";
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
@@ -298,7 +298,7 @@ const ViewReceivedInvtById = (props) => {
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
 
           <div className="">
-          <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start'>
+          <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
               {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
               View Procurement Request{" "}
             </h2>
@@ -609,17 +609,12 @@ const ViewReceivedInvtById = (props) => {
                 <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
                   <div className='col-span-12  w-full mb-20'>
                     <div className=' ml-4 p-2 mt-4'>
-                      <h1 className={`${headingStyle} text-left pb-2 pl-6`}>
+                      <h1 className={`${headingStyle} text-left p-2 pl-6 bg-[#4338ca] text-white rounded-md`}>
                         Inventory Details
                       </h1>
-                      {/* <h1 className={`${labelStyle} `}>
-                          Maintaining a healthy home: Confirming my septic tank
-                          service.
-                        </h1> */}
+                      
                     </div>
-                    {/* <div className="hidden md:block lg:block">
-                        <hr className="border w-full border-gray-200" />
-                      </div> */}
+                   
 
                     <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
                       <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
@@ -704,7 +699,7 @@ const ViewReceivedInvtById = (props) => {
 
                           <button
                             // className={`${buttonStyle} absolute`}
-                            className={`text-white absolute end-6 mt-[6px] bg-blue-700 hover:bg-blue-800 rounded text-[12px] px-5 py-[5px]`}
+                            className={`text-white absolute end-6 mt-[6px] bg-[#4338CA] hover:bg-blue-800 rounded text-[12px] px-5 py-[5px]`}
                             onClick={() => {
                               setDeadStockImg(true);
                             }}

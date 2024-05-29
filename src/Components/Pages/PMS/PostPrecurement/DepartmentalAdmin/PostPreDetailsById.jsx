@@ -415,7 +415,7 @@ const PostPreDetailsById = (props) => {
 
           <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
             <div className=''>
-              <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start'>
+              <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
                 {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
                 View Procurement Request{" "}
               </h2>
@@ -695,7 +695,7 @@ const PostPreDetailsById = (props) => {
                     <div className='col-span-12  w-full mb-20'>
                       <div className=' ml-4 p-2 mt-2'>
                         <h1
-                          className={`${headingStyle} text-left pb-2 pt-2 pl-6`}
+                          className={`${headingStyle} text-left pb-2 pt-2 pl-6  bg-[#4338ca] text-white rounded-md`}
                         >
                           Inventory Details
                         </h1>
@@ -914,11 +914,14 @@ const PostPreDetailsById = (props) => {
           )}
 
           {page == "outbox" && (
-            <div className='py-6 mt-8 bg-white rounded-lg shadow-xl px-10 border border-blue-500'>
-              <h2 className='text-2xl font-semibold text-gray-600 mb-4'>
-                Supplier Details
-              </h2>
-              <div className='flex justify-between items-center py-4'>
+            <div className='py-6 mt-8 bg-white rounded-lg shadow-xl px-6 border border-blue-500'>
+              <div className=''>
+                <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+                  {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
+                  Supplier Details{" "}
+                </h2>
+              </div>
+              <div className='flex justify-between items-center py-4 px-8'>
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(applicationFullData?.supplier_name)}
@@ -958,7 +961,7 @@ const PostPreDetailsById = (props) => {
                 )}
               </div>
 
-              <div className='flex justify-between items-center py-4'>
+              <div className='flex justify-between items-center py-4 px-8'>
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(applicationFullData?.final_rate)}
@@ -998,11 +1001,13 @@ const PostPreDetailsById = (props) => {
             </div>
           )}
         </div>
-        <div className='flex justify-end mt-3'>
-          <button onClick={handlePrint} className={buttonStyle}>
-            Print
-          </button>
-        </div>
+        {page == "outbox" && (
+          <div className='flex justify-end mt-3'>
+            <button onClick={handlePrint} className={buttonStyle}>
+              Print
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ function StockReceiverModal(props) {
 
   const handleCancelClick = () => {
     props.setIsModalOpen(false);
+    window.location.reload()
   };
   const handleUploadDoc = () => {
     inputFileRef.current.click();
@@ -104,7 +105,8 @@ function StockReceiverModal(props) {
               <img
                 src={preview}
                 alt='Image Preview'
-                style={{ width: "200px", height: "auto", marginTop: "20px" }}
+                // style={{ width: "200px", height: "auto", marginTop: "20px", border: "2px", borderColor: "blue" }}
+                className="w-[200px] h-auto mt-[20px] border border-indigo-400 rounded"
               />
             )}
 
@@ -128,14 +130,17 @@ function StockReceiverModal(props) {
               <p className='text-red-500 text-sm m-2'>
                 {props?.imageDoc?.name}
               </p>
+              <div className="flex justify-center">
               <button
                 className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
                 onClick={handleUploadDoc}
               >
                 Browse File
               </button>
+              </div>
             </div>
           </div>
+          
           <div>
             <div className=''>
               <h3 className='text-sm text-black font-openSans'>Remarks</h3>
@@ -143,7 +148,7 @@ function StockReceiverModal(props) {
             <div className='flex justify-center mb-6'>
               <textarea
                 name={props.remarks}
-                className='border border-[#5448dd] rounded w-[28rem] h-[5rem]'
+                className='border border-[#5448dd] rounded w-[28rem] h-[5rem] p-2'
                 placeholder=' Enter Remarks...'
                 onChange={(e) => {
                   allowCharacterNumberInput(

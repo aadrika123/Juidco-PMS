@@ -61,7 +61,7 @@ function DaRejectModal(props) {
         <div class=" flex-1">
           <div class="">
             <h3 class="text-xl  text-center  text-black font-openSans">
-            Sure to go Reject the Tender
+            Sure to "Reject the Tender"
             </h3>
             {/* <h3 class="text-xl  text-center mb-3 text-gray-400 font-openSans font-semibold ">
               Booking no. - {props?.responseScreenData?.data?.bookingNo}

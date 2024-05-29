@@ -256,9 +256,9 @@ const ViewPostInvtDetailsById = (props) => {
     </div>
         {/* Basic Details */}
         <div className="mt-6" id="printable-content">
-          {/* <div className="flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 ">
+          {/* <div className="flex justify-between mt-2 bg-indigo-600 text-white rounded-lg shadow-xl p-4 border border-blue-500 ">
             <h2 className="font-semibold text-xl flex justify-start">
-              <MdTag className="inline pt-1 text-[1.5rem] text-sky-700" /> View
+              <MdTag className="inline pt-1 text-[1.5rem] text-sky-700 text-white" /> View
               Procurement Request{" "}
             </h2>
           </div> */}
@@ -266,11 +266,12 @@ const ViewPostInvtDetailsById = (props) => {
           <div className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
 
           <div className="">
-          <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start'>
-              {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
-              View Procurement Request{" "}
+          <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start bg-[#4338CA] text-white rounded-md'>
+             
+              View Procurement Request
             </h2>
           </div>
+
 
 
           <div className="flex justify-between">
@@ -551,12 +552,18 @@ const ViewPostInvtDetailsById = (props) => {
           </div>
 
           <div className="py-6 mt-10 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
-            <h2 className="font-semibold text-2xl flex justify-start pb-8 pt-2 pl-8">
-              {/* <MdTag className="inline pt-1 text-[1.5rem] text-sky-700" />{" "} */}
+            {/* <h2 className="font-semibold text-2xl flex justify-start pb-8 pt-2 pl-8">
+              
               Inventory Details{" "}
-            </h2>
+            </h2> */}
 
-            <div className="grid grid-cols-4 gap-4 ml-8 pb-10">
+            <div className="">
+          <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start bg-[#4338CA] text-white rounded-md'>
+          Inventory Details
+            </h2>
+          </div>
+
+            <div className="grid grid-cols-4 gap-4 ml-8 pt-5 pb-10">
               <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">
                   {/* {nullToNA(applicationFullData?.category.name)} */}

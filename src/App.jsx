@@ -122,19 +122,19 @@ function App() {
 
     /////////////////////////{*** Received-Inventory ***}//////////////////////////////////////
 
+    //------------ DA ---------------
+    { path: "/da-received-inventory", element: <ReceivedInvtHomeDa /> },
+    {
+      path: "/da-received-InvtDetailsById/:id/:page",
+      element: <ViewReceivedInvtByIdDa />,
+    },
+
     //------------ Stock Receiver ---------------
 
     { path: "/sr-received-inventory", element: <ReceivedInvtHome /> },
     {
       path: "/sr-received-InvtDetailsById/:id/:page",
       element: <ViewReceivedInvtById />,
-    },
-
-    //------------ DA ---------------
-    { path: "/da-received-inventory", element: <ReceivedInvtHomeDa /> },
-    {
-      path: "/da-received-InvtDetailsById/:id/:page",
-      element: <ViewReceivedInvtByIdDa />,
     },
   ];
 
