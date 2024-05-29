@@ -65,13 +65,20 @@ const ViewReceivedInvtByIdDa = (props) => {
   let buttonStyle2 =
     " mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
+
+    // const dateFunc = ()=>{
+    //   let currDate = '2024-05-23T00:00:00.000Z'
+    //   new date = currDate.split('T')[0];
+    // }
+    // console.log(dateFunc(date))
+
   //Formik -------------------
   const validationSchema = yup.object({
     total_quantity: yup.number().required("Total quantity is required"),
     received_quantity: yup.number().required("Received quantity is required"),
     remaining_quantity: yup.number().required("Remaining quantity is required"),
     date: yup.date().required("Date is required"),
-    // remarks: yup.string().required("Remaining quantity is required"),
+    // remark: yup.string().required("Remaining quantity is required"),
   });
 
   // intitial value
@@ -80,7 +87,7 @@ const ViewReceivedInvtByIdDa = (props) => {
     received_quantity: "",
     remaining_quantity: "",
     date: "",
-    // remarks: "",
+    // remark: "",
     // imageDoc: "",
   };
 
@@ -89,7 +96,7 @@ const ViewReceivedInvtByIdDa = (props) => {
     enableReinitialize: true,
     onSubmit: (values) => {
       console.log("click");
-      console.log("Form Vlues ==============>>", values);
+      console.log("Form Values ==============>>", values);
       setIsModalOpen(true);
       setFormData(values);
     },
@@ -109,6 +116,8 @@ const ViewReceivedInvtByIdDa = (props) => {
     setUlbId(ulbIds);
     // console.log(ulbId)
     getApplicationDetail();
+
+    // dateFunc()
   }, []);
 
   ///////////{*** application view detail ***}/////////
@@ -179,7 +188,7 @@ const ViewReceivedInvtByIdDa = (props) => {
     let body = {
       ...formData,
       img: imageDoc,
-      remark,
+      // remarks,
       order_no: applicationFullData?.order_no,
       ulb_id: ulbId,
     };
@@ -216,7 +225,7 @@ const ViewReceivedInvtByIdDa = (props) => {
           toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/da-received-inventory");
-          }, 2000);
+          }, 1000);
         } else {
           setisLoading(false);
           const errorMsg = Object.keys(response?.data?.data);
@@ -225,6 +234,7 @@ const ViewReceivedInvtByIdDa = (props) => {
         }
       })
       .catch(function (error) {
+        toast.error("Something wrong happened")
         console.log("errorrr.... ", error);
       });
   };
@@ -235,9 +245,11 @@ const ViewReceivedInvtByIdDa = (props) => {
         <ReceivedInvtSubmittedScreen
           submitFunc={postReceivedInventoryDetails}
           setRemark={setRemark}
+          setFormData={setFormData}
           setImageDoc={setImageDoc}
           setIsModalOpen={setIsModalOpen}
-          preview={setPreview}
+          // preview={preview}
+          // setPreview={setPreview}
         />
       </>
     );
@@ -262,8 +274,10 @@ const ViewReceivedInvtByIdDa = (props) => {
     );
   }
 
-  console.log(applicationFullData?.total_quantity);
-  console.log(applicationFullData?.total_receivings);
+ 
+
+  // console.log(applicationFullData?.total_quantity);
+  console.log(applicationFullData?.receivings);
   // console.log(ulbId)
 
   return (
@@ -286,7 +300,7 @@ const ViewReceivedInvtByIdDa = (props) => {
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-600'>
             <div className='pl-8 text-[1rem] text-[#4338CA]'>
               <h1 className=''>
-                Procurement request No <span className='text-black'>:</span>
+                Procurement Request No <span className='text-black'>:</span>
                 <span className='font-bold'>
                   {" "}
                   {nullToNA(applicationFullData?.order_no)}
@@ -642,7 +656,7 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.total_receivings)}
+                  {applicationFullData?.total_receivings ? applicationFullData?.total_receivings : 0}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Total Received Items
@@ -705,12 +719,18 @@ const ViewReceivedInvtByIdDa = (props) => {
                           <th scope='col' class='px-6 py-3'>
                             Remaining Quantity
                           </th>
+                          <th scope='col' class='px-6 py-3'>
+                            Remark
+                          </th>
                         </tr>
                       </thead>
                       {applicationFullData?.receivings.map((data) => (
                         <tbody>
                           <tr class='bg-white border-b-2'>
-                            <td class='px-6 py-4'>{data?.date}</td>
+                            
+                            {/* <td class='px-6 py-4'>{data?.date}</td> */}
+                            <td class='px-6 py-4'>{data?.date.split('T')[0].split('-').reverse().join('-')}</td>
+
                             <td class='px-6 py-4'>{data?.receiving_no}</td>
                             <td class='px-6 py-4'>
                               {applicationFullData?.total_quantity}
@@ -731,6 +751,9 @@ const ViewReceivedInvtByIdDa = (props) => {
                             </td>
                             <td class='px-6 py-4'>
                               {data?.remaining_quantity}
+                            </td>
+                            <td class='px-6 py-4'>
+                              {data?.remark}
                             </td>
                           </tr>
                         </tbody>
@@ -783,7 +806,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                     123
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-                    Date
+                    Total Received Quantity
                   </div>
                 </div>
 
@@ -793,17 +816,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                     123
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-                    Received Quantity
-                  </div>
-                </div>
-
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    {/* {nullToNA(applicationFullData?.pre_procurement?.category?.name)} */}
-                    123
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-                    Remaining Quantity
+                    Total Remaining Quantity
                   </div>
                 </div>
 
@@ -868,7 +881,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
                                 value={formik.values.date}
-                              />
+                                max={new Date().toISOString().split("T")[0]}                              />
 
                               <p className='text-red-500 text-xs '>
                                 {formik.touched.date && formik.errors.date

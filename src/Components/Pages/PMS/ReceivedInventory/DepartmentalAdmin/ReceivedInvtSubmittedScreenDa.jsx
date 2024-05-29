@@ -9,37 +9,22 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState, useRef } from "react";
-// import PaymentDetailsSepticTank from "./SuccessModal";
-import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
-import cancel from "@/Components/assets/cancel.svg";
-import uploadImg from "@/Components/assets/uploadImg.png";
 import { useNavigate } from "react-router-dom";
 import { LuCloudy } from "react-icons/lu";
-import { Formik } from "formik";
+import { allowCharacterNumberInput } from "@/Components/Common/PowerupFunctions";
 
 function StockReceiverModal(props) {
   const navigate = useNavigate();
   const inputFileRef = useRef();
-  const { formStyle } = ThemeStyleTanker();
 
   const [openPaymentModal, setOpenPaymentModal] = useState(0);
-
-  // console.log("Res Dataaaaaaaa", props?.responseScreenData);
-
-  // const handlePayment = () => {
-  //   console.log("clicked====pay button");
-  //   navigate(
-  //     `/tanker-payment/${props?.responseScreenData?.data?.applicationId}/septicTanker`
-  //   );
-  // };
+  const [preview, setPreview] = useState();
 
   const handleClick = () => {
     props?.submitFunc();
   };
 
   const handleCancelClick = () => {
-    // props?.submitForm()
-    // navigate(`/add-pre-procurement`);
     props.setIsModalOpen(false);
   };
   const handleUploadDoc = () => {
@@ -65,30 +50,29 @@ function StockReceiverModal(props) {
           <hr className='w-full mt-3' />
 
           <div className='mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col'>
+
+            { preview == null ? <> 
             <div className='rounded-md mt-8'>
               <LuCloudy className='text-[1.5rem]' />
-              {/* <img
-                  src={uploadImg}
-                  alt='upload doc icon'
-                  width={50}
-                  height={50}
-                /> */}
             </div>
-            <h3 class='text-xl text-black font-openSans'>choose a file </h3>
+            <h3 class='text-xl text-black font-openSans'>Choose a file </h3>
             <h1 className='text-gray-400 text-sm'>
-              JPEG, PNG, PDG, and MP4 formats, up to 50MB
+              JPEG, PNG, JPG, and PDF formats, up to 2MB
             </h1>
+            </> : <img src={preview} alt="Image Preview" style={{ width: '200px', height: 'auto', marginTop: '20px' }} />}
+            
+
             <div className='mb-8'>
               <input type='file' className='hidden' ref={inputFileRef} 
-              onChange={ (e) => props?.setImageDoc(e.target.files[0])} 
-              
-              // onChange={ (e) => {
-              //     const file = e.target.files[0];
-              //     if (file) {
-              //       setImage(file);
-              //       setPreview(URL.createObjectURL(file));
-              //     }
-              // }} 
+              // onChange={ (e) => props?.setImageDoc(e.target.files[0])} 
+
+              onChange={ (e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    props?.setImageDoc(file);
+                    setPreview(URL.createObjectURL(file));
+                  }
+              }} 
 
               />
 
@@ -101,19 +85,23 @@ function StockReceiverModal(props) {
             </div>
           </div>
 
+          {/* <img src={preview} alt="Image Preview" style={{ width: '300px', height: 'auto' }} /> */}
+
           <div>
             <div className=''>
               <h3 className='text-sm text-black font-openSans'>Remarks</h3>
-              {/* <h3 class="text-xl  text-center mb-3 text-gray-400 font-openSans font-semibold ">
-              Booking no. - {props?.responseScreenData?.data?.bookingNo}
-            </h3> */}
+             
             </div>
             <div className='flex justify-center mb-6 mt-2'>
               <textarea
                 name={props.remarks}
                 className='border border-[#5448dd] rounded w-[28rem] h-[5rem]'
                 placeholder=' Enter Remarks...'
-                onChange={(e) => props?.setRemark(e.target.value)}
+                // onChange={(e) => props?.setRemark(e.target.value)}
+                onChange={(e) => { allowCharacterNumberInput(e.target.value, e.target.value, 1000) ;props?.setFormData((prev)=>({
+                  ...prev,
+                  remark:e.target.value
+                }))}}
                 required
               />
             </div>

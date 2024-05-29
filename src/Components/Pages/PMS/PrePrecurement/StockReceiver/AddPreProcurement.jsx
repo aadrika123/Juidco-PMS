@@ -418,7 +418,7 @@ function AddPreProcurement(props) {
           setdeclarationStatus(false);
           setOrderNo(response?.data?.order_no);
 
-          // navigate('/tankerFormSubmitted')
+          navigate('/sr-inventory-proposal')
         } else {
           setisLoading(false);
           setdeclarationStatus(false);

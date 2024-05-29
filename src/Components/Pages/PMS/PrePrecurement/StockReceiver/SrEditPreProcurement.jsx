@@ -4,8 +4,8 @@
 //    Date - 22/05/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - EditPreProcurement
-//    DESCRIPTION - EditPreProcurement
+//    Component  - SrEditPreProcurement
+//    DESCRIPTION - SrEditPreProcurement
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useEffect, useState } from "react";
@@ -36,7 +36,7 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 // import { click } from "@testing-library/user-event/dist/click";
 // import { C } from "dist/assets/index-1a86ca5c";
 
-function EditPreProcurement(props) {
+function SrEditPreProcurement(props) {
   const { saveButtonColor, inputStyle, labelStyle, headingStyle, formStyle } =
     ThemeStyle();
 
@@ -52,6 +52,9 @@ function EditPreProcurement(props) {
     api_fetchGraphics,
     api_fetchProcurementDADetailByIdinbox,
     api_editProcurement,
+    api_fetchOutboxProcurementDetailById,
+    api_fetchProcurementDetailById,
+    api_editSrProcurement
   } = ProjectApiList();
 
   const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar) 
@@ -96,7 +99,7 @@ function EditPreProcurement(props) {
 
   console.log(applicationFullData);
 
-  const { id } = useParams();
+  const { id, page } = useParams();
 
   console.log(id);
 
@@ -382,7 +385,7 @@ function EditPreProcurement(props) {
   };
 
   const getApplicationDetail = () => {
-    let url = api_fetchProcurementDADetailByIdinbox;
+    let url = api_fetchProcurementDetailById;
 
     seterroState(false);
     setisLoading(true);
@@ -433,7 +436,7 @@ function EditPreProcurement(props) {
     let url;
     let requestBody;
 
-    url = api_editProcurement;
+    url = api_editSrProcurement;
     requestBody = {
       id: applicationFullData?.id,
       order_no: applicationFullData?.order_no,
@@ -754,6 +757,9 @@ function EditPreProcurement(props) {
         <PreProcurementSubmittedScreen
           submitForm={submitForm}
           responseScreenData={formData}
+          setIsModalOpen={setIsModalOpen}
+          id={id}
+          page={page}
         />
       </>
     );
@@ -832,15 +838,12 @@ function EditPreProcurement(props) {
                       {...formik.getFieldProps("itemsubcategory")}
                       className={`${inputStyle} inline-block w-full relative`}
                       onChange={formik.handleChange}
-                      disabled="true"
                     >
                       {/* <option selected>select</option> */}
                       {subcategory?.length &&
                         subcategory?.map((items) => (
                           <option value={items?.id}>{items?.name}</option>
                         ))}
-
-                        
                     </select>
 
                     <p className="text-red-500 text-xs ">
@@ -1182,4 +1185,4 @@ function EditPreProcurement(props) {
   );
 }
 
-export default EditPreProcurement;
+export default SrEditPreProcurement;
