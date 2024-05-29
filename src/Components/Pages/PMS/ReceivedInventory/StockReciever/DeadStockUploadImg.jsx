@@ -23,6 +23,7 @@ function DeadStockUploadImg(props) {
 
   const handleCancelClick = () => {
     props.setDeadStockImg(false);
+    window.location.reload()
   };
   const handleUploadDoc = () => {
     inputFileRef.current.click();
@@ -87,7 +88,7 @@ function DeadStockUploadImg(props) {
 
           <hr className='w-full mt-3' />
 
-          <div className='mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col w-full'>
+          <div className='p-10 mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col'>
             {preview == null && (
               <>
                 <div className='rounded-md mt-8'>
@@ -104,7 +105,8 @@ function DeadStockUploadImg(props) {
               <img
                 src={preview}
                 alt='Image Preview'
-                style={{ width: "200px", height: "auto", marginTop: "20px" }}
+                // style={{ width: "200px", height: "auto", marginTop: "20px" }}
+                className="w-[200px] h-auto mt-[20px] border border-indigo-400 rounded"
               />
             )}
 
@@ -116,7 +118,7 @@ function DeadStockUploadImg(props) {
               />
             )}
 
-            <div className='mb-8'>
+            <div className='mb-4'>
               <input
                 type='file'
                 accept='.jpg, .jpeg, .pdf .png'
@@ -129,12 +131,14 @@ function DeadStockUploadImg(props) {
                 {props?.imageDoc?.name}
               </p>
 
+              <div className="flex justify-center">
               <button
                 className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
                 onClick={handleUploadDoc}
               >
                 Browse File
               </button>
+              </div>
             </div>
           </div>
 
