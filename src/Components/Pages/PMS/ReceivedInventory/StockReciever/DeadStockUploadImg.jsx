@@ -14,6 +14,8 @@ import { LuCloudy } from "react-icons/lu";
 function DeadStockUploadImg(props) {
   const inputFileRef = useRef();
 
+  const [preview, setPreview] = useState();
+
   const handleClick = () => {
     props?.postAddtoInventory();
     // props?.postBackToSR();
@@ -49,19 +51,28 @@ function DeadStockUploadImg(props) {
           <hr className='w-full mt-3' />
 
           <div className='mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col w-full'>
+          { preview == null ? <> 
             <div className='rounded-md mt-8'>
               <LuCloudy className='text-[1.5rem]' />
             </div>
             <h3 class='text-xl text-black font-openSans'>choose a file </h3>
-            <h1 className='text-gray-400 text-sm px-6'>
+            <h1 className='text-gray-400 text-sm'>
               JPEG, PNG, PDG, and MP4 formats, up to 50MB
             </h1>
+            </> : <img src={preview} alt="Image Preview" style={{ width: '200px', height: 'auto', marginTop: '20px' }} />}
             <div className='mb-8'>
               <input
                 type='file'
                 className='hidden'
                 ref={inputFileRef}
-                onChange={(e) => props?.setImageDoc(e.target.files[0])}
+                // onChange={(e) => props?.setImageDoc(e.target.files[0])}
+                onChange={ (e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    props?.setImageDoc(file);
+                    setPreview(URL.createObjectURL(file));
+                  }
+              }} 
               />
               <button
                 className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}

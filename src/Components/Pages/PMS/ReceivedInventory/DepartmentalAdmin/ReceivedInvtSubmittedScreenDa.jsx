@@ -9,38 +9,22 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState, useRef } from "react";
-// import PaymentDetailsSepticTank from "./SuccessModal";
-import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
-import cancel from "@/Components/assets/cancel.svg";
-import uploadImg from "@/Components/assets/uploadImg.png";
 import { useNavigate } from "react-router-dom";
 import { LuCloudy } from "react-icons/lu";
-import { Formik } from "formik";
+import { allowCharacterNumberInput } from "@/Components/Common/PowerupFunctions";
 
 function StockReceiverModal(props) {
   const navigate = useNavigate();
   const inputFileRef = useRef();
-  const { formStyle } = ThemeStyleTanker();
 
   const [openPaymentModal, setOpenPaymentModal] = useState(0);
   const [preview, setPreview] = useState();
-
-  // console.log("Res Dataaaaaaaa", props?.responseScreenData);
-
-  // const handlePayment = () => {
-  //   console.log("clicked====pay button");
-  //   navigate(
-  //     `/tanker-payment/${props?.responseScreenData?.data?.applicationId}/septicTanker`
-  //   );
-  // };
 
   const handleClick = () => {
     props?.submitFunc();
   };
 
   const handleCancelClick = () => {
-    // props?.submitForm()
-    // navigate(`/add-pre-procurement`);
     props.setIsModalOpen(false);
   };
   const handleUploadDoc = () => {
@@ -71,9 +55,9 @@ function StockReceiverModal(props) {
             <div className='rounded-md mt-8'>
               <LuCloudy className='text-[1.5rem]' />
             </div>
-            <h3 class='text-xl text-black font-openSans'>choose a file </h3>
+            <h3 class='text-xl text-black font-openSans'>Choose a file </h3>
             <h1 className='text-gray-400 text-sm'>
-              JPEG, PNG, PDG, and MP4 formats, up to 50MB
+              JPEG, PNG, JPG, and PDF formats, up to 2MB
             </h1>
             </> : <img src={preview} alt="Image Preview" style={{ width: '200px', height: 'auto', marginTop: '20px' }} />}
             
@@ -106,9 +90,7 @@ function StockReceiverModal(props) {
           <div>
             <div className=''>
               <h3 className='text-sm text-black font-openSans'>Remarks</h3>
-              {/* <h3 class="text-xl  text-center mb-3 text-gray-400 font-openSans font-semibold ">
-              Booking no. - {props?.responseScreenData?.data?.bookingNo}
-            </h3> */}
+             
             </div>
             <div className='flex justify-center mb-6 mt-2'>
               <textarea
@@ -116,10 +98,10 @@ function StockReceiverModal(props) {
                 className='border border-[#5448dd] rounded w-[28rem] h-[5rem]'
                 placeholder=' Enter Remarks...'
                 // onChange={(e) => props?.setRemark(e.target.value)}
-                onChange={(e) => props?.setFormData((prev)=>({
+                onChange={(e) => { allowCharacterNumberInput(e.target.value, e.target.value, 1000) ;props?.setFormData((prev)=>({
                   ...prev,
                   remark:e.target.value
-                }))}
+                }))}}
                 required
               />
             </div>

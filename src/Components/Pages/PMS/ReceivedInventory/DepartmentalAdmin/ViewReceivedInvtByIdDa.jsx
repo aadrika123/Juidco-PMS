@@ -225,7 +225,7 @@ const ViewReceivedInvtByIdDa = (props) => {
           toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/da-received-inventory");
-          }, 2000);
+          }, 1000);
         } else {
           setisLoading(false);
           const errorMsg = Object.keys(response?.data?.data);
@@ -234,6 +234,7 @@ const ViewReceivedInvtByIdDa = (props) => {
         }
       })
       .catch(function (error) {
+        toast.error("Something wrong happened")
         console.log("errorrr.... ", error);
       });
   };
@@ -299,7 +300,7 @@ const ViewReceivedInvtByIdDa = (props) => {
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-600'>
             <div className='pl-8 text-[1rem] text-[#4338CA]'>
               <h1 className=''>
-                Procurement request No <span className='text-black'>:</span>
+                Procurement Request No <span className='text-black'>:</span>
                 <span className='font-bold'>
                   {" "}
                   {nullToNA(applicationFullData?.order_no)}
@@ -655,7 +656,7 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.total_receivings)}
+                  {applicationFullData?.total_receivings ? applicationFullData?.total_receivings : 0}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Total Received Items
@@ -805,7 +806,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                     123
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-                    Date
+                    Total Received Quantity
                   </div>
                 </div>
 
@@ -815,17 +816,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                     123
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-                    Received Quantity
-                  </div>
-                </div>
-
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    {/* {nullToNA(applicationFullData?.pre_procurement?.category?.name)} */}
-                    123
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-                    Remaining Quantity
+                    Total Remaining Quantity
                   </div>
                 </div>
 
@@ -890,7 +881,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
                                 value={formik.values.date}
-                              />
+                                max={new Date().toISOString().split("T")[0]}                              />
 
                               <p className='text-red-500 text-xs '>
                                 {formik.touched.date && formik.errors.date

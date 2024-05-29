@@ -832,12 +832,15 @@ function EditPreProcurement(props) {
                       {...formik.getFieldProps("itemsubcategory")}
                       className={`${inputStyle} inline-block w-full relative`}
                       onChange={formik.handleChange}
+                      disabled="true"
                     >
                       {/* <option selected>select</option> */}
                       {subcategory?.length &&
                         subcategory?.map((items) => (
                           <option value={items?.id}>{items?.name}</option>
                         ))}
+
+                        
                     </select>
 
                     <p className="text-red-500 text-xs ">

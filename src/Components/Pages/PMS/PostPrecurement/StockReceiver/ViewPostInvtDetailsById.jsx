@@ -278,7 +278,7 @@ const ViewPostInvtDetailsById = (props) => {
             )}
             <div className="pl-8 text-[1rem] text-[#4338CA]">
               <h1 className="">
-                Procurement request No <span className="text-black">:</span>
+                Procurement Request No <span className="text-black">:</span>
                 <span className="font-bold">
                   {" "}
                   {nullToNA(applicationFullData?.order_no)}

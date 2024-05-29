@@ -26,9 +26,9 @@ function PreProcurementSubmittedScreen(props) {
   const handleClick = () => {
     props?.submitForm();
     props?.setIsModalOpen(false);
-    navigate(`/sr-viewInventoryDetailsById/${props.id}/${"inbox"}`, {
-      replace: true,
-    });
+    // navigate(`/sr-viewInventoryDetailsById/${props.id}/${"inbox"}`, {
+    //   replace: true,
+    // });
   };
 
   const handleCancilClick = () => {

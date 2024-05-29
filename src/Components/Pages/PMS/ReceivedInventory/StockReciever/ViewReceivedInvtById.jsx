@@ -297,7 +297,7 @@ const ViewReceivedInvtById = (props) => {
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
             <div className='pl-8 text-[1rem] text-[#4338CA]'>
               <h1 className=''>
-                Procurement request No <span className='text-black'>:</span>
+                Procurement Request No <span className='text-black'>:</span>
                 <span className='font-bold'>
                   {" "}
                   {nullToNA(applicationFullData?.order_no)}
