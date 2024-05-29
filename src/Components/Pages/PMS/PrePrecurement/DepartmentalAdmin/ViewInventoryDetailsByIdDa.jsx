@@ -59,13 +59,13 @@ const ViewInventoryDetailsById = (props) => {
   // const {  } = useContext(contextVar);
 
   let buttonStyle =
-    " mr-1 pb-3 pl-6 pr-6 pt-3 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
+    " mr-1 pb-3 pl-6 pr-6 pt-3 border border-indigo-500 text-indigo-800 text-md leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
   let buttonStyle2 =
-    " p-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
+    " p-2 border border-indigo-500 text-white text-md sm:text-md leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
   let buttonStyle3 =
-    " pb-2 pl-4 pr-4 pt-2 border border-yellow-400 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-yellow-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-yellow-700";
+    " pb-2 pl-4 pr-4 pt-2 border border-yellow-400 text-white text-md sm:text-md leading-tight rounded  hover:bg-white  hover:text-yellow-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-yellow-700";
 
   useEffect(() => {
     getApplicationDetail();
@@ -280,7 +280,7 @@ const ViewInventoryDetailsById = (props) => {
               <div className='pb-5 pl-8'>
                 <h1 className='font-bold text-base text-green-600'>
                   Remark <span className='text-black'>:</span>
-                  <span className='text-sm pt-2 font-ligh text-green-600'>
+                  <span className='text-md pt-2 font-ligh text-green-600'>
                     {" "}
                     {nullToNA(applicationFullData?.remark)}
                   </span>
@@ -305,10 +305,10 @@ const ViewInventoryDetailsById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.category.name)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Item Category
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.category.name)}
                 </div>
               </div>
 
@@ -318,10 +318,10 @@ const ViewInventoryDetailsById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.subcategory?.name)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Item Sub Category
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.subcategory?.name)}
                 </div>
               </div>
 
@@ -335,10 +335,10 @@ const ViewInventoryDetailsById = (props) => {
                   "Furniture") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.brand)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Brand
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.brand)}
                   </div>
                 </div>
               )}
@@ -350,10 +350,10 @@ const ViewInventoryDetailsById = (props) => {
                   "Furniture") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-semibold '>
-                    {nullToNA(applicationFullData?.colour)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Colour
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.colour)}
                   </div>
                 </div>
               )}
@@ -369,10 +369,10 @@ const ViewInventoryDetailsById = (props) => {
                   "Cleaning Supplies") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.material)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Material
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.material)}
                   </div>
                 </div>
               )}
@@ -381,10 +381,10 @@ const ViewInventoryDetailsById = (props) => {
                 ("Maintainance and Repaire" || "Safety and Security") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.dimension)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Dimension
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.dimension)}
                   </div>
                 </div>
               )}
@@ -392,10 +392,10 @@ const ViewInventoryDetailsById = (props) => {
               {applicationFullData?.category?.name == "Furniture" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.room_type)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Room Type
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.room_type)}
                   </div>
                 </div>
               )}
@@ -403,10 +403,10 @@ const ViewInventoryDetailsById = (props) => {
               {applicationFullData?.category?.name == "Furniture" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-semibold '>
-                    {nullToNA(applicationFullData?.included_components)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Included Components
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.included_components)}
                   </div>
                 </div>
               )}
@@ -418,32 +418,32 @@ const ViewInventoryDetailsById = (props) => {
               {applicationFullData?.category?.name == "Furniture" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.size)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     size
                   </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.size)}
+                  </div>
                 </div>
               )}
 
               {applicationFullData?.category?.name == "Cleaning Supplies" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.recomended_uses)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Recomended Uses
                   </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.recomended_uses)}
+                  </div>
                 </div>
               )}
 
               {applicationFullData?.category?.name == "Cleaning Supplies" && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
-                    {nullToNA(applicationFullData?.bristle)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Bristle
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.bristle)}
                   </div>
                 </div>
               )}
@@ -452,10 +452,10 @@ const ViewInventoryDetailsById = (props) => {
                 ("Maintainance and Repaire" || "Safety and Security") && (
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-semibold '>
-                    {nullToNA(applicationFullData?.weight)}
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                     Weight
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.weight)}
                   </div>
                 </div>
               )}
@@ -466,37 +466,37 @@ const ViewInventoryDetailsById = (props) => {
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold '>
-                  {nullToNA(applicationFullData?.rate)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Rate per Quantity
                 </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.rate)}
+                </div>
               </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.quantity)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Quantity
                 </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.quantity)}
+                </div>
               </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.total_rate)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   Total Rate
                 </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.total_rate)}
+                </div>
               </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {nullToNA(applicationFullData?.number_of_items)}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
                   No of Items
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.number_of_items)}
                 </div>
               </div>
 
@@ -508,7 +508,7 @@ const ViewInventoryDetailsById = (props) => {
                 <div className='md:w-auto w-[50%] font-bold '>
                   {/* {nullToNA(applicationFullData?.quantity)} */}
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {/* Quantity  */}
                 </div>
               </div>
@@ -517,7 +517,7 @@ const ViewInventoryDetailsById = (props) => {
                 <div className='md:w-auto w-[50%] font-bold '>
                   {/* {nullToNA(applicationFullData?.applicant_name)} */}
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {/* Total Rate   */}
                 </div>
               </div>
@@ -526,7 +526,7 @@ const ViewInventoryDetailsById = (props) => {
                 <div className='md:w-auto w-[50%] font-bold '>
                   {/* {nullToNA(applicationFullData?.mobile)} */}
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {/* Brand  */}
                 </div>
               </div>
@@ -535,7 +535,7 @@ const ViewInventoryDetailsById = (props) => {
                 <div className='md:w-auto w-[50%] font-semibold '>
                   {/* {nullToNA(applicationFullData?.email)} */}
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {/* Processor  */}
                 </div>
               </div>

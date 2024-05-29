@@ -62,10 +62,10 @@ const PostPreDetailsById = (props) => {
   const { titleBarVisibility } = useContext(contextVar);
 
   let buttonStyle =
-    "  pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
+    "  pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-md leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
   let buttonStyle2 =
-    " mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
+    " mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-md sm:text-md leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
   // formik
   const validationSchema = yup.object({
@@ -418,10 +418,10 @@ const PostPreDetailsById = (props) => {
               </h2>
             </div>
 
-            <div className="pl-8 text-[1rem] text-[#4338CA]">
-              <h1 className="">
+            <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
+              <h1 className="font-bold">
                 Procurement Request No <span className="text-black">:</span>
-                <span className="font-bold">
+                <span className="font-light">
                   {" "}
                   {nullToNA(applicationFullData?.order_no)}
                 </span>
@@ -433,12 +433,10 @@ const PostPreDetailsById = (props) => {
 
               <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">
-                  {nullToNA(
-                    applicationFullData?.pre_procurement?.category.name
-                  )}
-                </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                   Item Category
+                </div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.pre_procurement?.category.name)}
                 </div>
               </div>
 
@@ -448,12 +446,10 @@ const PostPreDetailsById = (props) => {
 
               <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">
-                  {nullToNA(
-                    applicationFullData?.pre_procurement?.subcategory?.name
-                  )}
-                </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                   Item Sub Category
+                </div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.pre_procurement?.subcategory?.name)}
                 </div>
               </div>
 
@@ -467,10 +463,10 @@ const PostPreDetailsById = (props) => {
                   "Furniture") && (
                 <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                   <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(applicationFullData?.pre_procurement?.brand)}
-                  </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                     Brand
+                  </div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    {nullToNA(applicationFullData?.pre_procurement?.brand)}
                   </div>
                 </div>
               )}
@@ -482,10 +478,10 @@ const PostPreDetailsById = (props) => {
                   "Furniture") && (
                 <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                   <div className="md:w-auto w-[50%] font-semibold ">
-                    {nullToNA(applicationFullData?.pre_procurement?.colour)}
-                  </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                     Colour
+                  </div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    {nullToNA(applicationFullData?.pre_procurement?.colour)}
                   </div>
                 </div>
               )}
@@ -499,11 +495,11 @@ const PostPreDetailsById = (props) => {
                   "Cleaning Supplies") && (
                 <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                   <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(applicationFullData?.pre_procurement?.material)}
-                  </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                     Material
                   </div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    {nullToNA(applicationFullData?.pre_procurement?.material)}
+                  </div>
                 </div>
               )}
 
@@ -511,11 +507,11 @@ const PostPreDetailsById = (props) => {
                 ("Maintainance and Repaire" || "Safety and Security") && (
                 <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                   <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(applicationFullData?.pre_procurement?.dimension)}
-                  </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                     Dimension
                   </div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    {nullToNA(applicationFullData?.pre_procurement?.dimension)}
+                  </div>
                 </div>
               )}
 
@@ -523,10 +519,10 @@ const PostPreDetailsById = (props) => {
                 "Furniture" && (
                 <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                   <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(applicationFullData?.pre_procurement?.room_type)}
-                  </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                     Room Type
+                  </div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    {nullToNA(applicationFullData?.pre_procurement?.room_type)}
                   </div>
                 </div>
               )}
@@ -535,12 +531,10 @@ const PostPreDetailsById = (props) => {
                 "Furniture" && (
                 <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                   <div className="md:w-auto w-[50%] font-semibold ">
-                    {nullToNA(
-                      applicationFullData?.pre_procurement?.included_components
-                    )}
-                  </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                     Included Components
+                  </div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    {nullToNA(applicationFullData?.pre_procurement?.included_components)}
                   </div>
                 </div>
               )}
@@ -549,11 +543,11 @@ const PostPreDetailsById = (props) => {
                 "Furniture" && (
                 <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                   <div className="md:w-auto w-[50%] font-bold ">
+                    Size
+                  </div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
                     {nullToNA(applicationFullData?.pre_procurement?.size)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
-                    size
-                  </div>
                 </div>
               )}
 
@@ -561,13 +555,11 @@ const PostPreDetailsById = (props) => {
                 "Cleaning Supplies" && (
                 <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                   <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(
-                      applicationFullData?.pre_procurement?.recomended_uses
-                    )}
-                  </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                     Recomended Uses
                   </div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    {nullToNA(applicationFullData?.pre_procurement?.recomended_uses)}
+                  </div>
                 </div>
               )}
 
@@ -575,10 +567,10 @@ const PostPreDetailsById = (props) => {
                 "Cleaning Supplies" && (
                 <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                   <div className="md:w-auto w-[50%] font-bold ">
-                    {nullToNA(applicationFullData?.pre_procurement?.bristle)}
-                  </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                     Bristle
+                  </div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    {nullToNA(applicationFullData?.pre_procurement?.bristle)}
                   </div>
                 </div>
               )}
@@ -587,49 +579,49 @@ const PostPreDetailsById = (props) => {
                 ("Maintainance and Repaire" || "Safety and Security") && (
                 <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                   <div className="md:w-auto w-[50%] font-semibold ">
-                    {nullToNA(applicationFullData?.pre_procurement?.weight)}
-                  </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                     Weight
+                  </div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    {nullToNA(applicationFullData?.pre_procurement?.weight)}
                   </div>
                 </div>
               )}
 
               <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-semibold ">
-                  {nullToNA(applicationFullData?.pre_procurement?.rate)}
-                </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                   Rate per quantity
                 </div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.pre_procurement?.rate)}
+                </div>
               </div>
 
               <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">
-                  {nullToNA(applicationFullData?.pre_procurement?.quantity)}
-                </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                   Quantity
                 </div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.pre_procurement?.quantity)}
+                </div>
               </div>
 
               <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">
-                  {nullToNA(applicationFullData?.pre_procurement?.total_rate)}
-                </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
                   Total Rate
                 </div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.pre_procurement?.total_rate)}
+                </div>
               </div>
 
               <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">
+                  No of Items
+                </div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
                   {nullToNA(
                     applicationFullData?.pre_procurement?.number_of_items
                   )}
-                </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
-                  No of Items
                 </div>
               </div>
 
@@ -637,7 +629,7 @@ const PostPreDetailsById = (props) => {
                 <div className="md:w-auto w-[50%] font-bold ">
                   {/* {nullToNA(applicationFullData?.quantity)} */}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
                   {/* Quantity  */}
                 </div>
               </div>
@@ -646,7 +638,7 @@ const PostPreDetailsById = (props) => {
                 <div className="md:w-auto w-[50%] font-bold ">
                   {/* {nullToNA(applicationFullData?.applicant_name)} */}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
                   {/* Total Rate   */}
                 </div>
               </div>
@@ -655,7 +647,7 @@ const PostPreDetailsById = (props) => {
                 <div className="md:w-auto w-[50%] font-bold ">
                   {/* {nullToNA(applicationFullData?.mobile)} */}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
                   {/* Brand  */}
                 </div>
               </div>
@@ -664,7 +656,7 @@ const PostPreDetailsById = (props) => {
                 <div className="md:w-auto w-[50%] font-semibold ">
                   {/* {nullToNA(applicationFullData?.email)} */}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
                   {/* Processor  */}
                 </div>
               </div>
@@ -815,7 +807,7 @@ const PostPreDetailsById = (props) => {
                                 }}
                                 // onClick={() => setIsGstAdded((prev) => !prev)}
                               />{" "}
-                              <p className="text-sm pl-2">add GST in Bill</p>
+                              <p className="text-md pl-2">add GST in Bill</p>
                             </div>
 
                             <p className="text-red-500 text-xs">
@@ -921,7 +913,7 @@ const PostPreDetailsById = (props) => {
                   <div className="md:w-auto w-[50%] font-bold ">
                     {nullToNA(applicationFullData?.supplier_name)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
                     Supplier Name
                   </div>
                 </div>
@@ -930,7 +922,7 @@ const PostPreDetailsById = (props) => {
                   <div className="md:w-auto w-[50%] font-bold ">
                     {nullToNA(applicationFullData?.gst_no)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
                     GST Number
                   </div>
                 </div>
@@ -939,7 +931,7 @@ const PostPreDetailsById = (props) => {
                   <div className="md:w-auto w-[50%] font-bold ">
                     {nullToNA(applicationFullData?.is_gst_added)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
                     GST included
                   </div>
                 </div>
@@ -949,7 +941,7 @@ const PostPreDetailsById = (props) => {
                     <div className="md:w-auto w-[50%] font-bold ">
                       {nullToNA(applicationFullData?.gst)}
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       GST
                     </div>
                   </div>
@@ -961,7 +953,7 @@ const PostPreDetailsById = (props) => {
                   <div className="md:w-auto w-[50%] font-bold ">
                     {nullToNA(applicationFullData?.final_rate)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
                     Final Rate
                   </div>
                 </div>
@@ -970,7 +962,7 @@ const PostPreDetailsById = (props) => {
                   <div className="md:w-auto w-[50%] font-bold ">
                     {nullToNA(applicationFullData?.total_quantity)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
                     Total Quantity
                   </div>
                 </div>
@@ -979,7 +971,7 @@ const PostPreDetailsById = (props) => {
                   <div className="md:w-auto w-[50%] font-bold ">
                     {nullToNA(applicationFullData?.total_price)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
                     Total Price
                   </div>
                 </div>
@@ -988,7 +980,7 @@ const PostPreDetailsById = (props) => {
                   <div className="md:w-auto w-[50%] font-bold ">
                     {nullToNA(applicationFullData?.unit_price)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-500 text-sm">
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
                     Price per Item
                   </div>
                 </div>
