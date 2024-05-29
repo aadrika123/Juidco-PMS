@@ -1,34 +1,35 @@
-import React, { useContext, useState } from 'react'
-import Modal from 'react-modal';
-import { FiAlertCircle } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
-import { contextVar } from '@/Components/context/contextVar'
-import BarLoader from '@/Components/Common/Loaders/BarLoader'
-import { localstorageRemoveEntire } from '@/Components/Common/localstorage'
-import ulb_data from '@/Components/Common/DynamicData'
-import { AiOutlineBars } from 'react-icons/ai'
-import { BiLogOutCircle } from 'react-icons/bi';
-import PermittedModuleCard from './PermittedModuleCard';
-import { Tooltip } from 'react-tooltip';
-import { BsBell } from 'react-icons/bs';
-import NotificationComponent from './NotificationComponent';
+import React, { useContext, useEffect, useState } from "react";
+import Modal from "react-modal";
+import { FiAlertCircle } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import { contextVar } from "@/Components/context/contextVar";
+import BarLoader from "@/Components/Common/Loaders/BarLoader";
+import { localstorageRemoveEntire } from "@/Components/Common/localstorage";
+import ulb_data from "@/Components/Common/DynamicData";
+import { AiOutlineBars } from "react-icons/ai";
+import { BiLogOutCircle } from "react-icons/bi";
+import PermittedModuleCard from "./PermittedModuleCard";
+import { Tooltip } from "react-tooltip";
+import { BsBell } from "react-icons/bs";
+import NotificationComponent from "./NotificationComponent";
 import { BiMenuAltLeft } from "react-icons/bi";
-
-
+import { getLocalStorageItemJsonParsed } from "@/Components/Common/localstorage";
 
 const TopHeader = (props) => {
-
+  const [userDetailss, setuserDetails] = useState(
+    getLocalStorageItemJsonParsed("userDetails")
+  ); // to store user details
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [isLoading, setisLoading] = useState(false)
+  const [isLoading, setisLoading] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
-  const [notificationState, setnotificationState] = useState(false)
+  const [notificationState, setnotificationState] = useState(false);
+  const [ulbName, setUlbName] = useState("");
 
-  const { toggleBar, settoggleBar, userDetails } = useContext(contextVar)
+  const { toggleBar, settoggleBar, userDetails } = useContext(contextVar);
 
+  const { brand_tag, brand_logo } = ulb_data();
 
-  const { brand_tag, brand_logo } = ulb_data()
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function openModal2() {
     setIsOpen2(true);
@@ -39,68 +40,75 @@ const TopHeader = (props) => {
   }
   function closeModal() {
     setIsOpen(false);
-    setIsOpen2(false)
+    setIsOpen2(false);
   }
-  // CALLBACK FUNCTION 
+  // CALLBACK FUNCTION
   const logoutCallback = () => {
-    setisLoading(false)
-    localstorageRemoveEntire()
-    navigate('/')
-  }
+    setisLoading(false);
+    localstorageRemoveEntire();
+    navigate("/");
+  };
 
   const LogOutUser = () => {
-    closeModal()
-    logoutCallback()
-  }
+    closeModal();
+    logoutCallback();
+  };
+  console.log(userDetailss, "userDetailss==========");
 
-  const [imgSrc, setImgSrc] = useState(userDetails?.imageUrl)
+  const [imgSrc, setImgSrc] = useState(userDetails?.imageUrl);
 
   return (
     <>
       {isLoading && <BarLoader />}
-      <div className="bg-white flex flex-row justify-between px-2 sm:px-6 border shadow-sm print:hidden py-3">
-        <div className="flex items-center md:w-[15rem] justify-between gap-2 sm:gap-4">
-          <span className="font-semibold text-xl ">{brand_tag}</span>
+      <div className='bg-white flex flex-row justify-between px-2 sm:px-6 border shadow-sm print:hidden py-3'>
+        <div className='flex items-center md:w-[15rem] justify-between gap-2 sm:gap-4'>
+          <div>
+            <p className='font-semibold text-xl '>{brand_tag}</p>
+            <p className='text-xs '>{userDetailss?.ulb}</p>
+          </div>
+
           <div
             onClick={() => {
               settoggleBar(!toggleBar);
             }}
-            className="ml-[8rem]"
+            className='ml-2'
           >
-            <span className="cursor-pointer text-gray-700 text-xl">
-              <BiMenuAltLeft className="text-2xl" />
+            <span className='cursor-pointer text-gray-700 text-xl'>
+              <BiMenuAltLeft className='text-2xl' />
             </span>
           </div>
         </div>
 
-        <div className="flex w-1/2">
+        <div className='flex w-1/2'>
           <span
             onClick={() => openModal2()}
-            className="bg-gray-200 px-4 py-1 cursor-pointer hover:shadow-md"
+            className='bg-gray-200 px-4 py-1 cursor-pointer hover:shadow-md'
           >
             Modules
           </span>{" "}
         </div>
-        
-        <div className="flex items-center sm:gap-4 gap-2">
-          <span className="sm:visible flex items-center ">
-          <h1 className='pr-4 font-bold text-[1.3rem]'>Procurement Management System</h1>
-            <Tooltip anchorId="logout" className="z-50" />
+
+        <div className='flex items-center sm:gap-4 gap-2'>
+          <span className='sm:visible flex items-center '>
+            <h1 className='pr-4 font-bold text-[1.3rem]'>
+              Procurement Management System
+            </h1>
+            <Tooltip anchorId='logout' className='z-50' />
             <button
-              id="logout"
-              data-tooltip-content="Log Out"
+              id='logout'
+              data-tooltip-content='Log Out'
               onClick={() => openModal()}
-              className="text-2xl font-semibold bg-[#4338CA] text-white rounded p-1"
+              className='text-2xl font-semibold bg-[#4338CA] text-white rounded p-1'
             >
               <BiLogOutCircle />
             </button>
           </span>
-          <Tooltip anchorId="notification_icon" className="z-50" />
+          <Tooltip anchorId='notification_icon' className='z-50' />
           <BsBell
-            id="notification_icon"
-            data-tooltip-content="Show all notifications."
+            id='notification_icon'
+            data-tooltip-content='Show all notifications.'
             onClick={() => setnotificationState(true)}
-            className="text-3xl font-semibold bg-[#4338CA] text-white rounded p-1 cursor-pointer"
+            className='text-3xl font-semibold bg-[#4338CA] text-white rounded p-1 cursor-pointer'
           />
         </div>
       </div>
@@ -109,35 +117,35 @@ const TopHeader = (props) => {
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        className="h-screen w-screen flex items-center justify-center"
-        contentLabel="Logout Modal"
+        className='h-screen w-screen flex items-center justify-center'
+        contentLabel='Logout Modal'
       >
         <div
-          className="bg-black absolute h-screen w-screen opacity-50 z-0 "
+          className='bg-black absolute h-screen w-screen opacity-50 z-0 '
           onClick={closeModal}
         ></div>
 
-        <div className="border bg-white z-50 px-6 py-4 flex flex-col gap-4 animate__animated animate__slideInLeft animate__faster">
-          <div className="flex items-center gap-6">
-            <div className="flex flex-col gap-2">
-              <span className="text-red-500  block rounded-full drop-shadow-md shadow-red-300 ml-24">
+        <div className='border bg-white z-50 px-6 py-4 flex flex-col gap-4 animate__animated animate__slideInLeft animate__faster'>
+          <div className='flex items-center gap-6'>
+            <div className='flex flex-col gap-2'>
+              <span className='text-red-500  block rounded-full drop-shadow-md shadow-red-300 ml-24'>
                 <FiAlertCircle size={25} />
               </span>
-              <span className="text-xl font-semibold border-b pb-1 text-center">
+              <span className='text-xl font-semibold border-b pb-1 text-center'>
                 Confirmation
               </span>
-              <span className="text-base">Are you sure want to log out ?</span>
+              <span className='text-base'>Are you sure want to log out ?</span>
             </div>
           </div>
-          <div className="flex justify-end gap-2">
+          <div className='flex justify-end gap-2'>
             <button
-              className="text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-1 text-sm "
+              className='text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-1 text-sm '
               onClick={closeModal}
             >
               No
             </button>
             <button
-              className="text-white bg-red-500 hover:bg-red-600 px-4 py-1 text-sm "
+              className='text-white bg-red-500 hover:bg-red-600 px-4 py-1 text-sm '
               onClick={LogOutUser}
             >
               Yes
@@ -149,8 +157,8 @@ const TopHeader = (props) => {
       <Modal
         isOpen={modalIsOpen2}
         onRequestClose={closeModal}
-        className="z-20 h-screen w-screen backdrop-blur-sm flex flex-row justify-center items-center overflow-auto"
-        contentLabel="Example Modal"
+        className='z-20 h-screen w-screen backdrop-blur-sm flex flex-row justify-center items-center overflow-auto'
+        contentLabel='Example Modal'
       >
         <PermittedModuleCard closeModuleModal={closeModal} />
       </Modal>
@@ -159,7 +167,7 @@ const TopHeader = (props) => {
       )}
     </>
   );
-}
+};
 
 // export default HeaderIcons
-export default TopHeader
+export default TopHeader;

@@ -1,4 +1,3 @@
-
 // 👉 Importing Packages 👈
 import "animate.css";
 import { useState } from "react";
@@ -9,31 +8,10 @@ import { getLocalStorageItemJsonParsed } from "@/Components/Common/localstorage"
 import Login from "@/Components/Pages/Others/Login";
 import ProtectedRoutes from "@/Components/Pages/Others/ProtectedRoutes";
 import ErrorPage from "@/Components/Pages/Others/404/ErrorPage";
-import TransferPage from "@/Components/Pages/Others/TransferPage";
-import ChangePassword from "@/Components/Pages/Others/ChangePassword";
-import PetRegWorkflowEntry from "./Components/Pages/PetRegistration/PetRegWorkflowEntry";
-import SearchPetApplicationForm from "./Components/Pages/PetRegistration/SearchPetApplication/SearchPetApplicationForm";
-import PetRegistrationIndex from "./Components/Pages/PetRegistration/PetRegistrationIndex";
-import ViewPetApplication from "./Components/Pages/PetRegistration/ViewEditApplication/ViewPetApplication";
-import PetOfflinePayment from "./Components/Pages/PetRegistration/PatPayment/PetOfflinePayment";
-import PetPaymentReceiptIndex from "./Components/Pages/PetRegistration/PetPaymentReceipt/PetPaymentReceiptIndex";
-// import PetDashboard from './Components/Pages/PetRegistration/PetDashboard/PetDashboard';
-import SearchApprovedPetApplication from "./Components/Pages/PetRegistration/SearchApprovedPetApplication/SearchApprovedPetApplication";
-import ViewApprovedApplication from "./Components/Pages/PetRegistration/ViewEditApplication/ViewApprovedApplication";
-import PetRenewalFormIndex from "./Components/Pages/PetRegistration/Form/PetRenewalFormIndex";
-import ApprovedPetApplication from "./Components/Pages/PetRegistration/SearchApprovedPetApplication/ApprovedPetApplication";
-import RejectPetApplication from "./Components/Pages/PetRegistration/SearchApprovedPetApplication/RejectPetApplication";
-import PetRegDashboard from "./Components/Pages/PetRegistration/PetRegDashboard/PetRegDashboard";
-import SearchRejectPetApplication from "./Components/Pages/PetRegistration/SearchApprovedPetApplication/SearchRejectPetApplication";
-import ViewRejectApplication from "./Components/Pages/PetRegistration/ViewEditApplication/ViewRejectApplication";
-import PetRegistrationPreviewList from "./Components/Pages/PetRegistration/SearchApprovedPetApplication/PetRegistrationPreviewList";
-import ViewApprovedPreviewApplication from "./Components/Pages/PetRegistration/ViewEditApplication/ViewApprovedPreviewApplication";
-import PetLicense from "./Components/Pages/PetRegistration/PetPaymentReceipt/PetLicense";
 import AddPreProcurement from "./Components/Pages/PMS/PrePrecurement/StockReceiver/AddPreProcurement";
 import RejectedListTabs from "./Components/Pages/PMS/PrePrecurement/StockReceiver/RejectedListTabs";
 import ReleasedListTabs from "./Components/Pages/PMS/PrePrecurement/StockReceiver/ReleasedListTabs";
 import InventoryDashboard from "./Components/Pages/PMS/PrePrecurement/StockReceiver/InventoryDashboard";
-import InventoryProposalList from "./Components/Pages/PMS/PrePrecurement/StockReceiver/InventoryProposalList";
 import { QueryClient, QueryClientProvider } from "react-query";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ViewInventoryDetailsById from "./Components/Pages/PMS/PrePrecurement/StockReceiver/ViewInventoryDetailsById";
@@ -41,7 +19,6 @@ import InventoryProposalListTabs from "./Components/Pages/PMS/PrePrecurement/Sto
 import InventoryProposalListTabsDa from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/InventoryProposalListTabsDa";
 import ViewInventoryDetailsByIdDa from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/ViewInventoryDetailsByIdDa";
 import EditPreProcurement from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/EditPreProcurement";
-import InventoryDashboardDa from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/InventoryDashboardDa";
 
 //postprocurement
 import PostProcurementHome from "./Components/Pages/PMS/PostPrecurement/StockReceiver/PostProcurementHome";
@@ -100,102 +77,65 @@ function App() {
 
   // 👉 Routes Json 👈
   const allRoutes = [
-    // { path: "/transfer", element: <TransferPage /> },
-    // { path: "/change-password", element: <ChangePassword /> },
-    // { path: '/home', element: <PetDashboard /> },
-    // { path: "/home", element: <PetRegDashboard /> },
-    // { path: "/pet-workflow", element: <PetRegWorkflowEntry /> },
-    // { path: "/search-pet-registration", element: <SearchPetApplicationForm /> },
-    // {
-    //   path: "/search-approved-pet-registration",
-    //   element: <SearchApprovedPetApplication />,
-    // },
-    // {
-    //   path: "/PetRegistrationPreviewList/:registration_id",
-    //   element: <PetRegistrationPreviewList />,
-    // },
-    // {
-    //   path: "/viewPreviewApplication/:id",
-    //   element: <ViewApprovedPreviewApplication />,
-    // },
-    // {
-    //   path: "/search-rejected-pet-registration",
-    //   element: <SearchRejectPetApplication />,
-    // },
-    // { path: "/approved-pet-application", element: <ApprovedPetApplication /> },
-    // { path: "/reject-pet-application", element: <RejectPetApplication /> },
-    // { path: "/pet-registration", element: <PetRegistrationIndex /> },
-    // { path: "/pet-renewal/:id", element: <PetRenewalFormIndex /> },
-    // { path: "/viewPetApplication/:id", element: <ViewPetApplication /> },
-    // { path: "/viewRejectApplication/:id", element: <ViewRejectApplication /> },
-    // {
-    //   path: "/viewApprovedApplication/:id",
-    //   element: <ViewApprovedApplication />,
-    // },
-    // { path: "/pet-payment-offline/:id", element: <PetOfflinePayment /> },
-    // {
-    //   path: "/pet-payment-receipt/:transNo",
-    //   element: <PetPaymentReceiptIndex />,
-    // },
-    // { path: "/pet-license/:id", element: <PetLicense /> },
-
-
-
-
-    //---------- PMS-Routes -----------------
-
-
-    
-     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
+    /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 
     //------------ Stock Receiver ---------------
     { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
     { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
-    { path: "/sr-viewInventoryDetailsById/:id/:page", element: <ViewInventoryDetailsById />},
+    {
+      path: "/sr-viewInventoryDetailsById/:id/:page",
+      element: <ViewInventoryDetailsById />,
+    },
     { path: "/sr-add-pre-procurement", element: <AddPreProcurement /> },
     { path: "/sr-edit-pre-procurement/:id", element: <SrEditPreProcurement /> },
     { path: "/sr-rejectedlist", element: <RejectedListTabs /> },
     { path: "/sr-releasedlist", element: <ReleasedListTabs /> },
-    
+
     //------------ DA ---------------
     // { path: "/da-inventory-dashboard", element: <InventoryDashboardDa /> },
     { path: "/da-inventory-dashboard", element: <InventoryDashboardDa2 /> },
-    { path: "/da-inventory-proposal", element: <InventoryProposalListTabsDa />}, 
+    {
+      path: "/da-inventory-proposal",
+      element: <InventoryProposalListTabsDa />,
+    },
     { path: "/da-edit-pre-procurement/:id", element: <EditPreProcurement /> },
-    { path: "/da-viewInventoryDetailsById/:id/:page", element: <ViewInventoryDetailsByIdDa /> },
-    
-  
-    
-     /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
-     
-     //------------ DA ---------------
-     { path: "/da-post-precurement", element: <PostPrecurementListTabsDa />}, 
-     { path: "/da-post-precurementbyid/:id/:page", element: <PostPreDetailsById /> },
+    {
+      path: "/da-viewInventoryDetailsById/:id/:page",
+      element: <ViewInventoryDetailsByIdDa />,
+    },
 
+    /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
+
+    //------------ DA ---------------
+    { path: "/da-post-precurement", element: <PostPrecurementListTabsDa /> },
+    {
+      path: "/da-post-precurementbyid/:id/:page",
+      element: <PostPreDetailsById />,
+    },
 
     //------------ Stock Receiver ---------------
     { path: "/sr-post-inventory", element: <PostProcurementHome /> },
-    { path: "/sr-post-InvtDetailsById/:id/:page", element: <ViewPostInvtDetailsById /> },
-    
+    {
+      path: "/sr-post-InvtDetailsById/:id/:page",
+      element: <ViewPostInvtDetailsById />,
+    },
 
-    
-
-    
-    
     /////////////////////////{*** Received-Inventory ***}//////////////////////////////////////
-    
+
     //------------ DA ---------------
     { path: "/da-received-inventory", element: <ReceivedInvtHomeDa /> },
-    { path: "/da-received-InvtDetailsById/:id/:page", element: <ViewReceivedInvtByIdDa /> },
+    {
+      path: "/da-received-InvtDetailsById/:id/:page",
+      element: <ViewReceivedInvtByIdDa />,
+    },
 
-    
     //------------ Stock Receiver ---------------
-    
+
     { path: "/sr-received-inventory", element: <ReceivedInvtHome /> },
-    { path: "/sr-received-InvtDetailsById/:id/:page", element: <ViewReceivedInvtById /> },
-    
-    
-    
+    {
+      path: "/sr-received-InvtDetailsById/:id/:page",
+      element: <ViewReceivedInvtById />,
+    },
   ];
 
   return (
