@@ -28,6 +28,7 @@ import wd from '@/Components/assets/wd.svg'
 import fd from '@/Components/assets/fd.svg'
 import cd2 from '@/Components/assets/cd2.svg'
 import bo from '@/Components/assets/bo.svg'
+import BasicDetailsForm from "./BasicDetailsForm";
 
 const TenderForm = () => {
 
@@ -150,7 +151,7 @@ const { titleBarVisibility } = useContext(contextVar);
         <div className='mt-4'>
           {activeTab === "basic_details" && (
             <div>
-              Basic Details
+              <BasicDetailsForm/>
             </div>
           )}
 
