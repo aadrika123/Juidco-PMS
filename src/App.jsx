@@ -31,7 +31,7 @@ import ReceivedInvtHomeDa from "./Components/Pages/PMS/ReceivedInventory/Departm
 import ViewReceivedInvtByIdDa from "./Components/Pages/PMS/ReceivedInventory/DepartmentalAdmin/ViewReceivedInvtByIdDa";
 import InventoryDashboardDa2 from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/InventoryDashboardDa2";
 import SrEditPreProcurement from "./Components/Pages/PMS/PrePrecurement/StockReceiver/SrEditPreProcurement";
-import TenderForm from "./Components/Pages/PMS/TenderForm/TenderForm";
+import TenderForm from "./Components/Pages/PMS/TenderForm/TenderFormIndex";
 
 const queryClient = new QueryClient();
 
