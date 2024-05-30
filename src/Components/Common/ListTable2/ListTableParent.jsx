@@ -269,7 +269,8 @@ const ListTableParent = (props) => {
     searchOldFun();
   };
 
-  const exportBtnStyle = ` bg-[#F7881F] text-white px-2 rounded-md flex items-center gap-4 hover:bg-orange-600`;
+  const exportBtnStyle = `bg-[#7a6ef7] text-white px-2 rounded-md flex items-center gap-1 hover:bg-[#190bc4]`;
+  const exportBtnStyle2 = `bg-[#190bc4] text-white px-2 rounded-md flex items-center gap-4 ml-2`;
 
   return (
     <>
@@ -298,10 +299,12 @@ const ListTableParent = (props) => {
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              <button className={exportBtnStyle}>
+            <button class="text-red bg-[#4338CA] hover:before:bg-redborder-red-500 relative overflow-hidden border px-2 text-white shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-indigo-900 before:transition-all before:duration-500 hover:text-white hover:before:left-0 hover:before:w-full rounded-md"><span class="relative z-10 flex">Export <FaArrowRightLong color='white' size={15} className="mt-1 ml-3" /></span></button>
+
+              {/* <button className={exportBtnStyle2}>
                 Export
                 <FaArrowRightLong color='white' size={10} />
-              </button>
+              </button> */}
               <div
                 className={`flex gap-2 transition-opacity duration-300 ${
                   isHovered ? "opacity-100 visible" : "opacity-0 invisible"
