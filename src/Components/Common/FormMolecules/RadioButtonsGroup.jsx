@@ -23,8 +23,8 @@ export default function RadioButtonsGroup({
         variant='standard'
         error={Boolean(errors && touched)}
       >
-        <FormLabel id='demo-radio-buttons-group-label' sx={{ color: "black" }}>
-          {title}
+        <FormLabel component='legend' sx={{ color: "#111827", fontSize: "15px" }}>
+          {title} <span className='text-red-500'>*</span>
         </FormLabel>
         <RadioGroup
           aria-labelledby='demo-radio-buttons-group-label'
@@ -35,8 +35,13 @@ export default function RadioButtonsGroup({
             <FormControlLabel
               key={opt.value}
               value={opt.value}
-              control={<Radio size='small' />}
-              label={opt.label}
+              control={<Radio size='small' sx={{
+                    '& .MuiSvgIcon-root': {
+                      fontSize: 20,
+                    },
+                    paddingLeft: 3,
+                   }} />}
+              label={<Typography variant="body2" color="textSecondary">{opt.label}</Typography>}
             />
           ))}
         </RadioGroup>

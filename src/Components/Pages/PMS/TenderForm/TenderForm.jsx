@@ -14,14 +14,15 @@ import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 
-import tender from "@/Components/assets/tender.png";
-import bd from "@/Components/assets/basicdetails.svg";
-import cd from "@/Components/assets/cd.svg";
-import wd from "@/Components/assets/wd.svg";
-import fd from "@/Components/assets/fd.svg";
-import cd2 from "@/Components/assets/cd2.svg";
-import bo from "@/Components/assets/bo.svg";
+import tender from '@/Components/assets/tender.png'
+import bd from '@/Components/assets/basicdetails.svg'
+import cd from '@/Components/assets/cd.svg'
+import wd from '@/Components/assets/wd.svg'
+import fd from '@/Components/assets/fd.svg'
+import cd2 from '@/Components/assets/cd2.svg'
+import bo from '@/Components/assets/bo.svg'
 import BasicDetailsForm from "./BasicDetailsForm";
+import CustomCheckboxGroup from "@/Components/Common/FormMolecules/CustomCheckboxGroup";
 
 const TenderForm = () => {
   const [activeTab, setActiveTab] = useState("basic_details");
@@ -130,12 +131,12 @@ const TenderForm = () => {
         {/* <hr className='w-[76rem] mt-3' /> */}
       </div>
 
-      <div className='mt-4'>
-        {activeTab === "basic_details" && (
-          <div>
-            <BasicDetailsForm />
-          </div>
-        )}
+        <div className='mt-4'>
+          {activeTab === "basic_details" && (
+            <div>
+              <BasicDetailsForm/>
+            </div>
+          )}
 
         {activeTab === "cover_details" && <div>Cover Details</div>}
 
