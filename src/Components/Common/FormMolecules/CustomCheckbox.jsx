@@ -7,6 +7,7 @@ import {
   FormControlLabel,
   FormHelperText,
   Checkbox,
+  Typography,
 } from "@mui/material";
 
 const CustomCheckboxGroup = ({
@@ -20,13 +21,13 @@ const CustomCheckboxGroup = ({
   return (
     <Box sx={{ display: "flex" }}>
       <FormControl
-        sx={{ m: 3, width: "100%" }}
+        sx={{ mt: 2, width: "100%" }}
         component='fieldset'
         variant='standard'
         error={Boolean(errors && touched)}
       >
-        <FormLabel component='legend' sx={{ color: "black" }}>
-          {title}
+        <FormLabel component='legend' sx={{ color: "#111827", fontSize: "15px" }}>
+          {title} <span className='text-red-500'>*</span>
         </FormLabel>
         <FormGroup
           className='text-gray-600'
@@ -41,9 +42,16 @@ const CustomCheckboxGroup = ({
                   //   checked={values[opt.value]}
                   onChange={handleChange}
                   name={`checkboxes.${opt.value}`}
+                  sx={{
+                    '& .MuiSvgIcon-root': {
+                      fontSize: 20,
+                    },
+                    paddingLeft: 3,
+                   }}
                 />
               }
-              label={opt.label}
+                          
+              label={<Typography variant="body2" color="textSecondary">{opt.label}</Typography>}
             />
           ))}
         </FormGroup>

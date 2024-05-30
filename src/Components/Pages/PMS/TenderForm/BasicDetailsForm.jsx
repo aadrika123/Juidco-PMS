@@ -8,9 +8,11 @@ import CustomCheckbox from "@/Components/Common/FormMolecules/CustomCheckbox";
 const BasicDetailsForm = () => {
 
   const formOfContract = [
-    { label: "Work Contract", value: "work_contact" },
-    { label: "Auction", value: "auction" },
-    { label: "Buy", value: "buy" },
+    { label: "Open", value: "open" },
+    { label: "Limited", value: "limited" },
+    { label: "EOI", value:"eoi" },
+    { label: "Auction", value:"auction" },
+    { label: "Single", value:"single" },
   ];
   const validationSchema = Yup.object({
     checkboxes: Yup.object({
@@ -53,7 +55,7 @@ const BasicDetailsForm = () => {
               </div>
 
               <div className="">
-              <label for="default-input" class="block mb-2 text-sm font-medium text-gray-900">Tender Type<span className='text-red-500'>*</span></label>
+              {/* <label for="default-input" class="block mb-2 text-sm font-medium text-gray-900">Tender Type<span className='text-red-500'>*</span></label> */}
 
                 <Formik
                   initialValues={initialValues}
@@ -66,13 +68,13 @@ const BasicDetailsForm = () => {
                     <Form>
                       <CustomCheckbox
                         fields={formOfContract}
-                        // title={"Ttile for now"}
+                        title={"Tender Type"}
                         values={values.checkboxes}
                         handleChange={handleChange}
                         errors={errors.checkboxes}
                         touched={touched.checkboxes}
                       />
-                      <button type='submit'>Submit</button>
+                      {/* <button type='submit'>Submit</button> */}
                     </Form>
                   )}
                 </Formik>
