@@ -2,7 +2,7 @@ import React from 'react'
 import folder from '@/Components/assets/folder.svg'
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import CustomCheckbox from "@/Components/Common/FormMolecules/CustomCheckbox";
+import CustomCheckboxGroup from "@/Components/Common/FormMolecules/CustomCheckboxGroup";
 
 
 const BasicDetailsForm = () => {
@@ -66,7 +66,7 @@ const BasicDetailsForm = () => {
                 >
                   {({ values, handleChange, errors, touched }) => (
                     <Form>
-                      <CustomCheckbox
+                      <CustomCheckboxGroup
                         fields={formOfContract}
                         title={"Tender Type"}
                         values={values.checkboxes}
@@ -88,7 +88,7 @@ const BasicDetailsForm = () => {
 
       </div>
     </>
-  )
-}
+  );
+};
 
-export default BasicDetailsForm
+export default BasicDetailsForm;
