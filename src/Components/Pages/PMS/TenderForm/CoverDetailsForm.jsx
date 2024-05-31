@@ -48,7 +48,7 @@ const BasicDetailsForm = () => {
     { name: "Tabs133", value: "Tabs133" },
     { name: "Tabs134", value: "Tabs134" },
   ];
-  const [tabData, setTabData] = useState(tabsCover4);
+  const [tabData, setTabData] = useState(tabsCover1);
   const [activeTab, setActiveTab] = useState();
 
   const covers = [

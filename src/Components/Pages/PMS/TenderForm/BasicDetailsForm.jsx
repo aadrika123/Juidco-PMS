@@ -173,6 +173,7 @@ const BasicDetailsForm = () => {
                   <CustomCheckboxGroup
                     fields={tenderType}
                     title={"Tender Type"}
+                    // name={"tender_type"}
                     values={values.checkboxes}
                     handleChange={handleChange}
                     errors={errors.checkboxes}
@@ -183,6 +184,7 @@ const BasicDetailsForm = () => {
                 <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                   <CustomCheckboxGroup
                     fields={formOfContract}
+                    // name={"contract_form"}
                     title={"Form of Contract"}
                     values={values.checkboxes}
                     handleChange={handleChange}
@@ -195,6 +197,7 @@ const BasicDetailsForm = () => {
                   <RadioButtonsGroup
                     fields={noOfCovers}
                     title={"No of Covers"}
+                    // name={"no_of_covers"}
                     values={values.checkboxes}
                     handleChange={handleChange}
                     errors={errors.checkboxes}
@@ -206,6 +209,7 @@ const BasicDetailsForm = () => {
                   <CustomCheckboxGroup
                     fields={tenderCategory}
                     title={"Tender Category"}
+                    // name={"tender_category"}
                     values={values.checkboxes}
                     handleChange={handleChange}
                     errors={errors.checkboxes}
@@ -218,6 +222,7 @@ const BasicDetailsForm = () => {
                   <RadioButtonsGroup
                     fields={allowResubmission}
                     title={"Allow Resubmission"}
+                    // name={"allow_resubmission"}
                     values={values.checkboxes}
                     handleChange={handleChange}
                     errors={errors.checkboxes}
@@ -229,6 +234,7 @@ const BasicDetailsForm = () => {
                   <RadioButtonsGroup
                     fields={allowWithdrawl}
                     title={"Allow Withdrawal"}
+                    // name={"allow_"}
                     values={values.checkboxes}
                     handleChange={handleChange}
                     errors={errors.checkboxes}

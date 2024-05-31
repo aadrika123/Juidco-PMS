@@ -18,6 +18,7 @@ export default function RadioButtonsGroup({
   name,
   defaultValue,
 }) {
+  console.log(defaultValue, "defaultValue====>");
   return (
     <Box sx={{ display: "flex" }}>
       <FormControl
@@ -36,6 +37,7 @@ export default function RadioButtonsGroup({
           aria-labelledby='demo-radio-buttons-group-label'
           name='radio-buttons-group'
           sx={{ display: "flex", flexDirection: "row" }}
+          defaultValue={defaultValue || ""}
         >
           {fields?.map((opt) => (
             <FormControlLabel
@@ -45,7 +47,6 @@ export default function RadioButtonsGroup({
               control={
                 <Radio
                   onChange={handleChange}
-                  defaultChecked={defaultValue || ""}
                   sx={{
                     "& .MuiSvgIcon-root": {
                       fontSize: 20,

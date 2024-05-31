@@ -72,10 +72,10 @@ function InventoryProposalList(props) {
       Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
-      Header: "Order No",
-      accessor: "order_no",
+      Header: "Procurement No",
+      accessor: "procurement_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.order_no}</div>
+        <div className='pr-2'>{cell.row.values.procurement_no}</div>
       ),
     },
     {
@@ -96,7 +96,7 @@ function InventoryProposalList(props) {
       Header: "Brand",
       accessor: "brand",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.brand || "N/A"}</div>
+        <div className='pr-2'>{cell.row.values.brand.name || "N/A"}</div>
       ),
     },
 
