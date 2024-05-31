@@ -588,13 +588,13 @@ function SrEditPreProcurement(props) {
           allowNumberInput(value, formik.values.number_of_items, 100)
         );
     }
-    {
-      name == "brand" &&
-        formik.setFieldValue(
-          "brand",
-          allowCharacterNumberInput(value, formik.values.brand, 50)
-        );
-    }
+    // {
+    //   name == "brand" &&
+    //     formik.setFieldValue(
+    //       "brand",
+    //       allowCharacterNumberInput(value, formik.values.brand, 50)
+    //     );
+    // }
     {
       name == "quantity" &&
         formik.setFieldValue(
@@ -761,8 +761,8 @@ function SrEditPreProcurement(props) {
                       <span className="text-xl text-red-500 pl-1">*</span>
                     </label>
                     <select
-                      // {...formik.getFieldProps("brand")}
-                      name="brand"
+                      {...formik.getFieldProps("brand")}
+                      // name="brand"
                       defaultValue={applicationFullData?.brand?.id}
                       className={`${inputStyle} inline-block w-full relative`}
                       onChange={formik.handleChange}
@@ -771,7 +771,7 @@ function SrEditPreProcurement(props) {
 
                       {brand?.length &&
                         brand?.map((items) => (
-                          <option key={items?.id} value={items?.id} selected={applicationFullData?.brand?.id} defaultValue={applicationFullData?.brand?.id}>
+                          <option key={items?.id} value={items?.id}>
                             {items?.name}
                           </option>
                         ))}
