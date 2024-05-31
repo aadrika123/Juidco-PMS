@@ -54,6 +54,7 @@ const ViewPostInvtDetailsById = (props) => {
     api_postBackToSR,
     api_postReleaseTender,
     api_postRejectTender,
+    api_fetchProcurementListInbox,
     api_postDaEditTender,
   } = ProjectApiList();
 
@@ -86,10 +87,10 @@ const ViewPostInvtDetailsById = (props) => {
     setisLoading(true);
 
     if (page == "inbox") {
-      url = api_fetchProcurementDetailById;
+      url = api_fetchProcurementListInbox;
     }
     if (page == "outbox") {
-      url = api_fetchOutboxProcurementDetailById;
+      url = api_fetchProcurementListOutbox;
     }
 
     AxiosInterceptors.get(`${url}/${id}`, {}, ApiHeader())
