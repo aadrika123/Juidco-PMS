@@ -12,7 +12,7 @@ import React, { useState, useRef } from "react";
 import { LuCloudy } from "react-icons/lu";
 import toast from "react-hot-toast";
 
-function DeadStockUploadImg(props) {
+function  DeadStockUploadImg(props) {
   const inputFileRef = useRef();
 
   const [preview, setPreview] = useState();

@@ -431,7 +431,7 @@ function SrEditPreProcurement(props) {
           toast.success("Data has been updated successfully")
           setdeclarationStatus(false);
 
-          navigate('/sr-inventory-proposal')
+          // navigate('/sr-inventory-proposal')
         } else {
           setisLoading(false);
           setdeclarationStatus(false);

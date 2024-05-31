@@ -54,6 +54,7 @@ const ViewPostInvtDetailsById = (props) => {
     api_postBackToSR,
     api_postReleaseTender,
     api_postRejectTender,
+    api_fetchProcurementListInbox,
     api_postDaEditTender,
   } = ProjectApiList();
 
@@ -86,10 +87,10 @@ const ViewPostInvtDetailsById = (props) => {
     setisLoading(true);
 
     if (page == "inbox") {
-      url = api_fetchProcurementDetailById;
+      url = api_fetchProcurementListInbox;
     }
     if (page == "outbox") {
-      url = api_fetchOutboxProcurementDetailById;
+      url = api_fetchProcurementListOutbox;
     }
 
     AxiosInterceptors.get(`${url}/${id}`, {}, ApiHeader())
@@ -507,54 +508,90 @@ const ViewPostInvtDetailsById = (props) => {
             <div className='h-[30px]'></div>
           </div>
 
-          <div className='py-6 mt-10 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
-            {/* <h2 className="font-semibold text-2xl flex justify-start pb-8 pt-2 pl-8">
-              
-              Inventory Details{" "}
-            </h2> */}
+           {/* Additional Details */}
 
+           <div className='py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 '>
             <div className=''>
-              <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start bg-[#4338CA] text-white rounded-md'>
-                Inventory Details
+              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+                {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
+                Supplier Details
               </h2>
             </div>
 
-            <div className='grid grid-cols-4 gap-4 ml-8 pt-5 pb-10'>
+            <div className='grid grid-cols-4 gap-4 ml-9'>
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {/* {nullToNA(applicationFullData?.category.name)} */}
-                  Total Qunatity
+                  Supplier Name
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {applicationFullData?.quantity
-                    ? applicationFullData?.quantity
-                    : 0}
+                  {nullToNA(
+                    applicationFullData?.post_procurement?.supplier_name
+                  )}
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>GST No</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.post_procurement?.gst_no)}
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>Final Rate</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.post_procurement?.final_rate)}
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>GST %</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.post_procurement?.gst)}
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>Total Price</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.post_procurement?.total_price)}
                 </div>
               </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {/* {nullToNA(applicationFullData?.category.name)} */}
-                  Total Received Quantity
+                  Total Quantity
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {applicationFullData?.quantity
-                    ? applicationFullData?.quantity
-                    : 0}
+                  {nullToNA(
+                    applicationFullData?.post_procurement?.total_quantity
+                  )}
                 </div>
               </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  {/* {nullToNA(applicationFullData?.category.name)} */}
-                  Remaining Quantity
+                  Total Received Items
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  Remaining Quantity
+                  {applicationFullData?.total_receivings
+                    ? applicationFullData?.total_receivings
+                    : 0}
                 </div>
               </div>
+
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>Unit Price</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.post_procurement?.unit_price)}
+                </div>
+              </div>
+
+              <div className='h-[40px]'></div>
             </div>
           </div>
+
+
         </div>
         <div className='space-x-5 flex justify-end mt-[3rem]'>
           <button onClick={handlePrint} className={buttonStyle}>

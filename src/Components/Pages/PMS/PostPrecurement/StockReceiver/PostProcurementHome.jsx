@@ -23,7 +23,7 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 const PostProcurementHome = () => {
   const [activeTab, setActiveTab] = useState("inbox");
   const navigate = useNavigate();
-  const { api_fetchProcurementList, api_fetchProcurementDAList } =
+  const { api_fetchProcurementList, api_fetchProcurementListInbox } =
     ProjectApiList();
 
     const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar)
@@ -63,7 +63,7 @@ const PostProcurementHome = () => {
           <FaChartPie className='m-1 text-[1rem]' />
           Inbox
         </button>
-        <button
+        {/* <button
           className={`ml-4 py-2 px-4 ${
             activeTab === "outbox"
               ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
@@ -73,7 +73,7 @@ const PostProcurementHome = () => {
         >
           <FaChartPie className='m-1 text-[1rem]' />
           Outbox
-        </button>
+        </button> */}
       </div>
 
       <hr className='w-[76rem] mt-3' />
@@ -83,18 +83,18 @@ const PostProcurementHome = () => {
           <div>
             <InventoryProposalList
               page='inbox'
-              api={api_fetchProcurementList}
+              api={api_fetchProcurementListInbox}
             />
           </div>
         )}
-        {activeTab === "outbox" && (
+        {/* {activeTab === "outbox" && (
           <div>
             <InventoryProposalList
               page='outbox'
-              api={api_fetchProcurementDAList}
+              api={api_fetchProcurementListOutbox}
             />
           </div>
-        )}
+        )} */}
       </div>
     </div>
     </>
