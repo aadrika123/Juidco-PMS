@@ -5,7 +5,7 @@
 //    Revision - 1
 //    Project - JUIDCO
 //    Component  - ViewInventoryDetailsById
-//    DESCRIPTION - ViewInventoryDetailsById     
+//    DESCRIPTION - ViewInventoryDetailsById
 //////////////////////////////////////////////////////////////////////////////////////
 
 import { useState, useEffect, useContext } from "react";
@@ -15,17 +15,12 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
-import { MdTag } from "react-icons/md";
 import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 import { contextVar } from "@/Components/context/contextVar";
 import StockReceiverModal from "./StockReceiverModal";
 import ReleaseTenderModal from "./ReleaseTenderModal";
 import DaRejectModal from "./DaRejectModal";
-// import { contextVar } from '@/Components/context/contextVar'
-// import { useContext } from 'react'
 import TitleBar from "@/Components/Pages/Others/TitleBar";
-// import ListTable from "src/Components/Common/ListTable/ListTable";
-// import PaymentHistory from "src/Components/Common/PaymentHistory/PaymentHistory";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
@@ -49,14 +44,9 @@ const ViewInventoryDetailsById = (props) => {
     api_postBackToSR,
     api_postReleaseTender,
     api_postRejectTender,
-    api_postDaEditTender,
   } = ProjectApiList();
 
-
-  const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText,notify } = useContext(contextVar)
-
-  // Accessing context for notifications
-  // const {  } = useContext(contextVar);
+  const { titleBarVisibility } = useContext(contextVar);
 
   let buttonStyle =
     " mr-1 pb-3 pl-6 pr-6 pt-3 border border-indigo-500 text-indigo-800 text-md leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -250,59 +240,50 @@ const ViewInventoryDetailsById = (props) => {
 
   return (
     <div>
-    <div className="">
-    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Inventory Proposal Details"} />
-    </div>
+      <div className=''>
+        <TitleBar
+          titleBarVisibility={titleBarVisibility}
+          titleText={"Inventory Proposal Details"}
+        />
+      </div>
       <div className=''>
         {/* Basic Details */}
         <div className='mt-6'>
+          <div
+            className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'
+            id='printable-content'
+          >
+            <div className=''>
+              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+                View Procurement Request{" "}
+              </h2>
+            </div>
 
-          {/* <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500'>
-            <h2 className='font-semibold text-xl flex justify-start'>
-              <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View
-              Procurement Request{" "}
-            </h2>
-          </div>
-           */}
-          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500' id="printable-content">
+            <div className='flex justify-between'>
+              {!applicationFullData?.remark?.length == 0 && (
+                <div className='pb-5 pl-8'>
+                  <h1 className='font-bold text-base text-green-600'>
+                    Remark <span className='text-black'>:</span>
+                    <span className='text-md pt-2 font-ligh text-green-600'>
+                      {" "}
+                      {nullToNA(applicationFullData?.remark)}
+                    </span>
+                  </h1>
+                </div>
+              )}
 
-          <div className="">
-          <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-              {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
-              View Procurement Request{" "}
-            </h2>
-          </div>
-
-          <div className="flex justify-between">
-            
-
-            {!applicationFullData?.remark?.length == 0 && (
-              <div className='pb-5 pl-8'>
-                <h1 className='font-bold text-base text-green-600'>
-                  Remark <span className='text-black'>:</span>
-                  <span className='text-md pt-2 font-ligh text-green-600'>
+              <div className='pl-8 text-[1rem] text-[#4338CA]'>
+                <h1 className=''>
+                  Procurement Request No <span className='text-black'>:</span>
+                  <span className='font-bold'>
                     {" "}
-                    {nullToNA(applicationFullData?.remark)}
+                    {nullToNA(applicationFullData?.procurement_no)}
                   </span>
                 </h1>
               </div>
-            )}
-
-            <div className='pl-8 text-[1rem] text-[#4338CA]'>
-              <h1 className=''>
-                Procurement Request No <span className='text-black'>:</span>
-                <span className='font-bold'>
-                  {" "}
-                  {nullToNA(applicationFullData?.procurement_no)}
-                </span>
-              </h1>
             </div>
-            </div>
-
 
             <div className='grid grid-cols-4 gap-4 ml-8'>
-              {/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
-
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Item Category
@@ -311,10 +292,6 @@ const ViewInventoryDetailsById = (props) => {
                   {nullToNA(applicationFullData?.category.name)}
                 </div>
               </div>
-
-              {/* } */}
-
-              {/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
@@ -325,139 +302,12 @@ const ViewInventoryDetailsById = (props) => {
                 </div>
               </div>
 
-              {/* } */}
-
-              
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Brand
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.brand?.name)}
-                  </div>
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>Brand</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.brand?.name)}
                 </div>
-              
-
-              {applicationFullData?.category?.name ==
-                ("Uniforms" ||
-                  "Maintainance and Repaire" ||
-                  "Cleaning Supplies" ||
-                  "Furniture") && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold '>
-                    Colour
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.colour)}
-                  </div>
-                </div>
-              )}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-              {applicationFullData?.category?.name ==
-                ("Uniforms" ||
-                  "Maintainance and Repaire" ||
-                  "Furniture" ||
-                  "Cleaning Supplies") && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Material
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.material)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.category?.name ==
-                ("Maintainance and Repaire" || "Safety and Security") && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Dimension
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.dimension)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.category?.name == "Furniture" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Room Type
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.room_type)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.category?.name == "Furniture" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold '>
-                    Included Components
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.included_components)}
-                  </div>
-                </div>
-              )}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-              {applicationFullData?.category?.name == "Furniture" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    size
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.size)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.category?.name == "Cleaning Supplies" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Recomended Uses
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.recomended_uses)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.category?.name == "Cleaning Supplies" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Bristle
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.bristle)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.category?.name ==
-                ("Maintainance and Repaire" || "Safety and Security") && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold '>
-                    Weight
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.weight)}
-                  </div>
-                </div>
-              )}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
+              </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold '>
@@ -469,69 +319,16 @@ const ViewInventoryDetailsById = (props) => {
               </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  Quantity
-                </div>
+                <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.quantity)}
                 </div>
               </div>
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  Total Rate
-                </div>
+                <div className='md:w-auto w-[50%] font-bold '>Total Rate</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.total_rate)}
-                </div>
-              </div>
-
-              {/* <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  No of Items
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.number_of_items)}
-                </div>
-              </div> */}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  {/* {nullToNA(applicationFullData?.quantity)} */}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {/* Quantity  */}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  {/* {nullToNA(applicationFullData?.applicant_name)} */}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {/* Total Rate   */}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  {/* {nullToNA(applicationFullData?.mobile)} */}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {/* Brand  */}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-semibold '>
-                  {/* {nullToNA(applicationFullData?.email)} */}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {/* Processor  */}
                 </div>
               </div>
             </div>
@@ -544,52 +341,51 @@ const ViewInventoryDetailsById = (props) => {
             </div>
 
             <div className='h-[30px]'></div>
-
           </div>
-            <div className='space-x-5 flex justify-end mt-[2rem]'>
-            <button onClick={handlePrint} className={buttonStyle} >Print</button>
+          <div className='space-x-5 flex justify-end mt-[2rem]'>
+            <button onClick={handlePrint} className={buttonStyle}>
+              Print
+            </button>
 
-              {page == "outbox" && (
-                <button className={buttonStyle} onClick={() => navigate(-1)}>
-                  Back
-                </button>
-              )}
+            {page == "outbox" && (
+              <button className={buttonStyle} onClick={() => navigate(-1)}>
+                Back
+              </button>
+            )}
 
-              {page == "inbox" && (
+            {page == "inbox" && (
+              <button
+                className={buttonStyle}
+                onClick={() => {
+                  navigate(`/da-edit-pre-procurement/${id}`);
+                }}
+              >
+                Edit
+              </button>
+            )}
+
+            {page == "inbox" && (
+              <>
                 <button
-                  className={buttonStyle}
-                  onClick={() => {
-                    navigate(`/da-edit-pre-procurement/${id}`);
-                  }}
+                  className={`${buttonStyle} mr-0`}
+                  onClick={postRejectTenderModal}
                 >
-                  Edit
+                  Reject
                 </button>
-              )}
 
-              {page == "inbox" && (
-                <>
-                  <button
-                    className={`${buttonStyle} mr-0`}
-                    onClick={postRejectTenderModal}
-                  >
-                    Reject
-                  </button>
+                <button className={buttonStyle} onClick={postBackToSRModal}>
+                  Back To Stock Receiver
+                </button>
 
-                  <button className={buttonStyle} onClick={postBackToSRModal}>
-                    Back To Stock Receiver
-                  </button>
-
-                  <button
-                    className={buttonStyle2}
-                    onClick={postReleaseTenderModal}
-                  >
-                    Release For Tender
-                  </button>
-                </>
-              )}
-
-              
-            </div>
+                <button
+                  className={buttonStyle2}
+                  onClick={postReleaseTenderModal}
+                >
+                  Release For Tender
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
