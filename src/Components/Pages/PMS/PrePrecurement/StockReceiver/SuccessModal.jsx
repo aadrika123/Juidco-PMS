@@ -58,7 +58,7 @@ function SuccessModal(props) {
             Your request no is successfully created 
             </h3>
             <h3 class="text-xl  text-center mb-3 text-gray-500 font-openSans font-semibold ">
-              <span className="text-base text-gray-400 ">Procurement Request no</span> - {props?.orderNo}
+              <span className="text-base text-gray-400 ">Procurement Request no</span> - {props?.procurement_no}
             </h3>
           </div>
         </div>
