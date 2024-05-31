@@ -74,7 +74,7 @@ function AddPreProcurement(props) {
   const [successModal, setSuccessModal] = useState(false);
   const [formData, setFormData] = useState();
   const [categorySelected, setCategorySelected] = useState([]);
-  const [orderNo, setOrderNo] = useState();
+  const [procurement_no, setProcurement_no] = useState();
 
   // ══════════════════════════════║🔰 form submission declaration 🔰║═══════════════════════════════════
   const [declarationStatus, setdeclarationStatus] = useState();
@@ -125,7 +125,7 @@ function AddPreProcurement(props) {
     //   then: yup.string().required("Must enter email address")
     // }),
 
-    other_description: yup.string().required("Other description is required"),
+    description: yup.string().required("Other description is required"),
     rate: yup.number().required("Rate is required"),
   });
 
@@ -139,7 +139,7 @@ function AddPreProcurement(props) {
     operatingsystem: "",
     rom: "",
     graphics: "",
-    other_description: "",
+    description: "",
     quantity: "",
     rate: "",
 
@@ -397,7 +397,7 @@ function AddPreProcurement(props) {
       bristle: formData?.bristle,
       weight: String(formData?.weight),
       number_of_items: Number(formData?.number_of_items),
-      other_description: formData?.other_description,
+      description: formData?.description,
 
       rate: Number(formData?.rate),
       quantity: Number(formData?.quantity),
@@ -417,7 +417,7 @@ function AddPreProcurement(props) {
           notify(response?.data?.message, "success");
           // notify();
           setdeclarationStatus(false);
-          setOrderNo(response?.data?.order_no);
+          setProcurement_no(response?.data?.procurement_no);
 
           navigate('/sr-inventory-proposal')
         } else {
@@ -589,7 +589,7 @@ function AddPreProcurement(props) {
         <SuccessModal
           successModal={successModal}
           setSuccessModal={setSuccessModal}
-          orderNo={orderNo}
+          procurement_no={procurement_no}
         />
       </>
     );
@@ -768,16 +768,16 @@ function AddPreProcurement(props) {
                     </label>
                     <textarea
                       type='text'
-                      name='other_description'
+                      name='description'
                       className={`${inputStyle} inline-block w-full relative h-20`}
                       onChange={formik.handleChange}
-                      value={formik.values.other_description}
+                      value={formik.values.description}
                     />
 
                     <p className='text-red-500 text-xs '>
-                      {formik.touched.other_description &&
-                      formik.errors.other_description
-                        ? formik.errors.other_description
+                      {formik.touched.description &&
+                      formik.errors.description
+                        ? formik.errors.description
                         : null}
                     </p>
                   </div>

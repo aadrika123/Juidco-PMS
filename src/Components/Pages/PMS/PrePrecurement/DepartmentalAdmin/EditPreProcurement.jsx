@@ -28,8 +28,8 @@ import {
   allowCharacterNumberInput,
 } from "@/Components/Common/PowerUps/PowerupFunctions";
 import ProjectApiList from "@/Components/api/ProjectApiList";
-import { contextVar } from '@/Components/context/contextVar'
-import { useContext } from 'react'
+import { contextVar } from "@/Components/context/contextVar";
+import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 // import PreProcurementCancelScreen from "./PreProcurementCancelScreen";
 
@@ -54,8 +54,8 @@ function EditPreProcurement(props) {
     api_editProcurement,
   } = ProjectApiList();
 
-  const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar) 
-
+  const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } =
+    useContext(contextVar);
 
   const currentDate = new Date().toISOString().split("T")[0];
 
@@ -92,7 +92,6 @@ function EditPreProcurement(props) {
   const [applicationFullData, setapplicationFullData] = useState();
   const [categoryId, setCategoryId] = useState();
   const [categorySelected, setCategorySelected] = useState([]);
-  
 
   console.log(applicationFullData);
 
@@ -123,7 +122,6 @@ function EditPreProcurement(props) {
     }
   };
 
-  
   // ══════════════════════════════║🔰 validationSchema 🔰║═══════════════════════════════════
   const validationSchema = yup.object({
     itemsubcategory: yup.string().required("itemsubcategory is required"),
@@ -134,67 +132,65 @@ function EditPreProcurement(props) {
     operatingsystem: yup.string().required("operatingsystem is required"),
     rom: yup.string().required("rom is required"),
     graphics: yup.string().required("graphics is required"),
-    other_description: yup.string().required("other_description is required"),
+    description: yup.string().required("description is required"),
     quantity: yup.number().required("quantity is required"),
     // Generation: yup.string().required("Generation is required"),
     rate: yup.number().required("rate is required"),
     // totalRate: yup.string().required("totalRate is required"),
   });
 
-
   console.log(applicationFullData);
   // intitial value
   const initialValues = {
     itemcategory: applicationFullData?.category?.id,
     itemsubcategory: applicationFullData?.subcategory?.id,
-    brand: applicationFullData?.brand,
+    brand: applicationFullData?.brand?.id,
     processor: applicationFullData?.processor,
     ram: applicationFullData?.ram,
     operatingsystem: applicationFullData?.os,
     rom: applicationFullData?.rom,
     graphics: applicationFullData?.graphics,
-    other_description: applicationFullData?.other_description,
+    description: applicationFullData?.description,
     quantity: applicationFullData?.quantity,
     rate: applicationFullData?.rate,
 
     //Furniture values
     number_of_items: applicationFullData?.number_of_items,
-    brand: applicationFullData?.brand,
+    // brand: applicationFullData?.brand,
     colour: applicationFullData?.colour,
     material: applicationFullData?.material,
     product_dimensions: applicationFullData?.product_dimensions,
     room_type: applicationFullData?.room_type,
     included_components: applicationFullData?.included_components,
     size: applicationFullData?.size,
-    
+
     //CleaningSupplies
     number_of_items: applicationFullData?.number_of_items,
-    brand: applicationFullData?.brand,
+    // brand: applicationFullData?.brand,
     colour: applicationFullData?.colour,
     recommendedUsedProducts: applicationFullData?.recommendedUsedProducts,
     handle_material: applicationFullData?.handle_material,
     bristle: applicationFullData?.bristle,
-    
+
     // safetySecurity
     number_of_items: applicationFullData?.number_of_items,
-    brand: applicationFullData?.brand,
+    // brand: applicationFullData?.brand,
     weight: applicationFullData?.weight,
     recommendedUsedProducts: applicationFullData?.recommendedUsedProducts,
-    
+
     // maintenanceAndRepair
     number_of_items: applicationFullData?.number_of_items,
-    brand: applicationFullData?.brand,
+    // brand: applicationFullData?.brand,
     colour: applicationFullData?.colour,
     maintenamce_material: applicationFullData?.maintenamce_material,
     items_dimensions: applicationFullData?.items_dimensions,
     items_weight: applicationFullData?.items_weight,
-    
+
     // uniform
     number_of_items: applicationFullData?.number_of_items,
-    brand: applicationFullData?.brand,
+    // brand: applicationFullData?.brand,
     colour: applicationFullData?.colour,
     maintenamce_material: applicationFullData?.maintenamce_material,
-    
   };
 
   const formik = useFormik({
@@ -211,46 +207,50 @@ function EditPreProcurement(props) {
   });
 
   const furniture = [
-    { label: "Number of Items", name: "number_of_items", type:"number" },
-    { label: "Brand", name: "brand", type:"text" },
-    { label: "Colour", name: "colour", type:"text" },
-    { label: "Material", name: "material", type:"text" },
-    { label: "Product Dimensions", name: "product_dimensions", type:"text" },
-    { label: "Room Type", name: "room_type", type:"text" },
-    { label: "Included Components", name: "included_components", type:"text" },
-    { label: "Size", name: "size", type:"number" },
+    { label: "Number of Items", name: "number_of_items", type: "number" },
+    { label: "Brand", name: "brand", type: "text" },
+    { label: "Colour", name: "colour", type: "text" },
+    { label: "Material", name: "material", type: "text" },
+    { label: "Product Dimensions", name: "product_dimensions", type: "text" },
+    { label: "Room Type", name: "room_type", type: "text" },
+    { label: "Included Components", name: "included_components", type: "text" },
+    { label: "Size", name: "size", type: "number" },
   ];
 
   const cleaningSupplies = [
-    { label: "Number of Items", name: "number_of_items", type:"number" },
-    { label: "Brand", name: "brand", type:"text" },
-    { label: "Colour", name: "colour", type:"text" },
-    { label: "Recommended Uses For Product", name: "recomended_uses", type:"text" },
-    { label: "Handle Material	", name: "material", type:"text" },
-    { label: "Bristle", name: "bristle", type:"text" },
+    { label: "Number of Items", name: "number_of_items", type: "number" },
+    { label: "Brand", name: "brand", type: "text" },
+    { label: "Colour", name: "colour", type: "text" },
+    {
+      label: "Recommended Uses For Product",
+      name: "recomended_uses",
+      type: "text",
+    },
+    { label: "Handle Material	", name: "material", type: "text" },
+    { label: "Bristle", name: "bristle", type: "text" },
   ];
 
   const safetySecurity = [
-    { label: "Number of Items", name: "number_of_items", type:"number" },
-    { label: "Brand", name: "brand", type:"text" },
-    { label: "Weight", name: "weight", type:"number" },
-    { label: "Dimension", name: "dimension", type:"text" },
+    { label: "Number of Items", name: "number_of_items", type: "number" },
+    { label: "Brand", name: "brand", type: "text" },
+    { label: "Weight", name: "weight", type: "number" },
+    { label: "Dimension", name: "dimension", type: "text" },
   ];
 
   const maintenanceAndRepair = [
-    { label: "Number of Items", name: "number_of_items", type:"number" },
-    { label: "Brand", name: "brand", type:"text" },
-    { label: "Colour", name: "colour", type:"text" },
-    { label: "Material	", name: "material", type:"text" },
-    { label: "Dimension", name: "dimension", type:"text" },
-    { label: "Items Weight", name: "weight", type:"number" },
+    { label: "Number of Items", name: "number_of_items", type: "number" },
+    { label: "Brand", name: "brand", type: "text" },
+    { label: "Colour", name: "colour", type: "text" },
+    { label: "Material	", name: "material", type: "text" },
+    { label: "Dimension", name: "dimension", type: "text" },
+    { label: "Items Weight", name: "weight", type: "number" },
   ];
 
   const uniform = [
-    { label: "Number of Items", name: "number_of_items", type:"number" },
-    { label: "Brand", name: "brand", type:"text" },
-    { label: "Colour", name: "colour", type:"text" },
-    { label: "Material	", name: "material", type:"text" },
+    { label: "Number of Items", name: "number_of_items", type: "number" },
+    { label: "Brand", name: "brand", type: "text" },
+    { label: "Colour", name: "colour", type: "text" },
+    { label: "Material	", name: "material", type: "text" },
   ];
 
   // ══════════════════════════════║🔰calculate the total rate🔰║═══════════════════════════════════
@@ -266,18 +266,10 @@ function EditPreProcurement(props) {
     const ulbId = localStorage.getItem("ulbId");
     setulbId(ulbId);
 
-    fetchCategory();
-    console.log(categoryId,"categoryId======================>>>")
     getApplicationDetail();
-    fetchBrand();
-    fetchProcessor();
-    fetchRam();
-    fetchOperatingSystem();
-    fetchRom();
-    fetchGraphics();
+    fetchCategory();
 
-   
-  //  fetchSubCategory(categoryId);
+    // fetchBrand(applicationFullData?.subcategory?.id);
   }, [ulbData]);
 
   useEffect(() => {
@@ -293,6 +285,7 @@ function EditPreProcurement(props) {
       .then(function (response) {
         console.log("item Categor", response.data.data);
         setCategory(response.data.data);
+
       })
       .catch(function (error) {
         console.log("errorrr.... ", error);
@@ -302,23 +295,21 @@ function EditPreProcurement(props) {
   const fetchSubCategory = (value) => {
     console.log(value);
 
-    AxiosInterceptors.get(
-      `${api_itemSubCategory}/${value}`,
-      ApiHeader()
-    )
+    AxiosInterceptors.get(`${api_itemSubCategory}/${value}`, ApiHeader())
       .then(function (response) {
-        console.log("item Categor", response.data.data);
-        setSubCategory(response.data.data);
+        console.log("item subCategory", response?.data?.data);
+        // fetchBrand(response?.data?.data[0]?.id);
+        setSubCategory(response?.data?.data);
       })
       .catch(function (error) {
         console.log("errorrr.... ", error);
       });
   };
 
-  const fetchBrand = () => {
-    AxiosInterceptors.get(`${api_itemBrand}`, ApiHeader())
+  const fetchBrand = (value) => {
+    AxiosInterceptors.get(`${api_itemBrand}/${value}`, ApiHeader())
       .then(function (response) {
-        console.log("item Categor", response.data.data);
+        console.log("brand details", response.data.data);
         setBrand(response.data.data);
       })
       .catch(function (error) {
@@ -400,17 +391,21 @@ function EditPreProcurement(props) {
         // console.log("view application full details ...", response?.data?.data?.category?.name);
         if (response?.data?.status) {
           const categoryName = response.data?.data?.category?.name;
-          fetchSubCategory(response.data?.data?.category?.id)
-          setCategoryId(response.data?.data?.category?.id)
-          console.log(categoryName,"categoryName==============>>>>>")
+          fetchSubCategory(response.data?.data?.category?.id);
+          fetchBrand(response.data?.data?.subcategory?.id)
+          setCategoryId(response.data?.data?.category?.id);
+          console.log(categoryName, "categoryName==============>>>>>");
           setapplicationFullData(response?.data?.data);
           // setTableData(response?.data?.data?.tran_dtls);
           categoryName == "Furniture" && setCategorySelected(furniture);
-          categoryName == "Cleaning Supplies" && setCategorySelected(cleaningSupplies);
-          categoryName == "Safety and Security" && setCategorySelected(safetySecurity);
+          categoryName == "Cleaning Supplies" &&
+            setCategorySelected(cleaningSupplies);
+          categoryName == "Safety and Security" &&
+            setCategorySelected(safetySecurity);
           categoryName == "Uniforms" && setCategorySelected(uniform);
-          categoryName == "Maintainance and Repaire" && setCategorySelected(maintenanceAndRepair);
-          
+          categoryName == "Maintainance and Repaire" &&
+            setCategorySelected(maintenanceAndRepair);
+
           setisLoading(false);
         } else {
           toast.error("Error while getting details...");
@@ -436,8 +431,8 @@ function EditPreProcurement(props) {
     url = api_editProcurement;
     requestBody = {
       id: applicationFullData?.id,
-      order_no: applicationFullData?.order_no,
-      
+      procurement_no: applicationFullData?.procurement_no,
+
       // category: formData?.itemcategory,
       // subcategory: formData?.itemsubcategory,
       // processor: formData?.processor,
@@ -446,7 +441,7 @@ function EditPreProcurement(props) {
       // ram: formData?.ram,
       // rom: formData?.rom,
       // graphics: formData?.graphics,
-      // other_description: formData?.other_description,
+      // description: formData?.description,
       // quantity: Number(formData?.quantity),
       // rate: Number(formData?.rate),
       // total_rate: Number(formData?.totalRate),
@@ -459,8 +454,7 @@ function EditPreProcurement(props) {
       os: formData?.operatingsystem,
       rom: formData?.rom,
       graphics: formData?.graphics,
-      
-      
+
       brand: formData?.brand,
       colour: formData?.colour,
       material: formData?.material,
@@ -472,8 +466,8 @@ function EditPreProcurement(props) {
       bristle: formData?.bristle,
       weight: formData?.weight,
       number_of_items: Number(formData?.number_of_items),
-      other_description: formData?.other_description,
-      
+      description: formData?.description,
+
       rate: Number(formData?.rate),
       quantity: Number(formData?.quantity),
       total_rate: Number(formData?.totalRate),
@@ -487,20 +481,20 @@ function EditPreProcurement(props) {
         setresponseScreen(response?.data);
         if (response?.data?.status === true) {
           setisLoading(false);
-          notify(response?.data?.message, "success");
+          toast.success("Data has been updated successfully")
           setdeclarationStatus(false);
 
           // navigate('/tankerFormSubmitted')
         } else {
           setisLoading(false);
           setdeclarationStatus(false);
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
-          console.log(errorMsg, "====>>");
-          notify(response?.data?.message, "error");
+          toast.error(response?.data?.message)
+
         }
       })
       .catch(function (error) {
+        toast.error("Something went wrong")
+
         console.log("errorrr.... ", error);
         setdeclarationStatus(false);
       });
@@ -562,34 +556,6 @@ function EditPreProcurement(props) {
     );
   }
 
-  // ══════════════════════════════║🔰Validating Booking Date 🔰║═══════════════════════════════════
-
-  // const verifyDateForBookingTanker = (value) => {
-  //   let currentDate = new Date();
-  //   currentDate.setDate(currentDate.getDate() + 1);
-
-  //   let userSetDate = new Date(value);
-
-  //   // Convert both dates to UTC timestamps
-  //   const currentTimestamp = Date.UTC(
-  //     currentDate.getFullYear(),
-  //     currentDate.getMonth(),
-  //     currentDate.getDate()
-  //   );
-  //   const userTimestamp = Date.UTC(
-  //     userSetDate.getFullYear(),
-  //     userSetDate.getMonth(),
-  //     userSetDate.getDate()
-  //   );
-
-  //   if (userTimestamp < currentTimestamp) {
-  //     notify("Date must be 24 hours ahead of the current date", "error");
-  //     formik.setFieldValue("cleaningDate", "");
-  //     console.log("wrong time");
-  //   } else {
-  //     console.log("right time");
-  //   }
-  // };
 
   const handleOnChange = (e) => {
     // console.log("target type", e.target.type);
@@ -601,61 +567,52 @@ function EditPreProcurement(props) {
     console.log("target value checked", e.target.checked);
 
     {
-      name == "cleaningDate" && verifyDateForBookingTanker(value);
-    }
-    {
-      name == "isWithinUlb" && setulbAreaVal(value);
-    }
-    {
-      name == "isWithinUlb" && fetchLocationListByUlb(value);
-    }
-    {
       name == "colour" &&
         formik.setFieldValue(
           "colour",
-          allowCharacterInput(value, formik.values.colour,50)
+          allowCharacterInput(value, formik.values.colour, 50)
         );
     }
     {
       name == "material" &&
         formik.setFieldValue(
           "material",
-          allowCharacterInput(value, formik.values.material,50)
+          allowCharacterInput(value, formik.values.material, 50)
         );
     }
     {
       name == "product_dimensions" &&
         formik.setFieldValue(
           "product_dimensions",
-          allowCharacterNumberInput(value, formik.values.product_dimensions,50)
+          allowCharacterNumberInput(value, formik.values.product_dimensions, 50)
         );
     }
     {
       name == "room_type" &&
         formik.setFieldValue(
           "room_type",
-          allowCharacterInput(value, formik.values.room_type,50)
+          allowCharacterInput(value, formik.values.room_type, 50)
         );
-      }
+    }
     {
       name == "included_components" &&
         formik.setFieldValue(
           "included_components",
-          allowCharacterInput(value, formik.values.included_components,50)
+          allowCharacterInput(value, formik.values.included_components, 50)
         );
     }
     {
       name == "recomended_uses" &&
         formik.setFieldValue(
           "recomended_uses",
-          allowCharacterInput(value, formik.values.recomended_uses,50)
+          allowCharacterInput(value, formik.values.recomended_uses, 50)
         );
     }
     {
       name == "bristle" &&
         formik.setFieldValue(
           "bristle",
-          allowCharacterInput(value, formik.values.bristle,50)
+          allowCharacterInput(value, formik.values.bristle, 50)
         );
     }
     {
@@ -683,14 +640,14 @@ function EditPreProcurement(props) {
       name == "number_of_items" &&
         formik.setFieldValue(
           "number_of_items",
-          allowNumberInput(value, formik.values.number_of_items,100)
+          allowNumberInput(value, formik.values.number_of_items, 100)
         );
     }
     {
       name == "brand" &&
         formik.setFieldValue(
           "brand",
-          allowCharacterNumberInput(value, formik.values.brand,50)
+          allowCharacterNumberInput(value, formik.values.brand, 50)
         );
     }
     {
@@ -772,10 +729,12 @@ function EditPreProcurement(props) {
   // }
   return (
     <>
-
-    <div className="">
-    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Edit Pre Procurement"} />
-    </div>
+      <div className="">
+        <TitleBar
+          titleBarVisibility={titleBarVisibility}
+          titleText={"Edit Pre Procurement"}
+        />
+      </div>
       <div className={`${formStyle} border border-blue-500 mt-7 shadow-xl`}>
         <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
           <div className="">
@@ -795,7 +754,7 @@ function EditPreProcurement(props) {
                 </div>
 
                 <div className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4">
-                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Item Category
                       <span className="text-sm text-red-500">*</span>{" "}
@@ -805,8 +764,7 @@ function EditPreProcurement(props) {
                       className={`${inputStyle} inline-block w-full relative`}
                       onChange={(e) => {
                         formik.handleChange(e);
-                        fetchSubCategory(e.target.value);
-                        
+                        // fetchSubCategory(e.target.value);
                       }}
                       disabled="true"
                     >
@@ -823,7 +781,7 @@ function EditPreProcurement(props) {
                     </p>
                   </div>
 
-                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Items Sub Category
                       <span className="text-sm text-red-500">*</span>
@@ -832,15 +790,13 @@ function EditPreProcurement(props) {
                       {...formik.getFieldProps("itemsubcategory")}
                       className={`${inputStyle} inline-block w-full relative`}
                       onChange={formik.handleChange}
-                      disabled="true"
+                      disabled
                     >
                       {/* <option selected>select</option> */}
                       {subcategory?.length &&
                         subcategory?.map((items) => (
                           <option value={items?.id}>{items?.name}</option>
                         ))}
-
-                        
                     </select>
 
                     <p className="text-red-500 text-xs ">
@@ -851,7 +807,39 @@ function EditPreProcurement(props) {
                     </p>
                   </div>
 
-{console.log(categorySelected,"catego===========sel")}
+                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
+                    <label className={`${labelStyle} inline-block mb-2`}>
+                      Brand
+                      <span className="text-xl text-red-500 pl-1">*</span>
+                    </label>
+                    <select
+                      {...formik.getFieldProps("brand")}
+                      // name="brand"
+                      defaultValue={applicationFullData?.brand?.id}
+                      className={`${inputStyle} inline-block w-full relative`}
+                      onChange={formik.handleChange}
+
+                    >
+                      <option>select</option>
+
+                      {brand?.length &&
+                        brand?.map((items) => (
+                          <option key={items?.id} value={items?.id}  defaultValue={applicationFullData?.brand?.id}>
+                            {items?.name}
+                          </option>
+                        ))}
+                    </select>
+
+                    <p className="text-red-500 text-xs ">
+                      {formik.touched.brand && formik.errors.brand
+                        ? formik.errors.brand
+                        : null}
+                    </p>
+                  </div>
+
+                  {/* ---------------------------------------------------------------------------------------------------------------------- */}
+
+                  {console.log(categorySelected, "catego===========sel")}
                   {categorySelected?.map((obj) => (
                     <div className=" flex flex-wrap w-1/2">
                       <div class="px-4 w-full mb-4">
@@ -1045,16 +1033,16 @@ function EditPreProcurement(props) {
                       </label>
                       <input
                         type='text'
-                        name='other_description'
+                        name='description'
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
-                        value={formik.values.other_description}
+                        value={formik.values.description}
                       />
 
                       <p className='text-red-500 text-xs '>
-                        {formik.touched.other_description &&
-                        formik.errors.other_description
-                          ? formik.errors.other_description
+                        {formik.touched.description &&
+                        formik.errors.description
+                          ? formik.errors.description
                           : null}
                       </p>
                       
@@ -1069,16 +1057,16 @@ function EditPreProcurement(props) {
                     </label>
                     <textarea
                       type="text"
-                      name="other_description"
+                      name="description"
                       className={`${inputStyle} inline-block w-full relative h-20`}
                       onChange={formik.handleChange}
-                      value={formik.values.other_description}
+                      value={formik.values.description}
                     />
 
                     <p className="text-red-500 text-xs ">
-                      {formik.touched.other_description &&
-                      formik.errors.other_description
-                        ? formik.errors.other_description
+                      {formik.touched.description &&
+                      formik.errors.description
+                        ? formik.errors.description
                         : null}
                     </p>
                   </div>

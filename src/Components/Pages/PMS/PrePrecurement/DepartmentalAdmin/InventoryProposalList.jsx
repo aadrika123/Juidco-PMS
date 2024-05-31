@@ -73,9 +73,9 @@ function InventoryProposalList(props) {
     },
     {
       Header: "Order No",
-      accessor: "order_no",
+      accessor: "procurement_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.order_no}</div>
+        <div className='pr-2'>{cell.row.values.procurement_no}</div>
       ),
     },
     {
@@ -97,30 +97,10 @@ function InventoryProposalList(props) {
       accessor: "brand",
       Cell: (
         { cell } // console.log(cell.row.values,"===================celllllll")
-      ) => <div className='pr-2'>{cell.row.values.brand || "N/A"}</div>,
+      ) => <div className='pr-2'>{cell.row.values.brand.name || "N/A"}</div>,
     },
 
-    // {
-    //   Header: "Graphics",
-    //   accessor: "graphics",
-    //   Cell: ({ cell }) => (
-    //     <div className='pr-2'>{cell.row.values.graphics.name}</div>
-    //   ),
-    // },
-    // {
-    //   Header: "OS",
-    //   accessor: "os",
-    //   Cell: ({ cell }) => (
-    //     <div className='pr-2'>{cell.row.values.os.name}</div>
-    //   ),
-    // },
-    // {
-    //   Header: "Processor",
-    //   accessor: "processor",
-    //   Cell: ({ cell }) => (
-    //     <div className='pr-2'>{cell.row.values.processor.name}</div>
-    //   ),
-    // },
+  
     {
       Header: "status",
       accessor: "status",
@@ -142,13 +122,16 @@ function InventoryProposalList(props) {
             {cell.row.values.status.status == 2 && "Release for Tender"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 3 && "Stock Receaved"}
+            {cell.row.values.status.status == 3 && "Supplier assigned"}
           </p>
           <p className='font-bold text-green-500'>
             {cell.row.values.status.status == 4 && "Incomplete stocks received"}
           </p>
           <p className='font-bold text-green-500'>
             {cell.row.values.status.status == 5 && "Stocks received"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 69 && "Revised"}
           </p>
         </div>
       ),

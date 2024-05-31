@@ -16,9 +16,6 @@ import { useNavigate } from "react-router-dom";
 
 function PreProcurementSubmittedScreen(props) {
   const navigate = useNavigate();
-  const { formStyle } = ThemeStyleTanker();
-
-  const [openPaymentModal, setOpenPaymentModal] = useState(0);
 
   console.log(props.id);
   console.log(props.page);
