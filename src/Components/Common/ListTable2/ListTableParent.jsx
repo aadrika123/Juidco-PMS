@@ -269,8 +269,8 @@ const ListTableParent = (props) => {
     searchOldFun();
   };
 
-  const exportBtnStyle = `bg-[#7a6ef7] text-white px-2 rounded-md flex items-center gap-1 hover:bg-[#190bc4]`;
-  const exportBtnStyle2 = `bg-[#190bc4] text-white px-2 rounded-md flex items-center gap-4 ml-2`;
+  const exportBtnStyle = `bg-green-700 text-white px-2 rounded-md flex items-center gap-1 hover:bg-green-900`;
+  const exportBtnStyle2 = `bg-green-700 text-white px-2 rounded-md flex items-center gap-4 ml-2`;
 
   return (
     <>
@@ -299,7 +299,7 @@ const ListTableParent = (props) => {
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-            <button class="text-red bg-[#4338CA] hover:before:bg-redborder-red-500 relative overflow-hidden border px-2 text-white shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-indigo-900 before:transition-all before:duration-500 hover:text-white hover:before:left-0 hover:before:w-full rounded-md"><span class="relative z-10 flex">Export <FaArrowRightLong color='white' size={15} className="mt-1 ml-3" /></span></button>
+            <button class="text-red bg-green-700 hover:before:bg-redborder-red-500 relative overflow-hidden border px-2 text-white shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-green-900 before:transition-all before:duration-500 hover:text-white hover:before:left-0 hover:before:w-full rounded-md"><span class="relative z-10 flex">Export <FaArrowRightLong color='white' size={15} className="mt-1 ml-3" /></span></button>
 
               {/* <button className={exportBtnStyle2}>
                 Export
