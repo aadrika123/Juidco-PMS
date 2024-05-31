@@ -736,6 +736,9 @@ const ViewReceivedInvtById = (props) => {
                             Remaining Quantity
                           </th>
                           <th scope='col' className='px-6 py-3'>
+                            Inventory Status
+                          </th>
+                          <th scope='col' className='px-6 py-3'>
                             Remark
                           </th>
                         </tr>
@@ -777,6 +780,15 @@ const ViewReceivedInvtById = (props) => {
                             </td>
                             <td className='px-6 py-4'>
                               {data?.remaining_quantity}
+                            </td>
+                            <td className='px-6 py-4'>
+                              {data?.is_added ? (
+                                <p className='text-green-500'>
+                                  Added to Inventory
+                                </p>
+                              ) : (
+                                <p className='text-violet-600'>Pending</p>
+                              )}
                             </td>
                             <td className='px-6 py-4'>{data?.remark}</td>
                           </tr>
