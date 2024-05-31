@@ -284,13 +284,6 @@ const ViewReceivedInvtByIdDa = (props) => {
       <div className=''>
         {/* Basic Details */}
         <div className='mt-6' id='printable-content'>
-          {/* <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-600 '>
-            <h2 className='font-semibold text-xl flex justify-start'>
-              <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View
-              Procurement Request{" "}
-            </h2>
-          </div> */}
-
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-600 '>
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
@@ -652,7 +645,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                   aria-controls='panel1-content'
                   id='panel1-header'
                 >
-                  Receiving No
+                  Receiving Nosss
                 </AccordionSummary>
                 <AccordionDetails>
                   {/* table */}
@@ -679,6 +672,9 @@ const ViewReceivedInvtByIdDa = (props) => {
 
                           <th scope='col' className='px-6 py-3'>
                             Remaining Quantity
+                          </th>
+                          <th scope='col' className='px-6 py-3'>
+                            Inventory Status
                           </th>
                           <th scope='col' className='px-6 py-3'>
                             Remark
@@ -722,6 +718,15 @@ const ViewReceivedInvtByIdDa = (props) => {
                             </td>
                             <td className='px-6 py-4'>
                               {data?.remaining_quantity}
+                            </td>
+                            <td className='px-6 py-4'>
+                              {data?.is_added ? (
+                                <p className='text-green-500'>
+                                  Added to Inventory
+                                </p>
+                              ) : (
+                                <p className='text-violet-600'>Pending</p>
+                              )}
                             </td>
                             <td className='px-6 py-4'>{data?.remark}</td>
                           </tr>
