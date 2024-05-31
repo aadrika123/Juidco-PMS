@@ -68,10 +68,10 @@ function ReceivedInvtList(props) {
       Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
-      Header: "Order No",
-      accessor: "order_no",
+      Header: "Procurement No",
+      accessor: "procurement_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.order_no}</div>
+        <div className='pr-2'>{cell.row.values.procurement_no}</div>
       ),
     },
     {
@@ -93,62 +93,43 @@ function ReceivedInvtList(props) {
       accessor: "brand",
       Cell: (
         { cell } // console.log(cell.row.values,"===================celllllll")
-      ) => <div className='pr-2'>{cell.row.values.brand || "N/A"}</div>,
+      ) => <div className='pr-2'>{cell.row.values.brand.name || "N/A"}</div>,
     },
 
+    
     // {
-    //   Header: "Graphics",
-    //   accessor: "graphics",
+    //   Header: "status",
+    //   accessor: "status",
     //   Cell: ({ cell }) => (
-    //     <div className='pr-2'>{cell.row.values.graphics.name}</div>
+    //     <div className='pr-2'>
+    //       <p className='font-bold text-yellow-800'>
+    //         {cell.row.values.status.status == -1 && "Back to SR"}
+    //       </p>
+    //       <p className='font-bold text-red-500'>
+    //         {cell.row.values.status.status == -2 && "Rejected"}
+    //       </p>
+    //       <p className='font-bold text-blue-800'>
+    //         {cell.row.values.status.status == 0 && "Pending"}
+    //       </p>
+    //       <p className='font-bold text-blue-800'>
+    //         {cell.row.values.status.status == 1 && "DA's Inbox"}
+    //       </p>
+    //       <p className='font-bold text-green-800'>
+    //         {cell.row.values.status.status == 2 && "Release for Tender"}
+    //       </p>
+    //       <p className='font-bold text-green-500'>
+    //         {cell.row.values.status.status == 3 && "Supplier Assigned"}
+    //       </p>
+    //       <p className='font-bold text-green-500'>
+    //         {cell.row.values.status.status == 4 && "Incomplete stocks received"}
+    //       </p>
+    //       <p className='font-bold text-green-500'>
+    //         {cell.row.values.status.status == 5 && "Stocks received"}
+    //       </p>
+    //     </div>
     //   ),
     // },
-    // {
-    //   Header: "OS",
-    //   accessor: "os",
-    //   Cell: ({ cell }) => (
-    //     <div className='pr-2'>{cell.row.values.os.name}</div>
-    //   ),
-    // },
-    // {
-    //   Header: "Processor",
-    //   accessor: "processor",
-    //   Cell: ({ cell }) => (
-    //     <div className='pr-2'>{cell.row.values.processor.name}</div>
-    //   ),
-    // },
-    {
-      Header: "status",
-      accessor: "status",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>
-          <p className='font-bold text-yellow-800'>
-            {cell.row.values.status.status == -1 && "Back to SR"}
-          </p>
-          <p className='font-bold text-red-500'>
-            {cell.row.values.status.status == -2 && "Rejected"}
-          </p>
-          <p className='font-bold text-blue-800'>
-            {cell.row.values.status.status == 0 && "Pending"}
-          </p>
-          <p className='font-bold text-blue-800'>
-            {cell.row.values.status.status == 1 && "DA's Inbox"}
-          </p>
-          <p className='font-bold text-green-800'>
-            {cell.row.values.status.status == 2 && "Release for Tender"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 3 && "Supplier Assigned"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 4 && "Incomplete stocks received"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 5 && "Stocks received"}
-          </p>
-        </div>
-      ),
-    },
+
     // {
     //   Header: "Remark",
     //   accessor: "remark",

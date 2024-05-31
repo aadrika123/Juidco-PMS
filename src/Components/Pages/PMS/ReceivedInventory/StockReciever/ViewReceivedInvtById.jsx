@@ -107,7 +107,7 @@ const ViewReceivedInvtById = (props) => {
 
     let body = {
       ...payload,
-      order_no: applicationFullData?.order_no,
+      procurement_no: applicationFullData?.procurement_no,
       img: imageDoc,
     };
 
@@ -176,7 +176,7 @@ const ViewReceivedInvtById = (props) => {
 
   // intitial value
   const initialValues = {
-    totalStock: applicationFullData?.total_quantity,
+    totalStock: applicationFullData?.post_procurement?.total_quantity,
     receivedStock: applicationFullData?.total_receivings || 0,
     remarks: "",
     remStock: applicationFullData?.total_remaining,
@@ -207,7 +207,7 @@ const ViewReceivedInvtById = (props) => {
     console.log(deadStock, "deadStock====>");
     if (deadStock) {
       let remaining =
-        applicationFullData?.total_quantity -
+        applicationFullData?.post_procurement?.total_quantity -
         (formik.values.receivedStock - deadStock);
 
       console.log(
@@ -327,7 +327,7 @@ const ViewReceivedInvtById = (props) => {
                 Procurement Request No <span className='text-black'>:</span>
                 <span className='font-light'>
                   {" "}
-                  {nullToNA(applicationFullData?.order_no)}
+                  {nullToNA(applicationFullData?.procurement_no)}
                 </span>
               </h1>
             </div>
@@ -353,7 +353,7 @@ const ViewReceivedInvtById = (props) => {
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(
-                    applicationFullData?.pre_procurement?.category?.name
+                    applicationFullData?.category?.name
                   )}
                 </div>
               </div>
@@ -368,28 +368,23 @@ const ViewReceivedInvtById = (props) => {
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(
-                    applicationFullData?.pre_procurement?.subcategory?.name
+                    applicationFullData?.subcategory?.name
                   )}
                 </div>
               </div>
 
               {/* } */}
 
-              {applicationFullData?.pre_procurement?.category?.name ==
-                ("Uniforms" ||
-                  "Maintainance and Repaire" ||
-                  "Safety and Security" ||
-                  "Cleaning Supplies" ||
-                  "Furniture") && (
+             
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
                     Brand
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.brand)}
+                    {nullToNA(applicationFullData?.brand.name)}
                   </div>
                 </div>
-              )}
+              
 
               {applicationFullData?.pre_procurement?.category?.name ==
                 ("Uniforms" ||
@@ -526,7 +521,7 @@ const ViewReceivedInvtById = (props) => {
                   Rate per quantity
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.unit_price)}
+                  {nullToNA(applicationFullData?.rate)}
                 </div>
               </div>
 
@@ -535,7 +530,7 @@ const ViewReceivedInvtById = (props) => {
                   Quantity
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.total_quantity)}
+                  {nullToNA(applicationFullData?.quantity)}
                 </div>
               </div>
 
@@ -544,11 +539,11 @@ const ViewReceivedInvtById = (props) => {
                   Total Rate
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.pre_procurement?.total_rate)}
+                  {nullToNA(applicationFullData?.total_rate)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              {/* <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   No of Items
                 </div>
@@ -564,7 +559,7 @@ const ViewReceivedInvtById = (props) => {
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.pre_procurement?.dimension)}
                 </div>
-              </div>
+              </div> */}
 
               {/* </div> */}
 
@@ -608,10 +603,10 @@ const ViewReceivedInvtById = (props) => {
             </div>
 
             <div className='p-5 pl-8'>
-              <h1 className='font-bold '>Other Description</h1>
+              <h1 className='font-bold '>Description</h1>
               <p className=' pt-2'>
                 {nullToNA(
-                  applicationFullData?.pre_procurement?.other_description
+                  applicationFullData?.description
                 )}
               </p>
             </div>
@@ -688,6 +683,7 @@ const ViewReceivedInvtById = (props) => {
                           </label>
 
                           <input
+                          disabled
                             name='remStock'
                             className={`${inputStyle} inline-block w-full relative`}
                             onChange={formik.handleChange}

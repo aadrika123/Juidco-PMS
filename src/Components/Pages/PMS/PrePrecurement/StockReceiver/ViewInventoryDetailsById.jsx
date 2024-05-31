@@ -190,7 +190,7 @@ const ViewInventoryDetailsById = (props) => {
                   Procurement Request No <span className='text-black'>:</span>
                   <span className='font-light'>
                     {" "}
-                    {nullToNA(applicationFullData?.order_no)}
+                    {nullToNA(applicationFullData?.procurement_no)}
                   </span>
                 </h1>
               </div>
@@ -226,21 +226,16 @@ const ViewInventoryDetailsById = (props) => {
 
               {/* } */}
 
-              {applicationFullData?.category?.name ==
-                ("Uniforms" ||
-                  "Maintainance and Repaire" ||
-                  "Safety and Security" ||
-                  "Cleaning Supplies" ||
-                  "Furniture") && (
+              
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
                     Brand
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.brand)}
+                    {nullToNA(applicationFullData?.brand?.name)}
                   </div>
                 </div>
-              )}
+            
 
               {applicationFullData?.category?.name ==
                 ("Uniforms" ||
@@ -390,14 +385,14 @@ const ViewInventoryDetailsById = (props) => {
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              {/* <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   No of Items
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.number_of_items)}
                 </div>
-              </div>
+              </div> */}
 
               {/* </div> */}
 
@@ -441,9 +436,9 @@ const ViewInventoryDetailsById = (props) => {
             </div>
 
             <div className='p-5 pl-8'>
-              <h1 className='font-bold '>Other Description</h1>
+              <h1 className='font-bold '>Description</h1>
               <p className=' pt-2'>
-                {nullToNA(applicationFullData?.other_description)}
+                {nullToNA(applicationFullData?.description)}
               </p>
             </div>
 

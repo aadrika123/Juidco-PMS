@@ -76,7 +76,7 @@ const ViewReceivedInvtByIdDa = (props) => {
 
   // intitial value
   const initialValues = {
-    total_quantity: applicationFullData?.total_quantity,
+    total_quantity: applicationFullData?.post_procurement?.total_quantity,
     received_quantity: "",
     remaining_quantity: "",
     date: "",
@@ -154,13 +154,13 @@ const ViewReceivedInvtByIdDa = (props) => {
     receivedQuantity && (recQuantity = Number(receivedQuantity) || 0);
 
     const recQuantityValueRange =
-      applicationFullData?.total_quantity -
+      applicationFullData?.post_procurement?.total_quantity -
       applicationFullData?.total_receivings;
     if (receivedQuantity <= recQuantityValueRange) {
       formik.setFieldValue("received_quantity", receivedQuantity);
 
       const remQuantityValue =
-        applicationFullData?.total_quantity -
+        applicationFullData?.post_procurement?.total_quantity -
         (applicationFullData?.total_receivings + Number(receivedQuantity));
       // console.log(remQuantityValue,"remQuantityValue",applicationFullData?.total_quantity,"applicationFullData?.total_quantity",applicationFullData?.total_receivings,"applicationFullData?.total_receivings",receivedQuantity,"receivedQuantity")
 
@@ -182,7 +182,7 @@ const ViewReceivedInvtByIdDa = (props) => {
       ...formData,
       img: imageDoc,
       // remarks,
-      order_no: applicationFullData?.order_no,
+      procurement_no: applicationFullData?.procurement_no,
       ulb_id: ulbId,
     };
     let formDataPayload = new FormData();
@@ -306,7 +306,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                 Procurement Request No <span className='text-black'>:</span>
                 <span className='font-light'>
                   {" "}
-                  {nullToNA(applicationFullData?.order_no)}
+                  {nullToNA(applicationFullData?.procurement_no)}
                 </span>
               </h1>
             </div>
@@ -332,7 +332,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(
-                    applicationFullData?.pre_procurement?.category?.name
+                    applicationFullData?.category?.name
                   )}
                 </div>
               </div>
@@ -347,28 +347,23 @@ const ViewReceivedInvtByIdDa = (props) => {
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(
-                    applicationFullData?.pre_procurement?.subcategory?.name
+                    applicationFullData?.subcategory?.name
                   )}
                 </div>
               </div>
 
               {/* } */}
 
-              {applicationFullData?.pre_procurement?.category?.name ==
-                ("Uniforms" ||
-                  "Maintainance and Repaire" ||
-                  "Safety and Security" ||
-                  "Cleaning Supplies" ||
-                  "Furniture") && (
+             
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
                     Brand
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.brand)}
+                    {nullToNA(applicationFullData?.brand?.name)}
                   </div>
                 </div>
-              )}
+              
 
               {applicationFullData?.pre_procurement?.category?.name ==
                 ("Uniforms" ||
@@ -505,7 +500,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                   Rate
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.pre_procurement?.rate)}
+                  {nullToNA(applicationFullData?.rate)}
                 </div>
               </div>
 
@@ -514,7 +509,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                   Quantity
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.pre_procurement?.quantity)}
+                  {nullToNA(applicationFullData?.quantity)}
                 </div>
               </div>
 
@@ -523,20 +518,20 @@ const ViewReceivedInvtByIdDa = (props) => {
                   Total Rate
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.pre_procurement?.total_rate)}
+                  {nullToNA(applicationFullData?.total_rate)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              {/* <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   No of Items
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(
-                    applicationFullData?.pre_procurement?.number_of_items
+                    applicationFullData?.number_of_items
                   )}
                 </div>
-              </div>
+              </div> */}
 
               {/* </div> */}
 
@@ -580,10 +575,10 @@ const ViewReceivedInvtByIdDa = (props) => {
             </div>
 
             <div className='p-5 pl-8'>
-              <h1 className='font-bold '>Other Description</h1>
+              <h1 className='font-bold '>Description</h1>
               <p className=' pt-2'>
                 {nullToNA(
-                  applicationFullData?.pre_procurement?.other_description
+                  applicationFullData?.description
                 )}
               </p>
             </div>
@@ -608,7 +603,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                   Supplier Name
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.supplier_name)}
+                  {nullToNA(applicationFullData?.post_procurement?.supplier_name)}
                 </div>
               </div>
 
@@ -617,7 +612,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                   GST No
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.gst_no)}
+                  {nullToNA(applicationFullData?.post_procurement?.gst_no)}
                 </div>
               </div>
 
@@ -626,7 +621,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                   Final Rate
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.final_rate)}
+                  {nullToNA(applicationFullData?.post_procurement?.final_rate)}
                 </div>
               </div>
 
@@ -635,7 +630,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                   GST %
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.gst)}
+                  {nullToNA(applicationFullData?.post_procurement?.gst)}
                 </div>
               </div>
 
@@ -644,7 +639,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                   Total Price
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.total_price)}
+                  {nullToNA(applicationFullData?.post_procurement?.total_price)}
                 </div>
               </div>
 
@@ -653,7 +648,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                   Total Quantity
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.total_quantity)}
+                  {nullToNA(applicationFullData?.post_procurement?.total_quantity)}
                 </div>
               </div>
 
@@ -673,7 +668,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                   Unit Price
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.unit_price)}
+                  {nullToNA(applicationFullData?.post_procurement?.unit_price)}
                 </div>
               </div>
 
@@ -743,7 +738,7 @@ const ViewReceivedInvtByIdDa = (props) => {
 
                             <td className='px-6 py-4'>{data?.receiving_no}</td>
                             <td className='px-6 py-4'>
-                              {applicationFullData?.total_quantity}
+                              {applicationFullData?.post_procurement?.total_quantity}
                             </td>
                             <td className='px-6 py-4'>
                               {data?.received_quantity}
@@ -804,18 +799,18 @@ const ViewReceivedInvtByIdDa = (props) => {
 
               <div className='grid grid-cols-4 gap-4 ml-8'>
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold text-xl'>
+                  <div className='md:w-auto w-[50%] font-bold text-md'>
                     Total Quantity
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {applicationFullData?.total_quantity
-                      ? applicationFullData?.total_quantity
+                    {applicationFullData?.post_procurement?.total_quantity
+                      ? applicationFullData?.post_procurement?.total_quantity
                       : 0}
                   </div>
                 </div>
 
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold text-xl'>
+                  <div className='md:w-auto w-[50%] font-bold text-md'>
                     Total Received Quantity
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-800 text-md'>
@@ -826,7 +821,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                 </div>
 
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold text-xl'>
+                  <div className='md:w-auto w-[50%] font-bold text-md'>
                     Total Remaining Quantity
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-800 text-md'>
