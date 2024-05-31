@@ -88,7 +88,6 @@ const ViewReceivedInvtByIdDa = (props) => {
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log("click");
       console.log("Form Values ==============>>", values);
       setIsModalOpen(true);
       setFormData(values);
@@ -107,7 +106,6 @@ const ViewReceivedInvtByIdDa = (props) => {
   useEffect(() => {
     var ulbIds = localStorage.getItem("ulbId");
     setUlbId(ulbIds);
-    // console.log(ulbId)
     getApplicationDetail();
 
     // dateFunc()
@@ -131,7 +129,6 @@ const ViewReceivedInvtByIdDa = (props) => {
         console.log("view water tanker full details ...", response?.data?.data);
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
-          // setTableData(response?.data?.data?.tran_dtls);
           setisLoading(false);
         } else {
           toast.error(response?.data?.message || "Something went Wrong");
@@ -266,9 +263,6 @@ const ViewReceivedInvtByIdDa = (props) => {
     );
   }
 
-  // console.log(applicationFullData?.receivings);
-  // console.log(ulbId)
-
   const handlePrint = () => {
     window.print();
   };
@@ -287,7 +281,6 @@ const ViewReceivedInvtByIdDa = (props) => {
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-600 '>
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-                {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
                 View Procurement Request{" "}
               </h2>
             </div>
@@ -315,8 +308,6 @@ const ViewReceivedInvtByIdDa = (props) => {
             )}
 
             <div className='grid grid-cols-4 gap-4 ml-8'>
-              {/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
-
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Item Category
@@ -325,10 +316,6 @@ const ViewReceivedInvtByIdDa = (props) => {
                   {nullToNA(applicationFullData?.category?.name)}
                 </div>
               </div>
-
-              {/* } */}
-
-              {/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
@@ -347,122 +334,6 @@ const ViewReceivedInvtByIdDa = (props) => {
                   {nullToNA(applicationFullData?.brand?.name)}
                 </div>
               </div>
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                ("Uniforms" ||
-                  "Maintainance and Repaire" ||
-                  "Cleaning Supplies" ||
-                  "Furniture") && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold '>Colour</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.colour)}
-                  </div>
-                </div>
-              )}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                ("Uniforms" ||
-                  "Maintainance and Repaire" ||
-                  "Furniture" ||
-                  "Cleaning Supplies") && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Material</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.material)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                ("Maintainance and Repaire" || "Safety and Security") && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Dimension</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.dimension)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                "Furniture" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Room Type</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.room_type)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                "Furniture" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold '>
-                    Included Components
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(
-                      applicationFullData?.pre_procurement?.included_components
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                "Furniture" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Size</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.size)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                "Cleaning Supplies" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Recomended Uses
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(
-                      applicationFullData?.pre_procurement?.recomended_uses
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                "Cleaning Supplies" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Bristle</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.bristle)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                ("Maintainance and Repaire" || "Safety and Security") && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold '>Weight</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.weight)}
-                  </div>
-                </div>
-              )}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
 
               <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold '>Rate</div>
@@ -484,57 +355,6 @@ const ViewReceivedInvtByIdDa = (props) => {
                   {nullToNA(applicationFullData?.total_rate)}
                 </div>
               </div>
-
-              {/* <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  No of Items
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(
-                    applicationFullData?.number_of_items
-                  )}
-                </div>
-              </div> */}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  {/* {nullToNA(applicationFullData?.quantity)} */}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {/* Quantity  */}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  {/* {nullToNA(applicationFullData?.applicant_name)} */}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {/* Total Rate   */}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  {/* {nullToNA(applicationFullData?.mobile)} */}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {/* Brand  */}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-semibold '>
-                  {/* {nullToNA(applicationFullData?.email)} */}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {/* Processor  */}
-                </div>
-              </div>
             </div>
 
             <div className='p-5 pl-8'>
@@ -548,7 +368,6 @@ const ViewReceivedInvtByIdDa = (props) => {
           </div>
 
           {/* Additional Details */}
-
           <div className='py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 '>
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
@@ -631,7 +450,6 @@ const ViewReceivedInvtByIdDa = (props) => {
           </div>
 
           {/* Receiving No */}
-
           {
             <div className='mt-8 '>
               <Accordion defaultExpanded>
@@ -645,105 +463,111 @@ const ViewReceivedInvtByIdDa = (props) => {
                   aria-controls='panel1-content'
                   id='panel1-header'
                 >
-                  Receiving Nosss
+                  Receiving No
                 </AccordionSummary>
                 <AccordionDetails>
                   {/* table */}
+                  {!applicationFullData?.receivings.length ? (
+                    <p className='font-semibold p-4'>No Data Found</p>
+                  ) : (
+                    <div className='relative overflow-x-auto'>
+                      <table className='w-full text-md text-left rtl:text-right'>
+                        <thead className='text-xs uppercase bg-gray-200'>
+                          <tr>
+                            <th scope='col' className='px-6 py-3'>
+                              Date
+                            </th>
+                            <th scope='col' className='px-6 py-3'>
+                              Receiving no
+                            </th>
+                            <th scope='col' className='px-6 py-3'>
+                              Total Quantity
+                            </th>
+                            <th scope='col' className='px-6 py-3'>
+                              Received Quantity
+                            </th>
+                            <th scope='col' className='px-6 py-3'>
+                              View Doc
+                            </th>
 
-                  <div className='relative overflow-x-auto'>
-                    <table className='w-full text-md text-left rtl:text-right'>
-                      <thead className='text-xs uppercase bg-gray-200'>
-                        <tr>
-                          <th scope='col' className='px-6 py-3'>
-                            Date
-                          </th>
-                          <th scope='col' className='px-6 py-3'>
-                            Receiving no
-                          </th>
-                          <th scope='col' className='px-6 py-3'>
-                            Total Quantity
-                          </th>
-                          <th scope='col' className='px-6 py-3'>
-                            Received Quantity
-                          </th>
-                          <th scope='col' className='px-6 py-3'>
-                            View Doc
-                          </th>
-
-                          <th scope='col' className='px-6 py-3'>
-                            Remaining Quantity
-                          </th>
-                          <th scope='col' className='px-6 py-3'>
-                            Inventory Status
-                          </th>
-                          <th scope='col' className='px-6 py-3'>
-                            Remark
-                          </th>
-                        </tr>
-                      </thead>
-                      {applicationFullData?.receivings.map((data) => (
-                        <tbody>
-                          <tr className='bg-white border-b-2'>
-                            {/* <td className='px-6 py-4'>{data?.date}</td> */}
-                            <td className='px-6 py-4'>
-                              {data?.date
-                                .split("T")[0]
-                                .split("-")
-                                .reverse()
-                                .join("-")}
-                            </td>
-
-                            <td className='px-6 py-4'>{data?.receiving_no}</td>
-                            <td className='px-6 py-4'>
-                              {
-                                applicationFullData?.post_procurement
-                                  ?.total_quantity
-                              }
-                            </td>
-                            <td className='px-6 py-4'>
-                              {data?.received_quantity}
-                            </td>
-                            <td className='px-6 py-4'>
-                              <p
-                                className='text-blue-900 underline font-bold cursor-pointer'
-                                onClick={() => {
-                                  setImageUrl(
-                                    data?.receiving_image[0]?.imageUrl
-                                  );
-                                  setImageModal(true);
-                                }}
-                              >
-                                View
-                              </p>
-                            </td>
-                            <td className='px-6 py-4'>
-                              {data?.remaining_quantity}
-                            </td>
-                            <td className='px-6 py-4'>
-                              {data?.is_added ? (
-                                <p className='text-green-500'>
-                                  Added to Inventory
-                                </p>
-                              ) : (
-                                <p className='text-violet-600'>Pending</p>
-                              )}
-                            </td>
-                            <td className='px-6 py-4'>{data?.remark}</td>
+                            <th scope='col' className='px-6 py-3'>
+                              Remaining Quantity
+                            </th>
+                            <th scope='col' className='px-6 py-3'>
+                              Inventory Status
+                            </th>
+                            <th scope='col' className='px-6 py-3'>
+                              Remark
+                            </th>
                           </tr>
-                        </tbody>
-                      ))}
+                        </thead>
 
-                      <tfoot>
-                        <tr className='font-semibold text-gray-900 dark:text-white'>
-                          <th scope='row' className='px-6 py-3 text-base'>
-                            Total
-                          </th>
-                          <td className='px-6 py-3'>3</td>
-                          <td className='px-6 py-3'>21,000</td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
+                        {applicationFullData?.receivings.map((data) => (
+                          <tbody>
+                            <tr className='bg-white border-b-2'>
+                              {/* <td className='px-6 py-4'>{data?.date}</td> */}
+                              <td className='px-6 py-4'>
+                                {data?.date
+                                  .split("T")[0]
+                                  .split("-")
+                                  .reverse()
+                                  .join("-")}
+                              </td>
+
+                              <td className='px-6 py-4'>
+                                {data?.receiving_no}
+                              </td>
+                              <td className='px-6 py-4'>
+                                {
+                                  applicationFullData?.post_procurement
+                                    ?.total_quantity
+                                }
+                              </td>
+                              <td className='px-6 py-4'>
+                                {data?.received_quantity}
+                              </td>
+                              <td className='px-6 py-4'>
+                                <p
+                                  className='text-blue-900 underline font-bold cursor-pointer'
+                                  onClick={() => {
+                                    setImageUrl(
+                                      data?.receiving_image[0]?.imageUrl
+                                    );
+                                    setImageModal(true);
+                                  }}
+                                >
+                                  View
+                                </p>
+                              </td>
+                              <td className='px-6 py-4'>
+                                {data?.remaining_quantity}
+                              </td>
+                              <td className='px-6 py-4'>
+                                {data?.is_added ? (
+                                  <p className='text-green-500'>
+                                    Added to Inventory
+                                  </p>
+                                ) : (
+                                  <p className='text-violet-600'>Pending</p>
+                                )}
+                              </td>
+                              <td className='px-6 py-4'>{data?.remark}</td>
+                            </tr>
+                          </tbody>
+                        ))}
+
+                        <tfoot>
+                          <tr className='font-semibold text-gray-900 dark:text-white'>
+                            <th scope='row' className='px-6 py-3 text-base'>
+                              Total
+                            </th>
+                            <td className='px-6 py-3'>3</td>
+                            <td className='px-6 py-3'>21,000</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  )}
 
                   {/* table */}
                 </AccordionDetails>
@@ -757,7 +581,6 @@ const ViewReceivedInvtByIdDa = (props) => {
             <div className='py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 '>
               <div className=''>
                 <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-                  {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
                   Received Inventory
                 </h2>
               </div>
@@ -790,9 +613,9 @@ const ViewReceivedInvtByIdDa = (props) => {
                     Total Remaining Quantity
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {applicationFullData?.total_quantity &&
-                      Number(applicationFullData?.total_quantity) -
-                        Number(applicationFullData?.total_receivings)}
+                    {(applicationFullData?.total_remaining &&
+                      Number(applicationFullData?.total_remaining)) ||
+                      0}
                   </div>
                 </div>
 
