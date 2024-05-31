@@ -805,7 +805,7 @@ function AddPreProcurement(props) {
                           placeholder='Rate'
                         />
                       </div>
-                      <p>X</p>
+                      <p className="pt-8">X</p>
                       <div>
                         <label className={`${labelStyle} inline-block mb-2`}>
                           Total Quantity
@@ -822,7 +822,7 @@ function AddPreProcurement(props) {
                           placeholder='Quantity'
                         />
                       </div>
-                      <p>=</p>
+                      <p className="pt-8">=</p>
                       <div>
                         <label className={`${labelStyle} inline-block mb-2`}>
                           Total Rate
