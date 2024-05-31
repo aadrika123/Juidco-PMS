@@ -44,7 +44,7 @@ function AddPreProcurement(props) {
     api_itemCategory,
     api_itemSubCategory,
     api_itemBrand,
-    
+
     api_fetchProcessor,
     api_fetchRam,
     api_fetchOperatingSystem,
@@ -99,6 +99,7 @@ function AddPreProcurement(props) {
   const validationSchema = yup.object({
     itemcategory: yup.string().required("item category is required"),
     itemsubcategory: yup.string().required("item subcategory is required"),
+    brand: yup.string().required("brand is required"),
     // fieldRequired: yup.string().required("This Field is required"),
     // brand: yup.string().required("brand is required"),
 
@@ -419,7 +420,7 @@ function AddPreProcurement(props) {
           setdeclarationStatus(false);
           setProcurement_no(response?.data?.procurement_no);
 
-          navigate('/sr-inventory-proposal')
+          navigate("/sr-inventory-proposal");
         } else {
           setisLoading(false);
           setdeclarationStatus(false);
@@ -456,7 +457,7 @@ function AddPreProcurement(props) {
       name == "cleaningDate" && verifyDateForBookingTanker(value);
     }
     {
-      name == "itemsubcategory" && fetchBrand(value)
+      name == "itemsubcategory" && fetchBrand(value);
     }
     {
       name == "isWithinUlb" && setulbAreaVal(value);
@@ -607,8 +608,6 @@ function AddPreProcurement(props) {
     );
   }
 
-
-
   // console.log(object)
   return (
     <>
@@ -730,14 +729,13 @@ function AddPreProcurement(props) {
                     </select>
 
                     <p className='text-red-500 text-xs '>
-                      {formik.touched.brand &&
-                      formik.errors.brand
+                      {formik.touched.brand && formik.errors.brand
                         ? formik.errors.brand
                         : null}
                     </p>
                   </div>
 
-{/* --------------------------------------------------------------------------------------------------------- */}
+                  {/* --------------------------------------------------------------------------------------------------------- */}
                   {categorySelected?.map((obj, index) => (
                     <div className=' flex flex-wrap w-1/2' key={index}>
                       <div className='px-4 w-full mb-4'>
@@ -764,7 +762,7 @@ function AddPreProcurement(props) {
 
                   <div className='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
-                      Others Description
+                      Description
                     </label>
                     <textarea
                       type='text'
@@ -775,8 +773,7 @@ function AddPreProcurement(props) {
                     />
 
                     <p className='text-red-500 text-xs '>
-                      {formik.touched.description &&
-                      formik.errors.description
+                      {formik.touched.description && formik.errors.description
                         ? formik.errors.description
                         : null}
                     </p>
@@ -785,44 +782,61 @@ function AddPreProcurement(props) {
 
                 <div className='valid-form flex flex-wrap flex-row mx-8'>
                   <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                    <label className={`${labelStyle} inline-block mb-2`}>
+                    <label
+                      className={`${labelStyle} inline-block mb-4 font-semibold`}
+                    >
                       Quantity
                     </label>
 
-                    <div className='flex space-x-5'>
-                      <input
-                        type='number'
-                        name='rate'
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={(e) => {
-                          formik.handleChange(e);
-                          calculateTotalRate();
-                        }}
-                        value={formik.values.rate}
-                        placeholder='Rate'
-                      />
+                    <div className='flex items-center space-x-5'>
+                      <div>
+                        <label className={`${labelStyle} inline-block mb-2`}>
+                          Rate
+                        </label>
+                        <input
+                          type='number'
+                          name='rate'
+                          className={`${inputStyle} inline-block w-full relative`}
+                          onChange={(e) => {
+                            formik.handleChange(e);
+                            calculateTotalRate();
+                          }}
+                          value={formik.values.rate}
+                          placeholder='Rate'
+                        />
+                      </div>
                       <p>X</p>
-                      <input
-                        type='number'
-                        name='quantity'
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={(e) => {
-                          formik.handleChange(e);
-                          calculateTotalRate();
-                        }}
-                        value={formik.values.quantity}
-                        placeholder='Quantity'
-                      />
+                      <div>
+                        <label className={`${labelStyle} inline-block mb-2`}>
+                          Total Quantity
+                        </label>
+                        <input
+                          type='number'
+                          name='quantity'
+                          className={`${inputStyle} inline-block w-full relative`}
+                          onChange={(e) => {
+                            formik.handleChange(e);
+                            calculateTotalRate();
+                          }}
+                          value={formik.values.quantity}
+                          placeholder='Quantity'
+                        />
+                      </div>
                       <p>=</p>
-                      <input
-                        type='number'
-                        name='totalRate'
-                        className={`${inputStyle} inline-block w-full relative`}
-                        // onChange={formik.handleChange}
-                        value={formik.values.totalRate}
-                        placeholder='Total Rate'
-                        disabled
-                      />
+                      <div>
+                        <label className={`${labelStyle} inline-block mb-2`}>
+                          Total Rate
+                        </label>
+                        <input
+                          type='number'
+                          name='totalRate'
+                          className={`${inputStyle} inline-block w-full relative`}
+                          // onChange={formik.handleChange}
+                          value={formik.values.totalRate}
+                          placeholder='Total Rate'
+                          disabled
+                        />
+                      </div>
                     </div>
                     <p className='text-red-500 text-xs '>
                       {formik.touched.quantity && formik.errors.quantity
