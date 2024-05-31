@@ -643,13 +643,13 @@ function EditPreProcurement(props) {
           allowNumberInput(value, formik.values.number_of_items, 100)
         );
     }
-    {
-      name == "brand" &&
-        formik.setFieldValue(
-          "brand",
-          allowCharacterNumberInput(value, formik.values.brand, 50)
-        );
-    }
+    // {
+    //   name == "brand" &&
+    //     formik.setFieldValue(
+    //       "brand",
+    //       allowCharacterNumberInput(value, formik.values.brand, 50)
+    //     );
+    // }
     {
       name == "quantity" &&
         formik.setFieldValue(
@@ -824,7 +824,7 @@ function EditPreProcurement(props) {
 
                       {brand?.length &&
                         brand?.map((items) => (
-                          <option key={items?.id} value={items?.id}  defaultValue={applicationFullData?.brand?.id}>
+                          <option key={items?.id} value={items?.id}>
                             {items?.name}
                           </option>
                         ))}
