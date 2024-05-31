@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import folder from "@/Components/assets/folder.svg";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -6,10 +6,58 @@ import CustomCheckboxGroup from "@/Components/Common/FormMolecules/CustomCheckbo
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
 
 const BasicDetailsForm = () => {
+  const inputFileRef = useRef();
+
   const [selectedTab, setSelectedTab] = useState("online");
+  const [preview, setPreview] = useState();
+  const [imageDoc, setImageDoc] = useState();
 
   const handleTabChange = (event) => {
     setSelectedTab(event.target.value);
+  };
+
+  const handleUploadDoc = () => {
+    inputFileRef.current.click();
+  };
+
+  //image validation with file type and size limit
+  const imageHandler = (e) => {
+    const validExtensions = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "application/pdf",
+    ];
+
+    const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
+
+    const file = e.target.files[0];
+    if (!file) {
+      return toast.error("No File Selected");
+    }
+
+    // Check the file type
+    if (!validExtensions.includes(file.type)) {
+      toast.error(
+        "Invalid file type. Please select a JPG, JPEG, PNG or PDF file."
+      );
+      e.target.value = ""; // Clear the input
+      return;
+    }
+
+    // Check the file size
+    if (file.size > maxSizeInBytes) {
+      toast.error("File size exceeds 2MB. Please select a smaller file.");
+      e.target.value = ""; // Clear the input
+      return;
+    }
+
+    if (file) {
+      console.log(file.size, "=========file size");
+      // props?.setImageDoc(file);
+      console.log(file, "==========file");
+      setPreview(URL.createObjectURL(file));
+    }
   };
 
   const tenderType = [
@@ -98,7 +146,6 @@ const BasicDetailsForm = () => {
         {/* Form Starting */}
 
         <div className=" mt-5 container">
-          
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -167,38 +214,38 @@ const BasicDetailsForm = () => {
                 </div>
 
                 <div class="p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex">
-                  <div className="">
-                    <RadioButtonsGroup
-                      fields={allowResubmission}
-                      title={"Allow Resubmission"}
-                      values={values.checkboxes}
-                      handleChange={handleChange}
-                      errors={errors.checkboxes}
-                      touched={touched.checkboxes}
-                    />
-                  </div>
+                  {/* <div className=""> */}
+                  <RadioButtonsGroup
+                    fields={allowResubmission}
+                    title={"Allow Resubmission"}
+                    values={values.checkboxes}
+                    handleChange={handleChange}
+                    errors={errors.checkboxes}
+                    touched={touched.checkboxes}
+                  />
+                  {/* </div> */}
 
-                  <div className="">
-                    <RadioButtonsGroup
-                      fields={allowWithdrawl}
-                      title={"Allow Withdrawal"}
-                      values={values.checkboxes}
-                      handleChange={handleChange}
-                      errors={errors.checkboxes}
-                      touched={touched.checkboxes}
-                    />
-                  </div>
+                  {/* <div className=""> */}
+                  <RadioButtonsGroup
+                    fields={allowWithdrawl}
+                    title={"Allow Withdrawal"}
+                    values={values.checkboxes}
+                    handleChange={handleChange}
+                    errors={errors.checkboxes}
+                    touched={touched.checkboxes}
+                  />
+                  {/* </div> */}
 
-                  <div className="">
-                    <RadioButtonsGroup
-                      fields={allowOfflineSubmission}
-                      title={"Allow offline Submission"}
-                      values={values.checkboxes}
-                      handleChange={handleChange}
-                      errors={errors.checkboxes}
-                      touched={touched.checkboxes}
-                    />
-                  </div>
+                  {/* <div className=""> */}
+                  <RadioButtonsGroup
+                    fields={allowOfflineSubmission}
+                    title={"Allow offline Submission"}
+                    values={values.checkboxes}
+                    handleChange={handleChange}
+                    errors={errors.checkboxes}
+                    touched={touched.checkboxes}
+                  />
+                  {/* </div> */}
                 </div>
 
                 <div class="p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md row-span-2">
@@ -306,23 +353,60 @@ const BasicDetailsForm = () => {
                     </div>
                   </div>
 
-                  <button
+                  {/* <button
                     className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right"
-                    onClick="##"
+                    onClick={handleUploadDoc}
                   >
                     Upload NIT Document
-                  </button>
-                </div>
+                  </button> */}
 
+                  <div className="flex justify-end">
+
+                  {preview != null &&
+                  <div className="">
+                      <img
+                        src={preview}
+                        alt="Image Preview"
+                       
+                        className="w-[100px] h-auto mt-[20px] border border-indigo-400 rounded mr-5"
+                      />
+                    </div>
+                  }
+
+                  <div className="mb-4">
+                    <input
+                      type="file"
+                      accept=".jpg, .jpeg, .pdf .png"
+                      className="hidden"
+                      ref={inputFileRef}
+                      onChange={(e) => imageHandler(e)}
+                    />
+
+                    <p className="text-red-500 text-sm m-2">
+                      {/* {props?.imageDoc?.name} */}
+                    </p>
+
+                    
+
+                    <div className="flex justify-end">
+                      <button
+                        className={`bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right`}
+                        onClick={handleUploadDoc}
+                      >
+                        Upload NIT Document
+                      </button>
+                    </div>
+                  </div>
+
+                  </div>
+
+                </div>
               </Form>
             )}
           </Formik>
-          
         </div>
-
-
       </div>
-        <div className="mb-5">
+      <div className="mb-5">
         <button
           className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left"
           onClick="##"
@@ -343,7 +427,7 @@ const BasicDetailsForm = () => {
         >
           Reset
         </button>
-        </div>
+      </div>
     </>
   );
 };

@@ -132,7 +132,7 @@ const SideBar = (props) => {
                                   <span
                                     className={
                                       dropName == item?.name
-                                        ? "transition-all duration-200 ease-in-out rotate-90"
+                                        ? "transition-all duration-200 ease-in-out rotate-90 "
                                         : "transition-all duration-200 ease-in-out rotate-0"
                                     }
                                   >
@@ -158,7 +158,7 @@ const SideBar = (props) => {
                                           to={elem?.path}
                                           className={({ isActive }) =>
                                             (isActive
-                                              ? `bg-${mcolor}-700 text-${tcolor}-100 `
+                                              ? `bg-blue-700 text-white `
                                               : ``) +
                                             `${dropMenuBtn} ` +
                                             "flex gap-3 items-center "
