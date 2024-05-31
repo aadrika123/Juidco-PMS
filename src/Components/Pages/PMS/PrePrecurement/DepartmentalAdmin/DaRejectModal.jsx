@@ -70,7 +70,7 @@ function DaRejectModal(props) {
         </div>
 
         <div className="flex justify-center">
-          <textarea name="sr_remark" className="border border-[#5448dd] rounded w-[22rem]  mt-5" placeholder=" Enter Remarks..." onChange={(e)=>props.setRemark(e.target.value)} required/>
+          <textarea name="sr_remark" className="border border-[#5448dd] rounded w-[22rem]  mt-5 p-2" placeholder=" Enter Remarks..." onChange={(e)=>props.setRemark(e.target.value)} required/>
         </div>
 
 

@@ -28,6 +28,7 @@ import { contextVar } from "@/Components/context/contextVar";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import DeadStockUploadImg from "./DeadStockUploadImg";
 import { allowNumberInput } from "@/Components/Common/PowerUps/PowerupFunctions";
+import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
 
 const ViewReceivedInvtById = (props) => {
   const navigate = useNavigate();
@@ -46,6 +47,8 @@ const ViewReceivedInvtById = (props) => {
   const [deadStockImg, setDeadStockImg] = useState(false);
   const [payload, setPayload] = useState({});
   const [imageDoc, setImageDoc] = useState();
+  const [imageUrl, setImageUrl] = useState();
+  const [imageModal, setImageModal] = useState();
 
   const {
     api_fetchSrReceivedInvtListInbox,
@@ -297,6 +300,18 @@ const ViewReceivedInvtById = (props) => {
           imageDoc={imageDoc}
           setImageDoc={setImageDoc}
           setDeadStockImg={setDeadStockImg}
+        />
+      </>
+    );
+  }
+
+  if (imageModal) {
+    return (
+      <>
+        <ImageModal
+          imageModal={imageModal}
+          setImageModal={setImageModal}
+          imageUrl={imageUrl}
         />
       </>
     );
@@ -788,6 +803,7 @@ const ViewReceivedInvtById = (props) => {
 
           {/* Inventory Details form */}
 
+          {page == 'inbox' && 
           <div className={`${formStyle} mt-8 border border-blue-500`}>
             <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
               <div className=''>
@@ -941,6 +957,7 @@ const ViewReceivedInvtById = (props) => {
               </div>
             </form>
           </div>
+          }
         </div>
       </div>
     </div>
