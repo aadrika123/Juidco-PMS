@@ -136,16 +136,16 @@ const BasicDetailsForm = () => {
 
   return (
     <>
-      <div className="bg-white rounded-xl w-full shadow-md p-4 border border-indigo-200">
+      <div className='bg-white rounded-xl w-full shadow-md p-4 border border-indigo-200'>
         {/* Heading  */}
-        <div className="bg-[#4338ca] text-white w-full rounded p-3 flex">
-          <img src={folder} className="pl-2" />
-          <h1 className="pt-1 pl-2 text-xl">Basic Details</h1>
+        <div className='bg-[#4338ca] text-white w-full rounded p-3 flex'>
+          <img src={folder} className='pl-2' />
+          <h1 className='pt-1 pl-2 text-xl'>Basic Details</h1>
         </div>
 
         {/* Form Starting */}
 
-        <div className=" mt-5 container">
+        <div className=' mt-5 container'>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -154,19 +154,19 @@ const BasicDetailsForm = () => {
             }}
           >
             {({ values, handleChange, errors, touched }) => (
-              <Form class="grid grid-cols-2 container mx-auto capitalize space-x-3">
-                <div class="p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
+              <Form class='grid grid-cols-2 container mx-auto capitalize space-x-3'>
+                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                   <>
                     <label
-                      for="default-input"
-                      class="block mb-2 text-sm font-medium text-gray-900"
+                      for='default-input'
+                      class='block mb-2 text-sm font-medium text-gray-900'
                     >
                       Tender Reference No{" "}
-                      <span className="text-red-500">*</span>
+                      <span className='text-red-500'>*</span>
                     </label>
                     <input
-                      type="text"
-                      class="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                      type='text'
+                      class='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
                     />
                   </>
 
@@ -180,7 +180,7 @@ const BasicDetailsForm = () => {
                   />
                 </div>
 
-                <div class="p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
+                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                   <CustomCheckboxGroup
                     fields={formOfContract}
                     title={"Form of Contract"}
@@ -191,7 +191,7 @@ const BasicDetailsForm = () => {
                   />
                 </div>
 
-                <div class="p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
+                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                   <RadioButtonsGroup
                     fields={noOfCovers}
                     title={"No of Covers"}
@@ -202,7 +202,7 @@ const BasicDetailsForm = () => {
                   />
                 </div>
 
-                <div class="p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
+                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                   <CustomCheckboxGroup
                     fields={tenderCategory}
                     title={"Tender Category"}
@@ -213,7 +213,7 @@ const BasicDetailsForm = () => {
                   />
                 </div>
 
-                <div class="p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex">
+                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex'>
                   {/* <div className=""> */}
                   <RadioButtonsGroup
                     fields={allowResubmission}
@@ -248,58 +248,58 @@ const BasicDetailsForm = () => {
                   {/* </div> */}
                 </div>
 
-                <div class="p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md row-span-2">
-                  <div className="">
-                    <h1 className="text-[14px] pb-3">
-                      Payment Mode <span className="text-red-500">*</span>
+                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md row-span-2'>
+                  <div className=''>
+                    <h1 className='text-[14px] pb-3'>
+                      Payment Mode <span className='text-red-500'>*</span>
                     </h1>
-                    <div className="flex space-x-4 mb-4">
-                      <label className="flex items-center space-x-2">
+                    <div className='flex space-x-4 mb-4'>
+                      <label className='flex items-center space-x-2'>
                         <input
-                          type="radio"
-                          name="tabs"
-                          value="online"
+                          type='radio'
+                          name='tabs'
+                          value='online'
                           checked={selectedTab === "online"}
                           onChange={handleTabChange}
-                          className="form-radio h-4 w-4 text-blue-600"
+                          className='form-radio h-4 w-4 text-blue-600'
                         />
                         <span>Online</span>
                       </label>
-                      <label className="flex items-center space-x-2">
+                      <label className='flex items-center space-x-2'>
                         <input
-                          type="radio"
-                          name="tabs"
-                          value="offline"
+                          type='radio'
+                          name='tabs'
+                          value='offline'
                           checked={selectedTab === "offline"}
                           onChange={handleTabChange}
-                          className="form-radio h-4 w-4 text-blue-600"
+                          className='form-radio h-4 w-4 text-blue-600'
                         />
                         <span>Offline</span>
                       </label>
                     </div>
 
-                    <div className="tab-content">
+                    <div className='tab-content'>
                       {selectedTab === "online" && (
-                        <div className="p-5">
+                        <div className='p-5'>
                           <label
-                            for="countries"
-                            class="block mb-2 text-sm font-medium text-gray-900"
+                            for='countries'
+                            class='block mb-2 text-sm font-medium text-gray-900'
                           >
                             In Online(Banks)
                           </label>
                           <select
-                            id="countries"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            id='countries'
+                            class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
                           >
                             <option selected>Choose a Bank</option>
-                            <option value="US">Bank Of India</option>
-                            <option value="CA">State Bank Of India</option>
-                            <option value="FR">Canara Bank</option>
+                            <option value='US'>Bank Of India</option>
+                            <option value='CA'>State Bank Of India</option>
+                            <option value='FR'>Canara Bank</option>
                           </select>
                         </div>
                       )}
                       {selectedTab === "offline" && (
-                        <div className="">
+                        <div className=''>
                           <RadioButtonsGroup
                             fields={offlineBanks}
                             title={"In offline(Instruments)"}
@@ -314,37 +314,37 @@ const BasicDetailsForm = () => {
                   </div>
                 </div>
 
-                <div class="p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
+                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                   <h1>
-                    NIT Document <span className="text-red-500">*</span>
+                    NIT Document <span className='text-red-500'>*</span>
                   </h1>
-                  <p className="text-[10px]">
+                  <p className='text-[10px]'>
                     {" "}
                     (Only .jpg and .pdf files are supported)
                   </p>
 
-                  <div className="">
-                    <div class="relative overflow-x-auto mt-6">
-                      <table class="w-full text-sm text-left rtl:text-right text-gray-500 rounded">
-                        <thead class="text-xs text-white uppercase ">
-                          <tr class=" bg-[#4338CA] border-[2px] border-white">
-                            <th scope="col" class="px-6 py-3">
+                  <div className=''>
+                    <div class='relative overflow-x-auto mt-6'>
+                      <table class='w-full text-sm text-left rtl:text-right text-gray-500 rounded'>
+                        <thead class='text-xs text-white uppercase '>
+                          <tr class=' bg-[#4338CA] border-[2px] border-white'>
+                            <th scope='col' class='px-6 py-3'>
                               File name
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope='col' class='px-6 py-3'>
                               Document Size in KB
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr class="bg-white border">
+                          <tr class='bg-white border'>
                             <th
-                              scope="row"
-                              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border "
+                              scope='row'
+                              class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap border '
                             >
                               NIT Document.pdf
                             </th>
-                            <td class="px-6 py-4">
+                            <td class='px-6 py-4'>
                               <p>123 kb</p>
                             </td>
                           </tr>
@@ -360,70 +360,64 @@ const BasicDetailsForm = () => {
                     Upload NIT Document
                   </button> */}
 
-                  <div className="flex justify-end">
+                  <div className='flex justify-end'>
+                    {preview != null && (
+                      <div className=''>
+                        <img
+                          src={preview}
+                          alt='Image Preview'
+                          className='w-[100px] h-auto mt-[20px] border border-indigo-400 rounded mr-5'
+                        />
+                      </div>
+                    )}
 
-                  {preview != null &&
-                  <div className="">
-                      <img
-                        src={preview}
-                        alt="Image Preview"
-                       
-                        className="w-[100px] h-auto mt-[20px] border border-indigo-400 rounded mr-5"
+                    <div className='mb-4'>
+                      <input
+                        type='file'
+                        accept='.jpg, .jpeg, .pdf .png'
+                        className='hidden'
+                        ref={inputFileRef}
+                        onChange={(e) => imageHandler(e)}
                       />
-                    </div>
-                  }
 
-                  <div className="mb-4">
-                    <input
-                      type="file"
-                      accept=".jpg, .jpeg, .pdf .png"
-                      className="hidden"
-                      ref={inputFileRef}
-                      onChange={(e) => imageHandler(e)}
-                    />
+                      <p className='text-red-500 text-sm m-2'>
+                        {/* {props?.imageDoc?.name} */}
+                      </p>
 
-                    <p className="text-red-500 text-sm m-2">
-                      {/* {props?.imageDoc?.name} */}
-                    </p>
-
-                    
-
-                    <div className="flex justify-end">
-                      <button
-                        className={`bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right`}
-                        onClick={handleUploadDoc}
-                      >
-                        Upload NIT Document
-                      </button>
+                      <div className='flex justify-end'>
+                        <button
+                          className={`bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right`}
+                          onClick={handleUploadDoc}
+                        >
+                          Upload NIT Document
+                        </button>
+                      </div>
                     </div>
                   </div>
-
-                  </div>
-
                 </div>
               </Form>
             )}
           </Formik>
         </div>
       </div>
-      <div className="mb-5">
+      <div className='mb-5'>
         <button
-          className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left"
-          onClick="##"
+          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
+          onClick='##'
         >
           Back
         </button>
 
         <button
-          className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right"
-          onClick="##"
+          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right'
+          onClick='##'
         >
           Save & Next
         </button>
 
         <button
-          className="bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right"
-          onClick="##"
+          className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
+          onClick='##'
         >
           Reset
         </button>

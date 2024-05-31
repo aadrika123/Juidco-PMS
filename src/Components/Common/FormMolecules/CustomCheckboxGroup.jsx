@@ -26,7 +26,10 @@ const CustomCheckboxGroup = ({
         variant='standard'
         error={Boolean(errors && touched)}
       >
-        <FormLabel component='legend' sx={{ color: "#111827", fontSize: "15px" }}>
+        <FormLabel
+          component='legend'
+          sx={{ color: "#111827", fontSize: "15px" }}
+        >
           {title} <span className='text-red-500'>*</span>
         </FormLabel>
         <FormGroup
@@ -38,20 +41,22 @@ const CustomCheckboxGroup = ({
               key={opt.value}
               control={
                 <Checkbox
-                  size='small'
                   //   checked={values[opt.value]}
                   onChange={handleChange}
                   name={`checkboxes.${opt.value}`}
                   sx={{
-                    '& .MuiSvgIcon-root': {
+                    "& .MuiSvgIcon-root": {
                       fontSize: 20,
                     },
                     paddingLeft: 3,
-                   }}
+                  }}
                 />
               }
-                          
-              label={<Typography variant="body2" color="textSecondary">{opt.label}</Typography>}
+              label={
+                <Typography variant='body2' color='textSecondary'>
+                  {opt.label}
+                </Typography>
+              }
             />
           ))}
         </FormGroup>
