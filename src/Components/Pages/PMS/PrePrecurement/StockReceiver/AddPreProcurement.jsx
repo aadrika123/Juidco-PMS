@@ -44,6 +44,7 @@ function AddPreProcurement(props) {
     api_itemCategory,
     api_itemSubCategory,
     api_itemBrand,
+    
     api_fetchProcessor,
     api_fetchRam,
     api_fetchOperatingSystem,
@@ -247,7 +248,7 @@ function AddPreProcurement(props) {
   // ══════════════════════════════║🔰calculate the total rate🔰║═══════════════════════════════════
   const calculateTotalRate = () => {
     const rate = Number(formik.values.rate) || 0;
-    const quantity = Number(formik.values.number_of_items) || 0;
+    const quantity = Number(formik.values.quantity) || 0;
     const totalRate = rate * quantity;
     formik.setFieldValue("totalRate", totalRate);
     console.log(totalRate, "tot Rate");
@@ -300,16 +301,16 @@ function AddPreProcurement(props) {
       });
   };
 
-  // const fetchBrand = () => {
-  //   AxiosInterceptors.get(`${api_itemBrand}`, ApiHeader())
-  //     .then(function (response) {
-  //       console.log("item Categor", response.data.data);
-  //       setBrand(response.data.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log("errorrr.... ", error);
-  //     });
-  // };
+  const fetchBrand = (value) => {
+    AxiosInterceptors.get(`${api_itemBrand}/${value}`, ApiHeader())
+      .then(function (response) {
+        console.log("item Categor", response.data.data);
+        setBrand(response.data.data);
+      })
+      .catch(function (error) {
+        console.log("errorrr.... ", error);
+      });
+  };
 
   // const fetchProcessor = () => {
   //   AxiosInterceptors.get(`${api_fetchProcessor}`, ApiHeader())
@@ -399,7 +400,7 @@ function AddPreProcurement(props) {
       other_description: formData?.other_description,
 
       rate: Number(formData?.rate),
-      quantity: Number(formData?.number_of_items),
+      quantity: Number(formData?.quantity),
       total_rate: Number(formData?.totalRate),
     };
 
@@ -453,6 +454,9 @@ function AddPreProcurement(props) {
 
     {
       name == "cleaningDate" && verifyDateForBookingTanker(value);
+    }
+    {
+      name == "itemsubcategory" && fetchBrand(value)
     }
     {
       name == "isWithinUlb" && setulbAreaVal(value);
@@ -537,13 +541,13 @@ function AddPreProcurement(props) {
           allowNumberInput(value, formik.values.number_of_items, 100)
         );
     }
-    {
-      name == "brand" &&
-        formik.setFieldValue(
-          "brand",
-          allowCharacterNumberInput(value, formik.values.brand, 50)
-        );
-    }
+    // {
+    //   name == "brand" &&
+    //     formik.setFieldValue(
+    //       "brand",
+    //       allowCharacterNumberInput(value, formik.values.brand, 50)
+    //     );
+    // }
     {
       name == "quantity" &&
         formik.setFieldValue(
@@ -602,6 +606,10 @@ function AddPreProcurement(props) {
       </>
     );
   }
+
+
+
+  // console.log(object)
   return (
     <>
       {/* <ToastContainer position='top-right' autoClose={3000} /> */}
@@ -628,7 +636,7 @@ function AddPreProcurement(props) {
                 </div>
 
                 <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
-                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Item Category
                       <span className='text-xl text-red-500 pl-1'>*</span>{" "}
@@ -673,7 +681,7 @@ function AddPreProcurement(props) {
                     </p>
                   </div>
 
-                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Items Sub Category
                       <span className='text-xl text-red-500 pl-1'>*</span>
@@ -701,6 +709,35 @@ function AddPreProcurement(props) {
                     </p>
                   </div>
 
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
+                    <label className={`${labelStyle} inline-block mb-2`}>
+                      Brand
+                      <span className='text-xl text-red-500 pl-1'>*</span>
+                    </label>
+                    <select
+                      {...formik.getFieldProps("brand")}
+                      className={`${inputStyle} inline-block w-full relative`}
+                      onChange={formik.handleChange}
+                    >
+                      <option defaultValue={"select"}>select</option>
+
+                      {brand?.length &&
+                        brand?.map((items) => (
+                          <option key={items?.id} value={items?.id}>
+                            {items?.name}
+                          </option>
+                        ))}
+                    </select>
+
+                    <p className='text-red-500 text-xs '>
+                      {formik.touched.brand &&
+                      formik.errors.brand
+                        ? formik.errors.brand
+                        : null}
+                    </p>
+                  </div>
+
+{/* --------------------------------------------------------------------------------------------------------- */}
                   {categorySelected?.map((obj, index) => (
                     <div className=' flex flex-wrap w-1/2' key={index}>
                       <div className='px-4 w-full mb-4'>
@@ -773,7 +810,7 @@ function AddPreProcurement(props) {
                           formik.handleChange(e);
                           calculateTotalRate();
                         }}
-                        value={formik.values.number_of_items}
+                        value={formik.values.quantity}
                         placeholder='Quantity'
                       />
                       <p>=</p>
