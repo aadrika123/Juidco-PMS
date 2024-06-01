@@ -634,7 +634,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                   <div className=''>
                     <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
                       <div className='col-span-12  w-full mb-20'>
-                        <div className=' ml-4 p-2 mt-4'>
+                        <div className=' ml-4 p-2 mt-3'>
                           <h1
                             className={`${headingStyle} text-left p-2 pl-6 bg-[#4338ca] text-white rounded-md`}
                           >
