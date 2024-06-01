@@ -222,7 +222,7 @@ function ListTable(props) {
                 onClick={() => goToPageFun()}
               >
                 {" "}
-                <span className='font-bold bg-blue-600 text-xl px-2 pb-1 rounded-full hover:text-white hover:bg-blue-400'>
+                <span className='font-bold bg-blue-600 text-xl px-2 pb-1 rounded-full text-white hover:text-white hover:bg-blue-400'>
                   &#x21E8;
                 </span>{" "}
               </abbr>

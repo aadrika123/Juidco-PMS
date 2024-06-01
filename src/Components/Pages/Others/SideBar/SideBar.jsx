@@ -113,7 +113,7 @@ const SideBar = (props) => {
                               className={({ isActive }) =>
                                 (isActive && item?.children?.length == 0
                                   ? ` bg-${mcolor}-600 text-${tcolor}-100 `
-                                  : " ") +
+                                  : ` `) +
                                 `${mobileMenuBtn} ` +
                                 "flex gap-4 items-center"
                               }
@@ -126,7 +126,7 @@ const SideBar = (props) => {
                               <span>
                                 <MdOutlineDashboard />
                               </span>{" "}
-                              <div className='flex justify-between items-center flex-1'>
+                              <div className={`flex justify-between items-center flex-1 `}>
                                 <span>{item?.name}</span>
                                 {item?.path == null && (
                                   <span
@@ -144,11 +144,11 @@ const SideBar = (props) => {
 
                             {item?.children?.length > 0 &&
                               dropName == item?.name && (
-                                <ul className='block rounded rounded-t-none top-full py-0.5 ltr:text-left rtl:text-right'>
+                                <ul className='block rounded top-full py-0.5 ltr:text-left rtl:text-right bg-[#190BC4] text-white'>
                                   {item?.children?.map((elem) => (
                                     <>
                                       <li
-                                        className={`relative cursor-pointer mb-1`}
+                                        className={`relative cursor-pointer mb-1 `}
                                         onClick={() => {
                                           window.innerWidth <= 763 &&
                                             settoggleBar(!toggleBar);
