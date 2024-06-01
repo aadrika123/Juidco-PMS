@@ -317,6 +317,10 @@ const ViewReceivedInvtById = (props) => {
     );
   }
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div>
       <div className=''>
@@ -325,18 +329,9 @@ const ViewReceivedInvtById = (props) => {
           titleText={"Inventory Proposal Details"}
         />
       </div>
-      <div className=''>
+      <div className='' id='printable-content'>
         {/* Basic Details */}
         <div className='mt-6'>
-          {/* <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 border border-blue-500 '>
-            <h2 className='font-semibold text-xl flex justify-start'>
-              <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View
-              Procurement Request{" "}
-            </h2>
-          </div> */}
-          {/* <h1 className='px-1 font-semibold font-serif  text-gray-800'>
-            <MdTag className='inline' /> Basic Details
-          </h1> */}
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
@@ -367,10 +362,8 @@ const ViewReceivedInvtById = (props) => {
               </div>
             )}
 
-            <div className='grid grid-cols-4 gap-4 ml-8'>
-              {/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+            <div className='grid md:grid-cols-4 gap-4 ml-8'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Item Category
                 </div>
@@ -379,11 +372,7 @@ const ViewReceivedInvtById = (props) => {
                 </div>
               </div>
 
-              {/* } */}
-
-              {/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Item Sub Category
                 </div>
@@ -392,209 +381,24 @@ const ViewReceivedInvtById = (props) => {
                 </div>
               </div>
 
-              {/* } */}
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Brand</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.brand.name)}
                 </div>
               </div>
 
-              {applicationFullData?.pre_procurement?.category?.name ==
-                ("Uniforms" ||
-                  "Maintainance and Repaire" ||
-                  "Cleaning Supplies" ||
-                  "Furniture") && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold '>Colour</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.colour)}
-                  </div>
-                </div>
-              )}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                ("Uniforms" ||
-                  "Maintainance and Repaire" ||
-                  "Furniture" ||
-                  "Cleaning Supplies") && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Material</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.material)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                ("Maintainance and Repaire" || "Safety and Security") && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Dimension</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.dimension)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                "Furniture" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Room Type</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.room_type)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                "Furniture" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold '>
-                    Included Components
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(
-                      applicationFullData?.pre_procurement?.included_components
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                "Furniture" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Size</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.size)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                "Cleaning Supplies" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Recomended Uses
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(
-                      applicationFullData?.pre_procurement?.recomended_uses
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                "Cleaning Supplies" && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Bristle</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.bristle)}
-                  </div>
-                </div>
-              )}
-
-              {applicationFullData?.pre_procurement?.category?.name ==
-                ("Maintainance and Repaire" || "Safety and Security") && (
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold '>Weight</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.pre_procurement?.weight)}
-                  </div>
-                </div>
-              )}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-semibold '>
-                  Rate per quantity
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.rate)}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.quantity)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Total Rate</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.total_rate)}
-                </div>
-              </div>
-
-              {/* <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  No of Items
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.number_of_items)}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  Dimensions
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.pre_procurement?.dimension)}
-                </div>
-              </div> */}
-
-              {/* </div> */}
-
-              {/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  {/* {nullToNA(applicationFullData?.quantity)} */}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {/* Quantity  */}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  {/* {nullToNA(applicationFullData?.applicant_name)} */}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {/* Total Rate   */}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  {/* {nullToNA(applicationFullData?.mobile)} */}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {/* Brand  */}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-semibold '>
-                  {/* {nullToNA(applicationFullData?.email)} */}
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {/* Processor  */}
                 </div>
               </div>
             </div>
@@ -609,18 +413,15 @@ const ViewReceivedInvtById = (props) => {
             <div className='h-[30px]'></div>
           </div>
 
-          {/* Additional Details */}
-
           <div className='py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 '>
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-                {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
                 Supplier Details
               </h2>
             </div>
 
-            <div className='grid grid-cols-4 gap-4 ml-9'>
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+            <div className='grid md:grid-cols-4 gap-4 ml-9'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Supplier Name
                 </div>
@@ -631,35 +432,35 @@ const ViewReceivedInvtById = (props) => {
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>GST No</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.post_procurement?.gst_no)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Final Rate</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.post_procurement?.final_rate)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>GST %</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.post_procurement?.gst)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Total Price</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.post_procurement?.total_price)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Total Quantity
                 </div>
@@ -670,7 +471,7 @@ const ViewReceivedInvtById = (props) => {
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Total Received Items
                 </div>
@@ -681,7 +482,7 @@ const ViewReceivedInvtById = (props) => {
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Unit Price</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.post_procurement?.unit_price)}
@@ -815,161 +616,186 @@ const ViewReceivedInvtById = (props) => {
 
           {/* Inventory Details form */}
 
-          {page == 'inbox' && 
-          <div className={`${formStyle} mt-8 border border-blue-500`}>
-            <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-              <div className=''>
-                <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
-                  <div className='col-span-12  w-full mb-20'>
-                    <div className=' ml-4 p-2 mt-4'>
-                      <h1
-                        className={`${headingStyle} text-left p-2 pl-6 bg-[#4338ca] text-white rounded-md`}
-                      >
-                        Inventory Details
-                      </h1>
-                    </div>
+          {page == "inbox" && (
+            <div className={`${formStyle} mt-8 border border-blue-500`}>
+              <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
+                <div className=''>
+                  <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
+                    <div className='col-span-12  w-full mb-20'>
+                      <div className=' ml-4 p-2 mt-4'>
+                        <h1
+                          className={`${headingStyle} text-left p-2 pl-6 bg-[#4338ca] text-white rounded-md`}
+                        >
+                          Inventory Details
+                        </h1>
+                      </div>
 
-                    <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
-                      <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                        <div class='px-4 w-full mb-4'>
+                      <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
+                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                          <div class='px-4 w-full mb-4'>
+                            <label
+                              className={`${labelStyle} inline-block mb-2`}
+                            >
+                              Total Stock
+                            </label>
+
+                            <input
+                              disabled
+                              name='totalStock'
+                              className={`${inputStyle} inline-block w-full relative`}
+                              onChange={formik.handleChange}
+                              value={formik.values.totalStock}
+                            />
+
+                            <p className='text-red-500 text-xs '>
+                              {formik.touched.totalStock &&
+                              formik.errors.totalStock
+                                ? formik.errors.totalStock
+                                : null}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                          <div class='px-4 w-full mb-4'>
+                            <label
+                              className={`${labelStyle} inline-block mb-2`}
+                            >
+                              Received Stock
+                            </label>
+
+                            <input
+                              name='receivedStock'
+                              disabled
+                              className={`${inputStyle} inline-block w-full relative`}
+                              onChange={formik.handleChange}
+                              value={formik.values.receivedStock}
+                            />
+
+                            <p className='text-red-500 text-xs '>
+                              {formik.touched.receivedStock &&
+                              formik.errors.receivedStock
+                                ? formik.errors.receivedStock
+                                : null}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                          <div class='px-4 w-full mb-4'>
+                            <label
+                              className={`${labelStyle} inline-block mb-2`}
+                            >
+                              Remaining Stock
+                            </label>
+
+                            <input
+                              disabled
+                              name='remStock'
+                              className={`${inputStyle} inline-block w-full relative`}
+                              onChange={formik.handleChange}
+                              value={formik.values.remStock}
+                            />
+
+                            <p className='text-red-500 text-xs '>
+                              {formik.touched.remStock && formik.errors.remStock
+                                ? formik.errors.remStock
+                                : null}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                          <div class=' relative px-4 w-full mb-4'>
+                            <label
+                              className={`${labelStyle} inline-block mb-2`}
+                            >
+                              Dead Stock
+                            </label>
+
+                            <input
+                              name='dead_stock'
+                              className={`${inputStyle} inline-block w-full relative`}
+                              onChange={formik.handleChange}
+                              value={formik.values.dead_stock}
+                            />
+
+                            <button
+                              // className={`${buttonStyle} absolute`}
+                              className={`text-white absolute end-6 mt-[6px] bg-[#4338CA] hover:bg-blue-800 rounded text-[12px] px-5 py-[5px]`}
+                              onClick={() => {
+                                setDeadStockImg(true);
+                              }}
+                            >
+                              Upload Reference Image
+                            </button>
+
+                            <p className='text-red-500 text-xs '>
+                              {formik.touched.dead_stock &&
+                              formik.errors.dead_stock
+                                ? formik.errors.dead_stock
+                                : null}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className='form-group flex-shrink max-w-full ml-4 px-4 w-full md:w-1/2'>
                           <label className={`${labelStyle} inline-block mb-2`}>
-                            Total Stock
+                            Remarks
                           </label>
-
-                          <input
-                            disabled
-                            name='totalStock'
-                            className={`${inputStyle} inline-block w-full relative`}
+                          <textarea
+                            type='text'
+                            name='remarks'
+                            className={`${inputStyle} inline-block w-full relative h-20`}
                             onChange={formik.handleChange}
-                            value={formik.values.totalStock}
+                            value={formik.values.remarks}
                           />
 
                           <p className='text-red-500 text-xs '>
-                            {formik.touched.totalStock &&
-                            formik.errors.totalStock
-                              ? formik.errors.totalStock
+                            {formik.touched.remarks && formik.errors.remarks
+                              ? formik.errors.remarks
                               : null}
                           </p>
                         </div>
                       </div>
 
-                      <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                        <div class='px-4 w-full mb-4'>
-                          <label className={`${labelStyle} inline-block mb-2`}>
-                            Received Stock
-                          </label>
+                      <div className='space-x-5 flex justify-end mr-[3rem]'>
+                        <button
+                          className={buttonStyle}
+                          onClick={() => {
+                            setCancelModal(true);
+                          }}
+                        >
+                          Cancel
+                        </button>
 
-                          <input
-                            name='receivedStock'
-                            disabled
-                            className={`${inputStyle} inline-block w-full relative`}
-                            onChange={formik.handleChange}
-                            value={formik.values.receivedStock}
-                          />
-
-                          <p className='text-red-500 text-xs '>
-                            {formik.touched.receivedStock &&
-                            formik.errors.receivedStock
-                              ? formik.errors.receivedStock
-                              : null}
-                          </p>
-                        </div>
+                        <button className={buttonStyle2} type='submit'>
+                          Add To Inventory
+                        </button>
                       </div>
-
-                      <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                        <div class='px-4 w-full mb-4'>
-                          <label className={`${labelStyle} inline-block mb-2`}>
-                            Remaining Stock
-                          </label>
-
-                          <input
-                            disabled
-                            name='remStock'
-                            className={`${inputStyle} inline-block w-full relative`}
-                            onChange={formik.handleChange}
-                            value={formik.values.remStock}
-                          />
-
-                          <p className='text-red-500 text-xs '>
-                            {formik.touched.remStock && formik.errors.remStock
-                              ? formik.errors.remStock
-                              : null}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                        <div class=' relative px-4 w-full mb-4'>
-                          <label className={`${labelStyle} inline-block mb-2`}>
-                            Dead Stock
-                          </label>
-
-                          <input
-                            name='dead_stock'
-                            className={`${inputStyle} inline-block w-full relative`}
-                            onChange={formik.handleChange}
-                            value={formik.values.dead_stock}
-                          />
-
-                          <button
-                            // className={`${buttonStyle} absolute`}
-                            className={`text-white absolute end-6 mt-[6px] bg-[#4338CA] hover:bg-blue-800 rounded text-[12px] px-5 py-[5px]`}
-                            onClick={() => {
-                              setDeadStockImg(true);
-                            }}
-                          >
-                            Upload Reference Image
-                          </button>
-
-                          <p className='text-red-500 text-xs '>
-                            {formik.touched.dead_stock &&
-                            formik.errors.dead_stock
-                              ? formik.errors.dead_stock
-                              : null}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className='form-group flex-shrink max-w-full ml-4 px-4 w-full md:w-1/2'>
-                        <label className={`${labelStyle} inline-block mb-2`}>
-                          Remarks
-                        </label>
-                        <textarea
-                          type='text'
-                          name='remarks'
-                          className={`${inputStyle} inline-block w-full relative h-20`}
-                          onChange={formik.handleChange}
-                          value={formik.values.remarks}
-                        />
-
-                        <p className='text-red-500 text-xs '>
-                          {formik.touched.remarks && formik.errors.remarks
-                            ? formik.errors.remarks
-                            : null}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className='space-x-5 flex justify-end mr-[3rem]'>
-                      <button
-                        className={buttonStyle}
-                        onClick={() => {
-                          setCancelModal(true);
-                        }}
-                      >
-                        Cancel
-                      </button>
-
-                      <button className={buttonStyle2} type='submit'>
-                        Add To Inventory
-                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
+          )}
+          {/* {page == "outbox" && ( */}
+          <div className='space-x-5 flex justify-end mt-[1rem]'>
+            {page == "outbox" && (
+              <button onClick={handlePrint} className={`${buttonStyle}`}>
+                Print
+              </button>
+            )}
+
+            <button
+              className={buttonStyle2}
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              Back
+            </button>
           </div>
-          }
         </div>
       </div>
     </div>
