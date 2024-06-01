@@ -43,7 +43,7 @@ function ImageModal(props) {
 
           {props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
             <img
-              className='max-w-full w-full'
+              className='w-[40rem]'
               src={props?.imageUrl}
               alt='alt title'
             />

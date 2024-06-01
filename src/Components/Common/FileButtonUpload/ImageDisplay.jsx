@@ -23,7 +23,7 @@ export default function ImageDisplay({
     );
   }
   return (
-    <div className={`w-${width} text-center rounded-md`}>
+    <div className={`w-${width} text-center rounded-md flex`}>
       {preview == null && (
         <div
           className={`${showPreview} p-10 mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col`}
@@ -57,8 +57,8 @@ export default function ImageDisplay({
         />
       )}
 
-      <div className='mb-4 text-center w-full'>
-        <p className='text-red-500 text-xs'>{imageDoc?.name}</p>
+      <div className='mb-4 text-center w-full pl-2'>
+        <p className='text-red-500 text-xs '>{imageDoc?.name}</p>
       </div>
     </div>
   );

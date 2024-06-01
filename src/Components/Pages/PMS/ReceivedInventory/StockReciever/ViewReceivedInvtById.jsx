@@ -388,6 +388,7 @@ const ViewReceivedInvtById = (props) => {
         {/* Basic Details */}
         <div className='mt-6'>
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
+           
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
                 View Procurement Request{" "}
@@ -680,13 +681,13 @@ const ViewReceivedInvtById = (props) => {
                 <div className=''>
                   <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
                     <div className='col-span-12  w-full mb-20'>
-                      <div className=' ml-4 p-2 mt-4'>
-                        <h1
-                          className={`${headingStyle} text-left p-2 pl-6 bg-[#4338ca] text-white rounded-md`}
-                        >
-                          Inventory Details
-                        </h1>
+                      
+                      <div className='p-4'>
+                        <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+                        Inventory Details
+                        </h2>
                       </div>
+                          
 
                       <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
                         <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
@@ -843,13 +844,14 @@ const ViewReceivedInvtById = (props) => {
                               imageDoc={imageDoc}
                               alt={"Dead Stock Image"}
                               showPreview={"hidden"}
-                              disabled
+                              // disabled
+                              width={["80px"]}
                             />
                           </div>
                           {/* </div> */}
                         </div>
 
-                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4'>
+                        <div className='form-group flex-shrink max-w-full px-8 w-full md:w-full mb-4'>
                           <label className={`${labelStyle} inline-block mb-2`}>
                             Remarks
                           </label>
