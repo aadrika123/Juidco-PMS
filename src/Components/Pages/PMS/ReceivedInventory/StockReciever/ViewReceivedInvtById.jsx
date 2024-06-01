@@ -190,7 +190,7 @@ const ViewReceivedInvtById = (props) => {
       //validation for dead stock image
       if (
         (formik.values.dead_stock != 0 || formik.values.dead_stock != "") &&
-        (imageDoc == "undefined" || imageDoc == null)
+        (imageDoc == "undefined" || imageDoc == null || imageDoc == "")
       ) {
         return toast.error("Please upload dead stock image");
       }
@@ -706,7 +706,7 @@ const ViewReceivedInvtById = (props) => {
                               value={formik.values.dead_stock}
                             />
                             {formik.values.dead_stock > 0 && (
-                              <div className='absolute right-0 top-[33px] w-full'>
+                              <div className='absolute left-[63%] top-[37px] w-full'>
                                 <FileButton
                                   btnLabel={"Upload Reference Image"}
                                   bg={"[#4338CA]"}
@@ -744,7 +744,7 @@ const ViewReceivedInvtById = (props) => {
                               value={formik.values.dead_stock}
                             />
                             {formik.values.dead_stock > 0 && (
-                              <div className='absolute right-0 top-[33px] w-full'>
+                              <div className='absolute left-[63%] top-[37px] w-full'>
                                 <FileButton
                                   btnLabel={"Upload Reference Image"}
                                   bg={"[#4338CA]"}
@@ -753,6 +753,7 @@ const ViewReceivedInvtById = (props) => {
                                   hoverBg={"bg-blue-800"}
                                   setImageDoc={setImageDoc}
                                   setPreview={setPreview}
+                                  paddingY={"[30px]"}
                                 />
                               </div>
                             )}

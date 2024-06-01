@@ -21,6 +21,9 @@ import StockReceiverModal from "./StockReceiverModal";
 import ReleaseTenderModal from "./ReleaseTenderModal";
 import DaRejectModal from "./DaRejectModal";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
+import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
+import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
+import ApiHeader2 from "@/Components/api/ApiHeader2";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
@@ -39,6 +42,8 @@ const ViewInventoryDetailsById = (props) => {
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [remark, setRemark] = useState("");
+  const [imageDoc, setImageDoc] = useState();
+  const [preview, setPreview] = useState();
 
   const {
     api_fetchProcurementDADetailByIdinbox,
@@ -55,9 +60,6 @@ const ViewInventoryDetailsById = (props) => {
 
   let buttonStyle2 =
     " p-2 border border-indigo-500 text-white text-md sm:text-md leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
-
-  let buttonStyle3 =
-    " pb-2 pl-4 pr-4 pt-2 border border-yellow-400 text-white text-md sm:text-md leading-tight rounded  hover:bg-white  hover:text-yellow-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-yellow-700";
 
   useEffect(() => {
     getApplicationDetail();
@@ -166,14 +168,13 @@ const ViewInventoryDetailsById = (props) => {
   };
 
   const postReleaseTender = () => {
+    let formData = new FormData();
+    formData.append("img", imageDoc);
+    formData.append("preProcurement", [id]);
     // seterroState(false);
     setisLoading(true);
 
-    AxiosInterceptors.post(
-      `${api_postReleaseTender}`,
-      { preProcurement: [id] },
-      ApiHeader()
-    )
+    AxiosInterceptors.post(`${api_postReleaseTender}`, formData, ApiHeader2())
       .then(function (response) {
         console.log("Forwarded to DA", response?.data);
         console.log(response?.data?.st, "upper Status");
@@ -342,7 +343,17 @@ const ViewInventoryDetailsById = (props) => {
               </p>
             </div>
 
-            <div className='h-[30px]'></div>
+            <div className='flex justify-end mb-4'>
+              <ImageDisplay
+                preview={preview}
+                imageDoc={imageDoc}
+                alt={"Notesheet doc"}
+                showPreview={"hidden"}
+                width={"[100px]"}
+              />
+            </div>
+
+            {/* <div className='h-[30px]'></div> */}
           </div>
           <div className='space-x-5 flex justify-end mt-[2rem]'>
             <button onClick={handlePrint} className={buttonStyle}>
@@ -386,14 +397,18 @@ const ViewInventoryDetailsById = (props) => {
                   Release For Tender
                 </button>
 
-                <input type='file' ref={notesheetRef} className='hidden' />
-
-                <button
-                  className='p-2 text-white bg-[#359F6E] hover:bg-green-700 text-md sm:text-sm leading-tight rounded hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
-                  onClick={() => notesheetRef.current.click()}
-                >
-                  Upload Notesheet
-                </button>
+                <div className='bg-[#359F6E] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-700'>
+                  <FileButton
+                    bg={"[#359F6E]"}
+                    hoverBg={"bg-green-700"}
+                    btnLabel={"Upload Notesheet"}
+                    imgRef={notesheetRef}
+                    setImageDoc={setImageDoc}
+                    setPreview={setPreview}
+                    textColor={"white"}
+                    // paddingY={"8"}
+                  />
+                </div>
               </>
             )}
           </div>

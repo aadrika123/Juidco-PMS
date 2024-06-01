@@ -80,8 +80,8 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
       <div
         className={`h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out w-64 p-4 border border-gray-300 rounded`}
       >
-        <div className='flex justify-between items-center'>
-          <h2 className='text-xl font-thin text-gray-600 flex'>
+        <div className='flex justify-between items-center bg-blue-800'>
+          <h2 className='text-xl font-thin text-white flex'>
             <FiFilter className=' mt-1 mr-2 text-blue-900' />
             Filters
           </h2>
@@ -96,12 +96,12 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
 
         <div>
           <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}
-            sx={{
-              border: "1px solid white",
-              boxShadow: "none", 
-                           
-            }}
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              sx={{
+                border: "1px solid white",
+                boxShadow: "none",
+              }}
             >
               Category
             </AccordionSummary>
@@ -121,12 +121,12 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
             </AccordionDetails>
           </Accordion>
           <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}
-            sx={{
-              border: "1px solid white",
-              boxShadow: "none", 
-                           
-            }}
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              sx={{
+                border: "1px solid white",
+                boxShadow: "none",
+              }}
             >
               Sub Category
             </AccordionSummary>
