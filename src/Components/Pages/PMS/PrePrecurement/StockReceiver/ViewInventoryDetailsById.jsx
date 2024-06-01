@@ -93,10 +93,10 @@ const ViewInventoryDetailsById = (props) => {
   const forwardToDA = () => {
     // seterroState(false);
     setisLoading(true);
-
+    // let preProcurement = [id];
     let formData = new FormData();
     formData.append("img", imageDoc);
-    formData.append("preProcurement", [id]);
+    formData.append("preProcurement", JSON.stringify([id]));
 
     AxiosInterceptors.post(`${api_postForwardToDA}`, formData, ApiHeader2())
       .then(function (response) {
@@ -113,10 +113,6 @@ const ViewInventoryDetailsById = (props) => {
           console.log(response?.data?.message, "Forwadede to DA--->>");
         } else {
           setisLoading(false);
-          // setdeclarationStatus(false);
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
-          console.log(errorMsg, "====>>");
           toast(response?.data?.message, "error");
         }
       })
