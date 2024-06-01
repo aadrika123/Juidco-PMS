@@ -512,7 +512,9 @@ const ViewReceivedInvtById = (props) => {
                 </AccordionSummary>
                 <AccordionDetails>
                   {/* table */}
-
+                  {!applicationFullData?.receivings.length ? (
+                    <p className='font-semibold p-4'>No Data Found</p>
+                  ) : (
                   <div className='relative overflow-x-auto'>
                     <table className='w-full text-md text-left rtl:text-right'>
                       <thead className='text-xs uppercase bg-gray-200'>
@@ -607,6 +609,7 @@ const ViewReceivedInvtById = (props) => {
                       </tfoot>
                     </table>
                   </div>
+                  )}
 
                   {/* table */}
                 </AccordionDetails>
