@@ -374,7 +374,7 @@ const ViewReceivedInvtById = (props) => {
     window.print();
   };
 
-  console.log(inventoryData)
+  console.log(inventoryData?.data,"invtDet")
 
   return (
     <div>
@@ -779,10 +779,10 @@ const ViewReceivedInvtById = (props) => {
                             >
                               <option defaultValue={"select"}>select</option>
 
-                              {inventoryData?.length &&
-                                inventoryData?.map((items) => (
+                              {inventoryData?.data?.length &&
+                                inventoryData?.data.map((items) => (
                                   <option key={items?.id} value={items?.id}>
-                                    {items?.name}
+                                    {items?.description}
                                   </option>
                                 ))}
                             </select>
