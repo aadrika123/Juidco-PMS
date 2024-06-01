@@ -13,11 +13,20 @@ export default function FileButton({
   console.log(paddingY, "paddingY----------------");
   //image validation with file type and size limit
   const imageHandler = (e) => {
+    // const validExtensions = [
+    //   "image/jpeg",
+    //   "image/jpg",
+    //   "image/png",
+    //   "application/pdf",
+    // ];
+
     const validExtensions = [
       "image/jpeg",
       "image/jpg",
       "image/png",
       "application/pdf",
+      "text/csv",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ];
 
     const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
@@ -56,7 +65,7 @@ export default function FileButton({
     <>
       <input
         type='file'
-        accept='.jpg, .jpeg, .pdf .png'
+        accept='.jpg, .jpeg, .pdf, .png, .csv, .xlsx'
         ref={imgRef}
         className='hidden'
         onChange={(e) => imageHandler(e)}
