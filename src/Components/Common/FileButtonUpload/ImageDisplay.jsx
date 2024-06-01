@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { LuCloudy } from "react-icons/lu";
 import pdfIcon from "@/assets/Images/pdfIcon.png";
+import csvIcon from "@/assets/Images/csvIcon.png";
+import xlsxIcon from "@/assets/Images/xlsx.png";
 import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
 
 export default function ImageDisplay({
@@ -48,14 +50,33 @@ export default function ImageDisplay({
         />
       )}
 
-      {imageDoc?.type?.includes("pdf") && (
+      {/* {imageDoc?.type?.match(/\.(pdf|csv|xlsx)$/i) && (
         <img
           src={pdfIcon}
           alt='Image Previewss'
           className='cursor-pointer'
           onClick={() => setImageModal(true)}
         />
+      )} */}
+
+      {(imageDoc?.type === "application/pdf" ||
+        imageDoc?.type === "text/csv" ||
+        imageDoc?.type ===
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") && (
+        <img
+          src={
+            imageDoc.type === "application/pdf"
+              ? pdfIcon
+              : imageDoc.type === "text/csv"
+              ? csvIcon
+              : xlsxIcon
+          }
+          alt='File Preview'
+          className='cursor-pointer'
+          onClick={() => setImageModal(true)}
+        />
       )}
+
       {/* 
       <div className='mb-4 text-center w-full pl-2'>
         <p className='text-red-500 text-xs '>{imageDoc?.name}</p>
