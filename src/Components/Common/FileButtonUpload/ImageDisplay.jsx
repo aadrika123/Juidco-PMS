@@ -18,11 +18,12 @@ export default function ImageDisplay({
         imageModal={imageModal}
         setImageModal={setImageModal}
         imageUrl={preview}
+        imageDoc={imageDoc}
       />
     );
   }
   return (
-    <div className={`w-full text-center rounded-md ml-44`}>
+    <div className={`w-${width} text-center rounded-md`}>
       {preview == null && (
         <div
           className={`${showPreview} p-10 mb-10 mt-5 border-[3px] rounded-xl border-dashed flex justify-center items-center flex-col`}
@@ -42,19 +43,17 @@ export default function ImageDisplay({
         <img
           src={preview}
           alt='Image Preview'
-          // style={{ width: "200px", height: "auto", marginTop: "20px" }}
           className={`rounded cursor-pointer `}
           onClick={() => setImageModal(true)}
         />
       )}
 
-      {imageDoc?.type.includes("pdf") && (
+      {imageDoc?.type?.includes("pdf") && (
         <img
           src={pdfIcon}
           alt='Image Previewss'
           className='cursor-pointer'
           onClick={() => setImageModal(true)}
-          //   style={{ marginTop: "20px", width: "400px", height: "250px" }}
         />
       )}
 

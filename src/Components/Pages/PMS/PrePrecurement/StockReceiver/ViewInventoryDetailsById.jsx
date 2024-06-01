@@ -18,6 +18,9 @@ import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
 import ForwardToDAConfirmationModal from "./FOrwardToDAConfirmationModal";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
+import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
+import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
+import ApiHeader2 from "@/Components/api/ApiHeader2";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
@@ -29,7 +32,8 @@ const ViewInventoryDetailsById = (props) => {
   const [applicationFullData, setapplicationFullData] = useState();
   const [tableData, setTableData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [imageDoc, setImageDoc] = useState(false);
+  const [preview, setPreview] = useState();
   const {
     api_fetchProcurementDetailById,
     api_fetchOutboxProcurementDetailById,
@@ -90,11 +94,11 @@ const ViewInventoryDetailsById = (props) => {
     // seterroState(false);
     setisLoading(true);
 
-    AxiosInterceptors.post(
-      `${api_postForwardToDA}`,
-      { preProcurement: [id] },
-      ApiHeader()
-    )
+    let formData = new FormData();
+    formData.append("img", imageDoc);
+    formData.append("preProcurement", [id]);
+
+    AxiosInterceptors.post(`${api_postForwardToDA}`, formData, ApiHeader2())
       .then(function (response) {
         console.log("Forwarded to DA", response?.data);
         // setresponseScreen(response?.data);
@@ -134,8 +138,6 @@ const ViewInventoryDetailsById = (props) => {
     );
   }
 
-  // console.log(applicationFullData?.category?.name)
-
   const handlePrint = () => {
     window.print();
   };
@@ -161,7 +163,6 @@ const ViewInventoryDetailsById = (props) => {
                 View Procurement Request{" "}
               </h2>
             </div>
-
             <div className='flex justify-between'>
               {!applicationFullData?.remark?.length == 0 && (
                 <div className='pb-5 pl-8'>
@@ -185,7 +186,6 @@ const ViewInventoryDetailsById = (props) => {
                 </h1>
               </div>
             </div>
-
             <div className='grid md:grid-cols-4 gap-4 ml-8'>
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold'>Item Category</div>
@@ -233,15 +233,21 @@ const ViewInventoryDetailsById = (props) => {
                 </div>
               </div>
             </div>
-
             <div className='p-5 pl-8'>
               <h1 className='font-bold '>Description</h1>
               <p className=' pt-2'>
                 {nullToNA(applicationFullData?.description)}
               </p>
             </div>
-
-            <div className='h-[30px]'></div>
+            <div className='flex justify-end w-full mb-5'>
+              <ImageDisplay
+                preview={preview}
+                imageDoc={imageDoc}
+                alt={"notesheet document"}
+                showPreview={"hidden"}
+                width={"[100px]"}
+              />
+            </div>
           </div>
           <div className='space-x-5 flex justify-end mt-[2rem]'>
             <button className={buttonStyle} onClick={() => navigate(-1)}>
@@ -264,19 +270,26 @@ const ViewInventoryDetailsById = (props) => {
             {page == "inbox" &&
               (applicationFullData?.status?.status == -1 ||
                 applicationFullData?.status?.status == 0) && (
-                <div className='space-x-3'>
+                <div className='space-x-3 flex items-end justify-center'>
                   <button
                     className=' p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]'
                     onClick={forwardDAModal}
                   >
                     Forward to DA
                   </button>
-                  <button
-                    className=' p-2 text-white bg-[#359F6E] hover:bg-green-700 text-md sm:text-sm leading-tight rounded hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
-                    onClick={() => notesheetRef.current.click()}
-                  >
-                    Upload Notesheet
-                  </button>
+
+                  <div className='bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700'>
+                    <FileButton
+                      bg={"[#359F6E]"}
+                      hoverBg={"bg-green-700"}
+                      btnLabel={"Upload Notesheet"}
+                      imgRef={notesheetRef}
+                      setImageDoc={setImageDoc}
+                      setPreview={setPreview}
+                      textColor={"white"}
+                      // paddingY={"8"}
+                    />
+                  </div>
                 </div>
               )}
 

@@ -53,10 +53,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   };
 
   const fetchBrand = async () => {
-    AxiosInterceptors.get(
-      `${api_itemBrand}`.split(" ").join(""),
-      ApiHeader()
-    )
+    AxiosInterceptors.get(`${api_itemBrand}`.split(" ").join(""), ApiHeader())
       .then((data) => {
         setBrandList(data?.data?.data);
         console.log(data?.data?.data);
@@ -91,7 +88,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
     console.log(filter);
   };
 
-  console.log(api_itemCategory,"---------------->")
+  console.log(api_itemCategory, "---------------->");
 
   return (
     <div className='relative h-full '>
@@ -113,20 +110,18 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
         <hr class='h-[1px] w-full bg-black mt-4 border-none' />
 
         <div>
-
-          <Accordion 
-          sx={{
+          <Accordion
+            sx={{
               borderBottom: "1px solid black",
-              boxShadow: "none", 
-                         
+              boxShadow: "none",
             }}
-            >
+          >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               Category
             </AccordionSummary>
-            <AccordionDetails 
-            className="rounded-xl bg-[rgb(234,234,246)] mb-2"
-            // sx={{ backgroundColor: "rgb(250,250,255)"}}
+            <AccordionDetails
+              className='rounded-xl bg-[rgb(234,234,246)] mb-2'
+              // sx={{ backgroundColor: "rgb(250,250,255)"}}
             >
               <FormGroup>
                 {categoryList.map((item, index) => (
@@ -142,27 +137,27 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
               </FormGroup>
             </AccordionDetails>
           </Accordion>
-          
+
           <Accordion
-          sx={{
+            sx={{
               borderBottom: "1px solid black",
-              boxShadow: "none",              
+              boxShadow: "none",
             }}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               Sub Category
             </AccordionSummary>
             <AccordionDetails
-            className="rounded-xl bg-[rgb(234,234,246)] mb-2"
-            // sx={{ backgroundColor: "rgb(250,250,255)"}}
+              className='rounded-xl bg-[rgb(234,234,246)] mb-2'
+              // sx={{ backgroundColor: "rgb(250,250,255)"}}
             >
               <FormGroup
-               sx={{
-                height: "150px",
-                overflowY: "scroll" ,
-                display : "flex",
-                flexDirection: "row"
-              }}
+                sx={{
+                  height: "150px",
+                  overflowY: "scroll",
+                  display: "flex",
+                  flexDirection: "row",
+                }}
               >
                 {subCategoryList.map((item, index) => (
                   <FormControlLabel
@@ -172,34 +167,32 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
                     onChange={() => {
                       handleOnchange("subcategory", item?.id);
                     }}
-                    
                   />
                 ))}
               </FormGroup>
             </AccordionDetails>
           </Accordion>
-          
+
           <Accordion
-          sx={{
+            sx={{
               // borderBottom: "1px solid black",
-              boxShadow: "none",              
+              boxShadow: "none",
             }}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               Brand List
             </AccordionSummary>
             <AccordionDetails
-            className="rounded-xl bg-[rgb(234,234,246)] mb-2"
-            // sx={{ backgroundColor: "rgb(250,250,255)"}}
+              className='rounded-xl bg-[rgb(234,234,246)] mb-2'
+              // sx={{ backgroundColor: "rgb(250,250,255)"}}
             >
               <FormGroup
-              sx={{
-              
-              height: "150px", 
-              overflowY: "scroll",
-              display : "flex-1",
-              flexDirection: "row"
-            }}
+                sx={{
+                  height: "150px",
+                  overflowY: "scroll",
+                  display: "flex-1",
+                  flexDirection: "row",
+                }}
               >
                 {brandList.map((item, index) => (
                   <FormControlLabel

@@ -9,9 +9,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
-import cancel from "@/Components/assets/user copy.png";
 
 function ImageModal(props) {
+  console.log(props?.imageDoc, "img type===============");
   const handleCancilClick = () => {
     props?.setImageModal(false);
   };
@@ -41,28 +41,26 @@ function ImageModal(props) {
             <p className='text-3xl'>&times;</p>
           </button>
 
-          {props?.imageUrl?.type?.match(/(jpg|jpeg|png)$/) && (
+          {props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
             <img
-              className='max-w-full w-full h-[20rem] '
+              className='max-w-full w-full'
               src={props?.imageUrl}
               alt='alt title'
             />
           )}
 
-          {!props?.imageUrl?.type?.match(/(jpg|jpeg|png)$/) && (
+          {!props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
             <iframe
               src={props?.imageUrl}
               alt='Image Preview'
-              className=''
-
-              // style={{ width: "200px", height: "auto", marginTop: "20px" }}
+              className='h-[480px]'
             />
           )}
         </div>
         <div className='flex'>
           <button
             onClick={handlePrint}
-            className={`w-96 border bg-indigo-700 text-white border-blue-950 pl-5 pr-5 pt-1 pb-1 rounded hover:bg-indigo-500 `}
+            className={`w-96 border mt-4 bg-indigo-700 text-white border-blue-950 pl-5 pr-5 pt-1 pb-1 rounded hover:bg-indigo-500 `}
           >
             Print
           </button>
