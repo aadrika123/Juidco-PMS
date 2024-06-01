@@ -374,7 +374,7 @@ const ViewReceivedInvtById = (props) => {
     window.print();
   };
 
-  console.log(inventoryData);
+  console.log(inventoryData?.data, "invtDet");
 
   return (
     <div>
@@ -774,26 +774,23 @@ const ViewReceivedInvtById = (props) => {
                               // {...formik.getFieldProps("itemsubcategory")}
                               className={`${inputStyle} inline-block w-full relative`}
                               onChange={formik.handleChange}
-                              value={formik.values.dead_stock}
-                            />
-                            {formik.values.dead_stock > 0 && (
-                              <div className='absolute left-[63%] top-[37px] w-full'>
-                                <FileButton
-                                  btnLabel={"Upload Reference Image"}
-                                  bg={"[#4338CA]"}
-                                  textColor={"white"}
-                                  imgRef={deadStockRef}
-                                  hoverBg={"bg-blue-800"}
-                                  setImageDoc={setImageDoc}
-                                  setPreview={setPreview}
-                                />
-                              </div>
-                            )}
+                              value={formik.values.invtDetails}
+                              name='invtDetails'
+                            >
+                              <option defaultValue={"select"}>select</option>
+
+                              {inventoryData?.data?.length &&
+                                inventoryData?.data.map((items) => (
+                                  <option key={items?.id} value={items?.id}>
+                                    {items?.description}
+                                  </option>
+                                ))}
+                            </select>
 
                             <p className='text-red-500 text-xs '>
-                              {formik.touched.dead_stock &&
-                              formik.errors.dead_stock
-                                ? formik.errors.dead_stock
+                              {formik.touched.itemsubcategory &&
+                              formik.errors.itemsubcategory
+                                ? formik.errors.itemsubcategory
                                 : null}
                             </p>
                           </div>
