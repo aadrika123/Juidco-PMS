@@ -93,7 +93,7 @@ export default function ProjectApiList() {
     api_itemCategory: `${baseUrl}/api/pms/master/category `,
     api_itemSubCategory: `${baseUrl}/api/pms/master/sub-category/by-category`,
     api_itemSubCategoryAll: `${baseUrl}/api/pms/master/sub-category`,
-    api_itemBrand: `${baseUrl}/api/pms/master/brand/by-subcategory`,
+    api_itemBrand: `${baseUrl}/api/pms/master/brand`,
 
     api_fetchProcessor: `${baseUrl}/api/pms/master/processor `,
     api_fetchRam: `${baseUrl}/api/pms/master/ram `,
@@ -138,6 +138,7 @@ export default function ProjectApiList() {
     api_fetchSrReceivedInvtListInbox: `${baseUrl}/api/pms/sr/rec-inv`,
     api_fetchSrReceivedInvtListOutbox: `${baseUrl}/api/pms/sr/rec-inv/outbox`,
     api_postSrAddInvt: `${baseUrl}/api/pms/sr/rec-inv/add-to-inv`,
+    api_fetchSrInvtDetailsList: `${baseUrl}/api/pms/inventory/by-filter`,
   };
 
   return apiList;

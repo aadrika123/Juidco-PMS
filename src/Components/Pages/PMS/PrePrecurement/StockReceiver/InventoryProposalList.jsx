@@ -25,7 +25,7 @@ function InventoryProposalList(props) {
   const navigate = useNavigate();
   const { module } = useParams();
 
-  console.log(props.page, "page========>");
+  // console.log(props.page, "page========>");
   // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
 
   const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
