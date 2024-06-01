@@ -56,10 +56,10 @@ export default function ImageDisplay({
           onClick={() => setImageModal(true)}
         />
       )}
-
+      {/* 
       <div className='mb-4 text-center w-full pl-2'>
         <p className='text-red-500 text-xs '>{imageDoc?.name}</p>
-      </div>
+      </div> */}
     </div>
   );
 }

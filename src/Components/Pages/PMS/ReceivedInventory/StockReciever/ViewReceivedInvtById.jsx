@@ -61,25 +61,23 @@ const ViewReceivedInvtById = (props) => {
   const [imageUrl, setImageUrl] = useState();
   const [imageModal, setImageModal] = useState();
   const [preview, setPreview] = useState();
-  const [categoryId, setCategoryId] = useState();
-  const [subCategoryId, setSubCategoryId] = useState();
-  const [brandId, setBrandId] = useState();
   const [inventoryData, setInventoryData] = useState();
 
   const [inventory, setInventory] = useState("");
 
-  const handleChange = (event) => {
+  const inventoryHisHandler = (event) => {
+    console.log(event.target.value, "event");
     setInventory(event.target.value);
   };
 
   const {
     api_fetchSrReceivedInvtListInbox,
     api_fetchSrReceivedInvtListOutbox,
-    api_postSrAddInvt,
     api_fetchSrInvtDetailsList,
+    api_postSrAddInvt,
   } = ProjectApiList();
 
-  const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
+  const { inputStyle, labelStyle, formStyle } = ThemeStyle();
 
   // Accessing context for notifications
   const { titleBarVisibility } = useContext(contextVar);
@@ -130,12 +128,6 @@ const ViewReceivedInvtById = (props) => {
         setisLoading(false);
       });
   };
-
-  // console.log(applicationFullData)
-  // console.log(applicationFullData?.category?.id)
-  // console.log(applicationFullData?.subcategory?.id)
-  // console.log(applicationFullData?.brand?.id)
-  ///////////{*** PREVIOUS INVENTORY DETAIL ***}/////////
   const getInventoryDetail = (category, subcategory, brand) => {
     let url = api_fetchSrInvtDetailsList;
 
@@ -182,25 +174,16 @@ const ViewReceivedInvtById = (props) => {
       procurement_no: applicationFullData?.procurement_no,
       img: imageDoc,
     };
+    if (inventory != "") {
+      body = { ...body, inventory };
+    }
+    console.log(body, "body sr======================");
 
     let formDataPayload = new FormData();
 
     for (let key in body) {
       formDataPayload.append(key, body[key]);
     }
-
-    // //headers for file data format
-    // let token2 = window.localStorage.getItem("token");
-    // const header = {
-    //   timeout: 60000,
-    //   headers: {
-    //     Authorization: `Bearer ${token2}`,
-    //     Accept: "multipart/form-data",
-    //     "Content-Type": "multipart/form-data",
-    //     "API-KEY": "eff41ef6-d430-4887-aa55-9fcf46c72c99",
-    //   },
-    // };
-
     AxiosInterceptors.post(
       `${api_postSrAddInvt}`,
       formDataPayload,
@@ -388,7 +371,6 @@ const ViewReceivedInvtById = (props) => {
         {/* Basic Details */}
         <div className='mt-6'>
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
-           
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
                 View Procurement Request{" "}
@@ -681,13 +663,11 @@ const ViewReceivedInvtById = (props) => {
                 <div className=''>
                   <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
                     <div className='col-span-12  w-full mb-20'>
-                      
                       <div className='p-4'>
                         <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-                        Inventory Details
+                          Inventory Details
                         </h2>
                       </div>
-                          
 
                       <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
                         <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
@@ -774,15 +754,19 @@ const ViewReceivedInvtById = (props) => {
                             <select
                               // {...formik.getFieldProps("itemsubcategory")}
                               className={`${inputStyle} inline-block w-full relative`}
-                              onChange={formik.handleChange}
-                              value={formik.values.invtDetails}
-                              name='invtDetails'
+                              onChange={inventoryHisHandler}
+                              value={inventory}
+                              // name='invtDetails'
                             >
                               <option defaultValue={"select"}>select</option>
 
                               {inventoryData?.data?.length &&
                                 inventoryData?.data.map((items) => (
-                                  <option key={items?.id} value={items?.id}>
+                                  <option
+                                    key={items?.id}
+                                    value={items?.id}
+                                    className='py-2'
+                                  >
                                     {items?.description}
                                   </option>
                                 ))}

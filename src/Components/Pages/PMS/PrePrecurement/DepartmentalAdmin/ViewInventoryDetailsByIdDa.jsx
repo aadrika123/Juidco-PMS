@@ -168,9 +168,12 @@ const ViewInventoryDetailsById = (props) => {
   };
 
   const postReleaseTender = () => {
+    setisLoading(true);
+    // let preProcurement = [id];
     let formData = new FormData();
     formData.append("img", imageDoc);
-    formData.append("preProcurement", [id]);
+    formData.append("preProcurement", JSON.stringify([id]));
+
     // seterroState(false);
     setisLoading(true);
 

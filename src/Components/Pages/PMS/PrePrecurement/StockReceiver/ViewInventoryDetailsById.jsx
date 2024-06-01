@@ -93,12 +93,10 @@ const ViewInventoryDetailsById = (props) => {
   const forwardToDA = () => {
     // seterroState(false);
     setisLoading(true);
-    let preProcurement = [id];
+    // let preProcurement = [id];
     let formData = new FormData();
     formData.append("img", imageDoc);
-
-    // Or, alternatively, if you want to append them as comma-separated values:
-    formData.append("preProcurement", preProcurement.join(","));
+    formData.append("preProcurement", JSON.stringify([id]));
 
     AxiosInterceptors.post(`${api_postForwardToDA}`, formData, ApiHeader2())
       .then(function (response) {
