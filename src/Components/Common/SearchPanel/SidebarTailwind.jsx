@@ -19,6 +19,7 @@ import { RxCross2 } from "react-icons/rx";
 const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   const [categoryList, setCategoryList] = useState([]);
   const [subCategoryList, setSubCategoryList] = useState([]);
+  const [brandList, setBrandList] = useState([]);
 
   const { api_itemCategory, api_itemSubCategoryAll, api_itemBrand } =
     ProjectApiList();
@@ -30,7 +31,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
     )
       .then((data) => {
         setCategoryList(data?.data?.data);
-        console.log(data?.data?.data);
+        // console.log(data?.data?.data);
       })
       .catch((err) => {
         console.log(err);
@@ -44,6 +45,17 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
     )
       .then((data) => {
         setSubCategoryList(data?.data?.data);
+        // console.log(data?.data?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const fetchBrand = async () => {
+    AxiosInterceptors.get(`${api_itemBrand}`.split(" ").join(""), ApiHeader())
+      .then((data) => {
+        setBrandList(data?.data?.data);
         console.log(data?.data?.data);
       })
       .catch((err) => {
@@ -54,6 +66,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   useEffect(() => {
     fetchCategory();
     fetchSubCategory();
+    fetchBrand();
   }, []);
 
   const handleOnchange = (fieldName, id) => {
@@ -75,14 +88,16 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
     console.log(filter);
   };
 
+  console.log(api_itemCategory, "---------------->");
+
   return (
     <div className='relative h-full '>
       <div
         className={`h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out w-64 p-4 border border-gray-300 rounded`}
       >
-        <div className='flex justify-between items-center bg-blue-800'>
-          <h2 className='text-xl font-thin text-white flex'>
-            <FiFilter className=' mt-1 mr-2 text-blue-900' />
+        <div className='flex justify-between items-center'>
+          <h2 className='text-xl font-thin text-black flex'>
+            <FiFilter className=' mt-1 mr-2 text-black' />
             Filters
           </h2>
           <button
@@ -92,20 +107,22 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
             <RxCross2 />
           </button>
         </div>
-        <hr class='h-[2px] w-full bg-gray-200 mb-4 border-none' />
+        <hr class='h-[1px] w-full bg-black mt-4 border-none' />
 
         <div>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              sx={{
-                border: "1px solid white",
-                boxShadow: "none",
-              }}
-            >
+          <Accordion
+            sx={{
+              borderBottom: "1px solid black",
+              boxShadow: "none",
+            }}
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               Category
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails
+              className='rounded-xl bg-[rgb(234,234,246)] mb-2'
+              // sx={{ backgroundColor: "rgb(250,250,255)"}}
+            >
               <FormGroup>
                 {categoryList.map((item, index) => (
                   <FormControlLabel
@@ -120,18 +137,28 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
               </FormGroup>
             </AccordionDetails>
           </Accordion>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              sx={{
-                border: "1px solid white",
-                boxShadow: "none",
-              }}
-            >
+
+          <Accordion
+            sx={{
+              borderBottom: "1px solid black",
+              boxShadow: "none",
+            }}
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               Sub Category
             </AccordionSummary>
-            <AccordionDetails>
-              <FormGroup>
+            <AccordionDetails
+              className='rounded-xl bg-[rgb(234,234,246)] mb-2'
+              // sx={{ backgroundColor: "rgb(250,250,255)"}}
+            >
+              <FormGroup
+                sx={{
+                  height: "150px",
+                  overflowY: "scroll",
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
                 {subCategoryList.map((item, index) => (
                   <FormControlLabel
                     key={index}
@@ -139,6 +166,41 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
                     label={item?.name}
                     onChange={() => {
                       handleOnchange("subcategory", item?.id);
+                    }}
+                  />
+                ))}
+              </FormGroup>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion
+            sx={{
+              // borderBottom: "1px solid black",
+              boxShadow: "none",
+            }}
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              Brand List
+            </AccordionSummary>
+            <AccordionDetails
+              className='rounded-xl bg-[rgb(234,234,246)] mb-2'
+              // sx={{ backgroundColor: "rgb(250,250,255)"}}
+            >
+              <FormGroup
+                sx={{
+                  height: "150px",
+                  overflowY: "scroll",
+                  display: "flex-1",
+                  flexDirection: "row",
+                }}
+              >
+                {brandList.map((item, index) => (
+                  <FormControlLabel
+                    key={index}
+                    control={<Checkbox />}
+                    label={item?.name}
+                    onChange={() => {
+                      handleOnchange("brand", item?.id);
                     }}
                   />
                 ))}

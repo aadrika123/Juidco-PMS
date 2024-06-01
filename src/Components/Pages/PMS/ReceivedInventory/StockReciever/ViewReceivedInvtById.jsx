@@ -10,7 +10,16 @@
 
 import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  FormControl,
+  InputLabel,
+  NativeSelect,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
@@ -52,11 +61,22 @@ const ViewReceivedInvtById = (props) => {
   const [imageUrl, setImageUrl] = useState();
   const [imageModal, setImageModal] = useState();
   const [preview, setPreview] = useState();
+  const [categoryId, setCategoryId] = useState();
+  const [subCategoryId, setSubCategoryId] = useState();
+  const [brandId, setBrandId] = useState();
+  const [inventoryData, setInventoryData] = useState();
+
+  const [inventory, setInventory] = useState("");
+
+  const handleChange = (event) => {
+    setInventory(event.target.value);
+  };
 
   const {
     api_fetchSrReceivedInvtListInbox,
     api_fetchSrReceivedInvtListOutbox,
     api_postSrAddInvt,
+    api_fetchSrInvtDetailsList,
   } = ProjectApiList();
 
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
@@ -88,6 +108,49 @@ const ViewReceivedInvtById = (props) => {
         console.log("view sr rec-inv id details ...", response?.data?.data);
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
+          // setCategoryId(applicationFullData?.category?.id)
+          // setSubCategoryId(applicationFullData?.subcategory?.id)
+          // setBrandId(applicationFullData?.brand?.id)
+          getInventoryDetail(
+            response?.data?.data?.category?.id,
+            response?.data?.data?.subcategory?.id,
+            response?.data?.data?.brand?.id
+          );
+          setTableData(response?.data?.data?.tran_dtls);
+          setisLoading(false);
+        } else {
+          toast.error("Error while getting details...");
+          seterroState(true);
+        }
+      })
+      .catch(function (error) {
+        console.log("==2 details by id error...", error);
+        toast.error("Error while getting details...");
+        seterroState(true);
+        setisLoading(false);
+      });
+  };
+
+  // console.log(applicationFullData)
+  // console.log(applicationFullData?.category?.id)
+  // console.log(applicationFullData?.subcategory?.id)
+  // console.log(applicationFullData?.brand?.id)
+  ///////////{*** PREVIOUS INVENTORY DETAIL ***}/////////
+  const getInventoryDetail = (category, subcategory, brand) => {
+    let url = api_fetchSrInvtDetailsList;
+
+    seterroState(false);
+    setisLoading(true);
+
+    AxiosInterceptors.get(
+      `${url}?category=${category}&scategory=${subcategory}&brand=${brand}`,
+      // {category: categoryId, scategory: subCategoryId, brand: brandId},
+      ApiHeader()
+    )
+      .then(function (response) {
+        console.log("view sr rec-inv id details ...", response?.data?.data);
+        if (response?.data?.status) {
+          setInventoryData(response?.data?.data);
           setTableData(response?.data?.data?.tran_dtls);
           setisLoading(false);
         } else {
@@ -181,6 +244,7 @@ const ViewReceivedInvtById = (props) => {
     remarks: "",
     remStock: applicationFullData?.total_remaining,
     dead_stock: "",
+    invtDetails: "",
   };
 
   const formik = useFormik({
@@ -258,6 +322,7 @@ const ViewReceivedInvtById = (props) => {
 
   useEffect(() => {
     getApplicationDetail();
+    getInventoryDetail();
     // calculateRemainingStock(formik.values.dead_stock);
   }, []);
 
@@ -308,6 +373,8 @@ const ViewReceivedInvtById = (props) => {
   const handlePrint = () => {
     window.print();
   };
+
+  console.log(inventoryData);
 
   return (
     <div>
@@ -371,7 +438,7 @@ const ViewReceivedInvtById = (props) => {
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Brand</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.brand.name)}
+                  {nullToNA(applicationFullData?.brand?.name)}
                 </div>
               </div>
 
@@ -499,100 +566,105 @@ const ViewReceivedInvtById = (props) => {
                 </AccordionSummary>
                 <AccordionDetails>
                   {/* table */}
+                  {!applicationFullData?.receivings?.length ? (
+                    <p className='font-semibold p-4'>No Data Found</p>
+                  ) : (
+                    <div className='relative overflow-x-auto'>
+                      <table className='w-full text-md text-left rtl:text-right'>
+                        <thead className='text-xs uppercase bg-gray-200'>
+                          <tr>
+                            <th scope='col' className='px-6 py-3'>
+                              Date
+                            </th>
+                            <th scope='col' className='px-6 py-3'>
+                              Receiving no
+                            </th>
+                            <th scope='col' className='px-6 py-3'>
+                              Total Quantity
+                            </th>
+                            <th scope='col' className='px-6 py-3'>
+                              Received Quantity
+                            </th>
+                            <th scope='col' className='px-6 py-3'>
+                              View Doc
+                            </th>
 
-                  <div className='relative overflow-x-auto'>
-                    <table className='w-full text-md text-left rtl:text-right'>
-                      <thead className='text-xs uppercase bg-gray-200'>
-                        <tr>
-                          <th scope='col' className='px-6 py-3'>
-                            Date
-                          </th>
-                          <th scope='col' className='px-6 py-3'>
-                            Receiving no
-                          </th>
-                          <th scope='col' className='px-6 py-3'>
-                            Total Quantity
-                          </th>
-                          <th scope='col' className='px-6 py-3'>
-                            Received Quantity
-                          </th>
-                          <th scope='col' className='px-6 py-3'>
-                            View Doc
-                          </th>
-
-                          <th scope='col' className='px-6 py-3'>
-                            Remaining Quantity
-                          </th>
-                          <th scope='col' className='px-6 py-3'>
-                            Inventory Status
-                          </th>
-                          <th scope='col' className='px-6 py-3'>
-                            Remark
-                          </th>
-                        </tr>
-                      </thead>
-                      {applicationFullData?.receivings.map((data) => (
-                        <tbody>
-                          <tr className='bg-white border-b-2'>
-                            <td className='px-6 py-4'>
-                              {data?.date
-                                .split("T")[0]
-                                .split("-")
-                                .reverse()
-                                .join("-")}
-                            </td>
-
-                            <td className='px-6 py-4'>{data?.receiving_no}</td>
-                            <td className='px-6 py-4'>
-                              {
-                                applicationFullData?.post_procurement
-                                  ?.total_quantity
-                              }
-                            </td>
-                            <td className='px-6 py-4'>
-                              {data?.received_quantity}
-                            </td>
-                            <td className='px-6 py-4'>
-                              <p
-                                className='text-blue-900 underline font-bold cursor-pointer'
-                                onClick={() => {
-                                  setImageUrl(
-                                    data?.receiving_image[0]?.imageUrl
-                                  );
-                                  setImageModal(true);
-                                }}
-                              >
-                                View
-                              </p>
-                            </td>
-                            <td className='px-6 py-4'>
-                              {data?.remaining_quantity}
-                            </td>
-                            <td className='px-6 py-4'>
-                              {data?.is_added ? (
-                                <p className='text-green-500'>
-                                  Added to Inventory
-                                </p>
-                              ) : (
-                                <p className='text-violet-600'>Pending</p>
-                              )}
-                            </td>
-                            <td className='px-6 py-4'>{data?.remark}</td>
+                            <th scope='col' className='px-6 py-3'>
+                              Remaining Quantity
+                            </th>
+                            <th scope='col' className='px-6 py-3'>
+                              Inventory Status
+                            </th>
+                            <th scope='col' className='px-6 py-3'>
+                              Remark
+                            </th>
                           </tr>
-                        </tbody>
-                      ))}
+                        </thead>
+                        {applicationFullData?.receivings.map((data) => (
+                          <tbody>
+                            <tr className='bg-white border-b-2'>
+                              <td className='px-6 py-4'>
+                                {data?.date
+                                  .split("T")[0]
+                                  .split("-")
+                                  .reverse()
+                                  .join("-")}
+                              </td>
 
-                      <tfoot>
-                        <tr className='font-semibold text-gray-900 dark:text-white'>
-                          <th scope='row' className='px-6 py-3 text-base'>
-                            Total
-                          </th>
-                          <td className='px-6 py-3'>3</td>
-                          <td className='px-6 py-3'>21,000</td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
+                              <td className='px-6 py-4'>
+                                {data?.receiving_no}
+                              </td>
+                              <td className='px-6 py-4'>
+                                {
+                                  applicationFullData?.post_procurement
+                                    ?.total_quantity
+                                }
+                              </td>
+                              <td className='px-6 py-4'>
+                                {data?.received_quantity}
+                              </td>
+                              <td className='px-6 py-4'>
+                                <p
+                                  className='text-blue-900 underline font-bold cursor-pointer'
+                                  onClick={() => {
+                                    setImageUrl(
+                                      data?.receiving_image[0]?.imageUrl
+                                    );
+                                    setImageModal(true);
+                                  }}
+                                >
+                                  View
+                                </p>
+                              </td>
+                              <td className='px-6 py-4'>
+                                {data?.remaining_quantity}
+                              </td>
+                              <td className='px-6 py-4'>
+                                {data?.is_added ? (
+                                  <p className='text-green-500'>
+                                    Added to Inventory
+                                  </p>
+                                ) : (
+                                  <p className='text-violet-600'>Pending</p>
+                                )}
+                              </td>
+                              <td className='px-6 py-4'>{data?.remark}</td>
+                            </tr>
+                          </tbody>
+                        ))}
+
+                        <tfoot>
+                          <tr className='font-semibold text-gray-900 dark:text-white'>
+                            <th scope='row' className='px-6 py-3 text-base'>
+                              Total
+                            </th>
+                            <td className='px-6 py-3'>3</td>
+                            <td className='px-6 py-3'>21,000</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  )}
 
                   {/* table */}
                 </AccordionDetails>
@@ -692,16 +764,15 @@ const ViewReceivedInvtById = (props) => {
                         </div>
 
                         <div className='relative form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                          <div class=' relative px-4 w-full mb-4'>
+                          <div className='form-group flex-shrink max-w-full px-4 w-full mb-4'>
                             <label
                               className={`${labelStyle} inline-block mb-2`}
                             >
-                              Invt
+                              Previous Inventory
                             </label>
-
-                            <input
-                              name='dead_stock'
-                              className={`${inputStyle} inline-block w-full`}
+                            <select
+                              // {...formik.getFieldProps("itemsubcategory")}
+                              className={`${inputStyle} inline-block w-full relative`}
                               onChange={formik.handleChange}
                               value={formik.values.dead_stock}
                             />
@@ -726,7 +797,6 @@ const ViewReceivedInvtById = (props) => {
                                 : null}
                             </p>
                           </div>
-                          <div></div>
                         </div>
 
                         <div className='relative form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
@@ -769,6 +839,20 @@ const ViewReceivedInvtById = (props) => {
                         </div>
 
                         <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                          {/* <div className=''> */}
+                          <div className='w-20 mt-5'>
+                            <ImageDisplay
+                              preview={preview}
+                              imageDoc={imageDoc}
+                              alt={"Dead Stock Image"}
+                              showPreview={"hidden"}
+                              disabled
+                            />
+                          </div>
+                          {/* </div> */}
+                        </div>
+
+                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4'>
                           <label className={`${labelStyle} inline-block mb-2`}>
                             Remarks
                           </label>
@@ -785,18 +869,6 @@ const ViewReceivedInvtById = (props) => {
                               ? formik.errors.remarks
                               : null}
                           </p>
-                        </div>
-
-                        <div className='grid grid-cols-4'>
-                          <div className='w-20 col-end-5 col-span-1 ml-[-7px] mt-[-25px]'>
-                            <ImageDisplay
-                              preview={preview}
-                              imageDoc={imageDoc}
-                              alt={"Dead Stock Image"}
-                              showPreview={"hidden"}
-                              disabled
-                            />
-                          </div>
                         </div>
                       </div>
 
