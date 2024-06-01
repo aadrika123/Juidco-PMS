@@ -17,6 +17,7 @@ const CustomCheckboxGroup = ({
   errors,
   touched,
   title,
+  name,
 }) => {
   return (
     <Box sx={{ display: "flex" }}>
@@ -39,6 +40,7 @@ const CustomCheckboxGroup = ({
           {fields.map((opt) => (
             <FormControlLabel
               key={opt.value}
+              name={`${name}`}
               control={
                 <Checkbox
                   //   checked={values[opt.value]}

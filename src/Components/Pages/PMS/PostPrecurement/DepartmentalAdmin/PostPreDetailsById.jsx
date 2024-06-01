@@ -319,8 +319,8 @@ const PostPreDetailsById = (props) => {
               </h1>
             </div>
 
-            <div className='grid grid-cols-4 gap-4 ml-8'>
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+            <div className='grid md:grid-cols-4 gap-4 ml-8'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Item Category
                 </div>
@@ -329,7 +329,7 @@ const PostPreDetailsById = (props) => {
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Item Sub Category
                 </div>
@@ -338,14 +338,14 @@ const PostPreDetailsById = (props) => {
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Brand</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.brand?.name)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold '>
                   Rate per quantity
                 </div>
@@ -354,14 +354,14 @@ const PostPreDetailsById = (props) => {
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.quantity)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Total Rate</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.total_rate)}
@@ -385,7 +385,7 @@ const PostPreDetailsById = (props) => {
             <div className={`${formStyle} mt-8 border border-blue-500`}>
               <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
                 <div className=''>
-                  <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
+                  <div className=' grid md:grid-cols-1 lg:grid-cols-12 container mx-auto capitalize'>
                     <div className='col-span-12  w-full mb-20'>
                       <div className=' ml-4 p-2 mt-2'>
                         <h1
@@ -395,7 +395,7 @@ const PostPreDetailsById = (props) => {
                         </h1>
                       </div>
 
-                      <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
+                      <div className='p-12 -mt-4 valid-form flex flex-wrap md:flex-row -mx-4'>
                         <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                           <div class='px-4 w-full mb-4'>
                             <label
@@ -615,8 +615,8 @@ const PostPreDetailsById = (props) => {
                   Supplier Details{" "}
                 </h2>
               </div>
-              <div className='flex justify-between items-center py-4 px-8'>
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex md:justify-between md:items-center py-4 px-8'>
+                <div className='flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(
                       applicationFullData?.post_procurement?.supplier_name
@@ -627,7 +627,7 @@ const PostPreDetailsById = (props) => {
                   </div>
                 </div>
 
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(applicationFullData?.post_procurement?.gst_no)}
                   </div>
@@ -636,7 +636,7 @@ const PostPreDetailsById = (props) => {
                   </div>
                 </div>
 
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(
                       applicationFullData?.post_procurement?.is_gst_added
@@ -648,7 +648,7 @@ const PostPreDetailsById = (props) => {
                 </div>
 
                 {applicationFullData?.is_gst_added && (
-                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
                     <div className='md:w-auto w-[50%] font-bold '>
                       {nullToNA(applicationFullData?.post_procurement?.gst)}
                     </div>
@@ -659,7 +659,7 @@ const PostPreDetailsById = (props) => {
                 )}
               </div>
 
-              <div className='flex justify-between items-center py-4 px-8'>
+              <div className='md:flex md:justify-between items-center py-4 px-8'>
                 <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(

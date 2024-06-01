@@ -125,6 +125,7 @@ const BasicDetailsForm = () => {
     }),
     // Additional form fields and their validation can go here
   });
+
   const initialValues = {
     checkboxes: {
       gilad: false,
@@ -154,26 +155,26 @@ const BasicDetailsForm = () => {
             }}
           >
             {({ values, handleChange, errors, touched }) => (
-              <Form class='grid grid-cols-2 container mx-auto capitalize space-x-3'>
-                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+              <Form className='grid grid-cols-2 container mx-auto capitalize space-x-3'>
+                <div className='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                   <>
                     <label
                       for='default-input'
-                      class='block mb-2 text-sm font-medium text-gray-900'
+                      className='block mb-2 text-sm font-medium text-gray-900'
                     >
                       Tender Reference No{" "}
                       <span className='text-red-500'>*</span>
                     </label>
                     <input
                       type='text'
-                      class='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
+                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
                     />
                   </>
 
                   <CustomCheckboxGroup
                     fields={tenderType}
                     title={"Tender Type"}
-                    // name={"tender_type"}
+                    name={"tender_type"}
                     values={values.checkboxes}
                     handleChange={handleChange}
                     errors={errors.checkboxes}
@@ -181,10 +182,10 @@ const BasicDetailsForm = () => {
                   />
                 </div>
 
-                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                <div className='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                   <CustomCheckboxGroup
                     fields={formOfContract}
-                    // name={"contract_form"}
+                    name={"contract_form"}
                     title={"Form of Contract"}
                     values={values.checkboxes}
                     handleChange={handleChange}
@@ -193,11 +194,11 @@ const BasicDetailsForm = () => {
                   />
                 </div>
 
-                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                <div className='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                   <RadioButtonsGroup
                     fields={noOfCovers}
                     title={"No of Covers"}
-                    // name={"no_of_covers"}
+                    name={"no_of_covers"}
                     values={values.checkboxes}
                     handleChange={handleChange}
                     errors={errors.checkboxes}
@@ -205,11 +206,11 @@ const BasicDetailsForm = () => {
                   />
                 </div>
 
-                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                <div className='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                   <CustomCheckboxGroup
                     fields={tenderCategory}
                     title={"Tender Category"}
-                    // name={"tender_category"}
+                    name={"tender_category"}
                     values={values.checkboxes}
                     handleChange={handleChange}
                     errors={errors.checkboxes}
@@ -217,12 +218,12 @@ const BasicDetailsForm = () => {
                   />
                 </div>
 
-                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex'>
+                <div className='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex'>
                   {/* <div className=""> */}
                   <RadioButtonsGroup
                     fields={allowResubmission}
                     title={"Allow Resubmission"}
-                    // name={"allow_resubmission"}
+                    name={"allow_resubmission"}
                     values={values.checkboxes}
                     handleChange={handleChange}
                     errors={errors.checkboxes}
@@ -234,7 +235,7 @@ const BasicDetailsForm = () => {
                   <RadioButtonsGroup
                     fields={allowWithdrawl}
                     title={"Allow Withdrawal"}
-                    // name={"allow_"}
+                    name={"allow_withdrawl"}
                     values={values.checkboxes}
                     handleChange={handleChange}
                     errors={errors.checkboxes}
@@ -246,6 +247,7 @@ const BasicDetailsForm = () => {
                   <RadioButtonsGroup
                     fields={allowOfflineSubmission}
                     title={"Allow offline Submission"}
+                    name={"allow_offline_submission"}
                     values={values.checkboxes}
                     handleChange={handleChange}
                     errors={errors.checkboxes}
@@ -254,7 +256,7 @@ const BasicDetailsForm = () => {
                   {/* </div> */}
                 </div>
 
-                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md row-span-2'>
+                <div className='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md row-span-2'>
                   <div className=''>
                     <h1 className='text-[14px] pb-3'>
                       Payment Mode <span className='text-red-500'>*</span>
@@ -289,13 +291,13 @@ const BasicDetailsForm = () => {
                         <div className='p-5'>
                           <label
                             for='countries'
-                            class='block mb-2 text-sm font-medium text-gray-900'
+                            className='block mb-2 text-sm font-medium text-gray-900'
                           >
                             In Online(Banks)
                           </label>
                           <select
                             id='countries'
-                            class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
                           >
                             <option selected>Choose a Bank</option>
                             <option value='US'>Bank Of India</option>
@@ -320,7 +322,7 @@ const BasicDetailsForm = () => {
                   </div>
                 </div>
 
-                <div class='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                <div className='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                   <h1>
                     NIT Document <span className='text-red-500'>*</span>
                   </h1>
@@ -330,27 +332,27 @@ const BasicDetailsForm = () => {
                   </p>
 
                   <div className=''>
-                    <div class='relative overflow-x-auto mt-6'>
-                      <table class='w-full text-sm text-left rtl:text-right text-gray-500 rounded'>
-                        <thead class='text-xs text-white uppercase '>
-                          <tr class=' bg-[#4338CA] border-[2px] border-white'>
-                            <th scope='col' class='px-6 py-3'>
+                    <div className='relative overflow-x-auto mt-6'>
+                      <table className='w-full text-sm text-left rtl:text-right text-gray-500 rounded'>
+                        <thead className='text-xs text-white uppercase '>
+                          <tr className=' bg-[#4338CA] border-[2px] border-white'>
+                            <th scope='col' className='px-6 py-3'>
                               File name
                             </th>
-                            <th scope='col' class='px-6 py-3'>
+                            <th scope='col' className='px-6 py-3'>
                               Document Size in KB
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr class='bg-white border'>
+                          <tr className='bg-white border'>
                             <th
                               scope='row'
-                              class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap border '
+                              className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap border '
                             >
                               NIT Document.pdf
                             </th>
-                            <td class='px-6 py-4'>
+                            <td className='px-6 py-4'>
                               <p>123 kb</p>
                             </td>
                           </tr>

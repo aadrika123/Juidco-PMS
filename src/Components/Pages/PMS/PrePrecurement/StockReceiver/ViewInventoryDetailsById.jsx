@@ -8,20 +8,20 @@
 //    DESCRIPTION - ViewInventoryDetailsById
 //////////////////////////////////////////////////////////////////////////////////////
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
-import { MdTag } from "react-icons/md";
 import { contextVar } from "@/Components/context/contextVar";
 import ForwardToDAConfirmationModal from "./FOrwardToDAConfirmationModal";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
+  const notesheetRef = useRef();
   const { id, page } = useParams();
 
   const [erroState, seterroState] = useState(false);
@@ -149,12 +149,7 @@ const ViewInventoryDetailsById = (props) => {
         />
       </div>
       <div className=''>
-        <div className='flex justify-end'>
-          {/* <div id="printable-content">
-        <h1>This is the content to print</h1>
-        <p>More content...</p>
-      </div> */}
-        </div>
+        <div className='flex justify-end'></div>
         {/* Basic Details */}
         <div className='mt-6'>
           <div
@@ -163,7 +158,6 @@ const ViewInventoryDetailsById = (props) => {
           >
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-                {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
                 View Procurement Request{" "}
               </h2>
             </div>
@@ -192,15 +186,15 @@ const ViewInventoryDetailsById = (props) => {
               </div>
             </div>
 
-            <div className='grid grid-cols-4 gap-4 ml-8'>
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+            <div className='grid md:grid-cols-4 gap-4 ml-8'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold'>Item Category</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.category.name)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Item Sub Category
                 </div>
@@ -209,14 +203,14 @@ const ViewInventoryDetailsById = (props) => {
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Brand</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.brand?.name)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold '>
                   Rate per quantity
                 </div>
@@ -225,14 +219,14 @@ const ViewInventoryDetailsById = (props) => {
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.quantity)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Total Rate</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.total_rate)}
@@ -265,17 +259,25 @@ const ViewInventoryDetailsById = (props) => {
               </button>
             )}
 
-            {/* {applicationFullData?.status?.status == -2 && "sdfv" } */}
+            <input type='file' ref={notesheetRef} className='hidden' />
 
             {page == "inbox" &&
               (applicationFullData?.status?.status == -1 ||
                 applicationFullData?.status?.status == 0) && (
-                <button
-                  className=' p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]'
-                  onClick={forwardDAModal}
-                >
-                  Forward to DA
-                </button>
+                <div className='space-x-3'>
+                  <button
+                    className=' p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]'
+                    onClick={forwardDAModal}
+                  >
+                    Forward to DA
+                  </button>
+                  <button
+                    className=' p-2 text-white bg-[#359F6E] hover:bg-green-700 text-md sm:text-sm leading-tight rounded hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
+                    onClick={() => notesheetRef.current.click()}
+                  >
+                    Upload Notesheet
+                  </button>
+                </div>
               )}
 
             <button

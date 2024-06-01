@@ -8,7 +8,7 @@
 //    DESCRIPTION - ViewInventoryDetailsById
 //////////////////////////////////////////////////////////////////////////////////////
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -24,6 +24,8 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
+  const notesheetRef = useRef();
+
   const { id, page } = useParams();
   console.log("param", id);
 
@@ -283,8 +285,8 @@ const ViewInventoryDetailsById = (props) => {
               </div>
             </div>
 
-            <div className='grid grid-cols-4 gap-4 ml-8'>
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+            <div className='grid md:grid-cols-4 gap-4 ml-8'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Item Category
                 </div>
@@ -293,7 +295,7 @@ const ViewInventoryDetailsById = (props) => {
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Item Sub Category
                 </div>
@@ -302,14 +304,14 @@ const ViewInventoryDetailsById = (props) => {
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Brand</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.brand?.name)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold '>
                   Rate per Quantity
                 </div>
@@ -318,14 +320,14 @@ const ViewInventoryDetailsById = (props) => {
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.quantity)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Total Rate</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.total_rate)}
@@ -382,6 +384,15 @@ const ViewInventoryDetailsById = (props) => {
                   onClick={postReleaseTenderModal}
                 >
                   Release For Tender
+                </button>
+
+                <input type='file' ref={notesheetRef} className='hidden' />
+
+                <button
+                  className='p-2 text-white bg-[#359F6E] hover:bg-green-700 text-md sm:text-sm leading-tight rounded hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
+                  onClick={() => notesheetRef.current.click()}
+                >
+                  Upload Notesheet
                 </button>
               </>
             )}
