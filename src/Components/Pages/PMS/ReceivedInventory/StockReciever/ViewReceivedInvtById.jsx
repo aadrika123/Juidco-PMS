@@ -8,7 +8,7 @@
 //    DESCRIPTION - SRPostProcurementCancelScreen
 //////////////////////////////////////////////////////////////////////////////////////
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -18,7 +18,6 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
-import { MdTag } from "react-icons/md";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -29,9 +28,13 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 import DeadStockUploadImg from "./DeadStockUploadImg";
 import { allowNumberInput } from "@/Components/Common/PowerUps/PowerupFunctions";
 import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
+import ApiHeader2 from "@/Components/api/ApiHeader2";
+import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
+import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 
 const ViewReceivedInvtById = (props) => {
   const navigate = useNavigate();
+  const deadStockRef = useRef();
   const { id, page } = useParams();
   console.log("param", id);
 
@@ -42,13 +45,13 @@ const ViewReceivedInvtById = (props) => {
   const [applicationFullData, setapplicationFullData] = useState();
   const [tableData, setTableData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [remark, setRemark] = useState("");
   const [cancelModal, setCancelModal] = useState(false);
   const [deadStockImg, setDeadStockImg] = useState(false);
   const [payload, setPayload] = useState({});
   const [imageDoc, setImageDoc] = useState();
   const [imageUrl, setImageUrl] = useState();
   const [imageModal, setImageModal] = useState();
+  const [preview, setPreview] = useState();
 
   const {
     api_fetchSrReceivedInvtListInbox,
@@ -123,19 +126,23 @@ const ViewReceivedInvtById = (props) => {
       formDataPayload.append(key, body[key]);
     }
 
-    //headers for file data format
-    let token2 = window.localStorage.getItem("token");
-    const header = {
-      timeout: 60000,
-      headers: {
-        Authorization: `Bearer ${token2}`,
-        Accept: "multipart/form-data",
-        "Content-Type": "multipart/form-data",
-        "API-KEY": "eff41ef6-d430-4887-aa55-9fcf46c72c99",
-      },
-    };
+    // //headers for file data format
+    // let token2 = window.localStorage.getItem("token");
+    // const header = {
+    //   timeout: 60000,
+    //   headers: {
+    //     Authorization: `Bearer ${token2}`,
+    //     Accept: "multipart/form-data",
+    //     "Content-Type": "multipart/form-data",
+    //     "API-KEY": "eff41ef6-d430-4887-aa55-9fcf46c72c99",
+    //   },
+    // };
 
-    AxiosInterceptors.post(`${api_postSrAddInvt}`, formDataPayload, header)
+    AxiosInterceptors.post(
+      `${api_postSrAddInvt}`,
+      formDataPayload,
+      ApiHeader2()
+    )
       .then(function (response) {
         console.log("Added to inventory", response?.data);
         console.log(response?.data?.st, "upper Status");
@@ -165,19 +172,6 @@ const ViewReceivedInvtById = (props) => {
     remarks: yup.string().required("Remarks is required"),
     remStock: yup.number().required("Remaining Stock is required"),
     dead_stock: yup.number(),
-    // deadStockImg: yup.mixed().when("deadStock", {
-    //   is: (value) => value !== undefined && value !== null && value !== 0,
-    //   then: yup
-    //     .mixed()
-    //     .required("Dead Stock Image is required")
-    //     .test("fileFormat", "Unsupported Format", (value) => {
-    //       return (
-    //         value &&
-    //         ["image/jpeg", "image/png", "image/gif"].includes(value.type)
-    //       );
-    //     }),
-    //   otherwise: yup.mixed(),
-    // }),
   });
 
   // intitial value
@@ -213,6 +207,7 @@ const ViewReceivedInvtById = (props) => {
 
     if (deadStock > applicationFullData?.post_procurement?.total_quantity) {
       formik.setFieldValue("dead_stock", 0);
+
       return toast.error("Dead Stock must not exceed total quantity");
     }
     console.log(deadStock, "deadStock====>");
@@ -221,14 +216,7 @@ const ViewReceivedInvtById = (props) => {
       let remaining =
         applicationFullData?.post_procurement?.total_quantity -
         (formik.values.receivedStock - deadStock);
-      console.log(
-        applicationFullData?.post_procurement?.total_quantity,
-        "applicationFullData?.total_quantity",
-        formik.values.receivedStock,
-        "applicationFullData?.total_receivings",
-        deadStock,
-        "deadStock"
-      );
+
       formik.setFieldValue("remStock", remaining);
     }
   };
@@ -335,7 +323,6 @@ const ViewReceivedInvtById = (props) => {
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-                {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
                 View Procurement Request{" "}
               </h2>
             </div>
@@ -547,7 +534,6 @@ const ViewReceivedInvtById = (props) => {
                       {applicationFullData?.receivings.map((data) => (
                         <tbody>
                           <tr className='bg-white border-b-2'>
-                            {/* <td className='px-6 py-4'>{data?.date}</td> */}
                             <td className='px-6 py-4'>
                               {data?.date
                                 .split("T")[0]
@@ -705,7 +691,45 @@ const ViewReceivedInvtById = (props) => {
                           </div>
                         </div>
 
-                        <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                        <div className='relative form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                          <div class=' relative px-4 w-full mb-4'>
+                            <label
+                              className={`${labelStyle} inline-block mb-2`}
+                            >
+                              Invt
+                            </label>
+
+                            <input
+                              name='dead_stock'
+                              className={`${inputStyle} inline-block w-full`}
+                              onChange={formik.handleChange}
+                              value={formik.values.dead_stock}
+                            />
+                            {formik.values.dead_stock > 0 && (
+                              <div className='absolute right-0 top-[33px] w-full'>
+                                <FileButton
+                                  btnLabel={"Upload Reference Image"}
+                                  bg={"[#4338CA]"}
+                                  textColor={"white"}
+                                  imgRef={deadStockRef}
+                                  hoverBg={"bg-blue-800"}
+                                  setImageDoc={setImageDoc}
+                                  setPreview={setPreview}
+                                />
+                              </div>
+                            )}
+
+                            <p className='text-red-500 text-xs '>
+                              {formik.touched.dead_stock &&
+                              formik.errors.dead_stock
+                                ? formik.errors.dead_stock
+                                : null}
+                            </p>
+                          </div>
+                          <div></div>
+                        </div>
+
+                        <div className='relative form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                           <div class=' relative px-4 w-full mb-4'>
                             <label
                               className={`${labelStyle} inline-block mb-2`}
@@ -715,20 +739,23 @@ const ViewReceivedInvtById = (props) => {
 
                             <input
                               name='dead_stock'
-                              className={`${inputStyle} inline-block w-full relative`}
+                              className={`${inputStyle} inline-block w-full`}
                               onChange={formik.handleChange}
                               value={formik.values.dead_stock}
                             />
-
-                            <button
-                              // className={`${buttonStyle} absolute`}
-                              className={`text-white absolute end-6 mt-[6px] bg-[#4338CA] hover:bg-blue-800 rounded text-[12px] px-5 py-[5px]`}
-                              onClick={() => {
-                                setDeadStockImg(true);
-                              }}
-                            >
-                              Upload Reference Image
-                            </button>
+                            {formik.values.dead_stock > 0 && (
+                              <div className='absolute right-0 top-[33px] w-full'>
+                                <FileButton
+                                  btnLabel={"Upload Reference Image"}
+                                  bg={"[#4338CA]"}
+                                  textColor={"white"}
+                                  imgRef={deadStockRef}
+                                  hoverBg={"bg-blue-800"}
+                                  setImageDoc={setImageDoc}
+                                  setPreview={setPreview}
+                                />
+                              </div>
+                            )}
 
                             <p className='text-red-500 text-xs '>
                               {formik.touched.dead_stock &&
@@ -737,9 +764,10 @@ const ViewReceivedInvtById = (props) => {
                                 : null}
                             </p>
                           </div>
+                          <div></div>
                         </div>
 
-                        <div className='form-group flex-shrink max-w-full ml-4 px-4 w-full md:w-1/2'>
+                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                           <label className={`${labelStyle} inline-block mb-2`}>
                             Remarks
                           </label>
@@ -756,6 +784,18 @@ const ViewReceivedInvtById = (props) => {
                               ? formik.errors.remarks
                               : null}
                           </p>
+                        </div>
+
+                        <div className='grid grid-cols-4'>
+                          <div className='w-20 col-end-5 col-span-1 ml-[-7px] mt-[-25px]'>
+                            <ImageDisplay
+                              preview={preview}
+                              imageDoc={imageDoc}
+                              alt={"Dead Stock Image"}
+                              showPreview={"hidden"}
+                              disabled
+                            />
+                          </div>
                         </div>
                       </div>
 
