@@ -327,10 +327,6 @@ const ListTableParent = (props) => {
                   // onClick={() => toPDF()}
                   onClick={() =>
                     navigate("/print-preview", {
-                      // state: {
-                      //   dataList,
-                      //   columns: props?.columns,
-                      // },
                       state: {
                         data: [...dataList],
                         columns: JSON.stringify(props.columns),
@@ -348,7 +344,10 @@ const ListTableParent = (props) => {
                 >
                   CSV
                 </button>
-                <button className={`${exportBtnStyle} font-semibold text-xs`}>
+                <button
+                  className={`${exportBtnStyle} font-semibold text-xs`}
+                  onClick={exportDataFun}
+                >
                   XLV
                 </button>
               </div>
@@ -451,9 +450,6 @@ const ListTableParent = (props) => {
           </div>
         </div>
       </div>
-      {/* <div ref={targetRef} id='printable-content'>
-        <ExportTableData columns={props?.columns} dataList={dataList} />
-      </div> */}
     </>
   );
 };
