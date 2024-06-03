@@ -49,19 +49,19 @@ function ImageModal(props) {
 
           {/* to display other than iimage */}
 
-          {props?.imageDoc?.type === "application/pdf" ||
+          {(props?.imageDoc?.type === "application/pdf" ||
             props?.imageDoc?.type === "text/csv" ||
             props?.imageDoc?.type ===
               "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-            ((props?.imageUrl?.includes(".pdf") ||
-              props?.imageUrl?.includes(".xlsx") ||
-              props?.imageUrl?.includes(".csv")) && (
-              <iframe
-                src={props?.imageUrl}
-                alt='Image Preview'
-                className='h-[480px]'
-              />
-            ))}
+            props?.imageUrl?.includes(".pdf") ||
+            props?.imageUrl?.includes(".xlsx") ||
+            props?.imageUrl?.includes(".csv")) && (
+            <iframe
+              src={props?.imageUrl}
+              title='File Preview'
+              className='h-[480px]'
+            />
+          )}
           {/* {!props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
             <iframe
               src={props?.imageUrl}
