@@ -191,14 +191,14 @@ const ViewInventoryDetailsById = (props) => {
           console.log(response?.data?.message, "Forwadede to DA--->>");
         } else {
           setisLoading(false);
-          // setdeclarationStatus(false);
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
-          console.log(errorMsg, "====>>");
+          toast.error(response?.data?.mmessage || "something went wrong");
+          navigate("/da-inventory-proposal");
           toast(response?.data?.message, "error");
         }
       })
       .catch(function (error) {
+        toast.error("Something went wrong");
+        navigate("/da-inventory-proposal");
         console.log("errorrr.... ", error);
         // setdeclarationStatus(false);
       });

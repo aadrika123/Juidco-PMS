@@ -19,10 +19,10 @@ import { AiOutlineDoubleRight, AiOutlineDoubleLeft } from "react-icons/ai";
 
 function ListTable(props) {
   const [bounce, setbounce] = useState("hidden");
-  const columns = useMemo(() => props.columns, []);
+  const columns = useMemo(() => props?.columns, []);
   const data = useMemo(
-    () => props.dataList,
-    [props.dataList, props?.totalCount]
+    () => props?.dataList,
+    [props?.dataList, props?.totalCount]
   );
   const [pageNo, setpageNo] = useState(0);
 

@@ -32,6 +32,7 @@ import ViewReceivedInvtByIdDa from "./Components/Pages/PMS/ReceivedInventory/Dep
 import InventoryDashboardDa2 from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/InventoryDashboardDa2";
 import SrEditPreProcurement from "./Components/Pages/PMS/PrePrecurement/StockReceiver/SrEditPreProcurement";
 import TenderForm from "./Components/Pages/PMS/TenderForm/TenderFormIndex";
+import ExportTableData from "./Components/Common/ExportTable/ExportTableData";
 
 const queryClient = new QueryClient();
 
@@ -130,7 +131,6 @@ function App() {
       element: <ViewReceivedInvtByIdDa />,
     },
 
-    
     //------------ Stock Receiver ---------------
 
     { path: "/sr-received-inventory", element: <ReceivedInvtHome /> },
@@ -143,6 +143,10 @@ function App() {
     {
       path: "/tendering",
       element: <TenderForm />,
+    },
+    {
+      path: "/print-preview",
+      element: <ExportTableData />,
     },
   ];
 
