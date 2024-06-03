@@ -420,7 +420,7 @@ function AddPreProcurement(props) {
           setdeclarationStatus(false);
           setProcurement_no(response?.data?.procurement_no);
 
-          navigate("/sr-inventory-proposal");
+          // navigate("/sr-inventory-proposal");
         } else {
           setisLoading(false);
           setdeclarationStatus(false);
