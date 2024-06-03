@@ -41,16 +41,17 @@ export default function ImageDisplay({
         </div>
       )}
 
-      {imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
-        <img
-          src={preview}
-          alt='Image Preview'
-          className={`rounded cursor-pointer `}
-          onClick={() => setImageModal(true)}
-        />
-      )}
+      <div>
+        {imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
+          <img
+            src={preview}
+            alt='Image Preview'
+            className={`rounded cursor-pointer `}
+            onClick={() => setImageModal(true)}
+          />
+        )}
 
-      {/* {imageDoc?.type?.match(/\.(pdf|csv|xlsx)$/i) && (
+        {/* {imageDoc?.type?.match(/\.(pdf|csv|xlsx)$/i) && (
         <img
           src={pdfIcon}
           alt='Image Previewss'
@@ -59,28 +60,27 @@ export default function ImageDisplay({
         />
       )} */}
 
-      {(imageDoc?.type === "application/pdf" ||
-        imageDoc?.type === "text/csv" ||
-        imageDoc?.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") && (
-        <img
-          src={
-            imageDoc.type === "application/pdf"
-              ? pdfIcon
-              : imageDoc.type === "text/csv"
-              ? csvIcon
-              : xlsxIcon
-          }
-          alt='File Preview'
-          className='cursor-pointer'
-          onClick={() => setImageModal(true)}
-        />
-      )}
-
-      {/* 
-      <div className='mb-4 text-center w-full pl-2'>
+        {(imageDoc?.type === "application/pdf" ||
+          imageDoc?.type === "text/csv" ||
+          imageDoc?.type ===
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") && (
+          <img
+            src={
+              imageDoc.type === "application/pdf"
+                ? pdfIcon
+                : imageDoc.type === "text/csv"
+                ? csvIcon
+                : xlsxIcon
+            }
+            alt='File Preview'
+            className='cursor-pointer'
+            onClick={() => setImageModal(true)}
+          />
+        )}
+      </div>
+      <div className='mb-4 text-center '>
         <p className='text-red-500 text-xs '>{imageDoc?.name}</p>
-      </div> */}
+      </div>
     </div>
   );
 }

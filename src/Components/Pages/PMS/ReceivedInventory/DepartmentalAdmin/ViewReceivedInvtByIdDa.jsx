@@ -145,6 +145,11 @@ const ViewReceivedInvtByIdDa = (props) => {
 
   //cal remaining quantity and managing rec quantity validation
   const remainingQuanityCalc = (receivedQuantity) => {
+    if (receivedQuantity < 0) {
+      toast.error("Amount cannot be negative");
+      formik.setFieldValue("received_quantity", 0);
+      return;
+    }
     let recQuantity;
 
     //setting received quantity
