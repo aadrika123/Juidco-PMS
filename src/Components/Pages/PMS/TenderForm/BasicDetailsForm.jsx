@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import CustomCheckboxGroup from "@/Components/Common/FormMolecules/CustomCheckboxGroup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
+import toast from "react-hot-toast";
 
 const BasicDetailsForm = () => {
   const inputFileRef = useRef();
