@@ -7,19 +7,21 @@
 //    Component  - ListTableParent
 //    DESCRIPTION - ListTableParent Component
 //////////////////////////////////////////////////////////////////////////////////////
-import React, { useEffect, useState } from "react";
-// import { useQuery } from "react-query";
+import React, { useEffect, useState, useRef } from "react";
+import { usePDF } from "react-to-pdf"; // import { useQuery } from "react-query";
 import ListTable from "./ListTable";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import { CSVDownload } from "react-csv";
 import ShimmerEffectInline from "@/Components/Common/Loaders/ShimmerEffectInline";
 import GlobalFilter from "./GlobalFilter";
-import { AiOutlineArrowDown } from "react-icons/ai";
 import { FiFilter } from "react-icons/fi";
 import SideSection from "../SearchPanel/SidebarTailwind";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaArrowRightLong } from "react-icons/fa6";
+import generatePDF from "react-to-pdf";
+import ExportTableData from "../ExportTable/ExportTableData";
+import { useNavigate } from "react-router-dom";
 
 const ListTableParent = (props) => {
   // 👉 State constants 👈
@@ -43,9 +45,13 @@ const ListTableParent = (props) => {
 
   const { api_exportcsv } = ProjectApiList();
 
+  const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
+
   const searchPanelItems = [
     { name: "project_proposal_no", caption: "Project Proposal Number" },
   ];
+
+  const navigate = useNavigate();
 
   //animation for open and close filter bar
   const open1 = `animate__animated animate__slideInLeft animate__faster `;
@@ -270,7 +276,8 @@ const ListTableParent = (props) => {
   };
 
   const exportBtnStyle = `bg-green-700 text-white px-2 rounded-md flex items-center gap-1 hover:bg-green-900`;
-  const exportBtnStyle2 = `bg-green-700 text-white px-2 rounded-md flex items-center gap-4 ml-2`;
+  console.log(props?.columns, "props?.columns==========================");
+  console.log(dataList, "datalist================");
 
   return (
     <>
@@ -310,25 +317,37 @@ const ListTableParent = (props) => {
                 </span>
               </button>
 
-              {/* <button className={exportBtnStyle2}>
-                Export
-                <FaArrowRightLong color='white' size={10} />
-              </button> */}
               <div
                 className={`flex gap-2 transition-opacity duration-300 ${
                   isHovered ? "opacity-100 visible" : "opacity-0 invisible"
                 }`}
               >
-                <button className={`${exportBtnStyle} font-semibold text-xs`}>
+                <button
+                  className={`${exportBtnStyle} font-semibold text-xs`}
+                  // onClick={() => toPDF()}
+                  onClick={() =>
+                    navigate("/print-preview", {
+                      state: {
+                        data: [...dataList],
+                        columns: JSON.stringify(props.columns),
+                      },
+                    })
+                  }
+                  // onClick={() => window.print()}
+                >
                   PDF
                 </button>
+
                 <button
                   className={`${exportBtnStyle} font-semibold text-xs`}
                   onClick={exportDataFun}
                 >
                   CSV
                 </button>
-                <button className={`${exportBtnStyle} font-semibold text-xs`}>
+                <button
+                  className={`${exportBtnStyle} font-semibold text-xs`}
+                  onClick={exportDataFun}
+                >
                   XLV
                 </button>
               </div>
@@ -384,7 +403,7 @@ const ListTableParent = (props) => {
             {loader && <ShimmerEffectInline />}
 
             {!loader && dataList?.length > 0 ? (
-              <div className='mb-10 ml-2'>
+              <div className='mb-10 ml-2' id='printable-content'>
                 {/* 👉 Listtable 👈 */}
 
                 <ListTable

@@ -8,9 +8,7 @@
 //    DESCRIPTION - PostPrecurementListTabsDa
 /////////////////////////////////////////////////////////////////////////////
 
-// src/components/PostPrecurementListTabsDa.js
 import React, { useState } from "react";
-import { GoPlus } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 import InventoryProposalList from "./PostPrecurementList";
 import ProjectApiList from "@/Components/api/ProjectApiList";
@@ -21,7 +19,6 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 const PostPrecurementListTabsDa = () => {
   const [activeTab, setActiveTab] = useState("inbox");
-  const navigate = useNavigate();
   const {
     api_fetchPostProcurementDAListInbox,
     api_fetchPostProcurementDAListOutbox,
