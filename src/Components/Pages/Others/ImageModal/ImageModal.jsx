@@ -41,21 +41,34 @@ function ImageModal(props) {
             <p className='text-3xl'>&times;</p>
           </button>
 
-          {props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
-            <img
-              className='w-[40rem]'
-              src={props?.imageUrl}
-              alt='alt title'
-            />
+          {/* to display image */}
+          {(props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) ||
+            props?.imageUrl?.match(/(jpg|jpeg|png)$/)) && (
+            <img className='w-[40rem]' src={props?.imageUrl} alt='alt title' />
           )}
 
-          {!props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
+          {/* to display other than iimage */}
+
+          {(props?.imageDoc?.type === "application/pdf" ||
+            props?.imageDoc?.type === "text/csv" ||
+            props?.imageDoc?.type ===
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+            props?.imageUrl?.includes(".pdf") ||
+            props?.imageUrl?.includes(".xlsx") ||
+            props?.imageUrl?.includes(".csv")) && (
+            <iframe
+              src={props?.imageUrl}
+              title='File Preview'
+              className='h-[480px]'
+            />
+          )}
+          {/* {!props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
             <iframe
               src={props?.imageUrl}
               alt='Image Preview'
               className='h-[480px]'
             />
-          )}
+          )} */}
         </div>
         <div className='flex'>
           <button
