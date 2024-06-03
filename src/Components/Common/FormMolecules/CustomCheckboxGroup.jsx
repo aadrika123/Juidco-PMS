@@ -23,14 +23,14 @@ const CustomCheckboxGroup = ({
   return (
     <Box sx={{ display: "flex" }}>
       <FormControl
-        sx={{ mt: 3, width: "100%" }}
+        sx={{ width: "100%" }}
         component='fieldset'
         variant='standard'
         error={Boolean(errors && touched)}
       >
         <FormLabel
           component='legend'
-          sx={{ color: "#111827", fontSize: "15px",paddingTop: "2px" }}
+          sx={{ color: "#111827", fontSize: "15px", paddingTop: "2px" }}
         >
           {title} <span className='text-red-500'>{important}</span>
         </FormLabel>
