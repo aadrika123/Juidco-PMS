@@ -23,7 +23,7 @@ function StockReceiverModal(props) {
 
   const handleCancelClick = () => {
     props.setIsModalOpen(false);
-    window.location.reload()
+    window.location.reload();
   };
   const handleUploadDoc = () => {
     inputFileRef.current.click();
@@ -42,6 +42,7 @@ function StockReceiverModal(props) {
 
     const file = e.target.files[0];
     if (!file) {
+      setPreview(null);
       return toast.error("No File Selected");
     }
 
@@ -50,6 +51,8 @@ function StockReceiverModal(props) {
       toast.error(
         "Invalid file type. Please select a JPG, JPEG, PNG or PDF file."
       );
+      setPreview(null);
+
       e.target.value = ""; // Clear the input
       return;
     }
@@ -57,6 +60,8 @@ function StockReceiverModal(props) {
     // Check the file size
     if (file.size > maxSizeInBytes) {
       toast.error("File size exceeds 2MB. Please select a smaller file.");
+      setPreview(null);
+
       e.target.value = ""; // Clear the input
       return;
     }
@@ -106,7 +111,7 @@ function StockReceiverModal(props) {
                 src={preview}
                 alt='Image Preview'
                 // style={{ width: "200px", height: "auto", marginTop: "20px", border: "2px", borderColor: "blue" }}
-                className="w-[200px] h-auto mt-[20px] border border-indigo-400 rounded"
+                className='w-[200px] h-auto mt-[20px] border border-indigo-400 rounded'
               />
             )}
 
@@ -114,7 +119,7 @@ function StockReceiverModal(props) {
               <iframe
                 src={preview}
                 alt='Image Previewss'
-                style={{ marginTop: "20px", width: "400px", height: "250px" }}
+                style={{ marginTop: "20px", width: "300px", height: "200px" }}
               />
             )}
 
@@ -127,20 +132,23 @@ function StockReceiverModal(props) {
                 onChange={(e) => imageHandler(e)}
               />
 
-              <p className='text-red-500 text-sm m-2'>
-                {props?.imageDoc?.name}
-              </p>
-              <div className="flex justify-center">
-              <button
-                className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
-                onClick={handleUploadDoc}
-              >
-                Browse File
-              </button>
+              {preview != null && (
+                <p className='text-red-500 text-sm m-2'>
+                  {props?.imageDoc?.name}
+                </p>
+              )}
+
+              <div className='flex justify-center'>
+                <button
+                  className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
+                  onClick={handleUploadDoc}
+                >
+                  Browse File
+                </button>
               </div>
             </div>
           </div>
-          
+
           <div>
             <div className=''>
               <h3 className='text-sm text-black font-openSans'>Remarks</h3>

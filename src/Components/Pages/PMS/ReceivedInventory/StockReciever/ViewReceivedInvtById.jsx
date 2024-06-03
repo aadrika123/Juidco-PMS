@@ -167,8 +167,6 @@ const ViewReceivedInvtById = (props) => {
       return toast.error("Please upload dead stock image");
     }
 
-    console.log(imageDoc, "imageDoc======>>>");
-
     let body = {
       ...payload,
       procurement_no: applicationFullData?.procurement_no,
@@ -177,7 +175,6 @@ const ViewReceivedInvtById = (props) => {
     if (inventory != "") {
       body = { ...body, inventory };
     }
-    console.log(body, "body sr======================");
 
     let formDataPayload = new FormData();
 
@@ -252,9 +249,15 @@ const ViewReceivedInvtById = (props) => {
   const calculateRemainingStock = (deadStockValue) => {
     let deadStock = Number(deadStockValue);
 
+    if (deadStock < 0) {
+      formik.setFieldValue("dead_stock", 0);
+      formik.setFieldValue("remStock", applicationFullData?.total_remaining);
+      toast.error("Dead stock cannot be negative");
+      return;
+    }
+
     if (deadStock > applicationFullData?.post_procurement?.total_quantity) {
       formik.setFieldValue("dead_stock", 0);
-
       return toast.error("Dead Stock must not exceed total quantity");
     }
     console.log(deadStock, "deadStock====>");
