@@ -119,7 +119,7 @@ const CriticalDateForm = () => {
               {({ values, handleChange, errors, touched }) => (
                 <Form className=" container mx-auto capitalize grid grid-cols-2 space-x-4">
 
-                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 ">
+                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5 ">
                     <div className="">
                       <label
                         for="default-input"
@@ -143,7 +143,7 @@ const CriticalDateForm = () => {
                     </div>
                   </div>
 
-                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3">
+                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5">
                     <div className="">
                       <label
                         for="default-input"
@@ -167,7 +167,7 @@ const CriticalDateForm = () => {
                     </div>
                   </div>
 
-                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3">
+                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5">
                     <div className="">
                       <label
                         for="default-input"
@@ -192,7 +192,7 @@ const CriticalDateForm = () => {
                   </div>
                   
                   
-                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3">
+                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5">
                     <div className="">
                       <label
                         for="default-input"
@@ -216,7 +216,7 @@ const CriticalDateForm = () => {
                     </div>
                   </div>
                   
-                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 col-span-2 mt-3">
+                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 col-span-2 mt-3 space-y-5">
                     <div className="">
                       <label
                         for="default-input"
