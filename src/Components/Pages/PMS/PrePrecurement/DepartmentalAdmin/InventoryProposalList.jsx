@@ -26,12 +26,8 @@ import { FaChartPie } from "react-icons/fa";
 
 function InventoryProposalList(props) {
   const navigate = useNavigate();
-  const { module } = useParams();
 
   console.log(props.page, "page========>");
-  // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
-
-  const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
@@ -39,31 +35,6 @@ function InventoryProposalList(props) {
   const [requestBody, setRequestBody] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
-  const [activeButton, setActiveButton] = useState("inbox");
-
-  let testDate = new Date().toLocaleDateString("in-IN");
-  let todayDate = moment(testDate).format("DD-MM-YYYY");
-
-  const validationSchema = yup.object({
-    // fromDate: yup.string().required("Field Required"),
-    // uptoDate: yup.string().required("Field Required"),
-    // key: yup.string().required("Field Required"),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      // fromDate: moment(new Date()).format("yy-MM-DD"),
-      // uptoDate: moment(new Date()).format("yy-MM-DD"),
-      // key: "",
-    },
-    onSubmit: (values) => {
-      console.log("values =>  ", values);
-      fetchResouceList(values);
-
-      // setchangeData((prev) => prev + 1);
-    },
-    validationSchema,
-  });
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
@@ -100,7 +71,6 @@ function InventoryProposalList(props) {
       ) => <div className='pr-2'>{cell.row.values.brand.name || "N/A"}</div>,
     },
 
-  
     {
       Header: "status",
       accessor: "status",
@@ -164,14 +134,6 @@ function InventoryProposalList(props) {
       ),
     },
   ];
-
-  const fetchResouceList = (data) => {
-    console.log(data, "payload data for searchin water");
-    setRequestBody(data);
-    setchangeData((prev) => prev + 1);
-  };
-
-  // const commonInputStyle = `form-control block w-full px-2 py-1 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none shadow-md`;
 
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {

@@ -9,29 +9,18 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
+import React, { useState } from "react";
 import * as yup from "yup";
-import moment from "moment";
 
-import ProjectApiList from "@/Components/api/ProjectApiList";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
-import { RotatingLines } from "react-loader-spinner";
-import { RiFilter2Line } from "react-icons/ri";
 import { useNavigate, useParams } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
-import { GoPlus } from "react-icons/go";
-import { FaChartPie } from "react-icons/fa";
 
 function ReceivedInvtList(props) {
   const navigate = useNavigate();
-  const { module } = useParams();
 
   console.log(props.page, "page========>");
-  // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
-
-  const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
@@ -39,27 +28,6 @@ function ReceivedInvtList(props) {
   const [requestBody, setRequestBody] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
-
-  const validationSchema = yup.object({
-    // fromDate: yup.string().required("Field Required"),
-    // uptoDate: yup.string().required("Field Required"),
-    // key: yup.string().required("Field Required"),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      // fromDate: moment(new Date()).format("yy-MM-DD"),
-      // uptoDate: moment(new Date()).format("yy-MM-DD"),
-      // key: "",
-    },
-    onSubmit: (values) => {
-      console.log("values =>  ", values);
-      fetchResouceList(values);
-
-      // setchangeData((prev) => prev + 1);
-    },
-    validationSchema,
-  });
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
@@ -96,7 +64,6 @@ function ReceivedInvtList(props) {
       ) => <div className='pr-2'>{cell.row.values.brand.name || "N/A"}</div>,
     },
 
-    
     {
       Header: "status",
       accessor: "status",
@@ -130,15 +97,6 @@ function ReceivedInvtList(props) {
       ),
     },
 
-    // {
-    //   Header: "Remark",
-    //   accessor: "remark",
-    //   Cell: ({ cell }) => (
-    //     <div className='pr-2 text-green-800 truncate w-14'>
-    //       {cell.row.values.remark || "N/A"}
-    //     </div>
-    //   ),
-    // },
     {
       Header: "Action",
       accessor: "id",
@@ -158,13 +116,6 @@ function ReceivedInvtList(props) {
       ),
     },
   ];
-
-  const fetchResouceList = (data) => {
-    console.log(data, "payload data for searchin water");
-    setRequestBody(data);
-    setchangeData((prev) => prev + 1);
-  };
-
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {
     return (
@@ -178,11 +129,11 @@ function ReceivedInvtList(props) {
   const tableSelector = (page) => {
     switch (page) {
       case "inbox":
-        return "DAIN";
+        return "RECDAIN";
       case "outbox":
-        return "DAOUT";
+        return "RECDAOUT";
       default:
-        return "DAIN";
+        return "RECDAIN";
     }
   };
 

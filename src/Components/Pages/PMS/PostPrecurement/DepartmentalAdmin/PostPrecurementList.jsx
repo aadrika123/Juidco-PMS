@@ -133,11 +133,11 @@ function PostPrecurementList(props) {
   const tableSelector = (page) => {
     switch (page) {
       case "inbox":
-        return "DAIN";
+        return "POSTDAIN";
       case "outbox":
-        return "DAOUT";
+        return "POSTDAOUT";
       default:
-        return "DAIN";
+        return "POSTDAIN";
     }
   };
 

@@ -8,10 +8,9 @@
 //    DESCRIPTION - ReceivedInvtList
 //////////////////////////////////////////////////////////////////////////////////////
 
-import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
 function ReceivedInvtList(props) {
@@ -136,11 +135,11 @@ function ReceivedInvtList(props) {
   const tableSelector = (page) => {
     switch (page) {
       case "inbox":
-        return "DAIN";
+        return "RECSRIN";
       case "outbox":
-        return "DAOUT";
+        return "RECSROUT";
       default:
-        return "DAIN";
+        return "RECSRIN";
     }
   };
 

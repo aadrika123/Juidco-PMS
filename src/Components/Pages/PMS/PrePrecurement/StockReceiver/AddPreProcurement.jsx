@@ -413,6 +413,7 @@ function AddPreProcurement(props) {
         console.log("response after data submitted", response?.data?.order_no);
         setresponseScreen(response?.data);
         if (response?.data?.status === true) {
+          console.log(response.data.status, "inside if=====================");
           setisLoading(false);
           setSuccessModal(true);
           notify(response?.data?.message, "success");
@@ -424,10 +425,8 @@ function AddPreProcurement(props) {
         } else {
           setisLoading(false);
           setdeclarationStatus(false);
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
-          console.log(errorMsg, "====>>");
           notify(response?.data?.message, "error");
+          navigate("/sr-inventory-proposal");
         }
       })
       .catch(function (error) {
@@ -435,6 +434,7 @@ function AddPreProcurement(props) {
         setisLoading(false);
         notify("Something went wrong!");
         setdeclarationStatus(false);
+        navigate("/sr-inventory-proposal");
       });
   };
 
@@ -805,7 +805,7 @@ function AddPreProcurement(props) {
                           placeholder='Rate'
                         />
                       </div>
-                      <p className="pt-8">X</p>
+                      <p className='pt-8'>X</p>
                       <div>
                         <label className={`${labelStyle} inline-block mb-2`}>
                           Total Quantity
@@ -822,7 +822,7 @@ function AddPreProcurement(props) {
                           placeholder='Quantity'
                         />
                       </div>
-                      <p className="pt-8">=</p>
+                      <p className='pt-8'>=</p>
                       <div>
                         <label className={`${labelStyle} inline-block mb-2`}>
                           Total Rate

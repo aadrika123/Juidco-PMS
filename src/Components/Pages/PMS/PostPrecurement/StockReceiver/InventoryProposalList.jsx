@@ -9,29 +9,18 @@
 /////////////////////////////////////////////////////////////////////////////
 
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
+import React, { useState } from "react";
 import * as yup from "yup";
 import moment from "moment";
-
-import ProjectApiList from "@/Components/api/ProjectApiList";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
-import { RotatingLines } from "react-loader-spinner";
-import { RiFilter2Line } from "react-icons/ri";
 import { useNavigate, useParams } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
-import { GoPlus } from "react-icons/go";
-import { FaChartPie } from "react-icons/fa";
 
 function InventoryProposalList(props) {
   const navigate = useNavigate();
-  const { module } = useParams();
 
   console.log(props.page, "page========>");
-  // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
-
-  const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
@@ -39,31 +28,6 @@ function InventoryProposalList(props) {
   const [requestBody, setRequestBody] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
-  const [activeButton, setActiveButton] = useState("inbox");
-
-  let testDate = new Date().toLocaleDateString("in-IN");
-  let todayDate = moment(testDate).format("DD-MM-YYYY");
-
-  const validationSchema = yup.object({
-    // fromDate: yup.string().required("Field Required"),
-    // uptoDate: yup.string().required("Field Required"),
-    // key: yup.string().required("Field Required"),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      // fromDate: moment(new Date()).format("yy-MM-DD"),
-      // uptoDate: moment(new Date()).format("yy-MM-DD"),
-      // key: "",
-    },
-    onSubmit: (values) => {
-      console.log("values =>  ", values);
-      fetchResouceList(values);
-
-      // setchangeData((prev) => prev + 1);
-    },
-    validationSchema,
-  });
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
@@ -164,8 +128,6 @@ function InventoryProposalList(props) {
     setchangeData((prev) => prev + 1);
   };
 
-  // const commonInputStyle = `form-control block w-full px-2 py-1 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none shadow-md`;
-
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {
     return (
@@ -179,11 +141,11 @@ function InventoryProposalList(props) {
   const tableSelector = (page) => {
     switch (page) {
       case "inbox":
-        return "SRIN";
+        return "POSTSRIN";
       case "outbox":
-        return "SROUT";
+        return "POSTSROUT";
       default:
-        return "SRIN";
+        return "POSTSRIN";
     }
   };
 
