@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import CustomCheckboxGroup from "@/Components/Common/FormMolecules/CustomCheckboxGroup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
+import toast from "react-hot-toast";
 
 const BasicDetailsForm = () => {
   const inputFileRef = useRef();
@@ -137,9 +138,9 @@ const BasicDetailsForm = () => {
 
   return (
     <>
-      <div className='bg-white rounded-xl w-full shadow-md p-4 border border-indigo-200'>
+      {/* <div className='bg-white rounded-xl w-full shadow-md p-4 border'> */}
         {/* Heading  */}
-        <div className='bg-[#4338ca] text-white w-full rounded p-3 flex'>
+        <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
           <img src={folder} className='pl-2' />
           <h1 className='pt-1 pl-2 text-xl'>Basic Details</h1>
         </div>
@@ -166,7 +167,7 @@ const BasicDetailsForm = () => {
                       <span className='text-red-500'>*</span>
                     </label>
                     <input
-                      type='text'
+                      type='text' 
                       className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
                     />
                   </>
@@ -407,7 +408,7 @@ const BasicDetailsForm = () => {
             )}
           </Formik>
         </div>
-      </div>
+      {/* </div> */}
       <div className='mb-5'>
         <button
           className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
@@ -417,7 +418,7 @@ const BasicDetailsForm = () => {
         </button>
 
         <button
-          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right'
+          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
           onClick='##'
         >
           Save & Next

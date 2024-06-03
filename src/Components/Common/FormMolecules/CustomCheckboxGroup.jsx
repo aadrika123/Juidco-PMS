@@ -17,6 +17,7 @@ const CustomCheckboxGroup = ({
   errors,
   touched,
   title,
+  important,
   name,
 }) => {
   return (
@@ -29,9 +30,9 @@ const CustomCheckboxGroup = ({
       >
         <FormLabel
           component='legend'
-          sx={{ color: "#111827", fontSize: "15px" }}
+          sx={{ color: "#111827", fontSize: "15px",paddingTop: "2px" }}
         >
-          {title} <span className='text-red-500'>*</span>
+          {title} <span className='text-red-500'>{important}</span>
         </FormLabel>
         <FormGroup
           className='text-gray-600'

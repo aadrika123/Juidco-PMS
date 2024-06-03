@@ -22,6 +22,9 @@ import cd2 from "@/Components/assets/cd2.svg";
 import bo from "@/Components/assets/bo.svg";
 import BasicDetailsForm from "./BasicDetailsForm";
 import CoverDetailsForm from "./CoverDetailsForm";
+import WorkDetailsForm from "./WorkDetailsForm";
+import FeeDetailsForm from "./FeeDetailsForm";
+import CriticalDateForm from "./CriticalDateForm";
 
 const TenderForm = () => {
   const [activeTab, setActiveTab] = useState("basic_details");
@@ -133,11 +136,11 @@ const TenderForm = () => {
           </div>
         )}
 
-        {activeTab === "work_details" && <div>Work Details</div>}
+        {activeTab === "work_details" && <div><WorkDetailsForm/></div>}
 
-        {activeTab === "fee_details" && <div>Fee Details</div>}
+        {activeTab === "fee_details" && <div><FeeDetailsForm/></div>}
 
-        {activeTab === "critical_dates" && <div>Critical Dates</div>}
+        {activeTab === "critical_dates" && <div><CriticalDateForm/></div>}
 
         {activeTab === "bid_openers" && <div>Bid Opiners</div>}
       </div>

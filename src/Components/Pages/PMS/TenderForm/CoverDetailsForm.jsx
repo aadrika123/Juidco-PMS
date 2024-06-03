@@ -85,13 +85,14 @@ const BasicDetailsForm = () => {
   };
 
   return (
-    <div className='bg-white rounded-md w-full shadow-md p-4'>
+    <>
       {/* Heading */}
-      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex'>
+      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
         <img src={cdIcon} className='pl-2' alt='folder icon' />
         <h1 className='pt-1 pl-2 text-xl'>Cover Details</h1>
       </div>
 
+    <div className='bg-white rounded-md w-full shadow-xl p-4 mt-5'>
       {/* Form Starting */}
       <div className='mt-5'>
         <Formik
@@ -151,6 +152,30 @@ const BasicDetailsForm = () => {
         </Formik>
       </div>
     </div>
+
+    <div className='mb-5'>
+        <button
+          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
+          onClick='##'
+        >
+          Back
+        </button>
+
+        <button
+          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
+          onClick='##'
+        >
+          Save & Next
+        </button>
+
+        <button
+          className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
+          onClick='##'
+        >
+          Reset
+        </button>
+      </div>
+    </>
   );
 };
 

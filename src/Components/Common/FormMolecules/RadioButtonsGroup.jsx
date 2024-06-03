@@ -22,7 +22,7 @@ export default function RadioButtonsGroup({
   return (
     <Box sx={{ display: "flex" }}>
       <FormControl
-        sx={{ m: 3, width: "100%" }}
+        sx={{ m: 0, width: "100%" }}
         component='fieldset'
         variant='standard'
         error={Boolean(errors && touched)}
