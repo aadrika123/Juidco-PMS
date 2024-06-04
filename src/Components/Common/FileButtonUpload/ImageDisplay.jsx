@@ -45,7 +45,7 @@ export default function ImageDisplay({
         {imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
           <img
             src={preview}
-            alt='Image Preview'
+            alt={alt}
             className={`rounded cursor-pointer `}
             onClick={() => setImageModal(true)}
           />
@@ -72,7 +72,7 @@ export default function ImageDisplay({
                 ? csvIcon
                 : xlsxIcon
             }
-            alt='File Preview'
+            alt={alt}
             className='cursor-pointer'
             onClick={() => setImageModal(true)}
           />
