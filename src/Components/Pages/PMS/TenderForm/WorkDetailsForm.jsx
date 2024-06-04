@@ -109,24 +109,50 @@ const WorkDetailsForm = () => {
   ];
 
   const validationSchema = Yup.object({
-    checkboxes: Yup.object({
-      gilad: Yup.boolean(),
-      jason: Yup.boolean(),
-      antoine: Yup.boolean(),
-    }).test("at-least-two", "You must select exactly two options", (values) => {
-      return Object.values(values).filter(Boolean).length === 2;
-    }),
-    // Additional form fields and their validation can go here
+    tenderReference_No: Yup.string().required(),
+    workDiscription: Yup.string().required(),
+    pre_qualification_details: Yup.string().required(),
+    product_category: Yup.object().required(),
+    productSubCategory: Yup.string().required(),
+    contract_type: Yup.string().required(),
+    tender_values: Yup.string().required(),
+    bid_validity: Yup.string().required(),
+    completionPeriod: Yup.string().required(),
+    location: Yup.string().required(),
+    pinCode: Yup.string().min(6, "must be 6 digits").required(),
+    pre_bid: Yup.string().required(),
+    preBidMeeting: Yup.string().required(),
+    preBidMeetingAdd: Yup.string().required(),
+    bidOpeningPlace: Yup.string().required(),
+    tenderer_class: Yup.object().required(),
+    invstOffName: Yup.string().required(),
+    invstOffAdd: Yup.string().required(),
+    invstOffEmail_Ph: Yup.string().required(),
   });
 
+  // Initial values for additional form fields can go here
   const initialValues = {
-    checkboxes: {
-      gilad: false,
-      jason: false,
-      antoine: false,
-    },
-    // Initial values for additional form fields can go here
+    tenderReference_No: "",
+    workDiscription: "",
+    pre_qualification_details: "",
+    product_category: "",
+    productSubCategory: "",
+    contract_type: "",
+    tender_values: "",
+    bid_validity: "",
+    completionPeriod: "",
+    location: "",
+    pinCode: "",
+    pre_bid: "",
+    preBidMeeting: "",
+    preBidMeetingAdd: "",
+    bidOpeningPlace: "",
+    tenderer_class: "",
+    invstOffName: "",
+    invstOffAdd: "",
+    invstOffEmail_Ph: "",
   };
+
   return (
     <>
       {/* <div className='bg-white rounded-xl w-full shadow-md p-4 border border-indigo-200'> */}
@@ -154,42 +180,95 @@ const WorkDetailsForm = () => {
                     <>
                       <label
                         for='default-input'
-                        className='block mb-2 text-sm font-medium text-gray-900'
+                        className={`block mb-2 text-sm font-medium text-gray-900 ${
+                          errors.tenderReference_No &&
+                          touched.tenderReference_No &&
+                          "text-red-500"
+                        }`}
                       >
                         Tender Reference No{" "}
                         <span className='text-red-500'>*</span>
                       </label>
                       <input
+                        name='tenderReference_No'
                         type='text'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-1/3 p-2.5'
                         placeholder='Reference No'
+                        onChange={handleChange}
+                        value={values.tenderReference_No}
                       />
 
                       <label
                         for='default-input'
-                        className='block mb-2 mt-3 text-sm font-medium text-gray-900'
+                        className={`block mb-2 mt-3 text-sm font-medium text-gray-900 ${
+                          errors.workDiscription &&
+                          touched.workDiscription &&
+                          "text-red-500"
+                        }`}
                       >
                         Work Discriptiion
                         <span className='text-red-500'>*</span>
                       </label>
-                      <textarea
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                        placeholder='Work Discriptiion'
-                      />
+
+                      <div className=' relative'>
+                        <textarea
+                          name='workDiscription'
+                          type='text'
+                          className=' bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                          placeholder='Work Discriptiion'
+                          value={values.workDiscription}
+                          onChange={(e) => {
+                            if (values.workDiscription.length < 300) {
+                              handleChange(e);
+                            }
+                          }}
+                        />
+
+                        <span
+                          className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${
+                            300 === values.workDiscription.length &&
+                            "text-red-500"
+                          }`}
+                        >
+                          {values.workDiscription?.length} / {300}
+                        </span>
+                      </div>
 
                       <label
                         for='default-input'
-                        className='block mb-2 mt-3 text-sm font-medium text-gray-900'
+                        className={`block mb-2 mt-3 text-sm font-medium text-gray-900 ${
+                          errors.pre_qualification_details &&
+                          touched.pre_qualification_details &&
+                          "text-red-500"
+                        }`}
                       >
                         Pre Qualification Details
                         <span className='text-red-500'>*</span>
                       </label>
-                      <textarea
-                        placeholder='Tender Fee, EMD, Affidavit'
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-20 p-2.5'
-                      />
+
+                      <div className='relative'>
+                        <textarea
+                          name='pre_qualification_details'
+                          type='text'
+                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-20 p-2.5'
+                          placeholder='Tender Fee, EMD, Affidavit'
+                          value={values.pre_qualification_details}
+                          onChange={(e) => {
+                            if (values.pre_qualification_details.length < 300) {
+                              handleChange(e);
+                            }
+                          }}
+                        />
+
+                        <span
+                          className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${
+                            300 === values.pre_qualification_details.length &&
+                            "text-red-500"
+                          }`}
+                        >
+                          {values.pre_qualification_details?.length} / {300}
+                        </span>
+                      </div>
                     </>
                   </div>
 
@@ -199,24 +278,46 @@ const WorkDetailsForm = () => {
                         fields={productCategory}
                         title={"Product Category "}
                         name={"product_category"}
-                        values={values.checkboxes}
+                        values={values.product_category}
                         handleChange={handleChange}
-                        errors={errors.checkboxes}
-                        touched={touched.checkboxes}
+                        errors={errors.product_category}
+                        touched={touched.product_category}
+                        value={values.product_category}
                       />
 
-                      <label
-                        for='default-input'
-                        className='block mb-2 mt-5 text-sm font-medium text-gray-900'
-                      >
-                        Product Sub Category
-                        <span className='text-red-500'>*</span>
-                      </label>
-                      <textarea
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                        placeholder='Sub Category'
-                      />
+                      <div className='relative'>
+                        <label
+                          for='default-input'
+                          className={`block mb-2 mt-5 text-sm font-medium text-gray-900 ${
+                            errors.productSubCategory &&
+                            touched.productSubCategory &&
+                            "text-red-500"
+                          }`}
+                        >
+                          Product Sub Category
+                          <span className='text-red-500'>*</span>
+                        </label>
+                        <textarea
+                          name='productSubCategory'
+                          type='text'
+                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                          placeholder='Sub Category'
+                          onChange={(e) => {
+                            if (values.productSubCategory.length < 300) {
+                              handleChange(e);
+                            }
+                          }}
+                          value={values.productSubCategory}
+                        />
+                        <span
+                          className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${
+                            300 === values.productSubCategory.length &&
+                            "text-red-500"
+                          }`}
+                        >
+                          {values.productSubCategory?.length} / {300}
+                        </span>
+                      </div>
                     </>
                   </div>
 
@@ -226,30 +327,30 @@ const WorkDetailsForm = () => {
                         fields={contractType}
                         title={"Contract Type"}
                         name={"contract_type"}
-                        values={values.checkboxes}
+                        values={values.contract_type}
                         handleChange={handleChange}
-                        errors={errors.checkboxes}
-                        touched={touched.checkboxes}
+                        errors={errors.contract_type}
+                        touched={touched.contract_type}
                       />
 
                       <RadioButtonsGroup
                         fields={tenderValue}
                         title={"Tender Value"}
                         name={"tender_values"}
-                        values={values.checkboxes}
+                        values={values.tender_values}
                         handleChange={handleChange}
-                        errors={errors.checkboxes}
-                        touched={touched.checkboxes}
+                        errors={errors.tender_values}
+                        touched={touched.tender_values}
                       />
 
                       <RadioButtonsGroup
                         fields={bidValidity}
                         title={"Bid Validity (Days)"}
                         name={"bid_validity"}
-                        values={values.checkboxes}
+                        values={values.bid_validity}
                         handleChange={handleChange}
-                        errors={errors.checkboxes}
-                        touched={touched.checkboxes}
+                        errors={errors.bid_validity}
+                        touched={touched.bid_validity}
                       />
                     </>
                   </div>
@@ -258,22 +359,31 @@ const WorkDetailsForm = () => {
                     <div>
                       <label
                         for='default-input'
-                        className='block mb-2 text-sm font-medium text-gray-900'
+                        className={`block mb-2 text-sm font-medium text-gray-900 ${
+                          errors.completionPeriod &&
+                          touched.completionPeriod &&
+                          "text-red-500"
+                        }`}
                       >
                         Completion Period in Months
                         <span className='text-red-500'>*</span>
                       </label>
                       <input
-                        type='text'
+                        type='number'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
-                        placeholder='Completion Period '
+                        placeholder='Completion Period'
+                        name='completionPeriod'
+                        onChange={handleChange}
+                        value={values.completionPeriod}
                       />
                     </div>
 
                     <div>
                       <label
                         for='default-input'
-                        className='block mb-2 text-sm font-medium text-gray-900'
+                        className={`block mb-2 text-sm font-medium text-gray-900 ${
+                          errors.location && touched.location && "text-red-500"
+                        }`}
                       >
                         Location (Work/Services/Items)
                         <span className='text-red-500'>*</span>
@@ -282,13 +392,18 @@ const WorkDetailsForm = () => {
                         type='text'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
                         placeholder='Location'
+                        name='location'
+                        onChange={handleChange}
+                        value={values.location}
                       />
                     </div>
 
                     <div>
                       <label
                         for='default-input'
-                        className='block mb-2 text-sm font-medium text-gray-900'
+                        className={`block mb-2 text-sm font-medium text-gray-900 ${
+                          errors.pinCode && touched.pinCode && "text-red-500"
+                        }`}
                       >
                         Pin Code
                         <span className='text-red-500'>*</span>
@@ -297,7 +412,15 @@ const WorkDetailsForm = () => {
                         type='number'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
                         placeholder='Pin Code'
+                        name='pinCode'
+                        onChange={handleChange}
+                        value={values.pinCode}
                       />
+                      <p className='text-red-500 text-xs '>
+                        {touched.pinCode && errors.pinCode
+                          ? errors.pinCode
+                          : null}
+                      </p>
                     </div>
                   </div>
 
@@ -306,52 +429,118 @@ const WorkDetailsForm = () => {
                       fields={preBidMeeting}
                       title={"Pre Bid Meeting"}
                       name={"pre_bid"}
-                      values={values.checkboxes}
+                      values={values.pre_bid}
                       handleChange={handleChange}
-                      errors={errors.checkboxes}
-                      touched={touched.checkboxes}
+                      errors={errors.pre_bid}
+                      touched={touched.pre_bid}
                     />
 
                     <label
                       for='default-input'
-                      className='block mb-2 mt-7 text-sm font-medium text-gray-900'
+                      className={`block mb-2 mt-7 text-sm font-medium text-gray-900 ${
+                        errors.preBidMeeting &&
+                        touched.preBidMeeting &&
+                        "text-red-500"
+                      }`}
                     >
                       Pre Bid Meeting Place
                       <span className='text-red-500'>*</span>
                     </label>
-                    <textarea
-                      type='text'
-                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                      placeholder='Meeting Place'
-                    />
+
+                    <div className='relative'>
+                      <textarea
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                        placeholder='Meeting Place'
+                        name='preBidMeeting'
+                        value={values.preBidMeeting}
+                        onChange={(e) => {
+                          if (values.preBidMeeting.length < 300) {
+                            handleChange(e);
+                          }
+                        }}
+                      />
+
+                      <span
+                        className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${
+                          300 === values.preBidMeeting.length && "text-red-500"
+                        }`}
+                      >
+                        {values.preBidMeeting?.length} / {300}
+                      </span>
+                    </div>
 
                     <label
                       for='default-input'
-                      className='block mb-2 mt-3 text-sm font-medium text-gray-900'
+                      className={`block mb-2 mt-3 text-sm font-medium text-gray-900 ${
+                        errors.preBidMeetingAdd &&
+                        touched.preBidMeetingAdd &&
+                        "text-red-500"
+                      }`}
                     >
                       Pre Bid Meeting Address
                       <span className='text-red-500'>*</span>
                     </label>
-                    <textarea
-                      type='text'
-                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                      placeholder='Meeting Address'
-                    />
+
+                    <div className='relative'>
+                      <textarea
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                        placeholder='Meeting Address'
+                        name='preBidMeetingAdd'
+                        value={values.preBidMeetingAdd}
+                        onChange={(e) => {
+                          if (values.preBidMeeting.length < 300) {
+                            handleChange(e);
+                          }
+                        }}
+                      />
+                      <span
+                        className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${
+                          300 === values.preBidMeetingAdd.length &&
+                          "text-red-500"
+                        }`}
+                      >
+                        {values.preBidMeetingAdd?.length} / {300}
+                      </span>
+                    </div>
                   </div>
 
                   <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <label
                       for='default-input'
-                      className='block mb-2  text-sm font-medium text-gray-900'
+                      className={`block mb-2  text-sm font-medium text-gray-900 ${
+                        errors.bidOpeningPlace &&
+                        touched.bidOpeningPlace &&
+                        "text-red-500"
+                      }`}
                     >
                       Bid Opening Place
                       <span className='text-red-500'>*</span>
                     </label>
-                    <textarea
-                      type='text'
-                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                      placeholder='Bid Opening Place'
-                    />
+
+                    <div className='relative'>
+                      <textarea
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                        placeholder='Bid Opening Place'
+                        name='bidOpeningPlace'
+                        value={values.bidOpeningPlace}
+                        onChange={(e) => {
+                          if (values.preBidMeeting.length < 300) {
+                            handleChange(e);
+                          }
+                        }}
+                      />
+                      <span
+                        className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${
+                          300 === values.bidOpeningPlace.length &&
+                          "text-red-500"
+                        }`}
+                      >
+                        {values.bidOpeningPlace?.length} / {300}
+                      </span>
+                    </div>
                   </div>
 
                   <div className='flex space-x-3'>
@@ -360,10 +549,10 @@ const WorkDetailsForm = () => {
                         fields={tendererClass}
                         title={"Tenderer className"}
                         name={"tenderer_class"}
-                        values={values.checkboxes}
+                        values={values.tenderer_class}
                         handleChange={handleChange}
-                        errors={errors.checkboxes}
-                        touched={touched.checkboxes}
+                        errors={errors.tenderer_class}
+                        touched={touched.tenderer_class}
                       />
 
                       <CustomCheckboxGroup
@@ -371,15 +560,19 @@ const WorkDetailsForm = () => {
                         // title={"Tenderer className"}
                         // important={"*"}
                         name={"tenderer_class"}
-                        values={values.checkboxes}
+                        values={values.tenderer_class}
                         handleChange={handleChange}
-                        errors={errors.checkboxes}
-                        touched={touched.checkboxes}
+                        errors={errors.tenderer_class}
+                        touched={touched.tenderer_class}
                       />
 
                       <label
                         for='default-input'
-                        className='block mb-2 mt-7 text-sm font-medium text-gray-900'
+                        className={`block mb-2 mt-7 text-sm font-medium text-gray-900 ${
+                          errors.invstOffName &&
+                          touched.invstOffName &&
+                          "text-red-500"
+                        }`}
                       >
                         Inviting Officer Name
                         <span className='text-red-500'>*</span>
@@ -388,13 +581,20 @@ const WorkDetailsForm = () => {
                         type='text'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full  p-2.5'
                         placeholder='Inviting Officer Name'
+                        name='invstOffName'
+                        onChange={handleChange}
+                        value={values.invstOffName}
                       />
                     </div>
 
                     <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md w-1/2 flex flex-col justify-center item-center'>
                       <label
                         for='default-input'
-                        className='block mb-2  text-sm font-medium text-gray-900'
+                        className={`block mb-2  text-sm font-medium text-gray-900  ${
+                          errors.invstOffAdd &&
+                          touched.invstOffAdd &&
+                          "text-red-500"
+                        }`}
                       >
                         Inviting Officer Address
                         <span className='text-red-500'>*</span>
@@ -403,11 +603,18 @@ const WorkDetailsForm = () => {
                         type='text'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
                         placeholder='Bid Opening Place'
+                        name='invstOffAdd'
+                        onChange={handleChange}
+                        value={values.invstOffAdd}
                       />
 
                       <label
                         for='default-input'
-                        className='block mb-2 mt-7 text-sm font-medium text-gray-900'
+                        className={`block mb-2 mt-7 text-sm font-medium text-gray-900 ${
+                          errors.invstOffEmail_Ph &&
+                          touched.invstOffEmail_Ph &&
+                          "text-red-500"
+                        }`}
                       >
                         Inviting Officer Phone/Email
                         <span className='text-red-500'>*</span>
@@ -416,32 +623,35 @@ const WorkDetailsForm = () => {
                         type='text'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
                         placeholder='Inviting Officer Name'
+                        name='invstOffEmail_Ph'
+                        onChange={handleChange}
+                        value={values.invstOffEmail_Ph}
                       />
                     </div>
                   </div>
+                </div>
 
-                  <div className='mb-5'>
-                    <button
-                      className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
-                      onClick='##'
-                    >
-                      Back
-                    </button>
+                <div className='mb-5'>
+                  <button
+                    className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
+                    onClick='##'
+                  >
+                    Back
+                  </button>
 
-                    <button
-                      className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
-                      onClick='##'
-                    >
-                      Save & Next
-                    </button>
+                  <button
+                    className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
+                    type='submit'
+                  >
+                    Save & Next
+                  </button>
 
-                    <button
-                      className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
-                      onClick='##'
-                    >
-                      Reset
-                    </button>
-                  </div>
+                  <button
+                    className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
+                    onClick='##'
+                  >
+                    Reset
+                  </button>
                 </div>
               </>
             </Form>
