@@ -11,13 +11,6 @@ export default function FileButton({
 }) {
   //image validation with file type and size limit
   const imageHandler = (e) => {
-    // const validExtensions = [
-    //   "image/jpeg",
-    //   "image/jpg",
-    //   "image/png",
-    //   "application/pdf",
-    // ];
-
     const validExtensions = [
       "image/jpeg",
       "image/jpg",
@@ -54,7 +47,6 @@ export default function FileButton({
 
     if (file) {
       setImageDoc(file);
-      console.log(file, "==========file");
       setPreview(URL.createObjectURL(file));
     }
   };
@@ -70,7 +62,6 @@ export default function FileButton({
       />
       <button
         type='button'
-        // className={`bg-[#4338ca] text-white mt-1 mr-5 rounded absolute`}
         className={`text-${textColor} end-6 bg-${bg} hover:${hoverBg} rounded text-[12px] px-5 py-[5px]`}
         onClick={() => {
           imgRef?.current.click();

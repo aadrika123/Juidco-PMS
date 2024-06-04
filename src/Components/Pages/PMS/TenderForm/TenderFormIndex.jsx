@@ -137,13 +137,29 @@ const TenderForm = () => {
           </div>
         )}
 
-        {activeTab === "work_details" && <div><WorkDetailsForm/></div>}
+        {activeTab === "work_details" && (
+          <div>
+            <WorkDetailsForm />
+          </div>
+        )}
 
-        {activeTab === "fee_details" && <div><FeeDetailsForm/></div>}
+        {activeTab === "fee_details" && (
+          <div>
+            <FeeDetailsForm />
+          </div>
+        )}
 
-        {activeTab === "critical_dates" && <div><CriticalDateForm/></div>}
+        {activeTab === "critical_dates" && (
+          <div>
+            <CriticalDateForm />
+          </div>
+        )}
 
-        {activeTab === "bid_openers" && <div><BidOpinerForm/></div>}
+        {activeTab === "bid_openers" && (
+          <div>
+            <BidOpinerForm />
+          </div>
+        )}
       </div>
     </>
   );

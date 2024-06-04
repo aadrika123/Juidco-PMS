@@ -31,23 +31,29 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import UploadDoc from "./UploadDoc";
 
-const BasicDetailsForm = () => {
-  const tabsCover1 = [{ name: "Tabs11", value: "Tabs11" }];
-  const tabsCover2 = [
-    { name: "Tabs121", value: "Tabs121" },
-    { name: "Tabs122", value: "Tabs122" },
-  ];
-  const tabsCover3 = [
-    { name: "Tabs131", value: "Tabs131" },
-    { name: "Tabs132", value: "Tabs132" },
-    { name: "Tabs133", value: "Tabs133" },
-  ];
-  const tabsCover4 = [
-    { name: "Tabs131", value: "Tabs131" },
-    { name: "Tabs132", value: "Tabs132" },
-    { name: "Tabs133", value: "Tabs133" },
-    { name: "Tabs134", value: "Tabs134" },
-  ];
+const tabsCover1 = [
+  {
+    name: "fee/ prequal/ technical/ financial",
+    value: "fee/prequal/technical/financial",
+  },
+];
+const tabsCover2 = [
+  { name: "fee/ prequal/ technical", value: "fee/prequal/technical" },
+  { name: "financial", value: "financial" },
+];
+const tabsCover3 = [
+  { name: "fee", value: "fee" },
+  { name: "prequal/ technical", value: "prequal/technical" },
+  { name: "financial", value: "financial" },
+];
+const tabsCover4 = [
+  { name: "fee", value: "fee" },
+  { name: "prequal", value: "prequal" },
+  { name: "technical", value: "technical" },
+  { name: "financial", value: "financial" },
+];
+
+const CoverDetailsForm = () => {
   const [tabData, setTabData] = useState(tabsCover1);
   const [activeTab, setActiveTab] = useState();
 
@@ -68,7 +74,6 @@ const BasicDetailsForm = () => {
 
   const handleCoversChange = (event, setFieldValue) => {
     const { value } = event.target;
-    console.log(value, "valueeeeeeeeeeee");
     setFieldValue("noOfCovers", value);
     {
       value == "single_cover" && setTabData(tabsCover1);
@@ -92,91 +97,92 @@ const BasicDetailsForm = () => {
         <h1 className='pt-1 pl-2 text-xl'>Cover Details</h1>
       </div>
 
-    <div className='bg-white rounded-md w-full shadow-xl p-4 mt-5'>
       {/* Form Starting */}
       <div className='mt-5'>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            if (values.noOfCovers == "")
-              // setTabData()
-              console.log("Form values", values);
+            // if (values.noOfCovers == "")
+            // setTabData()
+            console.log("Form values", values);
           }}
         >
           {({ values, handleChange, errors, touched, setFieldValue }) => (
             <Form>
-              <RadioButtonsGroup
-                fields={covers}
-                title='No of Covers'
-                values={values.noOfCovers}
-                handleChange={(event) =>
-                  handleCoversChange(event, setFieldValue)
-                }
-                errors={errors.noOfCovers}
-                touched={touched.noOfCovers}
-                name={"noOfCovers"}
-                defaultValue={"single_cover"}
-              />
+              <>
+                <div className='bg-white rounded-md w-full shadow-xl p-4 mt-5'>
+                  <RadioButtonsGroup
+                    fields={covers}
+                    title='No of Covers'
+                    values={values.noOfCovers}
+                    handleChange={(event) =>
+                      handleCoversChange(event, setFieldValue)
+                    }
+                    errors={errors.noOfCovers}
+                    touched={touched.noOfCovers}
+                    name={"noOfCovers"}
+                    defaultValue={"single_cover"}
+                  />
 
-              {/* tabs */}
-              <div className='flex gap-8 px-4 w-full relative z-1'>
-                {tabData &&
-                  tabData?.map((data) => (
-                    <div className='flex mt-6 '>
-                      <button
-                        className={`py-2 px-2 ${
-                          activeTab === data.value
-                            ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                            : "text-black bg-[#E9E9E9]"
-                        } focus:outline-none flex shadow-xl border border-gray-200 rounded rounded-t-lg rounded-b-none`}
-                        onClick={() => setActiveTab(data.value)}
-                      >
-                        {data.name}
-                      </button>
-                    </div>
-                  ))}
-                <hr className='bg-indigo-500 h-[2px] w-2/3 px-4 absolute bottom-[1px] z-2' />
-              </div>
-
-              {/* tab view */}
-              <div className='mt-4'>
-                {activeTab != "" && (
-                  <div>
-                    <UploadDoc tab={activeTab} />
+                  {/* tabs */}
+                  <div className='flex gap-8 px-4 w-full relative z-1'>
+                    {tabData &&
+                      tabData?.map((data) => (
+                        <div className='flex mt-6 '>
+                          <button
+                            className={`py-2 px-2 ${
+                              activeTab === data.value
+                                ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
+                                : "text-black bg-[#E9E9E9]"
+                            } focus:outline-none flex shadow-xl border border-gray-200 rounded rounded-t-lg rounded-b-none`}
+                            onClick={() => setActiveTab(data.value)}
+                          >
+                            {data.name}
+                          </button>
+                        </div>
+                      ))}
+                    <hr className='bg-indigo-500 h-[2px] w-2/3 px-4 absolute bottom-[1px] z-2' />
                   </div>
-                )}
-              </div>
+
+                  {/* tab view */}
+                  <div className='mt-4'>
+                    {activeTab != "" && (
+                      <div>
+                        <UploadDoc tab={activeTab} />
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className='mb-5'>
+                  <button
+                    className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
+                    onClick='##'
+                  >
+                    Back
+                  </button>
+
+                  <button
+                    className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
+                    onClick='##'
+                  >
+                    Save & Next
+                  </button>
+
+                  <button
+                    className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
+                    onClick='##'
+                  >
+                    Reset
+                  </button>
+                </div>
+              </>
             </Form>
           )}
         </Formik>
-      </div>
-    </div>
-
-    <div className='mb-5'>
-        <button
-          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
-          onClick='##'
-        >
-          Back
-        </button>
-
-        <button
-          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
-          onClick='##'
-        >
-          Save & Next
-        </button>
-
-        <button
-          className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
-          onClick='##'
-        >
-          Reset
-        </button>
       </div>
     </>
   );
 };
 
-export default BasicDetailsForm;
+export default CoverDetailsForm;

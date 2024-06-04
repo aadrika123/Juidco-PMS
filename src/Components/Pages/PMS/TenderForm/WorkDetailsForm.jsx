@@ -6,9 +6,8 @@ import CustomCheckboxGroup from "@/Components/Common/FormMolecules/CustomCheckbo
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
 import toast from "react-hot-toast";
 
-
 const WorkDetailsForm = () => {
-    const inputFileRef = useRef();
+  const inputFileRef = useRef();
 
   const [selectedTab, setSelectedTab] = useState("online");
   const [preview, setPreview] = useState();
@@ -62,52 +61,52 @@ const WorkDetailsForm = () => {
     }
   };
 
-const productCategory = [
+  const productCategory = [
     { label: "Civil Works", value: "civil_works" },
     { label: "Electrical Works", value: "elect_works" },
     { label: "Fleet Management ", value: "fleet_mang" },
     { label: "Computer Systems", value: "computer_sys" },
   ];
 
-const contractType = [
+  const contractType = [
     { label: "Tender", value: "tender" },
     { label: "Empanelment", value: "empanelment" },
   ];
-  
-const tenderValue = [
-      { label: "INR", value: "inr" },
-      { label: "USA", value: "usa" },
-      { label: "EUR", value: "eur" },
-    ];
-    
-const bidValidity = [
+
+  const tenderValue = [
+    { label: "INR", value: "inr" },
+    { label: "USA", value: "usa" },
+    { label: "EUR", value: "eur" },
+  ];
+
+  const bidValidity = [
     { label: "120", value: "120" },
     { label: "90", value: "90" },
     { label: "60", value: "60" },
     { label: "30", value: "30" },
     { label: "other", value: "other" },
-];
+  ];
 
-const preBidMeeting = [
+  const preBidMeeting = [
     { label: "Yes", value: "yes" },
     { label: "No", value: "no" },
-];
+  ];
 
-const tendererClass = [
+  const tendererClass = [
     { label: "A", value: "a" },
     { label: "B", value: "b" },
     { label: "C", value: "c" },
     { label: "D", value: "d" },
     { label: "E", value: "e" },
-];
-const tendererClass2 = [
+  ];
+  const tendererClass2 = [
     { label: "I", value: "i" },
     { label: "II", value: "ii" },
     { label: "III", value: "iii" },
     { label: "IV", value: "iv" },
     { label: "V", value: "v" },
     { label: "others", value: "others" },
-];
+  ];
 
   const validationSchema = Yup.object({
     checkboxes: Yup.object({
@@ -131,74 +130,72 @@ const tendererClass2 = [
   return (
     <>
       {/* <div className='bg-white rounded-xl w-full shadow-md p-4 border border-indigo-200'> */}
-        {/* Heading  */}
-        <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
-          <img src={wd} className='pl-2' />
-          <h1 className='pt-1 pl-2 text-xl'>Work Item Details</h1>
-        </div>
+      {/* Heading  */}
+      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
+        <img src={wd} className='pl-2' />
+        <h1 className='pt-1 pl-2 text-xl'>Work Item Details</h1>
+      </div>
 
-         {/* Form Starting */}
+      {/* Form Starting */}
 
-        <div className=' mt-5 container'>
-            <Formik
-              initialValues={initialValues}
-                      validationSchema={validationSchema}
-              onSubmit={(values) => {
-                console.log("Form values", values);
-              }}
-            >
-            {({ values, handleChange, errors, touched }) => (
-
-            <Form >
-            <>
+      <div className=' mt-5 container'>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            console.log("Form values", values);
+          }}
+        >
+          {({ values, handleChange, errors, touched }) => (
+            <Form>
+              <>
                 <div className=' container mx-auto capitalize'>
-                    <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
-                      <>
-                        <label
-                          for='default-input'
-                          className='block mb-2 text-sm font-medium text-gray-900'
-                        >
-                          Tender Reference No{" "}
-                          <span className='text-red-500'>*</span>
-                        </label>
-                        <input
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-1/3 p-2.5'
-                          placeholder="Reference No"
-                        />
-                        
-                        <label
-                          for='default-input'
-                          className='block mb-2 mt-3 text-sm font-medium text-gray-900'
-                        >
-                          Work Discriptiion
-                          <span className='text-red-500'>*</span>
-                        </label>
-                        <textarea
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                          placeholder="Work Discriptiion"
-                        />
-                        
-                        <label
-                          for='default-input'
-                          className='block mb-2 mt-3 text-sm font-medium text-gray-900'
-                        >
-                          Pre Qualification Details
-                          <span className='text-red-500'>*</span>
-                        </label>
-                        <textarea
-                        placeholder="Tender Fee, EMD, Affidavit"
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-20 p-2.5'
-                        />
-                      </>
-                    </div>
+                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                    <>
+                      <label
+                        for='default-input'
+                        className='block mb-2 text-sm font-medium text-gray-900'
+                      >
+                        Tender Reference No{" "}
+                        <span className='text-red-500'>*</span>
+                      </label>
+                      <input
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-1/3 p-2.5'
+                        placeholder='Reference No'
+                      />
 
-                    
-                    <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
-                      <>
-                        <CustomCheckboxGroup
+                      <label
+                        for='default-input'
+                        className='block mb-2 mt-3 text-sm font-medium text-gray-900'
+                      >
+                        Work Discriptiion
+                        <span className='text-red-500'>*</span>
+                      </label>
+                      <textarea
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                        placeholder='Work Discriptiion'
+                      />
+
+                      <label
+                        for='default-input'
+                        className='block mb-2 mt-3 text-sm font-medium text-gray-900'
+                      >
+                        Pre Qualification Details
+                        <span className='text-red-500'>*</span>
+                      </label>
+                      <textarea
+                        placeholder='Tender Fee, EMD, Affidavit'
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-20 p-2.5'
+                      />
+                    </>
+                  </div>
+
+                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                    <>
+                      <CustomCheckboxGroup
                         fields={productCategory}
                         title={"Product Category "}
                         name={"product_category"}
@@ -207,26 +204,24 @@ const tendererClass2 = [
                         errors={errors.checkboxes}
                         touched={touched.checkboxes}
                       />
-                        
-                        <label
-                          for='default-input'
-                          className='block mb-2 mt-5 text-sm font-medium text-gray-900'
-                        >
-                          Product Sub Category 
-                          <span className='text-red-500'>*</span>
-                        </label>
-                        <textarea
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                          placeholder="Sub Category"
-                        />
-                      </>
-                    </div>
 
+                      <label
+                        for='default-input'
+                        className='block mb-2 mt-5 text-sm font-medium text-gray-900'
+                      >
+                        Product Sub Category
+                        <span className='text-red-500'>*</span>
+                      </label>
+                      <textarea
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                        placeholder='Sub Category'
+                      />
+                    </>
+                  </div>
 
-                    <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex justify-between'>
-                      <>
-
+                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex justify-between'>
+                    <>
                       <RadioButtonsGroup
                         fields={contractType}
                         title={"Contract Type"}
@@ -236,7 +231,7 @@ const tendererClass2 = [
                         errors={errors.checkboxes}
                         touched={touched.checkboxes}
                       />
-                      
+
                       <RadioButtonsGroup
                         fields={tenderValue}
                         title={"Tender Value"}
@@ -246,7 +241,7 @@ const tendererClass2 = [
                         errors={errors.checkboxes}
                         touched={touched.checkboxes}
                       />
-                      
+
                       <RadioButtonsGroup
                         fields={bidValidity}
                         title={"Bid Validity (Days)"}
@@ -256,138 +251,124 @@ const tendererClass2 = [
                         errors={errors.checkboxes}
                         touched={touched.checkboxes}
                       />
+                    </>
+                  </div>
 
-                      </>
-                    </div>
-                    
-                    <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-3'>
-                      
-                        <div>
-                            <label
-                                for='default-input'
-                                className='block mb-2 text-sm font-medium text-gray-900'
-                                >
-                                Completion Period in Months
-                                <span className='text-red-500'>*</span>
-                                </label>
-                                <input
-                                type='text'
-                                className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
-                                placeholder="Completion Period "
-                                />
-                        </div>
-
-                        <div>
-                            <label
-                                for='default-input'
-                                className='block mb-2 text-sm font-medium text-gray-900'
-                                >
-                                Location (Work/Services/Items)
-                                <span className='text-red-500'>*</span>
-                                </label>
-                                <input
-                                type='text'
-                                className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
-                                placeholder="Location"
-                                />
-                        </div>
-                        
-                        <div>
-                            <label
-                                for='default-input'
-                                className='block mb-2 text-sm font-medium text-gray-900'
-                                >
-                                Pin Code
-                                <span className='text-red-500'>*</span>
-                                </label>
-                                <input
-                                type='number'
-                                className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
-                                placeholder="Pin Code"
-                        />
-                      </div>
-
-                    </div>
-                  
-                  
-                    <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
-                      
-                    <RadioButtonsGroup
-                        fields={preBidMeeting}
-                        title={"Pre Bid Meeting"}
-                        name={"pre_bid"}
-                        values={values.checkboxes}
-                        handleChange={handleChange}
-                        errors={errors.checkboxes}
-                        touched={touched.checkboxes}
+                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-3'>
+                    <div>
+                      <label
+                        for='default-input'
+                        className='block mb-2 text-sm font-medium text-gray-900'
+                      >
+                        Completion Period in Months
+                        <span className='text-red-500'>*</span>
+                      </label>
+                      <input
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
+                        placeholder='Completion Period '
                       />
-
-
-                        <label
-                          for='default-input'
-                          className='block mb-2 mt-7 text-sm font-medium text-gray-900'
-                        >
-                          Pre Bid Meeting Place
-                          <span className='text-red-500'>*</span>
-                        </label>
-                        <textarea
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                          placeholder="Meeting Place"
-                        />
-                      
-                      
-                        <label
-                          for='default-input'
-                          className='block mb-2 mt-3 text-sm font-medium text-gray-900'
-                        >
-                          Pre Bid Meeting Address
-                          <span className='text-red-500'>*</span>
-                        </label>
-                        <textarea
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                          placeholder="Meeting Address"
-                        />
-                        
-
                     </div>
-                  
-                  
-                    <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
-                    
-                        <label
-                          for='default-input'
-                          className='block mb-2  text-sm font-medium text-gray-900'
-                        >
-                          Bid Opening Place
-                          <span className='text-red-500'>*</span>
-                        </label>
-                        <textarea
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                          placeholder="Bid Opening Place"
-                        />
-                
+
+                    <div>
+                      <label
+                        for='default-input'
+                        className='block mb-2 text-sm font-medium text-gray-900'
+                      >
+                        Location (Work/Services/Items)
+                        <span className='text-red-500'>*</span>
+                      </label>
+                      <input
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
+                        placeholder='Location'
+                      />
                     </div>
-                  
-                    <div className="flex space-x-3">
-                        
+
+                    <div>
+                      <label
+                        for='default-input'
+                        className='block mb-2 text-sm font-medium text-gray-900'
+                      >
+                        Pin Code
+                        <span className='text-red-500'>*</span>
+                      </label>
+                      <input
+                        type='number'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
+                        placeholder='Pin Code'
+                      />
+                    </div>
+                  </div>
+
+                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                    <RadioButtonsGroup
+                      fields={preBidMeeting}
+                      title={"Pre Bid Meeting"}
+                      name={"pre_bid"}
+                      values={values.checkboxes}
+                      handleChange={handleChange}
+                      errors={errors.checkboxes}
+                      touched={touched.checkboxes}
+                    />
+
+                    <label
+                      for='default-input'
+                      className='block mb-2 mt-7 text-sm font-medium text-gray-900'
+                    >
+                      Pre Bid Meeting Place
+                      <span className='text-red-500'>*</span>
+                    </label>
+                    <textarea
+                      type='text'
+                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                      placeholder='Meeting Place'
+                    />
+
+                    <label
+                      for='default-input'
+                      className='block mb-2 mt-3 text-sm font-medium text-gray-900'
+                    >
+                      Pre Bid Meeting Address
+                      <span className='text-red-500'>*</span>
+                    </label>
+                    <textarea
+                      type='text'
+                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                      placeholder='Meeting Address'
+                    />
+                  </div>
+
+                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                    <label
+                      for='default-input'
+                      className='block mb-2  text-sm font-medium text-gray-900'
+                    >
+                      Bid Opening Place
+                      <span className='text-red-500'>*</span>
+                    </label>
+                    <textarea
+                      type='text'
+                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                      placeholder='Bid Opening Place'
+                    />
+                  </div>
+
+                  <div className='flex space-x-3'>
                     <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md w-1/2'>
-                    
-                    <CustomCheckboxGroup
+                      <CustomCheckboxGroup
                         fields={tendererClass}
-                        title={"Tenderer Class"}
+                        title={"Tenderer className"}
                         name={"tenderer_class"}
                         values={values.checkboxes}
                         handleChange={handleChange}
                         errors={errors.checkboxes}
                         touched={touched.checkboxes}
                       />
-                    
-                    <CustomCheckboxGroup
+
+                      <CustomCheckboxGroup
                         fields={tendererClass2}
-                        // title={"Tenderer Class"}
+                        // title={"Tenderer className"}
                         // important={"*"}
                         name={"tenderer_class"}
                         values={values.checkboxes}
@@ -396,57 +377,50 @@ const tendererClass2 = [
                         touched={touched.checkboxes}
                       />
 
-                    
-                    <label
-                          for='default-input'
-                          className='block mb-2 mt-7 text-sm font-medium text-gray-900'
-                        >
-                          Inviting Officer Name
-                          <span className='text-red-500'>*</span>
-                        </label>
-                        <input
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full  p-2.5'
-                          placeholder="Inviting Officer Name"
-                        />
-                
+                      <label
+                        for='default-input'
+                        className='block mb-2 mt-7 text-sm font-medium text-gray-900'
+                      >
+                        Inviting Officer Name
+                        <span className='text-red-500'>*</span>
+                      </label>
+                      <input
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full  p-2.5'
+                        placeholder='Inviting Officer Name'
+                      />
                     </div>
-                  
+
                     <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md w-1/2 flex flex-col justify-center item-center'>
-                    
-                        <label
-                          for='default-input'
-                          className='block mb-2  text-sm font-medium text-gray-900'
-                        >
-                          Inviting Officer Address
-                          <span className='text-red-500'>*</span>
-                        </label>
-                        <input
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
-                          placeholder="Bid Opening Place"
-                        />
+                      <label
+                        for='default-input'
+                        className='block mb-2  text-sm font-medium text-gray-900'
+                      >
+                        Inviting Officer Address
+                        <span className='text-red-500'>*</span>
+                      </label>
+                      <input
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
+                        placeholder='Bid Opening Place'
+                      />
 
-                        
-                        <label
-                          for='default-input'
-                          className='block mb-2 mt-7 text-sm font-medium text-gray-900'
-                        >
-                          Inviting Officer Phone/Email
-                          <span className='text-red-500'>*</span>
-                        </label>
-                        <input
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
-                          placeholder="Inviting Officer Name"
-                        />
-                
+                      <label
+                        for='default-input'
+                        className='block mb-2 mt-7 text-sm font-medium text-gray-900'
+                      >
+                        Inviting Officer Phone/Email
+                        <span className='text-red-500'>*</span>
+                      </label>
+                      <input
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
+                        placeholder='Inviting Officer Name'
+                      />
                     </div>
+                  </div>
 
-                    </div>
-
-
-                    <div className='mb-5'>
+                  <div className='mb-5'>
                     <button
                       className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
                       onClick='##'
@@ -468,16 +442,14 @@ const tendererClass2 = [
                       Reset
                     </button>
                   </div>
-
                 </div>
-            </>
-          </Form>
-            )}
-          </Formik>
-        </div>
-      
+              </>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default WorkDetailsForm
+export default WorkDetailsForm;

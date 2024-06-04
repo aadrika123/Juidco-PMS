@@ -107,7 +107,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
             <RxCross2 />
           </button>
         </div>
-        <hr class='h-[1px] w-full bg-black mt-4 border-none' />
+        <hr className='h-[1px] w-full bg-black mt-4 border-none' />
 
         <div>
           <Accordion

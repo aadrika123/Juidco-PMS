@@ -13,6 +13,7 @@ const BasicDetailsForm = () => {
 
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
+  const [imgErr, setImgErr] = useState(false);
 
   const tenderType = [
     { label: "Open", value: "open" },
@@ -30,13 +31,6 @@ const BasicDetailsForm = () => {
     { label: "Sell", value: "sell" },
     { label: "Empanelment", value: "empanelment" },
     { label: "Buy & Service", value: "buy_service" },
-  ];
-
-  const noOfCovers = [
-    { label: "1", value: "one" },
-    { label: "2", value: "two" },
-    { label: "3", value: "three" },
-    { label: "4", value: "four" },
   ];
 
   const tenderCategory = [
@@ -74,19 +68,24 @@ const BasicDetailsForm = () => {
     allow_withdrawl: Yup.string().required(),
     allow_offline_submission: Yup.string().required(),
     payment_mode: Yup.string().required(),
-    // offline_banks: Yup.string().when("payment_mode", {
-    //   is: "offline",
-    //   then: Yup.string().required("Field is required"),
-    // }),
+    offline_banks: Yup.string().when("payment_mode", {
+      is: "offline",
+      then: (schema) => schema.required("offline"),
+      otherwise: (schema) => schema.optional("Required field"),
+    }),
+    onlinePyment_mode: Yup.string().when("payment_mode", {
+      is: "online",
+      then: (schema) => schema.required("Choose a bank"),
+      otherwise: (schema) => schema.optional(),
+    }),
   });
 
   // Initial values for additional form fields can go here
   const initialValues = {
     tenderReference_No: "",
-    tender_type: {},
-    contract_form: {},
-    no_of_covers: "",
-    tender_category: {},
+    tender_type: "",
+    contract_form: "",
+    tender_category: "",
     allow_resubmission: "",
     allow_withdrawl: "",
     allow_offline_submission: "",
@@ -107,6 +106,11 @@ const BasicDetailsForm = () => {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={(values) => {
+            if (imageDoc == null || imageDoc == undefined || imageDoc == "") {
+              setImgErr(true);
+              return toast.error("Please upload valid documents");
+            }
+            setImgErr(false);
             console.log("Form values", values);
           }}
         >
@@ -129,6 +133,7 @@ const BasicDetailsForm = () => {
                         type='text'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
                         name='tenderReference_No'
+                        value={values.tenderReference_No}
                         onChange={handleChange}
                       />
                     </>
@@ -158,19 +163,6 @@ const BasicDetailsForm = () => {
                       important={"*"}
                     />
                   </div>
-
-                  {/* <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
-                    <RadioButtonsGroup
-                      fields={noOfCovers}
-                      title={"No of Covers"}
-                      name={"no_of_covers"}
-                      values={values.no_of_covers}
-                      handleChange={handleChange}
-                      errors={errors.no_of_covers}
-                      touched={touched.no_of_covers}
-                      important={"*"}
-                    />
-                  </div> */}
 
                   <div className='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <CustomCheckboxGroup
@@ -246,19 +238,28 @@ const BasicDetailsForm = () => {
                                 scope='row'
                                 className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap border '
                               >
-                                NIT Document.pdf
+                                {imageDoc?.name || "No file Added"}
                               </th>
                               <td className='px-6 py-4'>
-                                <p>123 kb</p>
+                                <p>
+                                  {Math.round((imageDoc?.size / 1024) * 100) /
+                                    100 || 0}{" "}
+                                  kb
+                                </p>
                               </td>
                             </tr>
                           </tbody>
                         </table>
+                        {imgErr && (
+                          <span className='text-red-400 text-xs'>
+                            Valid documents are required
+                          </span>
+                        )}
                       </div>
                     </div>
 
-                    <div className='flex justify-end gap-3'>
-                      <div className=' mt-[40px]'>
+                    <div className='flex justify-end gap-3 '>
+                      <div className=' mt-[20px] w-[40%]'>
                         <ImageDisplay
                           preview={preview}
                           imageDoc={imageDoc}
@@ -294,9 +295,7 @@ const BasicDetailsForm = () => {
                             type='radio'
                             name='payment_mode'
                             value='online'
-                            defaultChecked={values.payment_mode}
-                            // checked={selectedTab === "online"}
-                            // onChange={handleTabChange}
+                            defaultChecked={true}
                             onChange={handleChange}
                             className='form-radio h-4 w-4 text-blue-600'
                           />
@@ -306,7 +305,6 @@ const BasicDetailsForm = () => {
                           <input
                             type='radio'
                             name='payment_mode'
-                            defaultChecked={values.payment_mode}
                             value='offline'
                             // checked={selectedTab === "offline"}
                             onChange={handleChange}
@@ -317,7 +315,7 @@ const BasicDetailsForm = () => {
                       </div>
 
                       <div className='tab-content'>
-                        {values.payment_mode === "online" && (
+                        {values.payment_mode == "online" && (
                           <div className='p-5'>
                             <label
                               htmlFor='onlinePyment_mode'
@@ -338,9 +336,15 @@ const BasicDetailsForm = () => {
                               <option value='CA'>State Bank Of India</option>
                               <option value='FR'>Canara Bank</option>
                             </select>
+                            {errors.onlinePyment_mode &&
+                            touched.onlinePyment_mode ? (
+                              <p className='text-red-400 text-xs'>
+                                {errors.onlinePyment_mode}
+                              </p>
+                            ) : null}
                           </div>
                         )}
-                        {values.payment_mode === "offline" && (
+                        {values.payment_mode == "offline" && (
                           <div className=''>
                             <RadioButtonsGroup
                               fields={offlineBanks}
@@ -360,6 +364,7 @@ const BasicDetailsForm = () => {
                   <button
                     className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
                     // onClick='##'
+                    disabled
                   >
                     Back
                   </button>
@@ -373,7 +378,7 @@ const BasicDetailsForm = () => {
 
                   <button
                     className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
-                    onClick='##'
+                    // onClick={() => }
                   >
                     Reset
                   </button>
