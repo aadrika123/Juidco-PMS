@@ -25,6 +25,7 @@ import CoverDetailsForm from "./CoverDetailsForm";
 import WorkDetailsForm from "./WorkDetailsForm";
 import FeeDetailsForm from "./FeeDetailsForm";
 import CriticalDateForm from "./CriticalDateForm";
+import BidOpinerForm from "./BidOpinerForm";
 
 const TenderForm = () => {
   const [activeTab, setActiveTab] = useState("basic_details");
@@ -142,7 +143,7 @@ const TenderForm = () => {
 
         {activeTab === "critical_dates" && <div><CriticalDateForm/></div>}
 
-        {activeTab === "bid_openers" && <div>Bid Opiners</div>}
+        {activeTab === "bid_openers" && <div><BidOpinerForm/></div>}
       </div>
     </>
   );
