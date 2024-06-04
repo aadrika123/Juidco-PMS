@@ -160,170 +160,181 @@ const BidOpinerForm = () => {
           }}
         >
           {({ values, handleChange, errors, touched }) => (
-            <Form className=" container mx-auto capitalize grid grid-cols-1">
-              {bidOpinersList?.map((obj, index) => (
-                <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex mt-3 w-full">
-                  <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
-                    B0{index + 1}
-                  </div>
+            <Form >
 
-                  <div className=" w-full p-4 flex gap-3">
-                    <div className="w-full p-3">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900 "
-                      >
-                        {obj.label_name}
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        name={obj.name}
-                        type="text"
-                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                        placeholder="Name/Designation"
-                      />
-                    </div>
-
-                    <div className="w-full p-3">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900 "
-                      >
-                        Email ID
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                        placeholder="Email"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-
-              <div className="bg-[#4338ca] text-white w-full rounded p-3 shadow-xl mb-5">
-                {/* <img src={bo} className="pl-2" /> */}
-                <h1 className="pt-1 pl-2 text-xl">
-                  Uploading the tender documents
-                </h1>
-                <p className="text-[11px] pl-3 font-light">
-                  {" "}
-                  (Only PDF,JPG,XLS & RAR Files Allowed)*
-                </p>
-              </div>
-
-              {bidOpinersDoc?.map((obj, index) => (
-                <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex  w-full">
-                  <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
-                    B0{index + 1}
-                  </div>
-
-                  <div className=" w-2/3 p-4 gap-3">
-                    <div className="w-full p-3">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900 "
-                      >
-                        {obj.label_name}
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        name={obj.name}
-                        type="text"
-                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                        placeholder="Name/Designation"
-                      />
-                    </div>
-
-                    <div className="w-full p-3">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900 "
-                      >
-                        {obj.label_email}
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        name={obj.email}
-                        type="text"
-                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                        placeholder="Email"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="w-1/3 mt-4 mr-5 mb-5">
-                    <div className="w-full p-3">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900 "
-                      >
-                        Document Size (kb)
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        name=""
-                        type="text"
-                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                        placeholder=""
-                      />
-                    </div>
-
-                    <div className="w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 ">
-                      
-                      <div className="w-[10rem]">
-                        <ImageDisplay
-                          preview={preview}
-                          imageDoc={imageDoc}
-                          alt={"Dead Stock Image"}
-                          showPreview={"hidden"}
-                          // disabled
-                          width={["10px"]}
-                        />
+              <>
+                <div className=" container mx-auto capitalize grid grid-cols-1">
+                  {bidOpinersList?.map((obj, index) => (
+                    <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex mt-3 w-full">
+                      <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
+                        B0{index + 1}
                       </div>
-                      <div className="">
-                        <FileButton
-                          btnLabel={"Upload Reference Image"}
-                          bg={"[#4338CA]"}
-                          textColor={"white"}
-                          imgRef={deadStockRef}
-                          hoverBg={"bg-blue-800"}
-                          setImageDoc={setImageDoc}
-                          setPreview={setPreview}
-                          paddingY={"[30px]"}
-                        />
+
+                      <div className=" w-full p-4 flex gap-3">
+                        <div className="w-full p-3">
+                          <label
+                            for="default-input"
+                            className="block mb-2 text-sm font-medium text-gray-900 "
+                          >
+                            {obj.label_name}
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            name={obj.name}
+                            type="text"
+                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                            placeholder="Name/Designation"
+                          />
+                        </div>
+
+                        <div className="w-full p-3">
+                          <label
+                            for="default-input"
+                            className="block mb-2 text-sm font-medium text-gray-900 "
+                          >
+                            Email ID
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                            placeholder="Email"
+                          />
+                        </div>
                       </div>
                     </div>
+                  ))}
+
+                  <div className="bg-[#4338ca] text-white w-full rounded p-3 shadow-xl mb-5">
+                    
+                    <h1 className="pt-1 pl-2 text-xl">
+                      Uploading the tender documents
+                    </h1>
+                    <p className="text-[11px] pl-3 font-light">
+                      {" "}
+                      (Only PDF,JPG,XLS & RAR Files Allowed)*
+                    </p>
                   </div>
+
+                  {bidOpinersDoc?.map((obj, index) => (
+                    <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex  w-full">
+                      <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
+                        B0{index + 1}
+                      </div>
+
+                      <div className=" w-2/3 p-4 gap-3">
+                        <div className="w-full p-3">
+                          <label
+                            for="default-input"
+                            className="block mb-2 text-sm font-medium text-gray-900 "
+                          >
+                            {obj.label_name}
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            name={obj.name}
+                            type="text"
+                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                            placeholder="Name/Designation"
+                          />
+                        </div>
+
+                        <div className="w-full p-3">
+                          <label
+                            for="default-input"
+                            className="block mb-2 text-sm font-medium text-gray-900 "
+                          >
+                            {obj.label_email}
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            name={obj.email}
+                            type="text"
+                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                            placeholder="Email"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="w-1/3 mt-4 mr-5 mb-5">
+                        <div className="w-full p-3">
+                          <label
+                            for="default-input"
+                            className="block mb-2 text-sm font-medium text-gray-900 "
+                          >
+                            Document Size (kb)
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            name=""
+                            type="text"
+                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                            placeholder=""
+                          />
+                        </div>
+
+                        <div className="w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 ">
+                          
+                          <div className="w-[10rem]">
+                            <ImageDisplay
+                              preview={preview}
+                              imageDoc={imageDoc}
+                              alt={"Dead Stock Image"}
+                              showPreview={"hidden"}
+                              // disabled
+                              width={["10px"]}
+                            />
+                          </div>
+                          <div className="">
+                            <FileButton
+                              btnLabel={"Upload Reference Image"}
+                              bg={"[#4338CA]"}
+                              textColor={"white"}
+                              imgRef={deadStockRef}
+                              hoverBg={"bg-blue-800"}
+                              setImageDoc={setImageDoc}
+                              setPreview={setPreview}
+                              paddingY={"[30px]"}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+
+                  <div className="mb-5">
+                    <button
+                      className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left"
+                      onClick="##"
+                    >
+                      Back
+                    </button>
+
+                    <button
+                      className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse"
+                      onClick="##"
+                    >
+                      Save & Next
+                    </button>
+
+                    <button
+                      className="bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right"
+                      onClick="##"
+                    >
+                      Reset
+                    </button>
+                  </div>
+
                 </div>
-              ))}
+
+              </>
+
             </Form>
           )}
         </Formik>
       </div>
-      <div className="mb-5">
-        <button
-          className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left"
-          onClick="##"
-        >
-          Back
-        </button>
-
-        <button
-          className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse"
-          onClick="##"
-        >
-          Save & Next
-        </button>
-
-        <button
-          className="bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right"
-          onClick="##"
-        >
-          Reset
-        </button>
-      </div>
+      
     </>
   );
 };

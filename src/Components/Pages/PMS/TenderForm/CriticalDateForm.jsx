@@ -117,120 +117,149 @@ const CriticalDateForm = () => {
               }}
             >
               {({ values, handleChange, errors, touched }) => (
-                <Form className=" container mx-auto capitalize grid grid-cols-2 space-x-4">
+                <Form >
 
-                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5 ">
-                    <div className="">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900"
-                      >
-                        Publishing Date
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <DateTimePicker className="w-3/4" />
+                  <>
+
+                    <div className=" container mx-auto capitalize grid grid-cols-2 space-x-4">
+
+                          <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5 ">
+                            <div className="">
+                              <label
+                                for="default-input"
+                                className="block mb-2 text-sm font-medium text-gray-900"
+                              >
+                                Publishing Date
+                                <span className="text-red-500">*</span>
+                              </label>
+                              <DateTimePicker className="w-3/4" />
+                            </div>
+
+                            <div className="">
+                              <label
+                                for="default-input"
+                                className="block mb-2 text-sm font-medium text-gray-900"
+                              >
+                                Bid Opening Date
+                                <span className="text-red-500">*</span>
+                              </label>
+                              <DateTimePicker className="w-3/4" />
+                            </div>
+                          </div>
+
+                          <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5">
+                            <div className="">
+                              <label
+                                for="default-input"
+                                className="block mb-2 text-sm font-medium text-gray-900"
+                              >
+                                Document Sale Start Date
+                                <span className="text-red-500">*</span>
+                              </label>
+                              <DateTimePicker className="w-3/4" />
+                            </div>
+
+                            <div className="">
+                              <label
+                                for="default-input"
+                                className="block mb-2 text-sm font-medium text-gray-900"
+                              >
+                                Document Sale End Date
+                                <span className="text-red-500">*</span>
+                              </label>
+                              <DateTimePicker className="w-3/4" />
+                            </div>
+                          </div>
+
+                          <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5">
+                            <div className="">
+                              <label
+                                for="default-input"
+                                className="block mb-2 text-sm font-medium text-gray-900"
+                              >
+                                Seek Clarification Start Date
+                                <span className="text-red-500">*</span>
+                              </label>
+                              <DateTimePicker className="w-3/4" />
+                            </div>
+
+                            <div className="">
+                              <label
+                                for="default-input"
+                                className="block mb-2 text-sm font-medium text-gray-900"
+                              >
+                                Seek Clarification End Date
+                                <span className="text-red-500">*</span>
+                              </label>
+                              <DateTimePicker className="w-3/4" />
+                            </div>
+                          </div>
+                          
+                          
+                          <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5">
+                            <div className="">
+                              <label
+                                for="default-input"
+                                className="block mb-2 text-sm font-medium text-gray-900"
+                              >
+                                Bid Submission Start Date
+                                <span className="text-red-500">*</span>
+                              </label>
+                              <DateTimePicker className="w-3/4" />
+                            </div>
+
+                            <div className="">
+                              <label
+                                for="default-input"
+                                className="block mb-2 text-sm font-medium text-gray-900"
+                              >
+                                Bid Submission End Date
+                                <span className="text-red-500">*</span>
+                              </label>
+                              <DateTimePicker className="w-3/4" />
+                            </div>
+                          </div>
+                          
+                          <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 col-span-2 mt-3 space-y-5">
+                            <div className="">
+                              <label
+                                for="default-input"
+                                className="block mb-2 text-sm font-medium text-gray-900"
+                              >
+                                Pre Bid Meeting Date
+                                <span className="text-red-500">*</span>
+                              </label>
+                              <DateTimePicker className="w-1/2" />
+                            </div>
+
+                          </div>
                     </div>
+                    
+                    <div className='mb-5'>
+                          <button
+                            className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
+                            onClick='##'
+                          >
+                            Back
+                          </button>
 
-                    <div className="">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900"
-                      >
-                        Bid Opening Date
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <DateTimePicker className="w-3/4" />
+                          <button
+                            className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
+                            onClick='##'
+                          >
+                            Save & Next
+                          </button>
+
+                          <button
+                            className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
+                            onClick='##'
+                          >
+                            Reset
+                          </button>
                     </div>
-                  </div>
+                   
 
-                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5">
-                    <div className="">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900"
-                      >
-                        Document Sale Start Date
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <DateTimePicker className="w-3/4" />
-                    </div>
-
-                    <div className="">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900"
-                      >
-                        Document Sale End Date
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <DateTimePicker className="w-3/4" />
-                    </div>
-                  </div>
-
-                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5">
-                    <div className="">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900"
-                      >
-                        Seek Clarification Start Date
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <DateTimePicker className="w-3/4" />
-                    </div>
-
-                    <div className="">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900"
-                      >
-                        Seek Clarification End Date
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <DateTimePicker className="w-3/4" />
-                    </div>
-                  </div>
-                  
-                  
-                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5">
-                    <div className="">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900"
-                      >
-                        Bid Submission Start Date
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <DateTimePicker className="w-3/4" />
-                    </div>
-
-                    <div className="">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900"
-                      >
-                        Bid Submission End Date
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <DateTimePicker className="w-3/4" />
-                    </div>
-                  </div>
-                  
-                  <div className="p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 col-span-2 mt-3 space-y-5">
-                    <div className="">
-                      <label
-                        for="default-input"
-                        className="block mb-2 text-sm font-medium text-gray-900"
-                      >
-                        Pre Bid Meeting Date
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <DateTimePicker className="w-1/2" />
-                    </div>
-
-                  </div>
-
-
+                  </>
                 </Form>
               )}
             </Formik>
@@ -238,28 +267,7 @@ const CriticalDateForm = () => {
         </DemoContainer>
       </LocalizationProvider>
 
-      <div className='mb-5'>
-        <button
-          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
-          onClick='##'
-        >
-          Back
-        </button>
-
-        <button
-          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
-          onClick='##'
-        >
-          Save & Next
-        </button>
-
-        <button
-          className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
-          onClick='##'
-        >
-          Reset
-        </button>
-      </div>
+      
     </>
   );
 };
