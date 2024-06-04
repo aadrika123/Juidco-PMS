@@ -8,9 +8,7 @@ export default function FileButton({
   hoverBg,
   setImageDoc,
   setPreview,
-  paddingY,
 }) {
-  console.log(paddingY, "paddingY----------------");
   //image validation with file type and size limit
   const imageHandler = (e) => {
     // const validExtensions = [

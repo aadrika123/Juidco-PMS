@@ -67,24 +67,26 @@ const BasicDetailsForm = () => {
 
   const validationSchema = Yup.object({
     tenderReference_No: Yup.string().required(),
-    tender_type: Yup.string().required(),
-    contract_form: Yup.string().required(),
-    no_of_covers: Yup.string().required(),
-    tender_category: Yup.string().required(),
+    tender_type: Yup.object().required(),
+    contract_form: Yup.object().required(),
+    tender_category: Yup.object().required(),
     allow_resubmission: Yup.string().required(),
     allow_withdrawl: Yup.string().required(),
     allow_offline_submission: Yup.string().required(),
     payment_mode: Yup.string().required(),
-    offline_banks: Yup.string().required(),
+    // offline_banks: Yup.string().when("payment_mode", {
+    //   is: "offline",
+    //   then: Yup.string().required("Field is required"),
+    // }),
   });
 
   // Initial values for additional form fields can go here
   const initialValues = {
     tenderReference_No: "",
-    tender_type: "",
-    contract_form: "",
+    tender_type: {},
+    contract_form: {},
     no_of_covers: "",
-    tender_category: "",
+    tender_category: {},
     allow_resubmission: "",
     allow_withdrawl: "",
     allow_offline_submission: "",

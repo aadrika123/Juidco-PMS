@@ -18,7 +18,6 @@ export default function RadioButtonsGroup({
   name,
   defaultValue,
 }) {
-  console.log(defaultValue, "defaultValue====>");
   return (
     <Box sx={{ display: "flex" }}>
       <FormControl
