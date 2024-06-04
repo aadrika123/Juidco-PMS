@@ -117,236 +117,243 @@ const emdFee = [
           >
             {({ values, handleChange, errors, touched }) => (
 
-                <Form className=' container mx-auto capitalize'>
+                <Form >
 
+                <>
+                    <div className=' container mx-auto capitalize'>
+                        <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-2'>
+                          
+                          <div className="">
 
-                <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-2'>
-                  
-                  <div className="">
-
-                    <label
-                      for='default-input'
-                      className='block mb-2 text-sm font-medium text-gray-900 '
-                    >
-                      Tender Fee
-                      <span className='text-red-500'>*</span>
-                    </label>
-                    <input
-                      type='text'
-                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 '
-                      placeholder="Tender Fee"
-                    />
-                  </div>
-                    
-                    <div className="">
-
-                    <label
-                      for='default-input'
-                      className='block mb-2 text-sm font-medium text-gray-900 '
-                    >
-                      Processing Fee
-                      <span className='text-red-500'>*</span>
-                    </label>
-                    <input
-                      type='text'
-                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
-                      placeholder="Processing Fee"
-                    />
-                    </div>
-                    
-                    <div className="">
-
-                    <label
-                      for='default-input'
-                      className='block mb-2 text-sm font-medium text-gray-900 mt-5'
-                    >
-                      Tender Fee Payable To
-                      <span className='text-red-500'>*</span>
-                    </label>
-                    <input
-                      type='text'
-                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
-                      placeholder="Tender Fee Payable To"
-                    />
-                    </div>
-                    
-                    <div className="">
-
-                    <label
-                      for='default-input'
-                      className='block mb-2 text-sm font-medium text-gray-900 mt-5'
-                    >
-                      Tender Fee Payable At
-                      <span className='text-red-500'>*</span>
-                    </label>
-                    <input
-                      type='text'
-                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
-                      placeholder="Tender Fee Payable"
-                    />
-                    </div>
-                    
-                    <div className="">
-
-                    <label
-                      for='default-input'
-                      className='block mb-2 text-sm font-medium text-gray-900 mt-5'
-                    >
-                      Surcharges
-                      <span className='text-red-500'>*</span>
-                    </label>
-                    <input
-                      type='text'
-                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
-                      placeholder="Surcharges"
-                    />
-                    </div>
-                    
-                    <div className="">
-
-                    <label
-                      for='default-input'
-                      className='block mb-2 text-sm font-medium text-gray-900 mt-5'
-                    >
-                      Other Charges
-                      <span className='text-red-500'>*</span>
-                    </label>
-                    <input
-                      type='text'
-                      className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
-                      placeholder="Other Charges"
-                    />
-                    </div>
-
-                    
-                </div>
-
-                <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
-                    {/* <img src={fd} className='pl-2' /> */}
-                    <h1 className='pt-1 pl-2 text-xl'>EMD Fee Details</h1>
-                </div>
-
-                <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-3 mt-3'>
-                
-                    <div className="">
-
-                    <RadioButtonsGroup
-                        fields={emdFee}
-                        title={"EMD Fee"}
-                        name={"emd_fee"}
-                        values={values.checkboxes}
-                        handleChange={handleChange}
-                        errors={errors.checkboxes}
-                        touched={touched.checkboxes}
-                    />
-                    </div>
-
-                    <div className="">
-                    <label
-                            for='default-input'
-                            className='block mb-2 text-sm font-medium text-gray-900'
+                            <label
+                              for='default-input'
+                              className='block mb-2 text-sm font-medium text-gray-900 '
                             >
-                            If EMD Fee is Fixed
-                            <span className='text-red-500'>*</span>
+                              Tender Fee
+                              <span className='text-red-500'>*</span>
                             </label>
                             <input
-                            type='text'
-                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
-                            placeholder="EMD Amount"
+                              type='text'
+                              className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 '
+                              placeholder="Tender Fee"
                             />
-                    </div>
+                          </div>
+                            
+                            <div className="">
+
+                            <label
+                              for='default-input'
+                              className='block mb-2 text-sm font-medium text-gray-900 '
+                            >
+                              Processing Fee
+                              <span className='text-red-500'>*</span>
+                            </label>
+                            <input
+                              type='text'
+                              className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
+                              placeholder="Processing Fee"
+                            />
+                            </div>
+                            
+                            <div className="">
+
+                            <label
+                              for='default-input'
+                              className='block mb-2 text-sm font-medium text-gray-900 mt-5'
+                            >
+                              Tender Fee Payable To
+                              <span className='text-red-500'>*</span>
+                            </label>
+                            <input
+                              type='text'
+                              className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
+                              placeholder="Tender Fee Payable To"
+                            />
+                            </div>
+                            
+                            <div className="">
+
+                            <label
+                              for='default-input'
+                              className='block mb-2 text-sm font-medium text-gray-900 mt-5'
+                            >
+                              Tender Fee Payable At
+                              <span className='text-red-500'>*</span>
+                            </label>
+                            <input
+                              type='text'
+                              className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
+                              placeholder="Tender Fee Payable"
+                            />
+                            </div>
+                            
+                            <div className="">
+
+                            <label
+                              for='default-input'
+                              className='block mb-2 text-sm font-medium text-gray-900 mt-5'
+                            >
+                              Surcharges
+                              <span className='text-red-500'>*</span>
+                            </label>
+                            <input
+                              type='text'
+                              className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
+                              placeholder="Surcharges"
+                            />
+                            </div>
+                            
+                            <div className="">
+
+                            <label
+                              for='default-input'
+                              className='block mb-2 text-sm font-medium text-gray-900 mt-5'
+                            >
+                              Other Charges
+                              <span className='text-red-500'>*</span>
+                            </label>
+                            <input
+                              type='text'
+                              className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
+                              placeholder="Other Charges"
+                            />
+                            </div>
+
+                            
+                        </div>
+
+                        <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
+                            {/* <img src={fd} className='pl-2' /> */}
+                            <h1 className='pt-1 pl-2 text-xl'>EMD Fee Details</h1>
+                        </div>
+
+                        <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-3 mt-3'>
+                        
+                            <div className="">
+
+                            <RadioButtonsGroup
+                                fields={emdFee}
+                                title={"EMD Fee"}
+                                name={"emd_fee"}
+                                values={values.checkboxes}
+                                handleChange={handleChange}
+                                errors={errors.checkboxes}
+                                touched={touched.checkboxes}
+                            />
+                            </div>
+
+                            <div className="">
+                            <label
+                                    for='default-input'
+                                    className='block mb-2 text-sm font-medium text-gray-900'
+                                    >
+                                    If EMD Fee is Fixed
+                                    <span className='text-red-500'>*</span>
+                                    </label>
+                                    <input
+                                    type='text'
+                                    className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
+                                    placeholder="EMD Amount"
+                                    />
+                            </div>
+                            
+                            <div className="">
+                            <label
+                                    for='default-input'
+                                    className='block mb-2 text-sm font-medium text-gray-900'
+                                    >
+                                    If EMD Fee is Percentage
+                                    <span className='text-red-500'>*</span>
+                                    </label>
+                                    <input
+                                    type='text'
+                                    className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
+                                    placeholder="EMD Percentage %"
+                                    />
+                            </div>
+
+                        </div>
+
+                        <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-2 mt-3'>
+
+                            <div className="">
+                            <label
+                                    for='default-input'
+                                    className='block mb-2 text-sm font-medium text-gray-900'
+                                    >
+                                    EMD Fee Payable To
+                                    <span className='text-red-500'>*</span>
+                                    </label>
+                                    <input
+                                    type='text'
+                                    className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-4/5 p-2.5'
+                                    placeholder="EMD Fee Payable"
+                                    />
+                            </div>
+
+                            <div className="">
+                            <label
+                                    for='default-input'
+                                    className='block mb-2 text-sm font-medium text-gray-900'
+                                    >
+                                    EMD Fee Payable At
+                                    <span className='text-red-500'>*</span>
+                                    </label>
+                                    <input
+                                    type='text'
+                                    className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-4/5 p-2.5'
+                                    placeholder="EMD Fee Payable"
+                                    />
+                            </div>
+
+                            <div className="mt-10">
+                            <RadioButtonsGroup
+                                fields={emdExemption}
+                                title={"EMD Exemption Allowed"}
+                                name={"emd_exemption"}
+                                values={values.checkboxes}
+                                handleChange={handleChange}
+                                errors={errors.checkboxes}
+                                touched={touched.checkboxes}
+                            />
+                            </div>
+
+                        </div>
+
+
                     
-                    <div className="">
-                    <label
-                            for='default-input'
-                            className='block mb-2 text-sm font-medium text-gray-900'
-                            >
-                            If EMD Fee is Percentage
-                            <span className='text-red-500'>*</span>
-                            </label>
-                            <input
-                            type='text'
-                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
-                            placeholder="EMD Percentage %"
-                            />
+                        <div className='mb-5'>
+                        <button
+                          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
+                          onClick='##'
+                        >
+                          Back
+                        </button>
+
+                        <button
+                          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
+                          onClick='##'
+                        >
+                          Save & Next
+                        </button>
+
+                        <button
+                          className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
+                          onClick='##'
+                        >
+                          Reset
+                        </button>
+                        </div>
+
                     </div>
 
-                </div>
-
-                <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-2 mt-3'>
-
-                    <div className="">
-                    <label
-                            for='default-input'
-                            className='block mb-2 text-sm font-medium text-gray-900'
-                            >
-                            EMD Fee Payable To
-                            <span className='text-red-500'>*</span>
-                            </label>
-                            <input
-                            type='text'
-                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-4/5 p-2.5'
-                            placeholder="EMD Fee Payable"
-                            />
-                    </div>
-
-                    <div className="">
-                    <label
-                            for='default-input'
-                            className='block mb-2 text-sm font-medium text-gray-900'
-                            >
-                            EMD Fee Payable At
-                            <span className='text-red-500'>*</span>
-                            </label>
-                            <input
-                            type='text'
-                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-4/5 p-2.5'
-                            placeholder="EMD Fee Payable"
-                            />
-                    </div>
-
-                    <div className="mt-10">
-                    <RadioButtonsGroup
-                        fields={emdExemption}
-                        title={"EMD Exemption Allowed"}
-                        name={"emd_exemption"}
-                        values={values.checkboxes}
-                        handleChange={handleChange}
-                        errors={errors.checkboxes}
-                        touched={touched.checkboxes}
-                    />
-                    </div>
-
-                </div>
-
+                  </>
 
                 </Form>
             )}
             </Formik>
 
-            </div>
-        <div className='mb-5'>
-        <button
-          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
-          onClick='##'
-        >
-          Back
-        </button>
-
-        <button
-          className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
-          onClick='##'
-        >
-          Save & Next
-        </button>
-
-        <button
-          className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
-          onClick='##'
-        >
-          Reset
-        </button>
-      </div>
+          </div>
       
     </>
   )
