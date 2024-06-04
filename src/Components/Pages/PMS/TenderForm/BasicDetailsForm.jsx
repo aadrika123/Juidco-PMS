@@ -118,7 +118,9 @@ const BasicDetailsForm = () => {
                     <>
                       <label
                         htmlFor='tenderReference_No'
-                        className='block mb-2 text-sm font-medium text-gray-900'
+                        className={`block mb-2 text-sm font-medium text-gray-900 ${
+                          errors.tenderReference_No && "text-red-500"
+                        }`}
                       >
                         Tender Reference No{" "}
                         <span className='text-red-500'>*</span>
