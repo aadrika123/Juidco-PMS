@@ -306,8 +306,8 @@ const ListTableParent = (props) => {
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              <button class='text-red bg-green-700 hover:before:bg-redborder-red-500 relative overflow-hidden border px-2 text-white shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-green-900 before:transition-all before:duration-500 hover:text-white hover:before:left-0 hover:before:w-full rounded-md'>
-                <span class='relative z-10 flex'>
+              <button className='text-red bg-green-700 hover:before:bg-redborder-red-500 relative overflow-hidden border px-2 text-white shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-green-900 before:transition-all before:duration-500 hover:text-white hover:before:left-0 hover:before:w-full rounded-md'>
+                <span className='relative z-10 flex'>
                   Export{" "}
                   <FaArrowRightLong
                     color='white'

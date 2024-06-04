@@ -48,7 +48,7 @@ function Login() {
   useEffect(() => {
     getLocalStorageItem("token") != "null" &&
       getLocalStorageItem("token") != null &&
-      navigate("/home");
+      navigate("/sr-inventory-dashboard");
   }, []);
 
   const header = {

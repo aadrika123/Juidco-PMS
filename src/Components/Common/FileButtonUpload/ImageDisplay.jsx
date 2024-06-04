@@ -34,7 +34,7 @@ export default function ImageDisplay({
           <div className={`rounded-md mt-8`}>
             <LuCloudy className='text-[1.5rem]' />
           </div>
-          <h3 class='text-xl text-black font-openSans'>Choose a file </h3>
+          <h3 className='text-xl text-black font-openSans'>Choose a file </h3>
           <h1 className='text-gray-400 text-sm'>
             JPEG, PNG, JPG, and PDF formats, up to 2MB
           </h1>

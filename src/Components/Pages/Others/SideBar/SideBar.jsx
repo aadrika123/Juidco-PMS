@@ -84,9 +84,9 @@ const SideBar = (props) => {
                     <span className='flex justify-center font-semibold w-full'>
                       {userDetails?.userName}
                     </span>
-                    <span className='flex justify-center w-full uppercase text-sm font-semibold'>
+                    {/* <span className='flex justify-center w-full uppercase text-sm font-semibold'>
                       {userDetails?.roles?.map((elem) => elem)}
-                    </span>
+                    </span> */}
                   </div>
                   <hr className={`my-4 bg-${bg}-700 h-[0.1rem]`} />
                 </div>
@@ -126,7 +126,9 @@ const SideBar = (props) => {
                               <span>
                                 <MdOutlineDashboard />
                               </span>{" "}
-                              <div className={`flex justify-between items-center flex-1 `}>
+                              <div
+                                className={`flex justify-between items-center flex-1 `}
+                              >
                                 <span>{item?.name}</span>
                                 {item?.path == null && (
                                   <span
