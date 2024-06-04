@@ -51,7 +51,7 @@ export default function RadioButtonsGroup({
                     "& .MuiSvgIcon-root": {
                       fontSize: 20,
                     },
-                    paddingLeft: 3,
+                    paddingLeft: 2,
                   }}
                 />
               }
@@ -63,9 +63,9 @@ export default function RadioButtonsGroup({
             />
           ))}
         </RadioGroup>
-        {errors && touched ? (
+        {/* {errors && touched ? (
           <p className='text-red-400 text-xs'>{errors}</p>
-        ) : null}
+        ) : null} */}
       </FormControl>
     </Box>
   );

@@ -51,7 +51,7 @@ const CustomCheckboxGroup = ({
                     "& .MuiSvgIcon-root": {
                       fontSize: 20,
                     },
-                    paddingLeft: 3,
+                    paddingLeft: 2,
                   }}
                 />
               }
@@ -63,7 +63,7 @@ const CustomCheckboxGroup = ({
             />
           ))}
         </FormGroup>
-        {errors && touched && <FormHelperText>{errors}</FormHelperText>}
+        {/* {errors && touched && <FormHelperText>{errors}</FormHelperText>} */}
       </FormControl>
     </Box>
   );
