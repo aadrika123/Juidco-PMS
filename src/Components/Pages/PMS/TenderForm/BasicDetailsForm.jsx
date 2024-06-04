@@ -11,13 +11,8 @@ import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 const BasicDetailsForm = () => {
   const inputFileRef = useRef();
 
-  const [selectedTab, setSelectedTab] = useState("online");
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
-
-  const handleTabChange = (event) => {
-    setSelectedTab(event.target.value);
-  };
 
   const tenderType = [
     { label: "Open", value: "open" },
@@ -63,10 +58,6 @@ const BasicDetailsForm = () => {
     { label: "No", value: "no" },
   ];
 
-  const paymentMode = [
-    { label: "Online", value: "online" },
-    { label: "offline", value: "offline" },
-  ];
   const offlineBanks = [
     { label: "SS-Small Saving Instrument", value: "ss" },
     { label: "BG-Bank Guarantee", value: "bg" },
@@ -75,35 +66,39 @@ const BasicDetailsForm = () => {
   ];
 
   const validationSchema = Yup.object({
-    checkboxes: Yup.object({
-      gilad: Yup.boolean(),
-      jason: Yup.boolean(),
-      antoine: Yup.boolean(),
-    }).test("at-least-two", "You must select exactly two options", (values) => {
-      return Object.values(values).filter(Boolean).length === 2;
-    }),
-    // Additional form fields and their validation can go here
+    tenderReference_No: Yup.string().required(),
+    tender_type: Yup.string().required(),
+    contract_form: Yup.string().required(),
+    no_of_covers: Yup.string().required(),
+    tender_category: Yup.string().required(),
+    allow_resubmission: Yup.string().required(),
+    allow_withdrawl: Yup.string().required(),
+    allow_offline_submission: Yup.string().required(),
+    payment_mode: Yup.string().required(),
+    offline_banks: Yup.string().required(),
   });
 
+  // Initial values for additional form fields can go here
   const initialValues = {
-    checkboxes: {
-      gilad: false,
-      jason: false,
-      antoine: false,
-    },
-    // Initial values for additional form fields can go here
+    tenderReference_No: "",
+    tender_type: "",
+    contract_form: "",
+    no_of_covers: "",
+    tender_category: "",
+    allow_resubmission: "",
+    allow_withdrawl: "",
+    allow_offline_submission: "",
+    payment_mode: "online",
+    offline_banks: "",
+    onlinePyment_mode: "",
   };
 
   return (
     <>
-      {/* <div className='bg-white rounded-xl w-full shadow-md p-4 border'> */}
-      {/* Heading  */}
       <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
         <img src={folder} className='pl-2' />
         <h1 className='pt-1 pl-2 text-xl'>Basic Details</h1>
       </div>
-
-      {/* Form Starting */}
 
       <div className=' mt-5 container'>
         <Formik
@@ -120,7 +115,7 @@ const BasicDetailsForm = () => {
                   <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <>
                       <label
-                        htmlFor='default-input'
+                        htmlFor='tenderReference_No'
                         className='block mb-2 text-sm font-medium text-gray-900'
                       >
                         Tender Reference No{" "}
@@ -129,6 +124,8 @@ const BasicDetailsForm = () => {
                       <input
                         type='text'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
+                        name='tenderReference_No'
+                        onChange={handleChange}
                       />
                     </>
                     <div className='mt-3'>
@@ -136,10 +133,10 @@ const BasicDetailsForm = () => {
                         fields={tenderType}
                         title={"Tender Type"}
                         name={"tender_type"}
-                        values={values.checkboxes}
+                        values={values.tender_type}
                         handleChange={handleChange}
-                        errors={errors.checkboxes}
-                        touched={touched.checkboxes}
+                        errors={errors.tender_type}
+                        touched={touched.tender_type}
                         important={"*"}
                       />
                     </div>
@@ -150,144 +147,73 @@ const BasicDetailsForm = () => {
                       fields={formOfContract}
                       name={"contract_form"}
                       title={"Form of Contract"}
-                      values={values.checkboxes}
+                      values={values.contract_form}
                       handleChange={handleChange}
-                      errors={errors.checkboxes}
-                      touched={touched.checkboxes}
+                      errors={errors.contract_form}
+                      touched={touched.contract_form}
                       important={"*"}
                     />
                   </div>
 
-                  <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                  {/* <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <RadioButtonsGroup
                       fields={noOfCovers}
                       title={"No of Covers"}
                       name={"no_of_covers"}
-                      values={values.checkboxes}
+                      values={values.no_of_covers}
                       handleChange={handleChange}
-                      errors={errors.checkboxes}
-                      touched={touched.checkboxes}
+                      errors={errors.no_of_covers}
+                      touched={touched.no_of_covers}
                       important={"*"}
                     />
-                  </div>
+                  </div> */}
 
                   <div className='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <CustomCheckboxGroup
                       fields={tenderCategory}
                       title={"Tender Category"}
                       name={"tender_category"}
-                      values={values.checkboxes}
+                      values={values.tender_category}
                       handleChange={handleChange}
-                      errors={errors.checkboxes}
-                      touched={touched.checkboxes}
+                      errors={errors.tender_category}
+                      touched={touched.tender_category}
                       important={"*"}
                     />
                   </div>
 
                   <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex justify-between gap-3'>
-                    {/* <div className=""> */}
                     <RadioButtonsGroup
                       fields={allowResubmission}
                       title={"Allow Resubmission"}
                       name={"allow_resubmission"}
-                      values={values.checkboxes}
+                      values={values.allow_resubmission}
                       handleChange={handleChange}
-                      errors={errors.checkboxes}
-                      touched={touched.checkboxes}
+                      errors={errors.allow_resubmission}
+                      touched={touched.allow_resubmission}
                     />
-                    {/* </div> */}
 
-                    {/* <div className=""> */}
                     <RadioButtonsGroup
                       fields={allowWithdrawl}
                       title={"Allow Withdrawal"}
                       name={"allow_withdrawl"}
-                      values={values.checkboxes}
+                      values={values.allow_withdrawl}
                       handleChange={handleChange}
-                      errors={errors.checkboxes}
-                      touched={touched.checkboxes}
+                      errors={errors.allow_withdrawl}
+                      touched={touched.allow_withdrawl}
                     />
-                    {/* </div> */}
 
-                    {/* <div className=""> */}
                     <RadioButtonsGroup
                       fields={allowOfflineSubmission}
                       title={"Allow offline Submission"}
                       name={"allow_offline_submission"}
-                      values={values.checkboxes}
+                      values={values.allow_offline_submission}
                       handleChange={handleChange}
-                      errors={errors.checkboxes}
-                      touched={touched.checkboxes}
+                      errors={errors.allow_offline_submission}
+                      touched={touched.allow_offline_submission}
                     />
-                    {/* </div> */}
                   </div>
 
-                  <div className='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md row-span-2'>
-                    <div className=''>
-                      <h1 className='text-[14px] pb-3'>
-                        Payment Mode <span className='text-red-500'>*</span>
-                      </h1>
-                      <div className='flex space-x-4 mb-4'>
-                        <label className='flex items-center space-x-2'>
-                          <input
-                            type='radio'
-                            name='tabs'
-                            value='online'
-                            checked={selectedTab === "online"}
-                            onChange={handleTabChange}
-                            className='form-radio h-4 w-4 text-blue-600'
-                          />
-                          <span>Online</span>
-                        </label>
-                        <label className='flex items-center space-x-2'>
-                          <input
-                            type='radio'
-                            name='tabs'
-                            value='offline'
-                            checked={selectedTab === "offline"}
-                            onChange={handleTabChange}
-                            className='form-radio h-4 w-4 text-blue-600'
-                          />
-                          <span>Offline</span>
-                        </label>
-                      </div>
-
-                      <div className='tab-content'>
-                        {selectedTab === "online" && (
-                          <div className='p-5'>
-                            <label
-                              htmlFor='countries'
-                              className='block mb-2 text-sm font-medium text-gray-900'
-                            >
-                              In Online(Banks)
-                            </label>
-                            <select
-                              id='countries'
-                              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
-                            >
-                              <option selected>Choose a Bank</option>
-                              <option value='US'>Bank Of India</option>
-                              <option value='CA'>State Bank Of India</option>
-                              <option value='FR'>Canara Bank</option>
-                            </select>
-                          </div>
-                        )}
-                        {selectedTab === "offline" && (
-                          <div className=''>
-                            <RadioButtonsGroup
-                              fields={offlineBanks}
-                              title={"In offline(Instruments)"}
-                              values={values.checkboxes}
-                              handleChange={handleChange}
-                              errors={errors.checkboxes}
-                              touched={touched.checkboxes}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
+                  {/* document upload */}
                   <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <h1>
                       NIT Document <span className='text-red-500'>*</span>
@@ -348,6 +274,80 @@ const BasicDetailsForm = () => {
                           setPreview={setPreview}
                           textColor={"white"}
                         />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* payment mode */}
+                  <div className='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md row-span-2'>
+                    <div className=''>
+                      <h1 className='text-[14px] pb-3'>
+                        Payment Mode <span className='text-red-500'>*</span>
+                      </h1>
+                      <div className='flex space-x-4 mb-4'>
+                        <label className='flex items-center space-x-2'>
+                          <input
+                            type='radio'
+                            name='payment_mode'
+                            value='online'
+                            defaultChecked={values.payment_mode}
+                            // checked={selectedTab === "online"}
+                            // onChange={handleTabChange}
+                            onChange={handleChange}
+                            className='form-radio h-4 w-4 text-blue-600'
+                          />
+                          <span>Online</span>
+                        </label>
+                        <label className='flex items-center space-x-2'>
+                          <input
+                            type='radio'
+                            name='payment_mode'
+                            defaultChecked={values.payment_mode}
+                            value='offline'
+                            // checked={selectedTab === "offline"}
+                            onChange={handleChange}
+                            className='form-radio h-4 w-4 text-blue-600'
+                          />
+                          <span>Offline</span>
+                        </label>
+                      </div>
+
+                      <div className='tab-content'>
+                        {values.payment_mode === "online" && (
+                          <div className='p-5'>
+                            <label
+                              htmlFor='onlinePyment_mode'
+                              name='onlinePyment_mode'
+                              className='block mb-2 text-sm font-medium text-gray-900'
+                            >
+                              In Online(Banks)
+                            </label>
+                            <select
+                              id='onlinePyment_mode'
+                              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                              name='onlinePyment_mode'
+                              onChange={handleChange}
+                              value={values.onlinePyment_mode}
+                            >
+                              <option selected>Choose a Bank</option>
+                              <option value='US'>Bank Of India</option>
+                              <option value='CA'>State Bank Of India</option>
+                              <option value='FR'>Canara Bank</option>
+                            </select>
+                          </div>
+                        )}
+                        {values.payment_mode === "offline" && (
+                          <div className=''>
+                            <RadioButtonsGroup
+                              fields={offlineBanks}
+                              title={"In offline(Instruments)"}
+                              values={values.offline_banks}
+                              handleChange={handleChange}
+                              errors={errors.offline_banks}
+                              touched={touched.offline_banks}
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
