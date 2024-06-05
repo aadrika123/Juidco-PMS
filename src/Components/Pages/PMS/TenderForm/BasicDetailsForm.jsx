@@ -165,6 +165,7 @@ const BasicDetailsForm = () => {
                   </div>
 
 
+
                   <div className='p-4 mb-6 mr-2 bg-white shadow-xl border border-gray-200 rounded-md'>
 
                     <CustomCheckboxGroup
