@@ -42,9 +42,23 @@ const TenderForm = () => {
       </div>
 
       <div className='container mx-auto rounded mt-6 '>
-        <div className='p-5 border shadow-xl rounded-md flex bg-white'>
+        <div className='p-5 border shadow-xl rounded-md flex bg-white w-full justify-between'>
+          
+          <div className="w-1/2 flex">
           <img src={tender} className='w-11' />
           <h1 className='font-bold text-xl pt-2 pl-3'>Tendring Input Form</h1>
+          </div>
+          
+          <div className="flex w-[15rem] bg-gray-200 rounded-full h-4 dark:bg-gray-200 mt-4">
+          {activeTab === "basic_details" && (<div class="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full" style={{width: "30%"}}> Steps: 1/6</div>)}
+          {activeTab === "cover_details" && (<div className="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full" style={{width: "45%"}}>Steps: 2/6</div>)}
+          {activeTab === "work_details" && (<div className="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full" style={{width: "55%"}}>Steps: 3/6</div>)}
+          {activeTab === "fee_details" && (<div className="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full" style={{width: "75%"}}>Steps: 4/6</div>)}
+          {activeTab === "critical_dates" && (<div className="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full" style={{width: "85%"}}>Steps: 5/6</div>)}
+          {activeTab === "bid_openers" && (<div className="bg-blue-600 text-xs font-medium text-blue-100 pl-2 pt-0.5 leading-none rounded-full" style={{width: "100%"}}>Steps: 6/6</div>)}
+            
+          </div>
+ 
         </div>
 
         <div className='flex mt-6'>

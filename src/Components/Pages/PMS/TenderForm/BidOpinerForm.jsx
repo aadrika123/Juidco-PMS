@@ -78,65 +78,67 @@ const BidOpinerForm = () => {
   ];
 
   const validationSchema = Yup.object({
-    checkboxes: Yup.object({
-      gilad: Yup.boolean(),
-      jason: Yup.boolean(),
-      antoine: Yup.boolean(),
-    }).test("at-least-two", "You must select exactly two options", (values) => {
-      return Object.values(values).filter(Boolean).length === 2;
-    }),
-    // Additional form fields and their validation can go here
+    publishingDate: Yup.string().required(),
+    
   });
 
   const initialValues = {
-    checkboxes: {
-      gilad: false,
-      jason: false,
-      antoine: false,
-    },
-    // Initial values for additional form fields can go here
+    name_designation1: "",
+    name_designation2: "",
+    name_designation3: "",
+    email1: "",
+    email2: "",
+    email3: "",
+    namedoc1: "",
+    namedoc2: "",
+    emaildoc1: "",
+    emaildoc2: "",
+    docSize1: "",
+    docSize2: "",
+    
   };
 
-  useEffect(() => {
-    setBidOpinersList(bidOpiner);
-    setBidOpinersDoc(bidOpinerDocs);
-  });
+ 
 
   const bidOpiner = [
     {
       label_name: "Name/Designation",
-      name: "name",
+      name1: "name_designation1",
       label_email: "Email",
-      name: "email",
+      name2: "email1",
     },
     {
       label_name: "Name/Designation",
-      name: "name",
+      name1: "name_designation2",
       label_email: "Email",
-      name: "email",
+      name2: "email2",
     },
     {
       label_name: "Name/Designation",
-      name: "name",
+      name1: "name_designation3",
       label_email: "Email",
-      name: "email",
+      name2: "email3",
     },
   ];
 
   const bidOpinerDocs = [
     {
       label_name: "Name/Designation",
-      name: "name",
+      name1: "namedoc1",
       label_email: "Email",
-      name: "email",
+      name2: "disc1",
+      nameDocSize: "docSize1",
     },
     {
       label_name: "Name/Designation",
-      name: "name",
+      name1: "namedoc2",
       label_email: "Email",
-      name: "email",
+      name2: "disc2",
+      nameDocSize: "docSize2",
     },
   ];
+
+  
 
   return (
     <>
@@ -154,17 +156,17 @@ const BidOpinerForm = () => {
       <div className=" mt-5 container">
         <Formik
           initialValues={initialValues}
-          validationSchema={validationSchema}
+          // validationSchema={validationSchema}
           onSubmit={(values) => {
             console.log("Form values", values);
           }}
         >
-          {({ values, handleChange, errors, touched }) => (
+          {({ values, handleChange, errors, touched, resetForm }) => (
             <Form >
 
               <>
                 <div className=" container mx-auto capitalize grid grid-cols-1">
-                  {bidOpinersList?.map((obj, index) => (
+                  {bidOpiner?.map((obj, index) => (
                     <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex mt-3 w-full">
                       <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
                         B0{index + 1}
@@ -180,10 +182,12 @@ const BidOpinerForm = () => {
                             <span className="text-red-500">*</span>
                           </label>
                           <input
-                            name={obj.name}
                             type="text"
                             className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
                             placeholder="Name/Designation"
+                            name={obj.name1}
+                            onChange={handleChange}
+                            value={values[obj.name1]}
                           />
                         </div>
 
@@ -192,13 +196,17 @@ const BidOpinerForm = () => {
                             for="default-input"
                             className="block mb-2 text-sm font-medium text-gray-900 "
                           >
-                            Email ID
+                          
+                            {obj.label_email}
                             <span className="text-red-500">*</span>
                           </label>
                           <input
                             type="text"
                             className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
                             placeholder="Email"
+                            name={obj.name2}
+                            onChange={handleChange}
+                            value={values[obj.name2]}
                           />
                         </div>
                       </div>
@@ -216,7 +224,7 @@ const BidOpinerForm = () => {
                     </p>
                   </div>
 
-                  {bidOpinersDoc?.map((obj, index) => (
+                  {bidOpinerDocs?.map((obj, index) => (
                     <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex  w-full">
                       <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
                         B0{index + 1}
@@ -232,28 +240,43 @@ const BidOpinerForm = () => {
                             <span className="text-red-500">*</span>
                           </label>
                           <input
-                            name={obj.name}
+                            
                             type="text"
                             className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
                             placeholder="Name/Designation"
+                            name={obj.name1}
+                            onChange={handleChange}
+                            value={values[obj.name1]}
                           />
                         </div>
 
-                        <div className="w-full p-3">
-                          <label
-                            for="default-input"
-                            className="block mb-2 text-sm font-medium text-gray-900 "
-                          >
-                            {obj.label_email}
-                            <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            name={obj.email}
-                            type="text"
-                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                            placeholder="Email"
-                          />
-                        </div>
+                        <label
+                        for='default-input'
+                        className={`block mb-2 mt-3 text-sm font-medium text-gray-900`}
+                      >
+                        Discriptiion
+                        <span className='text-red-500'>*</span>
+                      </label>
+
+                        <div className=' relative'>
+                        <textarea
+                          type='text'
+                          className=' bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                          placeholder='Discriptiion'
+                          name={obj.name2}
+                          value={values[obj.name2]}
+                          onChange={handleChange}
+                        />
+
+                        {/* <span
+                          className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${
+                            300 === values[obj.name2].length &&
+                            "text-red-500"
+                          }`}
+                        >
+                          {values[obj.name2]?.length} / {300}
+                        </span> */}
+                      </div>
                       </div>
 
                       <div className="w-1/3 mt-4 mr-5 mb-5">
@@ -266,10 +289,13 @@ const BidOpinerForm = () => {
                             <span className="text-red-500">*</span>
                           </label>
                           <input
-                            name=""
                             type="text"
                             className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
                             placeholder=""
+                            name={obj.nameDocSize}
+                            value={values[obj.nameDocSize]}
+                            onChange={handleChange}
+
                           />
                         </div>
 
@@ -278,11 +304,10 @@ const BidOpinerForm = () => {
                           <div className="w-[10rem]">
                             <ImageDisplay
                               preview={preview}
-                              imageDoc={imageDoc}
                               alt={"Dead Stock Image"}
                               showPreview={"hidden"}
-                              // disabled
                               width={["10px"]}
+                              imageDoc={imageDoc}
                             />
                           </div>
                           <div className="">
@@ -292,9 +317,9 @@ const BidOpinerForm = () => {
                               textColor={"white"}
                               imgRef={deadStockRef}
                               hoverBg={"bg-blue-800"}
+                              paddingY={"[30px]"}
                               setImageDoc={setImageDoc}
                               setPreview={setPreview}
-                              paddingY={"[30px]"}
                             />
                           </div>
                         </div>
@@ -313,14 +338,14 @@ const BidOpinerForm = () => {
 
                     <button
                       className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse"
-                      onClick="##"
+                      type='submit'
                     >
                       Save & Next
                     </button>
 
                     <button
                       className="bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right"
-                      onClick="##"
+                      onClick={() => resetForm()}
                     >
                       Reset
                     </button>
