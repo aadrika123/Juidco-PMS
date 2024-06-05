@@ -44,7 +44,7 @@ const TenderForm = () => {
       <div className='container mx-auto rounded mt-6 '>
         <div className='p-5 border shadow-xl rounded-md flex bg-white'>
           <img src={tender} className='w-11' />
-          <h1 className='font-bold text-xl pt-2 pl-3'>Tendring Input Form</h1>
+          <h1 className='font-bold text-xl pt-2 pl-3'>Tendering Input Form</h1>
         </div>
 
         <div className='flex mt-6'>
