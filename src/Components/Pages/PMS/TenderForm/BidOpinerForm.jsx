@@ -101,7 +101,9 @@ const BidOpinerForm = () => {
 
   //image validation with file type and size limit
   const imageHandler = (e,index,setFieldValue) => {
-    console.log(index,"index mg")
+
+    // console.log(index,"index mg")
+
     const validExtensions = [
       "image/jpeg",
       "image/jpg",
@@ -146,7 +148,7 @@ const BidOpinerForm = () => {
     }
   };
 
-  console.log(preview, "previewwwww")
+  // console.log(preview, "previewwwww")
 
   return (
     <>
@@ -296,15 +298,9 @@ const BidOpinerForm = () => {
 
                         <div className="w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 ">
                           <div className="w-[10rem]">
-                            {/* <ImageDisplay
-                              preview={preview}
-                              alt={"Dead Stock Image"}
-                              showPreview={"hidden"}
-                              width={["10px"]}
-                              imageDoc={imageDoc}
-                            /> */}
+                            
+                            {values[`doc${index+1}`] && <img src={URL.createObjectURL(values[`doc${index+1}`])} alt="Selected" style={{ width: '300px', height: 'auto' }} />}
 
-                            {preview && <img src={preview} alt="Selected" style={{ width: '300px', height: 'auto' }} />}
                           </div>
                           <div className="">
                           
@@ -330,196 +326,7 @@ const BidOpinerForm = () => {
                     </div>
                   ))}
 
-                  {/* <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex  w-full">
-                      <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
-                        B01
-                      </div>
 
-                      <div className=" w-2/3 p-4 gap-3">
-                        <div className="w-full p-3">
-                          <label
-                            for="default-input"
-                            className="block mb-2 text-sm font-medium text-gray-900 "
-                          >
-                           
-                            File Name
-                            <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            
-                            type="text"
-                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                            placeholder="Name/Designation"
-                            name='namedoc1'
-                            onChange={handleChange}
-                            value={values.namedoc1}
-                          />
-                        </div>
-
-                        <label
-                        for='default-input'
-                        className={`block mb-2 mt-3 text-sm font-medium text-gray-900`}
-                      >
-                        Discription
-                        <span className='text-red-500'>*</span>
-                      </label>
-
-                        <div className=' relative'>
-                        <textarea
-                          type='text'
-                          className=' bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                          placeholder='Discriptiion'
-                          name='disc1'
-                          value={values.disc1}
-                          onChange={handleChange}
-                        />
-
-                      </div>
-                      </div>
-
-                      <div className="w-1/3 mt-4 mr-5 mb-5">
-                        <div className="w-full p-3">
-                          <label
-                            for="default-input"
-                            className="block mb-2 text-sm font-medium text-gray-900 "
-                          >
-                            Document Size (kb)
-                            <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            type="text"
-                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                            placeholder=""
-                            name='docSize1'
-                            value={values.docSize1}
-                            onChange={handleChange}
-
-                          />
-                        </div>
-
-                        <div className="w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 ">
-                          
-                          <div className="w-[10rem]">
-                            <ImageDisplay
-                              preview={preview}
-                              alt={"Dead Stock Image"}
-                              showPreview={"hidden"}
-                              width={["10px"]}
-                              imageDoc={imageDoc}
-                            />
-                          </div>
-                          <div className="">
-                            <FileButton
-                              btnLabel={"Upload Reference Image"}
-                              bg={"[#4338CA]"}
-                              textColor={"white"}
-                              imgRef={deadStockRef}
-                              hoverBg={"bg-blue-800"}
-                              paddingY={"[30px]"}
-                              setImageDoc={setImageDoc}
-                              setPreview={setPreview}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                  </div>
-
-
-                  <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex  w-full">
-                      <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
-                        B02
-                      </div>
-
-                      <div className=" w-2/3 p-4 gap-3">
-                        <div className="w-full p-3">
-                          <label
-                            for="default-input"
-                            className="block mb-2 text-sm font-medium text-gray-900 "
-                          >
-                            
-                            File Name
-                            <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            
-                            type="text"
-                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                            placeholder="Name/Designation"
-                            name='namedoc2'
-                            onChange={handleChange}
-                            value={values.namedoc2}
-                          />
-                        </div>
-
-                        <label
-                        for='default-input'
-                        className={`block mb-2 mt-3 text-sm font-medium text-gray-900`}
-                      >
-                        Discription
-                        <span className='text-red-500'>*</span>
-                      </label>
-
-                        <div className=' relative'>
-                        <textarea
-                          type='text'
-                          className=' bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                          placeholder='Discriptiion'
-                          name='disc2'
-                          onChange={handleChange}
-                          value={values.disc2}
-                        />
-
-                      </div>
-                      </div>
-
-                      <div className="w-1/3 mt-4 mr-5 mb-5">
-                        <div className="w-full p-3">
-                          <label
-                            for="default-input"
-                            className="block mb-2 text-sm font-medium text-gray-900 "
-                          >
-                            Document Size (kb)
-                            <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            type="text"
-                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                            placeholder=""
-                            name='docSize2'
-                            onChange={handleChange}
-                            value={values.docSize2}
-
-                          />
-                        </div>
-
-                        <div className="w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 ">
-                          
-                          <div className="w-[10rem]">
-                            <ImageDisplay
-                              alt={"Dead Stock Image"}
-                              showPreview={"hidden"}
-                              width={["10px"]}
-                              
-                              preview={preview}
-                              imageDoc={imageDoc}
-                            />
-                          </div>
-                          <div className="">
-                            <FileButton
-                              btnLabel={"Upload Reference Image"}
-                              bg={"[#4338CA]"}
-                              textColor={"white"}
-                              imgRef={deadStockRef}
-                              hoverBg={"bg-blue-800"}
-                              paddingY={"[30px]"}
-
-                              setImageDoc={setImageDoc}
-                              setPreview={setPreview}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                  </div> */}
 
                   <div className="mb-5">
                     <button
