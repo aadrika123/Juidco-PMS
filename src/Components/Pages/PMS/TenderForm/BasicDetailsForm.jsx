@@ -105,7 +105,7 @@ const BasicDetailsForm = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
+          onSubmit={(values,{ resetForm }) => {
             if (imageDoc == null || imageDoc == undefined || imageDoc == "") {
               setImgErr(true);
               return toast.error("Please upload valid documents");
@@ -114,7 +114,7 @@ const BasicDetailsForm = () => {
             console.log("Form values", values);
           }}
         >
-          {({ values, handleChange, errors, touched }) => (
+          {({ values, handleChange, errors, touched, resetForm }) => (
             <Form>
               <>
                 <div className='grid grid-cols-2 container mx-auto capitalize '>
@@ -164,7 +164,9 @@ const BasicDetailsForm = () => {
                     />
                   </div>
 
-                  <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+
+                  <div className='p-4 mb-6 mr-2 bg-white shadow-xl border border-gray-200 rounded-md'>
+
                     <CustomCheckboxGroup
                       fields={tenderCategory}
                       title={"Tender Category"}
@@ -290,6 +292,7 @@ const BasicDetailsForm = () => {
                         Payment Mode <span className='text-red-500'>*</span>
                       </h1>
                       <div className='flex space-x-4 mb-4'>
+                        
                         <label className='flex items-center space-x-2'>
                           <input
                             type='radio'
@@ -301,6 +304,7 @@ const BasicDetailsForm = () => {
                           />
                           <span>Online</span>
                         </label>
+                        
                         <label className='flex items-center space-x-2'>
                           <input
                             type='radio'
@@ -378,7 +382,7 @@ const BasicDetailsForm = () => {
 
                   <button
                     className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
-                    // onClick={() => }
+                    onClick={() => resetForm()}
                   >
                     Reset
                   </button>

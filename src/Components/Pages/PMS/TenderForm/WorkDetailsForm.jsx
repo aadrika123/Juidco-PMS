@@ -172,7 +172,7 @@ const WorkDetailsForm = () => {
             console.log("Form values", values);
           }}
         >
-          {({ values, handleChange, errors, touched }) => (
+          {({ values, handleChange, errors, touched,resetForm }) => (
             <Form>
               <>
                 <div className=' container mx-auto capitalize'>
@@ -190,10 +190,10 @@ const WorkDetailsForm = () => {
                         <span className='text-red-500'>*</span>
                       </label>
                       <input
-                        name='tenderReference_No'
                         type='text'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-1/3 p-2.5'
                         placeholder='Reference No'
+                        name='tenderReference_No'
                         onChange={handleChange}
                         value={values.tenderReference_No}
                       />
@@ -648,7 +648,7 @@ const WorkDetailsForm = () => {
 
                   <button
                     className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
-                    onClick='##'
+                    onClick={() => resetForm()}
                   >
                     Reset
                   </button>
