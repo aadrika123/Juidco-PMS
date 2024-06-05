@@ -46,6 +46,7 @@ const TenderForm = () => {
           
           <div className="w-1/2 flex">
           <img src={tender} className='w-11' />
+
           <h1 className='font-bold text-xl pt-2 pl-3'>Tendring Input Form</h1>
           </div>
           
@@ -59,6 +60,7 @@ const TenderForm = () => {
             
           </div>
  
+
         </div>
 
         <div className='flex mt-6'>
