@@ -9,7 +9,7 @@ import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 
 const BidOpinerForm = () => {
-  const inputFileRef = useRef();
+  const inputFileRefs = useRef([]);
 
   const [selectedTab, setSelectedTab] = useState("online");
   const [preview, setPreview] = useState();
@@ -21,14 +21,87 @@ const BidOpinerForm = () => {
     setSelectedTab(event.target.value);
   };
 
-  const handleUploadDoc = () => {
-    inputFileRef.current.click();
+  
+
+  const emdFee = [
+    { label: "Yes", value: "yes" },
+    { label: "No", value: "no" },
+  ];
+
+  const emdExemption = [
+    { label: "Yes", value: "yes" },
+    { label: "No", value: "no" },
+  ];
+
+  const validationSchema = Yup.object({
+    publishingDate: Yup.string().required(),
+  });
+
+  const initialValues = {
+    name_designation1: "",
+    name_designation2: "",
+    name_designation3: "",
+    email1: "",
+    email2: "",
+    email3: "",
+    namedoc1: "",
+    namedoc2: "",
+    disc1: "",
+    disc2: "",
+    docSize1: "",
+    docSize2: "",
+    doc1: "",
+    doc2: "",
+  };
+
+  const bidOpiner = [
+    {
+      label_name: "Name/Designation",
+      name1: "name_designation1",
+      label_email: "Email",
+      name2: "email1",
+    },
+    {
+      label_name: "Name/Designation",
+      name1: "name_designation2",
+      label_email: "Email",
+      name2: "email2",
+    },
+    {
+      label_name: "Name/Designation",
+      name1: "name_designation3",
+      label_email: "Email",
+      name2: "email3",
+    },
+  ];
+
+  const bidOpinerDocs = [
+    {
+      label_name: "Name/Designation",
+      name1: "namedoc1",
+      label_desc: "Description",
+      name2: "disc1",
+      nameDocSize: "docSize1",
+    },
+    {
+      label_name: "Name/Designation",
+      name1: "namedoc2",
+      label_desc: "Description",
+      name2: "disc2",
+      nameDocSize: "docSize2",
+    },
+  ];
+
+
+  const handleUploadDoc = (index) => {
+    inputFileRefs.current[index].click();
   };
 
   const deadStockRef = useRef();
 
   //image validation with file type and size limit
-  const imageHandler = (e) => {
+  const imageHandler = (e,index,setFieldValue) => {
+    console.log(index,"index mg")
     const validExtensions = [
       "image/jpeg",
       "image/jpg",
@@ -60,85 +133,20 @@ const BidOpinerForm = () => {
     }
 
     if (file) {
-      console.log(file.size, "=========file size");
-      // props?.setImageDoc(file);
-      console.log(file, "==========file");
-      setPreview(URL.createObjectURL(file));
+
+      setFieldValue(`doc${index+1}`, file)
+      setImageDoc(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      // setPreview((prev) => ({ ...prev, [index]: URL.createObjectURL(file) }));
     }
   };
 
-  const emdFee = [
-    { label: "Yes", value: "yes" },
-    { label: "No", value: "no" },
-  ];
-
-  const emdExemption = [
-    { label: "Yes", value: "yes" },
-    { label: "No", value: "no" },
-  ];
-
-  const validationSchema = Yup.object({
-    publishingDate: Yup.string().required(),
-    
-  });
-
-  const initialValues = {
-    name_designation1: "",
-    name_designation2: "",
-    name_designation3: "",
-    email1: "",
-    email2: "",
-    email3: "",
-    namedoc1: "",
-    namedoc2: "",
-    emaildoc1: "",
-    emaildoc2: "",
-    docSize1: "",
-    docSize2: "",
-    
-  };
-
- 
-
-  const bidOpiner = [
-    {
-      label_name: "Name/Designation",
-      name1: "name_designation1",
-      label_email: "Email",
-      name2: "email1",
-    },
-    {
-      label_name: "Name/Designation",
-      name1: "name_designation2",
-      label_email: "Email",
-      name2: "email2",
-    },
-    {
-      label_name: "Name/Designation",
-      name1: "name_designation3",
-      label_email: "Email",
-      name2: "email3",
-    },
-  ];
-
-  const bidOpinerDocs = [
-    {
-      label_name: "Name/Designation",
-      name1: "namedoc1",
-      label_email: "Email",
-      name2: "disc1",
-      nameDocSize: "docSize1",
-    },
-    {
-      label_name: "Name/Designation",
-      name1: "namedoc2",
-      label_email: "Email",
-      name2: "disc2",
-      nameDocSize: "docSize2",
-    },
-  ];
-
-  
+  console.log(preview, "previewwwww")
 
   return (
     <>
@@ -159,11 +167,11 @@ const BidOpinerForm = () => {
           // validationSchema={validationSchema}
           onSubmit={(values) => {
             console.log("Form values", values);
+            values = { ...values, imageDoc };
           }}
         >
-          {({ values, handleChange, errors, touched, resetForm }) => (
-            <Form >
-
+          {({ values, handleChange, errors, touched, resetForm,setFieldValue }) => (
+            <Form>
               <>
                 <div className=" container mx-auto capitalize grid grid-cols-1">
                   {bidOpiner?.map((obj, index) => (
@@ -196,7 +204,6 @@ const BidOpinerForm = () => {
                             for="default-input"
                             className="block mb-2 text-sm font-medium text-gray-900 "
                           >
-                          
                             {obj.label_email}
                             <span className="text-red-500">*</span>
                           </label>
@@ -214,7 +221,6 @@ const BidOpinerForm = () => {
                   ))}
 
                   <div className="bg-[#4338ca] text-white w-full rounded p-3 shadow-xl mb-5">
-                    
                     <h1 className="pt-1 pl-2 text-xl">
                       Uploading the tender documents
                     </h1>
@@ -240,7 +246,6 @@ const BidOpinerForm = () => {
                             <span className="text-red-500">*</span>
                           </label>
                           <input
-                            
                             type="text"
                             className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
                             placeholder="Name/Designation"
@@ -251,32 +256,23 @@ const BidOpinerForm = () => {
                         </div>
 
                         <label
-                        for='default-input'
-                        className={`block mb-2 mt-3 text-sm font-medium text-gray-900`}
-                      >
-                        Discriptiion
-                        <span className='text-red-500'>*</span>
-                      </label>
-
-                        <div className=' relative'>
-                        <textarea
-                          type='text'
-                          className=' bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                          placeholder='Discriptiion'
-                          name={obj.name2}
-                          value={values[obj.name2]}
-                          onChange={handleChange}
-                        />
-
-                        {/* <span
-                          className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${
-                            300 === values[obj.name2].length &&
-                            "text-red-500"
-                          }`}
+                          for="default-input"
+                          className={`block mb-2 mt-3 text-sm font-medium text-gray-900`}
                         >
-                          {values[obj.name2]?.length} / {300}
-                        </span> */}
-                      </div>
+                          {obj.label_desc}
+                          <span className="text-red-500">*</span>
+                        </label>
+
+                        <div className=" relative">
+                          <textarea
+                            type="text"
+                            className=" bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5"
+                            placeholder="Discriptiion"
+                            name={obj.name2}
+                            value={values[obj.name2]}
+                            onChange={handleChange}
+                          />
+                        </div>
                       </div>
 
                       <div className="w-1/3 mt-4 mr-5 mb-5">
@@ -294,6 +290,108 @@ const BidOpinerForm = () => {
                             placeholder=""
                             name={obj.nameDocSize}
                             value={values[obj.nameDocSize]}
+                            onChange={handleChange}
+                          />
+                        </div>
+
+                        <div className="w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 ">
+                          <div className="w-[10rem]">
+                            {/* <ImageDisplay
+                              preview={preview}
+                              alt={"Dead Stock Image"}
+                              showPreview={"hidden"}
+                              width={["10px"]}
+                              imageDoc={imageDoc}
+                            /> */}
+
+                            {preview && <img src={preview} alt="Selected" style={{ width: '300px', height: 'auto' }} />}
+                          </div>
+                          <div className="">
+                          
+                            <input
+                            type="file"
+                            className="hidden"
+                            ref={(el) => (inputFileRefs.current[index] = el)}
+                            onChange={(e) =>
+                              imageHandler(e, index, setFieldValue)
+                            }
+                          />
+                             <button
+                                type='button'
+                                className={`text-white end-6 bg-blue-500 hover:bg-blue-900 rounded text-[12px] px-5 py-[5px]`}
+                                onClick={() => handleUploadDoc(index)}
+                              >
+                              Choose File
+                              </button>
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex  w-full">
+                      <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
+                        B01
+                      </div>
+
+                      <div className=" w-2/3 p-4 gap-3">
+                        <div className="w-full p-3">
+                          <label
+                            for="default-input"
+                            className="block mb-2 text-sm font-medium text-gray-900 "
+                          >
+                           
+                            File Name
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            
+                            type="text"
+                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                            placeholder="Name/Designation"
+                            name='namedoc1'
+                            onChange={handleChange}
+                            value={values.namedoc1}
+                          />
+                        </div>
+
+                        <label
+                        for='default-input'
+                        className={`block mb-2 mt-3 text-sm font-medium text-gray-900`}
+                      >
+                        Discription
+                        <span className='text-red-500'>*</span>
+                      </label>
+
+                        <div className=' relative'>
+                        <textarea
+                          type='text'
+                          className=' bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                          placeholder='Discriptiion'
+                          name='disc1'
+                          value={values.disc1}
+                          onChange={handleChange}
+                        />
+
+                      </div>
+                      </div>
+
+                      <div className="w-1/3 mt-4 mr-5 mb-5">
+                        <div className="w-full p-3">
+                          <label
+                            for="default-input"
+                            className="block mb-2 text-sm font-medium text-gray-900 "
+                          >
+                            Document Size (kb)
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                            placeholder=""
+                            name='docSize1'
+                            value={values.docSize1}
                             onChange={handleChange}
 
                           />
@@ -324,9 +422,104 @@ const BidOpinerForm = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                  </div>
 
+
+                  <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex  w-full">
+                      <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
+                        B02
+                      </div>
+
+                      <div className=" w-2/3 p-4 gap-3">
+                        <div className="w-full p-3">
+                          <label
+                            for="default-input"
+                            className="block mb-2 text-sm font-medium text-gray-900 "
+                          >
+                            
+                            File Name
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            
+                            type="text"
+                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                            placeholder="Name/Designation"
+                            name='namedoc2'
+                            onChange={handleChange}
+                            value={values.namedoc2}
+                          />
+                        </div>
+
+                        <label
+                        for='default-input'
+                        className={`block mb-2 mt-3 text-sm font-medium text-gray-900`}
+                      >
+                        Discription
+                        <span className='text-red-500'>*</span>
+                      </label>
+
+                        <div className=' relative'>
+                        <textarea
+                          type='text'
+                          className=' bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                          placeholder='Discriptiion'
+                          name='disc2'
+                          onChange={handleChange}
+                          value={values.disc2}
+                        />
+
+                      </div>
+                      </div>
+
+                      <div className="w-1/3 mt-4 mr-5 mb-5">
+                        <div className="w-full p-3">
+                          <label
+                            for="default-input"
+                            className="block mb-2 text-sm font-medium text-gray-900 "
+                          >
+                            Document Size (kb)
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                            placeholder=""
+                            name='docSize2'
+                            onChange={handleChange}
+                            value={values.docSize2}
+
+                          />
+                        </div>
+
+                        <div className="w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 ">
+                          
+                          <div className="w-[10rem]">
+                            <ImageDisplay
+                              alt={"Dead Stock Image"}
+                              showPreview={"hidden"}
+                              width={["10px"]}
+                              
+                              preview={preview}
+                              imageDoc={imageDoc}
+                            />
+                          </div>
+                          <div className="">
+                            <FileButton
+                              btnLabel={"Upload Reference Image"}
+                              bg={"[#4338CA]"}
+                              textColor={"white"}
+                              imgRef={deadStockRef}
+                              hoverBg={"bg-blue-800"}
+                              paddingY={"[30px]"}
+
+                              setImageDoc={setImageDoc}
+                              setPreview={setPreview}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                  </div> */}
 
                   <div className="mb-5">
                     <button
@@ -338,7 +531,7 @@ const BidOpinerForm = () => {
 
                     <button
                       className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse"
-                      type='submit'
+                      type="submit"
                     >
                       Save & Next
                     </button>
@@ -350,16 +543,12 @@ const BidOpinerForm = () => {
                       Reset
                     </button>
                   </div>
-
                 </div>
-
               </>
-
             </Form>
           )}
         </Formik>
       </div>
-      
     </>
   );
 };
