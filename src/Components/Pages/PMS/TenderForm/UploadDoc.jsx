@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { LuCloudy } from "react-icons/lu";
 import { useRef } from "react";
 import pdfIcon from "@/assets/Images/pdfIcon.png";
@@ -8,12 +9,15 @@ import { RiDeleteBinLine } from "react-icons/ri";
 
 export default function UploadDoc({
   tab,
-  imageDoc,
   setImageDoc,
   setPreview,
-  preview,
   tabData,
   setTabData,
+  errors,
+  touched,
+  formikTabs,
+  formikContentVal,
+  setFieldValue,
 }) {
   const inputFileRef = useRef();
 
@@ -64,10 +68,20 @@ export default function UploadDoc({
         docs: det.value == tab ? [...det.docs, file] : [...det.docs],
       }));
       setTabData(spTab);
+      setFieldValue("tabs", spTab);
+
+      formikTabs = spTab;
       // tabData
       setPreview(URL.createObjectURL(file));
     }
   };
+
+  const addContentHandler = (e) => {
+    setFieldValue("content", e.target.value);
+  };
+
+  const deleteFileHandler = (fileName) => {};
+  console.log(tabData, "tabdata=========");
 
   return (
     <>
@@ -121,52 +135,52 @@ export default function UploadDoc({
               {tabData
                 ?.find((files) => files.value === tab)
                 ?.docs?.map((file) => (
-                  <>
-                    <div
-                      className='mb-2 bg-[#EEF1F7] h-14 w-full rounded-md'
-                      key={file.name}
-                    >
-                      <div className='flex justify-between items-center px-6 py-2 '>
-                        <div className='flex items-center gap-4'>
-                          {(file?.type === "application/pdf" ||
-                            file?.type === "text/csv" ||
-                            file?.type ===
-                              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") && (
-                            <img
-                              src={
-                                file.type === "application/pdf"
-                                  ? pdfIcon
-                                  : file.type === "text/csv"
-                                  ? csvIcon
-                                  : xlsxIcon
-                              }
-                              alt='file'
-                              className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-full p-1'
-                              onClick={() => setImageModal(true)}
-                            />
-                          )}
+                  <div
+                    className='mb-2 bg-[#EEF1F7] h-14 w-full rounded-md'
+                    key={file.name}
+                  >
+                    <div className='flex justify-between items-center px-6 py-2 '>
+                      <div className='flex items-center gap-4'>
+                        {(file?.type === "application/pdf" ||
+                          file?.type === "text/csv" ||
+                          file?.type ===
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") && (
+                          <img
+                            src={
+                              file.type === "application/pdf"
+                                ? pdfIcon
+                                : file.type === "text/csv"
+                                ? csvIcon
+                                : xlsxIcon
+                            }
+                            alt='file'
+                            className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-full p-1'
+                          />
+                        )}
 
-                          {file?.type?.match(/(jpg|jpeg|png)$/) && (
-                            <img
-                              src={URL.createObjectURL(file)}
-                              alt='Image Preview'
-                              // style={{ width: "200px", height: "auto", marginTop: "20px", border: "2px", borderColor: "blue" }}
-                              className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-md p-1'
-                            />
-                          )}
-                          <div className='text-gray-500 text-xs'>
-                            <p className='text-black'>{file?.name}</p>
-                            <p>
-                              {Math.round((file?.size / 1024) * 100) / 100} kb
-                            </p>
-                          </div>
+                        {file?.type?.match(/(jpg|jpeg|png)$/) && (
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt='Image Preview'
+                            // style={{ width: "200px", height: "auto", marginTop: "20px", border: "2px", borderColor: "blue" }}
+                            className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-md p-1'
+                          />
+                        )}
+                        <div className='text-gray-500 text-xs'>
+                          <p className='text-black'>{file?.name}</p>
+                          <p>
+                            {Math.round((file?.size / 1024) * 100) / 100} kb
+                          </p>
                         </div>
-                        <button className='rounded-full p-3 hover:bg-blue-200'>
-                          <RiDeleteBinLine />
-                        </button>
                       </div>
+                      <button
+                        className='rounded-full p-3 hover:bg-blue-200'
+                        onClick={() => deleteFileHandler(file?.name)}
+                      >
+                        <RiDeleteBinLine />
+                      </button>
                     </div>
-                  </>
+                  </div>
                 ))}
             </div>
           </>
@@ -177,18 +191,16 @@ export default function UploadDoc({
                 Content
               </h3>
             </div>
-            <div className='flex w-full mb-6'>
+            <div className=' w-full mb-6'>
               <textarea
-                // name={props.remarks}
                 className='border border-[#5448dd] rounded  p-2 w-full'
                 placeholder='Type Here...'
-                // onChange={(e) => {
-                //   props?.setFormData((prev) => ({
-                //     ...prev,
-                //     remark: e.target.value,
-                //   }));
-                // }}
+                // defaultValue={}
+                onChange={addContentHandler}
               />
+              {errors.content && touched.content ? (
+                <p className='text-red-500 text-xs'>{errors.content}</p>
+              ) : null}
             </div>
           </div>
         </div>

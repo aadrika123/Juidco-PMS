@@ -28,6 +28,7 @@ import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
 import { contextVar } from "@/Components/context/contextVar";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { allowCharacterNumberInput } from "@/Components/Common/PowerupFunctions";
+import ApiHeader2 from "@/Components/api/ApiHeader2";
 
 const ViewReceivedInvtByIdDa = (props) => {
   const navigate = useNavigate();
@@ -197,20 +198,11 @@ const ViewReceivedInvtByIdDa = (props) => {
 
     //headers for file data format
     let token2 = window.localStorage.getItem("token");
-    const header = {
-      timeout: 60000,
-      headers: {
-        Authorization: `Bearer ${token2}`,
-        Accept: "multipart/form-data",
-        "Content-Type": "multipart/form-data",
-        "API-KEY": "eff41ef6-d430-4887-aa55-9fcf46c72c99",
-      },
-    };
 
     AxiosInterceptors.post(
       `${api_postDaReceivedInvtDetail}`,
       formDataPayload,
-      header
+      ApiHeader2()
     )
       .then(function (response) {
         console.log("Received Inventory details submitted", response?.data);
