@@ -1,61 +1,39 @@
-import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
-import cdIcon from "@/Components/assets/cd.svg";
-
-// export default function CoverDetailsForm() {
-//   const covers = [
-//     { label: "Single Cover", value: "single_cover" },
-//     { label: "Two Cover", value: "two_cover" },
-//     { label: "Three Cover", value: "three_cover" },
-//     { label: "Four Cover", value: "four_cover" },
-//   ];
-//   return (
-//     <>
-//       <div className='bg-white rounded-md w-full shadow-md p-4'>
-//         {/* Heading  */}
-//         <div className='bg-[#4338ca] text-white w-full rounded p-2 flex'>
-//           <img src={cdIcon} className='pl-2' width={40} />
-//           <h1 className='pt-1 pl-2 text-xl'>Cover Details</h1>
-//         </div>
-
-//         <div>
-//           <RadioButtonsGroup fields={covers} title={"No of Covers"} handleChange={handleChange}/>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-import React, { useState } from "react";
-import folder from "@/Components/assets/folder.svg";
+import { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
+import cdIcon from "@/Components/assets/cd.svg";
 import UploadDoc from "./UploadDoc";
+import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 
 const tabsCover1 = [
   {
     name: "fee/ prequal/ technical/ financial",
     value: "fee/prequal/technical/financial",
+    docs: [],
   },
 ];
 const tabsCover2 = [
-  { name: "fee/ prequal/ technical", value: "fee/prequal/technical" },
-  { name: "financial", value: "financial" },
+  { name: "fee/ prequal/ technical", value: "fee/prequal/technical", docs: [] },
+  { name: "financial", value: "financial", docs: [] },
 ];
 const tabsCover3 = [
-  { name: "fee", value: "fee" },
-  { name: "prequal/ technical", value: "prequal/technical" },
-  { name: "financial", value: "financial" },
+  { name: "fee", value: "fee", docs: [] },
+  { name: "prequal/ technical", value: "prequal/technical", docs: [] },
+  { name: "financial", value: "financial", docs: [] },
 ];
 const tabsCover4 = [
-  { name: "fee", value: "fee" },
-  { name: "prequal", value: "prequal" },
-  { name: "technical", value: "technical" },
-  { name: "financial", value: "financial" },
+  { name: "fee", value: "fee", docs: [] },
+  { name: "prequal", value: "prequal", docs: [] },
+  { name: "technical", value: "technical", docs: [] },
+  { name: "financial", value: "financial", docs: [] },
 ];
 
 const CoverDetailsForm = () => {
   const [tabData, setTabData] = useState(tabsCover1);
-  const [activeTab, setActiveTab] = useState();
+  const [activeTab, setActiveTab] = useState(tabsCover1[0]?.value);
+  const [imageDoc, setImageDoc] = useState([]);
+  const [preview, setPreview] = useState();
 
   const covers = [
     { label: "Single Cover", value: "single_cover" },
@@ -64,28 +42,34 @@ const CoverDetailsForm = () => {
     { label: "Four Cover", value: "four_cover" },
   ];
 
+  const autoSelectActiveTab = (tab) => {
+    setActiveTab(tab[0]?.value);
+  };
+
   const validationSchema = Yup.object({
     noOfCovers: Yup.string().required("No of Covers is required"),
   });
 
   const initialValues = {
-    noOfCovers: "",
+    noOfCovers: tabData,
+    tabDetails: {},
   };
 
   const handleCoversChange = (event, setFieldValue) => {
     const { value } = event.target;
     setFieldValue("noOfCovers", value);
-    {
-      value == "single_cover" && setTabData(tabsCover1);
-    }
-    {
-      value == "two_cover" && setTabData(tabsCover2);
-    }
-    {
-      value == "three_cover" && setTabData(tabsCover3);
-    }
-    {
-      value == "four_cover" && setTabData(tabsCover4);
+    if (value == "single_cover") {
+      setTabData(tabsCover1);
+      autoSelectActiveTab(tabsCover1);
+    } else if (value == "two_cover") {
+      setTabData(tabsCover2);
+      autoSelectActiveTab(tabsCover2);
+    } else if (value == "three_cover") {
+      setTabData(tabsCover1);
+      autoSelectActiveTab(tabsCover1);
+    } else if (value == "four_cover") {
+      setTabData(tabsCover4);
+      autoSelectActiveTab(tabsCover4);
     }
   };
 
@@ -149,7 +133,15 @@ const CoverDetailsForm = () => {
                   <div className='mt-4'>
                     {activeTab != "" && (
                       <div>
-                        <UploadDoc tab={activeTab} />
+                        <UploadDoc
+                          tab={activeTab}
+                          setImageDoc={setImageDoc}
+                          imageDoc={imageDoc}
+                          setPreview={setPreview}
+                          preview={preview}
+                          tabData={tabData}
+                          setTabData={setTabData}
+                        />
                       </div>
                     )}
                   </div>
@@ -164,7 +156,7 @@ const CoverDetailsForm = () => {
 
                   <button
                     className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
-                    onClick='##'
+                    type='submit'
                   >
                     Save & Next
                   </button>

@@ -118,7 +118,6 @@ const BasicDetailsForm = () => {
             <Form>
               <>
                 <div className='grid grid-cols-2 container mx-auto capitalize '>
-                  
                   <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <>
                       <label
@@ -178,7 +177,7 @@ const BasicDetailsForm = () => {
                     />
                   </div>
 
-                  <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex justify-between gap-3'>
+                  <div className='p-4  mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex justify-between gap-3'>
                     <RadioButtonsGroup
                       fields={allowResubmission}
                       title={"Allow Resubmission"}
