@@ -79,6 +79,11 @@ function Login() {
             "ulbId",
             response?.data?.data?.userDetails?.ulb_id
           );
+          console.log(response?.data?.data, "roleid=========================");
+          setLocalStorageItemStrigified(
+            "roleId",
+            response?.data?.data?.userDetails?.roleId
+          );
 
           fetchMenuList();
           setheartBeatCounter((prev) => prev + 1);

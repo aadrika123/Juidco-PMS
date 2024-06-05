@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
 import cdIcon from "@/Components/assets/cd.svg";
 import UploadDoc from "./UploadDoc";
-import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
+import toast from "react-hot-toast";
 
 const tabsCover1 = [
   {
@@ -14,7 +14,11 @@ const tabsCover1 = [
   },
 ];
 const tabsCover2 = [
-  { name: "fee/ prequal/ technical", value: "fee/prequal/technical", docs: [] },
+  {
+    name: "fee/ prequal/ technical",
+    value: "fee/prequal/technical",
+    docs: [],
+  },
   { name: "financial", value: "financial", docs: [] },
 ];
 const tabsCover3 = [
@@ -48,15 +52,25 @@ const CoverDetailsForm = () => {
 
   const validationSchema = Yup.object({
     noOfCovers: Yup.string().required("No of Covers is required"),
+    content: Yup.string().required("Content is required"),
+    tabs: Yup.array().required("Please upload the documents"),
   });
 
   const initialValues = {
-    noOfCovers: tabData,
-    tabDetails: {},
+    noOfCovers: "single_cover",
+    tabs: [
+      {
+        name: "fee/ prequal/ technical",
+        value: "fee/prequal/technical",
+        docs: [],
+      },
+    ],
+    content: "",
   };
 
   const handleCoversChange = (event, setFieldValue) => {
     const { value } = event.target;
+    console.log(value, "noOfCovers");
     setFieldValue("noOfCovers", value);
     if (value == "single_cover") {
       setTabData(tabsCover1);
@@ -65,12 +79,21 @@ const CoverDetailsForm = () => {
       setTabData(tabsCover2);
       autoSelectActiveTab(tabsCover2);
     } else if (value == "three_cover") {
-      setTabData(tabsCover1);
-      autoSelectActiveTab(tabsCover1);
+      setTabData(tabsCover3);
+      autoSelectActiveTab(tabsCover3);
     } else if (value == "four_cover") {
       setTabData(tabsCover4);
       autoSelectActiveTab(tabsCover4);
     }
+  };
+
+  const handleSubmit = (values) => {
+    values.tabs.forEach((tab, index) => {
+      if (tab.docs.length === 0) {
+        return toast.error(`Please upload valid documents for ${tab.name}`);
+      }
+    });
+    console.log(values, "form values");
   };
 
   return (
@@ -86,11 +109,7 @@ const CoverDetailsForm = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            // if (values.noOfCovers == "")
-            // setTabData()
-            console.log("Form values", values);
-          }}
+          onSubmit={handleSubmit}
         >
           {({ values, handleChange, errors, touched, setFieldValue }) => (
             <Form>
@@ -112,14 +131,19 @@ const CoverDetailsForm = () => {
                   {/* tabs */}
                   <div className='flex gap-8 px-4 w-full relative z-1'>
                     {tabData &&
-                      tabData?.map((data) => (
-                        <div className='flex mt-6 '>
+                      tabData?.map((data, index) => (
+                        <div className='flex mt-6 ' key={index}>
                           <button
                             className={`py-2 px-2 ${
                               activeTab === data.value
                                 ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
                                 : "text-black bg-[#E9E9E9]"
-                            } focus:outline-none flex shadow-xl border border-gray-200 rounded rounded-t-lg rounded-b-none`}
+                            } focus:outline-none flex shadow-xl border border-gray-200 rounded rounded-t-lg rounded-b-none ${
+                              errors.tabs && touched.tabs
+                                ? "border-red-500 text-red-400"
+                                : ""
+                            }`}
+                            type='button'
                             onClick={() => setActiveTab(data.value)}
                           >
                             {data.name}
@@ -133,15 +157,31 @@ const CoverDetailsForm = () => {
                   <div className='mt-4'>
                     {activeTab != "" && (
                       <div>
-                        <UploadDoc
-                          tab={activeTab}
-                          setImageDoc={setImageDoc}
-                          imageDoc={imageDoc}
-                          setPreview={setPreview}
-                          preview={preview}
-                          tabData={tabData}
-                          setTabData={setTabData}
-                        />
+                        <FieldArray name='tabs'>
+                          {({ remove, push }) => (
+                            <>
+                              <UploadDoc
+                                tab={activeTab}
+                                setImageDoc={setImageDoc}
+                                imageDoc={imageDoc}
+                                setPreview={setPreview}
+                                preview={preview}
+                                tabData={tabData}
+                                setTabData={setTabData}
+                                formikContentVal={values.content}
+                                formikTabs={values.tabs}
+                                errors={errors}
+                                touched={touched}
+                                setFieldValue={setFieldValue}
+                              />
+                              {errors.tabs && touched.tabs ? (
+                                <p className='text-red-500 text-xs'>
+                                  {errors.tabs}
+                                </p>
+                              ) : null}
+                            </>
+                          )}
+                        </FieldArray>
                       </div>
                     )}
                   </div>
@@ -149,7 +189,7 @@ const CoverDetailsForm = () => {
                 <div className='mb-5'>
                   <button
                     className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
-                    onClick='##'
+                    // onClick=
                   >
                     Back
                   </button>
@@ -163,7 +203,7 @@ const CoverDetailsForm = () => {
 
                   <button
                     className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
-                    onClick='##'
+                    // onClick='##'
                   >
                     Reset
                   </button>
