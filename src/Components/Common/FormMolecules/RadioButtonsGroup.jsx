@@ -17,6 +17,7 @@ export default function RadioButtonsGroup({
   title,
   name,
   defaultValue,
+  disabled,
 }) {
   return (
     <Box sx={{ display: "flex" }}>
@@ -43,6 +44,7 @@ export default function RadioButtonsGroup({
               key={opt.value}
               value={opt.value}
               name={`${name}`}
+              disabled={disabled || false}
               control={
                 <Radio
                   onChange={handleChange}

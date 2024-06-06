@@ -46,6 +46,7 @@ const CustomCheckboxGroup = ({
                 <Checkbox
                   //   checked={values[opt.value]}
                   onChange={handleChange}
+                  value={opt.value}
                   name={`${name}.${opt.value}`}
                   sx={{
                     "& .MuiSvgIcon-root": {
