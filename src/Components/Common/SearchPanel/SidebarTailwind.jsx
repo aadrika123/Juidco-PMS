@@ -124,7 +124,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
               // sx={{ backgroundColor: "rgb(250,250,255)"}}
             >
               <FormGroup>
-                {categoryList.map((item, index) => (
+                {categoryList?.map((item, index) => (
                   <FormControlLabel
                     key={index}
                     control={<Checkbox />}
@@ -159,7 +159,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
                   flexDirection: "row",
                 }}
               >
-                {subCategoryList.map((item, index) => (
+                {subCategoryList?.map((item, index) => (
                   <FormControlLabel
                     key={index}
                     control={<Checkbox />}
@@ -194,7 +194,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
                   flexDirection: "row",
                 }}
               >
-                {brandList.map((item, index) => (
+                {brandList?.map((item, index) => (
                   <FormControlLabel
                     key={index}
                     control={<Checkbox />}
