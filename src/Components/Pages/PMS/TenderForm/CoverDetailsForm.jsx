@@ -33,7 +33,7 @@ const tabsCover4 = [
   { name: "financial", value: "financial", docs: [] },
 ];
 
-const CoverDetailsForm = () => {
+const CoverDetailsForm = (props) => {
   const [tabData, setTabData] = useState(tabsCover1);
   const [activeTab, setActiveTab] = useState(tabsCover1[0]?.value);
   const [imageDoc, setImageDoc] = useState([]);

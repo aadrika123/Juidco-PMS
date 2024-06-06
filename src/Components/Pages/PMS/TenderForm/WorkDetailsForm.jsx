@@ -112,7 +112,7 @@ const WorkDetailsForm = () => {
     tenderReference_No: Yup.string().required(),
     workDiscription: Yup.string().required(),
     pre_qualification_details: Yup.string().required(),
-    product_category: Yup.object().required(),
+    product_category: Yup.array().required(),
     productSubCategory: Yup.string().required(),
     contract_type: Yup.string().required(),
     tender_values: Yup.string().required(),
@@ -124,7 +124,7 @@ const WorkDetailsForm = () => {
     preBidMeeting: Yup.string().required(),
     preBidMeetingAdd: Yup.string().required(),
     bidOpeningPlace: Yup.string().required(),
-    tenderer_class: Yup.object().required(),
+    tenderer_class: Yup.array().required(),
     invstOffName: Yup.string().required(),
     invstOffAdd: Yup.string().required(),
     invstOffEmail_Ph: Yup.string().required(),
@@ -135,7 +135,7 @@ const WorkDetailsForm = () => {
     tenderReference_No: "",
     workDiscription: "",
     pre_qualification_details: "",
-    product_category: "",
+    product_category: [],
     productSubCategory: "",
     contract_type: "",
     tender_values: "",
@@ -147,7 +147,7 @@ const WorkDetailsForm = () => {
     preBidMeeting: "",
     preBidMeetingAdd: "",
     bidOpeningPlace: "",
-    tenderer_class: "",
+    tenderer_class: [],
     invstOffName: "",
     invstOffAdd: "",
     invstOffEmail_Ph: "",
@@ -172,7 +172,7 @@ const WorkDetailsForm = () => {
             console.log("Form values", values);
           }}
         >
-          {({ values, handleChange, errors, touched,resetForm }) => (
+          {({ values, handleChange, errors, touched,resetForm ,setFieldValue}) => (
             <Form>
               <>
                 <div className=' container mx-auto capitalize'>
@@ -282,6 +282,7 @@ const WorkDetailsForm = () => {
                         handleChange={handleChange}
                         errors={errors.product_category}
                         touched={touched.product_category}
+                        setFieldValue={setFieldValue}
                         value={values.product_category}
                       />
 
@@ -552,6 +553,7 @@ const WorkDetailsForm = () => {
                         values={values.tenderer_class}
                         handleChange={handleChange}
                         errors={errors.tenderer_class}
+                        setFieldValue={setFieldValue}
                         touched={touched.tenderer_class}
                       />
 
@@ -563,6 +565,7 @@ const WorkDetailsForm = () => {
                         values={values.tenderer_class}
                         handleChange={handleChange}
                         errors={errors.tenderer_class}
+                        setFieldValue={setFieldValue}
                         touched={touched.tenderer_class}
                       />
 
