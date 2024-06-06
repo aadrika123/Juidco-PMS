@@ -80,8 +80,20 @@ export default function UploadDoc({
     setFieldValue("content", e.target.value);
   };
 
-  const deleteFileHandler = (fileName) => {};
-  console.log(tabData, "tabdata=========");
+  const deleteFileHandler = (fileName) => {
+    console.log(tabData, "tabData===>", tab, "tab===>");
+    const spTab = tabData.map((det) => ({
+      ...det,
+      docs:
+        det.value == tab
+          ? det.docs.filter((file) => file.name != fileName)
+          : [...det.docs],
+    }));
+    console.log(spTab, "spTab====>");
+    setFieldValue("tabs", spTab);
+
+    setTabData(spTab);
+  };
 
   return (
     <>
