@@ -28,9 +28,11 @@ import CriticalDateForm from "./CriticalDateForm";
 import BidOpinerForm from "./BidOpinerForm";
 
 const TenderForm = () => {
-  const [activeTab, setActiveTab] = useState("basic_details");
+  const [activeTab, setActiveTab] = useState(1);
 
   const { titleBarVisibility } = useContext(contextVar);
+
+  const btnDetails = ["Basic Details", "Cover Details"];
 
   return (
     <>
@@ -103,19 +105,22 @@ const TenderForm = () => {
         </div>
 
         <div className="flex mt-6">
-          <button
-            className={`py-2 px-2 ${
-              activeTab === "basic_details"
-                ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                : "text-gray-500 bg-white"
-            } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
-            onClick={() => setActiveTab("basic_details")}
-          >
-            <img src={bd} className="pr-2" />
-            Basic Details
-          </button>
+          {btnDetails?.map((item, index) => 
+             <button
+            key={index}
+              className={`py-2 px-2 ${
+                activeTab === index+1
+                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
+                  : "text-gray-500 bg-white"
+              } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
+              onClick={() => setActiveTab(index+1)}
+            >
+              <img src={bd} className="pr-2" />
+              {item}
+            </button>
+          )}
 
-          <button
+          {/* <button
             className={`ml-4 py-2 px-2 ${
               activeTab === "cover_details"
                 ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
@@ -173,7 +178,7 @@ const TenderForm = () => {
           >
             <img src={bo} className="pr-2" />
             Bid Opiners
-          </button>
+          </button> */}
         </div>
 
         {/* <hr className='w-[76rem] mt-3' /> */}
