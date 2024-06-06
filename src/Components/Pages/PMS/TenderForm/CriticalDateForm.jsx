@@ -400,7 +400,7 @@ const CriticalDateForm = () => {
                       </div>
                     </div>
 
-                    <TenderFormButton />
+                    <TenderFormButton resetForm={resetForm} />
 
                     {/* <div className="mb-5">
                       <button

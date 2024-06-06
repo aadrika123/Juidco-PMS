@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-const TenderFormButton = (props) => {
+const TenderFormButton = ({resetForm}) => {
   let [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const TenderFormButton = (props) => {
 
       <button
         className="bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right"
-        // onClick='##'
+        onClick={() => resetForm()}
       >
         Reset
       </button>
