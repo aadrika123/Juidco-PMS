@@ -112,7 +112,7 @@ const WorkDetailsForm = () => {
     tenderReference_No: Yup.string().required(),
     workDiscription: Yup.string().required(),
     pre_qualification_details: Yup.string().required(),
-    product_category: Yup.array().required(),
+    product_category: Yup.array().min(1).required(),
     productSubCategory: Yup.string().required(),
     contract_type: Yup.string().required(),
     tender_values: Yup.string().required(),
@@ -124,7 +124,7 @@ const WorkDetailsForm = () => {
     preBidMeeting: Yup.string().required(),
     preBidMeetingAdd: Yup.string().required(),
     bidOpeningPlace: Yup.string().required(),
-    tenderer_class: Yup.array().required(),
+    tenderer_class: Yup.array().min(1).required(),
     invstOffName: Yup.string().required(),
     invstOffAdd: Yup.string().required(),
     invstOffEmail_Ph: Yup.string().required(),
@@ -172,7 +172,14 @@ const WorkDetailsForm = () => {
             console.log("Form values", values);
           }}
         >
-          {({ values, handleChange, errors, touched,resetForm ,setFieldValue}) => (
+          {({
+            values,
+            handleChange,
+            errors,
+            touched,
+            resetForm,
+            setFieldValue,
+          }) => (
             <Form>
               <>
                 <div className=' container mx-auto capitalize'>
@@ -332,6 +339,7 @@ const WorkDetailsForm = () => {
                         handleChange={handleChange}
                         errors={errors.contract_type}
                         touched={touched.contract_type}
+                        setFieldValue={setFieldValue}
                       />
 
                       <RadioButtonsGroup
@@ -342,6 +350,7 @@ const WorkDetailsForm = () => {
                         handleChange={handleChange}
                         errors={errors.tender_values}
                         touched={touched.tender_values}
+                        setFieldValue={setFieldValue}
                       />
 
                       <RadioButtonsGroup
@@ -352,6 +361,7 @@ const WorkDetailsForm = () => {
                         handleChange={handleChange}
                         errors={errors.bid_validity}
                         touched={touched.bid_validity}
+                        setFieldValue={setFieldValue}
                       />
                     </>
                   </div>
@@ -434,6 +444,7 @@ const WorkDetailsForm = () => {
                       handleChange={handleChange}
                       errors={errors.pre_bid}
                       touched={touched.pre_bid}
+                      setFieldValue={setFieldValue}
                     />
 
                     <label
