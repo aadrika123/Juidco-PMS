@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Formik, Form, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
@@ -89,7 +89,6 @@ const CoverDetailsForm = (props) => {
 
   const handleCoversChange = (event, setFieldValue) => {
     const { value } = event.target;
-    console.log(value, "noOfCovers");
     setFieldValue("noOfCovers", value);
     if (value == "single_cover") {
       setTabData(tabsCover1);
@@ -146,8 +145,14 @@ const CoverDetailsForm = (props) => {
                     touched={touched.noOfCovers}
                     name={"noOfCovers"}
                     defaultValue={"single_cover"}
+                    setFieldValue={setFieldValue}
+                    setTabData={setTabData}
+                    autoSelectActiveTab={autoSelectActiveTab}
+                    tabsCover1={tabsCover1}
+                    tabsCover2={tabsCover2}
+                    tabsCover3={tabsCover3}
+                    tabsCover4={tabsCover4}
                   />
-
                   {/* tabs */}
                   <div className="flex gap-8 px-4 w-full relative z-1">
                     {tabData &&

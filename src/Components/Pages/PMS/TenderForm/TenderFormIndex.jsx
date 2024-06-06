@@ -8,7 +8,7 @@
 //    DESCRIPTION - ReceivedInvtHome
 //////////////////////////////////////////////////////////////////////////////////////
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
@@ -61,25 +61,25 @@ const TenderForm = () => {
 
   return (
     <>
-      <div className="">
+      <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Tendering"}
         />
       </div>
 
-      <div className="container mx-auto rounded mt-6 ">
-        <div className="p-5 border shadow-xl rounded-md flex bg-white w-full justify-between">
-          <div className="w-1/2 flex">
-            <img src={tender} className="w-11" />
+      <div className='container mx-auto rounded mt-6 '>
+        <div className='p-5 border shadow-xl rounded-md flex bg-white w-full justify-between'>
+          <div className='w-1/2 flex'>
+            <img src={tender} className='w-11' />
 
-            <h1 className="font-bold text-xl pt-2 pl-3">Tendring Input Form</h1>
+            <h1 className='font-bold text-xl pt-2 pl-3'>Tendring Input Form</h1>
           </div>
 
-          <div className="flex w-[15rem] bg-gray-200 rounded-full h-4 dark:bg-gray-200 mt-4">
+          <div className='flex w-[15rem] bg-gray-200 rounded-full h-4 dark:bg-gray-200 mt-4'>
             {tabNo === 1 && (
               <div
-                class="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full"
+                className='bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full'
                 style={{ width: "30%" }}
               >
                 {" "}
@@ -88,7 +88,7 @@ const TenderForm = () => {
             )}
             {tabNo === 2 && (
               <div
-                className="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full"
+                className='bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full'
                 style={{ width: "45%" }}
               >
                 Steps: 2/6
@@ -96,7 +96,7 @@ const TenderForm = () => {
             )}
             {tabNo === 3 && (
               <div
-                className="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full"
+                className='bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full'
                 style={{ width: "55%" }}
               >
                 Steps: 3/6
@@ -104,7 +104,7 @@ const TenderForm = () => {
             )}
             {tabNo === 4 && (
               <div
-                className="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full"
+                className='bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full'
                 style={{ width: "75%" }}
               >
                 Steps: 4/6
@@ -112,7 +112,7 @@ const TenderForm = () => {
             )}
             {tabNo === 5 && (
               <div
-                className="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full"
+                className='bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full'
                 style={{ width: "85%" }}
               >
                 Steps: 5/6
@@ -120,7 +120,7 @@ const TenderForm = () => {
             )}
             {tabNo === 6 && (
               <div
-                className="bg-blue-600 text-xs font-medium text-blue-100 pl-2 pt-0.5 leading-none rounded-full"
+                className='bg-blue-600 text-xs font-medium text-blue-100 pl-2 pt-0.5 leading-none rounded-full'
                 style={{ width: "100%" }}
               >
                 Steps: 6/6
@@ -129,7 +129,7 @@ const TenderForm = () => {
           </div>
         </div>
 
-        <div className="flex mt-6">
+        <div className='flex mt-6'>
           {btnDetails?.map((item, index) => (
             <button
               key={index}
@@ -140,14 +140,14 @@ const TenderForm = () => {
               } focus:outline-none flex shadow-xl border border-gray-300 rounded`}
               onClick={() => handleTabClick(item.tab)}
             >
-              <img src={item.img} className="pr-2" />
+              <img src={item.img} className='pr-2' />
               {item.label}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className='mt-4'>
         {tabNo === 1 && (
           <div>
             <BasicDetailsForm />

@@ -125,7 +125,14 @@ const FeeDetailsForm = () => {
             navigate(`/tendering?tabNo=${5}`);
           }}
         >
-          {({ values, handleChange, errors, touched, resetForm }) => (
+          {({
+            values,
+            handleChange,
+            errors,
+            touched,
+            resetForm,
+            setFieldValue,
+          }) => (
             <Form>
               <>
                 <div className=' container mx-auto capitalize'>
@@ -278,6 +285,7 @@ const FeeDetailsForm = () => {
                       errors={errors.emd_exemption}
                       touched={touched.emd_exemption}
                       defaultValue={"yes"}
+                      setFieldValue={setFieldValue}
                     />
                   </div>
 
@@ -293,6 +301,7 @@ const FeeDetailsForm = () => {
                         touched={touched.emd_fee}
                         disabled={values.emd_exemption == "no"}
                         defaultValue={"fixed"}
+                        setFieldValue={setFieldValue}
                       />
                     </div>
 
