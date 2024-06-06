@@ -59,10 +59,6 @@ const TenderForm = () => {
     { label: "Bid Openers", tab: 6, img: bo },
   ];
 
-  useEffect(() => {
-    navigate(`/${location.pathname}?tabNo=${1}`);
-  }, []);
-
   return (
     <>
       <div className=''>
@@ -148,70 +144,7 @@ const TenderForm = () => {
               {item.label}
             </button>
           ))}
-
-          {/* 
-          <button
-            className={`ml-4 py-2 px-2 ${
-              tabNo === "2"
-                ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                : "text-gray-500 bg-white"
-            } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
-            onClick={() => setActiveTab("2")}
-          >
-            <img src={cd} className="pr-2" />
-            Cover Details
-          </button>
-
-          <button
-            className={`ml-4 py-2 px-2 ${
-              tabNo === "3"
-                ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                : "text-gray-500 bg-white"
-            } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
-            onClick={() => setActiveTab("3")}
-          >
-            <img src={wd} className="pr-2" />
-            Work Details
-          </button>
-
-          <button
-            className={`ml-4 py-2 px-2 ${
-              tabNo === "4"
-                ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                : "text-gray-500 bg-white"
-            } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
-            onClick={() => setActiveTab("4")}
-          >
-            <img src={fd} className="pr-2" />
-            Fee Details
-          </button>
-
-          <button
-            className={`ml-4 py-2 px-2 ${
-              tabNo === "5"
-                ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                : "text-gray-500 bg-white"
-            } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
-            onClick={() => setActiveTab("5")}
-          >
-            <img src={cd2} className="pr-2" />
-            Critical Dates
-          </button>
-
-          <button
-            className={`ml-4 py-2 px-2 ${
-              tabNo === "6"
-                ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                : "text-gray-500 bg-white"
-            } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
-            onClick={() => setActiveTab("6")}
-          >
-            <img src={bo} className="pr-2" />
-            Bid Opiners
-          </button> */}
         </div>
-
-        {/* <hr className='w-[76rem] mt-3' /> */}
       </div>
 
       <div className='mt-4'>

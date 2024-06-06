@@ -3,6 +3,10 @@ import bo from "@/Components/assets/bo.svg";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
+import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
+import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
+import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
+import { useNavigate } from "react-router-dom";
 
 const BidOpinerForm = () => {
   const inputFileRefs = useRef([]);
@@ -12,6 +16,8 @@ const BidOpinerForm = () => {
   const [imageDoc, setImageDoc] = useState();
   const [bidOpinersList, setBidOpinersList] = useState();
   const [bidOpinersDoc, setBidOpinersDoc] = useState();
+
+  const navigate = useNavigate();
 
   const handleTabChange = (event) => {
     setSelectedTab(event.target.value);
@@ -325,7 +331,9 @@ const BidOpinerForm = () => {
                     </div>
                   ))}
 
-                  <div className='mb-5'>
+                  <TenderFormButton />
+
+                  {/* <div className="mb-5">
                     <button
                       className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
                       onClick='##'
@@ -346,7 +354,7 @@ const BidOpinerForm = () => {
                     >
                       Reset
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               </>
             </Form>
