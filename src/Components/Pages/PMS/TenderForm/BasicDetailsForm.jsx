@@ -374,7 +374,7 @@ const BasicDetailsForm = () => {
                   </div>
                 </div>
 
-                <TenderFormButton/>
+                <TenderFormButton resetForm={resetForm}/>
                 {/* <div className='mb-10 w-full'>
                   <button
                     className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'

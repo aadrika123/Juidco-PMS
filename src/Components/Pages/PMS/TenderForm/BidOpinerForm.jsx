@@ -331,7 +331,7 @@ const BidOpinerForm = () => {
                   ))}
 
 
-                  <TenderFormButton />
+                  <TenderFormButton resetForm={resetForm} />
 
                   {/* <div className="mb-5">
                     <button
