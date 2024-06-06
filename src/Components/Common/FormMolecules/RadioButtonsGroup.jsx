@@ -18,7 +18,50 @@ export default function RadioButtonsGroup({
   name,
   defaultValue,
   disabled,
+  setFieldValue,
+  setTabData,
+  autoSelectActiveTab,
+  tabsCover1,
+  tabsCover2,
+  tabsCover3,
+  tabsCover4,
 }) {
+  const handleCoversChange = (event) => {
+    const { value } = event.target;
+    setFieldValue("noOfCovers", value);
+    if (value == "single_cover") {
+      setTabData && setTabData(tabsCover1);
+      autoSelectActiveTab && autoSelectActiveTab(tabsCover1);
+    } else if (value == "two_cover") {
+      setTabData(tabsCover2);
+      autoSelectActiveTab(tabsCover2);
+    } else if (value == "three_cover") {
+      setTabData(tabsCover3);
+      autoSelectActiveTab(tabsCover3);
+    } else if (value == "four_cover") {
+      setTabData(tabsCover4);
+      autoSelectActiveTab(tabsCover4);
+    }
+  };
+
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+
+    if (name == "noOfCovers") {
+      handleCoversChange(e);
+      return;
+    }
+
+    let data = {};
+    if (data[name] && data[name] != "") {
+      data[name] = value;
+    } else if (!data.name) {
+      data[name] = value;
+    }
+
+    setFieldValue(name, data[name]);
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <FormControl
@@ -47,7 +90,9 @@ export default function RadioButtonsGroup({
               disabled={disabled || false}
               control={
                 <Radio
-                  onChange={handleChange}
+                  checked={values.includes(opt.value)}
+                  onChange={(e) => onChangeHandler(e)}
+                  // onChange={handleChange}
                   sx={{
                     "& .MuiSvgIcon-root": {
                       fontSize: 20,

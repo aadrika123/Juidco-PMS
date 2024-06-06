@@ -65,9 +65,9 @@ const BasicDetailsForm = () => {
 
   const validationSchema = Yup.object({
     tenderReference_No: Yup.string().required(),
-    tender_type: Yup.array().required(),
-    contract_form: Yup.array().required(),
-    tender_category: Yup.array().required(),
+    tender_type: Yup.array().min(1).required(),
+    contract_form: Yup.array().min(1).required(),
+    tender_category: Yup.array().min(1).required(),
     allow_resubmission: Yup.string().required(),
     allow_withdrawl: Yup.string().required(),
     allow_offline_submission: Yup.string().required(),
@@ -109,7 +109,7 @@ const BasicDetailsForm = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={(values,{ resetForm }) => {
+          onSubmit={(values, { resetForm }) => {
             if (imageDoc == null || imageDoc == undefined || imageDoc == "") {
               setImgErr(true);
               return toast.error("Please upload valid documents");
@@ -119,7 +119,14 @@ const BasicDetailsForm = () => {
             navigate(`/tendering?tabNo=${2}`);
           }}
         >
-          {({ values, handleChange, errors, touched, resetForm, setFieldValue }) => (
+          {({
+            values,
+            handleChange,
+            errors,
+            touched,
+            resetForm,
+            setFieldValue,
+          }) => (
             <Form>
               <>
                 <div className='grid grid-cols-2 container mx-auto capitalize '>
@@ -171,10 +178,7 @@ const BasicDetailsForm = () => {
                     />
                   </div>
 
-
-
                   <div className='p-4 mb-6 mr-2 bg-white shadow-xl border border-gray-200 rounded-md'>
-
                     <CustomCheckboxGroup
                       fields={tenderCategory}
                       title={"Tender Category"}
@@ -195,6 +199,7 @@ const BasicDetailsForm = () => {
                       name={"allow_resubmission"}
                       values={values.allow_resubmission}
                       handleChange={handleChange}
+                      setFieldValue={setFieldValue}
                       errors={errors.allow_resubmission}
                       touched={touched.allow_resubmission}
                     />
@@ -207,6 +212,7 @@ const BasicDetailsForm = () => {
                       handleChange={handleChange}
                       errors={errors.allow_withdrawl}
                       touched={touched.allow_withdrawl}
+                      setFieldValue={setFieldValue}
                     />
 
                     <RadioButtonsGroup
@@ -217,6 +223,7 @@ const BasicDetailsForm = () => {
                       handleChange={handleChange}
                       errors={errors.allow_offline_submission}
                       touched={touched.allow_offline_submission}
+                      setFieldValue={setFieldValue}
                     />
                   </div>
 
@@ -301,7 +308,6 @@ const BasicDetailsForm = () => {
                         Payment Mode <span className='text-red-500'>*</span>
                       </h1>
                       <div className='flex space-x-4 mb-4'>
-                        
                         <label className='flex items-center space-x-2'>
                           <input
                             type='radio'
@@ -313,7 +319,7 @@ const BasicDetailsForm = () => {
                           />
                           <span>Online</span>
                         </label>
-                        
+
                         <label className='flex items-center space-x-2'>
                           <input
                             type='radio'

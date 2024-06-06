@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import bo from "@/Components/assets/bo.svg";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import CustomCheckboxGroup from "@/Components/Common/FormMolecules/CustomCheckboxGroup";
-import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
 import toast from "react-hot-toast";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
@@ -19,13 +17,11 @@ const BidOpinerForm = () => {
   const [bidOpinersList, setBidOpinersList] = useState();
   const [bidOpinersDoc, setBidOpinersDoc] = useState();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleTabChange = (event) => {
     setSelectedTab(event.target.value);
   };
-
-  
 
   const emdFee = [
     { label: "Yes", value: "yes" },
@@ -96,7 +92,6 @@ const BidOpinerForm = () => {
     },
   ];
 
-
   const handleUploadDoc = (index) => {
     inputFileRefs.current[index].click();
   };
@@ -104,8 +99,7 @@ const BidOpinerForm = () => {
   const deadStockRef = useRef();
 
   //image validation with file type and size limit
-  const imageHandler = (e,index,setFieldValue) => {
-
+  const imageHandler = (e, index, setFieldValue) => {
     // console.log(index,"index mg")
 
     const validExtensions = [
@@ -139,8 +133,7 @@ const BidOpinerForm = () => {
     }
 
     if (file) {
-
-      setFieldValue(`doc${index+1}`, file)
+      setFieldValue(`doc${index + 1}`, file);
       setImageDoc(file);
 
       const reader = new FileReader();
@@ -152,71 +145,75 @@ const BidOpinerForm = () => {
     }
   };
 
-  // console.log(preview, "previewwwww")
-
   return (
     <>
-      {/* <div className='bg-white rounded-xl w-full shadow-md p-4 border border-indigo-200'> */}
       {/* Heading  */}
-      <div className="bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl">
-        <img src={bo} className="pl-2" />
-        <h1 className="pt-1 pl-2 text-xl">
+      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
+        <img src={bo} className='pl-2' />
+        <h1 className='pt-1 pl-2 text-xl'>
           Bid Openers Selection : (Minimum 02 or Maximum 03)
         </h1>
       </div>
 
       {/* Form Starting */}
 
-      <div className=" mt-5 container">
+      <div className=' mt-5 container'>
         <Formik
           initialValues={initialValues}
-          // validationSchema={validationSchema}
+          validationSchema={validationSchema}
           onSubmit={(values) => {
             console.log("Form values", values);
             values = { ...values, imageDoc };
           }}
         >
-          {({ values, handleChange, errors, touched, resetForm,setFieldValue }) => (
+          {({
+            values,
+            handleChange,
+            errors,
+            touched,
+            resetForm,
+            setFieldValue,
+          }) => (
             <Form>
               <>
-                <div className=" container mx-auto capitalize grid grid-cols-1">
+                <div className=' container mx-auto capitalize grid grid-cols-1'>
                   {bidOpiner?.map((obj, index) => (
-                    <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex mt-3 w-full">
-                      <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
+                    <div className='mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex mt-3 w-full'>
+                      <div className='p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded'>
                         B0{index + 1}
                       </div>
 
-                      <div className=" w-full p-4 flex gap-3">
-                        <div className="w-full p-3">
+                      <div className=' w-full p-4 flex gap-3'>
+                        <div className='w-full p-3'>
                           <label
-                            for="default-input"
-                            className="block mb-2 text-sm font-medium text-gray-900 "
+                            for='default-input'
+                            className='block mb-2 text-sm font-medium text-gray-900 '
                           >
                             {obj.label_name}
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <input
-                            type="text"
-                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                            placeholder="Name/Designation"
+                            type='text'
+                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
+                            placeholder='Name/Designation'
                             name={obj.name1}
                             onChange={handleChange}
                             value={values[obj.name1]}
                           />
                         </div>
 
-                        <div className="w-full p-3">
+                        <div className='w-full p-3'>
                           <label
-                            for="default-input"
-                            className="block mb-2 text-sm font-medium text-gray-900 "
+                            for='default-input'
+                            className='block mb-2 text-sm font-medium text-gray-900 '
                           >
                             {obj.label_email}
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <input
-                            type="text"
-                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                            placeholder="Email"
+                            type='text'
+                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
+                            placeholder='Email'
                             name={obj.name2}
                             onChange={handleChange}
                             value={values[obj.name2]}
@@ -226,35 +223,35 @@ const BidOpinerForm = () => {
                     </div>
                   ))}
 
-                  <div className="bg-[#4338ca] text-white w-full rounded p-3 shadow-xl mb-5">
-                    <h1 className="pt-1 pl-2 text-xl">
+                  <div className='bg-[#4338ca] text-white w-full rounded p-3 shadow-xl mb-5'>
+                    <h1 className='pt-1 pl-2 text-xl'>
                       Uploading the tender documents
                     </h1>
-                    <p className="text-[11px] pl-3 font-light">
+                    <p className='text-[11px] pl-3 font-light'>
                       {" "}
                       (Only PDF,JPG,XLS & RAR Files Allowed)*
                     </p>
                   </div>
 
                   {bidOpinerDocs?.map((obj, index) => (
-                    <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex  w-full">
-                      <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
+                    <div className='mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex  w-full'>
+                      <div className='p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded'>
                         B0{index + 1}
                       </div>
 
-                      <div className=" w-2/3 p-4 gap-3">
-                        <div className="w-full p-3">
+                      <div className=' w-2/3 p-4 gap-3'>
+                        <div className='w-full p-3'>
                           <label
-                            for="default-input"
-                            className="block mb-2 text-sm font-medium text-gray-900 "
+                            for='default-input'
+                            className='block mb-2 text-sm font-medium text-gray-900 '
                           >
                             {obj.label_name}
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <input
-                            type="text"
-                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                            placeholder="Name/Designation"
+                            type='text'
+                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
+                            placeholder='Name/Designation'
                             name={obj.name1}
                             onChange={handleChange}
                             value={values[obj.name1]}
@@ -262,18 +259,18 @@ const BidOpinerForm = () => {
                         </div>
 
                         <label
-                          for="default-input"
+                          for='default-input'
                           className={`block mb-2 mt-3 text-sm font-medium text-gray-900`}
                         >
                           {obj.label_desc}
-                          <span className="text-red-500">*</span>
+                          <span className='text-red-500'>*</span>
                         </label>
 
-                        <div className=" relative">
+                        <div className=' relative'>
                           <textarea
-                            type="text"
-                            className=" bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5"
-                            placeholder="Discriptiion"
+                            type='text'
+                            className=' bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                            placeholder='Discriptiion'
                             name={obj.name2}
                             value={values[obj.name2]}
                             onChange={handleChange}
@@ -281,75 +278,78 @@ const BidOpinerForm = () => {
                         </div>
                       </div>
 
-                      <div className="w-1/3 mt-4 mr-5 mb-5">
-                        <div className="w-full p-3">
+                      <div className='w-1/3 mt-4 mr-5 mb-5'>
+                        <div className='w-full p-3'>
                           <label
-                            for="default-input"
-                            className="block mb-2 text-sm font-medium text-gray-900 "
+                            for='default-input'
+                            className='block mb-2 text-sm font-medium text-gray-900 '
                           >
                             Document Size (kb)
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <input
-                            type="text"
-                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                            placeholder=""
+                            type='text'
+                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
+                            placeholder=''
                             name={obj.nameDocSize}
                             value={values[obj.nameDocSize]}
                             onChange={handleChange}
                           />
                         </div>
 
-                        <div className="w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 ">
-                          <div className="w-[10rem]">
-                            
-                            {values[`doc${index+1}`] && <img src={URL.createObjectURL(values[`doc${index+1}`])} alt="Selected" style={{ width: '300px', height: 'auto' }} />}
-
+                        <div className='w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 '>
+                          <div className='w-[10rem]'>
+                            {values[`doc${index + 1}`] && (
+                              <img
+                                src={URL.createObjectURL(
+                                  values[`doc${index + 1}`]
+                                )}
+                                alt='Selected'
+                                style={{ width: "300px", height: "auto" }}
+                              />
+                            )}
                           </div>
-                          <div className="">
-                          
+                          <div className=''>
                             <input
-                            type="file"
-                            className="hidden"
-                            ref={(el) => (inputFileRefs.current[index] = el)}
-                            onChange={(e) =>
-                              imageHandler(e, index, setFieldValue)
-                            }
-                          />
-                             <button
-                                type='button'
-                                className={`text-white end-6 bg-blue-500 hover:bg-blue-900 rounded text-[12px] px-5 py-[5px]`}
-                                onClick={() => handleUploadDoc(index)}
-                              >
+                              type='file'
+                              className='hidden'
+                              ref={(el) => (inputFileRefs.current[index] = el)}
+                              onChange={(e) =>
+                                imageHandler(e, index, setFieldValue)
+                              }
+                            />
+                            <button
+                              type='button'
+                              className={`text-white end-6 bg-blue-500 hover:bg-blue-900 rounded text-[12px] px-5 py-[5px]`}
+                              onClick={() => handleUploadDoc(index)}
+                            >
                               Choose File
-                              </button>
-                            
+                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
                   ))}
 
-
-                  <TenderFormButton resetForm={resetForm} />
+                  <TenderFormButton />
 
                   {/* <div className="mb-5">
                     <button
-                      className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left"
-                      onClick="##"
+                      className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
+                      onClick='##'
                     >
                       Back
                     </button>
 
                     <button
-                      className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse"
-                      type="submit"
+                      className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
+                      type='submit'
                     >
                       Save & Next
                     </button>
 
                     <button
-                      className="bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right"
+                      className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
                       onClick={() => resetForm()}
                     >
                       Reset
