@@ -52,7 +52,7 @@ const TopHeader = (props) => {
     closeModal();
     logoutCallback();
   };
-  console.log(userDetailss, "userDetailss==========");
+  
 
   const [imgSrc, setImgSrc] = useState(userDetails?.imageUrl);
 
