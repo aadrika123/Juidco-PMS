@@ -7,6 +7,8 @@ import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGro
 import toast from "react-hot-toast";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
+import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
+import { useNavigate } from "react-router-dom";
 
 const BasicDetailsForm = () => {
   const inputFileRef = useRef();
@@ -14,6 +16,8 @@ const BasicDetailsForm = () => {
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
   const [imgErr, setImgErr] = useState(false);
+
+  const navigate = useNavigate()
 
   const tenderType = [
     { label: "Open", value: "open" },
@@ -112,6 +116,7 @@ const BasicDetailsForm = () => {
             }
             setImgErr(false);
             console.log("Form values", values);
+            navigate(`/tendering?tabNo=${2}`);
           }}
         >
           {({ values, handleChange, errors, touched, resetForm, setFieldValue }) => (
@@ -368,7 +373,9 @@ const BasicDetailsForm = () => {
                     </div>
                   </div>
                 </div>
-                <div className='mb-10 w-full'>
+
+                <TenderFormButton/>
+                {/* <div className='mb-10 w-full'>
                   <button
                     className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
                     // onClick='##'
@@ -390,7 +397,7 @@ const BasicDetailsForm = () => {
                   >
                     Reset
                   </button>
-                </div>
+                </div> */}
               </>
             </Form>
           )}

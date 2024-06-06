@@ -11,6 +11,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
+import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
+import { useNavigate } from "react-router-dom";
 
 const CriticalDateForm = () => {
   const inputFileRef = useRef();
@@ -18,6 +20,10 @@ const CriticalDateForm = () => {
   const [selectedTab, setSelectedTab] = useState("online");
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
+
+
+  const navigate = useNavigate()
+
 
   const handleTabChange = (event) => {
     setSelectedTab(event.target.value);
@@ -131,6 +137,7 @@ const CriticalDateForm = () => {
               validationSchema={validationSchema}
               onSubmit={(values) => {
                 console.log("Form values", values);
+                navigate(`/tendering?tabNo=${6}`);
               }}
             >
               {({ values, handleChange, errors, touched,setFieldValue,resetForm }) => (
@@ -356,7 +363,9 @@ const CriticalDateForm = () => {
                       </div>
                     </div>
 
-                    <div className="mb-5">
+                    <TenderFormButton />
+
+                    {/* <div className="mb-5">
                       <button
                         className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left"
                         onClick="##"
@@ -377,7 +386,7 @@ const CriticalDateForm = () => {
                       >
                         Reset
                       </button>
-                    </div>
+                    </div> */}
                   </>
                 </Form>
               )}
