@@ -272,7 +272,7 @@ const FeeDetailsForm = () => {
                       handleChange={handleChange}
                       errors={errors.emd_exemption}
                       touched={touched.emd_exemption}
-                      defaultValue={"no"}
+                      defaultValue={"yes"}
                     />
                   </div>
 
@@ -286,7 +286,7 @@ const FeeDetailsForm = () => {
                         handleChange={handleChange}
                         errors={errors.emd_fee}
                         touched={touched.emd_fee}
-                        disabled={values.emd_exemption == "yes"}
+                        disabled={values.emd_exemption == "no"}
                         defaultValue={"fixed"}
                       />
                     </div>

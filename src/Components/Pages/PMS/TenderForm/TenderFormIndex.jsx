@@ -26,13 +26,41 @@ import WorkDetailsForm from "./WorkDetailsForm";
 import FeeDetailsForm from "./FeeDetailsForm";
 import CriticalDateForm from "./CriticalDateForm";
 import BidOpinerForm from "./BidOpinerForm";
+import { Navigate, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 const TenderForm = () => {
-  const [activeTab, setActiveTab] = useState(1);
+
+  let [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  
+  
+  const tabNo = Number(searchParams.get("tabNo"))
+  // console.log(tabNo)
+  
+  const location = useLocation();
+  // console.log(location)
 
   const { titleBarVisibility } = useContext(contextVar);
+ 
+ 
+  const handleTabClick = (tabNo) => {
 
-  const btnDetails = ["Basic Details", "Cover Details"];
+    navigate(`/${location.pathname}?tabNo=${tabNo}`);
+  };
+
+  
+  const btnDetails = [
+    {label:"Basic Details",tab:1, img: bd}, 
+    {label:"Cover Details",tab:2, img: cd}, 
+    {label:"Work Details",tab:3, img: wd}, 
+    {label:"Fee Details",tab:4,img: fd},  
+    {label:"Critical Details",tab:5, img: cd2}, 
+    {label:"Bid Openers",tab:6, img: bo}, 
+  
+  ];
+
+
+  
 
   return (
     <>
@@ -52,7 +80,7 @@ const TenderForm = () => {
           </div>
 
           <div className="flex w-[15rem] bg-gray-200 rounded-full h-4 dark:bg-gray-200 mt-4">
-            {activeTab === "basic_details" && (
+            {tabNo === 1 && (
               <div
                 class="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full"
                 style={{ width: "30%" }}
@@ -61,7 +89,7 @@ const TenderForm = () => {
                 Steps: 1/6
               </div>
             )}
-            {activeTab === "cover_details" && (
+            {tabNo === 2 && (
               <div
                 className="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full"
                 style={{ width: "45%" }}
@@ -69,7 +97,7 @@ const TenderForm = () => {
                 Steps: 2/6
               </div>
             )}
-            {activeTab === "work_details" && (
+            {tabNo === 3 && (
               <div
                 className="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full"
                 style={{ width: "55%" }}
@@ -77,7 +105,7 @@ const TenderForm = () => {
                 Steps: 3/6
               </div>
             )}
-            {activeTab === "fee_details" && (
+            {tabNo === 4 && (
               <div
                 className="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full"
                 style={{ width: "75%" }}
@@ -85,7 +113,7 @@ const TenderForm = () => {
                 Steps: 4/6
               </div>
             )}
-            {activeTab === "critical_dates" && (
+            {tabNo === 5 && (
               <div
                 className="bg-blue-600 text-xs font-medium text-blue-100  pl-2 pt-0.5 leading-none rounded-full"
                 style={{ width: "85%" }}
@@ -93,7 +121,7 @@ const TenderForm = () => {
                 Steps: 5/6
               </div>
             )}
-            {activeTab === "bid_openers" && (
+            {tabNo === 6 && (
               <div
                 className="bg-blue-600 text-xs font-medium text-blue-100 pl-2 pt-0.5 leading-none rounded-full"
                 style={{ width: "100%" }}
@@ -105,28 +133,30 @@ const TenderForm = () => {
         </div>
 
         <div className="flex mt-6">
+
           {btnDetails?.map((item, index) => 
              <button
             key={index}
-              className={`py-2 px-2 ${
-                activeTab === index+1
+              className={`py-2 px-2 mr-5 ${
+                tabNo === item.tab
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
                   : "text-gray-500 bg-white"
-              } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
-              onClick={() => setActiveTab(index+1)}
+              } focus:outline-none flex shadow-xl border border-gray-300 rounded`}
+              onClick={()=> handleTabClick(item.tab)}
             >
-              <img src={bd} className="pr-2" />
-              {item}
+              <img src={item.img} className="pr-2" />
+              {item.label}
             </button>
           )}
 
-          {/* <button
+          {/* 
+          <button
             className={`ml-4 py-2 px-2 ${
-              activeTab === "cover_details"
+              tabNo === "2"
                 ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
                 : "text-gray-500 bg-white"
             } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
-            onClick={() => setActiveTab("cover_details")}
+            onClick={() => setActiveTab("2")}
           >
             <img src={cd} className="pr-2" />
             Cover Details
@@ -134,11 +164,11 @@ const TenderForm = () => {
 
           <button
             className={`ml-4 py-2 px-2 ${
-              activeTab === "work_details"
+              tabNo === "3"
                 ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
                 : "text-gray-500 bg-white"
             } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
-            onClick={() => setActiveTab("work_details")}
+            onClick={() => setActiveTab("3")}
           >
             <img src={wd} className="pr-2" />
             Work Details
@@ -146,11 +176,11 @@ const TenderForm = () => {
 
           <button
             className={`ml-4 py-2 px-2 ${
-              activeTab === "fee_details"
+              tabNo === "4"
                 ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
                 : "text-gray-500 bg-white"
             } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
-            onClick={() => setActiveTab("fee_details")}
+            onClick={() => setActiveTab("4")}
           >
             <img src={fd} className="pr-2" />
             Fee Details
@@ -158,11 +188,11 @@ const TenderForm = () => {
 
           <button
             className={`ml-4 py-2 px-2 ${
-              activeTab === "critical_dates"
+              tabNo === "5"
                 ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
                 : "text-gray-500 bg-white"
             } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
-            onClick={() => setActiveTab("critical_dates")}
+            onClick={() => setActiveTab("5")}
           >
             <img src={cd2} className="pr-2" />
             Critical Dates
@@ -170,11 +200,11 @@ const TenderForm = () => {
 
           <button
             className={`ml-4 py-2 px-2 ${
-              activeTab === "bid_openers"
+              tabNo === "6"
                 ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
                 : "text-gray-500 bg-white"
             } focus:outline-none flex shadow-xl border border-gray-200 rounded`}
-            onClick={() => setActiveTab("bid_openers")}
+            onClick={() => setActiveTab("6")}
           >
             <img src={bo} className="pr-2" />
             Bid Opiners
@@ -185,37 +215,37 @@ const TenderForm = () => {
       </div>
 
       <div className="mt-4">
-        {activeTab === "basic_details" && (
+        {tabNo === 1 && (
           <div>
             <BasicDetailsForm />
           </div>
         )}
 
-        {activeTab === "cover_details" && (
+        {tabNo === 2 && (
           <div>
             <CoverDetailsForm />
           </div>
         )}
 
-        {activeTab === "work_details" && (
+        {tabNo === 3 && (
           <div>
             <WorkDetailsForm />
           </div>
         )}
 
-        {activeTab === "fee_details" && (
+        {tabNo === 4 && (
           <div>
             <FeeDetailsForm />
           </div>
         )}
 
-        {activeTab === "critical_dates" && (
+        {tabNo === 5 && (
           <div>
             <CriticalDateForm />
           </div>
         )}
 
-        {activeTab === "bid_openers" && (
+        {tabNo === 6 && (
           <div>
             <BidOpinerForm />
           </div>

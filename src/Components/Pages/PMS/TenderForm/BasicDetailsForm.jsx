@@ -61,9 +61,9 @@ const BasicDetailsForm = () => {
 
   const validationSchema = Yup.object({
     tenderReference_No: Yup.string().required(),
-    tender_type: Yup.object().required(),
-    contract_form: Yup.object().required(),
-    tender_category: Yup.object().required(),
+    tender_type: Yup.array().required(),
+    contract_form: Yup.array().required(),
+    tender_category: Yup.array().required(),
     allow_resubmission: Yup.string().required(),
     allow_withdrawl: Yup.string().required(),
     allow_offline_submission: Yup.string().required(),
@@ -83,9 +83,9 @@ const BasicDetailsForm = () => {
   // Initial values for additional form fields can go here
   const initialValues = {
     tenderReference_No: "",
-    tender_type: "",
-    contract_form: "",
-    tender_category: "",
+    tender_type: [],
+    contract_form: [],
+    tender_category: [],
     allow_resubmission: "",
     allow_withdrawl: "",
     allow_offline_submission: "",
@@ -114,7 +114,7 @@ const BasicDetailsForm = () => {
             console.log("Form values", values);
           }}
         >
-          {({ values, handleChange, errors, touched, resetForm }) => (
+          {({ values, handleChange, errors, touched, resetForm, setFieldValue }) => (
             <Form>
               <>
                 <div className='grid grid-cols-2 container mx-auto capitalize '>
@@ -146,6 +146,7 @@ const BasicDetailsForm = () => {
                         handleChange={handleChange}
                         errors={errors.tender_type}
                         touched={touched.tender_type}
+                        setFieldValue={setFieldValue}
                         important={"*"}
                       />
                     </div>
@@ -160,6 +161,7 @@ const BasicDetailsForm = () => {
                       handleChange={handleChange}
                       errors={errors.contract_form}
                       touched={touched.contract_form}
+                      setFieldValue={setFieldValue}
                       important={"*"}
                     />
                   </div>
@@ -176,6 +178,7 @@ const BasicDetailsForm = () => {
                       handleChange={handleChange}
                       errors={errors.tender_category}
                       touched={touched.tender_category}
+                      setFieldValue={setFieldValue}
                       important={"*"}
                     />
                   </div>
