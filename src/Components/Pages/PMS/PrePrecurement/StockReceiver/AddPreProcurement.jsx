@@ -313,60 +313,7 @@ function AddPreProcurement(props) {
       });
   };
 
-  // const fetchProcessor = () => {
-  //   AxiosInterceptors.get(`${api_fetchProcessor}`, ApiHeader())
-  //     .then(function (response) {
-  //       console.log("item Categor", response.data.data);
-  //       setProcessor(response.data.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log("errorrr.... ", error);
-  //     });
-  // };
-
-  // const fetchRam = () => {
-  //   AxiosInterceptors.get(`${api_fetchRam}`, ApiHeader())
-  //     .then(function (response) {
-  //       console.log("item Categor", response.data.data);
-  //       setRamList(response.data.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log("errorrr.... ", error);
-  //     });
-  // };
-
-  // const fetchOperatingSystem = () => {
-  //   AxiosInterceptors.get(`${api_fetchOperatingSystem}`, ApiHeader())
-  //     .then(function (response) {
-  //       console.log("item Categor", response.data.data);
-  //       setOperatingSystem(response.data.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log("errorrr.... ", error);
-  //     });
-  // };
-
-  // const fetchRom = () => {
-  //   AxiosInterceptors.get(`${api_fetchRom}`, ApiHeader())
-  //     .then(function (response) {
-  //       console.log("item Categor", response.data.data);
-  //       setRomList(response.data.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log("errorrr.... ", error);
-  //     });
-  // };
-
-  // const fetchGraphics = () => {
-  //   AxiosInterceptors.get(`${api_fetchGraphics}`, ApiHeader())
-  //     .then(function (response) {
-  //       console.log("item Categor", response.data.data);
-  //       setGraphicsList(response.data.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log("errorrr.... ", error);
-  //     });
-  // };
+ 
 
   // submit form
   const submitForm = () => {
