@@ -21,14 +21,8 @@ import { RotatingLines } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
-function BoqListIng(props) {
+function BoqListing(props) {
   const navigate = useNavigate();
-  const { module } = useParams();
-
-  // console.log(props.page, "page========>");
-  // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
-
-  const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
@@ -199,6 +193,9 @@ function BoqListIng(props) {
                 requestBody={requestBody} // sending body
                 changeData={changeData} // send action for new payload
                 showDiv={true}
+                categoryId={props.categoryId}
+                subcategoryId={props.subcategoryId}
+                
               />
             </>
           </div>
@@ -208,4 +205,4 @@ function BoqListIng(props) {
   );
 }
 
-export default BoqListIng;
+export default BoqListing;
