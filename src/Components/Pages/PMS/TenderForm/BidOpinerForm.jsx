@@ -10,31 +10,24 @@ import { useNavigate } from "react-router-dom";
 
 const BidOpinerForm = () => {
   const inputFileRefs = useRef([]);
-
-  const [selectedTab, setSelectedTab] = useState("online");
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
-  const [bidOpinersList, setBidOpinersList] = useState();
-  const [bidOpinersDoc, setBidOpinersDoc] = useState();
-
-  const navigate = useNavigate();
-
-  const handleTabChange = (event) => {
-    setSelectedTab(event.target.value);
-  };
-
-  const emdFee = [
-    { label: "Yes", value: "yes" },
-    { label: "No", value: "no" },
-  ];
-
-  const emdExemption = [
-    { label: "Yes", value: "yes" },
-    { label: "No", value: "no" },
-  ];
 
   const validationSchema = Yup.object({
-    publishingDate: Yup.string().required(),
+    name_designation1: Yup.string().required(),
+    name_designation2: Yup.string().required(),
+    name_designation3: Yup.string(),
+    email1: Yup.string().email().required(),
+    email2: Yup.string().email().required(),
+    email3: Yup.string().email(),
+    namedoc1: Yup.string().required(),
+    namedoc2: Yup.string(),
+    disc1: Yup.string().required(),
+    disc2: Yup.string(),
+    docSize1: Yup.string().required(),
+    docSize2: Yup.string(),
+    doc1: Yup.string().required(),
+    doc2: Yup.string(),
   });
 
   const initialValues = {
@@ -96,8 +89,6 @@ const BidOpinerForm = () => {
     inputFileRefs.current[index].click();
   };
 
-  const deadStockRef = useRef();
-
   //image validation with file type and size limit
   const imageHandler = (e, index, setFieldValue) => {
     // console.log(index,"index mg")
@@ -107,6 +98,8 @@ const BidOpinerForm = () => {
       "image/jpg",
       "image/png",
       "application/pdf",
+      "text/csv",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ];
 
     const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
@@ -240,7 +233,7 @@ const BidOpinerForm = () => {
                       </div>
 
                       <div className=' w-2/3 p-4 gap-3'>
-                        <div className='w-full p-3'>
+                        <div className='w-full '>
                           <label
                             for='default-input'
                             className='block mb-2 text-sm font-medium text-gray-900 '
@@ -279,7 +272,7 @@ const BidOpinerForm = () => {
                       </div>
 
                       <div className='w-1/3 mt-4 mr-5 mb-5'>
-                        <div className='w-full p-3'>
+                        <div className='w-full mb-5'>
                           <label
                             for='default-input'
                             className='block mb-2 text-sm font-medium text-gray-900 '
@@ -298,14 +291,14 @@ const BidOpinerForm = () => {
                         </div>
 
                         <div className='w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 '>
-                          <div className='w-[10rem]'>
+                          <div className='w-[8rem] mb-2'>
                             {values[`doc${index + 1}`] && (
                               <img
                                 src={URL.createObjectURL(
                                   values[`doc${index + 1}`]
                                 )}
                                 alt='Selected'
-                                style={{ width: "300px", height: "auto" }}
+                                style={{ width: "100px", height: "auto" }}
                               />
                             )}
                           </div>

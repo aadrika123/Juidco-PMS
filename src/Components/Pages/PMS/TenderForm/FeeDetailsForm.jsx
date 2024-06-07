@@ -1,69 +1,13 @@
 import React, { useRef, useState } from "react";
 import fd from "@/Components/assets/fd.svg";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import CustomCheckboxGroup from "@/Components/Common/FormMolecules/CustomCheckboxGroup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
-import toast from "react-hot-toast";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
 import { useNavigate } from "react-router-dom";
 
 const FeeDetailsForm = () => {
-  const inputFileRef = useRef();
-
-  const [selectedTab, setSelectedTab] = useState("online");
-  const [preview, setPreview] = useState();
-  const [imageDoc, setImageDoc] = useState();
-
-  const navigate = useNavigate()
-
-  const handleTabChange = (event) => {
-    setSelectedTab(event.target.value);
-  };
-
-  const handleUploadDoc = () => {
-    inputFileRef.current.click();
-  };
-
-  //image validation with file type and size limit
-  const imageHandler = (e) => {
-    const validExtensions = [
-      "image/jpeg",
-      "image/jpg",
-      "image/png",
-      "application/pdf",
-    ];
-
-    const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
-
-    const file = e.target.files[0];
-    if (!file) {
-      return toast.error("No File Selected");
-    }
-
-    // Check the file type
-    if (!validExtensions.includes(file.type)) {
-      toast.error(
-        "Invalid file type. Please select a JPG, JPEG, PNG or PDF file."
-      );
-      e.target.value = ""; // Clear the input
-      return;
-    }
-
-    // Check the file size
-    if (file.size > maxSizeInBytes) {
-      toast.error("File size exceeds 2MB. Please select a smaller file.");
-      e.target.value = ""; // Clear the input
-      return;
-    }
-
-    if (file) {
-      console.log(file.size, "=========file size");
-      // props?.setImageDoc(file);
-      console.log(file, "==========file");
-      setPreview(URL.createObjectURL(file));
-    }
-  };
+  const navigate = useNavigate();
 
   const emdFee = [
     { label: "Fixed", value: "fixed" },
@@ -83,11 +27,30 @@ const FeeDetailsForm = () => {
     surcharges: Yup.string().required(),
     otherCharges: Yup.string().required(),
     emdAmount: Yup.string().required(),
-    emdPercentage: Yup.string().required(),
     emd_fee: Yup.string().required(),
-    emdFeePayableAt: Yup.string().required(),
-    emdFeePayableTo: Yup.string().required(),
     emd_exemption: Yup.string().required(),
+    emdAmount: Yup.string().when(["emd_exemption", "emd_fee"], {
+      is: (emd_exemption, emd_fee) =>
+        emd_exemption === "no" && emd_fee === "fixed",
+      then: (schema) => schema.required(),
+      otherwise: (schema) => schema.optional(),
+    }),
+    emdFeePayableAt: Yup.string().when("emd_exemption", {
+      is: "no",
+      then: (schema) => schema.required(),
+      otherwise: (schema) => schema.optional(),
+    }),
+    emdFeePayableTo: Yup.string().when("emd_exemption", {
+      is: "no",
+      then: (schema) => schema.required(),
+      otherwise: (schema) => schema.optional(),
+    }),
+    emdPercentage: Yup.string().when(["emd_exemption", "emd_fee"], {
+      is: (emd_exemption, emd_fee) =>
+        emd_exemption === "no" && emd_fee === "percentage",
+      then: (schema) => schema.required(),
+      otherwise: (schema) => schema.optional(),
+    }),
   });
 
   const initialValues = {
@@ -99,10 +62,10 @@ const FeeDetailsForm = () => {
     otherCharges: "",
     emdAmount: "",
     emdPercentage: "",
-    emd_fee: "",
+    emd_exemption: "yes",
+    emd_fee: "fixed",
     emdFeePayableAt: "",
     emdFeePayableTo: "",
-    emd_exemption: "",
   };
 
   return (
@@ -284,7 +247,7 @@ const FeeDetailsForm = () => {
                       handleChange={handleChange}
                       errors={errors.emd_exemption}
                       touched={touched.emd_exemption}
-                      defaultValue={"yes"}
+                      defaultValue={"Yes"}
                       setFieldValue={setFieldValue}
                     />
                   </div>
@@ -299,13 +262,13 @@ const FeeDetailsForm = () => {
                         handleChange={handleChange}
                         errors={errors.emd_fee}
                         touched={touched.emd_fee}
-                        disabled={values.emd_exemption == "no"}
+                        disabled={values.emd_exemption == "yes"}
                         defaultValue={"fixed"}
                         setFieldValue={setFieldValue}
                       />
                     </div>
 
-                    {values.emd_fee == "Fixed" ? (
+                    {values.emd_fee == "fixed" ? (
                       <div className=''>
                         <label
                           for='default-input'
@@ -315,7 +278,7 @@ const FeeDetailsForm = () => {
                             "text-red-500"
                           }`}
                         >
-                          If EMD Fee is Fixed
+                          EMD Fee
                           <span className='text-red-500'>*</span>
                         </label>
                         <input
@@ -338,7 +301,7 @@ const FeeDetailsForm = () => {
                             "text-red-500"
                           }`}
                         >
-                          If EMD Fee is Percentage
+                          EMD Fee(in Percentage)
                           <span className='text-red-500'>*</span>
                         </label>
                         <input
