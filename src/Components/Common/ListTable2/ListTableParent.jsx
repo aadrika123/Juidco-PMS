@@ -71,21 +71,23 @@ const ListTableParent = (props) => {
       typeof props.loader == "function" && props.loader(true);
     }
 
-    const returnCategoryFilter = (fieldName, caragotyFilter) => {
-      if (caragotyFilter?.length === 0) {
+    const returnCategoryFilter = (fieldName, categoryFilter) => {
+      if (categoryFilter?.length === 0) {
         return;
       }
-      const filtered = caragotyFilter.map((item) => [`${fieldName}=${item}`]);
+      const filtered = categoryFilter.map((item) => [`${fieldName}=${item}`]);
       return filtered.join("&");
     };
-    // console.log(returnCategoryFilter());
+
+    console.log(props.categoryId);
+    console.log(props.subcategoryId);
 
     AxiosInterceptors.get(
       `${props?.api}?
       take=${perPageData}&page=${currentPage}
       &search=${searchFilter}
-      &${returnCategoryFilter("category", filter?.category || [])}
-      &${returnCategoryFilter("scategory", filter?.subcategory || [])}
+      &${returnCategoryFilter("category", filter?.category || [props?.categoryId] || [])}
+      &${returnCategoryFilter("scategory", filter?.subcategory || [props?.subcategoryId] || [])}
       &${returnCategoryFilter("brand", filter?.brand || [])}
       `
         .split(" ")
