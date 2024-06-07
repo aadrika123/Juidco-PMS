@@ -33,6 +33,7 @@ import InventoryDashboardDa2 from "./Components/Pages/PMS/PrePrecurement/Departm
 import SrEditPreProcurement from "./Components/Pages/PMS/PrePrecurement/StockReceiver/SrEditPreProcurement";
 import TenderForm from "./Components/Pages/PMS/TenderForm/TenderFormIndex";
 import ExportTableData from "./Components/Common/ExportTable/ExportTableData";
+import BoqList from "./Components/Pages/PMS/BOQ/BoqList";
 
 const queryClient = new QueryClient();
 
@@ -148,6 +149,15 @@ function App() {
       path: "/print-preview",
       element: <ExportTableData />,
     },
+
+
+    /////////////////////////{*** BOQ ***}//////////////////////////////////////
+    
+    {
+      path: "/boq-listing",
+      element: <BoqList />,
+    },
+
   ];
 
   return (
