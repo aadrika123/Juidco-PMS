@@ -36,28 +36,13 @@ const tabsCover4 = [
 ];
 
 const CoverDetailsForm = (props) => {
+  const [tabData, setTabData] = useState(tabsCover1);
+  const [activeTab, setActiveTab] = useState(tabsCover1[0]?.value);
+  const [imageDoc, setImageDoc] = useState([]);
+  const [preview, setPreview] = useState();
 
-  // let [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-  
-  // const tabNo = Number(searchParams.get("tabNo"));
-  // console.log(tabNo);
-  
-  // const location = useLocation();
-  // console.log(location)
-  // const handleBack = (tabNo) => {
-    //   let newTab = tabNo - 1;
-    //   console.log(newTab);
-    //   navigate(`/${location.pathname}?tabNo=${newTab}`);
-    // };
-    
-    const [tabData, setTabData] = useState(tabsCover1);
-    const [activeTab, setActiveTab] = useState(tabsCover1[0]?.value);
-    const [imageDoc, setImageDoc] = useState([]);
-    const [preview, setPreview] = useState();
-    
-    const navigate = useNavigate();
-    
   const covers = [
     { label: "Single Cover", value: "single_cover" },
     { label: "Two Cover", value: "two_cover" },
@@ -118,25 +103,32 @@ const CoverDetailsForm = (props) => {
   return (
     <>
       {/* Heading */}
-      <div className="bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl">
-        <img src={cdIcon} className="pl-2" alt="folder icon" />
-        <h1 className="pt-1 pl-2 text-xl">Cover Details</h1>
+      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
+        <img src={cdIcon} className='pl-2' alt='folder icon' />
+        <h1 className='pt-1 pl-2 text-xl'>Cover Details</h1>
       </div>
 
       {/* Form Starting */}
-      <div className="mt-5">
+      <div className='mt-5'>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, handleChange, errors, touched, setFieldValue }) => (
+          {({
+            values,
+            handleChange,
+            errors,
+            touched,
+            setFieldValue,
+            resetForm,
+          }) => (
             <Form>
               <>
-                <div className="bg-white rounded-md w-full shadow-xl p-4 mt-5">
+                <div className='bg-white rounded-md w-full shadow-xl p-4 mt-5'>
                   <RadioButtonsGroup
                     fields={covers}
-                    title="No of Covers"
+                    title='No of Covers'
                     values={values.noOfCovers}
                     handleChange={(event) =>
                       handleCoversChange(event, setFieldValue)
@@ -154,10 +146,10 @@ const CoverDetailsForm = (props) => {
                     tabsCover4={tabsCover4}
                   />
                   {/* tabs */}
-                  <div className="flex gap-8 px-4 w-full relative z-1">
+                  <div className='flex gap-8 px-4 w-full relative z-1'>
                     {tabData &&
                       tabData?.map((data, index) => (
-                        <div className="flex mt-6 " key={index}>
+                        <div className='flex mt-6 ' key={index}>
                           <button
                             className={`py-2 px-2 ${
                               activeTab === data.value
@@ -168,21 +160,21 @@ const CoverDetailsForm = (props) => {
                                 ? "border-red-500 text-red-400"
                                 : ""
                             }`}
-                            type="button"
+                            type='button'
                             onClick={() => setActiveTab(data.value)}
                           >
                             {data.name}
                           </button>
                         </div>
                       ))}
-                    <hr className="bg-indigo-500 h-[2px] w-2/3 px-4 absolute bottom-[1px] z-2" />
+                    <hr className='bg-indigo-500 h-[2px] w-2/3 px-4 absolute bottom-[1px] z-2' />
                   </div>
 
                   {/* tab view */}
-                  <div className="mt-4">
+                  <div className='mt-4'>
                     {activeTab != "" && (
                       <div>
-                        <FieldArray name="tabs">
+                        <FieldArray name='tabs'>
                           {({ remove, push }) => (
                             <>
                               <UploadDoc
@@ -200,7 +192,7 @@ const CoverDetailsForm = (props) => {
                                 setFieldValue={setFieldValue}
                               />
                               {errors.tabs && touched.tabs ? (
-                                <p className="text-red-500 text-xs">
+                                <p className='text-red-500 text-xs'>
                                   {errors.tabs}
                                 </p>
                               ) : null}

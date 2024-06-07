@@ -1,69 +1,13 @@
-import React, { useRef, useState } from "react";
 import wd from "@/Components/assets/wd.svg";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import CustomCheckboxGroup from "@/Components/Common/FormMolecules/CustomCheckboxGroup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
-import toast from "react-hot-toast";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
 import { useNavigate } from "react-router-dom";
 
 const WorkDetailsForm = () => {
-  const inputFileRef = useRef();
-
-  const [selectedTab, setSelectedTab] = useState("online");
-  const [preview, setPreview] = useState();
-  const [imageDoc, setImageDoc] = useState();
-
-  const navigate = useNavigate()
-
-  const handleTabChange = (event) => {
-    setSelectedTab(event.target.value);
-  };
-
-  const handleUploadDoc = () => {
-    inputFileRef.current.click();
-  };
-
-  //image validation with file type and size limit
-  const imageHandler = (e) => {
-    const validExtensions = [
-      "image/jpeg",
-      "image/jpg",
-      "image/png",
-      "application/pdf",
-    ];
-
-    const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
-
-    const file = e.target.files[0];
-    if (!file) {
-      return toast.error("No File Selected");
-    }
-
-    // Check the file type
-    if (!validExtensions.includes(file.type)) {
-      toast.error(
-        "Invalid file type. Please select a JPG, JPEG, PNG or PDF file."
-      );
-      e.target.value = ""; // Clear the input
-      return;
-    }
-
-    // Check the file size
-    if (file.size > maxSizeInBytes) {
-      toast.error("File size exceeds 2MB. Please select a smaller file.");
-      e.target.value = ""; // Clear the input
-      return;
-    }
-
-    if (file) {
-      console.log(file.size, "=========file size");
-      // props?.setImageDoc(file);
-      console.log(file, "==========file");
-      setPreview(URL.createObjectURL(file));
-    }
-  };
+  const navigate = useNavigate();
 
   const productCategory = [
     { label: "Civil Works", value: "civil_works" },
@@ -125,13 +69,21 @@ const WorkDetailsForm = () => {
     location: Yup.string().required(),
     pinCode: Yup.string().min(6, "must be 6 digits").required(),
     pre_bid: Yup.string().required(),
-    preBidMeeting: Yup.string().required(),
-    preBidMeetingAdd: Yup.string().required(),
     bidOpeningPlace: Yup.string().required(),
     tenderer_class: Yup.array().min(1).required(),
     invstOffName: Yup.string().required(),
     invstOffAdd: Yup.string().required(),
     invstOffEmail_Ph: Yup.string().required(),
+    preBidMeeting: Yup.string().when("pre_bid", {
+      is: "yes",
+      then: (schema) => schema.required(),
+      otherwise: (schema) => schema.optional(),
+    }),
+    preBidMeetingAdd: Yup.string().when("pre_bid", {
+      is: "yes",
+      then: (schema) => schema.required(),
+      otherwise: (schema) => schema.optional(),
+    }),
   });
 
   // Initial values for additional form fields can go here
@@ -147,7 +99,7 @@ const WorkDetailsForm = () => {
     completionPeriod: "",
     location: "",
     pinCode: "",
-    pre_bid: "",
+    pre_bid: "yes",
     preBidMeeting: "",
     preBidMeetingAdd: "",
     bidOpeningPlace: "",
@@ -450,6 +402,7 @@ const WorkDetailsForm = () => {
                       errors={errors.pre_bid}
                       touched={touched.pre_bid}
                       setFieldValue={setFieldValue}
+                      defaultValue={"yes"}
                     />
 
                     <label
@@ -471,6 +424,7 @@ const WorkDetailsForm = () => {
                         placeholder='Meeting Place'
                         name='preBidMeeting'
                         value={values.preBidMeeting}
+                        disabled={values.pre_bid == "no"}
                         onChange={(e) => {
                           if (values.preBidMeeting.length < 300) {
                             handleChange(e);
@@ -483,7 +437,7 @@ const WorkDetailsForm = () => {
                           300 === values.preBidMeeting.length && "text-red-500"
                         }`}
                       >
-                        {values.preBidMeeting?.length} / {300}
+                        {values.preBidMeeting?.length} / {50}
                       </span>
                     </div>
 
@@ -506,6 +460,7 @@ const WorkDetailsForm = () => {
                         placeholder='Meeting Address'
                         name='preBidMeetingAdd'
                         value={values.preBidMeetingAdd}
+                        disabled={values.pre_bid == "no"}
                         onChange={(e) => {
                           if (values.preBidMeeting.length < 300) {
                             handleChange(e);
@@ -650,7 +605,7 @@ const WorkDetailsForm = () => {
                   </div>
                 </div>
 
-                <TenderFormButton resetForm={resetForm}/>
+                <TenderFormButton resetForm={resetForm} />
 
                 {/* <div className='mb-5'>
                   <button

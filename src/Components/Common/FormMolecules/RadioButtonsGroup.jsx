@@ -52,10 +52,10 @@ export default function RadioButtonsGroup({
       return;
     }
 
-    let data = {};
+    let data = { ...values };
     if (data[name] && data[name] != "") {
       data[name] = value;
-    } else if (!data.name) {
+    } else if (!data[name]) {
       data[name] = value;
     }
 
