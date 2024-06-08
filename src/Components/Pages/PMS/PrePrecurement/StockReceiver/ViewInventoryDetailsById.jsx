@@ -104,7 +104,7 @@ const ViewInventoryDetailsById = (props) => {
           toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/sr-inventory-proposal");
-          }, 3000);
+          }, 2000);
           console.log(response?.data?.message, "Forwadede to DA--->>");
         } else {
           setisLoading(false);
