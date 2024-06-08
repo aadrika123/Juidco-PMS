@@ -143,6 +143,7 @@ export default function ProjectApiList() {
 
     //BOQ
     api_fetchBoqList: `${baseUrl}/api/pms/acc/pre-procurement/list-for-boq`,
+    api_postToAccountant: `${baseUrl}/api/pms/da/pre-procurement/to-acc-boq`,
 
   };
 
