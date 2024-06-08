@@ -77,7 +77,6 @@ const BoqSearch = () => {
 
   const fetchBoqList = () => {
     AxiosInterceptors.get(
-      // `${api_fetchBoqList}`,
       `${api_fetchBoqList}?category=${categoryId}&scategory=${subcategoryId}`,
       ApiHeader()
     )
