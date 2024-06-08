@@ -31,10 +31,7 @@ export default function CreateNewBoq() {
 
   const notesheetRef = useRef();
   const navigate = useNavigate();
-  const {state} = useLocation();
-
-  // let proNos = state;
-  // console.log(state)
+  const { state } = useLocation();
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -91,6 +88,7 @@ export default function CreateNewBoq() {
             (data) => (estAmtWithoutGst += data.total_rate)
           );
           setPayload((prev) => ({
+            ...prev,
             procurement: [...response?.data?.data],
             estimated_cost: estAmtWithoutGst,
           }));
@@ -100,7 +98,7 @@ export default function CreateNewBoq() {
         }
       })
       .catch(function (error) {
-        toast.error("Error while getting details...");
+        toast.error(error?.response?.data?.error);
         setisLoading(false);
       });
   };
@@ -119,6 +117,24 @@ export default function CreateNewBoq() {
     }));
   };
 
+  //estimated amount with gst cal
+  const estimatedAmountCalc = (gst, editRate) => {
+    let totalAmount = 0;
+    let totalEstAmt = (editRate || applicationData)?.map(
+      (data) => (totalAmount += data?.total_rate)
+    );
+    console.log(totalAmount, "totalAmount==========");
+    //calculating gst value
+    const gstValue =
+      Number(gst) > 0 ? (1 + Number(gst) / 100) * totalAmount : totalAmount;
+    let roundedGstValue = Math.floor(gstValue * 100) / 100;
+    setPayload((prev) => ({
+      ...prev,
+      gst: gst,
+      estimated_cost: roundedGstValue,
+    }));
+  };
+
   //adding rate and calculating amount
   const changeRateAmountHandler = (e, procNo) => {
     const editRate = applicationData?.map((data) => ({
@@ -133,32 +149,17 @@ export default function CreateNewBoq() {
     setPayload((prev) => ({
       ...prev,
       procurement: [...editRate],
-      img: imageDoc,
     }));
-
-    estimatedAmountCalc(payload?.gst);
-  };
-
-  //estimated amount with gst cal
-  const estimatedAmountCalc = (gst) => {
-    let totalAmount = 0;
-    let totalEstAmt = applicationData?.map(
-      (data) => (totalAmount += data?.total_rate)
-    );
-    //calculating gst value
-    const gstValue =
-      Number(gst) > 0 ? (1 + Number(gst) / 100) * totalAmount : totalAmount;
-    let roundedGstValue = Math.floor(gstValue * 100) / 100;
-    setPayload((prev) => ({
-      ...prev,
-      gst: gst,
-      estimated_cost: roundedGstValue,
-    }));
+    estimatedAmountCalc(payload?.gst, editRate);
   };
 
   useEffect(() => {
-    fetchBoqDataList();
-  }, []);
+    if (imageDoc) {
+      setPayload((prev) => ({ ...prev, img: imageDoc }));
+    } else {
+      fetchBoqDataList();
+    }
+  }, [imageDoc]);
 
   //confirmation for cancel
   if (cancelModal) {
@@ -180,7 +181,10 @@ export default function CreateNewBoq() {
             <thead className='bg-indigo-50 '>
               {COLUMNS?.length > 0 &&
                 COLUMNS?.map((heading, index) => (
-                  <th key={index} className='border border-gray-300 px-4 py-3 text-bold text-sm'>
+                  <th
+                    key={index}
+                    className='border border-gray-300 px-4 py-3 text-bold text-sm'
+                  >
                     {heading?.header}
                   </th>
                 ))}
@@ -233,7 +237,7 @@ export default function CreateNewBoq() {
           <div className='flex px-3 py-2 gap-6 bg-white text-center font-bold items-center'>
             <div className='text-center w-[7%] mr-3 '>#</div>
             <div className='flex justify-between pl-9 w-2/3'>
-              <p className="text-bold text-sm pt-2">Add Gst</p>
+              <p className='text-bold text-sm pt-2'>Add Gst</p>
               <input
                 placeholder='Add Gst'
                 className='p-1 text-md rounded-md outline-indigo-200 text-center border border-indigo-200'

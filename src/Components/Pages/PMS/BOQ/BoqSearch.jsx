@@ -10,10 +10,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BoqListing from "./BoqListIng";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
-import { CiMenuBurger } from "react-icons/ci";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
@@ -23,30 +21,23 @@ import BoqListTable from "@/Components/Common/ExportTable/BoqListTable";
 import { MdArrowRightAlt } from "react-icons/md";
 import ShimmerEffectInline from "@/Components/Common/Loaders/ShimmerEffectInline";
 import { FaChartPie } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 const BoqSearch = () => {
   const { inputStyle, labelStyle } = ThemeStyle();
-
   const [activeTab, setActiveTab] = useState("inbox");
   const [category, setCategory] = useState();
   const [subcategory, setSubCategory] = useState();
   const [categoryId, setCategoryId] = useState();
   const [subcategoryId, setSubCategoryId] = useState();
-  const [refresh, setRefresh] = useState(true);
   const [dataList, setdataList] = useState();
-  const [showBoqList, setShowBoqList] = useState(false);
   const [proNos, setProNos] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const {
-    api_fetchProcurementReleasedList,
-    api_fetchBoqList,
-    api_itemCategory,
-    api_itemSubCategory,
-    api_postToAccountant,
-  } = ProjectApiList();
+  const { api_fetchBoqList, api_itemCategory, api_itemSubCategory } =
+    ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -71,6 +62,7 @@ const BoqSearch = () => {
         setSubCategory(response.data.data);
       })
       .catch(function (error) {
+        toast.error("Something went wrong");
         console.log("errorrr.... ", error);
       });
   };
@@ -85,8 +77,8 @@ const BoqSearch = () => {
 
   const fetchBoqList = () => {
     AxiosInterceptors.get(
-      `${api_fetchBoqList}`,
-      // `${api_fetchBoqList}?category=${categoryId}&scategory=${subcategoryId}`,
+      // `${api_fetchBoqList}`,
+      `${api_fetchBoqList}?category=${categoryId}&scategory=${subcategoryId}`,
       ApiHeader()
     )
       .then((res) => {
@@ -100,10 +92,12 @@ const BoqSearch = () => {
           // setcurrentPage(res?.data?.pagination?.currentPage);
           // setlastPage(res?.data?.pagination?.currentTake);
         } else {
+          toast.error("Something went wrong");
           console.log("false error while getting list => ", res);
         }
       })
       .catch(function (error) {
+        toast.error(error?.response?.data?.error);
         console.log("errorrr.... ", error);
       })
       .finally(() => {
@@ -114,33 +108,38 @@ const BoqSearch = () => {
   // console.log(proNos);
 
   const prepareForBoq = () => {
+    console.log(proNos, "proNos==============>>");
+    if (!proNos.length) {
+      toast.error("Please select min 1 Procurement to proceed to BOQ");
+      return;
+    }
     navigate(`/create-boq`, { state: { proNos } });
   };
 
   useEffect(() => {
     fetchCategory();
-  }, [refresh]);
+  }, []);
 
   // console.log(dataList);
   return (
     <>
-      <div className="">
+      <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"BOQ List"}
         />
       </div>
 
-      <div className="container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl">
-        <h1 className="text-[25px] text-right pb-2 pr-10 pt-5 font-bold">
+      <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
+        <h1 className='text-[25px] text-right pb-2 pr-10 pt-5 font-bold'>
           {" "}
           BOQ Listing{" "}
         </h1>
-        <div className="flex p-8 justify-center items-center">
-          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
+        <div className='flex p-8 justify-center items-center'>
+          <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
             <label className={`${labelStyle} inline-block mb-2`}>
               Items Category
-              <span className="text-xl text-red-500 pl-1">*</span>
+              <span className='text-xl text-red-500 pl-1'>*</span>
             </label>
             <select
               // {...formik.getFieldProps("itemsubcategory")}
@@ -160,14 +159,12 @@ const BoqSearch = () => {
                   </option>
                 ))}
             </select>
-
-            
           </div>
 
-          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
+          <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
             <label className={`${labelStyle} inline-block mb-2`}>
               Items Sub Category
-              <span className="text-xl text-red-500 pl-1">*</span>
+              <span className='text-xl text-red-500 pl-1'>*</span>
             </label>
             <select
               // {...formik.getFieldProps("itemsubcategory")}
@@ -185,13 +182,11 @@ const BoqSearch = () => {
                   </option>
                 ))}
             </select>
-
-            
           </div>
 
-          <div className="pt-4">
+          <div className='pt-4'>
             <button
-              className="bg-[#4338CA] hover:bg-[#5f54df] px-7 py-2 text-white font-semibold rounded shadow-lg"
+              className='bg-[#4338CA] hover:bg-[#5f54df] px-7 py-2 text-white font-semibold rounded shadow-lg'
               onClick={boqListingFunc}
             >
               Search
@@ -199,8 +194,8 @@ const BoqSearch = () => {
           </div>
         </div>
 
-        <div className=" flex justify-between">
-          <div className="flex ml-5">
+        <div className=' flex justify-between'>
+          <div className='flex ml-5'>
             <button
               className={`py-2 px-4 ${
                 activeTab === "inbox"
@@ -209,7 +204,7 @@ const BoqSearch = () => {
               } focus:outline-none flex border border-[#4338ca] rounded`}
               onClick={() => setActiveTab("inbox")}
             >
-              <FaChartPie className="m-1 text-[1rem]" />
+              <FaChartPie className='m-1 text-[1rem]' />
               Inbox
             </button>
             <button
@@ -220,24 +215,24 @@ const BoqSearch = () => {
               } focus:outline-none flex border border-[#4338ca] rounded`}
               onClick={() => setActiveTab("outbox")}
             >
-              <FaChartPie className="m-1 text-[1rem]" />
+              <FaChartPie className='m-1 text-[1rem]' />
               Outbox
             </button>
           </div>
 
-          <div className=" mr-5">
+          <div className=' mr-5'>
             <button
-              className="bg-[#4338ca] hover:bg-[#3d3592] text-white p-2 rounded flex"
+              className='bg-[#4338ca] hover:bg-[#3d3592] text-white p-2 rounded flex'
               onClick={prepareForBoq}
             >
-              Prepare BOQ <MdArrowRightAlt className="text-2xl ml-2" />
+              Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
             </button>
           </div>
         </div>
 
-        <hr className="w-[76rem] mt-2 mb-10" />
+        <hr className='w-[76rem] mt-2 mb-10' />
 
-        <div className="mt-4">
+        <div className='mt-4'>
           {loading ? (
             <ShimmerEffectInline />
           ) : (
@@ -251,8 +246,8 @@ const BoqSearch = () => {
                       proNos={proNos}
                     />
                   ) : (
-                    <div className="bg-red-100 border flex justify-center items-center border-red-400 text-red-700 rounded text-center m-3">
-                      <h1 className="p-3">No Data Available</h1>
+                    <div className='bg-red-100 border flex justify-center items-center border-red-400 text-red-700 rounded text-center m-3'>
+                      <h1 className='p-3'>No Data Available</h1>
                     </div>
                   )}
                 </div>

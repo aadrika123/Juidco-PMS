@@ -101,7 +101,6 @@ const ViewInventoryDetailsById = (props) => {
         console.log(response?.data?.st, "upper Status");
         if (response?.data?.status == true) {
           setisLoading(false);
-          console.log(response?.data?.message, "-------------->>");
           toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/sr-inventory-proposal");
