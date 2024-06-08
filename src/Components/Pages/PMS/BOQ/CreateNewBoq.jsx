@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Dimple Kumari
+//    Version - 1.0
+//    Date - 06/08/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - CreateNewBoq
+//    DESCRIPTION - BOQ creating
+//////////////////////////////////////////////////////////////////////////////////////
+
 import { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
@@ -12,7 +22,7 @@ import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 import PreProcurementCancelScreen from "../PrePrecurement/StockReceiver/PreProcurementCancelScreen";
 
 export default function CreateNewBoq() {
-  const [imageDoc, setImageDoc] = useState(false);
+  const [imageDoc, setImageDoc] = useState();
   const [isLoading, setisLoading] = useState(false);
   const [applicationData, setApplicationData] = useState([]);
   const [payload, setPayload] = useState({});
@@ -85,7 +95,6 @@ export default function CreateNewBoq() {
         }
       })
       .catch(function (error) {
-        console.log("==2 details by id error...", error);
         toast.error("Error while getting details...");
         setisLoading(false);
       });
@@ -98,6 +107,11 @@ export default function CreateNewBoq() {
       remark: data?.procurement_no === procNo ? e.target.value : data?.remark,
     }));
     setApplicationData(addedRemarks);
+    setPayload((prev) => ({
+      ...prev,
+      procurement: [...addedRemarks],
+      img: imageDoc,
+    }));
   };
 
   //adding rate and calculating amount
@@ -110,8 +124,13 @@ export default function CreateNewBoq() {
           ? Number(e.target.value) * Number(data?.quantity)
           : data?.total_rate,
     }));
-    console.log(editRate, "editRate================>>>");
     setApplicationData(editRate);
+    setPayload((prev) => ({
+      ...prev,
+      procurement: [...editRate],
+      img: imageDoc,
+    }));
+
     estimatedAmountCalc(payload?.gst);
   };
 
@@ -125,7 +144,6 @@ export default function CreateNewBoq() {
     const gstValue =
       Number(gst) > 0 ? (1 + Number(gst) / 100) * totalAmount : totalAmount;
     let roundedGstValue = Math.floor(gstValue * 100) / 100;
-    console.log(roundedGstValue, "roundedGstValueamount====>");
     setPayload((prev) => ({
       ...prev,
       gst: gst,
