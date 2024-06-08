@@ -21,6 +21,8 @@ import ThemeStyle from "@/Components/Common/ThemeStyle";
 import ApiHeader from "@/Components/api/ApiHeader";
 import BoqListTable from "@/Components/Common/ExportTable/BoqListTable";
 import { MdArrowRightAlt } from "react-icons/md";
+import ShimmerEffectInline from "@/Components/Common/Loaders/ShimmerEffectInline";
+import { FaChartPie } from "react-icons/fa6";
 
 const BoqSearch = () => {
   const { inputStyle, labelStyle } = ThemeStyle();
@@ -34,6 +36,9 @@ const BoqSearch = () => {
   const [dataList, setdataList] = useState();
   const [showBoqList, setShowBoqList] = useState(false);
   const [proNos, setProNos] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const {
     api_fetchProcurementReleasedList,
@@ -71,7 +76,11 @@ const BoqSearch = () => {
   };
 
   const boqListingFunc = () => {
-    fetchBoqList();
+    setLoading(true);
+
+    setTimeout(() => {
+      fetchBoqList();
+    }, 500);
   };
 
   const fetchBoqList = () => {
@@ -96,32 +105,19 @@ const BoqSearch = () => {
       })
       .catch(function (error) {
         console.log("errorrr.... ", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
+  // console.log(proNos);
 
-  console.log(proNos);
-
-  // const forwardToAccountant = () => {
-
-  //   AxiosInterceptors.post(`${api_postToAccountant}`, ApiHeader()).then((res) => {
-  //     if (res?.data?.status == true) {
-  //       console.log("Forwaded to Accountant Successfully", res?.data);
-  //       console.log(response?.data?.message, "-------------->>");
-  //       toast.success(response?.data?.message, "success");
-  //     } else {
-  //       setisLoading(false);
-  //       toast(response?.data?.message, "error");
-  //     }
-  //   })
-  //   .catch(function (error) {
-  //     console.log("errorrr.... ", error);
-  //     toast.error("Something went wrong");
-  //   });
-  // };
+  const prepareForBoq = () => {
+    navigate(`/create-boq`, { state: { proNos } });
+  };
 
   useEffect(() => {
-    // fetchBoqList();
     fetchCategory();
   }, [refresh]);
 
@@ -165,12 +161,7 @@ const BoqSearch = () => {
                 ))}
             </select>
 
-            {/* <p className='text-red-500 text-xs '>
-                      {formik.touched.itemsubcategory &&
-                      formik.errors.itemsubcategory
-                        ? formik.errors.itemsubcategory
-                        : null}
-                    </p> */}
+            
           </div>
 
           <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
@@ -195,12 +186,7 @@ const BoqSearch = () => {
                 ))}
             </select>
 
-            {/* <p className='text-red-500 text-xs '>
-                      {formik.touched.itemsubcategory &&
-                      formik.errors.itemsubcategory
-                        ? formik.errors.itemsubcategory
-                        : null}
-                    </p> */}
+            
           </div>
 
           <div className="pt-4">
@@ -223,7 +209,7 @@ const BoqSearch = () => {
               } focus:outline-none flex border border-[#4338ca] rounded`}
               onClick={() => setActiveTab("inbox")}
             >
-              {/* <FaChartPie className='m-1 text-[1rem]' /> */}
+              <FaChartPie className="m-1 text-[1rem]" />
               Inbox
             </button>
             <button
@@ -234,7 +220,7 @@ const BoqSearch = () => {
               } focus:outline-none flex border border-[#4338ca] rounded`}
               onClick={() => setActiveTab("outbox")}
             >
-              {/* <FaChartPie className='m-1 text-[1rem]' /> */}
+              <FaChartPie className="m-1 text-[1rem]" />
               Outbox
             </button>
           </div>
@@ -242,7 +228,7 @@ const BoqSearch = () => {
           <div className=" mr-5">
             <button
               className="bg-[#4338ca] hover:bg-[#3d3592] text-white p-2 rounded flex"
-              // onClick={forwardToAccountant}
+              onClick={prepareForBoq}
             >
               Prepare BOQ <MdArrowRightAlt className="text-2xl ml-2" />
             </button>
@@ -252,21 +238,32 @@ const BoqSearch = () => {
         <hr className="w-[76rem] mt-2 mb-10" />
 
         <div className="mt-4">
-          {activeTab === "inbox" && (
-            <div>
-              {dataList?.length > 0 ? (
-                <BoqListTable dataList={dataList} setProNos={setProNos} proNos={proNos}/>
-              ) : (
-                <div className="bg-red-100 border flex justify-center items-center border-red-400 text-red-700 rounded text-center m-3">
-                  <h1 className="p-3">No Data Available</h1>
+          {loading ? (
+            <ShimmerEffectInline />
+          ) : (
+            <>
+              {activeTab === "inbox" && (
+                <div>
+                  {dataList?.length > 0 ? (
+                    <BoqListTable
+                      dataList={dataList}
+                      setProNos={setProNos}
+                      proNos={proNos}
+                    />
+                  ) : (
+                    <div className="bg-red-100 border flex justify-center items-center border-red-400 text-red-700 rounded text-center m-3">
+                      <h1 className="p-3">No Data Available</h1>
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
-          )}
-          {activeTab === "outbox" && (
-            <div>
-              <BoqListTable dataList={dataList} />
-            </div>
+
+              {activeTab === "outbox" && (
+                <div>
+                  <BoqListTable dataList={dataList} />
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
