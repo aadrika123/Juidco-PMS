@@ -79,7 +79,7 @@ const ListTableParent = (props) => {
       return filtered.join("&");
     };
 
-    console.log(props.categoryId);
+    // console.log(props.categoryId);
     console.log(props.subcategoryId);
 
     AxiosInterceptors.get(
