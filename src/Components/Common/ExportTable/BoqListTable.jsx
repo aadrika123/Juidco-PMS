@@ -1,6 +1,10 @@
+import BoqDetailModal from "@/Components/Pages/PMS/BOQ/BoqDetailModal";
 import React, { useState } from "react";
 
 const BoqListTable = (props) => {
+
+    const [detailModal,setDetailModal] = useState(false)
+    const [singleProNo,setSingleProNo] = useState()
   
 // get the Procurement Id
 const handleChange = (id) =>{
@@ -14,6 +18,19 @@ const handleChange = (id) =>{
 }
   
 //   console.log(props.proNos);
+
+const openDetailModal = (data) =>{
+    setSingleProNo(data)
+    setDetailModal(true)    
+}
+
+if (detailModal) {
+    return (
+      <>
+        <BoqDetailModal setDetailModal={setDetailModal} singleProNo={singleProNo}/>
+      </>
+    );
+  }
 
   return (
     <>
@@ -67,7 +84,7 @@ const handleChange = (id) =>{
                       <input
                         id="checkbox-table-search-1"
                         type="checkbox"
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
                         onChange={()=>{handleChange(items.procurement_no)}}
                       />
                     </div>
@@ -81,7 +98,10 @@ const handleChange = (id) =>{
                   <td className="px-6 py-4">{items.description}</td>
 
                   <td className="px-6 py-4">
-                    <button className="bg-[#4338ca] text-white pl-3 pr-3 pt-1 pb-1 rounded hover:bg-[#5d51de]">
+                    <button 
+                    className="bg-[#4338ca] text-white pl-3 pr-3 pt-1 pb-1 rounded hover:bg-[#5d51de]"
+                    onClick={()=>openDetailModal(items.procurement_no)}
+                    >
                       View
                     </button>
                   </td>

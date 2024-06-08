@@ -44,12 +44,6 @@ function AddPreProcurement(props) {
     api_itemCategory,
     api_itemSubCategory,
     api_itemBrand,
-
-    api_fetchProcessor,
-    api_fetchRam,
-    api_fetchOperatingSystem,
-    api_fetchRom,
-    api_fetchGraphics,
   } = ProjectApiList();
 
   const [isLoading, setisLoading] = useState(false);
