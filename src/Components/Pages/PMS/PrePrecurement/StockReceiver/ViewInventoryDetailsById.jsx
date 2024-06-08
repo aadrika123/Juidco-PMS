@@ -40,9 +40,6 @@ const ViewInventoryDetailsById = (props) => {
     api_postForwardToDA,
   } = ProjectApiList();
 
-  // Accessing context for notifications
-  const { notify } = useContext(contextVar);
-
   const { titleBarVisibility } = useContext(contextVar);
 
   let buttonStyle =
@@ -235,13 +232,15 @@ const ViewInventoryDetailsById = (props) => {
               </p>
             </div>
             <div className='flex justify-end w-full mb-5'>
-              <ImageDisplay
-                preview={preview}
-                imageDoc={imageDoc}
-                alt={"notesheet document"}
-                showPreview={"hidden"}
-                width={"[100px]"}
-              />
+              <div className='w-[100px]'>
+                <ImageDisplay
+                  preview={preview}
+                  imageDoc={imageDoc}
+                  alt={"notesheet document"}
+                  showPreview={"hidden"}
+                  // width={"[80px]"}
+                />
+              </div>
             </div>
           </div>
           <div className='space-x-5 flex justify-end mt-[2rem]'>
