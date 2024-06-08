@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Dimple Kumari
+//    Version - 1.0
+//    Date - 06/08/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - CreateNewBoq
+//    DESCRIPTION - BOQ creating
+//////////////////////////////////////////////////////////////////////////////////////
+
 import { useEffect, useRef, useState, useContext } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
@@ -12,7 +22,7 @@ import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 import PreProcurementCancelScreen from "../PrePrecurement/StockReceiver/PreProcurementCancelScreen";
 
 export default function CreateNewBoq() {
-  const [imageDoc, setImageDoc] = useState(false);
+  const [imageDoc, setImageDoc] = useState();
   const [isLoading, setisLoading] = useState(false);
   const [applicationData, setApplicationData] = useState([]);
   const [payload, setPayload] = useState({});
@@ -21,10 +31,7 @@ export default function CreateNewBoq() {
 
   const notesheetRef = useRef();
   const navigate = useNavigate();
-  const {state} = useLocation();
-
-  // let proNos = state;
-  // console.log(state)
+  const { state } = useLocation();
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -81,6 +88,7 @@ export default function CreateNewBoq() {
             (data) => (estAmtWithoutGst += data.total_rate)
           );
           setPayload((prev) => ({
+            ...prev,
             procurement: [...response?.data?.data],
             estimated_cost: estAmtWithoutGst,
           }));
@@ -90,8 +98,7 @@ export default function CreateNewBoq() {
         }
       })
       .catch(function (error) {
-        console.log("==2 details by id error...", error);
-        toast.error("Error while getting details...");
+        toast.error(error?.response?.data?.error);
         setisLoading(false);
       });
   };
@@ -103,6 +110,29 @@ export default function CreateNewBoq() {
       remark: data?.procurement_no === procNo ? e.target.value : data?.remark,
     }));
     setApplicationData(addedRemarks);
+    setPayload((prev) => ({
+      ...prev,
+      procurement: [...addedRemarks],
+      img: imageDoc,
+    }));
+  };
+
+  //estimated amount with gst cal
+  const estimatedAmountCalc = (gst, editRate) => {
+    let totalAmount = 0;
+    let totalEstAmt = (editRate || applicationData)?.map(
+      (data) => (totalAmount += data?.total_rate)
+    );
+    console.log(totalAmount, "totalAmount==========");
+    //calculating gst value
+    const gstValue =
+      Number(gst) > 0 ? (1 + Number(gst) / 100) * totalAmount : totalAmount;
+    let roundedGstValue = Math.floor(gstValue * 100) / 100;
+    setPayload((prev) => ({
+      ...prev,
+      gst: gst,
+      estimated_cost: roundedGstValue,
+    }));
   };
 
   //adding rate and calculating amount
@@ -115,32 +145,21 @@ export default function CreateNewBoq() {
           ? Number(e.target.value) * Number(data?.quantity)
           : data?.total_rate,
     }));
-    console.log(editRate, "editRate================>>>");
     setApplicationData(editRate);
-    estimatedAmountCalc(payload?.gst);
-  };
-
-  //estimated amount with gst cal
-  const estimatedAmountCalc = (gst) => {
-    let totalAmount = 0;
-    let totalEstAmt = applicationData?.map(
-      (data) => (totalAmount += data?.total_rate)
-    );
-    //calculating gst value
-    const gstValue =
-      Number(gst) > 0 ? (1 + Number(gst) / 100) * totalAmount : totalAmount;
-    let roundedGstValue = Math.floor(gstValue * 100) / 100;
-    console.log(roundedGstValue, "roundedGstValueamount====>");
     setPayload((prev) => ({
       ...prev,
-      gst: gst,
-      estimated_cost: roundedGstValue,
+      procurement: [...editRate],
     }));
+    estimatedAmountCalc(payload?.gst, editRate);
   };
 
   useEffect(() => {
-    fetchBoqDataList();
-  }, []);
+    if (imageDoc) {
+      setPayload((prev) => ({ ...prev, img: imageDoc }));
+    } else {
+      fetchBoqDataList();
+    }
+  }, [imageDoc]);
 
   //confirmation for cancel
   if (cancelModal) {
@@ -162,7 +181,10 @@ export default function CreateNewBoq() {
             <thead className='bg-indigo-50 '>
               {COLUMNS?.length > 0 &&
                 COLUMNS?.map((heading, index) => (
-                  <th key={index} className='border border-gray-300 px-4 py-3 text-bold text-sm'>
+                  <th
+                    key={index}
+                    className='border border-gray-300 px-4 py-3 text-bold text-sm'
+                  >
                     {heading?.header}
                   </th>
                 ))}
@@ -215,7 +237,7 @@ export default function CreateNewBoq() {
           <div className='flex px-3 py-2 gap-6 bg-white text-center font-bold items-center'>
             <div className='text-center w-[7%] mr-3 '>#</div>
             <div className='flex justify-between pl-9 w-2/3'>
-              <p className="text-bold text-sm pt-2">Add Gst</p>
+              <p className='text-bold text-sm pt-2'>Add Gst</p>
               <input
                 placeholder='Add Gst'
                 className='p-1 text-md rounded-md outline-indigo-200 text-center border border-indigo-200'

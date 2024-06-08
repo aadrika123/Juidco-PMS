@@ -34,7 +34,7 @@ function ReleaseTenderModal(props) {
           <div class=' flex-1'>
             <div class=''>
               <h3 class='text-xl  text-center  text-black font-openSans'>
-                Sure to "Release the Tender"
+                Sure to "Forward to Accountant"
               </h3>
             </div>
           </div>

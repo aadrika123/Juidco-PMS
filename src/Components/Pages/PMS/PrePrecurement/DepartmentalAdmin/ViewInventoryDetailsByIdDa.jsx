@@ -49,7 +49,7 @@ const ViewInventoryDetailsById = (props) => {
     api_fetchProcurementDADetailByIdinbox,
     api_fetchProcurementDADetailByIdOutbox,
     api_postBackToSR,
-    api_postReleaseTender,
+    api_postForwardtoAcc,
     api_postRejectTender,
   } = ProjectApiList();
 
@@ -177,7 +177,7 @@ const ViewInventoryDetailsById = (props) => {
     // seterroState(false);
     setisLoading(true);
 
-    AxiosInterceptors.post(`${api_postReleaseTender}`, formData, ApiHeader2())
+    AxiosInterceptors.post(`${api_postForwardtoAcc}`, formData, ApiHeader2())
       .then(function (response) {
         console.log("Forwarded to DA", response?.data);
         console.log(response?.data?.st, "upper Status");
@@ -397,7 +397,7 @@ const ViewInventoryDetailsById = (props) => {
                   className={buttonStyle2}
                   onClick={postReleaseTenderModal}
                 >
-                  Release For Tender
+                  Forward to Accountant
                 </button>
 
                 <div className='bg-[#359F6E] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-700'>
