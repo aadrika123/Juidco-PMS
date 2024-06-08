@@ -2,9 +2,6 @@ import React, { useState } from "react";
 
 const BoqListTable = (props) => {
   
-
-
-  
 // get the Procurement Id
 const handleChange = (id) =>{
 
@@ -21,7 +18,7 @@ const handleChange = (id) =>{
   return (
     <>
    
-      <div className="m-4 overflow-x-auto shadow-md rounded-lg h-[30rem]">
+      <div className="m-4 overflow-x-auto shadow-md rounded-lg max-h-96">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-sm text-white bg-[#4338ca] sticky -top-0">
             <tr>

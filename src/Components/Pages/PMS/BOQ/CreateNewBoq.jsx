@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -21,6 +21,11 @@ export default function CreateNewBoq() {
 
   const notesheetRef = useRef();
   const navigate = useNavigate();
+  const {state} = useLocation();
+
+  // let proNos = state;
+  // console.log(state)
+
   const { titleBarVisibility } = useContext(contextVar);
 
   const { api_fetchAllBoqDetails } = ProjectApiList();
@@ -65,7 +70,7 @@ export default function CreateNewBoq() {
     setisLoading(true);
     AxiosInterceptors.post(
       `${api_fetchAllBoqDetails}`,
-      { procurement_no: ["02240607776", "02240607282"] },
+      { procurement_no: state?.proNos },
       ApiHeader()
     )
       .then(function (response) {
@@ -148,16 +153,16 @@ export default function CreateNewBoq() {
         titleBarVisibility={titleBarVisibility}
         titleText={"Enter BOQ for Procurement"}
       />
-      <div className='container mx-auto bg-white rounded border border-blue-500 mt-10 shadow-xl p-4'>
+      <div className='container mx-auto bg-white rounded border border-blue-500 mt-10 shadow-xl p-6'>
         <div className='p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md'>
-          <h2 className='text-xl '>Enter BOQ for Procurement</h2>
+          <h2 className='text-2xl '>Enter BOQ for Procurement</h2>
         </div>
         <div className='shadow-md'>
           <table className='min-w-full bg-white border-collapse border border-gray-200'>
-            <thead className='bg-indigo-50'>
+            <thead className='bg-indigo-50 '>
               {COLUMNS?.length > 0 &&
                 COLUMNS?.map((heading, index) => (
-                  <th key={index} className='border border-gray-200 px-4 py-2'>
+                  <th key={index} className='border border-gray-300 px-4 py-3 text-bold text-sm'>
                     {heading?.header}
                   </th>
                 ))}
@@ -182,7 +187,7 @@ export default function CreateNewBoq() {
                     </td>
                     <td className='border border-gray-200 text-md w-[30px] px-1'>
                       <input
-                        className='outline-indigo-400 text-md px-2 h-[30px] border border-gray-100 rounded-md'
+                        className='outline-indigo-400 text-md px-2 h-[30px] border border-gray-300 rounded-md'
                         defaultValue={row?.rate}
                         onChange={(e) =>
                           changeRateAmountHandler(e, row?.procurement_no)
@@ -210,7 +215,7 @@ export default function CreateNewBoq() {
           <div className='flex px-3 py-2 gap-6 bg-white text-center font-bold items-center'>
             <div className='text-center w-[7%] mr-3 '>#</div>
             <div className='flex justify-between pl-9 w-2/3'>
-              <p>Add Gst</p>
+              <p className="text-bold text-sm pt-2">Add Gst</p>
               <input
                 placeholder='Add Gst'
                 className='p-1 text-md rounded-md outline-indigo-200 text-center border border-indigo-200'
@@ -270,7 +275,7 @@ export default function CreateNewBoq() {
             Cancel
           </button>
           <button
-            className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
+            className={`bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
             onClick={() => navigate("/boqSummary", { state: payload })}
           >
             Next

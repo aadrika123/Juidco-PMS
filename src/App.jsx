@@ -159,7 +159,7 @@ function App() {
       element: <BoqSearch />,
     },
     {
-      path: "/create-boq/:procId",
+      path: "/create-boq",
       element: <CreateNewBoq />,
     },
     {
