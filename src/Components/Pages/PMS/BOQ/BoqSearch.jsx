@@ -107,7 +107,6 @@ const BoqSearch = () => {
   // console.log(proNos);
 
   const prepareForBoq = () => {
-    console.log(proNos, "proNos==============>>");
     if (!proNos.length) {
       toast.error("Please select min 1 Procurement to proceed to BOQ");
       return;

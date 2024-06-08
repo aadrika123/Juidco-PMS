@@ -64,7 +64,9 @@ export default function PreviewBoqSummary() {
         if (response?.data?.status) {
           setIsLoading(false);
           toast.success("Successfully forwarded to DA");
-          navigate("/boq-search");
+          setTimeout(() => {
+            navigate("/boq-search");
+          }, 2000);
         } else {
           setIsLoading(false);
           toast.error("Something went wrong");

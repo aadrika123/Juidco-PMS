@@ -130,7 +130,7 @@ export default function CreateNewBoq() {
     let roundedGstValue = Math.floor(gstValue * 100) / 100;
     setPayload((prev) => ({
       ...prev,
-      gst: gst,
+      gst: Number(gst),
       estimated_cost: roundedGstValue,
     }));
   };
