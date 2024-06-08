@@ -34,6 +34,8 @@ import SrEditPreProcurement from "./Components/Pages/PMS/PrePrecurement/StockRec
 import TenderForm from "./Components/Pages/PMS/TenderForm/TenderFormIndex";
 import ExportTableData from "./Components/Common/ExportTable/ExportTableData";
 import BoqSearch from "./Components/Pages/PMS/BOQ/BoqSearch";
+import CreateNewBoq from "./Components/Pages/PMS/BOQ/CreateNewBoq";
+import PreviewBoqSummary from "./Components/Pages/PMS/BOQ/PreviewBoqSummary";
 
 const queryClient = new QueryClient();
 
@@ -150,14 +152,20 @@ function App() {
       element: <ExportTableData />,
     },
 
-
     /////////////////////////{*** BOQ ***}//////////////////////////////////////
-    
+
     {
       path: "/boq-search",
       element: <BoqSearch />,
     },
-
+    {
+      path: "/create-boq/:procId",
+      element: <CreateNewBoq />,
+    },
+    {
+      path: "/boqSummary",
+      element: <PreviewBoqSummary />,
+    },
   ];
 
   return (

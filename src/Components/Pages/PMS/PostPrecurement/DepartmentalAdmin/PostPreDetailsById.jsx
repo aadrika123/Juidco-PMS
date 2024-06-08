@@ -52,9 +52,6 @@ const PostPreDetailsById = (props) => {
     api_fetchPostProcurementDetailById,
     api_postPostProcurementDaAdditionalDetails,
     api_fetchPostProcurementDAListOutbox,
-    api_postBackToSR,
-    api_postReleaseTender,
-    api_postRejectTender,
   } = ProjectApiList();
 
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();

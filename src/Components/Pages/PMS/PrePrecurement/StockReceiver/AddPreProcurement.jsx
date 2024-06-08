@@ -256,33 +256,22 @@ function AddPreProcurement(props) {
   };
 
   useEffect(() => {
-    // notify();
     const ulbId = localStorage.getItem("ulbId");
     setulbId(ulbId);
-
-    // fetchProcessor();
     fetchCategory();
-    // fetchBrand();
-    // fetchRam();
-    // fetchOperatingSystem();
-    // fetchRom();
-    // fetchGraphics();
 
     calculateTotalRate();
   }, [ulbData, formik.values.quantity, formik.values.rate]);
 
   // ══════════════════════════════║🔰 function to get ward list  🔰║═══════════════════════════════════
 
-  // console.log(category, "category listing");
-
   const fetchCategory = () => {
     AxiosInterceptors.get(`${api_itemCategory}`, ApiHeader())
       .then(function (response) {
-        console.log("item Categor", response.data.data);
         setCategory(response.data.data);
       })
       .catch(function (error) {
-        console.log("errorrr.... ", error);
+        toast.error("Something went wrong");
       });
   };
 
@@ -294,26 +283,22 @@ function AddPreProcurement(props) {
       ApiHeader()
     )
       .then(function (response) {
-        console.log("item Categor", response.data.data);
         setSubCategory(response.data.data);
       })
       .catch(function (error) {
-        console.log("errorrr.... ", error);
+        toast.error("Something went wrong");
       });
   };
 
   const fetchBrand = (value) => {
     AxiosInterceptors.get(`${api_itemBrand}/${value}`, ApiHeader())
       .then(function (response) {
-        console.log("item Categor", response.data.data);
         setBrand(response.data.data);
       })
       .catch(function (error) {
-        console.log("errorrr.... ", error);
+        toast.error("Something went wrong");
       });
   };
-
- 
 
   // submit form
   const submitForm = () => {
@@ -352,19 +337,13 @@ function AddPreProcurement(props) {
       total_rate: Number(formData?.totalRate),
     };
 
-    console.log(requestBody, "=======================>>>");
-
     AxiosInterceptors.post(`${url}`, requestBody, ApiHeader())
       .then(function (response) {
-        console.log("response after data submitted", response?.data);
-        console.log("response after data submitted", response?.data?.order_no);
         setresponseScreen(response?.data);
         if (response?.data?.status === true) {
-          console.log(response.data.status, "inside if=====================");
           setisLoading(false);
           setSuccessModal(true);
           notify(response?.data?.message, "success");
-          // notify();
           setdeclarationStatus(false);
           setProcurement_no(response?.data?.procurement_no);
 
@@ -377,7 +356,6 @@ function AddPreProcurement(props) {
         }
       })
       .catch(function (error) {
-        console.log("errorrr.... ", error);
         setisLoading(false);
         notify("Something went wrong!");
         setdeclarationStatus(false);
@@ -397,8 +375,6 @@ function AddPreProcurement(props) {
   const handleOnChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-
-    console.log("target value checked", e.target.checked);
 
     {
       name == "cleaningDate" && verifyDateForBookingTanker(value);
@@ -489,13 +465,6 @@ function AddPreProcurement(props) {
           allowNumberInput(value, formik.values.number_of_items, 100)
         );
     }
-    // {
-    //   name == "brand" &&
-    //     formik.setFieldValue(
-    //       "brand",
-    //       allowCharacterNumberInput(value, formik.values.brand, 50)
-    //     );
-    // }
     {
       name == "quantity" &&
         formik.setFieldValue(
