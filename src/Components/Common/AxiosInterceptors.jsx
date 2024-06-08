@@ -7,7 +7,7 @@ const AxiosInterceptors = axios.create();
 AxiosInterceptors.interceptors.response.use(
     (response) => {
         // window.location.href='/property/'
-        console.log('data from axios interceptors....', response?.data)
+        // console.log('data from axios interceptors....', response?.data)
         if (response?.data?.authenticated === false) {
             localstorageRemoveEntire()
             // window.location.href = '/marriage'

@@ -86,8 +86,8 @@ const ListTableParent = (props) => {
       `${props?.api}?
       take=${perPageData}&page=${currentPage}
       &search=${searchFilter}
-      &${returnCategoryFilter("category", filter?.category || [props?.categoryId] || [])}
-      &${returnCategoryFilter("scategory", filter?.subcategory || [props?.subcategoryId] || [])}
+      &${returnCategoryFilter("category", filter?.category  || [])}
+      &${returnCategoryFilter("scategory", filter?.subcategory  || [])}
       &${returnCategoryFilter("brand", filter?.brand || [])}
       `
         .split(" ")

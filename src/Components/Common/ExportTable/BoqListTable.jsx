@@ -1,28 +1,29 @@
 import React, { useState } from "react";
 
 const BoqListTable = (props) => {
-  const [proNos, setProNos] = useState([]);
+  
 
 
   
 // get the Procurement Id
 const handleChange = (id) =>{
 
-    if(!proNos.includes(id)) {
-        setProNos(prev => ([...prev,id]))
+    if(!props?.proNos.includes(id)) {
+        props?.setProNos(prev => ([...prev,id]))
     }else{
-        let data = proNos.filter((item)=> item != id )
-       setProNos(data)
+        let data = props?.proNos.filter((item)=> item != id )
+       props?.setProNos(data)
     }
 }
   
-  console.log(proNos);
+//   console.log(props.proNos);
 
   return (
     <>
-      <div className="p-5 overflow-x-auto shadow-md sm:rounded-lg">
+   
+      <div className="m-4 overflow-x-auto shadow-md rounded-lg h-[30rem]">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead className="text-sm text-white bg-[#4338ca]">
+          <thead className="text-sm text-white bg-[#4338ca] sticky -top-0">
             <tr>
               <th scope="col" className="p-4">
                 <div className="flex items-center">
@@ -35,6 +36,9 @@ const handleChange = (id) =>{
                     checkbox
                   </label> */}
                 </div>
+              </th>
+              <th scope="col" className="px-6 py-3">
+                S No
               </th>
               <th scope="col" className="px-6 py-3">
                 Procurement No
@@ -72,6 +76,7 @@ const handleChange = (id) =>{
                     </div>
                   </td>
 
+                  <td className="px-6 py-4">{index +1}</td>
                   <td className="px-6 py-4">{items.procurement_no}</td>
                   <td className="px-6 py-4">{items.category.name}</td>
                   <td className="px-6 py-4">{items.subcategory.name}</td>
@@ -88,7 +93,7 @@ const handleChange = (id) =>{
           </tbody>
         </table>
 
-        <nav
+        {/* <nav
           className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
           aria-label="Table navigation"
         >
@@ -155,7 +160,7 @@ const handleChange = (id) =>{
               </a>
             </li>
           </ul>
-        </nav>
+        </nav> */}
       </div>
     </>
   );

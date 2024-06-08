@@ -4,8 +4,8 @@
 //    Date - 07/06/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - BoqList
-//    DESCRIPTION - BoqList
+//    Component  - BoqSearch
+//    DESCRIPTION - BoqSearch
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useEffect, useState } from "react";
@@ -22,7 +22,7 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import BoqListTable from "@/Components/Common/ExportTable/BoqListTable";
 import { MdArrowRightAlt } from "react-icons/md";
 
-const BoqList = () => {
+const BoqSearch = () => {
   const { inputStyle, labelStyle } = ThemeStyle();
 
   const [activeTab, setActiveTab] = useState("inbox");
@@ -32,14 +32,15 @@ const BoqList = () => {
   const [subcategoryId, setSubCategoryId] = useState();
   const [refresh, setRefresh] = useState(true);
   const [dataList, setdataList] = useState();
-
   const [showBoqList, setShowBoqList] = useState(false);
+  const [proNos, setProNos] = useState([]);
 
   const {
     api_fetchProcurementReleasedList,
     api_fetchBoqList,
     api_itemCategory,
     api_itemSubCategory,
+    api_postToAccountant,
   } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
@@ -81,14 +82,14 @@ const BoqList = () => {
     )
       .then((res) => {
         if (res?.data?.status == true) {
-          console.log("success getting list => ", res?.data?.data);
+          // console.log("success getting list => ", res?.data?.data);
 
           // props?.getData && props?.allData(res?.data);
           setdataList(res?.data?.data);
-          setPagination(res?.data?.pagination);
-          settotalCount(res?.data?.pagination?.totalPage);
-          setcurrentPage(res?.data?.pagination?.currentPage);
-          setlastPage(res?.data?.pagination?.currentTake);
+          // setPagination(res?.data?.pagination);
+          // settotalCount(res?.data?.pagination?.totalPage);
+          // setcurrentPage(res?.data?.pagination?.currentPage);
+          // setlastPage(res?.data?.pagination?.currentTake);
         } else {
           console.log("false error while getting list => ", res);
         }
@@ -98,12 +99,33 @@ const BoqList = () => {
       });
   };
 
+
+  console.log(proNos);
+
+  // const forwardToAccountant = () => {
+
+  //   AxiosInterceptors.post(`${api_postToAccountant}`, ApiHeader()).then((res) => {
+  //     if (res?.data?.status == true) {
+  //       console.log("Forwaded to Accountant Successfully", res?.data);
+  //       console.log(response?.data?.message, "-------------->>");
+  //       toast.success(response?.data?.message, "success");
+  //     } else {
+  //       setisLoading(false);
+  //       toast(response?.data?.message, "error");
+  //     }
+  //   })
+  //   .catch(function (error) {
+  //     console.log("errorrr.... ", error);
+  //     toast.error("Something went wrong");
+  //   });
+  // };
+
   useEffect(() => {
     // fetchBoqList();
     fetchCategory();
   }, [refresh]);
 
-  console.log(dataList);
+  // console.log(dataList);
   return (
     <>
       <div className="">
@@ -218,9 +240,9 @@ const BoqList = () => {
           </div>
 
           <div className=" mr-5">
-            <button 
-            className="bg-[#4338ca] hover:bg-[#3d3592] text-white p-2 rounded flex"
-            // onClick={}
+            <button
+              className="bg-[#4338ca] hover:bg-[#3d3592] text-white p-2 rounded flex"
+              // onClick={forwardToAccountant}
             >
               Prepare BOQ <MdArrowRightAlt className="text-2xl ml-2" />
             </button>
@@ -233,7 +255,7 @@ const BoqList = () => {
           {activeTab === "inbox" && (
             <div>
               {dataList?.length > 0 ? (
-                <BoqListTable dataList={dataList} />
+                <BoqListTable dataList={dataList} setProNos={setProNos} proNos={proNos}/>
               ) : (
                 <div className="bg-red-100 border flex justify-center items-center border-red-400 text-red-700 rounded text-center m-3">
                   <h1 className="p-3">No Data Available</h1>
@@ -252,4 +274,4 @@ const BoqList = () => {
   );
 };
 
-export default BoqList;
+export default BoqSearch;
