@@ -33,7 +33,7 @@ import InventoryDashboardDa2 from "./Components/Pages/PMS/PrePrecurement/Departm
 import SrEditPreProcurement from "./Components/Pages/PMS/PrePrecurement/StockReceiver/SrEditPreProcurement";
 import TenderForm from "./Components/Pages/PMS/TenderForm/TenderFormIndex";
 import ExportTableData from "./Components/Common/ExportTable/ExportTableData";
-import BoqList from "./Components/Pages/PMS/BOQ/BoqList";
+import BoqSearch from "./Components/Pages/PMS/BOQ/BoqSearch";
 import CreateNewBoq from "./Components/Pages/PMS/BOQ/CreateNewBoq";
 import PreviewBoqSummary from "./Components/Pages/PMS/BOQ/PreviewBoqSummary";
 
@@ -155,8 +155,8 @@ function App() {
     /////////////////////////{*** BOQ ***}//////////////////////////////////////
 
     {
-      path: "/boq-listing",
-      element: <BoqList />,
+      path: "/boq-search",
+      element: <BoqSearch />,
     },
     {
       path: "/create-boq/:procId",
