@@ -1,27 +1,20 @@
 //////////////////////////////////////////////////////////////////////////////////////
-//    Author - Almaash Alam
+//    Author - Almaash alam
 //    Version - 1.0
-//    Date - 06/06/2024
+//    Date - 23/05/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - BoqListIng
-//    DESCRIPTION - BoqListIng
-//////////////////////////////////////////////////////////////////////////////////////
+//    Component  - InventoryProposalList
+//    DESCRIPTION - InventoryProposalList
+/////////////////////////////////////////////////////
 
-import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
-import * as yup from "yup";
-import moment from "moment";
-
-import ProjectApiList from "@/Components/api/ProjectApiList";
+import React, { useState } from "react";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import ThemeStyle from "@/Components/Common/ThemeStyle";
-import { RotatingLines } from "react-loader-spinner";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
+import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 
-function BoqListing(props) {
+function InventoryProposalList(props) {
   const navigate = useNavigate();
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
@@ -31,119 +24,86 @@ function BoqListing(props) {
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
 
-  const validationSchema = yup.object({
-    // fromDate: yup.string().required("Field Required"),
-    // uptoDate: yup.string().required("Field Required"),
-    // key: yup.string().required("Field Required"),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      // fromDate: moment(new Date()).format("yy-MM-DD"),
-      // uptoDate: moment(new Date()).format("yy-MM-DD"),
-      // key: "",
-    },
-    onSubmit: (values) => {
-      console.log("values =>  ", values);
-      fetchResouceList(values);
-
-      // setchangeData((prev) => prev + 1);
-    },
-    validationSchema,
-  });
-
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
-    {
-      Header: " ",
-      Cell: ({ row }) => (
-        <div className='flex justify-center items-center'>
-          <input type='checkbox' className='h-4 w-4 cursor-pointer' />
-        </div>
-      ),
-    },
     {
       Header: "#",
       Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
-      Header: "Order No",
-      accessor: "procurement_no",
+      Header: "Tender Reference No",
+      accessor: "reference_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.procurement_no}</div>
+        <div className='pr-2'>{cell.row.values.reference_no}</div>
       ),
     },
     {
-      Header: "Category",
-      accessor: "category",
+      Header: "Procurements",
+      accessor: "procurements",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.category.name} </div>
+        <div className='pr-2'>
+          {cell.row.values.procurements[0]?.category?.name}
+        </div>
       ),
     },
     {
-      Header: "Sub Category",
-      accessor: "subcategory",
+      Header: "Estimated cost",
+      accessor: "estimated_cost",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.subcategory.name} </div>
+        <div className='pr-2'>
+          {indianAmount(cell.row.values.estimated_cost)}{" "}
+        </div>
       ),
     },
-    {
-      Header: "Brand",
-      accessor: "brand",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.brand.name || "N/A"}</div>
-      ),
-    },
-
     {
       Header: "status",
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2'>
           <p className='font-bold text-yellow-800'>
-            {cell.row.values.status.status == -1 && "Back to SR"}
+            {cell.row.values.status == -1 && "Back to SR"}
           </p>
           <p className='font-bold text-red-500'>
-            {cell.row.values.status.status == -2 && "Rejected"}
+            {cell.row.values.status == -2 && "Rejected"}
           </p>
           <p className='font-bold text-blue-800'>
-            {cell.row.values.status.status == 0 && "Pending"}
+            {cell.row.values.status == 0 && "Pending"}
           </p>
           <p className='font-bold text-blue-800'>
-            {cell.row.values.status.status == 1 && "DA's Inbox"}
+            {cell.row.values.status == 1 && "DA's Inbox"}
           </p>
           <p className='font-bold text-green-800'>
-            {cell.row.values.status.status == 2 && "Release for Tender"}
+            {cell.row.values.status == 2 && "Release for Tender"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 3 && "Supplier assigned"}
+            {cell.row.values.status == 3 && "Supplier assigned"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 4 && "Incomplete stocks received"}
+            {cell.row.values.status == 4 && "Incomplete stocks received"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 5 && "Stocks received"}
+            {cell.row.values.status == 5 && "Stocks received"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 69 && "Revised"}
+            {cell.row.values.status == 69 && "Revised"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 71 && "BOQ already created"}
+            {cell.row.values.status == 71 && "BOQ already created"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 70 && "Ready for BOQ"}
+            {cell.row.values.status == 70 && "Ready for BOQ"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == -70 && "BOQ returned from DA"}
+            {cell.row.values.status == -70 && "BOQ returned from DA"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 72 && "Ready for tendering"}
+            {cell.row.values.status == 72 && "Ready for tendering"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == -72 && "Tender back from DA"}
+            {cell.row.values.status == -72 && "Tender back from DA"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 73 && "Tender is ready"}
+            {cell.row.values.status == 73 && "Tender is ready"}
           </p>
         </div>
       ),
@@ -152,8 +112,8 @@ function BoqListing(props) {
     //   Header: "Remark",
     //   accessor: "remark",
     //   Cell: ({ cell }) => (
-    //     <div className='pr-2 text-green-800 truncate'>
-    //       {cell.row.values.remark || ""}
+    //     <div className='pr-2 text-green-800 truncate w-14'>
+    //       {cell.row.values.remark || "N/A"}
     //     </div>
     //   ),
     // },
@@ -166,7 +126,7 @@ function BoqListing(props) {
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
               navigate(
-                `/sr-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`
+                `/da-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`
               )
             }
           >
@@ -176,12 +136,6 @@ function BoqListing(props) {
       ),
     },
   ];
-
-  const fetchResouceList = (data) => {
-    console.log(data, "payload data for searchin water");
-    setRequestBody(data);
-    setchangeData((prev) => prev + 1);
-  };
 
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {
@@ -196,11 +150,11 @@ function BoqListing(props) {
   const tableSelector = (page) => {
     switch (page) {
       case "inbox":
-        return "SRIN";
+        return "DAIN";
       case "outbox":
-        return "SROUT";
+        return "DAOUT";
       default:
-        return "SRIN";
+        return "DAIN";
     }
   };
 
@@ -208,18 +162,19 @@ function BoqListing(props) {
     <>
       {loader && <BarLoader />}
       <div className='container mx-auto p-4'>
+        <div className=''>
+          <div className='flex justify-between'></div>
+        </div>
+
         <div className='grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 '>
           <div className='col-span-12'>
             <>
               <ListTableParent
                 table={tableSelector(props?.page)}
-                api={props.api}
+                api={props?.api}
                 columns={COLUMNS}
                 requestBody={requestBody} // sending body
                 changeData={changeData} // send action for new payload
-                showDiv={true}
-                categoryId={props.categoryId}
-                subcategoryId={props.subcategoryId}
               />
             </>
           </div>
@@ -229,4 +184,4 @@ function BoqListing(props) {
   );
 }
 
-export default BoqListing;
+export default InventoryProposalList;

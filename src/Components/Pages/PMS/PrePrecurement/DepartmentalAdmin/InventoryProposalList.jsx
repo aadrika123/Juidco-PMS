@@ -6,28 +6,15 @@
 //    Project - JUIDCO
 //    Component  - InventoryProposalList
 //    DESCRIPTION - InventoryProposalList
-/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
 
-import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
-import * as yup from "yup";
-import moment from "moment";
-
-import ProjectApiList from "@/Components/api/ProjectApiList";
+import React, { useState } from "react";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import ThemeStyle from "@/Components/Common/ThemeStyle";
-import { RotatingLines } from "react-loader-spinner";
-import { RiFilter2Line } from "react-icons/ri";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
-import { GoPlus } from "react-icons/go";
-import { FaChartPie } from "react-icons/fa";
 
 function InventoryProposalList(props) {
   const navigate = useNavigate();
-
-  console.log(props.page, "page========>");
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
@@ -103,6 +90,24 @@ function InventoryProposalList(props) {
           <p className='font-bold text-green-500'>
             {cell.row.values.status.status == 69 && "Revised"}
           </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 71 && "BOQ already created"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 70 && "Ready for BOQ"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == -70 && "BOQ returned from DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 72 && "Ready for tendering"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == -72 && "Tender back from DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 73 && "Tender is ready"}
+          </p>
         </div>
       ),
     },
@@ -169,7 +174,7 @@ function InventoryProposalList(props) {
             <>
               <ListTableParent
                 table={tableSelector(props?.page)}
-                api={props.api}
+                api={props?.api}
                 columns={COLUMNS}
                 requestBody={requestBody} // sending body
                 changeData={changeData} // send action for new payload

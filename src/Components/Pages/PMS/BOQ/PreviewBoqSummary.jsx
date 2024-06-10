@@ -61,9 +61,9 @@ export default function PreviewBoqSummary() {
     AxiosInterceptors.post(api_postForwardAndCreateBoq, formData, ApiHeader2())
       .then(function (response) {
         if (response?.data?.status) {
-          setIsLoading(false);
           toast.success("Successfully forwarded to DA");
           setTimeout(() => {
+            setIsLoading(false);
             navigate("/boq-search");
           }, 2000);
         } else {
@@ -98,19 +98,31 @@ export default function PreviewBoqSummary() {
             <h2 className='text-xl '>BOQ Summary</h2>
           </div>
           <div className=''>
-            <div className='mb-4 p-4 shadow-md'>
-              <p className='text-lg font-bold mb-2'>
-                Category:{" "}
-                <span className='font-semibold text-gray-500'>
-                  {state?.procurement[0]?.category?.name}
-                </span>
-              </p>
-              <p className='text-lg font-bold'>
-                SubCategory:{" "}
-                <span className='font-semibold text-gray-500'>
-                  {state?.procurement[0]?.subcategory?.name}
-                </span>
-              </p>
+            <div>
+              <div className='flex mb-4 p-4 shadow-md justify-between px-6'>
+                <div>
+                  <p className='text-lg font-bold mb-2'>
+                    Category:{" "}
+                    <span className='font-semibold text-gray-500'>
+                      {state?.procurement[0]?.category?.name}
+                    </span>
+                  </p>
+                  <p className='text-lg font-bold'>
+                    SubCategory:{" "}
+                    <span className='font-semibold text-gray-500'>
+                      {state?.procurement[0]?.subcategory?.name}
+                    </span>
+                  </p>
+                </div>
+                <div>
+                  <p className='text-lg font-bold mb-2'>
+                    Gst:{" "}
+                    <span className='font-semibold text-gray-500'>
+                      {`${state?.gst}% ` || "Gst not added"}
+                    </span>
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div className='shaodow-md rounded-md'>
@@ -160,14 +172,17 @@ export default function PreviewBoqSummary() {
               </table>
             </div>
 
-            <div className='p-2 px-4 bg-[#4338CA] text-white flex justify-between mt-6 rounded-t-md '>
-              <h2 className='text-xl '>Estimated Cost</h2>
-              <h2>{indianAmount(state?.estimated_cost)}</h2>
+            <div className='p-2 px-8 bg-[#4338CA] text-white flex justify-between mt-6 rounded-t-md '>
+              <h2 className='text-xl'>Estimated Cost</h2>
+              <h2 className='text-xl'>{indianAmount(state?.estimated_cost)}</h2>
             </div>
 
-            <div>
+            <div className='m-4'>
               <p className='text-lg font-semibold px-2'>
-                Remark - <span className='text-gray-400'>{state?.remark}</span>{" "}
+                Remark -{" "}
+                <span className='text-gray-400'>
+                  {state?.remark || "No remark added"}
+                </span>{" "}
               </p>
               <div className='flex justify-end mb-4'>
                 <ImageDisplay

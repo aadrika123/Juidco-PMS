@@ -44,16 +44,16 @@ const BasicDetailsForm = () => {
   ];
 
   const allowResubmission = [
-    { label: "Yes", value: "yes" },
-    { label: "No", value: "no" },
+    { label: "Yes", value: "true" },
+    { label: "No", value: "false" },
   ];
   const allowWithdrawl = [
-    { label: "Yes", value: "yes" },
-    { label: "No", value: "no" },
+    { label: "Yes", value: "true" },
+    { label: "No", value: "false" },
   ];
   const allowOfflineSubmission = [
-    { label: "Yes", value: "yes" },
-    { label: "No", value: "no" },
+    { label: "Yes", value: "true" },
+    { label: "No", value: "false" },
   ];
 
   const offlineBanks = [
@@ -64,7 +64,7 @@ const BasicDetailsForm = () => {
   ];
 
   const validationSchema = Yup.object({
-    tenderReference_No: Yup.string().required(),
+    reference_No: Yup.string().required(),
     tender_type: Yup.array().min(1).required(),
     contract_form: Yup.array().min(1).required(),
     tender_category: Yup.array().min(1).required(),
@@ -72,7 +72,7 @@ const BasicDetailsForm = () => {
     allow_withdrawl: Yup.string().required(),
     allow_offline_submission: Yup.string().required(),
     payment_mode: Yup.string().required(),
-    offline_banks: Yup.string().when("payment_mode", {
+    offlinePayment_mode: Yup.string().when("payment_mode", {
       is: "offline",
       then: (schema) => schema.required("offline"),
       otherwise: (schema) => schema.optional("Required field"),
@@ -86,7 +86,7 @@ const BasicDetailsForm = () => {
 
   // Initial values for additional form fields can go here
   const initialValues = {
-    tenderReference_No: "",
+    reference_No: "",
     tender_type: [],
     contract_form: [],
     tender_category: [],
@@ -94,7 +94,7 @@ const BasicDetailsForm = () => {
     allow_withdrawl: "",
     allow_offline_submission: "",
     payment_mode: "online",
-    offline_banks: "",
+    offlinePayment_mode: "",
     onlinePyment_mode: "",
   };
 
@@ -133,9 +133,9 @@ const BasicDetailsForm = () => {
                   <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <>
                       <label
-                        htmlFor='tenderReference_No'
+                        htmlFor='reference_No'
                         className={`block mb-2 text-sm font-medium text-gray-900 ${
-                          errors.tenderReference_No && "text-red-500"
+                          errors.reference_No && "text-red-500"
                         }`}
                       >
                         Tender Reference No{" "}
@@ -144,8 +144,8 @@ const BasicDetailsForm = () => {
                       <input
                         type='text'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
-                        name='tenderReference_No'
-                        value={values.tenderReference_No}
+                        name='reference_No'
+                        value={values.reference_No}
                         onChange={handleChange}
                       />
                     </>
@@ -368,10 +368,12 @@ const BasicDetailsForm = () => {
                             <RadioButtonsGroup
                               fields={offlineBanks}
                               title={"In offline(Instruments)"}
-                              values={values.offline_banks}
+                              name={"allow_offline_submission"}
+                              values={values.offlinePayment_mode}
                               handleChange={handleChange}
-                              errors={errors.offline_banks}
-                              touched={touched.offline_banks}
+                              errors={errors.offlinePayment_mode}
+                              touched={touched.offlinePayment_mode}
+                              setFieldValue={setFieldValue}
                             />
                           </div>
                         )}

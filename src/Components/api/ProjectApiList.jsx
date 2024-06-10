@@ -144,11 +144,13 @@ export default function ProjectApiList() {
     api_fetchSrInvtDetailsList: `${baseUrl}/api/pms/inventory/by-filter`,
 
     //BOQ
-    api_fetchBoqList: `${baseUrl}/api/pms/acc/pre-procurement/list-for-boq`,
+    api_fetchBoqList: `${baseUrl}/api/pms/acc/pre-procurement/list-for-boq`, //accountant
     api_postToAccountant: `${baseUrl}/api/pms/da/pre-procurement/to-acc-boq`,
     api_fetchAllBoqDetails: `${baseUrl}/api/pms/acc/pre-procurement/bulk`,
     api_postForwardAndCreateBoq: `${baseUrl}/api/pms/acc/pre-procurement/boq`,
-    api_fetchBoqListOutbox: `${baseUrl}/api/pms/acc/pre-procurement/outbox`,
+    api_fetchBoqListOutbox: `${baseUrl}/api/pms/acc/pre-procurement/outbox`, //accountant
+    api_fetchDaBoqListInbox: `${baseUrl}/api/pms/da/pre-procurement/boq`, //da
+    api_fetchDaBoqListOutbox: `${baseUrl}/api/pms/da/pre-procurement/boq/outbox`, //da
   };
 
   return apiList;

@@ -33,12 +33,16 @@ const BoqSearch = () => {
   const [dataList, setdataList] = useState();
   const [proNos, setProNos] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [outboxData,setOutboxData] = useState()
+  const [outboxData, setOutboxData] = useState();
 
   const navigate = useNavigate();
 
-  const { api_fetchBoqList, api_itemCategory, api_itemSubCategory, api_fetchBoqListOutbox} =
-    ProjectApiList();
+  const {
+    api_fetchBoqList,
+    api_itemCategory,
+    api_itemSubCategory,
+    api_fetchBoqListOutbox,
+  } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -83,8 +87,6 @@ const BoqSearch = () => {
     )
       .then((res) => {
         if (res?.data?.status == true) {
-          // console.log("success getting list => ", res?.data?.data);
-
           // props?.getData && props?.allData(res?.data);
           setdataList(res?.data?.data);
           // setPagination(res?.data?.pagination);
@@ -108,7 +110,6 @@ const BoqSearch = () => {
   // console.log(outboxData);
 
   const fetchOutboxBoq = () => {
-   
     AxiosInterceptors.get(`${api_fetchBoqListOutbox}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response.data.data);
@@ -233,14 +234,16 @@ const BoqSearch = () => {
             </button>
           </div>
 
-          <div className=' mr-5'>
-            <button
-              className='bg-[#4338ca] hover:bg-[#3d3592] text-white p-2 rounded flex'
-              onClick={prepareForBoq}
-            >
-              Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
-            </button>
-          </div>
+          {activeTab == "inbox" && (
+            <div className=' mr-5'>
+              <button
+                className='bg-[#4338ca] hover:bg-[#3d3592] text-white p-2 rounded flex'
+                onClick={prepareForBoq}
+              >
+                Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
+              </button>
+            </div>
+          )}
         </div>
 
         <hr className='w-[76rem] mt-2 mb-10' />
@@ -257,7 +260,7 @@ const BoqSearch = () => {
                       dataList={dataList}
                       setProNos={setProNos}
                       proNos={proNos}
-                      page="inbox"
+                      page='inbox'
                     />
                   ) : (
                     <div className='bg-red-100 border flex justify-center items-center border-red-400 text-red-700 rounded text-center m-3'>
@@ -272,7 +275,7 @@ const BoqSearch = () => {
                   {outboxData?.length > 0 ? (
                     <BoqListTable
                       dataList={outboxData}
-                      page="outbox"
+                      page='outbox'
                       // setProNos={setProNos}
                       // proNos={proNos}
                     />
@@ -283,7 +286,6 @@ const BoqSearch = () => {
                   )}
                 </div>
               )}
-
             </>
           )}
         </div>
