@@ -29,23 +29,25 @@ const openDetailModal = (data) =>{
     props?.page == "outbox" ? navigate(`/boqSummary`) : setDetailModal(true)    
 }
 
-if (detailModal) {
+  if (detailModal) {
     return (
       <>
-        <BoqDetailModal setDetailModal={setDetailModal} singleProNo={singleProNo}/>
+        <BoqDetailModal
+          setDetailModal={setDetailModal}
+          singleProNo={singleProNo}
+        />
       </>
     );
   }
 
   return (
     <>
-   
-      <div className="m-4 overflow-x-auto shadow-md rounded-lg max-h-96">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead className="text-sm text-white bg-[#4338ca] sticky -top-0">
+      <div className='m-4 overflow-x-auto shadow-md rounded-lg max-h-96'>
+        <table className='w-full text-sm text-left rtl:text-right text-gray-500'>
+          <thead className='text-sm text-white bg-[#4338ca] sticky -top-0'>
             <tr>
-              <th scope="col" className="p-4">
-                <div className="flex items-center">
+              <th scope='col' className='p-4'>
+                <div className='flex items-center'>
                   {/* <input
                     id="checkbox-all-search"
                     type="checkbox"
@@ -56,25 +58,25 @@ if (detailModal) {
                   </label> */}
                 </div>
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope='col' className='px-6 py-3'>
                 S No
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope='col' className='px-6 py-3'>
                 Procurement No
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope='col' className='px-6 py-3'>
                 Category
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope='col' className='px-6 py-3'>
                 Sub Category
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope='col' className='px-6 py-3'>
                 Brand
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope='col' className='px-6 py-3'>
                 Description
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope='col' className='px-6 py-3'>
                 Action
               </th>
             </tr>
@@ -83,29 +85,31 @@ if (detailModal) {
           <tbody>
             {props?.dataList?.length &&
               props?.dataList.map((items, index) => (
-                <tr className="bg-gray-100 border-b" key={index}>
-                  <td className="w-4 p-4">
-                    <div className="flex items-center">
+                <tr className='bg-gray-100 border-b' key={index}>
+                  <td className='w-4 p-4'>
+                    <div className='flex items-center'>
                       <input
-                        id="checkbox-table-search-1"
-                        type="checkbox"
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
-                        onChange={()=>{handleChange(items.procurement_no)}}
+                        id='checkbox-table-search-1'
+                        type='checkbox'
+                        className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer'
+                        onChange={() => {
+                          handleChange(items.procurement_no);
+                        }}
                       />
                     </div>
                   </td>
 
-                  <td className="px-6 py-4">{index +1}</td>
-                  <td className="px-6 py-4">{items.procurement_no}</td>
-                  <td className="px-6 py-4">{items.category.name}</td>
-                  <td className="px-6 py-4">{items.subcategory.name}</td>
-                  <td className="px-6 py-4">{items.brand.name}</td>
-                  <td className="px-6 py-4">{items.description}</td>
+                  <td className='px-6 py-4'>{index + 1}</td>
+                  <td className='px-6 py-4'>{items.procurement_no}</td>
+                  <td className='px-6 py-4'>{items.category.name}</td>
+                  <td className='px-6 py-4'>{items.subcategory.name}</td>
+                  <td className='px-6 py-4'>{items.brand.name}</td>
+                  <td className='px-6 py-4'>{items.description}</td>
 
-                  <td className="px-6 py-4">
-                    <button 
-                    className="bg-[#4338ca] text-white pl-3 pr-3 pt-1 pb-1 rounded hover:bg-[#5d51de]"
-                    onClick={()=>openDetailModal(items.procurement_no)}
+                  <td className='px-6 py-4'>
+                    <button
+                      className='bg-[#4338ca] text-white pl-3 pr-3 pt-1 pb-1 rounded hover:bg-[#5d51de]'
+                      onClick={() => openDetailModal(items.procurement_no)}
                     >
                       View
                     </button>
