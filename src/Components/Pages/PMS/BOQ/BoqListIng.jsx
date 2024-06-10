@@ -24,12 +24,17 @@ import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 function BoqListing(props) {
   const navigate = useNavigate();
 
+ 
+
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
   const [changeData, setchangeData] = useState(0);
   const [requestBody, setRequestBody] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
+  const [refNo, setRefNo] = useState(false);
+
+  console.log(refNo)
 
   const validationSchema = yup.object({
     // fromDate: yup.string().required("Field Required"),
@@ -54,71 +59,71 @@ function BoqListing(props) {
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
-    {
-      Header: " ",
-      Cell: ({ row }) => <div className='flex justify-center items-center'><input type="checkbox" className="h-4 w-4 cursor-pointer"/></div>,
-    },
+    // {
+    //   Header: " ",
+    //   Cell: ({ row }) => <div className='flex justify-center items-center'><input type="checkbox" className="h-4 w-4 cursor-pointer"/></div>,
+    // },
     {
       Header: "#",
       Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
-      Header: "Order No",
-      accessor: "procurement_no",
+      Header: "Reference No",
+      accessor: "reference_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.procurement_no}</div>
+        <div className='pr-2'>{cell.row.values.reference_no}</div>
       ),
     },
     {
       Header: "Category",
-      accessor: "category",
+      accessor: "procurements",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.category.name} </div>
+        <div className='pr-2'>{cell.row.values?.procurements[0].category?.name} </div>
       ),
     },
     {
-      Header: "Sub Category",
-      accessor: "subcategory",
+      Header: "Estimated Cost",
+      accessor: "estimated_cost",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.subcategory.name} </div>
+        <div className='pr-2'>{cell.row.values.estimated_cost} </div>
       ),
     },
-    {
-      Header: "Brand",
-      accessor: "brand",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.brand.name || "N/A"}</div>
-      ),
-    },
+    // {
+    //   Header: "Status",
+    //   accessor: "brand",
+    //   Cell: ({ cell }) => (
+    //     <div className='pr-2'>{cell.row.values.brand.name || "N/A"}</div>
+    //   ),
+    // },
 
     {
-      Header: "status",
+      Header: "Status",
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2'>
           <p className='font-bold text-yellow-800'>
-            {cell.row.values.status.status == -1 && "Back from DA"}
+            {cell.row.values.status == -1 && "Back from DA"}
           </p>
           <p className='font-bold text-red-500'>
-            {cell.row.values.status.status == -2 && "Rejected"}
+            {cell.row.values.status == -2 && "Rejected"}
           </p>
           <p className='font-bold text-blue-800'>
-            {cell.row.values.status.status == 0 && "Pending"}
+            {cell.row.values.status == 0 && "Pending"}
           </p>
           <p className='font-bold text-blue-800'>
-            {cell.row.values.status.status == 1 && "DA's Inbox"}
+            {cell.row.values.status == 1 && "DA's Inbox"}
           </p>
           <p className='font-bold text-green-800'>
-            {cell.row.values.status.status == 2 && "Released for Tender"}
+            {cell.row.values.status == 2 && "Released for Tender"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 3 && "Supplier Assigned"}
+            {cell.row.values.status == 3 && "Supplier Assigned"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 4 && "Incomplete stocks received"}
+            {cell.row.values.status == 4 && "Incomplete stocks received"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 5 && "Stocks received"}
+            {cell.row.values.status == 5 && "Stocks received"}
           </p>
         </div>
       ),
@@ -141,7 +146,7 @@ function BoqListing(props) {
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
               navigate(
-                `/sr-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`
+                `/boq-details-byId/${cell.row.values.reference_no}`
               )
             }
           >
@@ -195,6 +200,8 @@ function BoqListing(props) {
                 showDiv={true}
                 categoryId={props.categoryId}
                 subcategoryId={props.subcategoryId}
+                // refNo={refNo}
+                setRefNo={setRefNo}
                 
               />
             </>
