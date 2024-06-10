@@ -158,7 +158,7 @@ function App() {
     /////////////////////////{*** BOQ ***}//////////////////////////////////////
 
     {
-      path: "/boq-listing",
+      path: "/accountant-boq",
       element: <BoqListTabs />,
     },
     {
