@@ -1,10 +1,14 @@
 import BoqDetailModal from "@/Components/Pages/PMS/BOQ/BoqDetailModal";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BoqListTable = (props) => {
 
     const [detailModal,setDetailModal] = useState(false)
     const [singleProNo,setSingleProNo] = useState()
+
+
+    const navigate = useNavigate()
   
 // get the Procurement Id
 const handleChange = (id) =>{
@@ -17,11 +21,12 @@ const handleChange = (id) =>{
     }
 }
   
-//   console.log(props.proNos);
+  // console.log(props?.page,"pageeeeeeeeeeeeeeeeeee");
 
 const openDetailModal = (data) =>{
-    setSingleProNo(data)
-    setDetailModal(true)    
+    setSingleProNo(data);
+    
+    props?.page == "outbox" ? navigate(`/boqSummary`) : setDetailModal(true)    
 }
 
 if (detailModal) {

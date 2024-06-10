@@ -93,12 +93,12 @@ export default function PreviewBoqSummary() {
       <div className={`${isLoading ? "opacity-40" : ""}`}>
         <div
           id='printable-content'
-          className=' bg-white rounded-t-md font-sans mb-10'
+          className=' bg-white rounded font-sans mb-10 border border-[#4338ca] shadow-lg px-4'
         >
           <div className='p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md'>
             <h2 className='text-xl '>BOQ Summary</h2>
           </div>
-          <div className='p-4'>
+          <div className=''>
             <div className='mb-4 p-4 shadow-md'>
               <p className='text-lg font-bold mb-2'>
                 Category:{" "}
