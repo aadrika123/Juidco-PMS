@@ -14,7 +14,6 @@ export default function PreviewBoqSummary() {
   const [uldId, setUlbId] = useState();
   const { state } = useLocation();
   const navigate = useNavigate();
-  console.log(state, "state=============");
   const { titleBarVisibility } = useContext(contextVar);
 
   const { api_postForwardAndCreateBoq } = ProjectApiList();
