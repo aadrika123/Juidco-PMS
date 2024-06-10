@@ -96,7 +96,7 @@ const BoqListTable = (props) => {
           <tbody>
             {props?.dataList?.length &&
               props?.dataList.map((items, index) => (
-                <tr className="text-start border-b hover:bg-[#fafafb]" key={index}>
+                <tr className="text-start text-black border-b hover:bg-[#fafafb]" key={index}>
                   <td className="w-4 p-4">
                     <div className="flex items-center">
                       <input
