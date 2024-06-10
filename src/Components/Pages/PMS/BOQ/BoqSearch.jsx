@@ -33,10 +33,11 @@ const BoqSearch = () => {
   const [dataList, setdataList] = useState();
   const [proNos, setProNos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [outboxData,setOutboxData] = useState()
 
   const navigate = useNavigate();
 
-  const { api_fetchBoqList, api_itemCategory, api_itemSubCategory } =
+  const { api_fetchBoqList, api_itemCategory, api_itemSubCategory, api_fetchBoqListOutbox} =
     ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
@@ -104,7 +105,20 @@ const BoqSearch = () => {
       });
   };
 
-  // console.log(proNos);
+  // console.log(outboxData);
+
+  const fetchOutboxBoq = () => {
+   
+    AxiosInterceptors.get(`${api_fetchBoqListOutbox}`, ApiHeader())
+      .then(function (response) {
+        console.log("item Categor", response.data.data);
+        setOutboxData(response.data.data);
+      })
+      .catch(function (error) {
+        toast.error("Something went wrong");
+        console.log("errorrr.... ", error);
+      });
+  };
 
   const prepareForBoq = () => {
     if (!proNos.length) {
@@ -116,6 +130,7 @@ const BoqSearch = () => {
 
   useEffect(() => {
     fetchCategory();
+    fetchOutboxBoq();
   }, []);
 
   // console.log(dataList);
@@ -242,6 +257,7 @@ const BoqSearch = () => {
                       dataList={dataList}
                       setProNos={setProNos}
                       proNos={proNos}
+                      page="inbox"
                     />
                   ) : (
                     <div className='bg-red-100 border flex justify-center items-center border-red-400 text-red-700 rounded text-center m-3'>
@@ -253,9 +269,21 @@ const BoqSearch = () => {
 
               {activeTab === "outbox" && (
                 <div>
-                  <BoqListTable dataList={dataList} />
+                  {outboxData?.length > 0 ? (
+                    <BoqListTable
+                      dataList={outboxData}
+                      page="outbox"
+                      // setProNos={setProNos}
+                      // proNos={proNos}
+                    />
+                  ) : (
+                    <div className='bg-red-100 border flex justify-center items-center border-red-400 text-red-700 rounded text-center m-3'>
+                      <h1 className='p-3'>No Data Available</h1>
+                    </div>
+                  )}
                 </div>
               )}
+
             </>
           )}
         </div>
