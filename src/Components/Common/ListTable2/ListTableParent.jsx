@@ -102,7 +102,9 @@ const ListTableParent = (props) => {
             "success current page => ",
             res?.data?.pagination?.currentPage
           );
+          // console.log(res?.data?.data)
           props?.getData && props?.allData(res?.data?.data);
+          // props?.setRefNo(res?.data?.data[0].reference_no)
           setdataList(res?.data?.data);
           setPagination(res?.data?.pagination);
           settotalCount(res?.data?.pagination?.totalPage);

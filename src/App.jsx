@@ -40,6 +40,9 @@ import ExportTableData from "./Components/Common/ExportTable/ExportTableData";
 import BoqSearch from "./Components/Pages/PMS/BOQ/BoqSearch";
 import CreateNewBoq from "./Components/Pages/PMS/BOQ/CreateNewBoq";
 import PreviewBoqSummary from "./Components/Pages/PMS/BOQ/PreviewBoqSummary";
+import BoqDetailsById from "./Components/Pages/PMS/BOQ/BoqDetailsById";
+import BoqListing from "./Components/Pages/PMS/BOQ/BoqListIng";
+import BoqListTabs from "./Components/Pages/PMS/BOQ/BoqListTabs";
 import BoqListTabsDa from "./Components/Pages/PMS/BOQ/DA/BoqListTabsDa";
 
 const queryClient = new QueryClient();
@@ -158,7 +161,10 @@ function App() {
 
     /////////////////////////{*** BOQ ***}//////////////////////////////////////
 
-    //-------Accountant -----
+    {
+      path: "/accountant-boq",
+      element: <BoqListTabs />,
+    },
     {
       path: "/boq-search",
       element: <BoqSearch />,
@@ -171,8 +177,10 @@ function App() {
       path: "/boqSummary",
       element: <PreviewBoqSummary />,
     },
-
-    //-------DA --------
+    {
+      path: "/boq-details-byId/:refNo",
+      element: <BoqDetailsById />,
+    },
     {
       path: "/da-boq",
       element: <BoqListTabsDa />,

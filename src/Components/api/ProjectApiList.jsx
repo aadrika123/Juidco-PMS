@@ -148,9 +148,11 @@ export default function ProjectApiList() {
     api_postToAccountant: `${baseUrl}/api/pms/da/pre-procurement/to-acc-boq`,
     api_fetchAllBoqDetails: `${baseUrl}/api/pms/acc/pre-procurement/bulk`,
     api_postForwardAndCreateBoq: `${baseUrl}/api/pms/acc/pre-procurement/boq`,
-    api_fetchBoqListOutbox: `${baseUrl}/api/pms/acc/pre-procurement/outbox`, //accountant
+    api_fetchBoqListOutbox: `${baseUrl}/api/pms/acc/pre-procurement/boq/outbox`, //accountant
     api_fetchDaBoqListInbox: `${baseUrl}/api/pms/da/pre-procurement/boq`, //da
     api_fetchDaBoqListOutbox: `${baseUrl}/api/pms/da/pre-procurement/boq/outbox`, //da
+    api_fetchAllBoqDetailsbyId: `${baseUrl}/api/pms/boq/by-ref`,
+    api_fetchBoqInboxList: `${baseUrl}/api/pms/acc/pre-procurement/boq`,
   };
 
   return apiList;

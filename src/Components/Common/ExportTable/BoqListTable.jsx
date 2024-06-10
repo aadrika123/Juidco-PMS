@@ -3,31 +3,65 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const BoqListTable = (props) => {
+  const [detailModal, setDetailModal] = useState(false);
+  const [singleProNo, setSingleProNo] = useState();
 
-    const [detailModal,setDetailModal] = useState(false)
-    const [singleProNo,setSingleProNo] = useState()
+  const navigate = useNavigate();
 
+  // const COLUMNS = [
+  //   { header: "", },
+  //   { header: "S No", },
+  //   { header: "Procurement No", },
+  //   { header: "Category" ,},
+  //   { header: "Sub Category" ,},
+  //   { header: "Brand" ,},
+  //   { header: "Description" ,},
+  //   { header: "Action", },
+  // ];
 
-    const navigate = useNavigate()
-  
-// get the Procurement Id
-const handleChange = (id) =>{
+  let COLUMNS =
+    props?.page == "outbox"
+      ? [
+          { header: "" },
+          { header: "S No" },
+          { header: "Reference No" },
+          { header: "Category" },
+          { header: "Estimated Cost" },
+          { header: "Status" },
+          { header: "Action" },
+        ]
+      : [
+          { header: "" },
+          { header: "S No" },
+          { header: "Procurement No" },
+          { header: "Category" },
+          { header: "Sub Category" },
+          { header: "Brand" },
+          { header: "Description" },
+          { header: "Action" },
+        ];
 
-    if(!props?.proNos.includes(id)) {
-        props?.setProNos(prev => ([...prev,id]))
-    }else{
-        let data = props?.proNos.filter((item)=> item != id )
-       props?.setProNos(data)
+  console.log(props?.page);
+
+  // get the Procurement Id
+  const handleChange = (id) => {
+    if (!props?.proNos.includes(id)) {
+      props?.setProNos((prev) => [...prev, id]);
+    } else {
+      let data = props?.proNos.filter((item) => item != id);
+      props?.setProNos(data);
     }
-}
-  
+  };
+
   // console.log(props?.page,"pageeeeeeeeeeeeeeeeeee");
 
-const openDetailModal = (data) =>{
+  const openDetailModal = (data,refNo) => {
     setSingleProNo(data);
-    
-    props?.page == "outbox" ? navigate(`/boqSummary`) : setDetailModal(true)    
-}
+
+    props?.page == "outbox"
+      ? navigate(`/boq-details-byId/${refNo}`)
+      : setDetailModal(true);
+  };
 
   if (detailModal) {
     return (
@@ -42,74 +76,75 @@ const openDetailModal = (data) =>{
 
   return (
     <>
-      <div className='m-4 overflow-x-auto shadow-md rounded-lg max-h-96'>
-        <table className='w-full text-sm text-left rtl:text-right text-gray-500'>
-          <thead className='text-sm text-white bg-[#4338ca] sticky -top-0'>
+      <div className="m-4 overflow-x-auto shadow-md rounded-lg max-h-96">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead className="text-sm text-white bg-[#4338ca] sticky -top-0">
             <tr>
-              <th scope='col' className='p-4'>
-                <div className='flex items-center'>
-                  {/* <input
-                    id="checkbox-all-search"
-                    type="checkbox"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
-                  />
-                  <label for="checkbox-all-search" className="sr-only">
-                    checkbox
-                  </label> */}
-                </div>
+              {COLUMNS?.length &&
+                COLUMNS?.map((item, index) => (
+                  <th scope="col" className="p-4" key={index}>
+                    <div className="flex items-center">{item?.header}</div>
+                  </th>
+                ))}
+              {/* <th scope="col" className="p-4">
+                <div className="flex items-center"></div>
               </th>
-              <th scope='col' className='px-6 py-3'>
+              <th scope="col" className="px-6 py-3">
                 S No
               </th>
-              <th scope='col' className='px-6 py-3'>
+              <th scope="col" className="px-6 py-3">
                 Procurement No
               </th>
-              <th scope='col' className='px-6 py-3'>
+              <th scope="col" className="px-6 py-3">
                 Category
               </th>
-              <th scope='col' className='px-6 py-3'>
+              <th scope="col" className="px-6 py-3">
                 Sub Category
               </th>
-              <th scope='col' className='px-6 py-3'>
+              <th scope="col" className="px-6 py-3">
                 Brand
               </th>
-              <th scope='col' className='px-6 py-3'>
+              <th scope="col" className="px-6 py-3">
                 Description
               </th>
-              <th scope='col' className='px-6 py-3'>
+              <th scope="col" className="px-6 py-3">
                 Action
-              </th>
+              </th> */}
             </tr>
           </thead>
 
           <tbody>
             {props?.dataList?.length &&
               props?.dataList.map((items, index) => (
-                <tr className='bg-gray-100 border-b' key={index}>
-                  <td className='w-4 p-4'>
-                    <div className='flex items-center'>
+                <tr className="bg-gray-100 border-b" key={index}>
+                  <td className="w-4 p-4">
+                    <div className="flex items-center">
                       <input
-                        id='checkbox-table-search-1'
-                        type='checkbox'
-                        className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer'
+                        id="checkbox-table-search-1"
+                        type="checkbox"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
                         onChange={() => {
-                          handleChange(items.procurement_no);
+                          handleChange(items?.procurement_no);
                         }}
                       />
                     </div>
                   </td>
 
-                  <td className='px-6 py-4'>{index + 1}</td>
-                  <td className='px-6 py-4'>{items.procurement_no}</td>
-                  <td className='px-6 py-4'>{items.category.name}</td>
-                  <td className='px-6 py-4'>{items.subcategory.name}</td>
-                  <td className='px-6 py-4'>{items.brand.name}</td>
-                  <td className='px-6 py-4'>{items.description}</td>
+                  <td className="px-6 py-4">{index + 1}</td>
+                  {props?.page == "outbox" ? <td className="px-6 py-4">{items?.reference_no}</td> : <td className="px-6 py-4">{items?.procurement_no}</td>}
+                  {props?.page == "outbox" ? <td className="px-6 py-4">{items?.procurements[0]?.category?.name}</td> : <td className="px-6 py-4">{items?.category.name}</td>}
+                  {props?.page == "outbox" ? <td className="px-6 py-4">{items?.estimated_cost}</td> : <td className="px-6 py-4">{items?.category.name}</td>}
+                  {props?.page == "outbox" ? <td className="px-6 py-4">{items?.status}</td> : <td className="px-6 py-4">{items?.category.name}</td>}
+                  {props?.page != "outbox" && <td className="px-6 py-4">{items.description}</td>}
+                  {/* <td className="px-6 py-4">{items.subcategory.name}</td>
+                  <td className="px-6 py-4">{items.brand.name}</td>
+                  <td className="px-6 py-4">{items.description}</td> */}
 
-                  <td className='px-6 py-4'>
+                  <td className="px-6 py-4">
                     <button
-                      className='bg-[#4338ca] text-white pl-3 pr-3 pt-1 pb-1 rounded hover:bg-[#5d51de]'
-                      onClick={() => openDetailModal(items.procurement_no)}
+                      className="bg-[#4338ca] text-white pl-3 pr-3 pt-1 pb-1 rounded hover:bg-[#5d51de]"
+                      onClick={() => openDetailModal(items?.procurement_no,items?.reference_no)}
+                      
                     >
                       View
                     </button>
@@ -119,7 +154,8 @@ const openDetailModal = (data) =>{
           </tbody>
         </table>
 
-        {/* <nav
+        {/* 
+        <nav
           className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
           aria-label="Table navigation"
         >

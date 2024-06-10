@@ -53,7 +53,7 @@ export default function PreviewBoqSummary() {
 
   const createAndForwardBoq = async () => {
     setIsLoading(true);
-    let body = { ...state, ulb_id: uldId };
+    let body = { ...state, ulb_id: uldId, amount: state?.total_rate };
     let formData = new FormData();
     formData.append("img", state?.img);
     formData.append("boqData", JSON.stringify(body));

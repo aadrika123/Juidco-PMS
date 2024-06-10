@@ -107,13 +107,13 @@ const BoqSearch = () => {
       });
   };
 
-  // console.log(outboxData);
+  console.log(outboxData, "out box data");
 
   const fetchOutboxBoq = () => {
     AxiosInterceptors.get(`${api_fetchBoqListOutbox}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response.data.data);
-        setOutboxData(response.data.data);
+        setOutboxData(response.data.data.data);
       })
       .catch(function (error) {
         toast.error("Something went wrong");
@@ -134,13 +134,13 @@ const BoqSearch = () => {
     fetchOutboxBoq();
   }, []);
 
-  // console.log(dataList);
+  // console.log(outboxData);
   return (
     <>
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
-          titleText={"BOQ List"}
+          titleText={"Prepare BOQ"}
         />
       </div>
 
@@ -149,7 +149,7 @@ const BoqSearch = () => {
           {" "}
           BOQ Listing{" "}
         </h1>
-        <div className='flex p-8 justify-center items-center'>
+        <div className='flex p-8 justify-start items-center'>
           <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
             <label className={`${labelStyle} inline-block mb-2`}>
               Items Category
@@ -206,11 +206,20 @@ const BoqSearch = () => {
               Search
             </button>
           </div>
+
+          {/* <div className='pt-4'>
+          <button
+              className='bg-[#4338ca] hover:bg-[#3d3592] text-white p-2 rounded flex'
+              onClick={prepareForBoq}
+            >
+              Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
+            </button>
+          </div> */}
         </div>
 
-        <div className=' flex justify-between'>
-          <div className='flex ml-5'>
-            <button
+        <div className=' flex justify-start'>
+          <div className='flex ml-12'>
+            {/* <button
               className={`py-2 px-4 ${
                 activeTab === "inbox"
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
@@ -220,8 +229,8 @@ const BoqSearch = () => {
             >
               <FaChartPie className='m-1 text-[1rem]' />
               Inbox
-            </button>
-            <button
+            </button> */}
+            {/* <button
               className={`ml-4 py-2 px-4 ${
                 activeTab === "outbox"
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
@@ -231,7 +240,7 @@ const BoqSearch = () => {
             >
               <FaChartPie className='m-1 text-[1rem]' />
               Outbox
-            </button>
+            </button> */}
           </div>
 
           {activeTab == "inbox" && (
@@ -270,7 +279,7 @@ const BoqSearch = () => {
                 </div>
               )}
 
-              {activeTab === "outbox" && (
+              {/* {activeTab === "outbox" && (
                 <div>
                   {outboxData?.length > 0 ? (
                     <BoqListTable
@@ -285,7 +294,7 @@ const BoqSearch = () => {
                     </div>
                   )}
                 </div>
-              )}
+              )} */}
             </>
           )}
         </div>

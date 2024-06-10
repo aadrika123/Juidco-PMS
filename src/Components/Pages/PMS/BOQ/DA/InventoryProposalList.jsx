@@ -38,7 +38,7 @@ function InventoryProposalList(props) {
       ),
     },
     {
-      Header: "Procurements",
+      Header: "Category",
       accessor: "procurements",
       Cell: ({ cell }) => (
         <div className='pr-2'>
@@ -108,15 +108,6 @@ function InventoryProposalList(props) {
         </div>
       ),
     },
-    // {
-    //   Header: "Remark",
-    //   accessor: "remark",
-    //   Cell: ({ cell }) => (
-    //     <div className='pr-2 text-green-800 truncate w-14'>
-    //       {cell.row.values.remark || "N/A"}
-    //     </div>
-    //   ),
-    // },
     {
       Header: "Action",
       accessor: "id",
@@ -125,9 +116,9 @@ function InventoryProposalList(props) {
           <button
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
-              navigate(
-                `/da-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`
-              )
+              navigate(`/create-boq`, {
+                state: cell.row.values.reference_no,
+              })
             }
           >
             View
