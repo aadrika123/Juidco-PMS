@@ -26,8 +26,7 @@ const BoqListTabs = () => {
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { api_fetchBoqInboxList, api_fetchBoqListOutbox } =
-    ProjectApiList();
+  const { api_fetchBoqInboxList, api_fetchBoqListOutbox } = ProjectApiList();
 
   return (
     <>
@@ -40,15 +39,17 @@ const BoqListTabs = () => {
 
       <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
         <div className='mt-14'>
-          <div>
-            <button
-              className='bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right '
-              onClick={() => navigate(`/boq-search`)}
-            >
-              <GoPlus className='m-1 text-[1rem]' />
-              Prepare BOQ
-            </button>
-          </div>
+          {activeTab == "inbox" && (
+            <div>
+              <button
+                className='bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right '
+                onClick={() => navigate(`/boq-search`)}
+              >
+                <GoPlus className='m-1 text-[1rem]' />
+                Prepare BOQ
+              </button>
+            </div>
+          )}
 
           <div className='flex ml-5'>
             <button
@@ -81,18 +82,12 @@ const BoqListTabs = () => {
         <div className='mt-4'>
           {activeTab === "inbox" && (
             <div>
-              <BoqListing
-                page='inbox'
-                api={api_fetchBoqInboxList}
-              />
+              <BoqListing page='inbox' api={api_fetchBoqInboxList} />
             </div>
           )}
           {activeTab === "outbox" && (
             <div>
-              <BoqListing
-                page='outbox'
-                api={api_fetchBoqListOutbox}
-              />
+              <BoqListing page='outbox' api={api_fetchBoqListOutbox} />
             </div>
           )}
         </div>

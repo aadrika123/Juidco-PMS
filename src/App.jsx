@@ -183,7 +183,7 @@ function App() {
       element: <PreviewBoqSummary />,
     },
     {
-      path: "/boq-details-byId/:refNo",
+      path: "/boq-details-byId/:refNo/:page",
       element: <BoqDetailsById />,
     },
     {

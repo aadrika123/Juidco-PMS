@@ -38,9 +38,11 @@ export default function CreateNewBoq() {
 
   const { api_fetchAllBoqDetails, api_fetchAllBoqDetailsbyId } =
     ProjectApiList();
+
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
+  let colouredBtnStyle = `bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`;
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
     {
@@ -73,61 +75,82 @@ export default function CreateNewBoq() {
     },
   ];
 
+  const fetchBoqDataListById = () => {
+    setisLoading(true);
+
+    AxiosInterceptors.get(`${api_fetchAllBoqDetailsbyId}/${state}`, ApiHeader())
+      .then(function (response) {
+        console.log("boq data fetched by id ...", response?.data?.data);
+        if (response?.data?.status) {
+          setApplicationData(response?.data?.data);
+
+          setPayload((prev) => ({
+            ...prev,
+            procurement: [...response?.data?.data[0].procurements],
+            estimated_cost: response?.data?.data[0]?.estimated_cost,
+            gst: response?.data?.data[0]?.gst,
+            remark: response?.data?.data[0]?.remark,
+            reference_no: response?.data?.data[0]?.reference_no,
+            status: response?.data?.data[0]?.status,
+          }));
+          setisLoading(false);
+        } else {
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        toast.error(error?.response?.data?.error);
+        setisLoading(false);
+      });
+  };
+
   //fetchg data for boq list---------------
   const fetchBoqDataList = () => {
     let estAmtWithoutGst = 0;
     setisLoading(true);
-    {
-      (isCreatePage == "create"
-        ? AxiosInterceptors.post(
-            `${api_fetchAllBoqDetails}`,
-            { procurement_no: state?.proNos },
-            ApiHeader()
-          )
-        : AxiosInterceptors.get(
-            `${api_fetchAllBoqDetailsbyId}/${state}`,
-            ApiHeader()
-          )
-      )
-
-        .then(function (response) {
-          console.log("all boq data fetched ...", response?.data?.data);
-          if (response?.data?.status) {
-            setApplicationData(response?.data?.data);
-            response?.data?.data.map(
-              (data) => (estAmtWithoutGst += data.total_rate)
-            );
-            setPayload((prev) => ({
-              ...prev,
-              procurement: [...response?.data?.data],
-              estimated_cost: estAmtWithoutGst,
-            }));
-            setisLoading(false);
-          } else {
-            toast.error(response?.data?.message);
-          }
-        })
-        .catch(function (error) {
-          console.log(error, "err res");
-          toast.error(error?.response?.data?.error);
+    AxiosInterceptors.post(
+      `${api_fetchAllBoqDetails}`,
+      { procurement_no: state?.proNos },
+      ApiHeader()
+    )
+      .then(function (response) {
+        console.log("all boq data fetched ...", response?.data?.data);
+        if (response?.data?.status) {
+          setApplicationData(response?.data?.data);
+          response?.data?.data.map(
+            (data) => (estAmtWithoutGst += data.total_rate)
+          );
+          setPayload((prev) => ({
+            ...prev,
+            procurement: [...response?.data?.data],
+            estimated_cost: estAmtWithoutGst,
+          }));
           setisLoading(false);
-        });
-    }
+        } else {
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        toast.error(error?.response?.data?.error);
+        setisLoading(false);
+      });
   };
 
   //adding remarks
   const addRemarkHandler = (e, procNo) => {
-    const addedRemarks = applicationData?.map((data) => ({
-      ...data,
-      remark: data?.procurement_no === procNo ? e.target.value : data?.remark,
-    }));
-    console.log(payload, "payload======");
-    setApplicationData(addedRemarks);
-    setPayload((prev) => ({
-      ...prev,
-      procurement: [...addedRemarks],
-      img: imageDoc,
-    }));
+    setPayload((prev) => {
+      const updatedProcurement = prev.procurement.map((data) => ({
+        ...data,
+        remark: data.procurement_no === procNo ? e.target.value : data.remark,
+      }));
+      return {
+        ...prev,
+        procurement: updatedProcurement,
+        img: imageDoc,
+      };
+    });
   };
 
   //estimated amount with gst cal
@@ -136,7 +159,6 @@ export default function CreateNewBoq() {
     let totalEstAmt = (editRate || applicationData)?.map(
       (data) => (totalAmount += data?.total_rate)
     );
-    console.log(totalAmount, "totalAmount==========");
     //calculating gst value
     const gstValue =
       Number(gst) > 0 ? (1 + Number(gst) / 100) * totalAmount : totalAmount;
@@ -152,7 +174,10 @@ export default function CreateNewBoq() {
   const changeRateAmountHandler = (e, procNo) => {
     const editRate = applicationData?.map((data) => ({
       ...data,
-      rate: data?.procurement_no === procNo ? e.target.value : data?.rate,
+      rate:
+        data?.procurement_no === procNo
+          ? Number(e.target.value)
+          : Number(data?.rate),
       total_rate:
         data?.procurement_no === procNo
           ? Number(e.target.value) * Number(data?.quantity)
@@ -170,7 +195,7 @@ export default function CreateNewBoq() {
     if (imageDoc) {
       setPayload((prev) => ({ ...prev, img: imageDoc }));
     } else {
-      fetchBoqDataList();
+      isCreatePage == "create" ? fetchBoqDataList() : fetchBoqDataListById();
     }
   }, [imageDoc]);
 
@@ -185,7 +210,7 @@ export default function CreateNewBoq() {
         titleBarVisibility={titleBarVisibility}
         titleText={"Enter BOQ for Procurement"}
       />
-      <div className='container mx-auto bg-white rounded border border-blue-500 mt-10 shadow-xl p-6'>
+      <div className='container mx-auto bg-white rounded border border-blue-500 mt-10 shadow-xl p-6 mb-10'>
         <div className='p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md'>
           <h2 className='text-2xl '>
             {isCreatePage == "create"
@@ -193,7 +218,7 @@ export default function CreateNewBoq() {
               : "View/Edit BOQ"}
           </h2>
         </div>
-        <div className='shadow-md'>
+        <div className='shadow-md overflow-y-auto'>
           <table className='min-w-full bg-white border-collapse border border-gray-200'>
             <thead className='bg-indigo-50 '>
               {COLUMNS?.length > 0 &&
@@ -363,17 +388,28 @@ export default function CreateNewBoq() {
             </div>
           </div>
         </div>
-        <div className='flex justify-end mb-10 gap-4'>
-          <button className={buttonStyle} onClick={() => setCancelModal(true)}>
-            Cancel
-          </button>
-          <button
-            className={`bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
-            onClick={() => navigate("/boqSummary", { state: payload })}
-          >
-            Next
-          </button>
-        </div>
+      </div>
+      <div className='flex justify-end mb-6 gap-4'>
+        <button className={buttonStyle} onClick={() => navigate(-1)}>
+          Back
+        </button>
+        <button
+          className={colouredBtnStyle}
+          onClick={() => setCancelModal(true)}
+        >
+          Back to Accountant
+        </button>
+        <button
+          className={`bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
+          onClick={() =>
+            navigate(
+              "/boqSummary",
+              isCreatePage == "create" ? { state: payload } : { state: payload }
+            )
+          }
+        >
+          Proceed
+        </button>
       </div>
     </div>
   );

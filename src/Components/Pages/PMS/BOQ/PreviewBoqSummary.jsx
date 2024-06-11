@@ -8,15 +8,18 @@ import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
+import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 
 export default function PreviewBoqSummary() {
   const [isLoading, setIsLoading] = useState(false);
   const [uldId, setUlbId] = useState();
+  const [confirmationModal, setConfirmationModal] = useState(false);
   const { state } = useLocation();
+  console.log(state, "state==========");
   const navigate = useNavigate();
   const { titleBarVisibility } = useContext(contextVar);
 
-  const { api_postForwardAndCreateBoq } = ProjectApiList();
+  const { api_postForwardAndCreateBoq, api_postUpdatedBoq } = ProjectApiList();
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
@@ -52,6 +55,7 @@ export default function PreviewBoqSummary() {
   };
 
   const createAndForwardBoq = async () => {
+    setConfirmationModal(false);
     setIsLoading(true);
     let body = { ...state, ulb_id: uldId, amount: state?.total_rate };
     let formData = new FormData();
@@ -68,7 +72,7 @@ export default function PreviewBoqSummary() {
           }, 2000);
         } else {
           setIsLoading(false);
-          toast.error("Something went wrong");
+          toast.error("Error in Forwarding to DA. Please try again");
         }
       })
       .catch(function (error) {
@@ -78,10 +82,64 @@ export default function PreviewBoqSummary() {
       });
   };
 
+  const updateBoqChanges = async () => {
+    setConfirmationModal(false);
+    setIsLoading(true);
+    let body = {
+      ...state,
+      ulb_id: uldId,
+      amount: state?.total_rate,
+      reference_no: state?.reference_no,
+    };
+    let formData = new FormData();
+    formData.append("img", state?.img);
+    formData.append("boqData", JSON.stringify(body));
+
+    AxiosInterceptors.put(`${api_postUpdatedBoq}`, formData, ApiHeader2())
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Successfully forwarded to DA");
+          setTimeout(() => {
+            setIsLoading(false);
+            navigate("/boq-search");
+          }, 2000);
+        } else {
+          setIsLoading(false);
+          toast.error("Error in Forwarding to DA. Please try again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        setIsLoading(false);
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
+  const confirmationHandler = () => {
+    createAndForwardBoq();
+  };
+
+  const handleCancel = () => {
+    setConfirmationModal(false);
+  };
+
   useEffect(() => {
     const ulb_id = window.localStorage.getItem("ulbId");
     setUlbId(ulb_id);
   }, []);
+
+  //displaying confirmation message
+  if (confirmationModal) {
+    return (
+      <>
+        <ConfirmationModal
+          confirmationHandler={confirmationHandler}
+          handleCancel={handleCancel}
+          message={"Are you sure you want to Forward to DA"}
+        />
+      </>
+    );
+  }
 
   return (
     <div>
@@ -118,14 +176,14 @@ export default function PreviewBoqSummary() {
                   <p className='text-lg font-bold mb-2'>
                     Gst:{" "}
                     <span className='font-semibold text-gray-500'>
-                      {`${state?.gst}% ` || "Gst not added"}
+                      {state?.gst ? `${state?.gst}% ` : "Gst not added"}
                     </span>
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className='shaodow-md rounded-md'>
+            <div className='shaodow-md rounded-md overflow-auto'>
               <table className='min-w-full bg-white border-collapse border border-gray-200 rounded-md'>
                 <thead className='bg-indigo-100 text-black rounded-md'>
                   {COLUMNS?.length > 0 &&
@@ -201,12 +259,30 @@ export default function PreviewBoqSummary() {
           <button className={buttonStyle} onClick={handlePrint}>
             Print
           </button>
-          <button
+          {state?.status === 0 ||
+          state?.status === 1 ||
+          state?.status === -1 ? (
+            <button
+              className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
+              onClick={() => updateBoqChanges(true)}
+            >
+              {isLoading ? "Updating..." : "Save Changes"}
+            </button>
+          ) : (
+            <button
+              className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
+              onClick={() => setConfirmationModal(true)}
+            >
+              {isLoading ? "Processing..." : "Forward To DA"}
+            </button>
+          )}
+          {/* <button
             className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
-            onClick={() => createAndForwardBoq()}
+            onClick={() => setConfirmationModal(true)}
           >
+            
             {isLoading ? "Processing..." : "Forward To DA"}
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
