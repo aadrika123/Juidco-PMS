@@ -115,10 +115,14 @@ function InventoryProposalList(props) {
         <>
           <button
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
-            onClick={() =>
-              navigate(`/create-boq`, {
-                state: cell.row.values.reference_no,
-              })
+            onClick={
+              () =>
+                navigate(
+                  `/boq-details-byId/${cell.row.values.reference_no}/${props?.page}`
+                )
+              // navigate(`/create-boq`, {
+              //   state: cell.row.values.reference_no,
+              // })
             }
           >
             View

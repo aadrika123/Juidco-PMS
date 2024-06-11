@@ -8,17 +8,9 @@
 //    DESCRIPTION - BoqListIng
 //////////////////////////////////////////////////////////////////////////////////////
 
-import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
-import * as yup from "yup";
-import moment from "moment";
-
-import ProjectApiList from "@/Components/api/ProjectApiList";
+import React, { useState } from "react";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import ThemeStyle from "@/Components/Common/ThemeStyle";
-import { RotatingLines } from "react-loader-spinner";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
 function BoqListing(props) {
@@ -34,33 +26,8 @@ function BoqListing(props) {
 
   console.log(refNo);
 
-  const validationSchema = yup.object({
-    // fromDate: yup.string().required("Field Required"),
-    // uptoDate: yup.string().required("Field Required"),
-    // key: yup.string().required("Field Required"),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      // fromDate: moment(new Date()).format("yy-MM-DD"),
-      // uptoDate: moment(new Date()).format("yy-MM-DD"),
-      // key: "",
-    },
-    onSubmit: (values) => {
-      console.log("values =>  ", values);
-      fetchResouceList(values);
-
-      // setchangeData((prev) => prev + 1);
-    },
-    validationSchema,
-  });
-
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
-    // {
-    //   Header: " ",
-    //   Cell: ({ row }) => <div className='flex justify-center items-center'><input type="checkbox" className="h-4 w-4 cursor-pointer"/></div>,
-    // },
     {
       Header: "#",
       Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
@@ -88,13 +55,6 @@ function BoqListing(props) {
         <div className='pr-2'>{cell.row.values.estimated_cost} </div>
       ),
     },
-    // {
-    //   Header: "Status",
-    //   accessor: "brand",
-    //   Cell: ({ cell }) => (
-    //     <div className='pr-2'>{cell.row.values.brand.name || "N/A"}</div>
-    //   ),
-    // },
 
     {
       Header: "Status",
@@ -170,15 +130,6 @@ function BoqListing(props) {
         </div>
       ),
     },
-    // {
-    //   Header: "Remark",
-    //   accessor: "remark",
-    //   Cell: ({ cell }) => (
-    //     <div className='pr-2 text-green-800 truncate'>
-    //       {cell.row.values.remark || ""}
-    //     </div>
-    //   ),
-    // },
     {
       Header: "Action",
       accessor: "id",
@@ -187,7 +138,9 @@ function BoqListing(props) {
           <button
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
-              navigate(`/boq-details-byId/${cell.row.values.reference_no}`)
+              navigate(
+                `/boq-details-byId/${cell.row.values.reference_no}/${props?.page}`
+              )
             }
           >
             View
@@ -196,12 +149,6 @@ function BoqListing(props) {
       ),
     },
   ];
-
-  const fetchResouceList = (data) => {
-    console.log(data, "payload data for searchin water");
-    setRequestBody(data);
-    setchangeData((prev) => prev + 1);
-  };
 
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {

@@ -16,11 +16,11 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
-import ForwardToDAConfirmationModal from "./FOrwardToDAConfirmationModal";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
+import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
@@ -85,6 +85,7 @@ const ViewInventoryDetailsById = (props) => {
   };
 
   const forwardToDA = () => {
+    setIsModalOpen(false);
     // seterroState(false);
     setisLoading(true);
     // let preProcurement = [id];
@@ -116,12 +117,22 @@ const ViewInventoryDetailsById = (props) => {
       });
   };
 
+  const confirmationHandler = () => {
+    forwardToDA();
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  //displaying confirmation message
   if (isModalOpen) {
     return (
       <>
-        <ForwardToDAConfirmationModal
-          forwardToDA={forwardToDA}
-          // responseScreenData={formData}
+        <ConfirmationModal
+          confirmationHandler={confirmationHandler}
+          handleCancel={handleCancel}
+          message={"Are you sure you want to Forward to DA"}
         />
       </>
     );
