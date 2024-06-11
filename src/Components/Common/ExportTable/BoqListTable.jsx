@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const BoqListTable = (props) => {
   const [detailModal, setDetailModal] = useState(false);
   const [singleProNo, setSingleProNo] = useState();
+  
 
   const navigate = useNavigate();
 
@@ -22,7 +23,7 @@ const BoqListTable = (props) => {
   let COLUMNS =
     props?.page == "outbox"
       ? [
-          { header: "" },
+          { header: "#" },
           { header: "S No" },
           { header: "Reference No" },
           { header: "Category" },
@@ -31,7 +32,7 @@ const BoqListTable = (props) => {
           { header: "Action" },
         ]
       : [
-          { header: "" },
+          { header: "#" },
           { header: "S No" },
           { header: "Procurement No" },
           { header: "Category" },
@@ -41,15 +42,17 @@ const BoqListTable = (props) => {
           { header: "Action" },
         ];
 
-  console.log(props?.page);
+  // console.log(count,"counting");
 
   // get the Procurement Id
   const handleChange = (id) => {
     if (!props?.proNos.includes(id)) {
       props?.setProNos((prev) => [...prev, id]);
+      props?.setCount(props?.count +1)
     } else {
       let data = props?.proNos.filter((item) => item != id);
       props?.setProNos(data);
+      props?.setCount(props?.count -1)
     }
   };
 
@@ -76,47 +79,24 @@ const BoqListTable = (props) => {
 
   return (
     <>
-      <div className="m-4 overflow-x-auto shadow-md rounded-lg max-h-96">
+      <div className="m-4 overflow-x-auto max-h-96">
+      <h1>Total Result : <span className="font-bold">{props?.pagination}</span></h1>
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead className="text-sm text-white bg-[#4338ca] sticky -top-0">
-            <tr>
+          <thead className="text-xs text-start text-[#1f2937] uppercase bg-[#e2e8f0] sticky -top-0">
+            <tr className="pl-3">
               {COLUMNS?.length &&
                 COLUMNS?.map((item, index) => (
                   <th scope="col" className="p-4" key={index}>
                     <div className="flex items-center">{item?.header}</div>
                   </th>
                 ))}
-              {/* <th scope="col" className="p-4">
-                <div className="flex items-center"></div>
-              </th>
-              <th scope="col" className="px-6 py-3">
-                S No
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Procurement No
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Category
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Sub Category
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Brand
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Description
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Action
-              </th> */}
             </tr>
           </thead>
-
+                
           <tbody>
             {props?.dataList?.length &&
               props?.dataList.map((items, index) => (
-                <tr className="bg-gray-100 border-b" key={index}>
+                <tr className="text-start text-black border-b hover:bg-[#fafafb]" key={index}>
                   <td className="w-4 p-4">
                     <div className="flex items-center">
                       <input
@@ -130,19 +110,19 @@ const BoqListTable = (props) => {
                     </div>
                   </td>
 
-                  <td className="px-6 py-4">{index + 1}</td>
-                  {props?.page == "outbox" ? <td className="px-6 py-4">{items?.reference_no}</td> : <td className="px-6 py-4">{items?.procurement_no}</td>}
-                  {props?.page == "outbox" ? <td className="px-6 py-4">{items?.procurements[0]?.category?.name}</td> : <td className="px-6 py-4">{items?.category.name}</td>}
-                  {props?.page == "outbox" ? <td className="px-6 py-4">{items?.estimated_cost}</td> : <td className="px-6 py-4">{items?.category.name}</td>}
-                  {props?.page == "outbox" ? <td className="px-6 py-4">{items?.status}</td> : <td className="px-6 py-4">{items?.category.name}</td>}
-                  {props?.page != "outbox" && <td className="px-6 py-4">{items.description}</td>}
+                  <td className="px-6 py-2">{index + 1}</td>
+                  {props?.page == "outbox" ? <td className="px-6 py-2">{items?.reference_no}</td> : <td className="px-6 py-2">{items?.procurement_no}</td>}
+                  {props?.page == "outbox" ? <td className="px-6 py-2">{items?.procurements[0]?.category?.name}</td> : <td className="px-4 py-2">{items?.category.name}</td>}
+                  {props?.page == "outbox" ? <td className="px-6 py-2">{items?.estimated_cost}</td> : <td className="px-4 py-2">{items?.subcategory?.name}</td>}
+                  {props?.page == "outbox" ? <td className="px-6 py-2">{items?.status}</td> : <td className="px-4 py-2">{items?.brand?.name}</td>}
+                  {props?.page != "outbox" && <td className="px-4 py-2">{items.description}</td>}
                   {/* <td className="px-6 py-4">{items.subcategory.name}</td>
                   <td className="px-6 py-4">{items.brand.name}</td>
                   <td className="px-6 py-4">{items.description}</td> */}
 
-                  <td className="px-6 py-4">
+                  <td className="">
                     <button
-                      className="bg-[#4338ca] text-white pl-3 pr-3 pt-1 pb-1 rounded hover:bg-[#5d51de]"
+                      className="bg-[#4338ca] text-white pl-3 pr-3 pt-1 pb-1 ml-3 rounded hover:bg-[#5d51de]"
                       onClick={() => openDetailModal(items?.procurement_no,items?.reference_no)}
                       
                     >

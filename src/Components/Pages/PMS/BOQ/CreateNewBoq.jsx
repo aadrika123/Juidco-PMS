@@ -121,6 +121,7 @@ export default function CreateNewBoq() {
       ...data,
       remark: data?.procurement_no === procNo ? e.target.value : data?.remark,
     }));
+    console.log(payload, "payload======");
     setApplicationData(addedRemarks);
     setPayload((prev) => ({
       ...prev,

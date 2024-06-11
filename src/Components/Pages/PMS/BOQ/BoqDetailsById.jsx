@@ -63,7 +63,7 @@ export default function BoqDetailsById(props) {
     AxiosInterceptors.get(`${api_fetchAllBoqDetailsbyId}/${refNo}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response?.data);
-        setDatalist(response?.data?.data);
+        setDatalist(response?.data?.data[0]);
       })
       .catch(function (error) {
         toast.error("Something went wrong");
