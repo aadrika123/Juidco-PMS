@@ -42,13 +42,14 @@ const TenderForm = () => {
   // console.log(tabNo)
 
   const location = useLocation();
-  // console.log(location)
+  console.log(location?.pathname)
 
   const { titleBarVisibility } = useContext(contextVar);
 
   const handleTabClick = (tabNo) => {
     navigate(`/${location.pathname}?tabNo=${tabNo}`);
   };
+  
 
   const btnDetails = [
     { label: "Basic Details", tab: 1, img: bd },
@@ -58,6 +59,13 @@ const TenderForm = () => {
     { label: "Critical Details", tab: 5, img: cd2 },
     { label: "Bid Openers", tab: 6, img: bo },
   ];
+
+  // useEffect(() => {
+  //   console.log(location.pathname)
+  //   console.log(location.search)
+  //   //  location?.pathname == '/tendering' && navigate(`/tendering${location.search}`) && navigate('/tendering?tabNo=1') 
+  
+  // }, [])
 
   return (
     <>
