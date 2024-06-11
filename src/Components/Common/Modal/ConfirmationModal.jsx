@@ -4,28 +4,14 @@
 //    Date - 25/05/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - ForwardToDAConfirmationModal
-//    DESCRIPTION - ForwardToDAConfirmationModal
+//    Component  - ConfirmationModal
+//    DESCRIPTION - ConfirmationModal
 //////////////////////////////////////////////////////////////////////////////////////
 
-import React, { useState } from "react";
-import PaymentDetailsSepticTank from "./SuccessModal";
-import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
-import check from "@/Components/assets/check.svg";
 import { useNavigate } from "react-router-dom";
 import cancel from "@/Components/assets/cancel.svg";
 
-function ForwardToDAConfirmationModal(props) {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    props?.forwardToDA();
-    navigate(`/sr-inventory-proposal`);
-  };
-
-  const handleCancilClick = () => {
-    window.location.reload();
-  };
+function ConfirmationModal({ confirmationHandler, handleCancel, message }) {
   return (
     <>
       <div></div>
@@ -43,8 +29,7 @@ function ForwardToDAConfirmationModal(props) {
           <div class=' flex-1'>
             <div class=''>
               <h3 class='text-xl  text-center  text-black font-openSans'>
-                Are you sure, <br /> You want to forward this application to DA
-                ?
+                {message}
               </h3>
             </div>
           </div>
@@ -53,7 +38,7 @@ function ForwardToDAConfirmationModal(props) {
               <div>
                 <button
                   className={`bg-white border-blue-900 border text-blue-950 text-sm px-8 py-2 hover:bg-[#4338CA] hover:text-white  rounded leading-5 shadow-lg`}
-                  onClick={handleCancilClick}
+                  onClick={handleCancel}
                 >
                   Cancel
                 </button>
@@ -62,7 +47,7 @@ function ForwardToDAConfirmationModal(props) {
               <div class=''>
                 <button
                   className={`bg-[#4338CA] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
-                  onClick={handleClick}
+                  onClick={confirmationHandler}
                 >
                   Continue
                 </button>
@@ -82,4 +67,4 @@ function ForwardToDAConfirmationModal(props) {
   );
 }
 
-export default ForwardToDAConfirmationModal;
+export default ConfirmationModal;

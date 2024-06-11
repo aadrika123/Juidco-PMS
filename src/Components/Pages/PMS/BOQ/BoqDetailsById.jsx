@@ -12,9 +12,7 @@ import ApiHeader from "@/Components/api/ApiHeader";
 
 export default function BoqDetailsById(props) {
   const [isLoading, setIsLoading] = useState(false);
-  const [uldId, setUlbId] = useState();
   const [dataList, setDatalist] = useState();
-
   const { state } = useLocation();
   const navigate = useNavigate();
   console.log(state, "state=============");
@@ -22,7 +20,7 @@ export default function BoqDetailsById(props) {
 
   const { api_fetchAllBoqDetailsbyId } = ProjectApiList();
 
-  const { refNo } = useParams();
+  const { refNo, page } = useParams();
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
@@ -53,6 +51,8 @@ export default function BoqDetailsById(props) {
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
+  let colouredBtnStyle = `bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`;
+
   const handlePrint = () => {
     window.print();
   };
@@ -82,92 +82,89 @@ export default function BoqDetailsById(props) {
         titleText={"Preview BOQ"}
       />
       <div className={`${isLoading ? "opacity-40" : ""}`}>
-        <div
-          id="printable-content"
-          className=" "
-        >
-          <div className="p-2 bg-[#4338CA] text-white pl-5 mt-6 rounded-md flex justify-between">
-            <h2 className="text-xl ">BOQ Details</h2>
+        <div id='printable-content' className=' '>
+          <div className='p-2 bg-[#4338CA] text-white pl-5 mt-6 rounded-md flex justify-between'>
+            <h2 className='text-xl '>BOQ Details</h2>
             {/* <h2 className="text-xl pr-5">Reference no: {dataList?.reference_no}</h2> */}
           </div>
-          <div className="bg-white rounded font-sans mb-10 border border-[#4338ca] shadow-lg px-4 mt-5">
-            <div className="mb-4 p-4 flex justify-between">
-              <div className="">
-                <p className="text-lg font-bold mb-2">
-                Reference no: 
-                  <span className="font-semibold text-green-600 pl-2 ">
-                  {dataList?.reference_no}
+          <div className='bg-white rounded font-sans mb-10 border border-[#4338ca] shadow-lg px-4 mt-5'>
+            <div className='mb-4 p-4 flex justify-between'>
+              <div className=''>
+                <p className='text-lg font-bold mb-2'>
+                  Reference no:
+                  <span className='font-semibold text-green-600 pl-2 '>
+                    {dataList?.reference_no}
                   </span>
                 </p>
-                <p className="text-lg font-bold mb-2">
+                <p className='text-lg font-bold mb-2'>
                   Category:{" "}
-                  <span className="font-semibold text-gray-500">
+                  <span className='font-semibold text-gray-500'>
                     {dataList?.procurements[0]?.category?.name}
                   </span>
                 </p>
-                <p className="text-lg font-bold">
+                <p className='text-lg font-bold'>
                   SubCategory:{" "}
-                  <span className="font-semibold text-gray-500">
+                  <span className='font-semibold text-gray-500'>
                     {dataList?.procurements[0]?.subcategory?.name}
                   </span>
                 </p>
               </div>
 
-              <div className="">
-              <p className="text-lg font-bold">
-                GST:{" "}
-                <span className="font-semibold text-gray-500">
-                  {dataList?.gst}%
-                </span>
-              </p>
-              <p className="text-lg font-bold ">
-                Status:{" "}
-                <span className="font-semibold text-blue-500">
-                  {dataList?.status == 0 && "Pending"}
-                </span>
-              </p>
+              <div className=''>
+                <p className='text-lg font-bold'>
+                  GST:{" "}
+                  <span className='font-semibold text-gray-500'>
+                    {dataList?.gst}%
+                  </span>
+                </p>
+                <p className='text-lg font-bold '>
+                  Status:{" "}
+                  <span className='font-semibold text-blue-500'>
+                    {dataList?.status == 0 && "Pending"}
+                  </span>
+                </p>
               </div>
             </div>
 
-            <div className="shaodow-md rounded-md">
-              <table className="min-w-full bg-white border-collapse border border-gray-200 rounded-md">
-                <thead className="bg-indigo-100 text-black rounded-md">
+            <div className='shaodow-md rounded-md'>
+              <table className='min-w-full bg-white border-collapse border border-gray-200 rounded-md'>
+                <thead className='bg-indigo-100 text-black rounded-md'>
                   {COLUMNS?.length > 0 &&
                     COLUMNS?.map((heading, index) => (
                       <th
                         key={index}
-                        className="border border-gray-200 px-4 py-2"
+                        className='border border-gray-200 px-4 py-2'
                       >
                         {heading?.header}
                       </th>
                     ))}
                 </thead>
-                <tbody className="font-normal text-center ">
+                <tbody className='font-normal text-center '>
                   {dataList?.procurements?.length > 0 &&
                     dataList?.procurements?.map((row, index) => (
                       <tr key={row?.procurement_no}>
-                        <td className="border border-gray-200 px-4 py-2">
+                        <td className='border border-gray-200 px-4 py-2'>
                           {index + 1}
                         </td>
-                        <td className="border border-gray-200 px-4 py-2 text-sm">
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {row?.description}
                         </td>
-                        <td className="border border-gray-200 px-4 py-2 text-sm">
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {row?.quantity}
                         </td>
-                        <td className="border border-gray-200 px-4 py-2 text-sm">
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {row?.category?.name == "Cleaning Appliances"
                             ? "L"
                             : "kg"}
                         </td>
-                        <td className="border border-gray-200 px-4 py-2 text-sm">
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {row?.rate}
                         </td>
-                        <td className="border border-gray-200 px-4 py-2 text-sm">
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {row?.total_rate}
                         </td>
 
-                        <td className="border border-gray-200 px-4 py-2 text-sm">
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {row?.remark}
                         </td>
                       </tr>
@@ -176,19 +173,21 @@ export default function BoqDetailsById(props) {
               </table>
             </div>
 
-            <div className="p-2 px-4 flex mt-6 rounded-t-md ">
-              <h2 className="text-xl ">Estimated Cost :</h2>
-              <h2 className="text-xl pl-5">{indianAmount(dataList?.estimated_cost)}</h2>
+            <div className='p-2 px-4 flex mt-6 rounded-t-md '>
+              <h2 className='text-xl '>Estimated Cost :</h2>
+              <h2 className='text-xl pl-5'>
+                {indianAmount(dataList?.estimated_cost)}
+              </h2>
             </div>
 
             <div>
-              <p className="text-lg font-semibold px-4">
+              <p className='text-lg font-semibold px-4'>
                 Remark -{" "}
-                <span className="text-gray-400">{dataList?.remark}</span>{" "}
+                <span className='text-gray-400'>{dataList?.remark}</span>{" "}
               </p>
-              <div className="flex justify-end mb-4">
+              <div className='flex justify-end mb-4'>
                 <ImageDisplay
-                  preview={dataList?.img && URL.createObjectURL(dataList?.img)}
+                  preview={dataList?.boq_doc?.imageUrl}
                   imageDoc={dataList?.img}
                   alt={"Notesheet doc"}
                   showPreview={"hidden"}
@@ -199,18 +198,24 @@ export default function BoqDetailsById(props) {
           </div>
         </div>
 
-        <div className="flex justify-end mb-10 gap-4">
+        <div className='flex justify-end mb-10 gap-4'>
           <button className={buttonStyle} onClick={handlePrint}>
             Print
           </button>
-          {props?.page == "outbox" && (
-            <button
-              className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
-              onClick={() => createAndForwardBoq()}
-            >
-              {isLoading ? "Processing..." : "Forward To DA"}
-            </button>
-          )}
+          {page &&
+            page == "inbox" &&
+            (dataList?.status == 0 ||
+              dataList?.status == 1 ||
+              dataList?.status == -1) && (
+              <>
+                <button
+                  className={colouredBtnStyle}
+                  onClick={() => navigate("/create-boq", { state: refNo })}
+                >
+                  Edit
+                </button>
+              </>
+            )}
         </div>
       </div>
     </div>

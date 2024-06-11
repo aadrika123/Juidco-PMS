@@ -153,6 +153,7 @@ export default function ProjectApiList() {
     api_fetchDaBoqListOutbox: `${baseUrl}/api/pms/da/pre-procurement/boq/outbox`, //da
     api_fetchAllBoqDetailsbyId: `${baseUrl}/api/pms/boq/by-ref`,
     api_fetchBoqInboxList: `${baseUrl}/api/pms/acc/pre-procurement/boq`,
+    api_postUpdatedBoq: `${baseUrl}/api/pms/boq`, //update boq
   };
 
   return apiList;
