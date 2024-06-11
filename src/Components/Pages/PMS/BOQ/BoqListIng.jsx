@@ -24,8 +24,6 @@ import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 function BoqListing(props) {
   const navigate = useNavigate();
 
- 
-
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
   const [changeData, setchangeData] = useState(0);
@@ -34,7 +32,7 @@ function BoqListing(props) {
   const [loader, setloader] = useState(false);
   const [refNo, setRefNo] = useState(false);
 
-  console.log(refNo)
+  console.log(refNo);
 
   const validationSchema = yup.object({
     // fromDate: yup.string().required("Field Required"),
@@ -78,7 +76,9 @@ function BoqListing(props) {
       Header: "Category",
       accessor: "procurements",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values?.procurements[0].category?.name} </div>
+        <div className='pr-2'>
+          {cell.row.values?.procurements[0]?.category?.name}{" "}
+        </div>
       ),
     },
     {
@@ -125,6 +125,48 @@ function BoqListing(props) {
           <p className='font-bold text-green-500'>
             {cell.row.values.status == 5 && "Stocks received"}
           </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 69 && "Revised"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 71 && "BOQ already created"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 70 && "Ready for BOQ"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == -70 && "BOQ returned from DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 72 && "Ready for tendering"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == -72 && "Tender back from DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 73 && "Tender is ready"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 69 && "Revised"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 71 && "BOQ already created"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 70 && "Ready for BOQ"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == -70 && "BOQ returned from DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 72 && "Ready for tendering"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == -72 && "Tender back from DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 73 && "Tender is ready"}
+          </p>
         </div>
       ),
     },
@@ -145,9 +187,7 @@ function BoqListing(props) {
           <button
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
-              navigate(
-                `/boq-details-byId/${cell.row.values.reference_no}`
-              )
+              navigate(`/boq-details-byId/${cell.row.values.reference_no}`)
             }
           >
             View
@@ -202,7 +242,6 @@ function BoqListing(props) {
                 subcategoryId={props.subcategoryId}
                 // refNo={refNo}
                 setRefNo={setRefNo}
-                
               />
             </>
           </div>

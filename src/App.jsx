@@ -32,13 +32,18 @@ import ViewReceivedInvtByIdDa from "./Components/Pages/PMS/ReceivedInventory/Dep
 import InventoryDashboardDa2 from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/InventoryDashboardDa2";
 import SrEditPreProcurement from "./Components/Pages/PMS/PrePrecurement/StockReceiver/SrEditPreProcurement";
 import TenderForm from "./Components/Pages/PMS/TenderForm/TenderFormIndex";
+
+//export print
 import ExportTableData from "./Components/Common/ExportTable/ExportTableData";
+
+//BOQ -- Accountant/DA
 import BoqSearch from "./Components/Pages/PMS/BOQ/BoqSearch";
 import CreateNewBoq from "./Components/Pages/PMS/BOQ/CreateNewBoq";
 import PreviewBoqSummary from "./Components/Pages/PMS/BOQ/PreviewBoqSummary";
 import BoqDetailsById from "./Components/Pages/PMS/BOQ/BoqDetailsById";
 import BoqListing from "./Components/Pages/PMS/BOQ/BoqListIng";
 import BoqListTabs from "./Components/Pages/PMS/BOQ/BoqListTabs";
+import BoqListTabsDa from "./Components/Pages/PMS/BOQ/DA/BoqListTabsDa";
 
 const queryClient = new QueryClient();
 
@@ -87,7 +92,7 @@ function App() {
   const allRoutes = [
     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 
-    //------------ Stock Receiver ---------------
+    //------------ Stock Receiver -------
     { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
     { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
     {
@@ -99,8 +104,7 @@ function App() {
     { path: "/sr-rejectedlist", element: <RejectedListTabs /> },
     { path: "/sr-releasedlist", element: <ReleasedListTabs /> },
 
-    //------------ DA ---------------
-    // { path: "/da-inventory-dashboard", element: <InventoryDashboardDa /> },
+    //------------ DA ----------
     { path: "/da-inventory-dashboard", element: <InventoryDashboardDa2 /> },
     {
       path: "/da-inventory-proposal",
@@ -114,14 +118,14 @@ function App() {
 
     /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
 
-    //------------ DA ---------------
+    //------------ DA -------
     { path: "/da-post-precurement", element: <PostPrecurementListTabsDa /> },
     {
       path: "/da-post-precurementbyid/:id/:page",
       element: <PostPreDetailsById />,
     },
 
-    //------------ Stock Receiver ---------------
+    //------- Stock Receiver -----
     { path: "/sr-post-inventory", element: <PostProcurementHome /> },
     {
       path: "/sr-post-InvtDetailsById/:id/:page",
@@ -130,14 +134,14 @@ function App() {
 
     /////////////////////////{*** Received-Inventory ***}//////////////////////////////////////
 
-    //------------ DA ---------------
+    //------------ DA ------
     { path: "/da-received-inventory", element: <ReceivedInvtHomeDa /> },
     {
       path: "/da-received-InvtDetailsById/:id/:page",
       element: <ViewReceivedInvtByIdDa />,
     },
 
-    //------------ Stock Receiver ---------------
+    //-------Stock Receiver -----
 
     { path: "/sr-received-inventory", element: <ReceivedInvtHome /> },
     {
@@ -176,6 +180,10 @@ function App() {
     {
       path: "/boq-details-byId/:refNo",
       element: <BoqDetailsById />,
+    },
+    {
+      path: "/da-boq",
+      element: <BoqListTabsDa />,
     },
   ];
 

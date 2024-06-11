@@ -81,13 +81,34 @@ function ReceivedInvtList(props) {
             {cell.row.values.status.status == 2 && "Release for Tender"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 3 && "Supplier Assigned"}
+            {cell.row.values.status.status == 3 && "Supplier assigned"}
           </p>
           <p className='font-bold text-green-500'>
             {cell.row.values.status.status == 4 && "Incomplete stocks received"}
           </p>
           <p className='font-bold text-green-500'>
             {cell.row.values.status.status == 5 && "Stocks received"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 69 && "Revised"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 71 && "BOQ already created"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 70 && "Ready for BOQ"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == -70 && "BOQ returned from DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 72 && "Ready for tendering"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == -72 && "Tender back from DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 73 && "Tender is ready"}
           </p>
         </div>
       ),

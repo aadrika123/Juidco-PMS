@@ -34,8 +34,10 @@ export default function CreateNewBoq() {
   const { state } = useLocation();
 
   const { titleBarVisibility } = useContext(contextVar);
+  let isCreatePage = state?.proNos?.length > 0 ? "create" : "edit/view";
 
-  const { api_fetchAllBoqDetails } = ProjectApiList();
+  const { api_fetchAllBoqDetails, api_fetchAllBoqDetailsbyId } =
+    ProjectApiList();
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
@@ -72,35 +74,45 @@ export default function CreateNewBoq() {
   ];
 
   //fetchg data for boq list---------------
-  const fetchBoqDataList = (data) => {
+  const fetchBoqDataList = () => {
     let estAmtWithoutGst = 0;
     setisLoading(true);
-    AxiosInterceptors.post(
-      `${api_fetchAllBoqDetails}`,
-      { procurement_no: state?.proNos },
-      ApiHeader()
-    )
-      .then(function (response) {
-        console.log("all boq data fetched ...", response?.data?.data);
-        if (response?.data?.status) {
-          setApplicationData(response?.data?.data);
-          response?.data?.data.map(
-            (data) => (estAmtWithoutGst += data.total_rate)
-          );
-          setPayload((prev) => ({
-            ...prev,
-            procurement: [...response?.data?.data],
-            estimated_cost: estAmtWithoutGst,
-          }));
+    {
+      (isCreatePage == "create"
+        ? AxiosInterceptors.post(
+            `${api_fetchAllBoqDetails}`,
+            { procurement_no: state?.proNos },
+            ApiHeader()
+          )
+        : AxiosInterceptors.get(
+            `${api_fetchAllBoqDetailsbyId}/${state}`,
+            ApiHeader()
+          )
+      )
+
+        .then(function (response) {
+          console.log("all boq data fetched ...", response?.data?.data);
+          if (response?.data?.status) {
+            setApplicationData(response?.data?.data);
+            response?.data?.data.map(
+              (data) => (estAmtWithoutGst += data.total_rate)
+            );
+            setPayload((prev) => ({
+              ...prev,
+              procurement: [...response?.data?.data],
+              estimated_cost: estAmtWithoutGst,
+            }));
+            setisLoading(false);
+          } else {
+            toast.error(response?.data?.message);
+          }
+        })
+        .catch(function (error) {
+          console.log(error, "err res");
+          toast.error(error?.response?.data?.error);
           setisLoading(false);
-        } else {
-          toast.error(response?.data?.message);
-        }
-      })
-      .catch(function (error) {
-        toast.error(error?.response?.data?.error);
-        setisLoading(false);
-      });
+        });
+    }
   };
 
   //adding remarks
@@ -109,6 +121,7 @@ export default function CreateNewBoq() {
       ...data,
       remark: data?.procurement_no === procNo ? e.target.value : data?.remark,
     }));
+    console.log(payload, "payload======");
     setApplicationData(addedRemarks);
     setPayload((prev) => ({
       ...prev,
@@ -174,7 +187,11 @@ export default function CreateNewBoq() {
       />
       <div className='container mx-auto bg-white rounded border border-blue-500 mt-10 shadow-xl p-6'>
         <div className='p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md'>
-          <h2 className='text-2xl '>Enter BOQ for Procurement</h2>
+          <h2 className='text-2xl '>
+            {isCreatePage == "create"
+              ? "Enter BOQ for Procurement"
+              : "View/Edit BOQ"}
+          </h2>
         </div>
         <div className='shadow-md'>
           <table className='min-w-full bg-white border-collapse border border-gray-200'>
@@ -190,8 +207,9 @@ export default function CreateNewBoq() {
                 ))}
             </thead>
             <tbody className='font-normal text-center '>
-              {applicationData?.length > 0 &&
-                applicationData.map((row, index) => (
+              {isCreatePage == "create" &&
+                applicationData?.length > 0 &&
+                applicationData?.map((row, index) => (
                   <tr key={row?.procurement_no}>
                     <td className='border border-gray-200 px-4 py-2'>
                       {index + 1}
@@ -231,6 +249,51 @@ export default function CreateNewBoq() {
                     </td>
                   </tr>
                 ))}
+
+              {isCreatePage != "create" &&
+                applicationData?.map((data) =>
+                  data?.procurements.map((row, index) => (
+                    <tr key={row?.procurement_no}>
+                      <td className='border border-gray-200 px-4 py-2'>
+                        {index + 1}
+                      </td>
+                      <td className='border border-gray-200 px-4 py-2 text-sm'>
+                        {row?.description}
+                      </td>
+                      <td className='border border-gray-200 px-4 py-2 text-sm'>
+                        {row?.quantity}
+                      </td>
+                      <td className='border border-gray-200 px-4 py-2 text-sm'>
+                        {row?.category?.name == "Cleaning Appliances"
+                          ? "L"
+                          : "kg"}
+                      </td>
+                      <td className='border border-gray-200 text-md w-[30px] px-1'>
+                        <input
+                          className='outline-indigo-400 text-md px-2 h-[30px] border border-gray-300 rounded-md'
+                          defaultValue={row?.rate}
+                          onChange={(e) =>
+                            changeRateAmountHandler(e, row?.procurement_no)
+                          }
+                        />
+                      </td>
+                      <td className='border border-gray-200 px-4 py-2 text-sm'>
+                        {row?.total_rate}
+                      </td>
+
+                      <td className='border border-gray-200 p-1'>
+                        <input
+                          placeholder='Enter remarks...'
+                          className='outline-indigo-400 text-md px-2 h-[30px] rounded-md w-full'
+                          onChange={(e) =>
+                            addRemarkHandler(e, row?.procurement_no)
+                          }
+                          defaultValue={row?.remark || ""}
+                        />
+                      </td>
+                    </tr>
+                  ))
+                )}
             </tbody>
           </table>
 
@@ -242,6 +305,7 @@ export default function CreateNewBoq() {
                 placeholder='Add Gst'
                 className='p-1 text-md rounded-md outline-indigo-200 text-center border border-indigo-200'
                 onChange={(e) => estimatedAmountCalc(e.target.value)}
+                defaultValue={applicationData[0]?.gst || 0}
               />
             </div>
             <span>%</span>
@@ -251,7 +315,13 @@ export default function CreateNewBoq() {
               <p>Estimated cost including GSt</p>
             </div>
             <div className='w-2/3 flex justify-center '>
-              <p>{indianAmount(payload?.estimated_cost)}</p>
+              <p>
+                {indianAmount(
+                  payload?.estimated_cost ||
+                    applicationData[0]?.estimated_cost ||
+                    0
+                )}
+              </p>
             </div>
           </div>
         </div>
@@ -262,10 +332,11 @@ export default function CreateNewBoq() {
             <textarea
               name='sr_remark'
               className='border border-[#5448dd] rounded w-full mt-5 p-2 outline-indigo-200'
-              placeholder=' Enter Remarks...'
+              placeholder='Enter Remarks...'
               onChange={(e) =>
                 setPayload((prev) => ({ ...prev, remark: e.target.value }))
               }
+              defaultValue={applicationData[0]?.remark || ""}
               required
             />
           </div>

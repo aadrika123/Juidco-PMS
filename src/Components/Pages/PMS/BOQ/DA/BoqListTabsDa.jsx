@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////////////
-//    Author - Almaash alam
+//    Author - Dimple Kumari
 //    Version - 1.0
-//    Date - 22/05/2024
+//    Date - 10/06/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - InventoryProposalListTabs
-//    DESCRIPTION - InventoryProposalListTabs
+//    Component  - BoqListTabs
+//    DESCRIPTION - BoqListTabs for inbox and outbox
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
@@ -16,9 +16,9 @@ import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 
-const InventoryProposalListTabs = () => {
+const BoqListTabsDa = () => {
   const [activeTab, setActiveTab] = useState("inbox");
-  const { api_fetchProcurementDAListInbox, api_fetchProcurementDAListOutbox } =
+  const { api_fetchDaBoqListInbox, api_fetchDaBoqListOutbox } =
     ProjectApiList();
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -71,7 +71,7 @@ const InventoryProposalListTabs = () => {
             <div>
               <InventoryProposalList
                 page='inbox'
-                api={api_fetchProcurementDAListInbox}
+                api={api_fetchDaBoqListInbox}
               />
             </div>
           )}
@@ -79,7 +79,7 @@ const InventoryProposalListTabs = () => {
             <div>
               <InventoryProposalList
                 page='outbox'
-                api={api_fetchProcurementDAListOutbox}
+                api={api_fetchDaBoqListOutbox}
               />
             </div>
           )}
@@ -89,4 +89,4 @@ const InventoryProposalListTabs = () => {
   );
 };
 
-export default InventoryProposalListTabs;
+export default BoqListTabsDa;

@@ -64,7 +64,6 @@ const ViewInventoryDetailsById = (props) => {
 
     AxiosInterceptors.get(`${url}/${id}`, ApiHeader())
       .then(function (response) {
-        console.log("view water tanker full details ...", response?.data?.data);
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
           setTableData(response?.data?.data?.tran_dtls);
@@ -75,7 +74,6 @@ const ViewInventoryDetailsById = (props) => {
         }
       })
       .catch(function (error) {
-        console.log("==2 details by id error...", error);
         toast.error("Error while getting details...");
         seterroState(true);
         setisLoading(false);
@@ -237,7 +235,7 @@ const ViewInventoryDetailsById = (props) => {
                   imageDoc={imageDoc}
                   alt={"notesheet document"}
                   showPreview={"hidden"}
-                  // width={"[80px]"}
+                  width={"[100px]"}
                 />
               </div>
             </div>
