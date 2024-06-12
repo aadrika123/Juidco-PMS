@@ -49,6 +49,23 @@ body {
     body * {
       visibility: hidden;
     }
+  
+    #printableArea,
+    #printableArea * {
+      visibility: visible;
+    }
+  
+    #printableArea {
+      position: absolute;
+      left: "25%";
+      top: 0;
+    }
+  }
+
+  /* @media print {
+    body * {
+      visibility: hidden;
+    }
     #printable-content, #printable-content * {
       visibility: visible;
     }
@@ -57,36 +74,34 @@ body {
       left: 0;
       top: 0;
       width: 100%;
-      height: auto; /* Ensure the height adjusts to content */
-      overflow: visible; /* Ensure content overflows across pages */
+      height: screen; 
+      overflow: visible; 
     }
-    /* Ensure headers and footers do not overlap */
+   
     header, footer {
       display: none;
     }
-    /* Avoid page break within content blocks */
+    
     .avoid-page-break {
       page-break-inside: avoid;
     }
-    /* Page break after certain sections if needed */
     .page-break {
       page-break-after: always;
     }
-    /* Handle content that must start on a new page */
     .page-break-before {
       page-break-before: always;
     }
-    /* Styling for printed pages to ensure clear breaks */
     @page {
-      margin: 20mm; /* Adjust margins as necessary */
+      margin: 20mm; 
     }
-    /* Ensure no content is cut off */
     .page-content {
       page-break-inside: avoid;
     }
-    /* Ensure images or other elements are not cut off */
     img, table, pre, blockquote {
       page-break-inside: avoid;
     }
-  }
+  } */
+
+
+
   

@@ -154,6 +154,11 @@ export default function ProjectApiList() {
     api_fetchAllBoqDetailsbyId: `${baseUrl}/api/pms/boq/by-ref`,
     api_fetchBoqInboxList: `${baseUrl}/api/pms/acc/pre-procurement/boq`,
     api_postUpdatedBoq: `${baseUrl}/api/pms/boq`, //update boq
+
+    //tendring form
+    api_postBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
+    api_getBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
+    
   };
 
   return apiList;

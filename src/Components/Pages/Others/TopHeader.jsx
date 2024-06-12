@@ -61,7 +61,7 @@ const TopHeader = (props) => {
       {isLoading && <BarLoader />}
       <div className='bg-white flex flex-row justify-between px-2 sm:px-6 border shadow-sm print:hidden py-3'>
         <div className='flex items-center md:w-[15rem] justify-between gap-2 sm:gap-4'>
-          <div>
+          <div className="">
             <p className='font-semibold text-xl '>{brand_tag}</p>
             <p className='text-xs '>{userDetailss?.ulb}</p>
           </div>
@@ -78,10 +78,10 @@ const TopHeader = (props) => {
           </div>
         </div>
 
-        <div className='flex w-1/2'>
+        <div className='flex w-1/2 ju'>
           <span
             onClick={() => openModal2()}
-            className='bg-gray-200 px-4 py-1 cursor-pointer hover:shadow-md'
+            className='bg-gray-200 px-4 py-1 cursor-pointer hover:shadow-md flex justify-center items-center'
           >
             Modules
           </span>{" "}

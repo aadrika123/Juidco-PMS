@@ -42,7 +42,7 @@ const TenderForm = () => {
   // console.log(tabNo)
 
   const location = useLocation();
-  console.log(location?.pathname)
+  // console.log(location?.pathname)
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -81,7 +81,7 @@ const TenderForm = () => {
           <div className='w-1/2 flex'>
             <img src={tender} className='w-11' />
 
-            <h1 className='font-bold text-xl pt-2 pl-3'>Tendring Input Form</h1>
+            <h1 className='font-bold text-xl pt-2 pl-3'>Tendering Input Form</h1>
           </div>
 
           <div className='flex w-[15rem] bg-gray-200 rounded-full h-4 dark:bg-gray-200 mt-4'>

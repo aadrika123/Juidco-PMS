@@ -44,6 +44,7 @@
     "react-table": "^7.8.0",
     "react-to-pdf": "^1.0.1",
     "react-to-print": "^2.14.13",
+    "react-to-print-advanced": "^2.1.2",
     "react-toastify": "^10.0.4",
     "react-tooltip": "^5.26.4",
     "yup": "^1.2.0"

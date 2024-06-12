@@ -1,11 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import d from "@/Components/assets/ptax.jpg";
 import TitleBar from "../../Others/TitleBar";
 import { contextVar } from "@/Components/context/contextVar";
+import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import SuccessModal from "@/Components/Common/Modal/SuccessModal";
+import { useNavigate } from "react-router-dom";
 
 const TenderFormViewDetails = () => {
-
-    const { titleBarVisibility } = useContext(contextVar);
+  const navigate = useNavigate();
+  const { titleBarVisibility } = useContext(contextVar);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccessModal, setIsSuccessModal] = useState(false);
 
   const descTitle = "font-bold text-[#4D4B4B]";
   const descText = "text-[#7d7d7d]";
@@ -14,18 +19,40 @@ const TenderFormViewDetails = () => {
     window.print();
   };
 
+  const confirmationHandler = () => {
+    setIsSuccessModal(false);
+  };
+
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  //displaying confirmation message
+
+  if (isSuccessModal) {
+    return (
+      <>
+        <SuccessModal
+          confirmationHandler={confirmationHandler}
+          message={"Your Form has been submitted Successfully"}
+          requestNoMsg={"Tendring Request No -"}
+        />
+      </>
+    );
+  }
+
   return (
     <>
-     <div className=''>
+      <div className="">
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Tender Input Form Summary"}
         />
       </div>
-      <div className="" id="printable-content">
-        <div className="page-content">
+      <div className="" id='printableArea'>
+        <div className="">
           {/* Basic Details */}
-
+ 
           <div className="bg-[#4338ca] border-b  p-4 rounded mt-5">
             <p className="text-xl text-white">Basic Details</p>
           </div>
@@ -144,7 +171,6 @@ const TenderFormViewDetails = () => {
             </div>
           </div>
 
-            
           {/* Work Item Details */}
 
           <div className="bg-[#4338ca] border-b  p-4 rounded mt-5">
@@ -476,16 +502,29 @@ const TenderFormViewDetails = () => {
             {/* //////// */}
           </div>
 
-          <div className=" mt-10 flex justify-end space-x-4">
-            <button
-              onClick={handlePrint}
-              className="pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
-            >
-              Print
-            </button>
-            <button className="p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse">
-              Submit
-            </button>
+          <div className=" mt-10 flex justify-between space-x-4">
+            <div className="">
+              <button
+                onClick={handleBack}
+                className="pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+              >
+                Back
+              </button>
+            </div>
+            <div className="flex justify-end space-x-5">
+              <button
+                onClick={handlePrint}
+                className="pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+              >
+                Print
+              </button>
+              <button
+                className="p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse"
+                onClick={() => setIsSuccessModal(true)}
+              >
+                Submit
+              </button>
+            </div>
           </div>
         </div>
       </div>
