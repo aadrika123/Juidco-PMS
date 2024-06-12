@@ -159,6 +159,7 @@ export default function ProjectApiList() {
     api_postBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
     api_getBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
     
+    api_postBacktoAcc: `${baseUrl}/api/pms/da/pre-procurement/boq/return-boq`, //boq back to acc
   };
 
   return apiList;

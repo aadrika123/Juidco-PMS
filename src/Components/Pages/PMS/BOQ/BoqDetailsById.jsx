@@ -217,6 +217,15 @@ export default function BoqDetailsById(props) {
               </>
             )}
 
+          {/* {page == "inbox" && applicationData[0]?.status === -1 && (
+            <button
+              className={colouredBtnStyle}
+              onClick={() => setConfirmationModal(true)}
+            >
+              Forward to DA
+            </button>
+          )} */}
+
           <div className="flex justify-end items-center">
             <button className="bg-green-600 hover:bg-green-700 text-white p-2 rounded flex"
              onClick={() => navigate(`/tendering?tabNo=1`,{ state: refNo })}>
