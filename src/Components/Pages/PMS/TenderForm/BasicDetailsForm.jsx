@@ -20,12 +20,10 @@ const BasicDetailsForm = () => {
   // console.log(state)
 
   const { api_postBasicDetails, api_getBasicDetails } = ProjectApiList();
-  const { api_postBasicDetails, api_getBasicDetails } = ProjectApiList();
 
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
   const [imgErr, setImgErr] = useState(false);
-  const [basicDetailData, setBasicDetailData] = useState();
   const [basicDetailData, setBasicDetailData] = useState();
 
   const navigate = useNavigate();
