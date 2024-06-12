@@ -336,9 +336,6 @@ export default function CreateNewBoq() {
     );
   }
 
-  console.log(payload, "payload------------");
-  console.log(applicationData, "applicationData------------");
-
   return (
     <div>
       <TitleBar
