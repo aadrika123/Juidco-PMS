@@ -20,6 +20,9 @@ import TitleBar from "../../Others/TitleBar";
 import { contextVar } from "@/Components/context/contextVar";
 import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 import PreProcurementCancelScreen from "../PrePrecurement/StockReceiver/PreProcurementCancelScreen";
+import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
+import ApiHeader2 from "@/Components/api/ApiHeader2";
 
 export default function CreateNewBoq() {
   const [imageDoc, setImageDoc] = useState();
@@ -28,6 +31,11 @@ export default function CreateNewBoq() {
   const [payload, setPayload] = useState({});
   const [preview, setPreview] = useState();
   const [cancelModal, setCancelModal] = useState(false);
+  const [backtoAccModal, setBacktoAccModal] = useState(false);
+  const [confirmationModal, setConfirmationModal] = useState(false);
+  const [uldId, setUlbId] = useState();
+
+  const [data, setData] = useState({ reference_no: "", remark: "" });
 
   const notesheetRef = useRef();
   const navigate = useNavigate();
@@ -36,8 +44,12 @@ export default function CreateNewBoq() {
   const { titleBarVisibility } = useContext(contextVar);
   let isCreatePage = state?.proNos?.length > 0 ? "create" : "edit/view";
 
-  const { api_fetchAllBoqDetails, api_fetchAllBoqDetailsbyId } =
-    ProjectApiList();
+  const {
+    api_fetchAllBoqDetails,
+    api_fetchAllBoqDetailsbyId,
+    api_postBacktoAcc,
+    api_postForwardAndCreateBoq,
+  } = ProjectApiList();
 
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -75,6 +87,7 @@ export default function CreateNewBoq() {
     },
   ];
 
+  //get boq data by id------------
   const fetchBoqDataListById = () => {
     setisLoading(true);
 
@@ -83,7 +96,10 @@ export default function CreateNewBoq() {
         console.log("boq data fetched by id ...", response?.data?.data);
         if (response?.data?.status) {
           setApplicationData(response?.data?.data);
-
+          setData((prev) => ({
+            ...prev,
+            reference_no: response?.data?.data[0]?.reference_no,
+          }));
           setPayload((prev) => ({
             ...prev,
             procurement: [...response?.data?.data[0].procurements],
@@ -138,6 +154,60 @@ export default function CreateNewBoq() {
       });
   };
 
+  //boq back to accountant------------
+  const backtoAccHandler = () => {
+    setisLoading(true);
+    setBacktoAccModal(false);
+    AxiosInterceptors.post(`${api_postBacktoAcc}`, data, ApiHeader())
+      .then(function (response) {
+        console.log("boq data fetched by id ...", response?.data?.data);
+        if (response?.data?.status) {
+          toast.success("Successfully sent to Accountant");
+          navigate("/da-boq");
+          setisLoading(false);
+        } else {
+          toast.error("Error in sending back to Accountant");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        toast.error(error?.response?.data?.error);
+        setisLoading(false);
+      });
+  };
+
+  //forward to DA
+  const forwardToDA = () => {
+    setConfirmationModal(false);
+    let body = { ...payload, ulb_id: uldId, amount: state?.total_rate };
+
+    let formData = new FormData();
+    formData.append("img", imageDoc);
+    formData.append("boqData", JSON.stringify(body));
+
+    AxiosInterceptors.post(
+      `${api_postForwardAndCreateBoq}`,
+      formData,
+      ApiHeader2()
+    )
+      .then(function (response) {
+        console.log(response?.data?.st, "upper Status");
+        if (response?.data?.status == true) {
+          toast.success(response?.data?.message, "success");
+          setTimeout(() => {
+            navigate("/accountant-boq");
+          }, 2000);
+        } else {
+          toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        console.log("errorrr.... ", error);
+        toast.error(error?.response?.data?.error);
+        // setdeclarationStatus(false);
+      });
+  };
+
   //adding remarks
   const addRemarkHandler = (e, procNo) => {
     setPayload((prev) => {
@@ -159,6 +229,7 @@ export default function CreateNewBoq() {
     let totalEstAmt = (editRate || applicationData)?.map(
       (data) => (totalAmount += data?.total_rate)
     );
+    console.log(totalAmount, "totalAmount");
     //calculating gst value
     const gstValue =
       Number(gst) > 0 ? (1 + Number(gst) / 100) * totalAmount : totalAmount;
@@ -172,23 +243,59 @@ export default function CreateNewBoq() {
 
   //adding rate and calculating amount
   const changeRateAmountHandler = (e, procNo) => {
-    const editRate = applicationData?.map((data) => ({
+    const updatedProcurement = applicationData?.map((data) => ({
       ...data,
-      rate:
-        data?.procurement_no === procNo
-          ? Number(e.target.value)
-          : Number(data?.rate),
       total_rate:
         data?.procurement_no === procNo
           ? Number(e.target.value) * Number(data?.quantity)
           : data?.total_rate,
+      rate:
+        data?.procurement_no === procNo ? Number(e.target.value) : data?.rate,
     }));
-    setApplicationData(editRate);
-    setPayload((prev) => ({
-      ...prev,
-      procurement: [...editRate],
-    }));
-    estimatedAmountCalc(payload?.gst, editRate);
+    setApplicationData(updatedProcurement);
+
+    setPayload((prev) => {
+      const updatedProcurement = prev.procurement?.map((data) => ({
+        ...data,
+        rate:
+          data?.procurement_no === procNo ? Number(e.target.value) : data?.rate,
+        total_rate:
+          data?.procurement_no === procNo
+            ? Number(e.target.value) * Number(data?.quantity)
+            : Number(data?.rate) * Number(data?.quantity),
+        amount:
+          data?.procurement_no === procNo
+            ? Number(e.target.value) * Number(data?.quantity)
+            : Number(data?.rate) * Number(data?.quantity),
+      }));
+      estimatedAmountCalc(payload?.gst, updatedProcurement);
+
+      return {
+        ...prev,
+        procurement: updatedProcurement,
+        img: imageDoc,
+      };
+    });
+  };
+
+  //rejecting page
+  const confirmationHandler = () => {
+    backtoAccHandler();
+  };
+
+  //cancel fn for rejection
+  const handleCancel = () => {
+    setBacktoAccModal(false);
+  };
+
+  //send to da fn
+  const confirmationHandlertoDa = () => {
+    forwardToDA();
+  };
+
+  //cancel fn for da modal
+  const handleCancelDA = () => {
+    setConfirmationModal(false);
   };
 
   useEffect(() => {
@@ -197,12 +304,40 @@ export default function CreateNewBoq() {
     } else {
       isCreatePage == "create" ? fetchBoqDataList() : fetchBoqDataListById();
     }
+    const ulb_id = window.localStorage.getItem("ulbId");
+    setUlbId(ulb_id);
   }, [imageDoc]);
 
   //confirmation for cancel
   if (cancelModal) {
     return <PreProcurementCancelScreen setIsModalOpen2={setCancelModal} />;
   }
+
+  if (backtoAccModal) {
+    return (
+      <RejectionModalRemark
+        confirmationHandler={confirmationHandler}
+        handleCancel={handleCancel}
+        message={"Are you sure you want to send BOQ back to Accountant "}
+        setData={setData}
+      />
+    );
+  }
+
+  if (confirmationModal) {
+    return (
+      <>
+        <ConfirmationModal
+          confirmationHandler={confirmationHandlertoDa}
+          handleCancel={handleCancelDA}
+          message={"Are you sure you want to Forward to DA"}
+        />
+      </>
+    );
+  }
+
+  console.log(payload, "payload------------");
+  console.log(applicationData, "applicationData------------");
 
   return (
     <div>
@@ -260,7 +395,8 @@ export default function CreateNewBoq() {
                       />
                     </td>
                     <td className='border border-gray-200 px-4 py-2 text-sm'>
-                      {row?.total_rate}
+                      {payload?.procurement[index]?.total_rate ||
+                        row?.total_rate}
                     </td>
 
                     <td className='border border-gray-200 p-1'>
@@ -303,7 +439,7 @@ export default function CreateNewBoq() {
                         />
                       </td>
                       <td className='border border-gray-200 px-4 py-2 text-sm'>
-                        {row?.total_rate}
+                        {row?.amount || payload?.procurement[index]?.total_rate}
                       </td>
 
                       <td className='border border-gray-200 p-1'>
@@ -321,7 +457,6 @@ export default function CreateNewBoq() {
                 )}
             </tbody>
           </table>
-
           <div className='flex px-3 py-2 gap-6 bg-white text-center font-bold items-center'>
             <div className='text-center w-[7%] mr-3 '>#</div>
             <div className='flex justify-between pl-9 w-2/3'>
@@ -329,8 +464,12 @@ export default function CreateNewBoq() {
               <input
                 placeholder='Add Gst'
                 className='p-1 text-md rounded-md outline-indigo-200 text-center border border-indigo-200'
-                onChange={(e) => estimatedAmountCalc(e.target.value)}
-                defaultValue={applicationData[0]?.gst || 0}
+                onChange={(e) =>
+                  estimatedAmountCalc(e.target.value, payload?.procurement)
+                }
+                defaultValue={
+                  applicationData[0]?.gst && applicationData[0]?.gst
+                }
               />
             </div>
             <span>%</span>
@@ -365,6 +504,18 @@ export default function CreateNewBoq() {
               required
             />
           </div>
+
+          {/* {applicationData[0]?.boq_doc[0]?.imageUrl && (
+            <div className='flex justify-end m-5 gap-4'>
+              <img
+                src={applicationData[0]?.boq_doc[0]?.imageUrl}
+                alt='doc'
+                width={100}
+                height={100}
+              />
+            </div>
+          )} */}
+
           <div className='flex justify-end m-5 gap-4'>
             <div className='flex justify-end mb-4'>
               <ImageDisplay
@@ -389,16 +540,30 @@ export default function CreateNewBoq() {
           </div>
         </div>
       </div>
+
       <div className='flex justify-end mb-6 gap-4'>
         <button className={buttonStyle} onClick={() => navigate(-1)}>
           Back
         </button>
-        <button
-          className={colouredBtnStyle}
-          onClick={() => setCancelModal(true)}
-        >
-          Back to Accountant
-        </button>
+        {(applicationData[0]?.status === 0 ||
+          applicationData[0]?.status === 1) && (
+          <button
+            className={colouredBtnStyle}
+            onClick={() => setBacktoAccModal(true)}
+          >
+            Back to Accountant
+          </button>
+        )}
+
+        {applicationData[0]?.status === -1 && (
+          <button
+            className={colouredBtnStyle}
+            onClick={() => setConfirmationModal(true)}
+          >
+            Forward to DA
+          </button>
+        )}
+
         <button
           className={`bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
           onClick={() =>

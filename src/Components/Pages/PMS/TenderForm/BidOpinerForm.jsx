@@ -153,9 +153,9 @@ const BidOpinerForm = () => {
       <div className=' mt-5 container'>
         <Formik
           initialValues={initialValues}
-          validationSchema={validationSchema}
+          // validationSchema={validationSchema}
           onSubmit={(values) => {
-            console.log("Form values", values);
+            console.log("Bid Form values", values);
             values = { ...values, imageDoc };
           }}
         >

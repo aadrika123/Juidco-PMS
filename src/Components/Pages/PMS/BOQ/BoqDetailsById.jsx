@@ -216,6 +216,15 @@ export default function BoqDetailsById(props) {
                 </button>
               </>
             )}
+
+          {/* {page == "inbox" && applicationData[0]?.status === -1 && (
+            <button
+              className={colouredBtnStyle}
+              onClick={() => setConfirmationModal(true)}
+            >
+              Forward to DA
+            </button>
+          )} */}
         </div>
       </div>
     </div>
