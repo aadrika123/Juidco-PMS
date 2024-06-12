@@ -76,7 +76,7 @@ const FeeDetailsForm = () => {
     otherCharges: feeDetailData?.otherCharges ||"",
     emdAmount: feeDetailData?.emdAmount ||"",
     emdPercentage: feeDetailData?.emdPercentage ||"",
-    emd_exemption: String(feeDetailData?.emd_exemption) ||"yes",
+    emd_exemption: feeDetailData?.emd_exemption ? "yes":"no",
     emd_fee: feeDetailData?.emd_fee ||"fixed",
     emdFeePayableAt: feeDetailData?.emdFeePayableAt ||"",
     emdFeePayableTo: feeDetailData?.emdFeePayableTo ||"",
@@ -327,7 +327,7 @@ const FeeDetailsForm = () => {
                     />
                   </div>
 
-                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-2 mt-3'>
+                  <div className={`p-7 mb-6 ${values.emd_exemption == "yes" ? "bg-gray-200" : "bg-white"} shadow-xl border border-gray-200 rounded-md grid grid-cols-2 mt-3`}>
                     <div className=''>
                       <RadioButtonsGroup
                         fields={emdFee}
@@ -337,7 +337,7 @@ const FeeDetailsForm = () => {
                         handleChange={handleChange}
                         errors={errors.emd_fee}
                         touched={touched.emd_fee}
-                        disabled={values.emd_exemption == "no"}
+                        disabled={values.emd_exemption == "yes"}
                         defaultValue={"fixed"}
                         setFieldValue={setFieldValue}
                       />
@@ -363,7 +363,7 @@ const FeeDetailsForm = () => {
                           name='emdAmount'
                           onChange={handleChange}
                           value={values.emdAmount}
-                          disabled={values.emd_exemption == "no"}
+                          disabled={values.emd_exemption == "yes"}
                         />
                       </div>
                     ) : (
@@ -386,13 +386,13 @@ const FeeDetailsForm = () => {
                           name='emdPercentage'
                           onChange={handleChange}
                           value={values.emdPercentage}
-                          disabled={values.emd_exemption == "no"}
+                          disabled={values.emd_exemption == "yes"}
                         />
                       </div>
                     )}
                   </div>
 
-                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-2 mt-3'>
+                  <div className={`p-7 mb-6 ${values.emd_exemption == "yes" ? "bg-gray-200" : "bg-white"} shadow-xl border border-gray-200 rounded-md grid grid-cols-2 mt-3`}>
                     <div className=''>
                       <label
                         for='default-input'
@@ -412,7 +412,7 @@ const FeeDetailsForm = () => {
                         name='emdFeePayableAt'
                         onChange={handleChange}
                         value={values.emdFeePayableAt}
-                        disabled={values.emd_exemption == "no"}
+                        disabled={values.emd_exemption == "yes"}
                       />
                     </div>
 
@@ -435,7 +435,7 @@ const FeeDetailsForm = () => {
                         name='emdFeePayableTo'
                         onChange={handleChange}
                         value={values.emdFeePayableTo}
-                        disabled={values.emd_exemption == "no"}
+                        disabled={values.emd_exemption == "yes"}
                       />
                     </div>
                   </div>

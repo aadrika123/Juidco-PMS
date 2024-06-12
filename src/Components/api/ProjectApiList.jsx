@@ -162,6 +162,9 @@ export default function ProjectApiList() {
     api_getWorkDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/work-details`,
     api_postFeeDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/fee-details`,
     api_getFeeDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/fee-details`,
+    api_postCriticalDatesDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/critical-dates`,
+    api_getCriticalDatesDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/critical-dates`,
+    
 
     api_postBacktoAcc: `${baseUrl}/api/pms/da/pre-procurement/boq/return-boq`, //boq back to acc
     api_postCoverDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/cover-details`,
