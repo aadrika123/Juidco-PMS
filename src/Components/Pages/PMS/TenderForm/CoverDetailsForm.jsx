@@ -7,6 +7,9 @@ import UploadDoc from "./UploadDoc";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
+import ApiHeader2 from "@/Components/api/ApiHeader2";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 
 const tabsCover1 = [
   {
@@ -40,6 +43,7 @@ const CoverDetailsForm = (props) => {
   const [activeTab, setActiveTab] = useState(tabsCover1[0]?.value);
   const [imageDoc, setImageDoc] = useState([]);
   const [preview, setPreview] = useState();
+  const { api_postCoverDetails } = ProjectApiList();
 
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -97,8 +101,33 @@ const CoverDetailsForm = (props) => {
         return toast.error(`Please upload valid documents for ${tab.name}`);
       }
     });
+    submitForm(values);
     console.log(values, "form values");
-    navigate(`/tendering?tabNo=${3}`);
+    // navigate(`/tendering?tabNo=${3}`);
+  };
+
+  // submit form
+  const submitForm = async (values) => {
+    let formData = new FormData();
+
+    for (let key in values) {
+      formData.append(key, values[key]);
+    }
+    // formData.append("preTender", JSON.stringify(values.noOfCovers));
+
+    AxiosInterceptors.post(api_postCoverDetails, formData, ApiHeader2())
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Basic data Submitted successfully");
+          navigate(`/tendering?tabNo=${3}`);
+        } else {
+          toast.error("Error in getting basic details");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        toast.error(error?.response?.data?.error);
+      });
   };
 
   return (
