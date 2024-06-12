@@ -11,10 +11,13 @@ const TenderFormButton = ({resetForm}) => {
   const tabNo = Number(searchParams.get("tabNo"));
 //   console.log(tabNo);
 
+const { state } = useLocation();
+  console.log(state);
+
   const handleBack = (tabNo) => {
     let newTab = tabNo - 1;
     console.log(newTab);
-    navigate(`/${location.pathname}?tabNo=${newTab}`);
+    navigate(`/${location.pathname}?tabNo=${newTab}`,{state});
   };
 
   return (

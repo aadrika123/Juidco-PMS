@@ -42,6 +42,7 @@ const CoverDetailsForm = (props) => {
   const [preview, setPreview] = useState();
 
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const covers = [
     { label: "Single Cover", value: "single_cover" },
@@ -204,7 +205,7 @@ const CoverDetailsForm = (props) => {
                   </div>
                 </div>
 
-                <TenderFormButton resetForm={resetForm} />
+                <TenderFormButton resetForm={resetForm} state={state} />
 
                 {/* <div className="mb-5">
                   <button

@@ -4,10 +4,24 @@ import * as Yup from "yup";
 import CustomCheckboxGroup from "@/Components/Common/FormMolecules/CustomCheckboxGroup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader2 from "@/Components/api/ApiHeader2";
+import toast from "react-hot-toast";
+import ApiHeader from "@/Components/api/ApiHeader";
+import { useEffect, useState } from "react";
+import { CleanHands } from "@mui/icons-material";
 
 const WorkDetailsForm = () => {
   const navigate = useNavigate();
+  
+  const { api_postWorkDetails, api_getWorkDetails } = ProjectApiList();
+
+  const [workDetailData,setWorkDetailData] = useState()
+  const { state } = useLocation();
+  console.log(state)
+
 
   const productCategory = [
     { label: "Civil Works", value: "civil_works" },
@@ -57,7 +71,7 @@ const WorkDetailsForm = () => {
   ];
 
   const validationSchema = Yup.object({
-    tenderReference_No: Yup.string().required(),
+    reference_no: Yup.string().required(),
     workDiscription: Yup.string().required(),
     pre_qualification_details: Yup.string().required(),
     product_category: Yup.array().min(1).required(),
@@ -88,39 +102,56 @@ const WorkDetailsForm = () => {
 
   // Initial values for additional form fields can go here
   const initialValues = {
-    tenderReference_No: "",
-    workDiscription: "",
-    pre_qualification_details: "",
-    product_category: [],
-    productSubCategory: "",
-    contract_type: "",
-    tender_values: "",
-    bid_validity: "",
-    completionPeriod: "",
-    location: "",
-    pinCode: "",
-    pre_bid: "yes",
-    preBidMeeting: "",
-    preBidMeetingAdd: "",
-    bidOpeningPlace: "",
-    tenderer_class: [],
-    invstOffName: "",
-    invstOffAdd: "",
-    invstOffEmail_Ph: "",
+    reference_no: workDetailData?.reference_no || "",
+    workDiscription: workDetailData?.workDiscription || "",
+    pre_qualification_details: workDetailData?.pre_qualification_details || "",
+    product_category: workDetailData?.product_category || [],
+    productSubCategory: workDetailData?.productSubCategory || "",
+    contract_type: workDetailData?.contract_type || "",
+    tender_values: workDetailData?.tender_values || "",
+    bid_validity: workDetailData?.bid_validity || "",
+    completionPeriod: workDetailData?.completionPeriod || "",
+    location: workDetailData?.location || "",
+    pinCode: workDetailData?.pinCode || "",
+    pre_bid: String(workDetailData?.pre_bid) || "yes",
+    preBidMeeting: workDetailData?.preBidMeeting || "",
+    preBidMeetingAdd: workDetailData?.preBidMeetingAdd || "",
+    bidOpeningPlace: workDetailData?.bidOpeningPlace || "",
+    tenderer_class: workDetailData?.tenderer_class || [],
+    invstOffName: workDetailData?.invstOffName || "",
+    invstOffAdd: workDetailData?.invstOffAdd || "",
+    invstOffEmail_Ph: workDetailData?.invstOffEmail_Ph || "",
   };
+  // const initialValues = {
+  //   reference_no: "",
+  //   workDiscription: "",
+  //   pre_qualification_details: "",
+  //   product_category: [],
+  //   productSubCategory: "",
+  //   contract_type: "",
+  //   tender_values: "",
+  //   bid_validity: "",
+  //   completionPeriod: "",
+  //   location: "",
+  //   pinCode: "",
+  //   pre_bid: "yes",
+  //   preBidMeeting: "",
+  //   preBidMeetingAdd: "",
+  //   bidOpeningPlace: "",
+  //   tenderer_class: [],
+  //   invstOffName: "",
+  //   invstOffAdd: "",
+  //   invstOffEmail_Ph: "",
+  // };
 
   // submit form
   const submitForm = async (values) => {
-    let formData = new FormData();
-    formData.append("img", values?.img);
-    delete values.img;
-    formData.append("preTender", JSON.stringify(values));
 
-    AxiosInterceptors.post(api_postBasicDetails, formData, ApiHeader2())
+    AxiosInterceptors.post(api_postWorkDetails, {"preTender": JSON.stringify(values)}, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           toast.success("Basic data Submitted successfully");
-          navigate(`/tendering?tabNo=${4}`)
+          navigate(`/tendering?tabNo=${4}`,{state});
         } else {
           toast.error("Error in Forwarding to DA. Please try again");
         }
@@ -131,18 +162,43 @@ const WorkDetailsForm = () => {
       });
   };
 
+  ///////////{*** APPLICATION FULL DETAIL ***}/////////
+
+  // console.log(state)
+  // console.log(workDetailData)
+
+  const getApplicationDetail = (refNo) => {
+
+    AxiosInterceptors.get(`${api_getWorkDetails}/${refNo}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setWorkDetailData(response?.data?.data);
+        } else {
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while getting details...");
+      });
+  };
+
+  useEffect(()=>{
+    let refNo = window.localStorage.getItem("reference_no");
+    getApplicationDetail(refNo);
+  },[])
+
   return (
     <>
       {/* <div className='bg-white rounded-xl w-full shadow-md p-4 border border-indigo-200'> */}
       {/* Heading  */}
-      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
-        <img src={wd} className='pl-2' />
-        <h1 className='pt-1 pl-2 text-xl'>Work Item Details</h1>
+      <div className="bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl">
+        <img src={wd} className="pl-2" />
+        <h1 className="pt-1 pl-2 text-xl">Work Item Details</h1>
       </div>
 
       {/* Form Starting */}
 
-      <div className=' mt-5 container'>
+      <div className=" mt-5 container">
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -162,31 +218,31 @@ const WorkDetailsForm = () => {
           }) => (
             <Form>
               <>
-                <div className=' container mx-auto capitalize'>
-                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                <div className=" container mx-auto capitalize">
+                  <div className="p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
                     <>
                       <label
-                        for='default-input'
+                        for="default-input"
                         className={`block mb-2 text-sm font-medium text-gray-900 ${
-                          errors.tenderReference_No &&
-                          touched.tenderReference_No &&
+                          errors.reference_no &&
+                          touched.reference_no &&
                           "text-red-500"
                         }`}
                       >
                         Tender Reference No{" "}
-                        <span className='text-red-500'>*</span>
+                        <span className="text-red-500">*</span>
                       </label>
                       <input
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-1/3 p-2.5'
-                        placeholder='Reference No'
-                        name='tenderReference_No'
+                        type="text"
+                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-1/3 p-2.5"
+                        placeholder="Reference No"
+                        name="reference_no"
                         onChange={handleChange}
-                        value={values.tenderReference_No}
+                        value={values.reference_no}
                       />
 
                       <label
-                        for='default-input'
+                        for="default-input"
                         className={`block mb-2 mt-3 text-sm font-medium text-gray-900 ${
                           errors.workDiscription &&
                           touched.workDiscription &&
@@ -194,15 +250,15 @@ const WorkDetailsForm = () => {
                         }`}
                       >
                         Work Discriptiion
-                        <span className='text-red-500'>*</span>
+                        <span className="text-red-500">*</span>
                       </label>
 
-                      <div className=' relative'>
+                      <div className=" relative">
                         <textarea
-                          name='workDiscription'
-                          type='text'
-                          className=' bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                          placeholder='Work Discriptiion'
+                          name="workDiscription"
+                          type="text"
+                          className=" bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5"
+                          placeholder="Work Discriptiion"
                           value={values.workDiscription}
                           onChange={(e) => {
                             if (values.workDiscription.length < 300) {
@@ -222,7 +278,7 @@ const WorkDetailsForm = () => {
                       </div>
 
                       <label
-                        for='default-input'
+                        for="default-input"
                         className={`block mb-2 mt-3 text-sm font-medium text-gray-900 ${
                           errors.pre_qualification_details &&
                           touched.pre_qualification_details &&
@@ -230,15 +286,15 @@ const WorkDetailsForm = () => {
                         }`}
                       >
                         Pre Qualification Details
-                        <span className='text-red-500'>*</span>
+                        <span className="text-red-500">*</span>
                       </label>
 
-                      <div className='relative'>
+                      <div className="relative">
                         <textarea
-                          name='pre_qualification_details'
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-20 p-2.5'
-                          placeholder='Tender Fee, EMD, Affidavit'
+                          name="pre_qualification_details"
+                          type="text"
+                          className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-20 p-2.5"
+                          placeholder="Tender Fee, EMD, Affidavit"
                           value={values.pre_qualification_details}
                           onChange={(e) => {
                             if (values.pre_qualification_details.length < 300) {
@@ -259,7 +315,7 @@ const WorkDetailsForm = () => {
                     </>
                   </div>
 
-                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                  <div className="p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
                     <>
                       <CustomCheckboxGroup
                         fields={productCategory}
@@ -273,9 +329,9 @@ const WorkDetailsForm = () => {
                         value={values.product_category}
                       />
 
-                      <div className='relative'>
+                      <div className="relative">
                         <label
-                          for='default-input'
+                          for="default-input"
                           className={`block mb-2 mt-5 text-sm font-medium text-gray-900 ${
                             errors.productSubCategory &&
                             touched.productSubCategory &&
@@ -283,13 +339,13 @@ const WorkDetailsForm = () => {
                           }`}
                         >
                           Product Sub Category
-                          <span className='text-red-500'>*</span>
+                          <span className="text-red-500">*</span>
                         </label>
                         <textarea
-                          name='productSubCategory'
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                          placeholder='Sub Category'
+                          name="productSubCategory"
+                          type="text"
+                          className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5"
+                          placeholder="Sub Category"
                           onChange={(e) => {
                             if (values.productSubCategory.length < 300) {
                               handleChange(e);
@@ -309,7 +365,7 @@ const WorkDetailsForm = () => {
                     </>
                   </div>
 
-                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex justify-between'>
+                  <div className="p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex justify-between">
                     <>
                       <RadioButtonsGroup
                         fields={contractType}
@@ -346,10 +402,10 @@ const WorkDetailsForm = () => {
                     </>
                   </div>
 
-                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-3'>
+                  <div className="p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-3">
                     <div>
                       <label
-                        for='default-input'
+                        for="default-input"
                         className={`block mb-2 text-sm font-medium text-gray-900 ${
                           errors.completionPeriod &&
                           touched.completionPeriod &&
@@ -357,13 +413,13 @@ const WorkDetailsForm = () => {
                         }`}
                       >
                         Completion Period in Months
-                        <span className='text-red-500'>*</span>
+                        <span className="text-red-500">*</span>
                       </label>
                       <input
-                        type='number'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
-                        placeholder='Completion Period'
-                        name='completionPeriod'
+                        type="number"
+                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5"
+                        placeholder="Completion Period"
+                        name="completionPeriod"
                         onChange={handleChange}
                         value={values.completionPeriod}
                       />
@@ -371,19 +427,19 @@ const WorkDetailsForm = () => {
 
                     <div>
                       <label
-                        for='default-input'
+                        for="default-input"
                         className={`block mb-2 text-sm font-medium text-gray-900 ${
                           errors.location && touched.location && "text-red-500"
                         }`}
                       >
                         Location (Work/Services/Items)
-                        <span className='text-red-500'>*</span>
+                        <span className="text-red-500">*</span>
                       </label>
                       <input
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
-                        placeholder='Location'
-                        name='location'
+                        type="text"
+                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5"
+                        placeholder="Location"
+                        name="location"
                         onChange={handleChange}
                         value={values.location}
                       />
@@ -391,23 +447,23 @@ const WorkDetailsForm = () => {
 
                     <div>
                       <label
-                        for='default-input'
+                        for="default-input"
                         className={`block mb-2 text-sm font-medium text-gray-900 ${
                           errors.pinCode && touched.pinCode && "text-red-500"
                         }`}
                       >
                         Pin Code
-                        <span className='text-red-500'>*</span>
+                        <span className="text-red-500">*</span>
                       </label>
                       <input
-                        type='number'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
-                        placeholder='Pin Code'
-                        name='pinCode'
+                        type="text"
+                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5"
+                        placeholder="Pin Code"
+                        name="pinCode"
                         onChange={handleChange}
                         value={values.pinCode}
                       />
-                      <p className='text-red-500 text-xs '>
+                      <p className="text-red-500 text-xs ">
                         {touched.pinCode && errors.pinCode
                           ? errors.pinCode
                           : null}
@@ -415,7 +471,7 @@ const WorkDetailsForm = () => {
                     </div>
                   </div>
 
-                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                  <div className="p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
                     <RadioButtonsGroup
                       fields={preBidMeeting}
                       title={"Pre Bid Meeting"}
@@ -429,7 +485,7 @@ const WorkDetailsForm = () => {
                     />
 
                     <label
-                      for='default-input'
+                      for="default-input"
                       className={`block mb-2 mt-7 text-sm font-medium text-gray-900 ${
                         errors.preBidMeeting &&
                         touched.preBidMeeting &&
@@ -437,15 +493,15 @@ const WorkDetailsForm = () => {
                       }`}
                     >
                       Pre Bid Meeting Place
-                      <span className='text-red-500'>*</span>
+                      <span className="text-red-500">*</span>
                     </label>
 
-                    <div className='relative'>
+                    <div className="relative">
                       <textarea
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                        placeholder='Meeting Place'
-                        name='preBidMeeting'
+                        type="text"
+                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5"
+                        placeholder="Meeting Place"
+                        name="preBidMeeting"
                         value={values.preBidMeeting}
                         disabled={values.pre_bid == "no"}
                         onChange={(e) => {
@@ -465,7 +521,7 @@ const WorkDetailsForm = () => {
                     </div>
 
                     <label
-                      for='default-input'
+                      for="default-input"
                       className={`block mb-2 mt-3 text-sm font-medium text-gray-900 ${
                         errors.preBidMeetingAdd &&
                         touched.preBidMeetingAdd &&
@@ -473,15 +529,15 @@ const WorkDetailsForm = () => {
                       }`}
                     >
                       Pre Bid Meeting Address
-                      <span className='text-red-500'>*</span>
+                      <span className="text-red-500">*</span>
                     </label>
 
-                    <div className='relative'>
+                    <div className="relative">
                       <textarea
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                        placeholder='Meeting Address'
-                        name='preBidMeetingAdd'
+                        type="text"
+                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5"
+                        placeholder="Meeting Address"
+                        name="preBidMeetingAdd"
                         value={values.preBidMeetingAdd}
                         disabled={values.pre_bid == "no"}
                         onChange={(e) => {
@@ -501,9 +557,9 @@ const WorkDetailsForm = () => {
                     </div>
                   </div>
 
-                  <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                  <div className="p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
                     <label
-                      for='default-input'
+                      for="default-input"
                       className={`block mb-2  text-sm font-medium text-gray-900 ${
                         errors.bidOpeningPlace &&
                         touched.bidOpeningPlace &&
@@ -511,15 +567,15 @@ const WorkDetailsForm = () => {
                       }`}
                     >
                       Bid Opening Place
-                      <span className='text-red-500'>*</span>
+                      <span className="text-red-500">*</span>
                     </label>
 
-                    <div className='relative'>
+                    <div className="relative">
                       <textarea
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                        placeholder='Bid Opening Place'
-                        name='bidOpeningPlace'
+                        type="text"
+                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5"
+                        placeholder="Bid Opening Place"
+                        name="bidOpeningPlace"
                         value={values.bidOpeningPlace}
                         onChange={(e) => {
                           if (values.preBidMeeting.length < 300) {
@@ -538,8 +594,8 @@ const WorkDetailsForm = () => {
                     </div>
                   </div>
 
-                  <div className='flex space-x-3'>
-                    <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md w-1/2'>
+                  <div className="flex space-x-3">
+                    <div className="p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md w-1/2">
                       <CustomCheckboxGroup
                         fields={tendererClass}
                         title={"Tenderer className"}
@@ -564,7 +620,7 @@ const WorkDetailsForm = () => {
                       />
 
                       <label
-                        for='default-input'
+                        for="default-input"
                         className={`block mb-2 mt-7 text-sm font-medium text-gray-900 ${
                           errors.invstOffName &&
                           touched.invstOffName &&
@@ -572,21 +628,21 @@ const WorkDetailsForm = () => {
                         }`}
                       >
                         Inviting Officer Name
-                        <span className='text-red-500'>*</span>
+                        <span className="text-red-500">*</span>
                       </label>
                       <input
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full  p-2.5'
-                        placeholder='Inviting Officer Name'
-                        name='invstOffName'
+                        type="text"
+                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full  p-2.5"
+                        placeholder="Inviting Officer Name"
+                        name="invstOffName"
                         onChange={handleChange}
                         value={values.invstOffName}
                       />
                     </div>
 
-                    <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md w-1/2 flex flex-col justify-center item-center'>
+                    <div className="p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md w-1/2 flex flex-col justify-center item-center">
                       <label
-                        for='default-input'
+                        for="default-input"
                         className={`block mb-2  text-sm font-medium text-gray-900  ${
                           errors.invstOffAdd &&
                           touched.invstOffAdd &&
@@ -594,19 +650,19 @@ const WorkDetailsForm = () => {
                         }`}
                       >
                         Inviting Officer Address
-                        <span className='text-red-500'>*</span>
+                        <span className="text-red-500">*</span>
                       </label>
                       <input
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
-                        placeholder='Bid Opening Place'
-                        name='invstOffAdd'
+                        type="text"
+                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                        placeholder="Bid Opening Place"
+                        name="invstOffAdd"
                         onChange={handleChange}
                         value={values.invstOffAdd}
                       />
 
                       <label
-                        for='default-input'
+                        for="default-input"
                         className={`block mb-2 mt-7 text-sm font-medium text-gray-900 ${
                           errors.invstOffEmail_Ph &&
                           touched.invstOffEmail_Ph &&
@@ -614,13 +670,13 @@ const WorkDetailsForm = () => {
                         }`}
                       >
                         Inviting Officer Phone/Email
-                        <span className='text-red-500'>*</span>
+                        <span className="text-red-500">*</span>
                       </label>
                       <input
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
-                        placeholder='Inviting Officer Name'
-                        name='invstOffEmail_Ph'
+                        type="text"
+                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                        placeholder="Inviting Officer Name"
+                        name="invstOffEmail_Ph"
                         onChange={handleChange}
                         value={values.invstOffEmail_Ph}
                       />
@@ -628,7 +684,7 @@ const WorkDetailsForm = () => {
                   </div>
                 </div>
 
-                <TenderFormButton resetForm={resetForm} />
+                <TenderFormButton resetForm={resetForm} state={state} />
 
                 {/* <div className='mb-5'>
                   <button

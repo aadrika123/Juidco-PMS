@@ -1,13 +1,24 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import fd from "@/Components/assets/fd.svg";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import toast from "react-hot-toast";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader from "@/Components/api/ApiHeader";
 
 const FeeDetailsForm = () => {
   const navigate = useNavigate();
+  // const { state } = useLocation();
+  // console.log(state)
+
+  const { api_postFeeDetails, api_getFeeDetails } = ProjectApiList();
+
+  const [feeDetailData,setFeeDetailData] = useState()
+  const [referenceNo,setReferenceNo] = useState()
 
   const emdFee = [
     { label: "Fixed", value: "fixed" },
@@ -53,20 +64,82 @@ const FeeDetailsForm = () => {
     }),
   });
 
+  // console.log(referenceNo)
+
   const initialValues = {
-    tenderFee: "",
-    processingFee: "",
-    tenderFeePayableTo: "",
-    tenderFeePayableAt: "",
-    surcharges: "",
-    otherCharges: "",
-    emdAmount: "",
-    emdPercentage: "",
-    emd_exemption: "yes",
-    emd_fee: "fixed",
-    emdFeePayableAt: "",
-    emdFeePayableTo: "",
+    reference_no:referenceNo,
+    tenderFee: feeDetailData?.tenderFee ||"",
+    processingFee: feeDetailData?.processingFee ||"",
+    tenderFeePayableTo: feeDetailData?.tenderFeePayableTo ||"",
+    tenderFeePayableAt: feeDetailData?.tenderFeePayableAt ||"",
+    surcharges: feeDetailData?.surcharges ||"",
+    otherCharges: feeDetailData?.otherCharges ||"",
+    emdAmount: feeDetailData?.emdAmount ||"",
+    emdPercentage: feeDetailData?.emdPercentage ||"",
+    emd_exemption: String(feeDetailData?.emd_exemption) ||"yes",
+    emd_fee: feeDetailData?.emd_fee ||"fixed",
+    emdFeePayableAt: feeDetailData?.emdFeePayableAt ||"",
+    emdFeePayableTo: feeDetailData?.emdFeePayableTo ||"",
   };
+
+  // const initialValues = {
+  //   reference_no:state,
+  //   tenderFee: "",
+  //   processingFee: "",
+  //   tenderFeePayableTo: "",
+  //   tenderFeePayableAt: "",
+  //   surcharges: "",
+  //   otherCharges: "",
+  //   emdAmount: "",
+  //   emdPercentage: "",
+  //   emd_exemption: "yes",
+  //   emd_fee: "fixed",
+  //   emdFeePayableAt: "",
+  //   emdFeePayableTo: "",
+  // };
+
+  // submit form
+  const submitForm = async (values) => {
+
+    AxiosInterceptors.post(api_postFeeDetails, {"preTender": JSON.stringify(values)}, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Basic data Submitted successfully");
+          navigate(`/tendering?tabNo=${5}`);
+        } else {
+          toast.error("Error in Forwarding to DA. Please try again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
+
+ 
+
+  const getApplicationDetail = (refNo) => {
+
+    AxiosInterceptors.get(`${api_getFeeDetails}/${refNo}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setFeeDetailData(response?.data?.data);
+        } else {
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while getting details...");
+      });
+  };
+
+  useEffect(()=>{
+    let refNo = window.localStorage.getItem("reference_no");
+    setReferenceNo(refNo)
+    getApplicationDetail(refNo);
+  },[])
+
 
   return (
     <>
@@ -83,9 +156,11 @@ const FeeDetailsForm = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
+          enableReinitialize={true}
           onSubmit={(values) => {
             console.log("Form values", values);
-            navigate(`/tendering?tabNo=${5}`);
+            submitForm(values)
+            
           }}
         >
           {({
@@ -113,7 +188,7 @@ const FeeDetailsForm = () => {
                         <span className='text-red-500'>*</span>
                       </label>
                       <input
-                        type='text'
+                        type='number'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 '
                         placeholder='Tender Fee'
                         name='tenderFee'
@@ -135,7 +210,7 @@ const FeeDetailsForm = () => {
                         <span className='text-red-500'>*</span>
                       </label>
                       <input
-                        type='text'
+                        type='number'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
                         placeholder='Processing Fee'
                         name='processingFee'
@@ -201,7 +276,7 @@ const FeeDetailsForm = () => {
                         <span className='text-red-500'>*</span>
                       </label>
                       <input
-                        type='text'
+                        type='number'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
                         placeholder='Surcharges'
                         name='surcharges'
@@ -223,7 +298,7 @@ const FeeDetailsForm = () => {
                         <span className='text-red-500'>*</span>
                       </label>
                       <input
-                        type='text'
+                        type='number'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
                         placeholder='Other Charges'
                         name='otherCharges'
@@ -262,7 +337,7 @@ const FeeDetailsForm = () => {
                         handleChange={handleChange}
                         errors={errors.emd_fee}
                         touched={touched.emd_fee}
-                        disabled={values.emd_exemption == "yes"}
+                        disabled={values.emd_exemption == "no"}
                         defaultValue={"fixed"}
                         setFieldValue={setFieldValue}
                       />
@@ -288,7 +363,7 @@ const FeeDetailsForm = () => {
                           name='emdAmount'
                           onChange={handleChange}
                           value={values.emdAmount}
-                          disabled={values.emd_exemption == "yes"}
+                          disabled={values.emd_exemption == "no"}
                         />
                       </div>
                     ) : (
@@ -311,7 +386,7 @@ const FeeDetailsForm = () => {
                           name='emdPercentage'
                           onChange={handleChange}
                           value={values.emdPercentage}
-                          disabled={values.emd_exemption == "yes"}
+                          disabled={values.emd_exemption == "no"}
                         />
                       </div>
                     )}
@@ -337,7 +412,7 @@ const FeeDetailsForm = () => {
                         name='emdFeePayableAt'
                         onChange={handleChange}
                         value={values.emdFeePayableAt}
-                        disabled={values.emd_exemption == "yes"}
+                        disabled={values.emd_exemption == "no"}
                       />
                     </div>
 
@@ -360,7 +435,7 @@ const FeeDetailsForm = () => {
                         name='emdFeePayableTo'
                         onChange={handleChange}
                         value={values.emdFeePayableTo}
-                        disabled={values.emd_exemption == "yes"}
+                        disabled={values.emd_exemption == "no"}
                       />
                     </div>
                   </div>
