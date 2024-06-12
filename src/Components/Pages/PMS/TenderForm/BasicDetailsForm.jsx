@@ -16,14 +16,15 @@ import ApiHeader from "@/Components/api/ApiHeader";
 
 const BasicDetailsForm = () => {
   const inputFileRef = useRef();
-  const { state } = useLocation();
+  // const { state } = useLocation();
+  // console.log(state)
 
-  const { api_postBasicDetails,api_getBasicDetails } = ProjectApiList();
+  const { api_postBasicDetails, api_getBasicDetails } = ProjectApiList();
 
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
   const [imgErr, setImgErr] = useState(false);
-  const [basicDetailData,setBasicDetailData] = useState()
+  const [basicDetailData, setBasicDetailData] = useState();
 
   const navigate = useNavigate();
 
@@ -92,22 +93,23 @@ const BasicDetailsForm = () => {
     }),
   });
 
-  console.log(basicDetailData)
+  console.log(basicDetailData);
 
   // Initial values for additional form fields can go here
   const initialValues = {
-    reference_no: basicDetailData?.reference_no || '',
+    reference_no: basicDetailData?.reference_no || "",
     tender_type: basicDetailData?.tender_type || [],
     contract_form: basicDetailData?.contract_form || [],
     tender_category: basicDetailData?.tender_category || [],
-    allow_resubmission: String(basicDetailData?.allow_resubmission)|| "",
+    allow_resubmission: String(basicDetailData?.allow_resubmission) || "",
     allow_withdrawl: String(basicDetailData?.allow_withdrawl) || "",
-    allow_offline_submission: String(basicDetailData?.allow_offline_submission) || "",
+    allow_offline_submission:
+      String(basicDetailData?.allow_offline_submission) || "",
     payment_mode: basicDetailData?.payment_mode || "online",
     offlinePayment_mode: basicDetailData?.onlinePyment_mode || "",
     onlinePyment_mode: basicDetailData?.onlinePyment_mode || "",
   };
- 
+
   // const initialValues = {
   //   reference_no: "",
   //   tender_type: [],
@@ -132,7 +134,7 @@ const BasicDetailsForm = () => {
       .then(function (response) {
         if (response?.data?.status) {
           toast.success("Basic data Submitted successfully");
-          navigate(`/tendering?tabNo=${2}`);
+          navigate(`/tendering?tabNo=${3}`);
         } else {
           toast.error("Error in Forwarding to DA. Please try again");
         }
@@ -145,9 +147,8 @@ const BasicDetailsForm = () => {
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
 
-  const getApplicationDetail = () => {
-
-    AxiosInterceptors.get(`${api_getBasicDetails}/${state}`, ApiHeader())
+  const getApplicationDetail = (refNo) => {
+    AxiosInterceptors.get(`${api_getBasicDetails}/${refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           setBasicDetailData(response?.data?.data);
@@ -160,11 +161,10 @@ const BasicDetailsForm = () => {
       });
   };
 
-
-  useEffect(()=>{
-    getApplicationDetail();
-  },[])
-
+  useEffect(() => {
+    let refNo = window.localStorage.getItem("reference_no");
+    getApplicationDetail(refNo);
+  }, []);
 
   return (
     <>
