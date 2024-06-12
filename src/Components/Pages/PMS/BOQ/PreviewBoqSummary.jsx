@@ -98,7 +98,7 @@ export default function PreviewBoqSummary() {
     AxiosInterceptors.put(`${api_postUpdatedBoq}`, formData, ApiHeader2())
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("Successfully forwarded to DA");
+          toast.success("Successfully Updated the BOQ");
           setTimeout(() => {
             setIsLoading(false);
             navigate("/boq-search");
