@@ -41,7 +41,6 @@ const TenderForm = () => {
   const tabNo = Number(searchParams.get("tabNo"));
 
   const location = useLocation();
-  // console.log(location?.pathname)
 
   const { titleBarVisibility } = useContext(contextVar);
 

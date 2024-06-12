@@ -31,41 +31,64 @@ const BidOpinerForm = () => {
     doc2: Yup.string(),
   });
 
+  // const initialValues = {
+  //   name_designation1: "",
+  //   name_designation2: "",
+  //   name_designation3: "",
+  //   email1: "",
+  //   email2: "",
+  //   email3: "",
+  //   namedoc1: "",
+  //   namedoc2: "",
+  //   disc1: "",
+  //   disc2: "",
+  //   docSize1: "",
+  //   docSize2: "",
+  //   doc1: "",
+  //   doc2: "",
+  // };
+
   const initialValues = {
-    name_designation1: "",
-    name_designation2: "",
-    name_designation3: "",
-    email1: "",
-    email2: "",
-    email3: "",
-    namedoc1: "",
-    namedoc2: "",
-    disc1: "",
-    disc2: "",
-    docSize1: "",
-    docSize2: "",
-    doc1: "",
-    doc2: "",
+    preTender: {
+      b01NameDesig: "",
+      b01Email: "",
+      b02NameDesig: "",
+      b02Email: "",
+    },
+    doc: {
+      B01: {
+        nameDesig: "",
+        description: "",
+        docSize: "",
+      },
+      B02: {
+        nameDesig: "",
+        description: "",
+        docSize: "",
+      },
+    },
+    B01: [],
+    B02: [],
   };
 
   const bidOpiner = [
     {
       label_name: "Name/Designation",
-      name1: "name_designation1",
+      name1: "b01NameDesig",
       label_email: "Email",
-      name2: "email1",
+      name2: "b01Email",
     },
     {
       label_name: "Name/Designation",
-      name1: "name_designation2",
+      name1: "b02NameDesig",
       label_email: "Email",
-      name2: "email2",
+      name2: "b02Email",
     },
     {
       label_name: "Name/Designation",
-      name1: "name_designation3",
+      name1: "b03NameDesig",
       label_email: "Email",
-      name2: "email3",
+      name2: "b03Email",
     },
   ];
 
@@ -191,8 +214,13 @@ const BidOpinerForm = () => {
                             className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
                             placeholder='Name/Designation'
                             name={obj.name1}
-                            onChange={handleChange}
-                            value={values[obj.name1]}
+                            onChange={(e) =>
+                              setFieldValue(
+                                values.preTender.name1,
+                                e.target.value
+                              )
+                            }
+                            value={values[obj?.name1]}
                           />
                         </div>
 
@@ -205,11 +233,16 @@ const BidOpinerForm = () => {
                             <span className='text-red-500'>*</span>
                           </label>
                           <input
-                            type='text'
+                            type='email'
                             className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
                             placeholder='Email'
                             name={obj.name2}
-                            onChange={handleChange}
+                            onChange={(e) =>
+                              setFieldValue(
+                                values.preTender.name2,
+                                e.target.value
+                              )
+                            }
                             value={values[obj.name2]}
                           />
                         </div>

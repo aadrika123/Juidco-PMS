@@ -16,8 +16,6 @@ import ApiHeader from "@/Components/api/ApiHeader";
 
 const BasicDetailsForm = () => {
   const inputFileRef = useRef();
-  // const { state } = useLocation();
-  // console.log(state)
 
   const { api_postBasicDetails, api_getBasicDetails } = ProjectApiList();
 
@@ -25,6 +23,7 @@ const BasicDetailsForm = () => {
   const [imageDoc, setImageDoc] = useState();
   const [imgErr, setImgErr] = useState(false);
   const [basicDetailData, setBasicDetailData] = useState();
+  const [referenceNo, setReferenceNo] = useState();
 
   const navigate = useNavigate();
 
@@ -92,8 +91,6 @@ const BasicDetailsForm = () => {
       otherwise: (schema) => schema.optional(),
     }),
   });
-
-  console.log(basicDetailData, "basicDetailData");
 
   // Initial values for additional form fields can go here
   const initialValues = {
@@ -165,6 +162,7 @@ const BasicDetailsForm = () => {
 
   useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
+    setReferenceNo(refNo);
     getApplicationDetail(refNo);
   }, []);
 
@@ -186,7 +184,6 @@ const BasicDetailsForm = () => {
               return toast.error("Please upload valid documents");
             }
             setImgErr(false);
-            console.log("Form values", { ...values, img: imageDoc });
             submitForm({ ...values, img: imageDoc });
           }}
         >
@@ -218,10 +215,9 @@ const BasicDetailsForm = () => {
                         name='reference_no'
                         disabled
                         // value={values?.reference_no}
-                        defaultValue={state || values?.reference_no}
+                        defaultValue={referenceNo}
                         onChange={handleChange}
                       />
-                      {console.log(state, "state===>")}
                     </>
                     <div className='mt-3'>
                       <CustomCheckboxGroup
