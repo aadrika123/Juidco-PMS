@@ -21,6 +21,7 @@ const CustomCheckboxGroup = ({
   name,
   setFieldValue,
 }) => {
+  
   const handle = (value) => {
     const data = [...values];
     if (data.includes(value)) {

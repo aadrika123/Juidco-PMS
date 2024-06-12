@@ -109,6 +109,28 @@ const WorkDetailsForm = () => {
     invstOffEmail_Ph: "",
   };
 
+  // submit form
+  const submitForm = async (values) => {
+    let formData = new FormData();
+    formData.append("img", values?.img);
+    delete values.img;
+    formData.append("preTender", JSON.stringify(values));
+
+    AxiosInterceptors.post(api_postBasicDetails, formData, ApiHeader2())
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Basic data Submitted successfully");
+          navigate(`/tendering?tabNo=${4}`)
+        } else {
+          toast.error("Error in Forwarding to DA. Please try again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
   return (
     <>
       {/* <div className='bg-white rounded-xl w-full shadow-md p-4 border border-indigo-200'> */}
@@ -124,9 +146,10 @@ const WorkDetailsForm = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
+          enableReinitialize={true}
           onSubmit={(values) => {
             console.log("Form values", values);
-            navigate(`/tendering?tabNo=${4}`);
+            submitForm(values);
           }}
         >
           {({

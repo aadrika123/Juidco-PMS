@@ -44,6 +44,8 @@ import BoqDetailsById from "./Components/Pages/PMS/BOQ/BoqDetailsById";
 import BoqListing from "./Components/Pages/PMS/BOQ/BoqListIng";
 import BoqListTabs from "./Components/Pages/PMS/BOQ/BoqListTabs";
 import BoqListTabsDa from "./Components/Pages/PMS/BOQ/DA/BoqListTabsDa";
+import TenderFormViewDetails from "./Components/Pages/PMS/TenderForm/TenderFormViewDetails";
+import PrintComponent from "./Components/Common/PrintArea/PrintComponent";
 
 const queryClient = new QueryClient();
 
@@ -153,6 +155,14 @@ function App() {
     {
       path: "/tendering",
       element: <TenderForm />,
+    },
+    {
+      path: "/tendering-preview",
+      element: <TenderFormViewDetails />,
+    },
+    {
+      path: "/tendering-previewPP",
+      element: <PrintComponent />,
     },
     {
       path: "/print-preview",

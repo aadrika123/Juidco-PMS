@@ -110,6 +110,7 @@ const BoqListTable = (props) => {
                         onChange={() => {
                           handleChange(items?.procurement_no);
                         }}
+                        
                       />
                     </div>
                   </td>

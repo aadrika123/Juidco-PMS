@@ -45,30 +45,63 @@ body {
   }
   
 
-  /* print.css */
-@media print {
-  body * {
-    visibility: hidden;
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+  
+    #printableArea,
+    #printableArea * {
+      visibility: visible;
+    }
+  
+    #printableArea {
+      position: absolute;
+      left: "25%";
+      top: 0;
+    }
   }
-  #printable-content, #printable-content * {
-    visibility: visible;
-  }
-  #printable-content {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-  }
-  /* Ensure headers and footers do not overlap */
-  header, footer {
-    display: none;
-  }
-  /* Avoid page break within content blocks */
-  .avoid-page-break {
-    page-break-inside: avoid;
-  }
-  /* Page break after certain sections if needed */
-  .page-break {
-    page-break-after: always;
-  }
-}
+
+  /* @media print {
+    body * {
+      visibility: hidden;
+    }
+    #printable-content, #printable-content * {
+      visibility: visible;
+    }
+    #printable-content {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: screen; 
+      overflow: visible; 
+    }
+   
+    header, footer {
+      display: none;
+    }
+    
+    .avoid-page-break {
+      page-break-inside: avoid;
+    }
+    .page-break {
+      page-break-after: always;
+    }
+    .page-break-before {
+      page-break-before: always;
+    }
+    @page {
+      margin: 20mm; 
+    }
+    .page-content {
+      page-break-inside: avoid;
+    }
+    img, table, pre, blockquote {
+      page-break-inside: avoid;
+    }
+  } */
+
+
+
+  
