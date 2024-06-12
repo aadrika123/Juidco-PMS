@@ -11,6 +11,7 @@ export default function ImageDisplay({
   alt,
   showPreview,
   width,
+  url,
 }) {
   const [imageModal, setImageModal] = useState(false);
 
@@ -19,7 +20,7 @@ export default function ImageDisplay({
       <ImageModal
         imageModal={imageModal}
         setImageModal={setImageModal}
-        imageUrl={preview}
+        imageUrl={preview || url}
         imageDoc={imageDoc}
       />
     );
@@ -42,9 +43,10 @@ export default function ImageDisplay({
       )}
 
       <div>
-        {imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
+        {(imageDoc?.type?.match(/(jpg|jpeg|png)$/) ||
+          url?.match(/(jpg|jpeg|png)$/)) && (
           <img
-            src={preview}
+            src={preview || url}
             alt={alt}
             className={`rounded cursor-pointer `}
             onClick={() => setImageModal(true)}
@@ -63,12 +65,15 @@ export default function ImageDisplay({
         {(imageDoc?.type === "application/pdf" ||
           imageDoc?.type === "text/csv" ||
           imageDoc?.type ===
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") && (
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+          url?.includes("pdf") ||
+          url?.includes("csv") ||
+          url?.includes("xlsx")) && (
           <img
             src={
-              imageDoc.type === "application/pdf"
+              imageDoc?.type === "application/pdf" || url?.includes("pdf")
                 ? pdfIcon
-                : imageDoc.type === "text/csv"
+                : imageDoc?.type === "text/csv" || url?.includes("csv")
                 ? csvIcon
                 : xlsxIcon
             }
@@ -78,7 +83,7 @@ export default function ImageDisplay({
           />
         )}
       </div>
-      <div className='mb-4 text-center '>
+      <div className='mb-4 text-center w-[40%]'>
         <p className='text-red-500 text-xs '>{imageDoc?.name}</p>
       </div>
     </div>
