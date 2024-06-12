@@ -39,7 +39,6 @@ const TenderForm = () => {
   const navigate = useNavigate();
 
   const tabNo = Number(searchParams.get("tabNo"));
-  // console.log(tabNo)
 
   const location = useLocation();
   // console.log(location?.pathname)
@@ -49,7 +48,6 @@ const TenderForm = () => {
   const handleTabClick = (tabNo) => {
     navigate(`/${location.pathname}?tabNo=${tabNo}`);
   };
-  
 
   const btnDetails = [
     { label: "Basic Details", tab: 1, img: bd },
@@ -59,13 +57,6 @@ const TenderForm = () => {
     { label: "Critical Details", tab: 5, img: cd2 },
     { label: "Bid Openers", tab: 6, img: bo },
   ];
-
-  // useEffect(() => {
-  //   console.log(location.pathname)
-  //   console.log(location.search)
-  //   //  location?.pathname == '/tendering' && navigate(`/tendering${location.search}`) && navigate('/tendering?tabNo=1') 
-  
-  // }, [])
 
   return (
     <>
@@ -81,7 +72,9 @@ const TenderForm = () => {
           <div className='w-1/2 flex'>
             <img src={tender} className='w-11' />
 
-            <h1 className='font-bold text-xl pt-2 pl-3'>Tendering Input Form</h1>
+            <h1 className='font-bold text-xl pt-2 pl-3'>
+              Tendering Input Form
+            </h1>
           </div>
 
           <div className='flex w-[15rem] bg-gray-200 rounded-full h-4 dark:bg-gray-200 mt-4'>
@@ -144,8 +137,16 @@ const TenderForm = () => {
               className={`py-2 px-2 mr-5 ${
                 tabNo === item.tab
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                  : "text-gray-500 bg-white"
+                  : "text-gray-500 bg-white "
               } focus:outline-none flex shadow-xl border border-gray-300 rounded`}
+              // disabled={tabNo <= item.tab}
+              // className={`py-2 px-2 mr-5 ${
+              //   tabNo === item.tab
+              //     ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
+              //     : tabNo >= item.tab
+              //     ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
+              //     : "disabled:bg-gray-200 text-black"
+              // } focus:outline-none flex shadow-xl border border-gray-300 rounded`}
               onClick={() => handleTabClick(item.tab)}
             >
               <img src={item.img} className='pr-2' />
@@ -157,37 +158,37 @@ const TenderForm = () => {
 
       <div className='mt-4'>
         {tabNo === 1 && (
-          <div>
+          <div className={`${tabNo >= 1 ? "" : "disabled:bg-red-300"}`}>
             <BasicDetailsForm />
           </div>
         )}
 
         {tabNo === 2 && (
-          <div>
+          <div className={`${tabNo >= 2 ? "" : "disabled:bg-red-300"}`}>
             <CoverDetailsForm />
           </div>
         )}
 
         {tabNo === 3 && (
-          <div>
+          <div className={`${tabNo >= 2 ? "" : "disabled:bg-red-300"}`}>
             <WorkDetailsForm />
           </div>
         )}
 
         {tabNo === 4 && (
-          <div>
+          <div className={`${tabNo >= 2 ? "" : "disabled:bg-red-300"}`}>
             <FeeDetailsForm />
           </div>
         )}
 
         {tabNo === 5 && (
-          <div>
+          <div className={`${tabNo >= 2 ? "" : "disabled:bg-red-300"}`}>
             <CriticalDateForm />
           </div>
         )}
 
         {tabNo === 6 && (
-          <div>
+          <div className={`${tabNo >= 2 ? "" : "disabled:bg-red-300"}`}>
             <BidOpinerForm />
           </div>
         )}

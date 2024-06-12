@@ -93,7 +93,7 @@ const BasicDetailsForm = () => {
     }),
   });
 
-  console.log(basicDetailData);
+  console.log(basicDetailData, "basicDetailData");
 
   // Initial values for additional form fields can go here
   const initialValues = {
@@ -108,6 +108,7 @@ const BasicDetailsForm = () => {
     payment_mode: basicDetailData?.payment_mode || "online",
     offlinePayment_mode: basicDetailData?.onlinePyment_mode || "",
     onlinePyment_mode: basicDetailData?.onlinePyment_mode || "",
+    // imageDoc=basicDetailData?.
   };
 
   // const initialValues = {
@@ -136,7 +137,7 @@ const BasicDetailsForm = () => {
           toast.success("Basic data Submitted successfully");
           navigate(`/tendering?tabNo=${3}`);
         } else {
-          toast.error("Error in Forwarding to DA. Please try again");
+          toast.error("Error in getting basic details");
         }
       })
       .catch(function (error) {
@@ -152,12 +153,13 @@ const BasicDetailsForm = () => {
       .then(function (response) {
         if (response?.data?.status) {
           setBasicDetailData(response?.data?.data);
+          setImageDoc(response?.data?.data?.doc[0]?.docUrl);
         } else {
           toast.error(response?.data?.message);
         }
       })
       .catch(function (error) {
-        toast.error("Error while getting details...");
+        toast.error(error?.response?.data?.message);
       });
   };
 
@@ -168,12 +170,12 @@ const BasicDetailsForm = () => {
 
   return (
     <>
-      <div className="bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl">
-        <img src={folder} className="pl-2" />
-        <h1 className="pt-1 pl-2 text-xl">Basic Details</h1>
+      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
+        <img src={folder} className='pl-2' />
+        <h1 className='pt-1 pl-2 text-xl'>Basic Details</h1>
       </div>
 
-      <div className=" mt-5 container">
+      <div className=' mt-5 container'>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -198,28 +200,30 @@ const BasicDetailsForm = () => {
           }) => (
             <Form>
               <>
-                <div className="grid grid-cols-2 container mx-auto capitalize ">
-                  <div className="p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
+                <div className='grid grid-cols-2 container mx-auto capitalize '>
+                  <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <>
                       <label
-                        htmlFor="reference_no"
+                        htmlFor='reference_no'
                         className={`block mb-2 text-sm font-medium text-gray-900 ${
                           errors.reference_no && "text-red-500"
                         }`}
                       >
                         Tender Reference No{" "}
-                        <span className="text-red-500">*</span>
+                        <span className='text-red-500'>*</span>
                       </label>
                       <input
-                        type="text"
-                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-                        name="reference_no"
+                        type='text'
+                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
+                        name='reference_no'
+                        disabled
                         // value={values?.reference_no}
-                        defaultValue={values?.reference_no}
+                        defaultValue={state || values?.reference_no}
                         onChange={handleChange}
                       />
+                      {console.log(state, "state===>")}
                     </>
-                    <div className="mt-3">
+                    <div className='mt-3'>
                       <CustomCheckboxGroup
                         fields={tenderType}
                         title={"Tender Type"}
@@ -234,7 +238,7 @@ const BasicDetailsForm = () => {
                     </div>
                   </div>
 
-                  <div className="p-3 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
+                  <div className='p-3 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <CustomCheckboxGroup
                       fields={formOfContract}
                       name={"contract_form"}
@@ -248,7 +252,7 @@ const BasicDetailsForm = () => {
                     />
                   </div>
 
-                  <div className="p-4 mb-6 mr-2 bg-white shadow-xl border border-gray-200 rounded-md">
+                  <div className='p-4 mb-6 mr-2 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <CustomCheckboxGroup
                       fields={tenderCategory}
                       title={"Tender Category"}
@@ -262,7 +266,7 @@ const BasicDetailsForm = () => {
                     />
                   </div>
 
-                  <div className="p-4  mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex justify-between gap-3">
+                  <div className='p-4  mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex justify-between gap-3'>
                     <RadioButtonsGroup
                       fields={allowResubmission}
                       title={"Allow Resubmission"}
@@ -298,37 +302,37 @@ const BasicDetailsForm = () => {
                   </div>
 
                   {/* document upload */}
-                  <div className="p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
+                  <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <h1>
-                      NIT Document <span className="text-red-500">*</span>
+                      NIT Document <span className='text-red-500'>*</span>
                     </h1>
-                    <p className="text-[10px]">
+                    <p className='text-[10px]'>
                       {" "}
                       (Only .jpg and .pdf files are supported)
                     </p>
 
-                    <div className="">
-                      <div className="relative overflow-x-auto mt-6">
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 rounded">
-                          <thead className="text-xs text-white uppercase ">
-                            <tr className=" bg-[#4338CA] border-[2px] border-white">
-                              <th scope="col" className="px-6 py-3">
+                    <div className=''>
+                      <div className='relative overflow-x-auto mt-6'>
+                        <table className='w-full text-sm text-left rtl:text-right text-gray-500 rounded'>
+                          <thead className='text-xs text-white uppercase '>
+                            <tr className=' bg-[#4338CA] border-[2px] border-white'>
+                              <th scope='col' className='px-6 py-3'>
                                 File name
                               </th>
-                              <th scope="col" className="px-6 py-3">
+                              <th scope='col' className='px-6 py-3'>
                                 Document Size in KB
                               </th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="bg-white border">
+                            <tr className='bg-white border'>
                               <th
-                                scope="row"
-                                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border "
+                                scope='row'
+                                className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap border '
                               >
                                 {imageDoc?.name || "No file Added"}
                               </th>
-                              <td className="px-6 py-4">
+                              <td className='px-6 py-4'>
                                 <p>
                                   {Math.round((imageDoc?.size / 1024) * 100) /
                                     100 || 0}{" "}
@@ -339,16 +343,17 @@ const BasicDetailsForm = () => {
                           </tbody>
                         </table>
                         {imgErr && (
-                          <span className="text-red-400 text-xs">
+                          <span className='text-red-400 text-xs'>
                             Valid documents are required
                           </span>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex justify-end gap-3 ">
-                      <div className=" mt-[20px] w-[40%]">
+                    <div className='flex justify-end gap-3 '>
+                      <div className=' mt-[20px] w-[40%]'>
                         <ImageDisplay
+                          url={basicDetailData?.doc[0]?.docUrl}
                           preview={preview}
                           imageDoc={imageDoc}
                           alt={"Nit document"}
@@ -357,7 +362,7 @@ const BasicDetailsForm = () => {
                         />
                       </div>
 
-                      <div className="flex justify-end py-12">
+                      <div className='flex justify-end py-12'>
                         <FileButton
                           bg={"[#4338CA]"}
                           hoverBg={"bg-indigo-300"}
@@ -372,69 +377,69 @@ const BasicDetailsForm = () => {
                   </div>
 
                   {/* payment mode */}
-                  <div className="p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md row-span-2">
-                    <div className="">
-                      <h1 className="text-[14px] pb-3">
-                        Payment Mode <span className="text-red-500">*</span>
+                  <div className='p-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md row-span-2'>
+                    <div className=''>
+                      <h1 className='text-[14px] pb-3'>
+                        Payment Mode <span className='text-red-500'>*</span>
                       </h1>
-                      <div className="flex space-x-4 mb-4">
-                        <label className="flex items-center space-x-2">
+                      <div className='flex space-x-4 mb-4'>
+                        <label className='flex items-center space-x-2'>
                           <input
-                            type="radio"
-                            name="payment_mode"
-                            value="online"
+                            type='radio'
+                            name='payment_mode'
+                            value='online'
                             defaultChecked={true}
                             onChange={handleChange}
-                            className="form-radio h-4 w-4 text-blue-600"
+                            className='form-radio h-4 w-4 text-blue-600'
                           />
                           <span>Online</span>
                         </label>
 
-                        <label className="flex items-center space-x-2">
+                        <label className='flex items-center space-x-2'>
                           <input
-                            type="radio"
-                            name="payment_mode"
-                            value="offline"
+                            type='radio'
+                            name='payment_mode'
+                            value='offline'
                             // checked={selectedTab === "offline"}
                             onChange={handleChange}
-                            className="form-radio h-4 w-4 text-blue-600"
+                            className='form-radio h-4 w-4 text-blue-600'
                           />
                           <span>Offline</span>
                         </label>
                       </div>
 
-                      <div className="tab-content">
+                      <div className='tab-content'>
                         {values.payment_mode == "online" && (
-                          <div className="p-5">
+                          <div className='p-5'>
                             <label
-                              htmlFor="onlinePyment_mode"
-                              name="onlinePyment_mode"
-                              className="block mb-2 text-sm font-medium text-gray-900"
+                              htmlFor='onlinePyment_mode'
+                              name='onlinePyment_mode'
+                              className='block mb-2 text-sm font-medium text-gray-900'
                             >
                               In Online(Banks)
                             </label>
                             <select
-                              id="onlinePyment_mode"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                              name="onlinePyment_mode"
+                              id='onlinePyment_mode'
+                              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                              name='onlinePyment_mode'
                               onChange={handleChange}
                               value={values.onlinePyment_mode}
                             >
                               <option selected>Choose a Bank</option>
-                              <option value="US">Bank Of India</option>
-                              <option value="CA">State Bank Of India</option>
-                              <option value="FR">Canara Bank</option>
+                              <option value='US'>Bank Of India</option>
+                              <option value='CA'>State Bank Of India</option>
+                              <option value='FR'>Canara Bank</option>
                             </select>
                             {errors.onlinePyment_mode &&
                             touched.onlinePyment_mode ? (
-                              <p className="text-red-400 text-xs">
+                              <p className='text-red-400 text-xs'>
                                 {errors.onlinePyment_mode}
                               </p>
                             ) : null}
                           </div>
                         )}
                         {values.payment_mode == "offline" && (
-                          <div className="">
+                          <div className=''>
                             <RadioButtonsGroup
                               fields={offlineBanks}
                               title={"In offline(Instruments)"}
