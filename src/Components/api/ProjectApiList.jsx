@@ -158,6 +158,10 @@ export default function ProjectApiList() {
     //tendring form
     api_postBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
     api_getBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
+    api_postWorkDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/work-details`,
+    api_getWorkDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/work-details`,
+    api_postFeeDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/fee-details`,
+    api_getFeeDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/fee-details`,
     
     api_postBacktoAcc: `${baseUrl}/api/pms/da/pre-procurement/boq/return-boq`, //boq back to acc
   };

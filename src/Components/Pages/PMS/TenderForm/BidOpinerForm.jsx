@@ -6,12 +6,13 @@ import toast from "react-hot-toast";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const BidOpinerForm = () => {
   const inputFileRefs = useRef([]);
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
+  const { state } = useLocation();
 
   const validationSchema = Yup.object({
     name_designation1: Yup.string().required(),
@@ -324,7 +325,7 @@ const BidOpinerForm = () => {
                     </div>
                   ))}
 
-                  <TenderFormButton />
+                  <TenderFormButton state={state} />
 
                   {/* <div className="mb-5">
                     <button

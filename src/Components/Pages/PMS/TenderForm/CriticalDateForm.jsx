@@ -10,10 +10,11 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CriticalDateForm = () => {
   const inputFileRef = useRef();
+  const { state } = useLocation();
 
   const [selectedTab, setSelectedTab] = useState("online");
   const [preview, setPreview] = useState();
@@ -400,7 +401,7 @@ const CriticalDateForm = () => {
                       </div>
                     </div>
 
-                    <TenderFormButton resetForm={resetForm} />
+                    <TenderFormButton resetForm={resetForm} state={state}/>
 
                     {/* <div className="mb-5">
                       <button

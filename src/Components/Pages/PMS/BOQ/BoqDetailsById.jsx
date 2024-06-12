@@ -22,6 +22,8 @@ export default function BoqDetailsById(props) {
 
   const { refNo, page } = useParams();
 
+
+
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
     {
@@ -73,6 +75,7 @@ export default function BoqDetailsById(props) {
 
   useEffect(() => {
     fetchBoqDetailsbyId();
+    window.localStorage.setItem("reference_no",refNo);
   }, []);
 
   return (
@@ -209,7 +212,7 @@ export default function BoqDetailsById(props) {
               <>
                 <button
                   className={colouredBtnStyle}
-                  onClick={() => navigate("/create-boq", { state: refNo })}
+                  onClick={() => navigate("/create-boq")}
                 >
                   Edit
                 </button>
