@@ -105,7 +105,6 @@ const BasicDetailsForm = () => {
     payment_mode: basicDetailData?.payment_mode || "online",
     offlinePayment_mode: basicDetailData?.onlinePyment_mode || "",
     onlinePyment_mode: basicDetailData?.onlinePyment_mode || "",
-    // imageDoc=basicDetailData?.
   };
 
   // const initialValues = {
@@ -198,6 +197,7 @@ const BasicDetailsForm = () => {
             <Form>
               <>
                 <div className='grid grid-cols-2 container mx-auto capitalize '>
+
                   <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <>
                       <label
@@ -248,7 +248,7 @@ const BasicDetailsForm = () => {
                     />
                   </div>
 
-                  <div className='p-4 mb-6 mr-2 bg-white shadow-xl border border-gray-200 rounded-md'>
+                  <div className='p-4 mb-6 mr-2 bg-white shadow-xl border border-gray-200 rounded-md '>
                     <CustomCheckboxGroup
                       fields={tenderCategory}
                       title={"Tender Category"}
@@ -451,9 +451,10 @@ const BasicDetailsForm = () => {
                       </div>
                     </div>
                   </div>
+
                 </div>
 
-                <TenderFormButton resetForm={resetForm} />
+                <TenderFormButton resetForm={resetForm} getDetailData={basicDetailData} />
                 {/* <div className='mb-10 w-full'>
                   <button
                     className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'

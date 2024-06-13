@@ -130,7 +130,7 @@ const FeeDetailsForm = () => {
         }
       })
       .catch(function (error) {
-        toast.error("Error while getting details...");
+        // toast.error("Error while getting details...");
       });
   };
 
@@ -440,7 +440,7 @@ const FeeDetailsForm = () => {
                     </div>
                   </div>
 
-                  <TenderFormButton resetForm={resetForm} />
+                  <TenderFormButton resetForm={resetForm} getDetailData={feeDetailData} />
 
                   {/* <div className='mb-5'>
                     <button

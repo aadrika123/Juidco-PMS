@@ -1,16 +1,26 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import d from "@/Components/assets/ptax.jpg";
 import TitleBar from "../../Others/TitleBar";
+import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import SuccessModal from "@/Components/Common/Modal/SuccessModal";
 import { useNavigate } from "react-router-dom";
+import ImageModal from "../../Others/ImageModal/ImageModal";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader from "@/Components/api/ApiHeader";
 
 const TenderFormViewDetails = () => {
   const navigate = useNavigate();
+  const { api_postBasicDetails, api_getPreviewDetails } = ProjectApiList();
+
   const { titleBarVisibility } = useContext(contextVar);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModal, setIsSuccessModal] = useState(false);
+  const [imageModal, setImageModal] = useState(false);
+  const [referenceNo, setReferenceNo] = useState();
+  const [previewData, setPreviewData] = useState();
 
   const descTitle = "font-bold text-[#4D4B4B]";
   const descText = "text-[#7d7d7d]";
@@ -27,6 +37,30 @@ const TenderFormViewDetails = () => {
     navigate(-1);
   };
 
+
+    const getApplicationDetail = (refNo) => {
+    AxiosInterceptors.get(`${api_getPreviewDetails}/${refNo}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          console.log(response?.data?.data)
+          setPreviewData(response?.data?.data);
+          setImageDoc(response?.data?.data?.doc[0]?.docUrl);
+        } else {
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        // toast.error(error?.response?.data?.message);
+      });
+  };
+
+  useEffect(()=>{
+    let refNo = window.localStorage.getItem("reference_no");
+    setReferenceNo(refNo);
+    getApplicationDetail(refNo);
+  },[]);
+
+
   //displaying confirmation message
 
   if (isSuccessModal) {
@@ -41,96 +75,104 @@ const TenderFormViewDetails = () => {
     );
   }
 
+  if (imageModal) {
+    return (
+      <>
+        <ImageModal
+          imageModal={imageModal}
+          setImageModal={setImageModal}
+          imageUrl={d}
+        />
+      </>
+    );
+  }
+
+  console.log(previewData)
   return (
     <>
-      <div className="">
+      {/* <div className="">
         <TitleBar
           titleBarVisibility={titleBarVisibility}
-          titleText={"Tender Input Form Summary"}
+          titleText={"Tender Input Form Details"}
         />
-      </div>
-      <div className="" id='printableArea'>
+      </div> */}
+      <div className="" id="printableArea">
         <div className="">
           {/* Basic Details */}
- 
-          <div className="bg-[#4338ca] border-b  p-4 rounded mt-5">
+
+          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
             <p className="text-xl text-white">Basic Details</p>
           </div>
 
-          <div className="flex  bg-white border shadow-xl mt-2 rounded">
-            <div className="p-10 text-sm space-y-4 w-1/2 ">
-              <h1>
-                <span className={descTitle}>Organization Chain : </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
-                <span className={descTitle}>Tender Reference Number : </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
-                <span className={descTitle}>Tender ID : </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
-                <span className={descTitle}>Tender Type : </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
-                <span className={descTitle}>Tender Category : </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
-                <span className={descTitle}>
-                  General Technical Evaluation Allowed :{" "}
-                </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
-                <span className={descTitle}>Payment Mode : </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
-                <span className={descTitle}>
-                  Multi Currency Allowed For Fee :{" "}
-                </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
+          <div className="bg-white border shadow-xl mt-2 rounded">
+            <div className="flex">
+              <div className="p-10 text-sm space-y-4 w-1/2 ">
+                <h1>
+                  <span className={descTitle}>Tender Reference Number : </span>{" "}
+                  <span className={descText}>{previewData?.reference_no}</span>
+                </h1>
+                {/* <h1>
+                  <span className={descTitle}>Tender ID : </span>{" "}
+                  <span className={descText}>XYZ Values</span>
+                </h1> */}
+                <h1>
+                  <span className={descTitle}>Tender Type : </span>{" "}
+                  <span className={descText}>{previewData?.basic_details?.tender_type}</span>
+                </h1>
+                <h1>
+                  <span className={descTitle}>Tender Category : </span>{" "}
+                  <span className={descText}>{previewData?.basic_details?.tender_category}</span>
+                </h1>
+                <h1>
+                  <span className={descTitle}>Form of Contract : </span>{" "}
+                  <span className={descText}>{previewData?.basic_details?.contract_form}</span>
+                </h1>
+              </div>
+
+              <div className="p-4 pt-9 text-sm space-y-4 w-1/2">
+                <h1>
+                  <span className={descTitle}>Payment Mode : </span>{" "}
+                  <span className={descText}>{previewData?.basic_details?.payment_mode}</span>
+                </h1>
+                <h1>
+                  <span className={descTitle}>Online Payment Mode : </span>{" "}
+                  <span className={descText}>{previewData?.basic_details?.onlinePyment_mode}</span>
+                </h1>
+                <h1>
+                  <span className={descTitle}>Allow Resubmission : </span>{" "}
+                  <span className={descText}>{previewData?.basic_details?.allow_resubmission == true ? "Yes" : "No"}</span>
+                </h1>
+                <h1>
+                  <span className={descTitle}>Allow Withdrawal : </span>{" "}
+                  <span className={descText}>{previewData?.basic_details?.allow_withdrawl == true ? "Yes" : "No"}</span>
+                </h1>
+                <h1>
+                  <span className={descTitle}>Allow Offline Submission : </span>{" "}
+                  <span className={descText}>{previewData?.basic_details?.allow_offline_submission == true ? "Yes" : "No"}</span>
+                </h1>
+              </div>
             </div>
-            <div className="p-4 pt-9 text-sm space-y-4 w-1/2">
-              <h1>
-                <span className={descTitle}>Withdrawal Allowed : </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
-                <span className={descTitle}>Form of Contract : </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
-                <span className={descTitle}>No of Covers : </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
-                <span className={descTitle}>
-                  Item Wise Technical Evaluation Allowed :{" "}
-                </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
-                <span className={descTitle}>
-                  Is Multi Currency Allowed for BOQ :{" "}
-                </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
-                <span className={descTitle}>Allow Two Stage Bidding : </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
+
+            <div className="flex pl-10 mb-5">
+              <div className="w-1/2">
+                <h1>
+                  <span className={descTitle}>NIT Document: </span>{" "}
+                  {/* <span className={descText}>XYZ Values</span> */}
+                </h1>
+              </div>
+              <div className="w-1/2">
+                  <img
+                    src={previewData?.basic_details?.doc[0]?.docUrl}
+                    class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
+                    onClick={() => setImageModal(true)}
+                  />{" "}
+                </div>
             </div>
           </div>
 
           {/* Cover Details */}
 
-          <div className="bg-[#4338ca] border-b  p-4 rounded mt-5">
+          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
             <p className="text-xl text-white">
               Cover Details, No of Covers - 4{" "}
             </p>
@@ -154,18 +196,47 @@ const TenderFormViewDetails = () => {
                 </h1>
               </div>
 
-              <div className="flex space-x-5 w-1/2 justify-center items-center text-center">
+              <div className="relative overflow-hidden flex space-x-5 w-1/2 justify-center items-center text-center">
                 <div>
-                  <img src={d} className="w-28 rounded" /> <p>cover 1</p>{" "}
+                  <img
+                    src={d}
+                    class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
+                    onClick={() => setImageModal(true)}
+                  />{" "}
+                  <p>cover 1</p>
+                </div>
+
+                <div>
+                  <img
+                    src={d}
+                    class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
+                    onClick={() => setImageModal(true)}
+                  />{" "}
+                  <p>cover 1</p>
                 </div>
                 <div>
-                  <img src={d} className="w-28 rounded" /> <p>cover 2</p>{" "}
+                  <img
+                    src={d}
+                    class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
+                    onClick={() => setImageModal(true)}
+                  />{" "}
+                  <p>cover 1</p>
                 </div>
                 <div>
-                  <img src={d} className="w-28 rounded" /> <p>cover 3</p>{" "}
+                  <img
+                    src={d}
+                    class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
+                    onClick={() => setImageModal(true)}
+                  />{" "}
+                  <p>cover 1</p>
                 </div>
                 <div>
-                  <img src={d} className="w-28 rounded" /> <p>cover 4</p>{" "}
+                  <img
+                    src={d}
+                    class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
+                    onClick={() => setImageModal(true)}
+                  />{" "}
+                  <p>cover 1</p>
                 </div>
               </div>
             </div>
@@ -173,7 +244,7 @@ const TenderFormViewDetails = () => {
 
           {/* Work Item Details */}
 
-          <div className="bg-[#4338ca] border-b  p-4 rounded mt-5">
+          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
             <p className="text-xl text-white">Work Item Details</p>
           </div>
           <div className="flex flex-col bg-white border shadow-xl mt-2 rounded">
@@ -291,7 +362,7 @@ const TenderFormViewDetails = () => {
 
           {/* Tender Fee Details */}
 
-          <div className="bg-[#4338ca] border-b  p-4 rounded mt-5">
+          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
             <p className="text-xl text-white">Tender Fee Details</p>
           </div>
 
@@ -334,7 +405,7 @@ const TenderFormViewDetails = () => {
 
           {/* EMD  Fee Details */}
 
-          <div className="bg-[#4338ca] border-b  p-4 rounded mt-5">
+          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
             <p className="text-xl text-white">EMD Fee Details</p>
           </div>
 
@@ -373,7 +444,7 @@ const TenderFormViewDetails = () => {
 
           {/* Critical Dates*/}
 
-          <div className="bg-[#4338ca] border-b  p-4 rounded mt-5">
+          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
             <p className="text-xl text-white">Critical Dates</p>
           </div>
 
@@ -424,7 +495,7 @@ const TenderFormViewDetails = () => {
 
           {/* Bid Openers Selection */}
 
-          <div className="bg-[#4338ca] border-b  p-4 rounded mt-5">
+          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
             <p className="text-xl text-white">Bid Openers Selection</p>
           </div>
 
@@ -464,7 +535,7 @@ const TenderFormViewDetails = () => {
 
           {/* Tender Documents */}
 
-          <div className="bg-[#4338ca] border-b  p-4 rounded mt-5">
+          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
             <p className="text-xl text-white">Tender Documents</p>
           </div>
 
@@ -492,10 +563,16 @@ const TenderFormViewDetails = () => {
                 </h1>
               </div>
               <div className="w-[30%] flex justify-center items-center text-center">
+                
                 <div>
-                  <img src={d} className="w-52 rounded mt-5" />{" "}
+                  <img
+                    src={d}
+                    className="w-52 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
+                    onClick={() => setImageModal(true)}
+                  />{" "}
                   <p className={descTitle}>Uploaded Reference Doc</p>{" "}
                 </div>
+
               </div>
             </div>
             <hr className="w-[71rem] mt-10" />

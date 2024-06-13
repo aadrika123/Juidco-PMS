@@ -14,6 +14,8 @@ const BidOpinerForm = () => {
   const [imageDoc, setImageDoc] = useState();
   const { state } = useLocation();
 
+  const navigate = useNavigate()
+
   const validationSchema = Yup.object({
     name_designation1: Yup.string().required(),
     name_designation2: Yup.string().required(),
@@ -181,6 +183,7 @@ const BidOpinerForm = () => {
           onSubmit={(values) => {
             console.log("Bid Form values", values);
             values = { ...values, imageDoc };
+            navigate(`/tendering?tabNo=${7}`);
           }}
         >
           {({
