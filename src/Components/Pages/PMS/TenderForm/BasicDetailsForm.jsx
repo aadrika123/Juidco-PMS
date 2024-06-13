@@ -107,19 +107,6 @@ const BasicDetailsForm = () => {
     onlinePyment_mode: basicDetailData?.onlinePyment_mode || "",
   };
 
-  // const initialValues = {
-  //   reference_no: "",
-  //   tender_type: [],
-  //   contract_form: [],
-  //   tender_category: [],
-  //   allow_resubmission: "",
-  //   allow_withdrawl: "",
-  //   allow_offline_submission: "",
-  //   payment_mode: "online",
-  //   offlinePayment_mode: "",
-  //   onlinePyment_mode: "",
-  // };
-
   // submit form
   const submitForm = async (values) => {
     let formData = new FormData();
@@ -133,7 +120,7 @@ const BasicDetailsForm = () => {
           toast.success("Basic data Submitted successfully");
           navigate(`/tendering?tabNo=${3}`);
         } else {
-          toast.error("Error in getting basic details");
+          toast.error("Error in submitting basic details");
         }
       })
       .catch(function (error) {
@@ -151,7 +138,7 @@ const BasicDetailsForm = () => {
           setBasicDetailData(response?.data?.data);
           setImageDoc(response?.data?.data?.doc[0]?.docUrl);
         } else {
-          toast.error(response?.data?.message);
+          // toast.error(response?.data?.message);
         }
       })
       .catch(function (error) {

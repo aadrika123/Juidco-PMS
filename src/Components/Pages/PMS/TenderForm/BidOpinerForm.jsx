@@ -1,56 +1,24 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import bo from "@/Components/assets/bo.svg";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
-import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
 import { useLocation, useNavigate } from "react-router-dom";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader2 from "@/Components/api/ApiHeader2";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import ApiHeader from "@/Components/api/ApiHeader";
+import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 
 const BidOpinerForm = () => {
   const inputFileRefs = useRef([]);
+  const navigate = useNavigate();
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
-  const { state } = useLocation();
-
-  const navigate = useNavigate()
-
-  const validationSchema = Yup.object({
-    name_designation1: Yup.string().required(),
-    name_designation2: Yup.string().required(),
-    name_designation3: Yup.string(),
-    email1: Yup.string().email().required(),
-    email2: Yup.string().email().required(),
-    email3: Yup.string().email(),
-    namedoc1: Yup.string().required(),
-    namedoc2: Yup.string(),
-    disc1: Yup.string().required(),
-    disc2: Yup.string(),
-    docSize1: Yup.string().required(),
-    docSize2: Yup.string(),
-    doc1: Yup.string().required(),
-    doc2: Yup.string(),
-  });
-
-  // const initialValues = {
-  //   name_designation1: "",
-  //   name_designation2: "",
-  //   name_designation3: "",
-  //   email1: "",
-  //   email2: "",
-  //   email3: "",
-  //   namedoc1: "",
-  //   namedoc2: "",
-  //   disc1: "",
-  //   disc2: "",
-  //   docSize1: "",
-  //   docSize2: "",
-  //   doc1: "",
-  //   doc2: "",
-  // };
-
-  const initialValues = {
+  const [bidOpenerDetails, setBidOpenerDetails] = useState();
+  const [referenceNo, setReferenceNo] = useState();
+  const [coverDetails, setCoverDetails] = useState({
     preTender: {
       b01NameDesig: "",
       b01Email: "",
@@ -71,6 +39,97 @@ const BidOpinerForm = () => {
     },
     B01: [],
     B02: [],
+  });
+  const { state } = useLocation();
+  const { api_postBidOpenerDetails, api_getBidOpenerDetails } =
+    ProjectApiList();
+
+  const validationSchema = Yup.object({
+    preTender: Yup.object({
+      b01NameDesig: Yup.string().required("Name/Designation is required"),
+      b01Email: Yup.string()
+        .email("Invalid email")
+        .required("Email is required"),
+      b02NameDesig: Yup.string().required("Name/Designation is required"),
+      b02Email: Yup.string()
+        .email("Invalid email")
+        .required("Email is required"),
+    }),
+    doc: Yup.object({
+      B01: Yup.object({
+        nameDesig: Yup.string().required("Name/Designation is required"),
+        description: Yup.string().required("Description is required"),
+        docSize: Yup.string().required("Document size is required"),
+      }),
+      B02: Yup.object({
+        nameDesig: Yup.string().required("Name/Designation is required"),
+        description: Yup.string().required("Description is required"),
+        docSize: Yup.string().required("Document size is required"),
+      }),
+    }),
+    B01: Yup.array().min(1, "Please upload at least one document for B01"),
+    B02: Yup.array().min(1, "Please upload at least one document for B02"),
+  });
+
+  const initialValues = {
+    preTender: {
+      b01NameDesig: bidOpenerDetails?.b01NameDesig,
+      b01Email: bidOpenerDetails?.b01Email || "",
+      b02NameDesig: bidOpenerDetails?.b02NameDesig || "",
+      b02Email: bidOpenerDetails?.b02Email || "",
+    },
+    doc: {
+      B01: {
+        nameDesig:
+          bidOpenerDetails?.bid_openers_docs?.find(
+            (data) => data?.type === "B01"
+          )?.nameDesig || "",
+        description:
+          bidOpenerDetails?.bid_openers_docs?.find(
+            (data) => data?.type === "B01"
+          )?.description || "",
+        docSize:
+          bidOpenerDetails?.bid_openers_docs?.find(
+            (data) => data?.type === "B01"
+          )?.docSize || "",
+      },
+      B02: {
+        nameDesig:
+          bidOpenerDetails?.bid_openers_docs?.find(
+            (data) => data?.type === "B02"
+          )?.nameDesig || "",
+        description:
+          bidOpenerDetails?.bid_openers_docs?.find(
+            (data) => data?.type === "B02"
+          )?.description || "",
+        docSize:
+          bidOpenerDetails?.bid_openers_docs?.find(
+            (data) => data?.type === "B02"
+          )?.docSize || "",
+      },
+      B03: {
+        nameDesig:
+          bidOpenerDetails?.bid_openers_docs?.find(
+            (data) => data?.type === "B03"
+          )?.nameDesig || "",
+        description:
+          bidOpenerDetails?.bid_openers_docs?.find(
+            (data) => data?.type === "B03"
+          )?.description || "",
+        docSize:
+          bidOpenerDetails?.bid_openers_docs?.find(
+            (data) => data?.type === "B03"
+          )?.docSize || "",
+      },
+    },
+    B01: [
+      bidOpenerDetails?.bid_openers_docs?.find((data) => data?.type === "B01")
+        ?.docUrl || "",
+    ],
+    B02: [
+      bidOpenerDetails?.bid_openers_docs?.find((data) => data?.type === "B02")
+        ?.docUrl || "",
+    ],
   };
 
   const bidOpiner = [
@@ -97,17 +156,17 @@ const BidOpinerForm = () => {
   const bidOpinerDocs = [
     {
       label_name: "Name/Designation",
-      name1: "namedoc1",
+      name1: "nameDesig",
       label_desc: "Description",
-      name2: "disc1",
-      nameDocSize: "docSize1",
+      name2: "description",
+      nameDocSize: "docSize",
     },
     {
       label_name: "Name/Designation",
-      name1: "namedoc2",
+      name1: "nameDesig",
       label_desc: "Description",
-      name2: "disc2",
-      nameDocSize: "docSize2",
+      name2: "description",
+      nameDocSize: "docSize",
     },
   ];
 
@@ -152,7 +211,7 @@ const BidOpinerForm = () => {
     }
 
     if (file) {
-      setFieldValue(`doc${index + 1}`, file);
+      // setFieldValue(`doc${index + 1}`, file);
       setImageDoc(file);
 
       const reader = new FileReader();
@@ -163,6 +222,116 @@ const BidOpinerForm = () => {
       // setPreview((prev) => ({ ...prev, [index]: URL.createObjectURL(file) }));
     }
   };
+
+  //name-designation and email form handler
+  const onChangeHandler = (name, value, setFieldValue) => {
+    console.log(name, "name", value, "value");
+
+    setCoverDetails((prev) => ({
+      ...prev,
+      preTender: { ...prev.preTender, [name]: value },
+    }));
+
+    setFieldValue(`preTender.${[name]}`, value);
+  };
+
+  //doc upload function
+  const docHandler = (name, event, setFieldValue) => {
+    setCoverDetails((prev) => ({
+      ...prev,
+      [name]: [event.target.files[0]],
+      doc: {
+        ...prev.doc,
+        [name]: {
+          ...prev.doc[name],
+          docSize: `${String(Number(event.target.files[0]?.size) / 1024)}kb`,
+        },
+      },
+    }));
+
+    setFieldValue([name], [event.target.files[0]]);
+    setFieldValue(
+      `doc.${name}.docSize`,
+      `${String(
+        (Math.round(Number(event.target.files[0]?.size) / 1024) * 100) / 100
+      )}kb`
+    );
+  };
+
+  //doc details handler
+  const docDataHandler = (name, subName, value, setFieldValue) => {
+    setCoverDetails((prev) => ({
+      ...prev,
+      doc: {
+        ...prev.doc,
+        [name]: {
+          ...prev.doc[name],
+          [subName]: value,
+        },
+      },
+    }));
+    setFieldValue(`doc.${name}.${subName}`, value);
+  };
+
+  // submit form
+  const submitForm = async (values) => {
+    values.preTender = { ...values.preTender, reference_no: referenceNo };
+    let formData = new FormData();
+    values.preTender = JSON.stringify(values.preTender);
+    values.doc = JSON.stringify(values.doc);
+
+    for (let key in values) {
+      // Append single file or multiple files
+      if (Array.isArray(values[key])) {
+        values[key].forEach((file, index) => {
+          formData.append(key, file);
+        });
+      } else {
+        formData.append(key, values[key]);
+      }
+    }
+
+    AxiosInterceptors.post(api_postBidOpenerDetails, formData, ApiHeader2())
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Bid Opener data Submitted successfully");
+          navigate(`/tendering?tabNo=${7}`);
+        } else {
+          toast.error("Error in getting basic details");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        toast.error("Error ");
+
+        // toast.error(error?.response?.data?.error);
+      });
+  };
+
+  ///////////{*** APPLICATION FULL DETAIL ***}/////////
+
+  const getApplicationDetail = (refNo) => {
+    AxiosInterceptors.get(`${api_getBidOpenerDetails}/${refNo}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          console.log(response?.data?.data, "bidopener details");
+          setBidOpenerDetails(response?.data?.data);
+          // setImageDoc(response?.data?.data?.doc[0]?.docUrl);
+        } else {
+          // toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        toast.error(error?.response?.data?.message);
+      });
+  };
+
+  useEffect(() => {
+    let refNo = window.localStorage.getItem("reference_no");
+    setReferenceNo(refNo);
+    getApplicationDetail(refNo);
+  }, []);
 
   return (
     <>
@@ -179,11 +348,11 @@ const BidOpinerForm = () => {
       <div className=' mt-5 container'>
         <Formik
           initialValues={initialValues}
-          // validationSchema={validationSchema}
+          enableReinitialize={true}
+          validationSchema={validationSchema}
           onSubmit={(values) => {
-            console.log("Bid Form values", values);
-            values = { ...values, imageDoc };
-            navigate(`/tendering?tabNo=${7}`);
+            submitForm(values);
+            
           }}
         >
           {({
@@ -207,30 +376,43 @@ const BidOpinerForm = () => {
                         <div className='w-full p-3'>
                           <label
                             for='default-input'
-                            className='block mb-2 text-sm font-medium text-gray-900 '
+                            className={`block mb-2 text-sm font-medium text-gray-900 ${
+                              errors?.preTender?.[obj.name1] &&
+                              touched?.preTender?.[obj.name1]
+                                ? "text-red-400"
+                                : "text-gray-900"
+                            }`}
                           >
                             {obj.label_name}
                             <span className='text-red-500'>*</span>
                           </label>
                           <input
+                            // {console.log(values[])}
+                            // name={`preTender${[obj.name1]}`}
                             type='text'
                             className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
                             placeholder='Name/Designation'
                             name={obj.name1}
                             onChange={(e) =>
-                              setFieldValue(
-                                values.preTender.name1,
-                                e.target.value
+                              onChangeHandler(
+                                obj.name1,
+                                e.target.value,
+                                setFieldValue
                               )
                             }
-                            value={values[obj?.name1]}
+                            value={values.preTender[obj?.name1]}
                           />
                         </div>
 
                         <div className='w-full p-3'>
                           <label
                             for='default-input'
-                            className='block mb-2 text-sm font-medium text-gray-900 '
+                            className={`block mb-2 text-sm font-medium text-gray-900 ${
+                              errors?.preTender?.[obj.name2] &&
+                              touched?.preTender?.[obj.name2]
+                                ? "text-red-400"
+                                : "text-gray-900"
+                            }`}
                           >
                             {obj.label_email}
                             <span className='text-red-500'>*</span>
@@ -240,13 +422,16 @@ const BidOpinerForm = () => {
                             className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
                             placeholder='Email'
                             name={obj.name2}
+                            // name={`preTender${[obj.name2]}`}
                             onChange={(e) =>
-                              setFieldValue(
-                                values.preTender.name2,
-                                e.target.value
+                              onChangeHandler(
+                                obj.name2,
+                                e.target.value,
+                                setFieldValue
                               )
                             }
-                            value={values[obj.name2]}
+                            // {console.log(first)}
+                            value={values.preTender[obj.name2]}
                           />
                         </div>
                       </div>
@@ -268,29 +453,45 @@ const BidOpinerForm = () => {
                       <div className='p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded'>
                         B0{index + 1}
                       </div>
-
                       <div className=' w-2/3 p-4 gap-3'>
                         <div className='w-full '>
                           <label
                             for='default-input'
-                            className='block mb-2 text-sm font-medium text-gray-900 '
+                            className={`block mb-2 text-sm font-medium ${
+                              errors?.doc?.[`B0${index + 1}`]?.[obj.name1] &&
+                              touched?.doc?.[`B0${index + 1}`]?.[obj.name1]
+                                ? "text-red-400"
+                                : "text-gray-900"
+                            }`}
                           >
                             {obj.label_name}
                             <span className='text-red-500'>*</span>
                           </label>
                           <input
                             type='text'
-                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
+                            className={`bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 $`}
                             placeholder='Name/Designation'
                             name={obj.name1}
-                            onChange={handleChange}
-                            value={values[obj.name1]}
+                            onChange={(e) =>
+                              docDataHandler(
+                                `B0${index + 1}`,
+                                obj.name1,
+                                e.target.value,
+                                setFieldValue
+                              )
+                            }
+                            value={values?.doc?.[`B0${index + 1}`]?.[obj.name1]}
                           />
                         </div>
 
                         <label
                           for='default-input'
-                          className={`block mb-2 mt-3 text-sm font-medium text-gray-900`}
+                          className={`block mb-2 mt-3 text-sm font-medium text-gray-900 ${
+                            errors?.doc?.[`B0${index + 1}`]?.[obj.name2] &&
+                            touched?.doc?.[`B0${index + 1}`]?.[obj.name2]
+                              ? "text-red-400"
+                              : "text-gray-900"
+                          }`}
                         >
                           {obj.label_desc}
                           <span className='text-red-500'>*</span>
@@ -299,11 +500,18 @@ const BidOpinerForm = () => {
                         <div className=' relative'>
                           <textarea
                             type='text'
-                            className=' bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                            placeholder='Discriptiion'
+                            className={` bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5 `}
+                            placeholder='Description'
                             name={obj.name2}
-                            value={values[obj.name2]}
-                            onChange={handleChange}
+                            value={values?.doc?.[`B0${index + 1}`]?.[obj.name2]}
+                            onChange={(e) =>
+                              docDataHandler(
+                                `B0${index + 1}`,
+                                obj.name2,
+                                e.target.value,
+                                setFieldValue
+                              )
+                            }
                           />
                         </div>
                       </div>
@@ -312,7 +520,12 @@ const BidOpinerForm = () => {
                         <div className='w-full mb-5'>
                           <label
                             for='default-input'
-                            className='block mb-2 text-sm font-medium text-gray-900 '
+                            className={`block mb-2 text-sm font-medium text-gray-900 ${
+                              errors?.[`B0${index + 1}`] &&
+                              touched?.[`B0${index + 1}`]
+                                ? "text-red-400"
+                                : "text-gray-900"
+                            }`}
                           >
                             Document Size (kb)
                             <span className='text-red-500'>*</span>
@@ -322,8 +535,12 @@ const BidOpinerForm = () => {
                             className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
                             placeholder=''
                             name={obj.nameDocSize}
-                            value={values[obj.nameDocSize]}
+                            // value={values[obj.nameDocSize]}
+                            defaultValue={
+                              values?.doc?.[`B0${index + 1}`]?.docSize
+                            }
                             onChange={handleChange}
+                            disabled
                           />
                         </div>
 
@@ -338,15 +555,22 @@ const BidOpinerForm = () => {
                                 style={{ width: "100px", height: "auto" }}
                               />
                             )}
+
+                            <img
+                              src={values?.[`B0${index + 1}`][0]}
+                              alt='Selected'
+                              style={{ width: "100px", height: "auto" }}
+                            />
                           </div>
                           <div className=''>
                             <input
                               type='file'
                               className='hidden'
                               ref={(el) => (inputFileRefs.current[index] = el)}
-                              onChange={(e) =>
-                                imageHandler(e, index, setFieldValue)
-                              }
+                              onChange={(e) => {
+                                imageHandler(e, index, setFieldValue);
+                                docHandler(`B0${index + 1}`, e, setFieldValue);
+                              }}
                             />
                             <button
                               type='button'
@@ -362,29 +586,6 @@ const BidOpinerForm = () => {
                   ))}
 
                   <TenderFormButton state={state} />
-
-                  {/* <div className="mb-5">
-                    <button
-                      className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
-                      onClick='##'
-                    >
-                      Back
-                    </button>
-
-                    <button
-                      className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
-                      type='submit'
-                    >
-                      Save & Next
-                    </button>
-
-                    <button
-                      className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
-                      onClick={() => resetForm()}
-                    >
-                      Reset
-                    </button>
-                  </div> */}
                 </div>
               </>
             </Form>
