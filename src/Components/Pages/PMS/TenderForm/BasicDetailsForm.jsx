@@ -108,19 +108,6 @@ const BasicDetailsForm = () => {
     // imageDoc=basicDetailData?.
   };
 
-  // const initialValues = {
-  //   reference_no: "",
-  //   tender_type: [],
-  //   contract_form: [],
-  //   tender_category: [],
-  //   allow_resubmission: "",
-  //   allow_withdrawl: "",
-  //   allow_offline_submission: "",
-  //   payment_mode: "online",
-  //   offlinePayment_mode: "",
-  //   onlinePyment_mode: "",
-  // };
-
   // submit form
   const submitForm = async (values) => {
     let formData = new FormData();
@@ -152,7 +139,7 @@ const BasicDetailsForm = () => {
           setBasicDetailData(response?.data?.data);
           setImageDoc(response?.data?.data?.doc[0]?.docUrl);
         } else {
-          toast.error(response?.data?.message);
+          // toast.error(response?.data?.message);
         }
       })
       .catch(function (error) {

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import fd from "@/Components/assets/fd.svg";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 
@@ -18,7 +18,6 @@ const CriticalDateForm = () => {
 
   const [selectedTab, setSelectedTab] = useState("online");
   const [preview, setPreview] = useState();
-  const [imageDoc, setImageDoc] = useState();
 
   const navigate = useNavigate();
 
@@ -104,20 +103,8 @@ const CriticalDateForm = () => {
     preBidMettingDate: "",
   };
 
-  //   const handleChange = (date) => {
-  //     setFieldValue('bidOpeningDate', date);
-  //     setFieldValue('publishingDate', date);
-  //     setFieldValue('docSaleStartDate', date);
-  //     setFieldValue('docSaleEndDate', date);
-  //     setFieldValue('seekClariStrtDate', date);
-  //     setFieldValue('seekClariEndDate', date);
-  //     setFieldValue('bidSubStrtDate', date);
-  //     setFieldValue('preBidMettingDate', date);
-  // };
-
   return (
     <>
-      {/* <div className='bg-white rounded-xl w-full shadow-md p-4 border border-indigo-200'> */}
       {/* Heading  */}
       <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
         <img src={fd} className='pl-2' />
@@ -401,7 +388,7 @@ const CriticalDateForm = () => {
                       </div>
                     </div>
 
-                    <TenderFormButton resetForm={resetForm} state={state}/>
+                    <TenderFormButton resetForm={resetForm} state={state} />
 
                     {/* <div className="mb-5">
                       <button
