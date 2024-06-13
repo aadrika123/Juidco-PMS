@@ -17,8 +17,8 @@ const FeeDetailsForm = () => {
 
   const { api_postFeeDetails, api_getFeeDetails } = ProjectApiList();
 
-  const [feeDetailData,setFeeDetailData] = useState()
-  const [referenceNo,setReferenceNo] = useState()
+  const [feeDetailData, setFeeDetailData] = useState();
+  const [referenceNo, setReferenceNo] = useState();
 
   const emdFee = [
     { label: "Fixed", value: "fixed" },
@@ -67,19 +67,19 @@ const FeeDetailsForm = () => {
   // console.log(referenceNo)
 
   const initialValues = {
-    reference_no:referenceNo,
-    tenderFee: feeDetailData?.tenderFee ||"",
-    processingFee: feeDetailData?.processingFee ||"",
-    tenderFeePayableTo: feeDetailData?.tenderFeePayableTo ||"",
-    tenderFeePayableAt: feeDetailData?.tenderFeePayableAt ||"",
-    surcharges: feeDetailData?.surcharges ||"",
-    otherCharges: feeDetailData?.otherCharges ||"",
-    emdAmount: feeDetailData?.emdAmount ||"",
-    emdPercentage: feeDetailData?.emdPercentage ||"",
-    emd_exemption: feeDetailData?.emd_exemption ? "yes":"no",
-    emd_fee: feeDetailData?.emd_fee ||"fixed",
-    emdFeePayableAt: feeDetailData?.emdFeePayableAt ||"",
-    emdFeePayableTo: feeDetailData?.emdFeePayableTo ||"",
+    reference_no: referenceNo,
+    tenderFee: feeDetailData?.tenderFee || "",
+    processingFee: feeDetailData?.processingFee || "",
+    tenderFeePayableTo: feeDetailData?.tenderFeePayableTo || "",
+    tenderFeePayableAt: feeDetailData?.tenderFeePayableAt || "",
+    surcharges: feeDetailData?.surcharges || "",
+    otherCharges: feeDetailData?.otherCharges || "",
+    emdAmount: feeDetailData?.emdAmount || "",
+    emdPercentage: feeDetailData?.emdPercentage || "",
+    emd_exemption: feeDetailData?.emd_exemption ? "yes" : "no",
+    emd_fee: feeDetailData?.emd_fee || "fixed",
+    emdFeePayableAt: feeDetailData?.emdFeePayableAt || "",
+    emdFeePayableTo: feeDetailData?.emdFeePayableTo || "",
   };
 
   // const initialValues = {
@@ -100,14 +100,17 @@ const FeeDetailsForm = () => {
 
   // submit form
   const submitForm = async (values) => {
-
-    AxiosInterceptors.post(api_postFeeDetails, {"preTender": JSON.stringify(values)}, ApiHeader())
+    AxiosInterceptors.post(
+      api_postFeeDetails,
+      { preTender: JSON.stringify(values) },
+      ApiHeader()
+    )
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("Basic data Submitted successfully");
+          toast.success("Fee Details Data Submitted successfully");
           navigate(`/tendering?tabNo=${5}`);
         } else {
-          toast.error("Error in Forwarding to DA. Please try again");
+          toast.error("Error in Submitting. Please try again");
         }
       })
       .catch(function (error) {
@@ -116,30 +119,25 @@ const FeeDetailsForm = () => {
       });
   };
 
-
- 
-
   const getApplicationDetail = (refNo) => {
-
     AxiosInterceptors.get(`${api_getFeeDetails}/${refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           setFeeDetailData(response?.data?.data);
         } else {
-          toast.error(response?.data?.message);
+          // toast.error(response?.data?.message);
         }
       })
       .catch(function (error) {
-        toast.error("Error while getting details...");
+        toast.error(error?.response?.data?.error);
       });
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
-    setReferenceNo(refNo)
+    setReferenceNo(refNo);
     getApplicationDetail(refNo);
-  },[])
-
+  }, []);
 
   return (
     <>
@@ -159,8 +157,7 @@ const FeeDetailsForm = () => {
           enableReinitialize={true}
           onSubmit={(values) => {
             console.log("Form values", values);
-            submitForm(values)
-            
+            submitForm(values);
           }}
         >
           {({
@@ -327,7 +324,11 @@ const FeeDetailsForm = () => {
                     />
                   </div>
 
-                  <div className={`p-7 mb-6 ${values.emd_exemption == "yes" ? "bg-gray-200" : "bg-white"} shadow-xl border border-gray-200 rounded-md grid grid-cols-2 mt-3`}>
+                  <div
+                    className={`p-7 mb-6 ${
+                      values.emd_exemption == "yes" ? "bg-gray-200" : "bg-white"
+                    } shadow-xl border border-gray-200 rounded-md grid grid-cols-2 mt-3`}
+                  >
                     <div className=''>
                       <RadioButtonsGroup
                         fields={emdFee}
@@ -392,7 +393,11 @@ const FeeDetailsForm = () => {
                     )}
                   </div>
 
-                  <div className={`p-7 mb-6 ${values.emd_exemption == "yes" ? "bg-gray-200" : "bg-white"} shadow-xl border border-gray-200 rounded-md grid grid-cols-2 mt-3`}>
+                  <div
+                    className={`p-7 mb-6 ${
+                      values.emd_exemption == "yes" ? "bg-gray-200" : "bg-white"
+                    } shadow-xl border border-gray-200 rounded-md grid grid-cols-2 mt-3`}
+                  >
                     <div className=''>
                       <label
                         for='default-input'

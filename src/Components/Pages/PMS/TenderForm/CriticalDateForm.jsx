@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import fd from "@/Components/assets/fd.svg";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 
@@ -18,15 +18,14 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 const CriticalDateForm = () => {
   const inputFileRef = useRef();
 
-  const { api_postCriticalDatesDetails, api_getCriticalDatesDetails } = ProjectApiList();
-
-  
+  const { api_postCriticalDatesDetails, api_getCriticalDatesDetails } =
+    ProjectApiList();
 
   const [selectedTab, setSelectedTab] = useState("online");
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
-  const [referenceNo,setReferenceNo] = useState()
-  const [criticalDateData,setCriticalDateData] = useState()
+  const [referenceNo, setReferenceNo] = useState();
+  const [criticalDateData, setCriticalDateData] = useState();
 
   const navigate = useNavigate();
 
@@ -100,44 +99,36 @@ const CriticalDateForm = () => {
     preBidMettingDate: Yup.string().required(),
   });
 
-// 2022-04-17T15:30
-  console.log(criticalDateData)
+  // 2022-04-17T15:30
+  console.log(criticalDateData);
 
   const initialValues = {
     reference_no: "",
-    publishingDate: criticalDateData?.publishingDate ||"",
-    bidOpeningDate: criticalDateData?.bidOpeningDate ||"",
-    docSaleStartDate: criticalDateData?.docSaleStartDate ||"",
-    docSaleEndDate: criticalDateData?.docSaleEndDate ||"",
-    seekClariStrtDate: criticalDateData?.seekClariStrtDate ||"",
-    seekClariEndDate: criticalDateData?.seekClariEndDate ||"",
-    bidSubStrtDate: criticalDateData?.bidSubStrtDate ||"",
-    bidSubEndDate: criticalDateData?.bidSubEndDate ||"",
-    preBidMettingDate: criticalDateData?.preBidMettingDate ||"",
+    publishingDate: criticalDateData?.publishingDate || "",
+    bidOpeningDate: criticalDateData?.bidOpeningDate || "",
+    docSaleStartDate: criticalDateData?.docSaleStartDate || "",
+    docSaleEndDate: criticalDateData?.docSaleEndDate || "",
+    seekClariStrtDate: criticalDateData?.seekClariStrtDate || "",
+    seekClariEndDate: criticalDateData?.seekClariEndDate || "",
+    bidSubStrtDate: criticalDateData?.bidSubStrtDate || "",
+    bidSubEndDate: criticalDateData?.bidSubEndDate || "",
+    preBidMettingDate: criticalDateData?.preBidMettingDate || "",
   };
-
-  //   const handleChange = (date) => {
-  //     setFieldValue('bidOpeningDate', date);
-  //     setFieldValue('publishingDate', date);
-  //     setFieldValue('docSaleStartDate', date);
-  //     setFieldValue('docSaleEndDate', date);
-  //     setFieldValue('seekClariStrtDate', date);
-  //     setFieldValue('seekClariEndDate', date);
-  //     setFieldValue('bidSubStrtDate', date);
-  //     setFieldValue('preBidMettingDate', date);
-  // };
-
 
   // submit form
   const submitForm = async (values) => {
-values={...values, reference_no:referenceNo}
-    AxiosInterceptors.post(api_postCriticalDatesDetails, {"preTender": JSON.stringify(values)}, ApiHeader())
+    values = { ...values, reference_no: referenceNo };
+    AxiosInterceptors.post(
+      api_postCriticalDatesDetails,
+      { preTender: JSON.stringify(values) },
+      ApiHeader()
+    )
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("Basic data Submitted successfully");
+          toast.success("Critical Date Details Data Submitted successfully");
           navigate(`/tendering?tabNo=${6}`);
         } else {
-          toast.error("Error in Forwarding to DA. Please try again");
+          // toast.error("Error in Forwarding to DA. Please try again");
         }
       })
       .catch(function (error) {
@@ -146,32 +137,32 @@ values={...values, reference_no:referenceNo}
       });
   };
 
-
-  console.log(criticalDateData)
+  console.log(criticalDateData);
 
   const getApplicationDetail = (refNo) => {
-
-    AxiosInterceptors.get(`${api_getCriticalDatesDetails}/${refNo}`, ApiHeader())
+    AxiosInterceptors.get(
+      `${api_getCriticalDatesDetails}/${refNo}`,
+      ApiHeader()
+    )
       .then(function (response) {
         if (response?.data?.status) {
           setCriticalDateData(response?.data?.data);
         } else {
-          toast.error(response?.data?.message);
+          // toast.error(response?.data?.message);
         }
       })
       .catch(function (error) {
-        toast.error("Error while getting details...");
+        toast.error(error?.response?.data?.error);
       });
   };
-  useEffect(()=>{
+  useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
-    setReferenceNo(refNo)
-    getApplicationDetail(refNo)
-  },[])
+    setReferenceNo(refNo);
+    getApplicationDetail(refNo);
+  }, []);
 
   return (
     <>
-      {/* <div className='bg-white rounded-xl w-full shadow-md p-4 border border-indigo-200'> */}
       {/* Heading  */}
       <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
         <img src={fd} className='pl-2' />
@@ -188,8 +179,7 @@ values={...values, reference_no:referenceNo}
               enableReinitialize={true}
               onSubmit={(values) => {
                 console.log("Form values", values);
-                submitForm(values)
-                
+                submitForm(values);
               }}
             >
               {({
@@ -226,7 +216,11 @@ values={...values, reference_no:referenceNo}
                             // defaultValue={dayjs(criticalDateData?.publishingDate)}
                             value={
                               values.publishingDate
-                                ? dayjs(new Date(values?.publishingDate).toISOString())
+                                ? dayjs(
+                                    new Date(
+                                      values?.publishingDate
+                                    ).toISOString()
+                                  )
                                 : null
                             }
                           />
@@ -458,7 +452,7 @@ values={...values, reference_no:referenceNo}
                       </div>
                     </div>
 
-                    <TenderFormButton resetForm={resetForm}/>
+                    <TenderFormButton resetForm={resetForm} />
 
                     {/* <div className="mb-5">
                       <button

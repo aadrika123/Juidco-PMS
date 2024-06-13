@@ -95,17 +95,6 @@ const CoverDetailsForm = (props) => {
     }
   };
 
-  const handleSubmit = (values) => {
-    values.tabs.forEach((tab, index) => {
-      if (tab.docs.length === 0) {
-        return toast.error(`Please upload valid documents for ${tab.name}`);
-      }
-    });
-    submitForm(values);
-    console.log(values, "form values");
-    // navigate(`/tendering?tabNo=${3}`);
-  };
-
   // submit form
   const submitForm = async (values) => {
     let formData = new FormData();
@@ -118,16 +107,27 @@ const CoverDetailsForm = (props) => {
     AxiosInterceptors.post(api_postCoverDetails, formData, ApiHeader2())
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("Basic data Submitted successfully");
+          toast.success("Cover Details Submitted successfully");
           navigate(`/tendering?tabNo=${3}`);
         } else {
-          toast.error("Error in getting basic details");
+          toast.error("Error in submitting details. Please try again");
         }
       })
       .catch(function (error) {
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         toast.error(error?.response?.data?.error);
       });
+  };
+
+  const handleSubmit = (values) => {
+    values.tabs.forEach((tab, index) => {
+      if (tab.docs.length === 0) {
+        return toast.error(`Please upload valid documents for ${tab.name}`);
+      }
+    });
+    submitForm(values);
+    console.log(values, "form values");
+    // navigate(`/tendering?tabNo=${3}`);
   };
 
   return (
