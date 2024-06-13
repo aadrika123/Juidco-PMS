@@ -164,7 +164,7 @@ const CriticalDateForm = () => {
   return (
     <>
       {/* Heading  */}
-      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
+      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl mb-3'>
         <img src={fd} className='pl-2' />
         <h1 className='pt-1 pl-2 text-xl'>Critical Dates</h1>
       </div>
@@ -192,8 +192,9 @@ const CriticalDateForm = () => {
               }) => (
                 <Form>
                   <>
-                    <div className=' container mx-auto capitalize grid grid-cols-2 space-x-4'>
-                      <div className='p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5 '>
+                    <div className='grid grid-cols-2 container mx-auto capitalize'>
+                     
+                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                         <div className=''>
                           <label
                             for='default-input'
@@ -213,7 +214,7 @@ const CriticalDateForm = () => {
                               const dateTime = value.format();
                               setFieldValue("publishingDate", dateTime);
                             }}
-                            // defaultValue={dayjs(criticalDateData?.publishingDate)}
+                            
                             value={
                               values.publishingDate
                                 ? dayjs(
@@ -254,7 +255,7 @@ const CriticalDateForm = () => {
                         </div>
                       </div>
 
-                      <div className='p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5'>
+                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                         <div className=''>
                           <label
                             for='default-input'
@@ -310,7 +311,7 @@ const CriticalDateForm = () => {
                         </div>
                       </div>
 
-                      <div className='p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5'>
+                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                         <div className=''>
                           <label
                             for='default-input'
@@ -366,7 +367,7 @@ const CriticalDateForm = () => {
                         </div>
                       </div>
 
-                      <div className='p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 mt-3 space-y-5'>
+                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                         <div className=''>
                           <label
                             for='default-input'
@@ -422,7 +423,7 @@ const CriticalDateForm = () => {
                         </div>
                       </div>
 
-                      <div className='p-7 mb-4 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-1 col-span-2 mt-3 space-y-5'>
+                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md col-span-2'>
                         <div className=''>
                           <label
                             for='default-input'
@@ -450,9 +451,10 @@ const CriticalDateForm = () => {
                           />
                         </div>
                       </div>
+
                     </div>
 
-                    <TenderFormButton resetForm={resetForm} />
+                    <TenderFormButton resetForm={resetForm} getDetailData={criticalDateData} />
 
                     {/* <div className="mb-5">
                       <button

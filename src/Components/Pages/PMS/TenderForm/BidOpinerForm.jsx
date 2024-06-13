@@ -13,6 +13,7 @@ import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 
 const BidOpinerForm = () => {
   const inputFileRefs = useRef([]);
+  const navigate = useNavigate();
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
   const [bidOpenerDetails, setBidOpenerDetails] = useState();
@@ -294,7 +295,7 @@ const BidOpinerForm = () => {
       .then(function (response) {
         if (response?.data?.status) {
           toast.success("Bid Opener data Submitted successfully");
-          // navigate(`/tendering?tabNo=${3}`);
+          navigate(`/tendering?tabNo=${7}`);
         } else {
           toast.error("Error in getting basic details");
         }
@@ -351,6 +352,7 @@ const BidOpinerForm = () => {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             submitForm(values);
+            
           }}
         >
           {({
@@ -538,6 +540,7 @@ const BidOpinerForm = () => {
                               values?.doc?.[`B0${index + 1}`]?.docSize
                             }
                             onChange={handleChange}
+                            disabled
                           />
                         </div>
 

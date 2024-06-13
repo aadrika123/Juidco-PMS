@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 function ImageModal(props) {
   console.log(props?.imageDoc, "img type===============");
@@ -29,17 +30,21 @@ function ImageModal(props) {
         } z-[1000]`}
       >
         <div
-          className={`bg-transparent rounded-lg relative transform transition-transform ${
+          className={`bg-transparent rounded-lg transform transition-transform ${
             props.imageModal ? "scale-100 modal-pop" : "scale-95"
           }`}
           id='printable-content'
         >
-          <button
+        <AiOutlineCloseCircle
+            onClick={handleCancilClick}
+            className="relative bottom-[2rem] float-right text-3xl text-white cursor-pointer hover:text-black"
+          />
+          {/* <button
             className='absolute top-1 right-1 text-white bg-transparent border border-white hover:bg-indigo-600 pl-2 pr-2 rounded-lg'
             onClick={handleCancilClick}
           >
             <p className='text-3xl'>&times;</p>
-          </button>
+          </button> */}
 
           {/* to display image */}
           {(props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) ||

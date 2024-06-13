@@ -445,7 +445,7 @@ const FeeDetailsForm = () => {
                     </div>
                   </div>
 
-                  <TenderFormButton resetForm={resetForm} />
+                  <TenderFormButton resetForm={resetForm} getDetailData={feeDetailData} />
 
                   {/* <div className='mb-5'>
                     <button

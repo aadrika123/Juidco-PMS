@@ -20,6 +20,7 @@ import wd from "@/Components/assets/wd.svg";
 import fd from "@/Components/assets/fd.svg";
 import cd2 from "@/Components/assets/cd2.svg";
 import bo from "@/Components/assets/bo.svg";
+import prev from "@/Components/assets/prev.svg";
 import BasicDetailsForm from "./BasicDetailsForm";
 import CoverDetailsForm from "./CoverDetailsForm";
 import WorkDetailsForm from "./WorkDetailsForm";
@@ -33,6 +34,7 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
+import TenderFormViewDetails from "./TenderFormViewDetails";
 
 const TenderForm = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -55,6 +57,7 @@ const TenderForm = () => {
     { label: "Fee Details", tab: 4, img: fd },
     { label: "Critical Details", tab: 5, img: cd2 },
     { label: "Bid Openers", tab: 6, img: bo },
+    { label: "Preview", tab: 7, img: prev },
   ];
 
   return (
@@ -126,6 +129,14 @@ const TenderForm = () => {
                 Steps: 6/6
               </div>
             )}
+            {tabNo === 7 && (
+              <div
+                className='bg-green-600 text-xs font-medium text-blue-100 pl-2 pt-0.5 leading-none rounded-full'
+                style={{ width: "100%" }}
+              >
+                Complited..
+              </div>
+            )}
           </div>
         </div>
 
@@ -138,14 +149,6 @@ const TenderForm = () => {
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
                   : "text-gray-500 bg-white "
               } focus:outline-none flex shadow-xl border border-gray-300 rounded`}
-              // disabled={tabNo <= item.tab}
-              // className={`py-2 px-2 mr-5 ${
-              //   tabNo === item.tab
-              //     ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-              //     : tabNo >= item.tab
-              //     ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-              //     : "disabled:bg-gray-200 text-black"
-              // } focus:outline-none flex shadow-xl border border-gray-300 rounded`}
               onClick={() => handleTabClick(item.tab)}
             >
               <img src={item.img} className='pr-2' />
@@ -189,6 +192,12 @@ const TenderForm = () => {
         {tabNo === 6 && (
           <div className={`${tabNo >= 2 ? "" : "disabled:bg-red-300"}`}>
             <BidOpinerForm />
+          </div>
+        )}
+
+        {tabNo === 7 && (
+          <div className={`${tabNo >= 2 ? "" : "disabled:bg-red-300"}`}>
+            <TenderFormViewDetails />
           </div>
         )}
       </div>

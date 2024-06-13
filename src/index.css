@@ -62,7 +62,7 @@ body {
     }
   }
 
-  /* @media print {
+  @media print {
     body * {
       visibility: hidden;
     }
@@ -100,7 +100,7 @@ body {
     img, table, pre, blockquote {
       page-break-inside: avoid;
     }
-  } */
+  }
 
 
 

@@ -46,6 +46,9 @@ import BoqListTabs from "./Components/Pages/PMS/BOQ/BoqListTabs";
 import BoqListTabsDa from "./Components/Pages/PMS/BOQ/DA/BoqListTabsDa";
 import TenderFormViewDetails from "./Components/Pages/PMS/TenderForm/TenderFormViewDetails";
 import PrintComponent from "./Components/Common/PrintArea/PrintComponent";
+import AccountantList from "./Components/Pages/PMS/TenderForm/Accountant/AccountantListTabs";
+import DATenderList from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderList";
+import DATenderTabs from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderTabs";
 
 const queryClient = new QueryClient();
 
@@ -151,7 +154,7 @@ function App() {
       element: <ViewReceivedInvtById />,
     },
 
-    /////////////////////////{*** Received-Inventory ***}//////////////////////////////////////
+    /////////////////////////{*** Tendering ***}//////////////////////////////////////
     {
       path: "/tendering",
       element: <TenderForm />,
@@ -167,6 +170,14 @@ function App() {
     {
       path: "/print-preview",
       element: <ExportTableData />,
+    },
+    {
+      path: "/acc-pre-tendring",
+      element: <AccountantList />,
+    },
+    {
+      path: "/da-pre-tendring",
+      element: <DATenderTabs />,
     },
 
     /////////////////////////{*** BOQ ***}//////////////////////////////////////
@@ -195,6 +206,7 @@ function App() {
       path: "/da-boq",
       element: <BoqListTabsDa />,
     },
+
   ];
 
   return (
