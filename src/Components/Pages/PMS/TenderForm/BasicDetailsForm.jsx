@@ -121,7 +121,7 @@ const BasicDetailsForm = () => {
           toast.success("Basic data Submitted successfully");
           navigate(`/tendering?tabNo=${3}`);
         } else {
-          toast.error("Error in getting basic details");
+          toast.error("Error in submitting basic details");
         }
       })
       .catch(function (error) {

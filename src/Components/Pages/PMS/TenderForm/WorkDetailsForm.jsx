@@ -112,9 +112,9 @@ const WorkDetailsForm = () => {
     completionPeriod: workDetailData?.completionPeriod || "",
     location: workDetailData?.location || "",
     pinCode: workDetailData?.pinCode || "",
-    pre_bid: String(workDetailData?.pre_bid) || "yes",
+    pre_bid: workDetailData?.pre_bid ? "yes" : "no",
     preBidMeeting: workDetailData?.preBidMeeting || "",
-    preBidMeetingAdd: workDetailData?.preBidMeetingAdd || "",
+    preBidMeetingAdd: workDetailData?.preBidMeetingAdd || "yes",
     bidOpeningPlace: workDetailData?.bidOpeningPlace || "",
     tenderer_class: workDetailData?.tenderer_class || [],
     invstOffName: workDetailData?.invstOffName || "",
@@ -459,78 +459,82 @@ const WorkDetailsForm = () => {
                       setFieldValue={setFieldValue}
                       defaultValue={"yes"}
                     />
+                    {values.pre_bid == "yes" && (
+                      <>
+                        <label
+                          for='default-input'
+                          className={`block mb-2 mt-7 text-sm font-medium text-gray-900 ${
+                            errors.preBidMeeting &&
+                            touched.preBidMeeting &&
+                            "text-red-500"
+                          }`}
+                        >
+                          Pre Bid Meeting Place
+                          <span className='text-red-500'>*</span>
+                        </label>
 
-                    <label
-                      for='default-input'
-                      className={`block mb-2 mt-7 text-sm font-medium text-gray-900 ${
-                        errors.preBidMeeting &&
-                        touched.preBidMeeting &&
-                        "text-red-500"
-                      }`}
-                    >
-                      Pre Bid Meeting Place
-                      <span className='text-red-500'>*</span>
-                    </label>
+                        <div className='relative'>
+                          <textarea
+                            type='text'
+                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                            placeholder='Meeting Place'
+                            name='preBidMeeting'
+                            value={values.preBidMeeting}
+                            disabled={values.pre_bid == "no"}
+                            onChange={(e) => {
+                              if (values.preBidMeeting.length < 300) {
+                                handleChange(e);
+                              }
+                            }}
+                          />
 
-                    <div className='relative'>
-                      <textarea
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                        placeholder='Meeting Place'
-                        name='preBidMeeting'
-                        value={values.preBidMeeting}
-                        disabled={values.pre_bid == "no"}
-                        onChange={(e) => {
-                          if (values.preBidMeeting.length < 300) {
-                            handleChange(e);
-                          }
-                        }}
-                      />
+                          <span
+                            className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${
+                              300 === values.preBidMeeting.length &&
+                              "text-red-500"
+                            }`}
+                          >
+                            {values.preBidMeeting?.length} / {50}
+                          </span>
+                        </div>
 
-                      <span
-                        className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${
-                          300 === values.preBidMeeting.length && "text-red-500"
-                        }`}
-                      >
-                        {values.preBidMeeting?.length} / {50}
-                      </span>
-                    </div>
+                        <label
+                          for='default-input'
+                          className={`block mb-2 mt-3 text-sm font-medium text-gray-900 ${
+                            errors.preBidMeetingAdd &&
+                            touched.preBidMeetingAdd &&
+                            "text-red-500"
+                          }`}
+                        >
+                          Pre Bid Meeting Address
+                          <span className='text-red-500'>*</span>
+                        </label>
 
-                    <label
-                      for='default-input'
-                      className={`block mb-2 mt-3 text-sm font-medium text-gray-900 ${
-                        errors.preBidMeetingAdd &&
-                        touched.preBidMeetingAdd &&
-                        "text-red-500"
-                      }`}
-                    >
-                      Pre Bid Meeting Address
-                      <span className='text-red-500'>*</span>
-                    </label>
-
-                    <div className='relative'>
-                      <textarea
-                        type='text'
-                        className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                        placeholder='Meeting Address'
-                        name='preBidMeetingAdd'
-                        value={values.preBidMeetingAdd}
-                        disabled={values.pre_bid == "no"}
-                        onChange={(e) => {
-                          if (values.preBidMeeting.length < 300) {
-                            handleChange(e);
-                          }
-                        }}
-                      />
-                      <span
-                        className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${
-                          300 === values.preBidMeetingAdd.length &&
-                          "text-red-500"
-                        }`}
-                      >
-                        {values.preBidMeetingAdd?.length} / {300}
-                      </span>
-                    </div>
+                        <div className='relative'>
+                          <textarea
+                            type='text'
+                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
+                            placeholder='Meeting Address'
+                            name='preBidMeetingAdd'
+                            value={values.preBidMeetingAdd}
+                            disabled={values.pre_bid == "no"}
+                            onChange={(e) => {
+                              if (values.preBidMeeting.length < 300) {
+                                handleChange(e);
+                              }
+                            }}
+                          />
+                          <span
+                            className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${
+                              300 === values.preBidMeetingAdd.length &&
+                              "text-red-500"
+                            }`}
+                          >
+                            {values.preBidMeetingAdd?.length} / {300}
+                          </span>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>

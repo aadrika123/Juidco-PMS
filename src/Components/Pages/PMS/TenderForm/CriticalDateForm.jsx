@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import fd from "@/Components/assets/fd.svg";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -11,13 +11,21 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
 import { useLocation, useNavigate } from "react-router-dom";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader from "@/Components/api/ApiHeader";
+import ProjectApiList from "@/Components/api/ProjectApiList";
 
 const CriticalDateForm = () => {
   const inputFileRef = useRef();
-  const { state } = useLocation();
+
+  const { api_postCriticalDatesDetails, api_getCriticalDatesDetails } =
+    ProjectApiList();
 
   const [selectedTab, setSelectedTab] = useState("online");
   const [preview, setPreview] = useState();
+  const [imageDoc, setImageDoc] = useState();
+  const [referenceNo, setReferenceNo] = useState();
+  const [criticalDateData, setCriticalDateData] = useState();
 
   const navigate = useNavigate();
 
@@ -91,17 +99,67 @@ const CriticalDateForm = () => {
     preBidMettingDate: Yup.string().required(),
   });
 
+  // 2022-04-17T15:30
+  console.log(criticalDateData);
+
   const initialValues = {
-    publishingDate: "",
-    bidOpeningDate: "",
-    docSaleStartDate: "",
-    docSaleEndDate: "",
-    seekClariStrtDate: "",
-    seekClariEndDate: "",
-    bidSubStrtDate: "",
-    bidSubEndDate: "",
-    preBidMettingDate: "",
+    reference_no: "",
+    publishingDate: criticalDateData?.publishingDate || "",
+    bidOpeningDate: criticalDateData?.bidOpeningDate || "",
+    docSaleStartDate: criticalDateData?.docSaleStartDate || "",
+    docSaleEndDate: criticalDateData?.docSaleEndDate || "",
+    seekClariStrtDate: criticalDateData?.seekClariStrtDate || "",
+    seekClariEndDate: criticalDateData?.seekClariEndDate || "",
+    bidSubStrtDate: criticalDateData?.bidSubStrtDate || "",
+    bidSubEndDate: criticalDateData?.bidSubEndDate || "",
+    preBidMettingDate: criticalDateData?.preBidMettingDate || "",
   };
+
+  // submit form
+  const submitForm = async (values) => {
+    values = { ...values, reference_no: referenceNo };
+    AxiosInterceptors.post(
+      api_postCriticalDatesDetails,
+      { preTender: JSON.stringify(values) },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Critical Date Details Data Submitted successfully");
+          navigate(`/tendering?tabNo=${6}`);
+        } else {
+          // toast.error("Error in Forwarding to DA. Please try again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
+  console.log(criticalDateData);
+
+  const getApplicationDetail = (refNo) => {
+    AxiosInterceptors.get(
+      `${api_getCriticalDatesDetails}/${refNo}`,
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          setCriticalDateData(response?.data?.data);
+        } else {
+          // toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.error);
+      });
+  };
+  useEffect(() => {
+    let refNo = window.localStorage.getItem("reference_no");
+    setReferenceNo(refNo);
+    getApplicationDetail(refNo);
+  }, []);
 
   return (
     <>
@@ -118,9 +176,10 @@ const CriticalDateForm = () => {
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
+              enableReinitialize={true}
               onSubmit={(values) => {
                 console.log("Form values", values);
-                navigate(`/tendering?tabNo=${6}`);
+                submitForm(values);
               }}
             >
               {({
@@ -154,9 +213,14 @@ const CriticalDateForm = () => {
                               const dateTime = value.format();
                               setFieldValue("publishingDate", dateTime);
                             }}
+                            // defaultValue={dayjs(criticalDateData?.publishingDate)}
                             value={
                               values.publishingDate
-                                ? dayjs(values.publishingDate)
+                                ? dayjs(
+                                    new Date(
+                                      values?.publishingDate
+                                    ).toISOString()
+                                  )
                                 : null
                             }
                           />
@@ -388,7 +452,7 @@ const CriticalDateForm = () => {
                       </div>
                     </div>
 
-                    <TenderFormButton resetForm={resetForm} state={state} />
+                    <TenderFormButton resetForm={resetForm} />
 
                     {/* <div className="mb-5">
                       <button
