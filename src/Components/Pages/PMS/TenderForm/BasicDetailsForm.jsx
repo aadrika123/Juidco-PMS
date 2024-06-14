@@ -72,7 +72,7 @@ const BasicDetailsForm = () => {
   ];
 
   const validationSchema = Yup.object({
-    reference_no: Yup.string().required(),
+    // reference_no: Yup.string().required(),
     tender_type: Yup.array().min(1).required(),
     contract_form: Yup.array().min(1).required(),
     tender_category: Yup.array().min(1).required(),
@@ -94,7 +94,7 @@ const BasicDetailsForm = () => {
 
   // Initial values for additional form fields can go here
   const initialValues = {
-    reference_no: basicDetailData?.reference_no || "",
+    reference_no: referenceNo || "",
     tender_type: basicDetailData?.tender_type || [],
     contract_form: basicDetailData?.contract_form || [],
     tender_category: basicDetailData?.tender_category || [],
@@ -118,7 +118,7 @@ const BasicDetailsForm = () => {
       .then(function (response) {
         if (response?.data?.status) {
           toast.success("Basic data Submitted successfully");
-          navigate(`/tendering?tabNo=${3}`);
+          navigate(`/tendering?tabNo=${2}`);
         } else {
           toast.error("Error in submitting basic details");
         }

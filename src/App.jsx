@@ -160,7 +160,7 @@ function App() {
       element: <TenderForm />,
     },
     {
-      path: "/tendering-preview",
+      path: "/tendering-preview/:page",
       element: <TenderFormViewDetails />,
     },
     {

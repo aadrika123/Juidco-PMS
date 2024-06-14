@@ -24,7 +24,7 @@ const AccountantListTabs = () => {
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { api_fetchProcurementList, api_fetchProcurementDAList } =
+  const { api_getAccPreTenderInbox, api_getAccPreTenderOutbox } =
     ProjectApiList();
 
   return (
@@ -73,7 +73,7 @@ const AccountantListTabs = () => {
             <div>
               <AccountantList
                 page='inbox'
-                api={api_fetchProcurementList}
+                api={api_getAccPreTenderInbox}
               />
             </div>
           )}
@@ -81,7 +81,7 @@ const AccountantListTabs = () => {
             <div>
               <AccountantList
                 page='outbox'
-                api={api_fetchProcurementDAList}
+                api={api_getAccPreTenderOutbox}
               />
             </div>
           )}

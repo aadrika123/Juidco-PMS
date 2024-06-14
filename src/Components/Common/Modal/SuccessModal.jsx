@@ -14,7 +14,7 @@ import React, { useState } from "react";
 import check from "@/Components/assets/check.svg";
 import { useNavigate } from "react-router-dom";
 
-function SuccessModal({ confirmationHandler, message,requestNoMsg }) {
+function SuccessModal({ confirmationHandler, message,requestNoMsg,refNo }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -44,7 +44,7 @@ function SuccessModal({ confirmationHandler, message,requestNoMsg }) {
                 <span className='text-base text-gray-400 '>
                   {requestNoMsg}
                 </span>{" "}
-                {/* - {props?.procurement_no} */}
+                {refNo}
               </h3>
             </div>
           </div>
@@ -61,10 +61,10 @@ function SuccessModal({ confirmationHandler, message,requestNoMsg }) {
             </div>
 
             <div>
-              <h1 className='text-center pt-5'>
+              {/* <h1 className='text-center pt-5'>
                 <span className='text-red-600 text-xl'>*</span> Save Your Order
                 number for Future Referance.
-              </h1>
+              </h1> */}
             </div>
           </div>
         </div>
