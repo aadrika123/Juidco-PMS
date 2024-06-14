@@ -79,7 +79,7 @@ const DATenderTabs = () => {
             <div>
               <DATenderList
                 page='outbox'
-                api={api_fetchAllDaPreTenderingInbox}
+                api={api_fetchAllDaPreTenderingOutbox}
               />
             </div>
           )}
