@@ -213,12 +213,7 @@ const BidOpinerForm = () => {
     if (file) {
       // setFieldValue(`doc${index + 1}`, file);
       setImageDoc(file);
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setPreview(URL.createObjectURL(file));
       // setPreview((prev) => ({ ...prev, [index]: URL.createObjectURL(file) }));
     }
   };
@@ -352,7 +347,6 @@ const BidOpinerForm = () => {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             submitForm(values);
-            
           }}
         >
           {({
@@ -546,7 +540,7 @@ const BidOpinerForm = () => {
 
                         <div className='w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 '>
                           <div className='w-[8rem] mb-2'>
-                            {values[`doc${index + 1}`] && (
+                            {/* {values[`doc${index + 1}`] && (
                               <img
                                 src={URL.createObjectURL(
                                   values[`doc${index + 1}`]
@@ -554,13 +548,22 @@ const BidOpinerForm = () => {
                                 alt='Selected'
                                 style={{ width: "100px", height: "auto" }}
                               />
-                            )}
+                            )} */}
 
-                            <img
+                            <ImageDisplay
+                              url={
+                                bidOpenerDetails?.bid_openers_docs?.find(
+                                  (data) => data?.type == `B0${index + 1}`
+                                )?.docUrl
+                              }
+                              preview={preview || ""}
+                              imageDoc={values?.[`B0${index + 1}`][0]}
+                            />
+                            {/* <img
                               src={values?.[`B0${index + 1}`][0]}
                               alt='Selected'
                               style={{ width: "100px", height: "auto" }}
-                            />
+                            /> */}
                           </div>
                           <div className=''>
                             <input
