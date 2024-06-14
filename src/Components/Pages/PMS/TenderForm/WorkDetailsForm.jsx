@@ -19,6 +19,8 @@ const WorkDetailsForm = () => {
   const { api_postWorkDetails, api_getWorkDetails } = ProjectApiList();
 
   const [workDetailData, setWorkDetailData] = useState();
+  const [referenceNo,setReferenceNo] = useState();
+
   const { state } = useLocation();
   console.log(state);
 
@@ -101,7 +103,7 @@ const WorkDetailsForm = () => {
 
   // Initial values for additional form fields can go here
   const initialValues = {
-    reference_no: workDetailData?.reference_no || "",
+    reference_no: referenceNo|| "",
     workDiscription: workDetailData?.workDiscription || "",
     pre_qualification_details: workDetailData?.pre_qualification_details || "",
     product_category: workDetailData?.product_category || [],
@@ -161,6 +163,7 @@ const WorkDetailsForm = () => {
 
   useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
+setReferenceNo(refNo)
     getApplicationDetail(refNo);
   }, []);
 

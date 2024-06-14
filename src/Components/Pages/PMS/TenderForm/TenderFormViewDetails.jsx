@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import SuccessModal from "@/Components/Common/Modal/SuccessModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ImageModal from "../../Others/ImageModal/ImageModal";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -13,7 +13,12 @@ import ApiHeader from "@/Components/api/ApiHeader";
 
 const TenderFormViewDetails = () => {
   const navigate = useNavigate();
-  const { api_postBasicDetails, api_getPreviewDetails } = ProjectApiList();
+
+  const { page } = useParams();
+
+  // console.log(page);
+
+  const { api_postForwardtoDA, api_getPreviewDetails } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,17 +26,17 @@ const TenderFormViewDetails = () => {
   const [imageModal, setImageModal] = useState(false);
   const [referenceNo, setReferenceNo] = useState();
   const [previewData, setPreviewData] = useState();
-  const [imageUrlModal,setImageUrlModal] = useState();
+  const [imageUrlModal, setImageUrlModal] = useState();
 
   const descTitle = "font-bold text-[#4D4B4B]";
   const descText = "text-[#7d7d7d] uppercase";
-
 
   const handlePrint = () => {
     window.print();
   };
 
   const confirmationHandler = () => {
+    navigate("/acc-pre-tendring");
     setIsSuccessModal(false);
   };
 
@@ -55,53 +60,65 @@ const TenderFormViewDetails = () => {
       });
   };
 
-  
+  const postFinalSubmission = () => {
+    AxiosInterceptors.post(
+      `${api_postForwardtoDA}`,
+      { reference_no: referenceNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          console.log(response?.data?.data);
+          setIsSuccessModal(true);
+        } else {
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        // toast.error(error?.response?.data?.message);
+      });
+  };
 
   const formateDateTime = (originalDateTime) => {
+    if (originalDateTime) {
+      const date = new Date(originalDateTime);
 
-    console.log(originalDateTime)
-
-    // const originalDateTime = "2024-06-28T18:30:00.000Z";
-    if(originalDateTime){
-
-    const date = new Date(originalDateTime);
-
-    // Options for formatting the date
-    const options = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-      timeZone: "America/New_York", // Adjust the time zone as needed
-    };
-    // Format the date using the Intl.DateTimeFormat
-    const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
-      date
-    );
-
-    // Since Intl.DateTimeFormat does not support the exact format directly, we need to adjust the time part
-    const formattedDateArray = formattedDate.split(", ");
-    const datePart = formattedDateArray[0];
-    let timePart = formattedDateArray[1];
-
-    // Adjust the date if time part indicates the next day
-    const [time, period] = timePart.split(" ");
-    if (time === "12:00" && period === "AM") {
-      const adjustedDate = new Date(date.getTime() + 24 * 60 * 60 * 1000); // Add one day
-      const adjustedDatePart = new Intl.DateTimeFormat("en-US", {
+      // Options for formatting the date
+      const options = {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
-        timeZone: "America/New_York",
-      }).format(adjustedDate);
-      timePart = "12:00 AM";
-      return(`${adjustedDatePart} ${timePart}`);
-    } else {
-      return(`${datePart} ${timePart}`);
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "America/New_York", // Adjust the time zone as needed
+      };
+      // Format the date using the Intl.DateTimeFormat
+      const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
+        date
+      );
+
+      // Since Intl.DateTimeFormat does not support the exact format directly, we need to adjust the time part
+      const formattedDateArray = formattedDate.split(", ");
+      const datePart = formattedDateArray[0];
+      let timePart = formattedDateArray[1];
+
+      // Adjust the date if time part indicates the next day
+      const [time, period] = timePart.split(" ");
+      if (time === "12:00" && period === "AM") {
+        const adjustedDate = new Date(date.getTime() + 24 * 60 * 60 * 1000); // Add one day
+        const adjustedDatePart = new Intl.DateTimeFormat("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          timeZone: "America/New_York",
+        }).format(adjustedDate);
+        timePart = "12:00 AM";
+        return `${adjustedDatePart} ${timePart}`;
+      } else {
+        return `${datePart} ${timePart}`;
+      }
     }
-  }
   };
 
   useEffect(() => {
@@ -110,11 +127,10 @@ const TenderFormViewDetails = () => {
     getApplicationDetail(refNo);
   }, []);
 
-
-  const ImageDetailFunc = (imgUrl)=>{
-    setImageUrlModal(imgUrl)
-    setImageModal(true)
-  }
+  const ImageDetailFunc = (imgUrl) => {
+    setImageUrlModal(imgUrl);
+    setImageModal(true);
+  };
 
   //displaying confirmation message
 
@@ -124,7 +140,8 @@ const TenderFormViewDetails = () => {
         <SuccessModal
           confirmationHandler={confirmationHandler}
           message={"Your Form has been submitted Successfully"}
-          requestNoMsg={"Tendring Request No -"}
+          requestNoMsg={"With Reference No -"}
+          refNo={referenceNo}
         />
       </>
     );
@@ -145,12 +162,14 @@ const TenderFormViewDetails = () => {
   // console.log(previewData);
   return (
     <>
-      {/* <div className="">
-        <TitleBar
-          titleBarVisibility={titleBarVisibility}
-          titleText={"Tender Input Form Details"}
-        />
-      </div> */}
+      {page == "preview" && (
+        <div className="">
+          <TitleBar
+            titleBarVisibility={titleBarVisibility}
+            titleText={"Tender Preview"}
+          />
+        </div>
+      )}
       <div className="" id="printableArea">
         <div className="">
           {/* Basic Details */}
@@ -242,7 +261,9 @@ const TenderFormViewDetails = () => {
                 <img
                   src={previewData?.basic_details?.doc[0]?.docUrl}
                   class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
-                  onClick={() => ImageDetailFunc(previewData?.basic_details?.doc[0]?.docUrl)}
+                  onClick={() =>
+                    ImageDetailFunc(previewData?.basic_details?.doc[0]?.docUrl)
+                  }
                 />{" "}
               </div>
             </div>
@@ -252,7 +273,7 @@ const TenderFormViewDetails = () => {
 
           <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
             <p className="text-xl text-white">
-              Cover Details, No of Covers - 4{" "}
+              Cover Details, No of Covers - 4
             </p>
           </div>
 
@@ -261,30 +282,33 @@ const TenderFormViewDetails = () => {
               <div className="p-5 w-1/2 space-y-3">
                 <h1>
                   <span className={descTitle}>No of Covers :</span>{" "}
-                  <span className={descText}>Two Covers</span>
+                  <span className={descText}>
+                    {previewData?.cover_details?.noOfCovers}
+                  </span>
                 </h1>
                 <h1>
                   <span className={descTitle}>Remarks :</span>
                   <span className={descText}>
-                    {" "}
-                    Lipsum dolor sit amet. 33 quod temporibus sed repudiandae
-                    reiciendis ex distinctio voluptatum ut deleniti possimus sit
-                    dicta maxime et quae{" "}
+                    {previewData?.cover_details?.content}
                   </span>
                 </h1>
               </div>
 
               <div className="relative overflow-hidden flex space-x-5 w-1/2 justify-center items-center text-center">
-                <div>
-                  <img
-                    src={d}
-                    class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
-                    onClick={() => setImageModal(true)}
-                  />{" "}
-                  <p>cover 1</p>
-                </div>
+                {previewData?.cover_details?.cover_details_docs?.map(
+                  (data, index) => (
+                    <div>
+                      <img
+                        src={data?.docPath[0]}
+                        class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
+                        onClick={() => ImageDetailFunc(data?.docPath[0])}
+                      />{" "}
+                      <p>{data?.type}</p>
+                    </div>
+                  )
+                )}
 
-                <div>
+                {/* <div>
                   <img
                     src={d}
                     class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
@@ -315,7 +339,7 @@ const TenderFormViewDetails = () => {
                     onClick={() => setImageModal(true)}
                   />{" "}
                   <p>cover 1</p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -591,37 +615,57 @@ const TenderFormViewDetails = () => {
             <div className="p-4 flex text-sm w-full">
               <div className="p-5 w-1/3 space-y-3">
                 <h1>
-                  <span className={descTitle}>Publishing Date & Time : <br /></span>{" "}
+                  <span className={descTitle}>
+                    Publishing Date & Time : <br />
+                  </span>{" "}
                   <span className={descText}>
-                  {formateDateTime(previewData?.critical_dates?.publishingDate)}
+                    {formateDateTime(
+                      previewData?.critical_dates?.publishingDate
+                    )}
                     {/* {previewData?.critical_dates?.publishingDate} */}
                   </span>
                 </h1>
                 <h1>
-                  <span className={descTitle}>Bid Opening Date & Time : <br /></span>{" "}
+                  <span className={descTitle}>
+                    Bid Opening Date & Time : <br />
+                  </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(previewData?.critical_dates?.bidOpeningDate)}
+                    {formateDateTime(
+                      previewData?.critical_dates?.bidOpeningDate
+                    )}
                   </span>
                 </h1>
                 <h1>
-                  <span className={descTitle}>Pre Bid Meeting Date & Time : <br /></span>{" "}
+                  <span className={descTitle}>
+                    Pre Bid Meeting Date & Time : <br />
+                  </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(previewData?.critical_dates?.preBidMettingDate)}
+                    {formateDateTime(
+                      previewData?.critical_dates?.preBidMettingDate
+                    )}
                   </span>
                 </h1>
               </div>
 
               <div className="p-5 w-1/3 space-y-3">
                 <h1>
-                  <span className={descTitle}>Document Sale Start Date & Time : <br /></span>{" "}
+                  <span className={descTitle}>
+                    Document Sale Start Date & Time : <br />
+                  </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(previewData?.critical_dates?.docSaleStartDate)}
+                    {formateDateTime(
+                      previewData?.critical_dates?.docSaleStartDate
+                    )}
                   </span>
                 </h1>
                 <h1>
-                  <span className={descTitle}>Document Sale End Date & Time : <br /></span>{" "}
+                  <span className={descTitle}>
+                    Document Sale End Date & Time : <br />
+                  </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(previewData?.critical_dates?.docSaleEndDate)}
+                    {formateDateTime(
+                      previewData?.critical_dates?.docSaleEndDate
+                    )}
                   </span>
                 </h1>
                 <h1>
@@ -629,7 +673,9 @@ const TenderFormViewDetails = () => {
                     Seek Clarification Start Date & Time : <br />
                   </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(previewData?.critical_dates?.seekClariStrtDate)}
+                    {formateDateTime(
+                      previewData?.critical_dates?.seekClariStrtDate
+                    )}
                   </span>
                 </h1>
               </div>
@@ -640,19 +686,29 @@ const TenderFormViewDetails = () => {
                     Seek Clarification End Date & Time : <br />
                   </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(previewData?.critical_dates?.seekClariEndDate)}
+                    {formateDateTime(
+                      previewData?.critical_dates?.seekClariEndDate
+                    )}
                   </span>
                 </h1>
                 <h1>
-                  <span className={descTitle}>Bid Submission Start Date & Time : <br /></span>{" "}
+                  <span className={descTitle}>
+                    Bid Submission Start Date & Time : <br />
+                  </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(previewData?.critical_dates?.bidSubStrtDate)}
+                    {formateDateTime(
+                      previewData?.critical_dates?.bidSubStrtDate
+                    )}
                   </span>
                 </h1>
                 <h1>
-                  <span className={descTitle}>Bid Submission End Date & Time : <br /></span>{" "}
+                  <span className={descTitle}>
+                    Bid Submission End Date & Time : <br />
+                  </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(previewData?.critical_dates?.bidSubEndDate)}
+                    {formateDateTime(
+                      previewData?.critical_dates?.bidSubEndDate
+                    )}
                   </span>
                 </h1>
               </div>
@@ -745,7 +801,9 @@ const TenderFormViewDetails = () => {
                         className="w-52 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer mt-5"
                         onClick={() => ImageDetailFunc(data?.docUrl)}
                       />{" "}
-                      <p className={`${descTitle} pt-2 text-green-600`}>Uploaded Reference Doc</p>{" "}
+                      <p className={`${descTitle} pt-2 text-green-600`}>
+                        Uploaded Reference Doc
+                      </p>{" "}
                     </div>
                   </div>
                 </div>
@@ -771,12 +829,26 @@ const TenderFormViewDetails = () => {
               >
                 Print
               </button>
-              <button
-                className="p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse"
-                onClick={() => setIsSuccessModal(true)}
-              >
-                Submit
-              </button>
+
+              {page == "preview" ? (
+                <>
+                  {(previewData?.status == 0 || previewData?.status == -1) && (
+                    <button
+                      className="p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse"
+                      onClick={() => postFinalSubmission()}
+                    >
+                      Forward to DA
+                    </button>
+                  )}
+                </>
+              ) : (
+                <button
+                  className="p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse"
+                  onClick={() => postFinalSubmission()}
+                >
+                  Submit
+                </button>
+              )}
             </div>
           </div>
         </div>
