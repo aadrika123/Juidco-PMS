@@ -19,7 +19,8 @@ const TenderFormViewDetails = () => {
 
   console.log(page);
 
-  const { api_postForwardtoDA, api_getPreviewDetails } = ProjectApiList();
+  const { api_postForwardtoDA, api_getPreviewDetails, api_postFinalSubit } =
+    ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,7 +50,7 @@ const TenderFormViewDetails = () => {
     AxiosInterceptors.get(`${api_getPreviewDetails}/${refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data?.data);
+          // console.log(response?.data?.data);
           setPreviewData(response?.data?.data);
           setImageDoc(response?.data?.data?.doc[0]?.docUrl);
         } else {
@@ -57,11 +58,32 @@ const TenderFormViewDetails = () => {
         }
       })
       .catch(function (error) {
-        // toast.error(error?.response?.data?.message);
+        toast.error(error?.response?.data?.message);
       });
   };
 
+  //submitting the form
   const postFinalSubmission = () => {
+    AxiosInterceptors.post(
+      `${api_postFinalSubit}`,
+      { reference_no: referenceNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          console.log(response?.data?.data);
+          setIsSuccessModal(true);
+        } else {
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
+  //forward to DA
+  const forwardBoqToDa = () => {
     AxiosInterceptors.post(
       `${api_postForwardtoDA}`,
       { reference_no: referenceNo },
@@ -70,7 +92,7 @@ const TenderFormViewDetails = () => {
       .then(function (response) {
         if (response?.data?.status) {
           console.log(response?.data?.data);
-          setIsSuccessModal(true);
+          // setIsSuccessModal(true);
         } else {
           toast.error(response?.data?.message);
         }
@@ -839,7 +861,7 @@ const TenderFormViewDetails = () => {
               </button>
 
               <button
-                className="bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex"
+                className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
                 onClick={() =>
                   navigate(`/tendering?tabNo=1`, { state: referenceNo })
                 }
