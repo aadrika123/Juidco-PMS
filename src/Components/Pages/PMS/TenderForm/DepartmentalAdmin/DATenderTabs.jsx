@@ -24,7 +24,7 @@ const DATenderTabs = () => {
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { api_fetchProcurementList, api_fetchProcurementDAList } =
+  const { api_fetchAllDaPreTenderingInbox, api_fetchAllDaPreTenderingOutbox } =
     ProjectApiList();
 
   return (
@@ -38,8 +38,6 @@ const DATenderTabs = () => {
 
       <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
         <div className='mt-14'>
-          
-
           <div className='flex ml-5'>
             <button
               className={`py-2 px-4 ${
@@ -73,7 +71,7 @@ const DATenderTabs = () => {
             <div>
               <DATenderList
                 page='inbox'
-                api={api_fetchProcurementList}
+                api={api_fetchAllDaPreTenderingInbox}
               />
             </div>
           )}
@@ -81,7 +79,7 @@ const DATenderTabs = () => {
             <div>
               <DATenderList
                 page='outbox'
-                api={api_fetchProcurementDAList}
+                api={api_fetchAllDaPreTenderingInbox}
               />
             </div>
           )}

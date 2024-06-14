@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import d from "@/Components/assets/ptax.jpg";
 import TitleBar from "../../Others/TitleBar";
 import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
-import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import SuccessModal from "@/Components/Common/Modal/SuccessModal";
 import { useNavigate, useParams } from "react-router-dom";
 import ImageModal from "../../Others/ImageModal/ImageModal";
@@ -17,13 +15,10 @@ const TenderFormViewDetails = () => {
 
   const { page } = useParams();
 
-  console.log(page);
-
   const { api_postForwardtoDA, api_getPreviewDetails, api_postFinalSubit } =
     ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModal, setIsSuccessModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
   const [referenceNo, setReferenceNo] = useState();
@@ -52,7 +47,6 @@ const TenderFormViewDetails = () => {
         if (response?.data?.status) {
           // console.log(response?.data?.data);
           setPreviewData(response?.data?.data);
-          setImageDoc(response?.data?.data?.doc[0]?.docUrl);
         } else {
           toast.error(response?.data?.message);
         }
@@ -91,6 +85,8 @@ const TenderFormViewDetails = () => {
     )
       .then(function (response) {
         if (response?.data?.status) {
+          toast.success("Forwarded to DA Successfully");
+          navigate("/acc-pre-tendring");
           console.log(response?.data?.data);
           // setIsSuccessModal(true);
         } else {
@@ -860,33 +856,31 @@ const TenderFormViewDetails = () => {
                 Print
               </button>
 
-              <button
-                className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
-                onClick={() =>
-                  navigate(`/tendering?tabNo=1`, { state: referenceNo })
-                }
-              >
-                Edit
-              </button>
-
-              {page == "preview" ? (
+              {page == "inbox" && (
                 <>
+                  <button
+                    className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
+                    onClick={() =>
+                      navigate(`/tendering?tabNo=1`, { state: referenceNo })
+                    }
+                  >
+                    Edit
+                  </button>
                   {(previewData?.status == 0 || previewData?.status == -1) && (
                     <button
                       className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
-                      onClick={() => postFinalSubmission()}
+                      onClick={() => forwardBoqToDa()}
                     >
                       Forward to DA
                     </button>
                   )}
+                  <button
+                    className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
+                    onClick={() => postFinalSubmission()}
+                  >
+                    Submit
+                  </button>
                 </>
-              ) : (
-                <button
-                  className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
-                  onClick={() => postFinalSubmission()}
-                >
-                  Submit
-                </button>
               )}
             </div>
           </div>
