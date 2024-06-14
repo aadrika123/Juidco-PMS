@@ -270,7 +270,7 @@ export default function PreviewBoqSummary() {
             </button>
           ) : (
             <button
-              className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
+              className={`bg-[#4338ca] hover:bg-[#564cc2] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
               onClick={() => setConfirmationModal(true)}
             >
               {isLoading ? "Processing..." : "Forward To DA"}
