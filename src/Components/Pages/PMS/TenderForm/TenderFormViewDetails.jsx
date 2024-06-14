@@ -52,7 +52,7 @@ const TenderFormViewDetails = () => {
         if (response?.data?.status) {
           // console.log(response?.data?.data);
           setPreviewData(response?.data?.data);
-          setImageDoc(response?.data?.data?.doc[0]?.docUrl);
+          // setImageDoc(response?.data?.data?.doc[0]?.docUrl);
         } else {
           toast.error(response?.data?.message);
         }
