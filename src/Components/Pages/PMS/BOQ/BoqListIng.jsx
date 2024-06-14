@@ -74,7 +74,7 @@ function BoqListing(props) {
             {cell.row.values.status == 1 && "DA's Inbox"}
           </p>
           <p className='font-bold text-green-800'>
-            {cell.row.values.status == 2 && "Released for Tender"}
+            {cell.row.values.status == 2 && "Approved by DA"}
           </p>
           <p className='font-bold text-green-500'>
             {cell.row.values.status == 3 && "Supplier Assigned"}

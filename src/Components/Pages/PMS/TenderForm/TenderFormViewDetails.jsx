@@ -9,6 +9,7 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
+import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
 
 const TenderFormViewDetails = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const TenderFormViewDetails = () => {
     api_postFinalSubit,
     api_postReleaseForTender,
     api_postPreTenderBackToAcc,
+    api_postRejectPreTender,
   } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
@@ -29,6 +31,8 @@ const TenderFormViewDetails = () => {
   const [referenceNo, setReferenceNo] = useState();
   const [previewData, setPreviewData] = useState();
   const [imageUrlModal, setImageUrlModal] = useState();
+  const [backtoAccModal, setBacktoAccModal] = useState(false);
+  const [data, setData] = useState({ reference_no: "", remark: "" });
 
   const descTitle = "font-bold text-[#4D4B4B]";
   const descText = "text-[#7d7d7d] uppercase";
@@ -189,8 +193,36 @@ const TenderFormViewDetails = () => {
     }
   };
 
+  //Reject pre tender
+  const rejectTender = () => {
+    setBacktoAccModal(false);
+    AxiosInterceptors.post(
+      `${api_postRejectPreTender}`,
+      { reference_no: referenceNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Rejected Successfully");
+          navigate("/da-pre-tendring");
+          console.log(response?.data?.data);
+          // setIsSuccessModal(true);
+        } else {
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
+  const handleCancel = () => {
+    setBacktoAccModal(false);
+  };
+
   useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
+    setData((prev) => ({ ...prev, reference_no: refNo }));
     setReferenceNo(refNo);
     getApplicationDetail(refNo);
   }, []);
@@ -199,6 +231,17 @@ const TenderFormViewDetails = () => {
     setImageUrlModal(imgUrl);
     setImageModal(true);
   };
+
+  if (backtoAccModal) {
+    return (
+      <RejectionModalRemark
+        confirmationHandler={rejectTender}
+        handleCancel={handleCancel}
+        message={"Are you sure you want to Reject Tender"}
+        setData={setData}
+      />
+    );
+  }
 
   //displaying confirmation message
 
@@ -325,14 +368,20 @@ const TenderFormViewDetails = () => {
                   {/* <span className={descText}>XYZ Values</span> */}
                 </h1>
               </div>
-              <div className='w-1/2'>
-                <img
+              <div className='w-[100px]'>
+                <ImageDisplay
+                  url={previewData?.basic_details?.doc[0]?.docUrl}
+                  className='w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer'
+                  alt={"uploaded doc"}
+                  preview={""}
+                />
+                {/* <img
                   src={previewData?.basic_details?.doc[0]?.docUrl}
                   class='w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer'
                   onClick={() =>
                     ImageDetailFunc(previewData?.basic_details?.doc[0]?.docUrl)
                   }
-                />{" "}
+                />{" "} */}
               </div>
             </div>
           </div>
@@ -365,12 +414,13 @@ const TenderFormViewDetails = () => {
               <div className='relative overflow-hidden flex space-x-5 w-1/2 justify-center items-center text-center'>
                 {previewData?.cover_details?.cover_details_docs?.map(
                   (data, index) => (
-                    <div>
-                      <img
+                    <div className='w-[120px] flex flex-col items-center gap-2'>
+                      <ImageDisplay url={data?.docPath[0]} preview={""} />
+                      {/* <img
                         src={data?.docPath[0]}
                         class='w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer'
                         onClick={() => ImageDetailFunc(data?.docPath[0])}
-                      />{" "}
+                      />{" "} */}
                       <p>{data?.type}</p>
                     </div>
                   )
@@ -907,14 +957,6 @@ const TenderFormViewDetails = () => {
 
               {page == "inbox" && (
                 <>
-                  {previewData?.status == 1 && (
-                    <button
-                      className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
-                      onClick={() => releaseForTender()}
-                    >
-                      Release for Tender
-                    </button>
-                  )}
                   <button
                     className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
                     onClick={() =>
@@ -923,6 +965,31 @@ const TenderFormViewDetails = () => {
                   >
                     Edit
                   </button>
+                  {previewData?.status == 1 && (
+                    <button
+                      className='bg-red-400  hover:bg-red-500  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
+                      onClick={() => setBacktoAccModal(true)}
+                    >
+                      Reject Tender
+                    </button>
+                  )}
+                  {previewData?.status == 1 && (
+                    <button
+                      className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
+                      onClick={() => preTenderBacktoAcc()}
+                    >
+                      Back to Accountant
+                    </button>
+                  )}
+                  {previewData?.status == 1 && (
+                    <button
+                      className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
+                      onClick={() => releaseForTender()}
+                    >
+                      Release for Tender
+                    </button>
+                  )}
+
                   {(previewData?.status == 0 || previewData?.status == -1) && (
                     <button
                       className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
@@ -931,24 +998,24 @@ const TenderFormViewDetails = () => {
                       Forward to DA
                     </button>
                   )}
-                  {previewData?.status == 0 && (
+
+                  {/* {previewData?.status == 0 && (
                     <button
                       className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
                       onClick={() => postFinalSubmission()}
                     >
                       Submit
                     </button>
-                  )}
-
-                  {previewData?.status == 1 && (
-                    <button
-                      className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
-                      onClick={() => preTenderBacktoAcc()}
-                    >
-                      Back to Accountant
-                    </button>
-                  )}
+                  )} */}
                 </>
+              )}
+              {page != "inbox" && page != "outbox" && (
+                <button
+                  className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
+                  onClick={() => postFinalSubmission()}
+                >
+                  Submit
+                </button>
               )}
             </div>
           </div>
