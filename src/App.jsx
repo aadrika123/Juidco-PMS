@@ -206,7 +206,6 @@ function App() {
       path: "/da-boq",
       element: <BoqListTabsDa />,
     },
-
   ];
 
   return (

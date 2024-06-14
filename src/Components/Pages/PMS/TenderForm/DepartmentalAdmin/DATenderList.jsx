@@ -8,27 +8,13 @@
 //    DESCRIPTION - DATenderList
 //////////////////////////////////////////////////////////////////////////////////////
 
-import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
-import * as yup from "yup";
-import moment from "moment";
-
-import ProjectApiList from "@/Components/api/ProjectApiList";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import ThemeStyle from "@/Components/Common/ThemeStyle";
-import { RotatingLines } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
 function DATenderList(props) {
   const navigate = useNavigate();
-  const { module } = useParams();
-
-  // console.log(props.page, "page========>");
-  // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
-
-  const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
@@ -37,27 +23,6 @@ function DATenderList(props) {
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
 
-  const validationSchema = yup.object({
-    // fromDate: yup.string().required("Field Required"),
-    // uptoDate: yup.string().required("Field Required"),
-    // key: yup.string().required("Field Required"),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      // fromDate: moment(new Date()).format("yy-MM-DD"),
-      // uptoDate: moment(new Date()).format("yy-MM-DD"),
-      // key: "",
-    },
-    onSubmit: (values) => {
-      console.log("values =>  ", values);
-      fetchResouceList(values);
-
-      // setchangeData((prev) => prev + 1);
-    },
-    validationSchema,
-  });
-
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
     {
@@ -65,10 +30,10 @@ function DATenderList(props) {
       Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
-      Header: "Order No",
-      accessor: "procurement_no",
+      Header: "Reference No",
+      accessor: "reference_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.procurement_no}</div>
+        <div className='pr-2'>{cell.row.values.reference_no}</div>
       ),
     },
     {
@@ -99,49 +64,49 @@ function DATenderList(props) {
       Cell: ({ cell }) => (
         <div className='pr-2'>
           <p className='font-bold text-yellow-800'>
-            {cell.row.values.status.status == -1 && "Back to SR"}
+            {cell.row.values.status == -1 && "Back to SR"}
           </p>
           <p className='font-bold text-red-500'>
-            {cell.row.values.status.status == -2 && "Rejected"}
+            {cell.row.values.status == -2 && "Rejected"}
           </p>
           <p className='font-bold text-blue-800'>
-            {cell.row.values.status.status == 0 && "Pending"}
+            {cell.row.values.status == 0 && "Pending"}
           </p>
           <p className='font-bold text-blue-800'>
-            {cell.row.values.status.status == 1 && "DA's Inbox"}
+            {cell.row.values.status == 1 && "DA's Inbox"}
           </p>
           <p className='font-bold text-green-800'>
-            {cell.row.values.status.status == 2 && "Release for Tender"}
+            {cell.row.values.status == 2 && "Release for Tender"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 3 && "Supplier assigned"}
+            {cell.row.values.status == 3 && "Supplier assigned"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 4 && "Incomplete stocks received"}
+            {cell.row.values.status == 4 && "Incomplete stocks received"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 5 && "Stocks received"}
+            {cell.row.values.status == 5 && "Stocks received"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 69 && "Revised"}
+            {cell.row.values.status == 69 && "Revised"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 71 && "BOQ already created"}
+            {cell.row.values.status == 71 && "BOQ already created"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 70 && "Ready for BOQ"}
+            {cell.row.values.status == 70 && "Ready for BOQ"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == -70 && "BOQ returned from DA"}
+            {cell.row.values.status == -70 && "BOQ returned from DA"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 72 && "Ready for tendering"}
+            {cell.row.values.status == 72 && "Ready for tendering"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == -72 && "Tender back from DA"}
+            {cell.row.values.status == -72 && "Tender back from DA"}
           </p>
           <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 73 && "Tender is ready"}
+            {cell.row.values.status == 73 && "Tender is ready"}
           </p>
         </div>
       ),
@@ -162,11 +127,7 @@ function DATenderList(props) {
         <>
           <button
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
-            onClick={() =>
-              navigate(
-                `/tendering-preview`
-              )
-            }
+            onClick={() => navigate(`/tendering-preview/${props?.page}`)}
           >
             View
           </button>

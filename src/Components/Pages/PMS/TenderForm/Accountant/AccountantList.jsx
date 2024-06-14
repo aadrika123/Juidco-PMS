@@ -8,27 +8,13 @@
 //    DESCRIPTION - AccountantList
 //////////////////////////////////////////////////////////////////////////////////////
 
-import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
-import * as yup from "yup";
-import moment from "moment";
-
-import ProjectApiList from "@/Components/api/ProjectApiList";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import ThemeStyle from "@/Components/Common/ThemeStyle";
-import { RotatingLines } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
 function AccountantList(props) {
   const navigate = useNavigate();
-  const { module } = useParams();
-
-  // console.log(props.page, "page========>");
-  // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
-
-  const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
@@ -36,27 +22,6 @@ function AccountantList(props) {
   const [requestBody, setRequestBody] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
-
-  const validationSchema = yup.object({
-    // fromDate: yup.string().required("Field Required"),
-    // uptoDate: yup.string().required("Field Required"),
-    // key: yup.string().required("Field Required"),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      // fromDate: moment(new Date()).format("yy-MM-DD"),
-      // uptoDate: moment(new Date()).format("yy-MM-DD"),
-      // key: "",
-    },
-    onSubmit: (values) => {
-      console.log("values =>  ", values);
-      fetchResouceList(values);
-
-      // setchangeData((prev) => prev + 1);
-    },
-    validationSchema,
-  });
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
@@ -146,7 +111,7 @@ function AccountantList(props) {
         </div>
       ),
     },
-   
+
     {
       Header: "Action",
       accessor: "id",
@@ -154,11 +119,7 @@ function AccountantList(props) {
         <>
           <button
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
-            onClick={() =>
-              navigate(
-                `/tendering-preview/preview`
-              )
-            }
+            onClick={() => navigate(`/tendering-preview/${props.page}`)}
           >
             View
           </button>
@@ -166,12 +127,6 @@ function AccountantList(props) {
       ),
     },
   ];
-
-  const fetchResouceList = (data) => {
-    console.log(data, "payload data for searchin water");
-    setRequestBody(data);
-    setchangeData((prev) => prev + 1);
-  };
 
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {
