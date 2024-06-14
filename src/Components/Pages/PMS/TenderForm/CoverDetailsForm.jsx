@@ -161,11 +161,7 @@ const CoverDetailsForm = (props) => {
         if (response?.data?.status) {
           console.log(response?.data?.data, "response?.data?.data");
           setCoverDetails(response?.data?.data);
-          // setFetchedtabdata(response?.data?.data?.cover_details_docs);
-          // response?.data?.data?.cover_details_docs.map(data => {
-          //   let obj = {};
-          //   obj[data?.type] = data?.type
-          // })
+
           if (response?.data?.data?.noOfCovers == "1") {
             setTabData(tabsCover1);
             autoSelectActiveTab(tabsCover1);

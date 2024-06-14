@@ -35,7 +35,7 @@ const FeeDetailsForm = () => {
     processingFee: Yup.string().required(),
     tenderFeePayableTo: Yup.string().required(),
     tenderFeePayableAt: Yup.string().required(),
-    surcharges: Yup.string().required(),
+    surcharges: Yup.string(),
     otherCharges: Yup.string().required(),
     emdAmount: Yup.string().required(),
     emd_fee: Yup.string().required(),
@@ -141,7 +141,6 @@ const FeeDetailsForm = () => {
 
   return (
     <>
-      {/* <div className='bg-white rounded-xl w-full shadow-md p-4 border border-indigo-200'> */}
       {/* Heading  */}
       <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
         <img src={fd} className='pl-2' />
@@ -149,8 +148,7 @@ const FeeDetailsForm = () => {
       </div>
 
       {/* Form Starting */}
-
-      <div className=' mt-5 container'>
+      <div className=' mt-5 container mb-20'>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -445,7 +443,10 @@ const FeeDetailsForm = () => {
                     </div>
                   </div>
 
-                  <TenderFormButton resetForm={resetForm} getDetailData={feeDetailData} />
+                  <TenderFormButton
+                    resetForm={resetForm}
+                    getDetailData={feeDetailData}
+                  />
 
                   {/* <div className='mb-5'>
                     <button

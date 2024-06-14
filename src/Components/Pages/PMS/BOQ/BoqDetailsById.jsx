@@ -7,22 +7,24 @@ import { indianAmount } from "@/Components/Common/PowerupFunctions";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
+import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
 import ApiHeader from "@/Components/api/ApiHeader";
 import { MdArrowRightAlt } from "react-icons/md";
 
 export default function BoqDetailsById(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [dataList, setDatalist] = useState();
+  const [backtoAccModal, setBacktoAccModal] = useState(false);
+  const [data, setData] = useState({ reference_no: "", remark: "" });
+
   const { state } = useLocation();
   const navigate = useNavigate();
-  console.log(state, "state=============");
   const { titleBarVisibility } = useContext(contextVar);
 
-  const { api_fetchAllBoqDetailsbyId } = ProjectApiList();
+  const { api_fetchAllBoqDetailsbyId, api_postBacktoAcc, api_postForwardBoq } =
+    ProjectApiList();
 
   const { refNo, page } = useParams();
-
-
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
@@ -59,8 +61,6 @@ export default function BoqDetailsById(props) {
     window.print();
   };
 
-  console.log(refNo);
-
   const fetchBoqDetailsbyId = () => {
     AxiosInterceptors.get(`${api_fetchAllBoqDetailsbyId}/${refNo}`, ApiHeader())
       .then(function (response) {
@@ -73,10 +73,71 @@ export default function BoqDetailsById(props) {
       });
   };
 
+  const handleCancel = () => {
+    setBacktoAccModal(false);
+  };
+
+  //boq back to accountant------------
+  const backtoAccHandler = () => {
+    setBacktoAccModal(false);
+    AxiosInterceptors.post(`${api_postBacktoAcc}`, data, ApiHeader())
+      .then(function (response) {
+        console.log("boq data fetched by id ...", response?.data?.data);
+        if (response?.data?.status) {
+          toast.success("Successfully sent to Accountant");
+          navigate("/da-boq");
+        } else {
+          toast.error("Error in sending back to Accountant");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
+  //approve boq ------------
+  const approveBoq = () => {
+    AxiosInterceptors.post(
+      `${api_postForwardBoq}`,
+      { reference_no: refNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("BOQ is Approved Successfully!!");
+          navigate("/da-boq");
+        } else {
+          toast.error("Error in approving. Please try Again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
+  //rejecting page
+  const confirmationHandler = () => {
+    backtoAccHandler();
+  };
+
   useEffect(() => {
+    setData((prev) => ({ ...prev, reference_no: refNo }));
     fetchBoqDetailsbyId();
-    window.localStorage.setItem("reference_no",refNo);
+    window.localStorage.setItem("reference_no", refNo);
   }, []);
+
+  if (backtoAccModal) {
+    return (
+      <RejectionModalRemark
+        confirmationHandler={confirmationHandler}
+        handleCancel={handleCancel}
+        message={"Are you sure you want to send BOQ back to Accountant "}
+        setData={setData}
+      />
+    );
+  }
 
   return (
     <div>
@@ -163,7 +224,9 @@ export default function BoqDetailsById(props) {
                           {row?.rate}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
-                          {row?.total_rate || row?.amount}
+                          {row?.total_rate ||
+                            row?.amount ||
+                            Number(row?.quantity) * Number(row?.rate)}
                         </td>
 
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
@@ -182,25 +245,43 @@ export default function BoqDetailsById(props) {
               </h2>
             </div>
 
-            <div>
+            <div className='flex justify-between mb-6'>
               <p className='text-lg font-semibold px-4'>
                 Remark -{" "}
                 <span className='text-gray-400'>{dataList?.remark}</span>{" "}
               </p>
-              <div className='flex justify-end mb-4'>
-                <ImageDisplay
-                  preview={dataList?.boq_doc?.imageUrl}
-                  imageDoc={dataList?.img}
-                  alt={"Notesheet doc"}
-                  showPreview={"hidden"}
-                  width={"[100px]"}
-                />
-              </div>
+              {dataList?.boq_doc?.length ? (
+                <div className='flex justify-end mb-4'>
+                  <ImageDisplay
+                    // preview={dataList?.boq_doc?.imageUrl}
+                    url={dataList?.boq_doc[0]?.imageUrl}
+                    imageDoc={dataList?.img}
+                    alt={"Notesheet doc"}
+                    showPreview={"hidden"}
+                    width={"[100px]"}
+                  />
+                </div>
+              ) : (
+                <p className='text-gray-400'>No file uploaded</p>
+              )}
             </div>
           </div>
         </div>
 
         <div className='flex justify-end mb-10 gap-4'>
+          {page &&
+            page == "inbox" &&
+            (dataList?.status == 0 || dataList?.status == 1) && (
+              <>
+                <button
+                  className={colouredBtnStyle}
+                  onClick={() => setBacktoAccModal(true)}
+                >
+                  Back to Accountant
+                </button>
+              </>
+            )}
+
           <button className={buttonStyle} onClick={handlePrint}>
             Print
           </button>
@@ -212,31 +293,36 @@ export default function BoqDetailsById(props) {
               <>
                 <button
                   className={colouredBtnStyle}
-                  onClick={() => navigate("/create-boq")}
+                  onClick={() =>
+                    navigate("/create-boq", { state: dataList?.reference_no })
+                  }
                 >
                   Edit
                 </button>
               </>
             )}
 
-          {/* {page == "inbox" && applicationData[0]?.status === -1 && (
-            <button
-              className={colouredBtnStyle}
-              onClick={() => setConfirmationModal(true)}
-            >
-              Forward to DA
-            </button>
-          )} */}
+          {page == "inbox" &&
+            (dataList?.status === 0 || dataList?.status === 1) && (
+              <button
+                className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
+                onClick={() => approveBoq()}
+              >
+                Approve BOQ
+              </button>
+            )}
 
-          <div className='flex justify-end items-center'>
-            <button
-              className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
-              onClick={() => navigate(`/tendering?tabNo=1`, { state: refNo })}
-            >
-              Proceed to Pre Tendering{" "}
-              <MdArrowRightAlt className='text-2xl ml-2' />
-            </button>
-          </div>
+          {page == "inbox" && dataList?.status == 2 && (
+            <div className='flex justify-end items-center'>
+              <button
+                className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
+                onClick={() => navigate(`/tendering?tabNo=1`, { state: refNo })}
+              >
+                Proceed to Pre Tendering{" "}
+                <MdArrowRightAlt className='text-2xl ml-2' />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
