@@ -14,7 +14,7 @@ export default function ImageDisplay({
   url,
 }) {
   const [imageModal, setImageModal] = useState(false);
-
+  console.log(url, "ul==========", imageDoc, "imageDoc===");
   if (imageModal) {
     return (
       <ImageModal
@@ -46,7 +46,7 @@ export default function ImageDisplay({
         {(imageDoc?.type?.match(/(jpg|jpeg|png)$/) ||
           url?.match(/(jpg|jpeg|png)$/)) && (
           <img
-            src={preview || url}
+            src={url || preview}
             alt={alt}
             className={`rounded cursor-pointer `}
             onClick={() => setImageModal(true)}
@@ -66,7 +66,7 @@ export default function ImageDisplay({
           imageDoc?.type === "text/csv" ||
           imageDoc?.type ===
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-          url?.includes("pdf") ||
+          (url && url?.includes("pdf")) ||
           url?.includes("csv") ||
           url?.includes("xlsx")) && (
           <img

@@ -41,10 +41,12 @@ const tabsCover4 = [
 
 const CoverDetailsForm = (props) => {
   const [tabData, setTabData] = useState(tabsCover1);
-  const [activeTab, setActiveTab] = useState(tabsCover1[0]?.value);
   const [imageDoc, setImageDoc] = useState([]);
   const [preview, setPreview] = useState();
   const [referenceNo, setReferenceNo] = useState();
+  const [coverDetails, setCoverDetails] = useState();
+  const [activeTab, setActiveTab] = useState(tabsCover1[0]?.value);
+  const [fetchTabData, setFetchedtabdata] = useState([]);
 
   const { api_postCoverDetails, api_postDocumentUpload, api_getCoverDetails } =
     ProjectApiList();
@@ -68,18 +70,6 @@ const CoverDetailsForm = (props) => {
     content: Yup.string().required("Content is required"),
     tabs: Yup.array().required("Please upload the documents"),
   });
-
-  const initialValues = {
-    noOfCovers: "1",
-    tabs: [
-      {
-        name: "fee/ prequal/ technical",
-        value: "fee/prequal/technical",
-        documents: [],
-      },
-    ],
-    content: "",
-  };
 
   //api to upload doc before submitting the form
   const uploadDoc = async (tabData) => {
@@ -157,7 +147,8 @@ const CoverDetailsForm = (props) => {
   const handleSubmit = (values) => {
     values.tabs.forEach((tab, index) => {
       if (tab?.documents?.length === 0) {
-        return toast.error(`Please upload valid documents for ${tab.name}`);
+        toast.error(`Please upload valid documents for ${tab.name}`);
+        return;
       }
     });
     submitForm(values);
@@ -168,8 +159,26 @@ const CoverDetailsForm = (props) => {
     AxiosInterceptors.get(`${api_getCoverDetails}/${refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
-          setBasicDetailData(response?.data?.data);
-          // setImageDoc(response?.data?.data?.doc[0]?.docUrl);
+          console.log(response?.data?.data, "response?.data?.data");
+          setCoverDetails(response?.data?.data);
+          // setFetchedtabdata(response?.data?.data?.cover_details_docs);
+          // response?.data?.data?.cover_details_docs.map(data => {
+          //   let obj = {};
+          //   obj[data?.type] = data?.type
+          // })
+          if (response?.data?.data?.noOfCovers == "1") {
+            setTabData(tabsCover1);
+            autoSelectActiveTab(tabsCover1);
+          } else if (response?.data?.data?.noOfCovers == "2") {
+            setTabData(tabsCover2);
+            autoSelectActiveTab(tabsCover2);
+          } else if (response?.data?.data?.noOfCovers == "3") {
+            setTabData(tabsCover3);
+            autoSelectActiveTab(tabsCover3);
+          } else if (response?.data?.data?.noOfCovers == "4") {
+            setTabData(tabsCover4);
+            autoSelectActiveTab(tabsCover4);
+          }
         } else {
           // toast.error(response?.data?.message);
         }
@@ -177,6 +186,18 @@ const CoverDetailsForm = (props) => {
       .catch(function (error) {
         toast.error(error?.response?.data?.message);
       });
+  };
+
+  const initialValues = {
+    noOfCovers: String(coverDetails?.noOfCovers) || "1",
+    tabs: [
+      {
+        name: "fee/ prequal/ technical",
+        value: "fee/prequal/technical",
+        documents: [],
+      },
+    ],
+    content: coverDetails?.content || "",
   };
 
   useEffect(() => {
@@ -196,6 +217,7 @@ const CoverDetailsForm = (props) => {
       {/* Form Starting */}
       <div className='mt-5'>
         <Formik
+          enableReinitialize={true}
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
@@ -221,7 +243,7 @@ const CoverDetailsForm = (props) => {
                     errors={errors.noOfCovers}
                     touched={touched.noOfCovers}
                     name={"noOfCovers"}
-                    defaultValue={"1"}
+                    defaultValue={String(coverDetails?.noOfCovers) || "1"}
                     setFieldValue={setFieldValue}
                     setTabData={setTabData}
                     autoSelectActiveTab={autoSelectActiveTab}
@@ -275,6 +297,8 @@ const CoverDetailsForm = (props) => {
                                 errors={errors}
                                 touched={touched}
                                 setFieldValue={setFieldValue}
+                                contentDefVal={coverDetails?.content}
+                                docs={coverDetails?.cover_details_docs}
                               />
                               {errors.tabs && touched.tabs ? (
                                 <p className='text-red-500 text-xs'>
