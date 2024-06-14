@@ -18,6 +18,8 @@ export default function UploadDoc({
   formikTabs,
   formikContentVal,
   setFieldValue,
+  contentDefVal,
+  docs,
 }) {
   const inputFileRef = useRef();
 
@@ -82,7 +84,6 @@ export default function UploadDoc({
   };
 
   const deleteFileHandler = (fileName) => {
-    console.log(tabData, "tabData===>", tab, "tab===>");
     const spTab = tabData.map((det) => ({
       ...det,
       documents:
@@ -90,7 +91,6 @@ export default function UploadDoc({
           ? det.documents.filter((file) => file.name != fileName)
           : [...det.documents],
     }));
-    console.log(spTab, "spTab====>");
     setFieldValue("tabs", spTab);
 
     setTabData(spTab);
@@ -145,6 +145,56 @@ export default function UploadDoc({
               </div>
             </div>
             <div className='mb-4'>
+              {docs
+                ?.find((files) => files.type === tab)
+                ?.docPath?.map((file, index) => (
+                  <div
+                    className='mb-2 bg-[#EEF1F7] h-14 w-full rounded-md'
+                    key={index}
+                  >
+                    <div className='flex justify-between items-center px-6 py-2 '>
+                      <div className='flex items-center gap-4'>
+                        {(file.includes("pdf") ||
+                          file.includes("csv") ||
+                          file.includes("xlsx")) && (
+                          <img
+                            src={
+                              file.includes("pdf")
+                                ? pdfIcon
+                                : file.includes("csv")
+                                ? csvIcon
+                                : xlsxIcon
+                            }
+                            alt='file'
+                            className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-full p-1'
+                          />
+                        )}
+
+                        {file?.match(/(jpg|jpeg|png)$/) && (
+                          <img
+                            src={file}
+                            alt='Image Preview'
+                            // style={{ width: "200px", height: "auto", marginTop: "20px", border: "2px", borderColor: "blue" }}
+                            className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-md p-1'
+                          />
+                        )}
+                        <div className='text-gray-500 text-xs'>
+                          {/* <p className='text-black'>{file?.name}</p> */}
+                          <p>
+                            {/* {Math.round((file?.size / 1024) * 100) / 100} kb */}
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        className='rounded-full p-3 hover:bg-blue-200'
+                        onClick={() => deleteFileHandler(file?.name)}
+                      >
+                        <RiDeleteBinLine />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+
               {tabData
                 ?.find((files) => files.value === tab)
                 ?.documents?.map((file) => (
@@ -208,7 +258,7 @@ export default function UploadDoc({
               <textarea
                 className='border border-[#5448dd] rounded  p-2 w-full'
                 placeholder='Type Here...'
-                // defaultValue={}
+                defaultValue={contentDefVal}
                 onChange={addContentHandler}
               />
               {errors.content && touched.content ? (

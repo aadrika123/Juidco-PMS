@@ -184,7 +184,6 @@ const BasicDetailsForm = () => {
             <Form>
               <>
                 <div className='grid grid-cols-2 container mx-auto capitalize '>
-
                   <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <>
                       <label
@@ -426,7 +425,7 @@ const BasicDetailsForm = () => {
                             <RadioButtonsGroup
                               fields={offlineBanks}
                               title={"In offline(Instruments)"}
-                              name={"allow_offline_submission"}
+                              name={"offlinePayment_mode"}
                               values={values.offlinePayment_mode}
                               handleChange={handleChange}
                               errors={errors.offlinePayment_mode}
@@ -438,10 +437,12 @@ const BasicDetailsForm = () => {
                       </div>
                     </div>
                   </div>
-
                 </div>
 
-                <TenderFormButton resetForm={resetForm} getDetailData={basicDetailData} />
+                <TenderFormButton
+                  resetForm={resetForm}
+                  getDetailData={basicDetailData}
+                />
                 {/* <div className='mb-10 w-full'>
                   <button
                     className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
