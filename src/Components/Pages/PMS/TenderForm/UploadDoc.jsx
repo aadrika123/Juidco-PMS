@@ -65,7 +65,8 @@ export default function UploadDoc({
       setImageDoc(file);
       const spTab = tabData.map((det) => ({
         ...det,
-        docs: det.value == tab ? [...det.docs, file] : [...det.docs],
+        documents:
+          det.value == tab ? [...det.documents, file] : [...det.documents],
       }));
       setTabData(spTab);
       setFieldValue("tabs", spTab);
@@ -84,10 +85,10 @@ export default function UploadDoc({
     console.log(tabData, "tabData===>", tab, "tab===>");
     const spTab = tabData.map((det) => ({
       ...det,
-      docs:
+      documents:
         det.value == tab
-          ? det.docs.filter((file) => file.name != fileName)
-          : [...det.docs],
+          ? det.documents.filter((file) => file.name != fileName)
+          : [...det.documents],
     }));
     console.log(spTab, "spTab====>");
     setFieldValue("tabs", spTab);
@@ -146,7 +147,7 @@ export default function UploadDoc({
             <div className='mb-4'>
               {tabData
                 ?.find((files) => files.value === tab)
-                ?.docs?.map((file) => (
+                ?.documents?.map((file) => (
                   <div
                     className='mb-2 bg-[#EEF1F7] h-14 w-full rounded-md'
                     key={file.name}

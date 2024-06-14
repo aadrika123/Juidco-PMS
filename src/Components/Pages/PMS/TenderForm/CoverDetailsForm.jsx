@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik, Form, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
@@ -10,32 +10,33 @@ import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormBut
 import ApiHeader2 from "@/Components/api/ApiHeader2";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader from "@/Components/api/ApiHeader";
 
 const tabsCover1 = [
   {
     name: "fee/ prequal/ technical/ financial",
     value: "fee/prequal/technical/financial",
-    docs: [],
+    documents: [],
   },
 ];
 const tabsCover2 = [
   {
     name: "fee/ prequal/ technical",
     value: "fee/prequal/technical",
-    docs: [],
+    documents: [],
   },
-  { name: "financial", value: "financial", docs: [] },
+  { name: "financial", value: "financial", documents: [] },
 ];
 const tabsCover3 = [
-  { name: "fee", value: "fee", docs: [] },
-  { name: "prequal/ technical", value: "prequal/technical", docs: [] },
-  { name: "financial", value: "financial", docs: [] },
+  { name: "fee", value: "fee", documents: [] },
+  { name: "prequal/ technical", value: "prequal/technical", documents: [] },
+  { name: "financial", value: "financial", documents: [] },
 ];
 const tabsCover4 = [
-  { name: "fee", value: "fee", docs: [] },
-  { name: "prequal", value: "prequal", docs: [] },
-  { name: "technical", value: "technical", docs: [] },
-  { name: "financial", value: "financial", docs: [] },
+  { name: "fee", value: "fee", documents: [] },
+  { name: "prequal", value: "prequal", documents: [] },
+  { name: "technical", value: "technical", documents: [] },
+  { name: "financial", value: "financial", documents: [] },
 ];
 
 const CoverDetailsForm = (props) => {
@@ -43,16 +44,19 @@ const CoverDetailsForm = (props) => {
   const [activeTab, setActiveTab] = useState(tabsCover1[0]?.value);
   const [imageDoc, setImageDoc] = useState([]);
   const [preview, setPreview] = useState();
-  const { api_postCoverDetails } = ProjectApiList();
+  const [referenceNo, setReferenceNo] = useState();
+
+  const { api_postCoverDetails, api_postDocumentUpload, api_getCoverDetails } =
+    ProjectApiList();
 
   const navigate = useNavigate();
   const { state } = useLocation();
 
   const covers = [
-    { label: "Single Cover", value: "single_cover" },
-    { label: "Two Cover", value: "two_cover" },
-    { label: "Three Cover", value: "three_cover" },
-    { label: "Four Cover", value: "four_cover" },
+    { label: "Single Cover", value: "1" },
+    { label: "Two Cover", value: "2" },
+    { label: "Three Cover", value: "3" },
+    { label: "Four Cover", value: "4" },
   ];
 
   const autoSelectActiveTab = (tab) => {
@@ -66,45 +70,76 @@ const CoverDetailsForm = (props) => {
   });
 
   const initialValues = {
-    noOfCovers: "single_cover",
+    noOfCovers: "1",
     tabs: [
       {
         name: "fee/ prequal/ technical",
         value: "fee/prequal/technical",
-        docs: [],
+        documents: [],
       },
     ],
     content: "",
   };
 
-  const handleCoversChange = (event, setFieldValue) => {
-    const { value } = event.target;
-    setFieldValue("noOfCovers", value);
-    if (value == "single_cover") {
-      setTabData(tabsCover1);
-      autoSelectActiveTab(tabsCover1);
-    } else if (value == "two_cover") {
-      setTabData(tabsCover2);
-      autoSelectActiveTab(tabsCover2);
-    } else if (value == "three_cover") {
-      setTabData(tabsCover3);
-      autoSelectActiveTab(tabsCover3);
-    } else if (value == "four_cover") {
-      setTabData(tabsCover4);
-      autoSelectActiveTab(tabsCover4);
+  //api to upload doc before submitting the form
+  const uploadDoc = async (tabData) => {
+    const uploadedDocs = {};
+
+    for (const data of tabData) {
+      const tabName = data.value;
+      uploadedDocs[tabName] = [];
+
+      for (const file of data?.documents) {
+        let formData = new FormData();
+        formData.append("doc", file);
+
+        try {
+          const res = await AxiosInterceptors.post(
+            api_postDocumentUpload,
+            formData,
+            ApiHeader2()
+          );
+
+          if (res?.status == 200) {
+            const fileUrl = res?.data; // Assuming the API response contains the uploaded file URL in 'url'
+            uploadedDocs[tabName].push(fileUrl);
+          } else {
+            toast.error(`Failed to upload document for ${tabName}`);
+            console.log(`Failed to upload document for ${tabName}`);
+          }
+        } catch (err) {
+          toast.error(err);
+          console.log(`Error uploading document for ${tabName}:`, err);
+        }
+      }
     }
+
+    return uploadedDocs;
+  };
+
+  const compareAndAddDocs = (formVal, docObj) => {
+    return formVal.map((obj) => {
+      const key = obj.value; // Assuming 'value' is the key to compare
+      if (docObj[key]) {
+        return {
+          ...obj,
+          docs: docObj[key],
+        };
+      }
+      return obj;
+    });
   };
 
   // submit form
   const submitForm = async (values) => {
-    let formData = new FormData();
+    // setLoading
+    const docObj = await uploadDoc(values?.tabs);
 
-    for (let key in values) {
-      formData.append(key, values[key]);
-    }
-    // formData.append("preTender", JSON.stringify(values.noOfCovers));
+    const data = await compareAndAddDocs(values?.tabs, docObj);
+    values.tabs = data;
+    values.reference_no = referenceNo;
 
-    AxiosInterceptors.post(api_postCoverDetails, formData, ApiHeader2())
+    AxiosInterceptors.post(api_postCoverDetails, values, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           toast.success("Cover Details Submitted successfully");
@@ -121,14 +156,34 @@ const CoverDetailsForm = (props) => {
 
   const handleSubmit = (values) => {
     values.tabs.forEach((tab, index) => {
-      if (tab.docs.length === 0) {
+      if (tab?.documents?.length === 0) {
         return toast.error(`Please upload valid documents for ${tab.name}`);
       }
     });
     submitForm(values);
-    console.log(values, "form values");
-    // navigate(`/tendering?tabNo=${3}`);
   };
+
+  ///////////{*** APPLICATION FULL DETAIL ***}/////////
+  const getApplicationDetail = (refNo) => {
+    AxiosInterceptors.get(`${api_getCoverDetails}/${refNo}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setBasicDetailData(response?.data?.data);
+          // setImageDoc(response?.data?.data?.doc[0]?.docUrl);
+        } else {
+          // toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.message);
+      });
+  };
+
+  useEffect(() => {
+    let refNo = window.localStorage.getItem("reference_no");
+    setReferenceNo(refNo);
+    getApplicationDetail(refNo);
+  }, []);
 
   return (
     <>
@@ -160,13 +215,13 @@ const CoverDetailsForm = (props) => {
                     fields={covers}
                     title='No of Covers'
                     values={values.noOfCovers}
-                    handleChange={(event) =>
-                      handleCoversChange(event, setFieldValue)
-                    }
+                    // handleChange={(event) =>
+                    //   handleCoversChange(event, setFieldValue)
+                    // }
                     errors={errors.noOfCovers}
                     touched={touched.noOfCovers}
                     name={"noOfCovers"}
-                    defaultValue={"single_cover"}
+                    defaultValue={"1"}
                     setFieldValue={setFieldValue}
                     setTabData={setTabData}
                     autoSelectActiveTab={autoSelectActiveTab}
@@ -235,28 +290,6 @@ const CoverDetailsForm = (props) => {
                 </div>
 
                 <TenderFormButton resetForm={resetForm} state={state} />
-
-                {/* <div className="mb-5">
-                  <button
-                    className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left"
-                    onClick={() => handleBack(tabNo)}
-                  >
-                    Back
-                  </button>
-                  <button
-                    className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse"
-                    type="submit"
-                  >
-                    Save & Next
-                  </button>
-
-                  <button
-                    className="bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right"
-                    // onClick='##'
-                  >
-                    Reset
-                  </button>
-                </div> */}
               </>
             </Form>
           )}

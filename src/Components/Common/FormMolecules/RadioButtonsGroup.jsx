@@ -28,17 +28,18 @@ export default function RadioButtonsGroup({
 }) {
   const handleCoversChange = (event) => {
     const { value } = event.target;
+    console.log(value, "value========>>>");
     setFieldValue("noOfCovers", value);
-    if (value == "single_cover") {
+    if (value == "1") {
       setTabData && setTabData(tabsCover1);
       autoSelectActiveTab && autoSelectActiveTab(tabsCover1);
-    } else if (value == "two_cover") {
+    } else if (value == "2") {
       setTabData(tabsCover2);
       autoSelectActiveTab(tabsCover2);
-    } else if (value == "three_cover") {
+    } else if (value == "3") {
       setTabData(tabsCover3);
       autoSelectActiveTab(tabsCover3);
-    } else if (value == "four_cover") {
+    } else if (value == "4") {
       setTabData(tabsCover4);
       autoSelectActiveTab(tabsCover4);
     }
