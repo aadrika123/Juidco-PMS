@@ -17,7 +17,7 @@ const TenderFormViewDetails = () => {
 
   const { page } = useParams();
 
-  // console.log(page);
+  console.log(page);
 
   const { api_postForwardtoDA, api_getPreviewDetails } = ProjectApiList();
 
@@ -836,6 +836,15 @@ const TenderFormViewDetails = () => {
                 className='pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
               >
                 Print
+              </button>
+
+              <button
+                className="bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex"
+                onClick={() =>
+                  navigate(`/tendering?tabNo=1`, { state: referenceNo })
+                }
+              >
+                Edit
               </button>
 
               {page == "preview" ? (
