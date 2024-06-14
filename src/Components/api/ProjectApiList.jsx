@@ -181,6 +181,8 @@ export default function ProjectApiList() {
     api_getAccPreTenderOutbox: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/outbox`, //to upload doc
     api_fetchAllDaPreTenderingInbox: `${baseUrl}/api/pms/da/pre-procurement/pre-tender`,
     api_fetchAllDaPreTenderingOutbox: `${baseUrl}/api/pms/da/pre-procurement/pre-tender/outbox`,
+    api_postReleaseForTender: `${baseUrl}/api/pms/da/pre-procurement/pre-tender/approve`, //release to tender
+    api_postPreTenderBackToAcc: `${baseUrl}/api/pms/da/pre-procurement/pre-tender/to-acc`, //tender back to acc
   };
 
   return apiList;

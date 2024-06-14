@@ -15,8 +15,13 @@ const TenderFormViewDetails = () => {
 
   const { page } = useParams();
 
-  const { api_postForwardtoDA, api_getPreviewDetails, api_postFinalSubit } =
-    ProjectApiList();
+  const {
+    api_postForwardtoDA,
+    api_getPreviewDetails,
+    api_postFinalSubit,
+    api_postReleaseForTender,
+    api_postPreTenderBackToAcc,
+  } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
   const [isSuccessModal, setIsSuccessModal] = useState(false);
@@ -87,6 +92,50 @@ const TenderFormViewDetails = () => {
         if (response?.data?.status) {
           toast.success("Forwarded to DA Successfully");
           navigate("/acc-pre-tendring");
+          console.log(response?.data?.data);
+          // setIsSuccessModal(true);
+        } else {
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
+  //Release for tender
+  const releaseForTender = () => {
+    AxiosInterceptors.post(
+      `${api_postReleaseForTender}`,
+      { reference_no: referenceNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Forwarded to DA Successfully");
+          navigate("/acc-pre-tendring");
+          console.log(response?.data?.data);
+          // setIsSuccessModal(true);
+        } else {
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
+  //Pre tender back to acc
+  const preTenderBacktoAcc = () => {
+    AxiosInterceptors.post(
+      `${api_postPreTenderBackToAcc}`,
+      { reference_no: referenceNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Back to Accountant Successfully");
+          navigate("/da-pre-tendring");
           console.log(response?.data?.data);
           // setIsSuccessModal(true);
         } else {
@@ -858,6 +907,14 @@ const TenderFormViewDetails = () => {
 
               {page == "inbox" && (
                 <>
+                  {previewData?.status == 1 && (
+                    <button
+                      className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
+                      onClick={() => releaseForTender()}
+                    >
+                      Release for Tender
+                    </button>
+                  )}
                   <button
                     className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
                     onClick={() =>
@@ -874,12 +931,23 @@ const TenderFormViewDetails = () => {
                       Forward to DA
                     </button>
                   )}
-                  <button
-                    className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
-                    onClick={() => postFinalSubmission()}
-                  >
-                    Submit
-                  </button>
+                  {previewData?.status == 0 && (
+                    <button
+                      className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
+                      onClick={() => postFinalSubmission()}
+                    >
+                      Submit
+                    </button>
+                  )}
+
+                  {previewData?.status == 1 && (
+                    <button
+                      className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
+                      onClick={() => preTenderBacktoAcc()}
+                    >
+                      Back to Accountant
+                    </button>
+                  )}
                 </>
               )}
             </div>
