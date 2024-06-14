@@ -134,7 +134,7 @@ const TenderForm = () => {
                 className='bg-green-600 text-xs font-medium text-blue-100 pl-2 pt-0.5 leading-none rounded-full'
                 style={{ width: "100%" }}
               >
-                Complited..
+                Completed
               </div>
             )}
           </div>

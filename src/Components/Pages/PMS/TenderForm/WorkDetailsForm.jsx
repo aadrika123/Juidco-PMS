@@ -19,7 +19,7 @@ const WorkDetailsForm = () => {
   const { api_postWorkDetails, api_getWorkDetails } = ProjectApiList();
 
   const [workDetailData, setWorkDetailData] = useState();
-  const [referenceNo,setReferenceNo] = useState();
+  const [referenceNo, setReferenceNo] = useState();
 
   const { state } = useLocation();
   console.log(state);
@@ -82,7 +82,10 @@ const WorkDetailsForm = () => {
     bid_validity: Yup.string().required(),
     completionPeriod: Yup.string().required(),
     location: Yup.string().required(),
-    pinCode: Yup.string().min(6, "must be 6 digits").required(),
+    pinCode: Yup.number("Must be number")
+      .min(6, "must be 6 digits")
+
+      .required("Invalid Pincode"),
     pre_bid: Yup.string().required(),
     bidOpeningPlace: Yup.string().required(),
     tenderer_class: Yup.array().min(1).required(),
@@ -103,7 +106,7 @@ const WorkDetailsForm = () => {
 
   // Initial values for additional form fields can go here
   const initialValues = {
-    reference_no: referenceNo|| "",
+    reference_no: referenceNo || "",
     workDiscription: workDetailData?.workDiscription || "",
     pre_qualification_details: workDetailData?.pre_qualification_details || "",
     product_category: workDetailData?.product_category || [],
@@ -113,8 +116,8 @@ const WorkDetailsForm = () => {
     bid_validity: workDetailData?.bid_validity || "",
     completionPeriod: workDetailData?.completionPeriod || "",
     location: workDetailData?.location || "",
-    pinCode: workDetailData?.pinCode || "",
-    pre_bid: workDetailData?.pre_bid ? "yes" : "no",
+    pinCode: Number(workDetailData?.pinCode) || null,
+    pre_bid: workDetailData?.pre_bid ? "no" : "yes",
     preBidMeeting: workDetailData?.preBidMeeting || "",
     preBidMeetingAdd: workDetailData?.preBidMeetingAdd || "yes",
     bidOpeningPlace: workDetailData?.bidOpeningPlace || "",
@@ -133,7 +136,7 @@ const WorkDetailsForm = () => {
     )
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("Basic data Submitted successfully");
+          toast.success("Work Details data Submitted successfully");
           navigate(`/tendering?tabNo=${4}`, { state });
         } else {
           toast.error("Error in Forwarding to DA. Please try again");
@@ -157,13 +160,14 @@ const WorkDetailsForm = () => {
         }
       })
       .catch(function (error) {
-        // toast.error("Error while getting details...");
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        toast.error(error?.response?.data?.error);
       });
   };
 
   useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
-setReferenceNo(refNo)
+    setReferenceNo(refNo);
     getApplicationDetail(refNo);
   }, []);
 
@@ -228,7 +232,7 @@ setReferenceNo(refNo)
                           "text-red-500"
                         }`}
                       >
-                        Work Discriptiion
+                        Work Description
                         <span className='text-red-500'>*</span>
                       </label>
 
@@ -237,7 +241,7 @@ setReferenceNo(refNo)
                           name='workDiscription'
                           type='text'
                           className=' bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
-                          placeholder='Work Discriptiion'
+                          placeholder='Work Description'
                           value={values.workDiscription}
                           onChange={(e) => {
                             if (values.workDiscription.length < 300) {
@@ -667,7 +671,10 @@ setReferenceNo(refNo)
                   </div>
                 </div>
 
-                <TenderFormButton resetForm={resetForm} getDetailData={workDetailData} />
+                <TenderFormButton
+                  resetForm={resetForm}
+                  getDetailData={workDetailData}
+                />
 
                 {/* <div className='mb-5'>
                   <button

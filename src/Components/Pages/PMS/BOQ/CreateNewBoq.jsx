@@ -21,7 +21,6 @@ import { contextVar } from "@/Components/context/contextVar";
 import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 import PreProcurementCancelScreen from "../PrePrecurement/StockReceiver/PreProcurementCancelScreen";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
-import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
 
 export default function CreateNewBoq() {
@@ -31,7 +30,6 @@ export default function CreateNewBoq() {
   const [payload, setPayload] = useState({});
   const [preview, setPreview] = useState();
   const [cancelModal, setCancelModal] = useState(false);
-  const [backtoAccModal, setBacktoAccModal] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [uldId, setUlbId] = useState();
 
@@ -154,28 +152,6 @@ export default function CreateNewBoq() {
       });
   };
 
-  //boq back to accountant------------
-  const backtoAccHandler = () => {
-    setisLoading(true);
-    setBacktoAccModal(false);
-    AxiosInterceptors.post(`${api_postBacktoAcc}`, data, ApiHeader())
-      .then(function (response) {
-        console.log("boq data fetched by id ...", response?.data?.data);
-        if (response?.data?.status) {
-          toast.success("Successfully sent to Accountant");
-          navigate("/da-boq");
-          setisLoading(false);
-        } else {
-          toast.error("Error in sending back to Accountant");
-        }
-      })
-      .catch(function (error) {
-        console.log(error, "err res");
-        toast.error(error?.response?.data?.error);
-        setisLoading(false);
-      });
-  };
-
   //forward to DA
   const forwardToDA = () => {
     setConfirmationModal(false);
@@ -278,16 +254,6 @@ export default function CreateNewBoq() {
     });
   };
 
-  //rejecting page
-  const confirmationHandler = () => {
-    backtoAccHandler();
-  };
-
-  //cancel fn for rejection
-  const handleCancel = () => {
-    setBacktoAccModal(false);
-  };
-
   //send to da fn
   const confirmationHandlertoDa = () => {
     forwardToDA();
@@ -311,17 +277,6 @@ export default function CreateNewBoq() {
   //confirmation for cancel
   if (cancelModal) {
     return <PreProcurementCancelScreen setIsModalOpen2={setCancelModal} />;
-  }
-
-  if (backtoAccModal) {
-    return (
-      <RejectionModalRemark
-        confirmationHandler={confirmationHandler}
-        handleCancel={handleCancel}
-        message={"Are you sure you want to send BOQ back to Accountant "}
-        setData={setData}
-      />
-    );
   }
 
   if (confirmationModal) {
@@ -542,15 +497,6 @@ export default function CreateNewBoq() {
         <button className={buttonStyle} onClick={() => navigate(-1)}>
           Back
         </button>
-        {(applicationData[0]?.status === 0 ||
-          applicationData[0]?.status === 1) && (
-          <button
-            className={colouredBtnStyle}
-            onClick={() => setBacktoAccModal(true)}
-          >
-            Back to Accountant
-          </button>
-        )}
 
         {applicationData[0]?.status === -1 && (
           <button
