@@ -377,7 +377,7 @@ const TenderFormViewDetails = () => {
                 />
                 {/* <img
                   src={previewData?.basic_details?.doc[0]?.docUrl}
-                  class='w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer'
+                  class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
                   onClick={() =>
                     ImageDetailFunc(previewData?.basic_details?.doc[0]?.docUrl)
                   }
@@ -418,7 +418,7 @@ const TenderFormViewDetails = () => {
                       <ImageDisplay url={data?.docPath[0]} preview={""} />
                       {/* <img
                         src={data?.docPath[0]}
-                        class='w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer'
+                        class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
                         onClick={() => ImageDetailFunc(data?.docPath[0])}
                       />{" "} */}
                       <p>{data?.type}</p>

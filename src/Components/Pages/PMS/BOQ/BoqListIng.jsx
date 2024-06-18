@@ -24,8 +24,6 @@ function BoqListing(props) {
   const [loader, setloader] = useState(false);
   const [refNo, setRefNo] = useState(false);
 
-  console.log(refNo);
-
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
     {
@@ -150,6 +148,131 @@ function BoqListing(props) {
     },
   ];
 
+  const COLUMNS2 = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+    },
+    {
+      Header: "Procurement No",
+      accessor: "procurement_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.procurement_no}</div>
+      ),
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values?.category?.name} </div>
+      ),
+    },
+    {
+      Header: "Sub Category",
+      accessor: "subcategory",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values?.subcategory?.name} </div>
+      ),
+    },
+    {
+      Header: "Total Rate",
+      accessor: "total_rate",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.total_rate} </div>
+      ),
+    },
+
+    {
+      Header: "Status",
+      accessor: "status",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          <p className='font-bold text-yellow-800'>
+            {cell.row.values.status == -1 && "Back from DA"}
+          </p>
+          <p className='font-bold text-red-500'>
+            {cell.row.values.status == -2 && "Rejected"}
+          </p>
+          <p className='font-bold text-blue-800'>
+            {cell.row.values.status == 0 && "Pending"}
+          </p>
+          <p className='font-bold text-blue-800'>
+            {cell.row.values.status == 1 && "DA's Inbox"}
+          </p>
+          <p className='font-bold text-green-800'>
+            {cell.row.values.status == 2 && "Approved by DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status == 3 && "Supplier Assigned"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status == 4 && "Incomplete stocks received"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status == 5 && "Stocks received"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 69 && "Revised"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 71 && "BOQ already created"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 70 && "Ready for BOQ"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == -70 && "BOQ returned from DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 72 && "Ready for tendering"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == -72 && "Tender back from DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 73 && "Tender is ready"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 69 && "Revised"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 71 && "BOQ already created"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 70 && "Ready for BOQ"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == -70 && "BOQ returned from DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 72 && "Ready for tendering"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == -72 && "Tender back from DA"}
+          </p>
+          <p className='font-bold text-green-500'>
+            {cell.row.values.status.status == 73 && "Tender is ready"}
+          </p>
+        </div>
+      ),
+    },
+    {
+      Header: "Action",
+      accessor: "id",
+      Cell: ({ cell }) => (
+        <>
+          <button
+            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+            onClick={() =>
+              navigate(`/viewProcurement/${cell.row.values.procurement_no}`)
+            }
+          >
+            View
+          </button>
+        </>
+      ),
+    },
+  ];
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {
     return (
@@ -181,9 +304,9 @@ function BoqListing(props) {
               <ListTableParent
                 table={tableSelector(props?.page)}
                 api={props.api}
-                columns={COLUMNS}
-                requestBody={requestBody} // sending body
-                changeData={changeData} // send action for new payload
+                columns={props?.page == "inbox" ? COLUMNS2 : COLUMNS}
+                requestBody={requestBody}
+                changeData={changeData}
                 showDiv={true}
                 categoryId={props.categoryId}
                 subcategoryId={props.subcategoryId}

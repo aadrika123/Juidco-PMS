@@ -174,12 +174,11 @@ export default function ProjectApiList() {
     api_postCoverDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/cover-details`,
     api_getCoverDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/cover-details`,
     api_postFinalSubit: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/submit`,
-    api_postFinalSubit: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/submit`,
     api_postDocumentUpload: `${baseUrl}/api/pms/upload`, //to upload doc
 
     api_postForwardtoDA: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/to-da`,
-    api_getAccPreTenderInbox: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender`, //to upload doc
-    api_getAccPreTenderOutbox: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/outbox`, //to upload doc
+    api_getAccPreTenderInbox: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender`,
+    api_getAccPreTenderOutbox: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/outbox`,
     api_fetchAllDaPreTenderingInbox: `${baseUrl}/api/pms/da/pre-procurement/pre-tender`,
     api_fetchAllDaPreTenderingOutbox: `${baseUrl}/api/pms/da/pre-procurement/pre-tender/outbox`,
     api_postReleaseForTender: `${baseUrl}/api/pms/da/pre-procurement/pre-tender/approve`, //release to tender

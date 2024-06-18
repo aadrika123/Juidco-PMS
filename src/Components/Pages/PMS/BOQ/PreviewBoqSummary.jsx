@@ -14,8 +14,9 @@ export default function PreviewBoqSummary() {
   const [isLoading, setIsLoading] = useState(false);
   const [uldId, setUlbId] = useState();
   const [confirmationModal, setConfirmationModal] = useState(false);
+  const [showMessageModal, setShowMessaegModal] = useState(false);
+  const [refID, setRefId] = useState();
   const { state } = useLocation();
-  console.log(state, "state==========");
   const navigate = useNavigate();
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -45,7 +46,6 @@ export default function PreviewBoqSummary() {
       header: "Remark",
     },
   ];
-  // Print the Image
 
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -65,7 +65,10 @@ export default function PreviewBoqSummary() {
     AxiosInterceptors.post(api_postForwardAndCreateBoq, formData, ApiHeader2())
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("Successfully forwarded to DA");
+          console.log(response?.data, "response?.data?");
+          // toast.success("Successfully forwarded to DA");
+          setRefId(response?.data?.reference_no);
+          setShowMessaegModal(true);
           setTimeout(() => {
             setIsLoading(false);
             navigate("/boq-search");
@@ -136,6 +139,19 @@ export default function PreviewBoqSummary() {
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
           message={"Are you sure you want to Forward to DA"}
+        />
+      </>
+    );
+  }
+
+  if (showMessageModal) {
+    return (
+      <>
+        <ConfirmationModal
+          confirmationHandler={() => setShowMessaegModal(false)}
+          handleCancel={() => setShowMessaegModal(false)}
+          message={"Successfully Forwarded to DA"}
+          sideMessage={`Your Reference No - ${refID}`}
         />
       </>
     );
@@ -270,7 +286,7 @@ export default function PreviewBoqSummary() {
             </button>
           ) : (
             <button
-              className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
+              className={`bg-[#4338ca] hover:bg-[#564cc2] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
               onClick={() => setConfirmationModal(true)}
             >
               {isLoading ? "Processing..." : "Forward To DA"}

@@ -294,6 +294,9 @@ export default function BoqDetailsById(props) {
         </div>
 
         <div className='flex justify-end mb-10 gap-4'>
+          <button className={buttonStyle} onClick={handlePrint}>
+            Print
+          </button>
           {page &&
             page == "inbox" &&
             (dataList?.status == 0 || dataList?.status == 1) && (
@@ -307,9 +310,6 @@ export default function BoqDetailsById(props) {
               </>
             )}
 
-          <button className={buttonStyle} onClick={handlePrint}>
-            Print
-          </button>
           {page == "inbox" &&
             (dataList?.status === 0 || dataList?.status === 1) && (
               <button

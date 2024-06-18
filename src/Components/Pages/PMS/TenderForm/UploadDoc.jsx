@@ -92,7 +92,6 @@ export default function UploadDoc({
           : [...det.documents],
     }));
     setFieldValue("tabs", spTab);
-
     setTabData(spTab);
   };
 

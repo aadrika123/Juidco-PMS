@@ -45,20 +45,11 @@ function SrEditPreProcurement(props) {
     api_itemCategory,
     api_itemSubCategory,
     api_itemBrand,
-    api_fetchProcessor,
-    api_fetchRam,
-    api_fetchOperatingSystem,
-    api_fetchRom,
-    api_fetchGraphics,
-    api_fetchProcurementDADetailByIdinbox,
-    api_editProcurement,
-    api_fetchOutboxProcurementDetailById,
     api_fetchProcurementDetailById,
     api_editSrProcurement,
   } = ProjectApiList();
 
-  const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } =
-    useContext(contextVar);
+  const { titleBarVisibility } = useContext(contextVar);
 
   const currentDate = new Date().toISOString().split("T")[0];
 
@@ -271,7 +262,6 @@ function SrEditPreProcurement(props) {
 
     getApplicationDetail();
     fetchCategory();
- ;
 
     //  fetchSubCategory(categoryId);
   }, [ulbData]);
@@ -318,7 +308,6 @@ function SrEditPreProcurement(props) {
         console.log("errorrr.... ", error);
       });
   };
-
 
   const getApplicationDetail = () => {
     let url = api_fetchProcurementDetailById;
@@ -428,19 +417,19 @@ function SrEditPreProcurement(props) {
         setresponseScreen(response?.data);
         if (response?.data?.status === true) {
           setisLoading(false);
-          toast.success("Data has been updated successfully")
+          toast.success("Data has been updated successfully");
           setdeclarationStatus(false);
 
           // navigate('/sr-inventory-proposal')
         } else {
           setisLoading(false);
           setdeclarationStatus(false);
-          toast.error(response?.data?.message)
+          toast.error(response?.data?.message);
         }
       })
       .catch(function (error) {
         console.log("errorrr.... ", error);
-        toast.error("Something went wrong")
+        toast.error("Something went wrong");
 
         setdeclarationStatus(false);
       });
@@ -497,7 +486,7 @@ function SrEditPreProcurement(props) {
     return (
       <>
         <BarLoader />
-        <div className="min-h-screen"></div>
+        <div className='min-h-screen'></div>
       </>
     );
   }
@@ -677,7 +666,7 @@ function SrEditPreProcurement(props) {
   // }
   return (
     <>
-      <div className="">
+      <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Edit Pre Procurement"}
@@ -685,10 +674,10 @@ function SrEditPreProcurement(props) {
       </div>
       <div className={`${formStyle} border border-blue-500 mt-7 shadow-xl`}>
         <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-          <div className="">
-            <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
-              <div className="col-span-12  w-full mb-20">
-                <div className=" ml-4 p-4 mt-4">
+          <div className=''>
+            <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
+              <div className='col-span-12  w-full mb-20'>
+                <div className=' ml-4 p-4 mt-4'>
                   <h1 className={`${headingStyle} text-right`}>
                     Pre Procurement Proposal
                   </h1>
@@ -697,15 +686,15 @@ function SrEditPreProcurement(props) {
                     service.
                   </h1> */}
                 </div>
-                <div className="hidden md:block lg:block">
-                  <hr className="border w-full border-gray-200" />
+                <div className='hidden md:block lg:block'>
+                  <hr className='border w-full border-gray-200' />
                 </div>
 
-                <div className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4">
-                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
+                <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
+                  <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Item Category
-                      <span className="text-sm text-red-500">*</span>{" "}
+                      <span className='text-sm text-red-500'>*</span>{" "}
                     </label>
                     <select
                       {...formik.getFieldProps("itemcategory")}
@@ -714,7 +703,7 @@ function SrEditPreProcurement(props) {
                         formik.handleChange(e);
                         fetchSubCategory(e.target.value);
                       }}
-                      disabled="true"
+                      disabled='true'
                     >
                       {category?.map((items, index) => (
                         <option key={index} value={items?.id}>
@@ -722,17 +711,17 @@ function SrEditPreProcurement(props) {
                         </option>
                       ))}
                     </select>
-                    <p className="text-red-500 text-xs ">
+                    <p className='text-red-500 text-xs '>
                       {formik.touched.itemcategory && formik.errors.itemcategory
                         ? formik.errors.itemcategory
                         : null}
                     </p>
                   </div>
 
-                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
+                  <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Items Sub Category
-                      <span className="text-sm text-red-500">*</span>
+                      <span className='text-sm text-red-500'>*</span>
                     </label>
                     <select
                       {...formik.getFieldProps("itemsubcategory")}
@@ -747,7 +736,7 @@ function SrEditPreProcurement(props) {
                         ))}
                     </select>
 
-                    <p className="text-red-500 text-xs ">
+                    <p className='text-red-500 text-xs '>
                       {formik.touched.itemsubcategory &&
                       formik.errors.itemsubcategory
                         ? formik.errors.itemsubcategory
@@ -755,10 +744,10 @@ function SrEditPreProcurement(props) {
                     </p>
                   </div>
 
-                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Brand
-                      <span className="text-xl text-red-500 pl-1">*</span>
+                      <span className='text-xl text-red-500 pl-1'>*</span>
                     </label>
                     <select
                       {...formik.getFieldProps("brand")}
@@ -777,13 +766,13 @@ function SrEditPreProcurement(props) {
                         ))}
                     </select>
 
-                    <p className="text-red-500 text-xs ">
+                    <p className='text-red-500 text-xs '>
                       {formik.touched.brand && formik.errors.brand
                         ? formik.errors.brand
                         : null}
                     </p>
                   </div>
-{/* 
+                  {/* 
                   {console.log(categorySelected, "catego===========sel")}
                   {categorySelected?.map((obj) => (
                     <div className=" flex flex-wrap w-1/2">
@@ -996,67 +985,66 @@ function SrEditPreProcurement(props) {
                   </div> */}
                   {/* row 6 */}
 
-                  <div class="form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4 ">
+                  <div class='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4 '>
                     <label className={`${labelStyle} inline-block mb-2`}>
-                      Description 
+                      Description
                     </label>
                     <textarea
-                      type="text"
-                      name="description"
+                      type='text'
+                      name='description'
                       className={`${inputStyle} inline-block w-full relative h-20`}
                       onChange={formik.handleChange}
                       value={formik.values.description}
                     />
 
-                    <p className="text-red-500 text-xs ">
-                      {formik.touched.description &&
-                      formik.errors.description
+                    <p className='text-red-500 text-xs '>
+                      {formik.touched.description && formik.errors.description
                         ? formik.errors.description
                         : null}
                     </p>
                   </div>
 
-                  <div class="valid-form flex flex-wrap flex-row ">
-                    <div class="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                  <div class='valid-form flex flex-wrap flex-row '>
+                    <div class='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Quantity
                       </label>
 
-                      <div className="flex space-x-5">
+                      <div className='flex space-x-5'>
                         <input
-                          type="number"
-                          name="rate"
+                          type='number'
+                          name='rate'
                           className={`${inputStyle} inline-block w-full relative`}
                           onChange={(e) => {
                             formik.handleChange(e);
                             calculateTotalRate();
                           }}
                           value={formik.values.rate}
-                          placeholder="Rate"
+                          placeholder='Rate'
                         />
                         <p>X</p>
                         <input
-                          type="number"
-                          name="quantity"
+                          type='number'
+                          name='quantity'
                           className={`${inputStyle} inline-block w-full relative`}
                           onChange={(e) => {
                             formik.handleChange(e);
                             calculateTotalRate();
                           }}
                           value={formik.values.quantity}
-                          placeholder="Quantity"
+                          placeholder='Quantity'
                         />
                         <p>=</p>
                         <input
-                          type="number"
-                          name="totalRate"
+                          type='number'
+                          name='totalRate'
                           className={`${inputStyle} inline-block w-full relative`}
                           value={formik.values.totalRate}
-                          placeholder="Total Rate"
+                          placeholder='Total Rate'
                           disabled
                         />
                       </div>
-                      <p className="text-red-500 text-xs ">
+                      <p className='text-red-500 text-xs '>
                         {formik.touched.quantity && formik.errors.quantity
                           ? formik.errors.quantity
                           : null}
@@ -1088,7 +1076,7 @@ function SrEditPreProcurement(props) {
                   </div>
                 </div>
 
-                <div className="float-right mr-8 space-x-5">
+                <div className='float-right mr-8 space-x-5'>
                   <button
                     // type='submit'
                     onClick={openCancelModal}
@@ -1100,7 +1088,7 @@ function SrEditPreProcurement(props) {
 
                   {/* <div className='pb-16 mr-8'> */}
                   <button
-                    type="submit"
+                    type='submit'
                     className={`bg-[#4338CA] border-blue-900 border hover:bg-[#393287] px-7 py-2 text-white  rounded leading-5 shadow-lg float-right`}
                   >
                     Save
