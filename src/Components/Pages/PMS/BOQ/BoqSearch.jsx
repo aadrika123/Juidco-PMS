@@ -40,12 +40,8 @@ const BoqSearch = () => {
 
   const navigate = useNavigate();
 
-  const {
-    api_fetchBoqList,
-    api_itemCategory,
-    api_itemSubCategory,
-    api_fetchBoqListOutbox,
-  } = ProjectApiList();
+  const { api_fetchBoqList, api_itemCategory, api_itemSubCategory } =
+    ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
 

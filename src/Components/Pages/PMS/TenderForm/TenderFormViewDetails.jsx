@@ -9,6 +9,7 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
+import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
 
 const TenderFormViewDetails = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const TenderFormViewDetails = () => {
     api_postFinalSubit,
     api_postReleaseForTender,
     api_postPreTenderBackToAcc,
+    api_postRejectPreTender,
   } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
@@ -29,6 +31,8 @@ const TenderFormViewDetails = () => {
   const [referenceNo, setReferenceNo] = useState();
   const [previewData, setPreviewData] = useState();
   const [imageUrlModal, setImageUrlModal] = useState();
+  const [backtoAccModal, setBacktoAccModal] = useState(false);
+  const [data, setData] = useState({ reference_no: "", remark: "" });
 
   const descTitle = "font-bold text-[#4D4B4B]";
   const descText = "text-[#7d7d7d] uppercase";
@@ -189,8 +193,36 @@ const TenderFormViewDetails = () => {
     }
   };
 
+  //Reject pre tender
+  const rejectTender = () => {
+    setBacktoAccModal(false);
+    AxiosInterceptors.post(
+      `${api_postRejectPreTender}`,
+      { reference_no: referenceNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Rejected Successfully");
+          navigate("/da-pre-tendring");
+          console.log(response?.data?.data);
+          // setIsSuccessModal(true);
+        } else {
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
+  const handleCancel = () => {
+    setBacktoAccModal(false);
+  };
+
   useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
+    setData((prev) => ({ ...prev, reference_no: refNo }));
     setReferenceNo(refNo);
     getApplicationDetail(refNo);
   }, []);
@@ -199,6 +231,17 @@ const TenderFormViewDetails = () => {
     setImageUrlModal(imgUrl);
     setImageModal(true);
   };
+
+  if (backtoAccModal) {
+    return (
+      <RejectionModalRemark
+        confirmationHandler={rejectTender}
+        handleCancel={handleCancel}
+        message={"Are you sure you want to Reject Tender"}
+        setData={setData}
+      />
+    );
+  }
 
   //displaying confirmation message
 
@@ -231,24 +274,24 @@ const TenderFormViewDetails = () => {
   return (
     <>
       {page == "preview" && (
-        <div className="">
+        <div className=''>
           <TitleBar
             titleBarVisibility={titleBarVisibility}
             titleText={"Tender Preview"}
           />
         </div>
       )}
-      <div className="" id="printableArea">
-        <div className="">
+      <div className='' id='printableArea'>
+        <div className=''>
           {/* Basic Details */}
 
-          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
-            <p className="text-xl text-white">Basic Details</p>
+          <div className='bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5'>
+            <p className='text-xl text-white'>Basic Details</p>
           </div>
 
-          <div className="bg-white border shadow-xl mt-2 rounded">
-            <div className="flex">
-              <div className="p-10 text-sm space-y-4 w-1/2 ">
+          <div className='bg-white border shadow-xl mt-2 rounded'>
+            <div className='flex'>
+              <div className='p-10 text-sm space-y-4 w-1/2 '>
                 <h1>
                   <span className={descTitle}>Tender Reference Number : </span>{" "}
                   <span className={descText}>{previewData?.reference_no}</span>
@@ -277,7 +320,7 @@ const TenderFormViewDetails = () => {
                 </h1>
               </div>
 
-              <div className="p-4 pt-9 text-sm space-y-4 w-1/2">
+              <div className='p-4 pt-9 text-sm space-y-4 w-1/2'>
                 <h1>
                   <span className={descTitle}>Payment Mode : </span>{" "}
                   <span className={descText}>
@@ -318,36 +361,42 @@ const TenderFormViewDetails = () => {
               </div>
             </div>
 
-            <div className="flex pl-10 mb-5">
-              <div className="w-1/2">
+            <div className='flex pl-10 mb-5'>
+              <div className='w-1/2'>
                 <h1>
                   <span className={descTitle}>NIT Document: </span>{" "}
                   {/* <span className={descText}>XYZ Values</span> */}
                 </h1>
               </div>
-              <div className="w-1/2">
-                <img
+              <div className='w-[100px]'>
+                <ImageDisplay
+                  url={previewData?.basic_details?.doc[0]?.docUrl}
+                  className='w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer'
+                  alt={"uploaded doc"}
+                  preview={""}
+                />
+                {/* <img
                   src={previewData?.basic_details?.doc[0]?.docUrl}
                   class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
                   onClick={() =>
                     ImageDetailFunc(previewData?.basic_details?.doc[0]?.docUrl)
                   }
-                />{" "}
+                />{" "} */}
               </div>
             </div>
           </div>
 
           {/* Cover Details */}
 
-          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
-            <p className="text-xl text-white">
+          <div className='bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5'>
+            <p className='text-xl text-white'>
               Cover Details, No of Covers - 4
             </p>
           </div>
 
-          <div className="flex flex-col bg-white border shadow-xl mt-2 rounded">
-            <div className="p-4 flex text-sm w-full">
-              <div className="p-5 w-1/2 space-y-3">
+          <div className='flex flex-col bg-white border shadow-xl mt-2 rounded'>
+            <div className='p-4 flex text-sm w-full'>
+              <div className='p-5 w-1/2 space-y-3'>
                 <h1>
                   <span className={descTitle}>No of Covers :</span>{" "}
                   <span className={descText}>
@@ -362,15 +411,16 @@ const TenderFormViewDetails = () => {
                 </h1>
               </div>
 
-              <div className="relative overflow-hidden flex space-x-5 w-1/2 justify-center items-center text-center">
+              <div className='relative overflow-hidden flex space-x-5 w-1/2 justify-center items-center text-center'>
                 {previewData?.cover_details?.cover_details_docs?.map(
                   (data, index) => (
-                    <div>
-                      <img
+                    <div className='w-[120px] flex flex-col items-center gap-2'>
+                      <ImageDisplay url={data?.docPath[0]} preview={""} />
+                      {/* <img
                         src={data?.docPath[0]}
                         class="w-28 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
                         onClick={() => ImageDetailFunc(data?.docPath[0])}
-                      />{" "}
+                      />{" "} */}
                       <p>{data?.type}</p>
                     </div>
                   )
@@ -414,11 +464,11 @@ const TenderFormViewDetails = () => {
 
           {/* Work Item Details */}
 
-          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
-            <p className="text-xl text-white">Work Item Details</p>
+          <div className='bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5'>
+            <p className='text-xl text-white'>Work Item Details</p>
           </div>
-          <div className="flex flex-col bg-white border shadow-xl mt-2 rounded">
-            <div className="p-9 text-sm w-full space-y-3">
+          <div className='flex flex-col bg-white border shadow-xl mt-2 rounded'>
+            <div className='p-9 text-sm w-full space-y-3'>
               {/* <h1>
                 <span className={descTitle}>Work Item Title : </span>{" "}
                 <span className={descText}>XYZ Values</span>
@@ -430,8 +480,8 @@ const TenderFormViewDetails = () => {
                 </span>
               </h1>
             </div>
-            <div className="flex w-full">
-              <div className="p-4 text-sm space-y-4 w-1/2 pl-10">
+            <div className='flex w-full'>
+              <div className='p-4 text-sm space-y-4 w-1/2 pl-10'>
                 <h1>
                   <span className={descTitle}>
                     Pre Qualification Details :{" "}
@@ -466,7 +516,7 @@ const TenderFormViewDetails = () => {
                 </h1>
               </div>
 
-              <div className="p-4 text-sm space-y-4 w-1/2">
+              <div className='p-4 text-sm space-y-4 w-1/2'>
                 <h1>
                   <span className={descTitle}>
                     Location(Work/Item/Service) :{" "}
@@ -508,8 +558,8 @@ const TenderFormViewDetails = () => {
               </div>
             </div>
           </div>
-          <div className="flex  bg-white border shadow-xl mt-2 rounded">
-            <div className="p-10 text-sm space-y-4 w-1/2 ">
+          <div className='flex  bg-white border shadow-xl mt-2 rounded'>
+            <div className='p-10 text-sm space-y-4 w-1/2 '>
               <h1>
                 <span className={descTitle}>Pre Bid Metting:</span>{" "}
                 <span className={descText}>
@@ -535,7 +585,7 @@ const TenderFormViewDetails = () => {
                 </span>
               </h1>
             </div>
-            <div className="p-4 pt-9 text-sm space-y-4 w-1/2">
+            <div className='p-4 pt-9 text-sm space-y-4 w-1/2'>
               <h1>
                 <span className={descTitle}>Tender Class : </span>{" "}
                 <span className={descText}>XYZ Values</span>
@@ -565,13 +615,13 @@ const TenderFormViewDetails = () => {
 
           {/* Tender Fee Details */}
 
-          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
-            <p className="text-xl text-white">Tender Fee Details</p>
+          <div className='bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5'>
+            <p className='text-xl text-white'>Tender Fee Details</p>
           </div>
 
-          <div className="flex flex-col bg-white border shadow-xl mt-2 rounded">
-            <div className="p-4 flex text-sm w-full">
-              <div className="p-5 w-1/3 space-y-3">
+          <div className='flex flex-col bg-white border shadow-xl mt-2 rounded'>
+            <div className='p-4 flex text-sm w-full'>
+              <div className='p-5 w-1/3 space-y-3'>
                 <h1>
                   <span className={descTitle}>Tender Fee :</span>{" "}
                   <span className={descText}>
@@ -586,7 +636,7 @@ const TenderFormViewDetails = () => {
                 </h1>
               </div>
 
-              <div className="p-5 w-1/3 space-y-3">
+              <div className='p-5 w-1/3 space-y-3'>
                 <h1>
                   <span className={descTitle}>Tender Fee Payable At :</span>{" "}
                   <span className={descText}>
@@ -601,7 +651,7 @@ const TenderFormViewDetails = () => {
                 </h1>
               </div>
 
-              <div className="p-5 w-1/3 space-y-3">
+              <div className='p-5 w-1/3 space-y-3'>
                 <h1>
                   <span className={descTitle}>Surg Charges :</span>{" "}
                   <span className={descText}>
@@ -620,13 +670,13 @@ const TenderFormViewDetails = () => {
 
           {/* EMD  Fee Details */}
 
-          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
-            <p className="text-xl text-white">EMD Fee Details</p>
+          <div className='bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5'>
+            <p className='text-xl text-white'>EMD Fee Details</p>
           </div>
 
-          <div className="flex flex-col bg-white border shadow-xl mt-2 rounded">
-            <div className="p-9 flex text-sm w-full">
-              <div className="w-1/3  space-y-3">
+          <div className='flex flex-col bg-white border shadow-xl mt-2 rounded'>
+            <div className='p-9 flex text-sm w-full'>
+              <div className='w-1/3  space-y-3'>
                 <h1>
                   <span className={descTitle}>Surg Charges :</span>{" "}
                   <span className={descText}>
@@ -642,7 +692,7 @@ const TenderFormViewDetails = () => {
                   </span>
                 </h1>
               </div>
-              <div className="w-1/3  space-y-3">
+              <div className='w-1/3  space-y-3'>
                 <h1>
                   <span className={descTitle}>EMD Amount :</span>{" "}
                   <span className={descText}>
@@ -656,7 +706,7 @@ const TenderFormViewDetails = () => {
                   </span>
                 </h1>
               </div>
-              <div className="w-1/3  space-y-3">
+              <div className='w-1/3  space-y-3'>
                 <h1>
                   <span className={descTitle}>EMD Fee Payable To :</span>{" "}
                   <span className={descText}>
@@ -675,13 +725,13 @@ const TenderFormViewDetails = () => {
 
           {/* Critical Dates*/}
 
-          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
-            <p className="text-xl text-white">Critical Dates</p>
+          <div className='bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5'>
+            <p className='text-xl text-white'>Critical Dates</p>
           </div>
 
-          <div className="flex flex-col bg-white border shadow-xl mt-2 rounded">
-            <div className="p-4 flex text-sm w-full">
-              <div className="p-5 w-1/3 space-y-3">
+          <div className='flex flex-col bg-white border shadow-xl mt-2 rounded'>
+            <div className='p-4 flex text-sm w-full'>
+              <div className='p-5 w-1/3 space-y-3'>
                 <h1>
                   <span className={descTitle}>
                     Publishing Date & Time : <br />
@@ -715,7 +765,7 @@ const TenderFormViewDetails = () => {
                 </h1>
               </div>
 
-              <div className="p-5 w-1/3 space-y-3">
+              <div className='p-5 w-1/3 space-y-3'>
                 <h1>
                   <span className={descTitle}>
                     Document Sale Start Date & Time : <br />
@@ -748,7 +798,7 @@ const TenderFormViewDetails = () => {
                 </h1>
               </div>
 
-              <div className="p-5 w-1/3 space-y-3">
+              <div className='p-5 w-1/3 space-y-3'>
                 <h1>
                   <span className={descTitle}>
                     Seek Clarification End Date & Time : <br />
@@ -785,13 +835,13 @@ const TenderFormViewDetails = () => {
 
           {/* Bid Openers Selection */}
 
-          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
-            <p className="text-xl text-white">Bid Openers Selection</p>
+          <div className='bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5'>
+            <p className='text-xl text-white'>Bid Openers Selection</p>
           </div>
 
-          <div className="flex flex-col bg-white border shadow-xl mt-2 rounded">
-            <div className="p-4 flex text-sm w-full">
-              <div className="p-5 w-1/3 space-y-3">
+          <div className='flex flex-col bg-white border shadow-xl mt-2 rounded'>
+            <div className='p-4 flex text-sm w-full'>
+              <div className='p-5 w-1/3 space-y-3'>
                 <h1>
                   <span className={descTitle}>BO1 Name/Designation :</span>{" "}
                   <span className={descText}>
@@ -812,7 +862,7 @@ const TenderFormViewDetails = () => {
                 </h1>
               </div>
 
-              <div className="p-5 w-1/3 space-y-3">
+              <div className='p-5 w-1/3 space-y-3'>
                 <h1>
                   <span className={descTitle}>Email :</span>{" "}
                   <span className={descText}>
@@ -837,17 +887,17 @@ const TenderFormViewDetails = () => {
 
           {/* Tender Documents */}
 
-          <div className="bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5">
-            <p className="text-xl text-white">Tender Documents</p>
+          <div className='bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5'>
+            <p className='text-xl text-white'>Tender Documents</p>
           </div>
 
-          <div className="w-full bg-white border shadow-xl mt-2 rounded p-9">
+          <div className='w-full bg-white border shadow-xl mt-2 rounded p-9'>
             {previewData?.bid_openers?.bid_openers_docs?.map((data, index) => (
               <>
                 {" "}
-                <div className="flex">
-                  <div className="w-[70%] space-y-4 pt-9">
-                    <div className="flex space-x-10">
+                <div className='flex'>
+                  <div className='w-[70%] space-y-4 pt-9'>
+                    <div className='flex space-x-10'>
                       <h1>
                         <span className={descTitle}>Name/Designation :</span>{" "}
                         <span className={descText}>{data?.nameDesig}</span>
@@ -862,9 +912,9 @@ const TenderFormViewDetails = () => {
                       <span className={descText}>{data?.description}</span>
                     </h1>
                   </div>
-                  <div className="w-[30%] flex justify-center items-center text-center">
-                    <div className="flex flex-col items-center justify-end">
-                      <div className="w-[50px]">
+                  <div className='w-[30%] flex justify-center items-center text-center'>
+                    <div className='flex flex-col items-center justify-end'>
+                      <div className='w-[50px]'>
                         <ImageDisplay
                           url={data?.docUrl}
                           alt={"uploaded doc"}
@@ -882,32 +932,56 @@ const TenderFormViewDetails = () => {
                     </div>
                   </div>
                 </div>
-                <hr className="w-[71rem] mt-10" />
+                <hr className='w-[71rem] mt-10' />
               </>
             ))}
             {/* //////// */}
           </div>
 
-          <div className=" mt-10 flex justify-between space-x-4">
-            <div className="">
+          <div className=' mt-10 flex justify-between space-x-4'>
+            <div className=''>
               <button
                 onClick={handleBack}
-                className="pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                className='pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
               >
                 Back
               </button>
             </div>
-            <div className="flex justify-end space-x-5">
+            <div className='flex justify-end space-x-5'>
               <button
                 onClick={handlePrint}
-                className="pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                className='pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
               >
                 Print
               </button>
 
               {page == "inbox" && (
                 <>
-                {previewData?.status == 1 && (
+                  <button
+                    className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
+                    onClick={() =>
+                      navigate(`/tendering?tabNo=1`, { state: referenceNo })
+                    }
+                  >
+                    Edit
+                  </button>
+                  {previewData?.status == 1 && (
+                    <button
+                      className='bg-red-400  hover:bg-red-500  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
+                      onClick={() => setBacktoAccModal(true)}
+                    >
+                      Reject Tender
+                    </button>
+                  )}
+                  {previewData?.status == 1 && (
+                    <button
+                      className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
+                      onClick={() => preTenderBacktoAcc()}
+                    >
+                      Back to Accountant
+                    </button>
+                  )}
+                  {previewData?.status == 1 && (
                     <button
                       className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
                       onClick={() => releaseForTender()}
@@ -915,40 +989,32 @@ const TenderFormViewDetails = () => {
                       Release for Tender
                     </button>
                   )}
-                  <button
-                    className="bg-[#4338CA]  hover:bg-[#5a50c6]  text-white pb-2 pl-6 pr-6 pt-2 rounded flex"
-                    onClick={() =>
-                      navigate(`/tendering?tabNo=1`, { state: referenceNo })
-                    }
-                  >
-                    Edit
-                  </button>
+
                   {(previewData?.status == 0 || previewData?.status == -1) && (
                     <button
-                      className="p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse"
+                      className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
                       onClick={() => forwardBoqToDa()}
                     >
                       Forward to DA
                     </button>
                   )}
-                  {/* {previewData?.status == 0 && ( */}
+
+                  {/* {previewData?.status == 0 && (
+                    <button
+                      className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
+                      onClick={() => postFinalSubmission()}
+                    >
+                      Submit
+                    </button>
+                  )} */}
                 </>
               )}
               {page != "inbox" && page != "outbox" && (
                 <button
-                  className="p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse"
+                  className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
                   onClick={() => postFinalSubmission()}
                 >
                   Submit
-                </button>
-              )}
-
-              {previewData?.status == 1 && (
-                <button
-                  className="p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse"
-                  onClick={() => preTenderBacktoAcc()}
-                >
-                  Back to Accountant
                 </button>
               )}
             </div>

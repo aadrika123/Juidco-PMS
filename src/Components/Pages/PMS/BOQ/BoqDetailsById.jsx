@@ -21,8 +21,12 @@ export default function BoqDetailsById(props) {
   const navigate = useNavigate();
   const { titleBarVisibility } = useContext(contextVar);
 
-  const { api_fetchAllBoqDetailsbyId, api_postBacktoAcc, api_postForwardBoq } =
-    ProjectApiList();
+  const {
+    api_fetchAllBoqDetailsbyId,
+    api_postBacktoAcc,
+    api_postForwardBoq,
+    api_postRejectBoq,
+  } = ProjectApiList();
 
   const { refNo, page } = useParams();
 
@@ -100,6 +104,27 @@ export default function BoqDetailsById(props) {
   const approveBoq = () => {
     AxiosInterceptors.post(
       `${api_postForwardBoq}`,
+      { reference_no: refNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("BOQ is Approved Successfully!!");
+          navigate("/da-boq");
+        } else {
+          toast.error("Error in approving. Please try Again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
+  //reject boq ------------
+  const rejectBoqHandler = () => {
+    AxiosInterceptors.post(
+      `${api_postRejectBoq}`,
       { reference_no: refNo },
       ApiHeader()
     )
@@ -269,7 +294,7 @@ export default function BoqDetailsById(props) {
         </div>
 
         <div className='flex justify-end mb-10 gap-4'>
-        <button className={buttonStyle} onClick={handlePrint}>
+          <button className={buttonStyle} onClick={handlePrint}>
             Print
           </button>
           {page &&
@@ -285,7 +310,15 @@ export default function BoqDetailsById(props) {
               </>
             )}
 
-         
+          {page == "inbox" &&
+            (dataList?.status === 0 || dataList?.status === 1) && (
+              <button
+                className='bg-red-400  hover:bg-red-500  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
+                onClick={() => rejectBoqHandler(true)}
+              >
+                Reject BOQ
+              </button>
+            )}
           {page &&
             page == "inbox" &&
             (dataList?.status == 0 ||

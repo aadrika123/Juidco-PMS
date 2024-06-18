@@ -11,7 +11,12 @@
 import { useNavigate } from "react-router-dom";
 import cancel from "@/Components/assets/cancel.svg";
 
-function ConfirmationModal({ confirmationHandler, handleCancel, message }) {
+function ConfirmationModal({
+  confirmationHandler,
+  handleCancel,
+  message,
+  sideMessage,
+}) {
   return (
     <>
       <div></div>
@@ -26,12 +31,15 @@ function ConfirmationModal({ confirmationHandler, handleCancel, message }) {
               alt='alt title'
             />
           </div>
-          <div class=' flex-1'>
+          <div class='flex-1'>
             <div class=''>
               <h3 class='text-xl  text-center  text-black font-openSans'>
                 {message}
               </h3>
             </div>
+            <h3 className='text-center text-gray-500'>
+              {sideMessage ? sideMessage : ""}
+            </h3>
           </div>
           <div className='flex flex-col m-8'>
             <div className='flex justify-center space-x-5'>

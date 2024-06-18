@@ -156,6 +156,7 @@ export default function ProjectApiList() {
     api_postUpdatedBoq: `${baseUrl}/api/pms/boq`, //update boq
     api_postBacktoAcc: `${baseUrl}/api/pms/da/pre-procurement/boq/return-boq`, //boq back to acc
     api_postForwardBoq: `${baseUrl}/api/pms/da/pre-procurement/boq/approve`, //approve boq
+    api_postRejectBoq: `${baseUrl}/api/pms/da/pre-procurement/boq/reject`, //reject boq
 
     //tendring form
     api_postBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
@@ -173,16 +174,16 @@ export default function ProjectApiList() {
     api_postCoverDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/cover-details`,
     api_getCoverDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/cover-details`,
     api_postFinalSubit: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/submit`,
-    api_postFinalSubit: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/submit`,
     api_postDocumentUpload: `${baseUrl}/api/pms/upload`, //to upload doc
 
     api_postForwardtoDA: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/to-da`,
-    api_getAccPreTenderInbox: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender`, //to upload doc
-    api_getAccPreTenderOutbox: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/outbox`, //to upload doc
+    api_getAccPreTenderInbox: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender`,
+    api_getAccPreTenderOutbox: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/outbox`,
     api_fetchAllDaPreTenderingInbox: `${baseUrl}/api/pms/da/pre-procurement/pre-tender`,
     api_fetchAllDaPreTenderingOutbox: `${baseUrl}/api/pms/da/pre-procurement/pre-tender/outbox`,
     api_postReleaseForTender: `${baseUrl}/api/pms/da/pre-procurement/pre-tender/approve`, //release to tender
     api_postPreTenderBackToAcc: `${baseUrl}/api/pms/da/pre-procurement/pre-tender/to-acc`, //tender back to acc
+    api_postRejectPreTender: `${baseUrl}/api/pms/da/pre-procurement/pre-tender/reject`, //reject tender
   };
 
   return apiList;

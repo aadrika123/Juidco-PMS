@@ -26,7 +26,8 @@ const BoqListTabs = () => {
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { api_fetchBoqInboxList, api_fetchBoqListOutbox } = ProjectApiList();
+  const { api_fetchBoqInboxList, api_fetchBoqListOutbox, api_fetchBoqList } =
+    ProjectApiList();
 
   return (
     <>
@@ -51,7 +52,7 @@ const BoqListTabs = () => {
             </div>
           )}
 
-          <div className='flex ml-5'>
+          <div className='flex gap-4 px-3'>
             <button
               className={`py-2 px-4 ${
                 activeTab === "inbox"
@@ -64,7 +65,18 @@ const BoqListTabs = () => {
               Inbox
             </button>
             <button
-              className={`ml-4 py-2 px-4 ${
+              className={`py-2 px-4 ${
+                activeTab === "boq-status"
+                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
+                  : "text-gray-500"
+              } focus:outline-none flex border border-[#4338ca] rounded`}
+              onClick={() => setActiveTab("boq-status")}
+            >
+              <FaChartPie className='m-1 text-[1rem]' />
+              BOQ Status
+            </button>
+            <button
+              className={` py-2 px-4 ${
                 activeTab === "outbox"
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
                   : "text-gray-500"
@@ -82,7 +94,12 @@ const BoqListTabs = () => {
         <div className='mt-4'>
           {activeTab === "inbox" && (
             <div>
-              <BoqListing page='inbox' api={api_fetchBoqInboxList} />
+              <BoqListing page='inbox' api={api_fetchBoqList} />
+            </div>
+          )}
+          {activeTab === "boq-status" && (
+            <div>
+              <BoqListing page='boq-status' api={api_fetchBoqInboxList} />
             </div>
           )}
           {activeTab === "outbox" && (

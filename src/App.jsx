@@ -49,6 +49,7 @@ import PrintComponent from "./Components/Common/PrintArea/PrintComponent";
 import AccountantList from "./Components/Pages/PMS/TenderForm/Accountant/AccountantListTabs";
 import DATenderList from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderList";
 import DATenderTabs from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderTabs";
+import ViewProcurementDetailsById from "./Components/Pages/PMS/BOQ/ViewProcurementDetailsById";
 
 const queryClient = new QueryClient();
 
@@ -185,6 +186,10 @@ function App() {
     {
       path: "/accountant-boq",
       element: <BoqListTabs />,
+    },
+    {
+      path: "/viewProcurement/:id",
+      element: <ViewProcurementDetailsById />,
     },
     {
       path: "/boq-search",

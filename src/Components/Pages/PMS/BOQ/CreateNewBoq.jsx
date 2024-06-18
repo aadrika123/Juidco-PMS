@@ -38,14 +38,12 @@ export default function CreateNewBoq() {
   const notesheetRef = useRef();
   const navigate = useNavigate();
   const { state } = useLocation();
-
   const { titleBarVisibility } = useContext(contextVar);
   let isCreatePage = state?.proNos?.length > 0 ? "create" : "edit/view";
 
   const {
     api_fetchAllBoqDetails,
     api_fetchAllBoqDetailsbyId,
-    api_postBacktoAcc,
     api_postForwardAndCreateBoq,
   } = ProjectApiList();
 
@@ -428,7 +426,7 @@ export default function CreateNewBoq() {
           </div>
           <div className='flex px-3 py-2 justify-around gap-6 bg-[#4338CA] text-white'>
             <div className='w-1/3'>
-              <p>Estimated cost including GSt</p>
+              <p>Estimated cost including GST</p>
             </div>
             <div className='w-2/3 flex justify-center '>
               <p>
