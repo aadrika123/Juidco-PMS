@@ -22,6 +22,7 @@ import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 import PreProcurementCancelScreen from "../PrePrecurement/StockReceiver/PreProcurementCancelScreen";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 export default function CreateNewBoq() {
   const [imageDoc, setImageDoc] = useState();
@@ -152,6 +153,7 @@ export default function CreateNewBoq() {
 
   //forward to DA
   const forwardToDA = () => {
+    setisLoading(true);
     setConfirmationModal(false);
     let body = { ...payload, ulb_id: uldId, amount: state?.total_rate };
 
@@ -179,6 +181,9 @@ export default function CreateNewBoq() {
         console.log("errorrr.... ", error);
         toast.error(error?.response?.data?.error);
         // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
       });
   };
 
@@ -291,11 +296,18 @@ export default function CreateNewBoq() {
 
   return (
     <div>
+      {isLoading && <LoaderApi />}
+
       <TitleBar
         titleBarVisibility={titleBarVisibility}
         titleText={"Enter BOQ for Procurement"}
       />
-      <div className='container mx-auto bg-white rounded border border-blue-500 mt-10 shadow-xl p-6 mb-10'>
+
+      <div
+        className={`container mx-auto bg-white rounded border border-blue-500 mt-10 shadow-xl p-6 mb-10 ${
+          isLoading ? "blur-[2px]" : ""
+        }`}
+      >
         <div className='p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md'>
           <h2 className='text-2xl '>
             {isCreatePage == "create"

@@ -156,6 +156,7 @@ function InventoryProposalList(props) {
   return (
     <>
       {loader && <BarLoader />}
+
       <div className='container mx-auto p-4'>
         <div className=''>
           <div className='flex justify-between'></div>

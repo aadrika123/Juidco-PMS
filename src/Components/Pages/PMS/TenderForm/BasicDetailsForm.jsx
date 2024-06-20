@@ -23,6 +23,7 @@ const BasicDetailsForm = () => {
   const [imageDoc, setImageDoc] = useState();
   const [imgErr, setImgErr] = useState(false);
   const [basicDetailData, setBasicDetailData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [referenceNo, setReferenceNo] = useState();
 
   const navigate = useNavigate();
@@ -109,6 +110,7 @@ const BasicDetailsForm = () => {
 
   // submit form
   const submitForm = async (values) => {
+    setIsLoading(true);
     let formData = new FormData();
     formData.append("img", values?.img);
     delete values.img;
@@ -126,12 +128,16 @@ const BasicDetailsForm = () => {
       .catch(function (error) {
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
 
   const getApplicationDetail = (refNo) => {
+    setIsLoading(true);
     AxiosInterceptors.get(`${api_getBasicDetails}/${refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
@@ -143,6 +149,9 @@ const BasicDetailsForm = () => {
       })
       .catch(function (error) {
         toast.error(error?.response?.data?.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -154,6 +163,8 @@ const BasicDetailsForm = () => {
 
   return (
     <>
+      {isLoading && <LoaderApi />}
+
       <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
         <img src={folder} className='pl-2' />
         <h1 className='pt-1 pl-2 text-xl'>Basic Details</h1>

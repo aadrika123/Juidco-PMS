@@ -9,6 +9,8 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import BoqTimeLine from "@/Components/Common/Timeline/BoqTimeLine";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 export default function PreviewBoqSummary() {
   const [isLoading, setIsLoading] = useState(false);
@@ -65,8 +67,6 @@ export default function PreviewBoqSummary() {
     AxiosInterceptors.post(api_postForwardAndCreateBoq, formData, ApiHeader2())
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data, "response?.data?");
-          // toast.success("Successfully forwarded to DA");
           setRefId(response?.data?.reference_no);
           setShowMessaegModal(true);
           setTimeout(() => {
@@ -159,11 +159,13 @@ export default function PreviewBoqSummary() {
 
   return (
     <div>
+      {isLoading && <LoaderApi />}
+
       <TitleBar
         titleBarVisibility={titleBarVisibility}
         titleText={"Preview BOQ"}
       />
-      <div className={`${isLoading ? "opacity-40" : ""}`}>
+      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         <div
           id='printable-content'
           className=' bg-white rounded font-sans mb-10 border border-[#4338ca] shadow-lg px-4'

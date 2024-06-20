@@ -18,8 +18,12 @@ import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { MdArrowRightAlt } from "react-icons/md";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import BoqTimeLine from "@/Components/Common/Timeline/BoqTimeLine";
+import TimeLine from "@/Components/Common/Timeline/TimeLine";
 
 const ViewProcurementDetailsById = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -38,6 +42,7 @@ const ViewProcurementDetailsById = () => {
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
 
   const getApplicationDetail = () => {
+    setIsLoading(true);
     AxiosInterceptors.post(
       `${api_fetchAllBoqDetails}`,
       { procurement_no: [id] },
@@ -56,6 +61,9 @@ const ViewProcurementDetailsById = () => {
       .catch(function (error) {
         toast.error("Error while fetching data");
         console.log("==2 details by id error...", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -65,13 +73,21 @@ const ViewProcurementDetailsById = () => {
 
   return (
     <div>
+      {isLoading && <LoaderApi />}
+
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Inventory Proposal Details"}
         />
       </div>
-      <div className=''>
+
+      {/* //timeline  */}
+      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
+        <TimeLine status={applicationFullData?.status?.status} />
+      </div>
+
+      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         <div className='flex justify-end'></div>
         {/* Basic Details */}
         <div className='mt-6'>
