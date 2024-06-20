@@ -1,5 +1,5 @@
 import wd from "@/Components/assets/wd.svg";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import CustomCheckboxGroup from "@/Components/Common/FormMolecules/CustomCheckboxGroup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
@@ -7,22 +7,19 @@ import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormBut
 import { useLocation, useNavigate } from "react-router-dom";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
-import ApiHeader2 from "@/Components/api/ApiHeader2";
 import toast from "react-hot-toast";
 import ApiHeader from "@/Components/api/ApiHeader";
 import { useEffect, useState } from "react";
-import { CleanHands } from "@mui/icons-material";
 
 const WorkDetailsForm = () => {
   const navigate = useNavigate();
 
   const { api_postWorkDetails, api_getWorkDetails } = ProjectApiList();
-
+  const [isLoading, setIsLoading] = useState(false);
   const [workDetailData, setWorkDetailData] = useState();
   const [referenceNo, setReferenceNo] = useState();
 
   const { state } = useLocation();
-  console.log(state);
 
   const productCategory = [
     { label: "Civil Works", value: "civil_works" },
@@ -129,6 +126,7 @@ const WorkDetailsForm = () => {
 
   // submit form
   const submitForm = async (values) => {
+    setIsLoading(true);
     AxiosInterceptors.post(
       api_postWorkDetails,
       { preTender: JSON.stringify(values) },
@@ -145,12 +143,17 @@ const WorkDetailsForm = () => {
       .catch(function (error) {
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
 
   const getApplicationDetail = (refNo) => {
+    setIsLoading(true);
+
     AxiosInterceptors.get(`${api_getWorkDetails}/${refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
@@ -162,6 +165,9 @@ const WorkDetailsForm = () => {
       .catch(function (error) {
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -181,7 +187,11 @@ const WorkDetailsForm = () => {
 
       {/* Form Starting */}
 
-      <div className=' mt-5 container'>
+      <div
+        className={`mt-5 container  ${
+          isLoading ? "blur-[2px] pointer-events-none" : ""
+        }`}
+      >
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}

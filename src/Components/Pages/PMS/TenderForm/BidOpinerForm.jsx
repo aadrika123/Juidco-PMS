@@ -16,6 +16,7 @@ const BidOpinerForm = () => {
   const navigate = useNavigate();
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [bidOpenerDetails, setBidOpenerDetails] = useState();
   const [referenceNo, setReferenceNo] = useState();
   const [coverDetails, setCoverDetails] = useState({
@@ -270,6 +271,8 @@ const BidOpinerForm = () => {
 
   // submit form
   const submitForm = async (values) => {
+    setIsLoading(true);
+
     values.preTender = { ...values.preTender, reference_no: referenceNo };
     let formData = new FormData();
     values.preTender = JSON.stringify(values.preTender);
@@ -287,12 +290,13 @@ const BidOpinerForm = () => {
     }
 
     AxiosInterceptors.post(api_postBidOpenerDetails, formData, ApiHeader2())
+
       .then(function (response) {
         if (response?.data?.status) {
           toast.success("Bid Opener data Submitted successfully");
           navigate(`/tendering?tabNo=${7}`);
         } else {
-          toast.error("Error in getting basic details");
+          toast.error("Error in getting Details");
         }
       })
       .catch(function (error) {
@@ -300,12 +304,17 @@ const BidOpinerForm = () => {
         toast.error("Error ");
 
         // toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
 
   const getApplicationDetail = (refNo) => {
+    setIsLoading(true);
+
     AxiosInterceptors.get(`${api_getBidOpenerDetails}/${refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
@@ -319,6 +328,9 @@ const BidOpinerForm = () => {
       .catch(function (error) {
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         toast.error(error?.response?.data?.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -340,7 +352,11 @@ const BidOpinerForm = () => {
 
       {/* Form Starting */}
 
-      <div className=' mt-5 container'>
+      <div
+        className={` mt-5 container  ${
+          isLoading ? "blur-[2px] pointer-events-none" : ""
+        }`}
+      >
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
