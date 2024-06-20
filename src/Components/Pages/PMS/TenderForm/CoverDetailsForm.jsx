@@ -11,6 +11,7 @@ import ApiHeader2 from "@/Components/api/ApiHeader2";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
+import { TailSpin } from "react-loader-spinner";
 
 const tabsCover1 = [
   {
@@ -46,6 +47,7 @@ const CoverDetailsForm = () => {
   const [referenceNo, setReferenceNo] = useState();
   const [coverDetails, setCoverDetails] = useState();
   const [activeTab, setActiveTab] = useState(tabsCover1[0]?.value);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { api_postCoverDetails, api_postDocumentUpload, api_getCoverDetails } =
     ProjectApiList();
@@ -72,6 +74,7 @@ const CoverDetailsForm = () => {
 
   //api to upload doc before submitting the form
   const uploadDoc = async (tabData) => {
+    setIsLoading(true);
     const uploadedDocs = {};
 
     for (const data of tabData) {
@@ -99,6 +102,8 @@ const CoverDetailsForm = () => {
         } catch (err) {
           toast.error(err);
           console.log(`Error uploading document for ${tabName}:`, err);
+        } finally {
+          setIsLoading(false);
         }
       }
     }
@@ -121,6 +126,8 @@ const CoverDetailsForm = () => {
 
   // submit form
   const submitForm = async (values) => {
+    setIsLoading(true);
+
     // setLoading
     const docObj = await uploadDoc(values?.tabs);
     const data = await compareAndAddDocs(values?.tabs, docObj);
@@ -138,6 +145,9 @@ const CoverDetailsForm = () => {
       .catch(function (error) {
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -167,6 +177,8 @@ const CoverDetailsForm = () => {
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = (refNo) => {
+    setIsLoading(true);
+
     AxiosInterceptors.get(`${api_getCoverDetails}/${refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
@@ -213,6 +225,9 @@ const CoverDetailsForm = () => {
       .catch(function (error) {
         // toast.error(error);
         toast.error(error?.response?.data?.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -245,7 +260,9 @@ const CoverDetailsForm = () => {
       </div>
 
       {/* Form Starting */}
-      <div className='mt-5'>
+      <div
+        className={`mt-5 ${isLoading ? "blur-[2px] pointer-events-none" : ""}`}
+      >
         <Formik
           enableReinitialize={true}
           initialValues={initialValues}

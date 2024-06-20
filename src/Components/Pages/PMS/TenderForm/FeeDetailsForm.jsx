@@ -16,7 +16,7 @@ const FeeDetailsForm = () => {
   // console.log(state)
 
   const { api_postFeeDetails, api_getFeeDetails } = ProjectApiList();
-
+  const [isLoading, setIsLoading] = useState(true);
   const [feeDetailData, setFeeDetailData] = useState();
   const [referenceNo, setReferenceNo] = useState();
 
@@ -100,6 +100,7 @@ const FeeDetailsForm = () => {
 
   // submit form
   const submitForm = async (values) => {
+    setIsLoading(true);
     AxiosInterceptors.post(
       api_postFeeDetails,
       { preTender: JSON.stringify(values) },
@@ -116,10 +117,14 @@ const FeeDetailsForm = () => {
       .catch(function (error) {
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const getApplicationDetail = (refNo) => {
+    setIsLoading(true);
     AxiosInterceptors.get(`${api_getFeeDetails}/${refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
@@ -130,6 +135,9 @@ const FeeDetailsForm = () => {
       })
       .catch(function (error) {
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -148,7 +156,11 @@ const FeeDetailsForm = () => {
       </div>
 
       {/* Form Starting */}
-      <div className=' mt-5 container mb-20'>
+      <div
+        className={`mt-5 container mb-20  ${
+          isLoading ? "blur-[2px] pointer-events-none" : ""
+        }`}
+      >
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}

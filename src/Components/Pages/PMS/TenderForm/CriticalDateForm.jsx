@@ -20,7 +20,7 @@ const CriticalDateForm = () => {
 
   const { api_postCriticalDatesDetails, api_getCriticalDatesDetails } =
     ProjectApiList();
-
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState("online");
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
@@ -70,9 +70,6 @@ const CriticalDateForm = () => {
     }
 
     if (file) {
-      console.log(file.size, "=========file size");
-      // props?.setImageDoc(file);
-      console.log(file, "==========file");
       setPreview(URL.createObjectURL(file));
     }
   };
@@ -117,6 +114,7 @@ const CriticalDateForm = () => {
 
   // submit form
   const submitForm = async (values) => {
+    setIsLoading(true);
     values = { ...values, reference_no: referenceNo };
     AxiosInterceptors.post(
       api_postCriticalDatesDetails,
@@ -134,12 +132,15 @@ const CriticalDateForm = () => {
       .catch(function (error) {
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
-  console.log(criticalDateData);
-
   const getApplicationDetail = (refNo) => {
+    setIsLoading(true);
+
     AxiosInterceptors.get(
       `${api_getCriticalDatesDetails}/${refNo}`,
       ApiHeader()
@@ -153,6 +154,9 @@ const CriticalDateForm = () => {
       })
       .catch(function (error) {
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   useEffect(() => {
@@ -172,7 +176,11 @@ const CriticalDateForm = () => {
       {/* Form Starting */}
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer components={["DateTimePicker"]}>
-          <div className=' mt-5 container'>
+          <div
+            className={`mt-5 container  ${
+              isLoading ? "blur-[2px] pointer-events-none" : ""
+            }`}
+          >
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -193,7 +201,6 @@ const CriticalDateForm = () => {
                 <Form>
                   <>
                     <div className='grid grid-cols-2 container mx-auto capitalize'>
-                     
                       <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                         <div className=''>
                           <label
@@ -214,7 +221,6 @@ const CriticalDateForm = () => {
                               const dateTime = value.format();
                               setFieldValue("publishingDate", dateTime);
                             }}
-                            
                             value={
                               values.publishingDate
                                 ? dayjs(
@@ -451,10 +457,12 @@ const CriticalDateForm = () => {
                           />
                         </div>
                       </div>
-
                     </div>
 
-                    <TenderFormButton resetForm={resetForm} getDetailData={criticalDateData} />
+                    <TenderFormButton
+                      resetForm={resetForm}
+                      getDetailData={criticalDateData}
+                    />
 
                     {/* <div className="mb-5">
                       <button
