@@ -8,11 +8,12 @@
 //    DESCRIPTION - page loader
 //////////////////////////////////////////////////////////////////////////////////////
 
+import zIndex from "@mui/material/styles/zIndex";
 import { ThreeDots } from "react-loader-spinner";
 
 export default function LoaderApi() {
   return (
-    <div className='fixed inset-0 flex items-center justify-center z-50'>
+    <div className='fixed inset-0 flex items-center justify-center z-100 '>
       <ThreeDots
         visible={true}
         color='#4338ca'

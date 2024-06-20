@@ -150,15 +150,13 @@ const ViewInventoryDetailsById = (props) => {
   };
 
   return (
-    <div>
+    <>
       {isLoading && <LoaderApi />}
 
-      <div className=''>
-        <TitleBar
-          titleBarVisibility={titleBarVisibility}
-          titleText={"Inventory Proposal Details"}
-        />
-      </div>
+      <TitleBar
+        titleBarVisibility={titleBarVisibility}
+        titleText={"Inventory Proposal Details"}
+      />
 
       {/* //timeline  */}
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
@@ -319,7 +317,7 @@ const ViewInventoryDetailsById = (props) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

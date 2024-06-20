@@ -1,10 +1,8 @@
 import React from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-const TenderFormButton = ({ resetForm ,getDetailData }) => {
+const TenderFormButton = ({ resetForm, getDetailData, loading }) => {
   let [searchParams, setSearchParams] = useSearchParams();
-
-  console.log(getDetailData)
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,16 +30,16 @@ const TenderFormButton = ({ resetForm ,getDetailData }) => {
         className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
         type='submit'
       >
-        Save & Next
+        {loading ? "Loading..." : "Save & Next"}
       </button>
-      {getDetailData == null && 
-      <button
-        className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
-        onClick={() => resetForm()}
-      >
-        Reset
-      </button>
-      }
+      {getDetailData == null && (
+        <button
+          className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
+          onClick={() => resetForm()}
+        >
+          Reset
+        </button>
+      )}
     </div>
   );
 };

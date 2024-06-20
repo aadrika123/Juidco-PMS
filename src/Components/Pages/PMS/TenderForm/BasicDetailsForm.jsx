@@ -164,14 +164,18 @@ const BasicDetailsForm = () => {
 
   return (
     <>
-      {isLoading && <LoaderApi />}
-
-      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
+      <div
+        className={`bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl `}
+      >
         <img src={folder} className='pl-2' />
         <h1 className='pt-1 pl-2 text-xl'>Basic Details</h1>
       </div>
 
-      <div className=' mt-5 container'>
+      <div
+        className={`mt-5 container ${
+          isLoading ? "blur-[2px] pointer-events-none" : ""
+        }`}
+      >
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -195,7 +199,9 @@ const BasicDetailsForm = () => {
           }) => (
             <Form>
               <>
-                <div className='grid grid-cols-2 container mx-auto capitalize '>
+                <div
+                  className={`grid grid-cols-2 container mx-auto capitalize `}
+                >
                   <div className='p-4 mr-2 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
                     <>
                       <label
@@ -454,30 +460,8 @@ const BasicDetailsForm = () => {
                 <TenderFormButton
                   resetForm={resetForm}
                   getDetailData={basicDetailData}
+                  loading={isLoading}
                 />
-                {/* <div className='mb-10 w-full'>
-                  <button
-                    className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
-                    // onClick='##'
-                    disabled
-                  >
-                    Back
-                  </button>
-
-                  <button
-                    className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
-                    type='submit'
-                  >
-                    Save & Next
-                  </button>
-
-                  <button
-                    className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
-                    onClick={() => resetForm()}
-                  >
-                    Reset
-                  </button>
-                </div> */}
               </>
             </Form>
           )}

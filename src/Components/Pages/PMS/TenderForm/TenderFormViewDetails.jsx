@@ -17,7 +17,7 @@ const TenderFormViewDetails = () => {
   const navigate = useNavigate();
 
   const { page } = useParams();
-
+  console.log(page, "page");
   const {
     api_postForwardtoDA,
     api_getPreviewDetails,
@@ -163,7 +163,6 @@ const TenderFormViewDetails = () => {
         if (response?.data?.status) {
           toast.success("Back to Accountant Successfully");
           navigate("/da-pre-tendring");
-          console.log(response?.data?.data);
           // setIsSuccessModal(true);
         } else {
           // toast.error(response?.data?.message);
@@ -299,8 +298,6 @@ const TenderFormViewDetails = () => {
   // console.log(previewData);
   return (
     <>
-      {loading && <LoaderApi />}
-
       {page == "preview" && (
         <div className=''>
           <TitleBar
@@ -311,9 +308,12 @@ const TenderFormViewDetails = () => {
       )}
 
       {/* //timeline  */}
-      <div className={`${loading ? "blur-[2px]" : ""}`}>
-        <PreTenderingTimeline status={previewData?.status} />
-      </div>
+
+      {page == "preview" && (
+        <div className={`${loading ? "blur-[2px]" : ""}`}>
+          <PreTenderingTimeline status={previewData?.status} />
+        </div>
+      )}
 
       <div className={`${loading ? "blur-[2px]" : ""}`} id='printableArea'>
         <div className=''>

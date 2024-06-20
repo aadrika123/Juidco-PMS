@@ -79,7 +79,7 @@ export default function TimeLine({ status }) {
           <p className='absolute -bottom-[30px] w-[145px] text-sm'>
             Departmental Admin
           </p>
-          <p className='border font-semibold absolute -top-[38px] px-2 shadow-md bg-white text-xs w-[100px]'>
+          <p className='border font-semibold absolute -top-[38px] px-2 shadow-md bg-white text-xs w-[100px] text-center'>
             {status === 71 || status === 73
               ? "BOQ"
               : status === 5
