@@ -134,7 +134,7 @@ const TenderFormViewDetails = () => {
     )
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("Forwarded to DA Successfully");
+          toast.success("Successfully Released for Tender");
           navigate("/acc-pre-tendring");
           console.log(response?.data?.data);
           // setIsSuccessModal(true);

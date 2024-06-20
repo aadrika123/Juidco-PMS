@@ -90,8 +90,7 @@ const CoverDetailsForm = () => {
           );
 
           if (res?.status == 200) {
-            console.log(res, "res");
-            const fileUrl = res?.data; // Assuming the API response contains the uploaded file URL in 'url'
+            const fileUrl = res?.data?.data; // Assuming the API response contains the uploaded file URL in 'url'
             uploadedDocs[tabName].push(fileUrl);
           } else {
             toast.error(`Failed to upload document for ${tabName}`);
@@ -124,11 +123,9 @@ const CoverDetailsForm = () => {
   const submitForm = async (values) => {
     // setLoading
     const docObj = await uploadDoc(values?.tabs);
-    console.log(docObj, "docobj");
     const data = await compareAndAddDocs(values?.tabs, docObj);
     values.tabs = data;
     values.reference_no = referenceNo;
-    console.log(values, "values", data, "data");
     AxiosInterceptors.post(api_postCoverDetails, values, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {

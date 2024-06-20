@@ -20,7 +20,7 @@ export default function PreTenderingTimeline({ status }) {
               />
             )}
 
-            {(status === 69 || status === 2) && (
+            {(status === 69 || status === 2 || status === 1) && (
               <FaCheck color='white' size={16} />
             )}
           </div>
@@ -36,7 +36,7 @@ export default function PreTenderingTimeline({ status }) {
 
         {/* //divider */}
         <div className='h-[2px] bg-black w-[20%] relative flex justify-center items-center'>
-          {status === 69 && (
+          {(status === 69 || status === 1) && (
             <MdKeyboardArrowRight
               color='black'
               size={26}
@@ -55,7 +55,7 @@ export default function PreTenderingTimeline({ status }) {
         {/* //DA */}
         <div className='flex flex-col items-center gap-1 relative'>
           <div className='flex justify-center items-center bg-[#4338ca] rounded-full w-10 h-10'>
-            {(status === 69 || status === 2) && (
+            {(status === 69 || status === 2 || status === 1) && (
               <img
                 src={locationMan}
                 alt='locationTag'
@@ -67,8 +67,8 @@ export default function PreTenderingTimeline({ status }) {
               <FaCheck color='white' size={16} />
             )}
           </div>
-          <p className='absolute -bottom-[30px] w-[110px] text-sm'>
-            Stock Receiver
+          <p className='absolute -bottom-[30px] w-[140px] text-sm'>
+            Departmental Admin
           </p>
           <p className='border font-semibold absolute -top-[38px] px-2 shadow-md bg-white text-xs'>
             {status === -1
@@ -99,7 +99,7 @@ export default function PreTenderingTimeline({ status }) {
         )}
 
         <div className='flex flex-col items-center gap-1 relative'>
-          <p className='absolute -bottom-[48px] w-[100px] text-sm'>
+          <p className='absolute -bottom-[48px] w-[130px] text-sm'>
             {status === 2
               ? "Released for Tender"
               : status === -2
