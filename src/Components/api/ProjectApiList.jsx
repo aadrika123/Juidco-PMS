@@ -184,6 +184,9 @@ export default function ProjectApiList() {
     api_postReleaseForTender: `${baseUrl}/api/pms/da/pre-procurement/pre-tender/approve`, //release to tender
     api_postPreTenderBackToAcc: `${baseUrl}/api/pms/da/pre-procurement/pre-tender/to-acc`, //tender back to acc
     api_postRejectPreTender: `${baseUrl}/api/pms/da/pre-procurement/pre-tender/reject`, //reject tender
+
+    api_fetchNotification: `${baseUrl}/api/pms/notification`,
+    api_readNotification: `${baseUrl}/api/pms/notification`,
   };
 
   return apiList;

@@ -11,11 +11,19 @@ import { BiLogOutCircle } from "react-icons/bi";
 import PermittedModuleCard from "./PermittedModuleCard";
 import { Tooltip } from "react-tooltip";
 import { BsBell } from "react-icons/bs";
-import NotificationComponent from "./NotificationComponent";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { getLocalStorageItemJsonParsed } from "@/Components/Common/localstorage";
+import NotificationSidebar from "./SideBar/NotificationSidebar";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader from "@/Components/api/ApiHeader";
+import toast from "react-hot-toast";
+
 
 const TopHeader = (props) => {
+
+  const { api_fetchNotification } = ProjectApiList();
+
   const [userDetailss, setuserDetails] = useState(
     getLocalStorageItemJsonParsed("userDetails")
   ); // to store user details
@@ -23,6 +31,8 @@ const TopHeader = (props) => {
   const [isLoading, setisLoading] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
   const [notificationState, setnotificationState] = useState(false);
+
+
 
   const { toggleBar, settoggleBar, userDetails } = useContext(contextVar);
 
@@ -54,6 +64,10 @@ const TopHeader = (props) => {
   };
 
   const [imgSrc, setImgSrc] = useState(userDetails?.imageUrl);
+
+  
+
+ 
 
   return (
     <>
@@ -98,18 +112,20 @@ const TopHeader = (props) => {
               id='logout'
               data-tooltip-content='Log Out'
               onClick={() => openModal()}
-              className='text-2xl font-semibold bg-[#4338CA] text-white rounded p-1'
+              className='text-2xl font-semibold bg-[#4338CA] text-white rounded-md p-1'
             >
               <BiLogOutCircle />
             </button>
           </span>
           <Tooltip anchorId='notification_icon' className='z-50' />
-          <BsBell
+          {/* <BsBell
             id='notification_icon'
             data-tooltip-content='Show all notifications.'
             onClick={() => setnotificationState(true)}
             className='text-3xl font-semibold bg-[#4338CA] text-white rounded p-1 cursor-pointer'
-          />
+          /> */}
+          
+          <NotificationSidebar />
         </div>
       </div>
 
@@ -162,9 +178,9 @@ const TopHeader = (props) => {
       >
         <PermittedModuleCard closeModuleModal={closeModal} />
       </Modal>
-      {notificationState && (
+      {/* {notificationState && (
         <NotificationComponent setnotificationState={setnotificationState} />
-      )}
+      )} */}
     </>
   );
 };
