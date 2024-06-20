@@ -13,6 +13,7 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
 import ApiHeader from "@/Components/api/ApiHeader";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const BasicDetailsForm = () => {
   const inputFileRef = useRef();
