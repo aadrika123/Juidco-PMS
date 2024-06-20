@@ -40,14 +40,13 @@ import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import TimeLine from "@/Components/Common/Timeline/TimeLine";
 
-const ViewReceivedInvtById = (props) => {
+const ViewReceivedInvtById = () => {
   const navigate = useNavigate();
   const deadStockRef = useRef();
   const { id, page } = useParams();
-  console.log("param", id);
-
-  console.log("page========>", page);
 
   const [erroState, seterroState] = useState(false);
   const [isLoading, setisLoading] = useState(false);
@@ -66,7 +65,6 @@ const ViewReceivedInvtById = (props) => {
   const [inventory, setInventory] = useState("");
 
   const inventoryHisHandler = (event) => {
-    console.log(event.target.value, "event");
     setInventory(event.target.value);
   };
 
@@ -239,7 +237,6 @@ const ViewReceivedInvtById = (props) => {
         return toast.error("Please upload dead stock image");
       }
 
-      console.log("procurement==============>>", values);
       setIsModalOpen(true);
       setPayload(values);
     },
@@ -272,13 +269,8 @@ const ViewReceivedInvtById = (props) => {
   };
 
   const handleOnChange = (e) => {
-    // console.log("target type", e.target.type);
-    // console.log("check box name", e.target.name);
-
     let name = e.target.name;
     let value = e.target.value;
-
-    console.log("target value checked", e.target.checked);
 
     {
       name == "totalStock" &&
@@ -360,19 +352,25 @@ const ViewReceivedInvtById = (props) => {
     window.print();
   };
 
-  console.log(inventoryData?.data, "invtDet");
-
   return (
     <div>
+      {isLoading && <LoaderApi />}
+
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Inventory Proposal Details"}
         />
       </div>
+
+      {/* //timeline  */}
+      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
+        <TimeLine status={applicationFullData?.status?.status} />
+      </div>
+
       <div className='' id='printable-content'>
         {/* Basic Details */}
-        <div className='mt-6'>
+        <div className={`mt-6 ${isLoading ? "blur-[2px]" : ""}`}>
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>

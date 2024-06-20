@@ -29,13 +29,12 @@ import { contextVar } from "@/Components/context/contextVar";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { allowCharacterNumberInput } from "@/Components/Common/PowerupFunctions";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
+import TimeLine from "@/Components/Common/Timeline/TimeLine";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const ViewReceivedInvtByIdDa = (props) => {
   const navigate = useNavigate();
   const { id, page } = useParams();
-  console.log("param", id);
-
-  console.log("page========>", page);
 
   const [erroState, seterroState] = useState(false);
   const [isLoading, setisLoading] = useState(false);
@@ -89,7 +88,6 @@ const ViewReceivedInvtByIdDa = (props) => {
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log("Form Values ==============>>", values);
       setIsModalOpen(true);
       setFormData(values);
     },
@@ -127,7 +125,6 @@ const ViewReceivedInvtByIdDa = (props) => {
 
     AxiosInterceptors.get(`${url}/${id}`, ApiHeader())
       .then(function (response) {
-        console.log("view water tanker full details ...", response?.data?.data);
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
           setisLoading(false);
@@ -193,11 +190,6 @@ const ViewReceivedInvtByIdDa = (props) => {
     for (let key in body) {
       formDataPayload.append(key, body[key]);
     }
-    console.log(body, "payload for post inventory details");
-    // console.log(api_postDaReceivedInvtDetail, "URL for post inventory details");
-
-    //headers for file data format
-    let token2 = window.localStorage.getItem("token");
 
     AxiosInterceptors.post(
       `${api_postDaReceivedInvtDetail}`,
@@ -205,8 +197,6 @@ const ViewReceivedInvtByIdDa = (props) => {
       ApiHeader2()
     )
       .then(function (response) {
-        console.log("Received Inventory details submitted", response?.data);
-        console.log(response?.data?.st, "upper Status");
         if (response?.data?.status == true) {
           setisLoading(false);
           toast.success("Successfully updated", "success");
@@ -266,15 +256,23 @@ const ViewReceivedInvtByIdDa = (props) => {
 
   return (
     <div>
+      {isLoading && <LoaderApi />}
+
+      <TitleBar
+        titleBarVisibility={titleBarVisibility}
+        titleText={"Inventory Details"}
+      />
       <div className=''>
-        <TitleBar
-          titleBarVisibility={titleBarVisibility}
-          titleText={"Inventory Details"}
-        />
-      </div>
-      <div className=''>
+        {/* //timeline  */}
+        <div className={`${isLoading ? "blur-[2px]" : ""}`}>
+          <TimeLine status={applicationFullData?.status?.status} />
+        </div>
+
         {/* Basic Details */}
-        <div className='mt-6' id='printable-content'>
+        <div
+          className={`mt-6 ${isLoading ? "blur-[2px]" : ""}`}
+          id='printable-content'
+        >
           <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-600 '>
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>

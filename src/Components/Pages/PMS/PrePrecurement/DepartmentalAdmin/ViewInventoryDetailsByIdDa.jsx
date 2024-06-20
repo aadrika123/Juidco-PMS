@@ -24,15 +24,14 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import TimeLine from "@/Components/Common/Timeline/TimeLine";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
   const notesheetRef = useRef();
 
   const { id, page } = useParams();
-  console.log("param", id);
-
-  console.log("page========>", page);
 
   const [erroState, seterroState] = useState(false);
   const [isLoading, setisLoading] = useState(false);
@@ -67,9 +66,10 @@ const ViewInventoryDetailsById = (props) => {
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
+    setisLoading(true);
+
     let url;
     seterroState(false);
-    setisLoading(true);
 
     if (page == "inbox") {
       url = api_fetchProcurementDADetailByIdinbox;
@@ -80,20 +80,20 @@ const ViewInventoryDetailsById = (props) => {
 
     AxiosInterceptors.get(`${url}/${id}`, ApiHeader())
       .then(function (response) {
-        console.log("view water tanker full details ...", response?.data?.data);
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
           setTableData(response?.data?.data?.tran_dtls);
-          setisLoading(false);
         } else {
-          toast.error("Error while getting details...");
-          seterroState(true);
+          // toast.error("Error while getting details...");
+          // seterroState(true);
         }
       })
       .catch(function (error) {
         console.log("==2 details by id error...", error);
-        toast.error("Error while getting details...");
+        toast.error(error?.response?.data?.message);
         seterroState(true);
+      })
+      .finally(() => {
         setisLoading(false);
       });
   };
@@ -110,7 +110,6 @@ const ViewInventoryDetailsById = (props) => {
 
   const postRejectTender = () => {
     setisLoading(true);
-    console.log(remark, "Remark==========>>");
 
     AxiosInterceptors.post(
       `${api_postRejectTender}`,
@@ -118,28 +117,27 @@ const ViewInventoryDetailsById = (props) => {
       ApiHeader()
     )
       .then(function (response) {
-        console.log("Forwarded to DA", response?.data);
-        console.log(response?.data?.st, "upper Status");
         if (response?.data?.status == true) {
-          setisLoading(false);
           toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/da-inventory-proposal");
           }, 1000);
         } else {
-          setisLoading(false);
           const errorMsg = Object.keys(response?.data?.data);
           setErrRes(errorMsg);
           toast(response?.data?.message, "error");
         }
       })
       .catch(function (error) {
+        toast.error(error?.response?.data?.message);
         console.log("errorrr.... ", error);
+      })
+      .finally(() => {
+        setisLoading(false);
       });
   };
   const postBackToSR = () => {
     setisLoading(true);
-    console.log(remark, "Remark==========>>");
 
     AxiosInterceptors.post(
       `${api_postBackToSR}`,
@@ -150,20 +148,22 @@ const ViewInventoryDetailsById = (props) => {
         console.log("Forwarded to DA", response?.data);
         console.log(response?.data?.st, "upper Status");
         if (response?.data?.status == true) {
-          setisLoading(false);
           toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/da-inventory-proposal");
           }, 1000);
         } else {
-          setisLoading(false);
           const errorMsg = Object.keys(response?.data?.data);
           setErrRes(errorMsg);
           toast(response?.data?.message, "error");
         }
       })
       .catch(function (error) {
+        toast.error(error?.response?.data?.message);
         console.log("errorrr.... ", error);
+      })
+      .finally(() => {
+        setisLoading(false);
       });
   };
 
@@ -175,22 +175,15 @@ const ViewInventoryDetailsById = (props) => {
     formData.append("preProcurement", JSON.stringify([id]));
 
     // seterroState(false);
-    setisLoading(true);
 
     AxiosInterceptors.post(`${api_postForwardtoAcc}`, formData, ApiHeader2())
       .then(function (response) {
-        console.log("Forwarded to DA", response?.data);
-        console.log(response?.data?.st, "upper Status");
         if (response?.data?.status == true) {
-          setisLoading(false);
-          console.log(response?.data?.message, "-------------->>");
           toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/da-inventory-proposal");
           }, 1000);
-          console.log(response?.data?.message, "Forwadede to DA--->>");
         } else {
-          setisLoading(false);
           toast.error(response?.data?.mmessage || "something went wrong");
           navigate("/da-inventory-proposal");
           toast(response?.data?.message, "error");
@@ -201,6 +194,9 @@ const ViewInventoryDetailsById = (props) => {
         navigate("/da-inventory-proposal");
         console.log("errorrr.... ", error);
         // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
       });
   };
 
@@ -246,13 +242,24 @@ const ViewInventoryDetailsById = (props) => {
 
   return (
     <div>
+      {isLoading && (
+        // <div className='fixed inset-0 flex items-center justify-center z-50'>
+        <LoaderApi />
+        // </div>
+      )}
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Inventory Proposal Details"}
         />
       </div>
-      <div className=''>
+
+      {/* //timeline  */}
+      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
+        <TimeLine status={applicationFullData?.status?.status} />
+      </div>
+
+      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         {/* Basic Details */}
         <div className='mt-6'>
           <div

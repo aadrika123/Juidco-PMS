@@ -10,6 +10,8 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
 import ApiHeader from "@/Components/api/ApiHeader";
 import { MdArrowRightAlt } from "react-icons/md";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import BoqTimeLine from "@/Components/Common/Timeline/BoqTimeLine";
 
 export default function BoqDetailsById(props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,7 +19,6 @@ export default function BoqDetailsById(props) {
   const [backtoAccModal, setBacktoAccModal] = useState(false);
   const [data, setData] = useState({ reference_no: "", remark: "" });
 
-  const { state } = useLocation();
   const navigate = useNavigate();
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -66,6 +67,7 @@ export default function BoqDetailsById(props) {
   };
 
   const fetchBoqDetailsbyId = () => {
+    setIsLoading(true);
     AxiosInterceptors.get(`${api_fetchAllBoqDetailsbyId}/${refNo}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response?.data);
@@ -74,6 +76,9 @@ export default function BoqDetailsById(props) {
       .catch(function (error) {
         toast.error("Something went wrong");
         console.log("errorrr.... ", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -84,6 +89,7 @@ export default function BoqDetailsById(props) {
   //boq back to accountant------------
   const backtoAccHandler = () => {
     setBacktoAccModal(false);
+    setIsLoading(true);
     AxiosInterceptors.post(`${api_postBacktoAcc}`, data, ApiHeader())
       .then(function (response) {
         console.log("boq data fetched by id ...", response?.data?.data);
@@ -97,11 +103,16 @@ export default function BoqDetailsById(props) {
       .catch(function (error) {
         console.log(error, "err res");
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(true);
       });
   };
 
   //approve boq ------------
   const approveBoq = () => {
+    setIsLoading(true);
+
     AxiosInterceptors.post(
       `${api_postForwardBoq}`,
       { reference_no: refNo },
@@ -118,11 +129,16 @@ export default function BoqDetailsById(props) {
       .catch(function (error) {
         console.log(error, "err res");
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   //reject boq ------------
   const rejectBoqHandler = () => {
+    setIsLoading(true);
+
     AxiosInterceptors.post(
       `${api_postRejectBoq}`,
       { reference_no: refNo },
@@ -139,6 +155,9 @@ export default function BoqDetailsById(props) {
       .catch(function (error) {
         console.log(error, "err res");
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -166,10 +185,17 @@ export default function BoqDetailsById(props) {
 
   return (
     <div>
+      {isLoading && <LoaderApi />}
+
       <TitleBar
         titleBarVisibility={titleBarVisibility}
         titleText={"Preview BOQ"}
       />
+
+      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
+        <BoqTimeLine status={dataList?.status} />
+      </div>
+
       <div className={`${isLoading ? "opacity-40" : ""}`}>
         <div id='printable-content' className=' '>
           <div className='p-2 bg-[#4338CA] text-white pl-5 mt-6 rounded-md flex justify-between'>
@@ -320,7 +346,7 @@ export default function BoqDetailsById(props) {
               </button>
             )}
           {page &&
-            page == "inbox" &&
+            (page == "inbox" || page == "boq-status") &&
             (dataList?.status == 0 ||
               dataList?.status == 1 ||
               dataList?.status == -1) && (
@@ -346,17 +372,20 @@ export default function BoqDetailsById(props) {
               </button>
             )}
 
-          {page == "inbox" && dataList?.status == 2 && (
-            <div className='flex justify-end items-center'>
-              <button
-                className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
-                onClick={() => navigate(`/tendering?tabNo=1`, { state: refNo })}
-              >
-                Proceed to Pre Tendering{" "}
-                <MdArrowRightAlt className='text-2xl ml-2' />
-              </button>
-            </div>
-          )}
+          {(page == "inbox" || page == "boq-status") &&
+            dataList?.status == 2 && (
+              <div className='flex justify-end items-center'>
+                <button
+                  className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
+                  onClick={() =>
+                    navigate(`/tendering?tabNo=1`, { state: refNo })
+                  }
+                >
+                  Proceed to Pre Tendering{" "}
+                  <MdArrowRightAlt className='text-2xl ml-2' />
+                </button>
+              </div>
+            )}
         </div>
       </div>
     </div>

@@ -10,6 +10,8 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import PreTenderingTimeline from "@/Components/Common/Timeline/PreTenderingTimeline";
 
 const TenderFormViewDetails = () => {
   const navigate = useNavigate();
@@ -32,6 +34,7 @@ const TenderFormViewDetails = () => {
   const [previewData, setPreviewData] = useState();
   const [imageUrlModal, setImageUrlModal] = useState();
   const [backtoAccModal, setBacktoAccModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({ reference_no: "", remark: "" });
 
   const descTitle = "font-bold text-[#4D4B4B]";
@@ -51,22 +54,27 @@ const TenderFormViewDetails = () => {
   };
 
   const getApplicationDetail = (refNo) => {
+    setLoading(true);
     AxiosInterceptors.get(`${api_getPreviewDetails}/${refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           // console.log(response?.data?.data);
           setPreviewData(response?.data?.data);
         } else {
-          toast.error(response?.data?.message);
+          // toast.error(response?.data?.message);
         }
       })
       .catch(function (error) {
         toast.error(error?.response?.data?.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   //submitting the form
   const postFinalSubmission = () => {
+    setLoading(false);
     AxiosInterceptors.post(
       `${api_postFinalSubit}`,
       { reference_no: referenceNo },
@@ -77,16 +85,21 @@ const TenderFormViewDetails = () => {
           console.log(response?.data?.data);
           setIsSuccessModal(true);
         } else {
-          toast.error(response?.data?.message);
+          // toast.error(response?.data?.message);
         }
       })
       .catch(function (error) {
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   //forward to DA
   const forwardBoqToDa = () => {
+    setLoading(true);
+
     AxiosInterceptors.post(
       `${api_postForwardtoDA}`,
       { reference_no: referenceNo },
@@ -99,16 +112,21 @@ const TenderFormViewDetails = () => {
           console.log(response?.data?.data);
           // setIsSuccessModal(true);
         } else {
-          toast.error(response?.data?.message);
+          // toast.error(response?.data?.message);
         }
       })
       .catch(function (error) {
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   //Release for tender
   const releaseForTender = () => {
+    setLoading(true);
+
     AxiosInterceptors.post(
       `${api_postReleaseForTender}`,
       { reference_no: referenceNo },
@@ -121,16 +139,21 @@ const TenderFormViewDetails = () => {
           console.log(response?.data?.data);
           // setIsSuccessModal(true);
         } else {
-          toast.error(response?.data?.message);
+          // toast.error(response?.data?.message);
         }
       })
       .catch(function (error) {
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   //Pre tender back to acc
   const preTenderBacktoAcc = () => {
+    setLoading(true);
+
     AxiosInterceptors.post(
       `${api_postPreTenderBackToAcc}`,
       { reference_no: referenceNo },
@@ -143,11 +166,14 @@ const TenderFormViewDetails = () => {
           console.log(response?.data?.data);
           // setIsSuccessModal(true);
         } else {
-          toast.error(response?.data?.message);
+          // toast.error(response?.data?.message);
         }
       })
       .catch(function (error) {
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -273,6 +299,8 @@ const TenderFormViewDetails = () => {
   // console.log(previewData);
   return (
     <>
+      {loading && <LoaderApi />}
+
       {page == "preview" && (
         <div className=''>
           <TitleBar
@@ -281,7 +309,13 @@ const TenderFormViewDetails = () => {
           />
         </div>
       )}
-      <div className='' id='printableArea'>
+
+      {/* //timeline  */}
+      <div className={`${loading ? "blur-[2px]" : ""}`}>
+        <PreTenderingTimeline status={previewData?.status} />
+      </div>
+
+      <div className={`${loading ? "blur-[2px]" : ""}`} id='printableArea'>
         <div className=''>
           {/* Basic Details */}
 

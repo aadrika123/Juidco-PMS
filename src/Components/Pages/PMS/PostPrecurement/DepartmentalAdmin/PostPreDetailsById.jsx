@@ -29,13 +29,12 @@ import {
   allowNumberInput,
 } from "@/Components/Common/PowerUps/PowerupFunctions";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import TimeLine from "@/Components/Common/Timeline/TimeLine";
 
 const PostPreDetailsById = (props) => {
   const navigate = useNavigate();
   const { id, page } = useParams();
-  console.log("param", id);
-
-  console.log("page========>", page);
 
   const [erroState, seterroState] = useState(false);
   const [isLoading, setisLoading] = useState(false);
@@ -98,7 +97,6 @@ const PostPreDetailsById = (props) => {
       console.log(validated, "validated===gst");
       if (!validated) return toast.error("Please write valid GST Number");
 
-      console.log("Additional details==============>>", values);
       // submitForm(values);
       setPayload(values);
       setIsModalOpen(true);
@@ -112,7 +110,6 @@ const PostPreDetailsById = (props) => {
     let name = e.target.name;
     let value = e.target.value;
 
-    console.log("target value checked", e.target.checked);
     {
       name == "is_gst_added" && gstcheckboxHandler();
     }
@@ -144,9 +141,9 @@ const PostPreDetailsById = (props) => {
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
+    setisLoading(true);
     let url;
     seterroState(false);
-    setisLoading(true);
 
     if (page == "inbox") {
       url = api_fetchPostProcurementDetailById;
@@ -178,9 +175,9 @@ const PostPreDetailsById = (props) => {
 
   //inbox additional details
   const submitAdditionalDetails = () => {
+    setisLoading(true);
     let url;
     seterroState(false);
-    setisLoading(true);
 
     if (page == "inbox") {
       url = api_postPostProcurementDaAdditionalDetails;
@@ -191,11 +188,9 @@ const PostPreDetailsById = (props) => {
       procurement_no: applicationFullData.procurement_no,
       is_gst_added: isGstAdded,
     };
-    console.log(body, "body======>>>");
 
     AxiosInterceptors.post(`${url}`, { ...body }, ApiHeader())
       .then(function (response) {
-        console.log("view post da details by id...", response?.data?.data);
         if (response?.data?.status) {
           toast.success("Successfully Data sent!!");
           // setapplicationFullData(response?.data?.data);
@@ -290,13 +285,21 @@ const PostPreDetailsById = (props) => {
 
   return (
     <div>
+      {isLoading && <LoaderApi />}
+
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Inventory Proposal Details"}
         />
       </div>
-      <div className=''>
+
+      {/* //timeline  */}
+      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
+        <TimeLine status={applicationFullData?.status?.status} />
+      </div>
+
+      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         {/* Basic Details */}
         <div className='mt-6' id='printable-content'>
           <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>

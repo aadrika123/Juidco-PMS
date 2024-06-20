@@ -21,6 +21,8 @@ import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import TimeLine from "@/Components/Common/Timeline/TimeLine";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
@@ -45,15 +47,11 @@ const ViewInventoryDetailsById = (props) => {
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
-  useEffect(() => {
-    getApplicationDetail();
-  }, []);
-
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
+    setisLoading(true);
     let url;
     seterroState(false);
-    setisLoading(true);
 
     if (page == "inbox") {
       url = api_fetchProcurementDetailById;
@@ -67,7 +65,6 @@ const ViewInventoryDetailsById = (props) => {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
           setTableData(response?.data?.data?.tran_dtls);
-          setisLoading(false);
         } else {
           toast.error(response?.data?.message);
           seterroState(true);
@@ -76,6 +73,8 @@ const ViewInventoryDetailsById = (props) => {
       .catch(function (error) {
         toast.error("Error while getting details...");
         seterroState(true);
+      })
+      .finally(() => {
         setisLoading(false);
       });
   };
@@ -84,10 +83,11 @@ const ViewInventoryDetailsById = (props) => {
     setIsModalOpen(true);
   };
 
+  //forward to da procurement-------------
   const forwardToDA = () => {
+    setisLoading(true);
     setIsModalOpen(false);
     // seterroState(false);
-    setisLoading(true);
     // let preProcurement = [id];
     let formData = new FormData();
     formData.append("img", imageDoc);
@@ -112,8 +112,11 @@ const ViewInventoryDetailsById = (props) => {
       })
       .catch(function (error) {
         console.log("errorrr.... ", error);
-        toast.error("Something went wrong");
+        toast.error(error?.response?.data?.message);
         // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
       });
   };
 
@@ -124,6 +127,10 @@ const ViewInventoryDetailsById = (props) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    getApplicationDetail();
+  }, []);
 
   //displaying confirmation message
   if (isModalOpen) {
@@ -144,13 +151,21 @@ const ViewInventoryDetailsById = (props) => {
 
   return (
     <div>
+      {isLoading && <LoaderApi />}
+
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Inventory Proposal Details"}
         />
       </div>
-      <div className=''>
+
+      {/* //timeline  */}
+      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
+        <TimeLine status={applicationFullData?.status?.status} />
+      </div>
+
+      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         <div className='flex justify-end'></div>
         {/* Basic Details */}
         <div className='mt-6'>

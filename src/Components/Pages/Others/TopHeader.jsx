@@ -52,7 +52,6 @@ const TopHeader = (props) => {
     closeModal();
     logoutCallback();
   };
-  
 
   const [imgSrc, setImgSrc] = useState(userDetails?.imageUrl);
 
@@ -60,38 +59,40 @@ const TopHeader = (props) => {
     <>
       {isLoading && <BarLoader />}
       <div className='bg-white flex flex-row justify-between px-2 sm:px-6 border shadow-sm print:hidden py-3'>
-        <div className='flex items-center md:w-[15rem] justify-between gap-2 sm:gap-4'>
-          <div className="">
-            <p className='font-semibold text-xl '>{brand_tag}</p>
-            <p className='text-xs '>{userDetailss?.ulb}</p>
+        <div className='flex gap-4'>
+          <div className='flex items-center md:w-[15rem] justify-between gap-2 sm:gap-4'>
+            <div className=''>
+              <p className='font-semibold text-xl '>{brand_tag}</p>
+              <p className='text-xs '>{userDetailss?.ulb}</p>
+            </div>
+
+            <div
+              onClick={() => {
+                settoggleBar(!toggleBar);
+              }}
+              className='ml-2'
+            >
+              <span className='cursor-pointer text-gray-700 text-xl'>
+                <BiMenuAltLeft className='text-2xl' />
+              </span>
+            </div>
           </div>
-
-          <div
-            onClick={() => {
-              settoggleBar(!toggleBar);
-            }}
-            className='ml-2'
-          >
-            <span className='cursor-pointer text-gray-700 text-xl'>
-              <BiMenuAltLeft className='text-2xl' />
-            </span>
-          </div>
-        </div>
-
-        <div className='flex w-1/2 ju'>
-          <span
-            onClick={() => openModal2()}
-            className='bg-gray-200 px-4 py-1 cursor-pointer hover:shadow-md flex justify-center items-center'
-          >
-            Modules
-          </span>{" "}
-        </div>
-
-        <div className='flex items-center sm:gap-4 gap-2'>
-          <span className='sm:visible flex items-center '>
-            <h1 className='pr-4 font-bold text-[1.3rem]'>
+          <div className='flex gap-2 items-center'>
+            <div className='flex '>
+              <span
+                onClick={() => openModal2()}
+                className='bg-gray-200 px-4 py-1 cursor-pointer hover:shadow-md flex justify-center items-center'
+              >
+                Modules
+              </span>
+            </div>
+            <h1 className='font-bold text-[1.3rem]'>
               Procurement Management System
             </h1>
+          </div>
+        </div>
+        <div className='flex items-center sm:gap-4 gap-2'>
+          <span className='sm:visible flex items-center '>
             <Tooltip anchorId='logout' className='z-50' />
             <button
               id='logout'
