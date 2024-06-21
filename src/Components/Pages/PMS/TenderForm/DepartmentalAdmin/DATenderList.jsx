@@ -127,7 +127,7 @@ function DATenderList(props) {
         <>
           <button
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
-            onClick={() => navigate(`/tendering-preview/${props?.page}`)}
+            onClick={() => navigate(`/tendering-preview/${props?.page}`,{state: cell.row.values.reference_no})}
           >
             View
           </button>

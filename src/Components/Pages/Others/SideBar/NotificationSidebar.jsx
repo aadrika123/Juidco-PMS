@@ -57,16 +57,19 @@ export default function NotificationSidebar() {
 
   console.log(notificationData);
 
- 
   //Read notification data
 
   const readNotification = (id) => {
-    AxiosInterceptors.post(`${api_readNotification}`,{"notification_id":id}, ApiHeader())
+    AxiosInterceptors.post(
+      `${api_readNotification}`,
+      { notification_id: id },
+      ApiHeader()
+    )
       .then(function (response) {
         if (response?.data?.status) {
           console.log(response?.data);
-        //   setNotificationCount(response?.data);
-        //   setNotificationData(response?.data?.data);
+          //   setNotificationCount(response?.data);
+          //   setNotificationData(response?.data?.data);
 
           // setisLoading(false);
         } else {
@@ -83,8 +86,7 @@ export default function NotificationSidebar() {
       });
   };
 
-
-  const notifiNavigate = (status,id) => {
+  const notifiNavigate = (status, id) => {
     readNotification(id);
 
     if (status == 10) {
@@ -114,7 +116,6 @@ export default function NotificationSidebar() {
     }
   };
 
-
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -132,43 +133,49 @@ export default function NotificationSidebar() {
 
   const list = (anchor) => (
     <>
+      <div className="flex justify-between  bg-white p-2">
+        <h1 className="text-black text-xl">Notification</h1>
+        <div className="rounded-s-lg  bg-red-500 pl-2 pr-2 text-white">
+          <h1 className="">{notificationCount?.totalCount}</h1>
+        </div>
+      </div>
+      <hr className="pb-3 " />
+
       <Stack
         sx={{
           width: anchor === "top" || anchor === "bottom" ? "auto" : 350,
           backgroundColor: "white",
           padding: "1rem",
           height: "100%",
+          // paddingTop: "4rem",
         }}
         spacing={1}
         role="presentation"
         onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}
       >
-      <div className="flex justify-between">
-
-        <h1 className="text-black text-xl">Notification</h1>
-        <div className="rounded-s-lg  bg-red-500 pl-2 pr-2 text-white">
-
-        <h1 className="">{notificationCount?.totalCount}</h1>
+        <div className="flex flex-col space-y-2 ">
+          {notificationData?.map((data, index) => (
+            <Card
+              key={index}
+              sx={{
+                backgroundColor:
+                  data?.isSeen == false
+                    ? "rgb(67, 56, 202)"
+                    : " rgb(125,142,196)",
+                // padding: "12rem"
+              }}
+              className="bg-[#4338CA] p-3 cursor-pointer "
+              onClick={() => notifiNavigate(data?.destination, data?.id)}
+            >
+              <div className="">
+                <h1 className="font-semibold text-white pb-2">{data?.title}</h1>
+                <hr className="" />
+                <p className="text-xs pt-2 text-white ">{data?.description}</p>
+              </div>
+            </Card>
+          ))}
         </div>
-      </div>
-        <hr className="pb-3 " />
-
-        {notificationData?.map((data, index) => (
-          <Card
-          
-            sx={{
-                
-              backgroundColor: data?.isSeen == false ? "rgb(67, 56, 202)":" rgb(125,142,196)",
-            }}
-            className="bg-[#4338CA] p-3 cursor-pointer"
-            onClick={() => notifiNavigate(data?.destination,data?.id)}
-          >
-            <h1 className="font-semibold text-white pb-2">{data?.title}</h1>
-            <hr className="" />
-            <p className="text-xs pt-2 pb-2 text-white ">{data?.description}</p>
-          </Card>
-        ))}
       </Stack>
     </>
   );

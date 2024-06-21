@@ -3,7 +3,7 @@ import TitleBar from "../../Others/TitleBar";
 import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
 import SuccessModal from "@/Components/Common/Modal/SuccessModal";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ImageModal from "../../Others/ImageModal/ImageModal";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -14,6 +14,11 @@ import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import PreTenderingTimeline from "@/Components/Common/Timeline/PreTenderingTimeline";
 
 const TenderFormViewDetails = () => {
+
+  const {state} = useLocation()
+
+  console.log(state)
+
   const navigate = useNavigate();
 
   const { page } = useParams();
@@ -55,7 +60,7 @@ const TenderFormViewDetails = () => {
 
   const getApplicationDetail = (refNo) => {
     setLoading(true);
-    AxiosInterceptors.get(`${api_getPreviewDetails}/${refNo}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getPreviewDetails}/${state?state:refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           // console.log(response?.data?.data);
@@ -129,7 +134,7 @@ const TenderFormViewDetails = () => {
 
     AxiosInterceptors.post(
       `${api_postReleaseForTender}`,
-      { reference_no: referenceNo },
+      { reference_no: state },
       ApiHeader()
     )
       .then(function (response) {
@@ -247,6 +252,7 @@ const TenderFormViewDetails = () => {
 
   useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
+    console.log(refNo)
     setData((prev) => ({ ...prev, reference_no: refNo }));
     setReferenceNo(refNo);
     getApplicationDetail(refNo);

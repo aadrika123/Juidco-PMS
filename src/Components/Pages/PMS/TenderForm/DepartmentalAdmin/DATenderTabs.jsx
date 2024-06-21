@@ -29,7 +29,7 @@ const DATenderTabs = () => {
 
   return (
     <>
-      <div className=''>
+      <div >
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"DA Pre Tendring"}
