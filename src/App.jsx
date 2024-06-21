@@ -50,6 +50,7 @@ import AccountantList from "./Components/Pages/PMS/TenderForm/Accountant/Account
 import DATenderList from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderList";
 import DATenderTabs from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderTabs";
 import ViewProcurementDetailsById from "./Components/Pages/PMS/BOQ/ViewProcurementDetailsById";
+import NotificationSidebar from "./Components/Pages/Others/SideBar/NotificationSidebar";
 
 const queryClient = new QueryClient();
 
@@ -210,6 +211,10 @@ function App() {
     {
       path: "/da-boq",
       element: <BoqListTabsDa />,
+    },
+    {
+      path: "/notifi",
+      element: <NotificationSidebar />,
     },
   ];
 
