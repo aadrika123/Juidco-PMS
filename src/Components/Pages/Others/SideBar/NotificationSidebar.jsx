@@ -10,6 +10,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import toast from "react-hot-toast";
 import { BsBell } from "react-icons/bs";
 import { Badge, Card, Grid, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -29,6 +30,7 @@ export default function NotificationSidebar() {
   });
   const [notificationData, setNotificationData] = React.useState();
   const [notificationCount, setNotificationCount] = React.useState();
+  const [notifiRefresh, setNotifiRefresh] = React.useState(false);
 
   //Get notification data
 
@@ -55,7 +57,7 @@ export default function NotificationSidebar() {
       });
   };
 
-  console.log(notificationData);
+  // console.log(notificationData);
 
   //Read notification data
 
@@ -68,6 +70,7 @@ export default function NotificationSidebar() {
       .then(function (response) {
         if (response?.data?.status) {
           console.log(response?.data);
+          setNotifiRefresh((prev)=> !prev)
           //   setNotificationCount(response?.data);
           //   setNotificationData(response?.data?.data);
 
@@ -91,6 +94,10 @@ export default function NotificationSidebar() {
 
     if (status == 10) {
       navigate("/sr-inventory-proposal");
+    } else if (status == 14) {
+      navigate("/sr-rejectedlist");
+    } else if (status == 15) {
+      navigate("/sr-releasedlist");
     } else if (status == 20) {
       navigate("/da-inventory-proposal");
     } else if (status == 21) {
@@ -129,7 +136,7 @@ export default function NotificationSidebar() {
 
   React.useEffect(() => {
     getNotification();
-  }, []);
+  }, [notifiRefresh]);
 
   const list = (anchor) => (
     <>
