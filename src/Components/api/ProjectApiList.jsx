@@ -171,6 +171,7 @@ export default function ProjectApiList() {
     api_postBidOpenerDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/bid-openers`,
     api_getBidOpenerDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/bid-openers`,
     api_getPreviewDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender`,
+    api_getDAPreviewDetails: `${baseUrl}/api/pms/pre-tender`,
     api_postCoverDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/cover-details`,
     api_getCoverDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/cover-details`,
     api_postFinalSubit: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/submit`,

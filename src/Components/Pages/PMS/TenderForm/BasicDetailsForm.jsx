@@ -17,7 +17,7 @@ import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const BasicDetailsForm = () => {
   const inputFileRef = useRef();
-
+  const {state} = useLocation()
   const { api_postBasicDetails, api_getBasicDetails } = ProjectApiList();
 
   const [preview, setPreview] = useState();
@@ -26,7 +26,6 @@ const BasicDetailsForm = () => {
   const [basicDetailData, setBasicDetailData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [referenceNo, setReferenceNo] = useState();
-
   const navigate = useNavigate();
 
   const tenderType = [
@@ -96,7 +95,7 @@ const BasicDetailsForm = () => {
 
   // Initial values for additional form fields can go here
   const initialValues = {
-    reference_no: referenceNo || "",
+    reference_no: referenceNo || state || '',
     tender_type: basicDetailData?.tender_type || [],
     contract_form: basicDetailData?.contract_form || [],
     tender_category: basicDetailData?.tender_category || [],
@@ -123,7 +122,7 @@ const BasicDetailsForm = () => {
           toast.success("Basic data Submitted successfully");
           navigate(`/tendering?tabNo=${2}`);
         } else {
-          toast.error("Error in submitting basic details");
+          // toast.error("Error in submitting basic details");
         }
       })
       .catch(function (error) {
@@ -139,7 +138,7 @@ const BasicDetailsForm = () => {
 
   const getApplicationDetail = (refNo) => {
     setIsLoading(true);
-    AxiosInterceptors.get(`${api_getBasicDetails}/${refNo}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getBasicDetails}/${state || refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           setBasicDetailData(response?.data?.data);
@@ -219,7 +218,7 @@ const BasicDetailsForm = () => {
                         name='reference_no'
                         disabled
                         // value={values?.reference_no}
-                        defaultValue={referenceNo}
+                        defaultValue={referenceNo || state}
                         onChange={handleChange}
                       />
                     </>
