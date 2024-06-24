@@ -23,6 +23,7 @@ import ApiHeader2 from "@/Components/api/ApiHeader2";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
+import { useReactToPrint } from "react-to-print";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
@@ -43,6 +44,13 @@ const ViewInventoryDetailsById = (props) => {
   } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
+
+ //Print
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
 
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -144,11 +152,7 @@ const ViewInventoryDetailsById = (props) => {
       </>
     );
   }
-
-  const handlePrint = () => {
-    window.print();
-  };
-
+  
   return (
     <>
       {isLoading && <LoaderApi />}
@@ -169,7 +173,7 @@ const ViewInventoryDetailsById = (props) => {
         <div className='mt-6'>
           <div
             className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'
-            id='printable-content'
+            ref={componentRef}
           >
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>

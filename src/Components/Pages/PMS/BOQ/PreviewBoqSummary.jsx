@@ -75,6 +75,7 @@ export default function PreviewBoqSummary() {
           }, 2000);
         } else {
           setIsLoading(false);
+          console.log(response)
           toast.error("Error in Forwarding to DA. Please try again");
         }
       })
@@ -108,6 +109,7 @@ export default function PreviewBoqSummary() {
           }, 2000);
         } else {
           setIsLoading(false);
+          console.log(response,"res")
           toast.error("Error in Forwarding to DA. Please try again");
         }
       })

@@ -45,7 +45,7 @@ body {
   }
   
 
-  @media print {
+  /* @media print {
     body * {
       visibility: hidden;
     }
@@ -59,10 +59,11 @@ body {
       position: absolute;
       left: "25%";
       top: 0;
+      overflow: visible !important;
     }
-  }
+  } */
 
-  @media print {
+  /* @media print {
     body * {
       visibility: hidden;
     }
@@ -100,7 +101,7 @@ body {
     img, table, pre, blockquote {
       page-break-inside: avoid;
     }
-  }
+  } */
 
 
 
