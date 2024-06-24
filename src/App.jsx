@@ -51,6 +51,11 @@ import DATenderList from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DA
 import DATenderTabs from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderTabs";
 import ViewProcurementDetailsById from "./Components/Pages/PMS/BOQ/ViewProcurementDetailsById";
 import NotificationSidebar from "./Components/Pages/Others/SideBar/NotificationSidebar";
+import DistributerListTabs from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DistributerListTabs";
+import StockRequestProposal from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/StockRequestProposal";
+import DDViewDetailbyId from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDViewDetailbyId";
+import StockRecListTabs from "./Components/Pages/PMS/Inventory/StockReceiver/StockRecListTabs";
+import SrViewDetailbyId from "./Components/Pages/PMS/Inventory/StockReceiver/SrViewDetailbyId";
 
 const queryClient = new QueryClient();
 
@@ -212,10 +217,35 @@ function App() {
       path: "/da-boq",
       element: <BoqListTabsDa />,
     },
-    {
-      path: "/notifi",
-      element: <NotificationSidebar />,
+    // {
+    //   path: "/notifi",
+    //   element: <NotificationSidebar />,
+    // },\
+
+
+     /////////////////////////{*** Distributer Inventory ***}//////////////////////////////////////
+     {
+      path: "/dd-inventory-proposal",
+      element: <DistributerListTabs />,
     },
+     {
+      path: "/dd-stock-proposal",
+      element: <StockRequestProposal />,
+    },
+     {
+      path: "/dd-viewDetailsById",
+      element: <DDViewDetailbyId />,
+    },
+    
+    /////////////////////////{*** Distributer Inventory ***}//////////////////////////////////////
+    {
+      path: "/sr-dist-proposal",
+      element: <StockRecListTabs />,
+    },
+    {
+     path: "/sr-viewDetailsById",
+     element: <SrViewDetailbyId />,
+   },
   ];
 
   return (

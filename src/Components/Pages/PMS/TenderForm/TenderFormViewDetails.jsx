@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import TitleBar from "../../Others/TitleBar";
 import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
@@ -12,6 +12,7 @@ import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import PreTenderingTimeline from "@/Components/Common/Timeline/PreTenderingTimeline";
+import { useReactToPrint } from "react-to-print";
 
 const TenderFormViewDetails = () => {
   const { state } = useLocation();
@@ -41,9 +42,12 @@ const TenderFormViewDetails = () => {
   const descTitle = "font-bold text-[#4D4B4B]";
   const descText = "text-[#7d7d7d] uppercase";
 
-  const handlePrint = () => {
-    window.print();
-  };
+
+
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   const confirmationHandler = () => {
     navigate("/acc-pre-tendring");
@@ -304,6 +308,8 @@ const TenderFormViewDetails = () => {
     );
   }
 
+  
+
   // console.log(previewData);
   return (
     <>
@@ -324,7 +330,7 @@ const TenderFormViewDetails = () => {
         </div>
       )}
 
-      <div className={`${loading ? "blur-[2px]" : ""}`} id="printableArea">
+      <div className={`${loading ? "blur-[2px]" : ""}`} ref={componentRef}>
         <div className="">
           {/* Basic Details */}
 
@@ -991,12 +997,12 @@ const TenderFormViewDetails = () => {
               </button>
             </div>
             <div className="flex justify-end space-x-5">
-              {/* <button
+              <button
                 onClick={handlePrint}
                 className="pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
               >
                 Print
-              </button> */}
+              </button>
 
               {page == "inbox" && (
                 <>
