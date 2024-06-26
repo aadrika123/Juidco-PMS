@@ -1,17 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import MasterTable from "@/Components/Common/ListTable2/MasterTable";
 import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
 import { IoMdAdd } from "react-icons/io";
 import CreateModal from "./components/CreateModal";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import ApiHeader from "@/Components/api/ApiHeader";
+import toast from "react-hot-toast";
+import { FaEdit } from "react-icons/fa";
 
 export default function CategoryMaster() {
+  const { api_itemCategory } = ProjectApiList();
   const { addButtonColor } = ThemeStyleTanker();
   const navigate = useNavigate();
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [newCategory, setNewCategory] = useState("");
+  const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const changeHandler = (e) => {
@@ -35,6 +42,78 @@ export default function CategoryMaster() {
     setOpenCreateModal(false);
   };
 
+  const fetchAllCategory = async () => {
+    setLoading(true);
+    try {
+      const response = await AxiosInterceptors.get(api_itemCategory, ApiHeader);
+      setCategoryData(response?.data?.data);
+    } catch (error) {
+      console.log("error in category master", error);
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const columns = [
+    {
+      Header: "Category Id",
+      // accessor: "id",
+      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.id}</div>,
+    },
+    {
+      Header: "Category",
+      accessor: "name",
+      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.name} </div>,
+    },
+    {
+      Header: "Sub Category",
+      Cell: ({ cell }) => (
+        <div
+          className='pr-2 text-indigo-700 font-medium underline cursor-pointer'
+          onClick={() =>
+            navigate(`/subCategoryMaster/${cell.row.values.id}`, {
+              state: cell.row.values.name,
+            })
+          }
+        >
+          View Sub Categories
+        </div>
+      ),
+    },
+    {
+      Header: "Status",
+      Cell: ({ cell }) => (
+        <div className=' font-medium'>
+          {cell.row.values.status === true ? (
+            <p className='text-green-500 bg-green-100 border border-green-500 text-center py-1 rounded-md'>
+              Active
+            </p>
+          ) : (
+            <p className='text-red-500 bg-red-100 border border-red-500 text-center py-1 rounded-md'>
+              Inactive
+            </p>
+          )}
+        </div>
+      ),
+    },
+    {
+      Header: "Action",
+      accessor: "id",
+      Cell: ({ cell }) => (
+        <>
+          <button className='' onClick={() => setOpenCreateModal(true)}>
+            <FaEdit color={"#4338CA"} fontSize={18} />
+          </button>
+        </>
+      ),
+    },
+  ];
+
+  useEffect(() => {
+    fetchAllCategory();
+  }, []);
+
   return (
     <>
       <TitleBar titleBarVisibility={true} titleText={"Category Master"} />
@@ -54,7 +133,16 @@ export default function CategoryMaster() {
           Category Master
         </h1>
 
-        <MasterTable tableRowHandler={tableRowHandler} loading={loading} />
+        <MasterTable
+          tableRowHandler={tableRowHandler}
+          loading={loading}
+          handleOpen={() => setOpenCreateModal(true)}
+          open={openCreateModal}
+          tableViewLabel={"View Sub Categories"}
+          data={categoryData}
+          columns={columns}
+          fetchedData={categoryData}
+        />
       </div>
 
       {/* create category modal */}

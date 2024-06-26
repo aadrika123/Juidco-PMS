@@ -1,63 +1,71 @@
-import { FormControlLabel, Switch } from "@mui/material";
+import { Switch } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import {
+  useTable,
+  useSortBy,
+  useGlobalFilter,
+  usePagination,
+} from "react-table";
+import { useMemo, useState, useEffect } from "react";
 
-export default function MasterTable({ tableRowHandler }) {
-  const IOSSwitch = styled((props) => (
-    <Switch
-      focusVisibleClassName='.Mui-focusVisible'
-      disableRipple
-      {...props}
-    />
-  ))(({ theme }) => ({
-    width: 42,
-    height: 26,
-    padding: 0,
-    "& .MuiSwitch-switchBase": {
-      padding: 0,
-      margin: 2,
-      transitionDuration: "300ms",
-      "&.Mui-checked": {
-        transform: "translateX(16px)",
-        color: "#fff",
-        "& + .MuiSwitch-track": {
-          backgroundColor:
-            theme.palette.mode === "dark" ? "#2ECA45" : "#65C466",
-          opacity: 1,
-          border: 0,
-        },
+export default function MasterTable({
+  tableRowHandler,
+  handleOpen,
+  tableViewLabel,
+  columns,
+  fetchedData,
+  totalCount,
+  perPage,
+}) {
+  const columnData = useMemo(() => columns, []);
+  const data = useMemo(() => fetchedData, [fetchedData, totalCount]);
+  const [pageNo, setpageNo] = useState(0);
 
-        "&.Mui-disabled + .MuiSwitch-track": {
-          opacity: 0.5,
-        },
-      },
-      "&.Mui-focusVisible .MuiSwitch-thumb": {
-        color: "#33cf4d",
-        border: "6px solid #fff",
-      },
-      "&.Mui-disabled .MuiSwitch-thumb": {
-        color:
-          theme.palette.mode === "light"
-            ? theme.palette.grey[100]
-            : theme.palette.grey[600],
-      },
-      "&.Mui-disabled + .MuiSwitch-track": {
-        opacity: theme.palette.mode === "light" ? 0.7 : 0.3,
-      },
+  //   useEffect(() => {
+  //     setpageNo(0);
+  //   }, [totalCount]);
+
+  //   useEffect(() => {
+  //     let rs = totalCount / perPage;
+  //     let rm = totalCount % perPage;
+
+  //     if (rm != 0) {
+  //       setPageSize(parseInt(rs) + 1);
+  //     } else {
+  //       setPageSize(parseInt(rs));
+  //     }
+  //   }, [props?.totalCount, props.perPageData]);
+
+  const {
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    setPageSize,
+    state,
+    rows,
+    setGlobalFilter,
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 0 },
     },
-    "& .MuiSwitch-thumb": {
-      boxSizing: "border-box",
-      width: 22,
-      height: 22,
-    },
-    "& .MuiSwitch-track": {
-      borderRadius: 26 / 2,
-      backgroundColor: theme.palette.mode === "light" ? "#E9E9EA" : "#39393D",
-      opacity: 1,
-      transition: theme.transitions.create(["background-color"], {
-        duration: 500,
-      }),
-    },
-  }));
+    useGlobalFilter,
+    useSortBy,
+    usePagination
+  );
+
+  //   const nextPageFun = () => {
+  //     if (props?.pagination?.next) {
+  //       props.nextPage();
+  //     }
+  //   };
+
+  //   const prevPageFun = () => {
+  //     if (props?.pagination?.prev) {
+  //       props.prevPage();
+  //     }
+  //   };
 
   return (
     <>
@@ -92,111 +100,67 @@ export default function MasterTable({ tableRowHandler }) {
       </div>
 
       <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
-        <table className='w-full text-sm text-left rtl:text-right text-gray-500'>
-          <thead className='text-xs text-gray-700 uppercase bg-indigo-200 '>
-            <tr className='font-semibold'>
-              <th scope='col' className='px-6 py-3 '>
-                Category Id
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                Category
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                Total SubCategory
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                Status
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                <span className='sr-only'>Edit</span>
-              </th>
-              <th scope='col' className='px-6 py-3'></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              className='bg-white border-b   hover:bg-gray-50 cursor-pointer'
-              onClick={tableRowHandler && tableRowHandler}
-            >
-              <th
-                scope='row'
-                className='px-6 py-4 text-gray-900 whitespace-nowrap text-[14px]'
-              >
-                Apple MacBook Pro 17"
-              </th>
-              <td className='px-6 py-4 font-semibold text-[14px]'>Silver</td>
-              <td className='px-6 py-4'>Laptop</td>
-              <td className='px-6 py-4'>
-                {" "}
-                <FormControlLabel
-                  control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
-                />
-              </td>
-              <td className='px-6 py-4 text-right'>
-                <a
-                  href='#'
-                  className='font-medium text-blue-600  hover:underline'
-                >
-                  Edit
-                </a>
-              </td>
-            </tr>
-            <tr
-              className='bg-white border-b   hover:bg-gray-50 '
-              onClick={() => {}}
-            >
-              <th
-                scope='row'
-                className='px-6 py-4 text-gray-900 whitespace-nowrap text-[14px]'
-              >
-                Apple MacBook Pro 17"
-              </th>
-              <td className='px-6 py-4 font-semibold text-[14px]'>Silver</td>
-              <td className='px-6 py-4'>Laptop</td>
-              <td className='px-6 py-4'>
-                {" "}
-                <FormControlLabel
-                  control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
-                />
-              </td>
-              <td className='px-6 py-4 text-right'>
-                <a
-                  href='#'
-                  className='font-medium text-blue-600  hover:underline'
-                >
-                  Edit
-                </a>
-              </td>
-            </tr>
-            <tr
-              className='bg-white border-b   hover:bg-gray-50 '
-              onClick={() => {}}
-            >
-              <th
-                scope='row'
-                className='px-6 py-4 text-gray-900 whitespace-nowrap text-[14px]'
-              >
-                Apple MacBook Pro 17"
-              </th>
-              <td className='px-6 py-4 font-semibold text-[14px]'>Silver</td>
-              <td className='px-6 py-4'>Laptop</td>
-              <td className='px-6 py-4'>
-                {" "}
-                <FormControlLabel
-                  control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
-                />
-              </td>
-              <td className='px-6 py-4 text-right'>
-                <a
-                  href='#'
-                  className='font-medium text-blue-600  hover:underline'
-                >
-                  Edit
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className='px-2 py-2 overflow-x-auto bg-white delay-700'>
+          <div className='inline-block min-w-full overflow-hidden bg-white'>
+            <table {...getTableBodyProps} className='min-w-full leading-normal'>
+              <thead className='font-bold text-left text-sm bg-slate-200'>
+                {headerGroups?.map((headerGroup) => (
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroup.headers?.map((column) => (
+                      <th
+                        {...column.getHeaderProps(
+                          column.getSortByToggleProps()
+                        )}
+                        className={
+                          column?.className +
+                          " px-2 py-3 border-b border-gray-200 text-gray-800  text-left text-xs uppercase "
+                        }
+                      >
+                        {column.render("Header")}
+                        <span>
+                          {column.isSorted
+                            ? column.isSortedDesc
+                              ? "⬆️"
+                              : "⬇️"
+                            : ""}
+                        </span>
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody {...getTableBodyProps()} className='text-sm'>
+                {rows?.map((row, index) => {
+                  prepareRow(row);
+                  return (
+                    <tr
+                      key={index}
+                      {...row.getRowProps()}
+                      className='bg-white hover:bg-slate-100 border-b border-gray-200'
+                    >
+                      {row?.cells?.map((cell, index) => {
+                        return (
+                          <>
+                            <td
+                              {...cell.getCellProps()}
+                              className='px-2 py-2 text-sm text-left'
+                              key={index}
+                            >
+                              {cell.render("Cell")}
+                            </td>
+                          </>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+                <tr>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </>
   );

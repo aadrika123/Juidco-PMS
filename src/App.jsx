@@ -110,6 +110,15 @@ function App() {
 
   // 👉 Routes Json 👈
   const allRoutes = [
+    /////////////////////////{*** master table ***}//////////////////////////////////////
+
+    { path: "/categoryMaster", element: <CategoryMaster /> },
+    { path: "/subCategoryMaster/:id", element: <SubCategoryMaster /> },
+    // { path: "/subCategoryMaster", element: <SubCategoryMaster /> },
+
+    // { path: "/brandMaster", element: <BrandMaster /> },
+    { path: "/brandMaster/:id", element: <BrandMaster /> },
+
     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 
     //------- Stock Receiver -------

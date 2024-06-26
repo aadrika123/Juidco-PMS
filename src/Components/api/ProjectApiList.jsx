@@ -35,52 +35,6 @@ export default function ProjectApiList() {
     // API TO DELETE NOTIFICATION DATA
     api_deleteNotification: `${baseUrl}/api/dashboard/jsk/prop-dashboard`,
 
-    ///////{*******MARRIAGE API LIST********}////////
-    marriageInbox: baseUrl + "/api/marriage/inbox",
-    marriageDetails: baseUrl + "/api/marriage/details",
-    workflowInfo: baseUrl + "/api/workflow/role-map/workflow-info",
-    appointSet: baseUrl + "/api/marriage/set-appiontment-date",
-    getUploadedDocument: baseUrl + "/api/marriage/get-uploaded-document",
-    docVerify: baseUrl + "/api/marriage/doc-verify-reject",
-    approveReject: baseUrl + "/api/marriage/final-approval-rejection",
-    approvedList: baseUrl + "/api/marriage/approved-application",
-    marriageApplicationList: baseUrl + "/api/marriage/search-application",
-    marriageOrderId: baseUrl + "/api/marriage/generate-order-id",
-    api_postMarriageOfflinePayment: baseUrl + "/api/marriage/offline-payment",
-    api_MarriageReceipt: baseUrl + "/api/marriage/payment-receipt",
-    api_marriageNextLevel: baseUrl + "/api/marriage/post-next-level",
-
-    api_postMarriageSubmission: `${baseUrl}/api/marriage/apply`,
-    api_getDocList: `${baseUrl}/api/marriage/get-doc-list`,
-    api_docUpload: `${baseUrl}/api/marriage/upload-document`,
-    api_getDetails: `${baseUrl}/api/marriage/static-details`,
-    api_getList: `${baseUrl}/api/marriage/applied-application`,
-    api_deleteApplication: `${baseUrl}/api/marriage/`,
-    api_editMarriageApplication: `${baseUrl}/api/marriage/edit-application`,
-
-    // ════════════════════════║🔰 Marriage Api List 🔰║═══════════════════════════
-    marriageInbox: baseUrl + "/api/marriage/inbox",
-    marriageDetails: baseUrl + "/api/marriage/details",
-    workflowInfo: baseUrl + "/api/workflow/role-map/workflow-info",
-    appointSet: baseUrl + "/api/marriage/set-appiontment-date",
-    getUploadedDocument: baseUrl + "/api/marriage/get-uploaded-document",
-    docVerify: baseUrl + "/api/marriage/doc-verify-reject",
-    approveReject: baseUrl + "/api/marriage/final-approval-rejection",
-    approvedList: baseUrl + "/api/marriage/approved-application",
-    marriageApplicationList: baseUrl + "/api/marriage/search-application",
-    marriageOrderId: baseUrl + "/api/marriage/generate-order-id",
-    api_postMarriageOfflinePayment: baseUrl + "/api/marriage/offline-payment",
-    api_MarriageReceipt: baseUrl + "/api/marriage/payment-receipt",
-    api_marriageNextLevel: baseUrl + "/api/marriage/post-next-level",
-
-    api_postMarriageSubmission: `${baseUrl}/api/marriage/apply`,
-    api_getDocList: `${baseUrl}/api/marriage/get-doc-list`,
-    api_docUpload: `${baseUrl}/api/marriage/upload-document`,
-    api_getDetails: `${baseUrl}/api/marriage/static-details`,
-    api_getList: `${baseUrl}/api/marriage/applied-application`,
-    api_deleteApplication: `${baseUrl}/api/marriage/`,
-    api_editMarriageApplication: `${baseUrl}/api/marriage/edit-application`,
-
     //Sample-Demo Api for PMS
     api_GetWaterTankerSearchData: `${baseUrl}/api/water-tanker/search-booking`, //search paramter from list
     api_getWaterTankerBookingDetailsById: `${baseUrl}/api/water-tanker/get-booking-details-by-id `, //get -by -id
