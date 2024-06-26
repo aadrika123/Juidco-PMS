@@ -1,15 +1,16 @@
 //////////////////////////////////////////////////////////////////////////////////////
-//    Author - Almaash Alam
+//    Author - dimple kumari
 //    Version - 1.0
-//    Date - 29/09/2023
+//    Date - 19/06/2024
 //    Revision - 1
 //    Project - JUIDCO
 //    Component  - ImageModal
 //    DESCRIPTION - ImageModal
 //////////////////////////////////////////////////////////////////////////////////////
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { useReactToPrint } from "react-to-print";
 
 function ImageModal(props) {
   console.log(props?.imageDoc, "img type===============");
@@ -17,10 +18,12 @@ function ImageModal(props) {
     props?.setImageModal(false);
   };
 
-  // Print the Image
-  const handlePrint = () => {
-    window.print();
-  };
+   //Print
+   const componentRef = useRef();
+   const handlePrint = useReactToPrint({
+     content: () => componentRef.current,
+   });
+ 
 
   return (
     <>
@@ -33,7 +36,7 @@ function ImageModal(props) {
           className={`bg-transparent rounded-lg transform transition-transform ${
             props.imageModal ? "scale-100 modal-pop" : "scale-95"
           }`}
-          id='printable-content'
+          ref={componentRef}
         >
         <AiOutlineCloseCircle
             onClick={handleCancilClick}

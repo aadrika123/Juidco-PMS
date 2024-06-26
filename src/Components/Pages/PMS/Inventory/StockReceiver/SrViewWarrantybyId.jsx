@@ -1,3 +1,5 @@
+import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
+import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import SuccessModal from "@/Components/Common/Modal/SuccessModal";
@@ -9,14 +11,17 @@ import React, { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 
-const SrViewDetailbyId = () => {
+const SrViewWarrantybyId = () => {
   const [isLoading, setisLoading] = useState(false);
   const [confModal, setConfModal] = useState(false);
   const [confModal2, setConfModal2] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+  const [imageDoc, setImageDoc] = useState(false);
+  const [preview, setPreview] = useState();
 
   const { titleBarVisibility } = useContext(contextVar);
 
+  const notesheetRef = useRef();
   const navigate = useNavigate();
 
   let buttonStyle =
@@ -31,7 +36,7 @@ const SrViewDetailbyId = () => {
     content: () => componentRef.current,
   });
 
-  const cancelModal = () => {
+  const deadStockModal = () => {
     setConfModal(true);
   };
 
@@ -43,7 +48,7 @@ const SrViewDetailbyId = () => {
     setConfModal(false);
   };
 
-  const approveModal = () => {
+  const claimWarrantyModal = () => {
     setConfModal2(true);
   };
 
@@ -51,7 +56,7 @@ const SrViewDetailbyId = () => {
     setConfModal2(false);
   };
 
-  const handleCancel2 = () => {
+  const handleApprove = () => {
     setConfModal2(false);
   };
 
@@ -61,7 +66,7 @@ const SrViewDetailbyId = () => {
         <ConfirmationModal
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
-          message={"Are you sure you want to Reject ?"}
+          message={'Are you sure you want to "Add in Dead Stock" ?'}
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
@@ -72,8 +77,8 @@ const SrViewDetailbyId = () => {
       <>
         <ConfirmationModal
           confirmationHandler={confirmationHandler2}
-          handleCancel={handleCancel2}
-          message={"Are you sure you want to Approve ?"}
+          handleCancel={handleApprove}
+          message={'Are you sure you want to "Approve Warranty" ?'}
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
@@ -86,7 +91,7 @@ const SrViewDetailbyId = () => {
 
       <TitleBar
         titleBarVisibility={titleBarVisibility}
-        titleText={"Inventory Proposal Details"}
+        titleText={"Warranty Details"}
       />
 
       {/* //timeline  */}
@@ -192,6 +197,17 @@ const SrViewDetailbyId = () => {
                 {/* {nullToNA(applicationFullData?.description)} */}
               </p>
             </div>
+            <div className='flex justify-end w-full mb-5'>
+              <div className='w-[100px]'>
+                <ImageDisplay
+                  preview={preview}
+                  imageDoc={imageDoc}
+                  alt={"notesheet document"}
+                  showPreview={"hidden"}
+                  width={"[100px]"}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Buttons */}
@@ -211,19 +227,24 @@ const SrViewDetailbyId = () => {
             </div>
 
             <div className="space-x-3 flex items-end justify-center">
-              <button
-                className={buttonStyl2}
-                onClick={() => navigate("/dd-stock-proposal")}
-              >
-                Edit
+              
+            <div className='bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700'>
+                    <FileButton
+                      bg={"[#359F6E]"}
+                      hoverBg={"bg-green-700"}
+                      btnLabel={"Upload References"}
+                      imgRef={notesheetRef}
+                      setImageDoc={setImageDoc}
+                      setPreview={setPreview}
+                      textColor={"white"}
+                    />
+                  </div>
+              <button className={buttonStyl2} onClick={deadStockModal}>
+                Add In Dead Stock
               </button>
 
-              <button className={buttonStyl2} onClick={cancelModal}>
-                Reject
-              </button>
-
-              <button className={buttonStyl2} onClick={approveModal}>
-                Approve
+              <button className={buttonStyl2} onClick={claimWarrantyModal}>
+                Approve Claim Warranty
               </button>
             </div>
           </div>
@@ -233,4 +254,4 @@ const SrViewDetailbyId = () => {
   );
 };
 
-export default SrViewDetailbyId;
+export default SrViewWarrantybyId;
