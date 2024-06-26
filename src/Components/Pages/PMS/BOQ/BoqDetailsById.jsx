@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
@@ -12,11 +12,13 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import { MdArrowRightAlt } from "react-icons/md";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import BoqTimeLine from "@/Components/Common/Timeline/BoqTimeLine";
+import { useReactToPrint } from "react-to-print";
 
 export default function BoqDetailsById(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [dataList, setDatalist] = useState();
   const [backtoAccModal, setBacktoAccModal] = useState(false);
+  const [rejectModal, setRejectModal] = useState(false);
   const [data, setData] = useState({ reference_no: "", remark: "" });
 
   const navigate = useNavigate();
@@ -30,6 +32,12 @@ export default function BoqDetailsById(props) {
   } = ProjectApiList();
 
   const { refNo, page } = useParams();
+
+  //Print
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
@@ -62,9 +70,6 @@ export default function BoqDetailsById(props) {
 
   let colouredBtnStyle = `bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`;
 
-  const handlePrint = () => {
-    window.print();
-  };
 
   const fetchBoqDetailsbyId = () => {
     setIsLoading(true);
@@ -85,6 +90,11 @@ export default function BoqDetailsById(props) {
   const handleCancel = () => {
     setBacktoAccModal(false);
   };
+
+  const handleRejCancel = () => {
+    setBacktoAccModal(false);
+  };
+
 
   //boq back to accountant------------
   const backtoAccHandler = () => {
@@ -141,12 +151,13 @@ export default function BoqDetailsById(props) {
 
     AxiosInterceptors.post(
       `${api_postRejectBoq}`,
-      { reference_no: refNo },
+      { ...data, reference_no: refNo},
       ApiHeader()
     )
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("BOQ is Approved Successfully!!");
+          setRejectModal(true)
+          toast.success("BOQ is Rejected.");
           navigate("/da-boq");
         } else {
           toast.error("Error in approving. Please try Again");
@@ -161,10 +172,16 @@ export default function BoqDetailsById(props) {
       });
   };
 
-  //rejecting page
+  //back to acc page
   const confirmationHandler = () => {
     backtoAccHandler();
   };
+
+  const confirmationRejectHandler  = () => {
+    rejectBoqHandler();
+  };
+
+
 
   useEffect(() => {
     setData((prev) => ({ ...prev, reference_no: refNo }));
@@ -177,7 +194,18 @@ export default function BoqDetailsById(props) {
       <RejectionModalRemark
         confirmationHandler={confirmationHandler}
         handleCancel={handleCancel}
-        message={"Are you sure you want to send BOQ back to Accountant "}
+        message={"Are you sure you want to send BOQ back to Accountant? "}
+        setData={setData}
+      />
+    );
+  }
+
+  if(rejectModal) {
+    return (
+      <RejectionModalRemark
+        confirmationHandler={confirmationRejectHandler}
+        handleCancel={handleRejCancel}
+        message={"Are you sure you want to reject BOQ ? "}
         setData={setData}
       />
     );
@@ -197,7 +225,7 @@ export default function BoqDetailsById(props) {
       </div>
 
       <div className={`${isLoading ? "opacity-40" : ""}`}>
-        <div id='printable-content' className=' '>
+        <div ref={componentRef} className=' '>
           <div className='p-2 bg-[#4338CA] text-white pl-5 mt-6 rounded-md flex justify-between'>
             <h2 className='text-xl '>BOQ Details</h2>
           </div>
@@ -340,7 +368,7 @@ export default function BoqDetailsById(props) {
             (dataList?.status === 0 || dataList?.status === 1) && (
               <button
                 className='bg-red-400  hover:bg-red-500  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
-                onClick={() => rejectBoqHandler(true)}
+                onClick={() => setRejectModal(true)}
               >
                 Reject BOQ
               </button>

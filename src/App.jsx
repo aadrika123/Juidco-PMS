@@ -49,6 +49,16 @@ import AccountantList from "./Components/Pages/PMS/TenderForm/Accountant/Account
 import DATenderTabs from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderTabs";
 import ViewProcurementDetailsById from "./Components/Pages/PMS/BOQ/ViewProcurementDetailsById";
 import NotificationSidebar from "./Components/Pages/Others/SideBar/NotificationSidebar";
+import DistributerListTabs from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DistributerListTabs";
+import StockRequestProposal from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/StockRequestProposal";
+import DDViewDetailbyId from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDViewDetailbyId";
+import StockRecListTabs from "./Components/Pages/PMS/Inventory/StockReceiver/StockRecListTabs";
+import SrViewDetailbyId from "./Components/Pages/PMS/Inventory/StockReceiver/SrViewDetailbyId";
+import SRWarrantyClaim from "./Components/Pages/PMS/Inventory/StockReceiver/SRWarrantyClaim";
+import SrViewWarrantybyId from "./Components/Pages/PMS/Inventory/StockReceiver/SrViewWarrantybyId";
+import DdHandoverList from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DdHandoverList";
+import DDHandoverListTabs from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDHandoverListTabs";
+import DDViewHandoverbyId from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDViewHandoverbyId";
 
 //Master table
 import CategoryMaster from "./Components/Pages/PMS/MasterTable/CategoryMaster";
@@ -168,10 +178,10 @@ function App() {
       path: "/tendering-preview/:page",
       element: <TenderFormViewDetails />,
     },
-    {
-      path: "/tendering-previewPP",
-      element: <PrintComponent />,
-    },
+    // {
+    //   path: "/tendering-previewPP",
+    //   element: <PrintComponent />,
+    // },
     {
       path: "/print-preview",
       element: <ExportTableData />,
@@ -215,33 +225,54 @@ function App() {
       path: "/da-boq",
       element: <BoqListTabsDa />,
     },
+    // {
+    //   path: "/notifi",
+    //   element: <NotificationSidebar />,
+    // },\
+
+    /////////////////////////{*** Distributer Inventory ***}//////////////////////////////////////
     {
-      path: "/notifi",
-      element: <NotificationSidebar />,
+      path: "/dd-inventory-proposal",
+      element: <DistributerListTabs />,
+    },
+    {
+      path: "/dd-stock-proposal",
+      element: <StockRequestProposal />,
+    },
+    {
+      path: "/dd-viewDetailsById",
+      element: <DDViewDetailbyId />,
     },
 
-    /////////////////////////{*** Master Table ***}//////////////////////////////////////
+    /////////////////////////{*** SR Inventory ***}//////////////////////////////////////
+    {
+      path: "/sr-dist-proposal",
+      element: <StockRecListTabs />,
+    },
+    {
+      path: "/sr-viewDetailsById",
+      element: <SrViewDetailbyId />,
+    },
 
+    /////////////////////////{*** SR Warranty ***}//////////////////////////////////////
     {
-      path: "/categoryMaster",
-      element: <CategoryMaster />,
-    },
-    // {
-    //   path: "/subcategoryMaster/:id",
-    //   element: <SubCategoryMaster />,
-    // },
-    {
-      path: "/subcategoryMaster",
-      element: <SubCategoryMaster />,
+      path: "/sr-warrantyClaim",
+      element: <SRWarrantyClaim />,
     },
     {
-      path: "/brandMaster",
-      element: <BrandMaster />,
+      path: "/sr-viewWarrantyById",
+      element: <SrViewWarrantybyId />,
     },
-    // {
-    //   path: "/brandMaster/:id",
-    //   element: <BrandMaster />,
-    // },
+
+    /////////////////////////{*** DD Handover ***}//////////////////////////////////////
+    {
+      path: "/dd-handover",
+      element: <DDHandoverListTabs />,
+    },
+    {
+      path: "/dd-viewHandoverById",
+      element: <DDViewHandoverbyId />,
+    },
   ];
 
   return (

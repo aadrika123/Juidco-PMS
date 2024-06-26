@@ -8,7 +8,7 @@
 //    DESCRIPTION - ViewPostInvtDetailsById
 //////////////////////////////////////////////////////////////////////////////////////
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -18,6 +18,8 @@ import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import { useReactToPrint } from "react-to-print";
 
 const ViewPostInvtDetailsById = () => {
   const navigate = useNavigate();
@@ -74,9 +76,12 @@ const ViewPostInvtDetailsById = () => {
       });
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
+  //Print
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
 
   return (
     <div>
@@ -95,7 +100,7 @@ const ViewPostInvtDetailsById = () => {
       </div>
 
       {/* Basic Details */}
-      <div className='mt-6' id='printable-content'>
+      <div className='mt-6' ref={componentRef}>
         <div className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
           <div className=''>
             <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start bg-[#4338CA] text-white rounded-md'>

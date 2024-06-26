@@ -30,12 +30,15 @@ import SuccessModal from "./SuccessModal";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
+import { useNavigate } from "react-router-dom";
 // import { ToastContainer, toast } from "react-toastify";
 
 function AddPreProcurement(props) {
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
 
   const { titleBarVisibility } = useContext(contextVar);
+
+  const navigate = useNavigate();
 
   // const notify = () => toast("Successfully Submitted ");
 
@@ -69,6 +72,9 @@ function AddPreProcurement(props) {
   const [formData, setFormData] = useState();
   const [categorySelected, setCategorySelected] = useState([]);
   const [procurement_no, setProcurement_no] = useState();
+  const [otherCategory, setOtherCategory] = useState();
+
+  console.log(otherCategory, "OT");
 
   // ══════════════════════════════║🔰 form submission declaration 🔰║═══════════════════════════════════
   const [declarationStatus, setdeclarationStatus] = useState();
@@ -270,7 +276,7 @@ function AddPreProcurement(props) {
   };
 
   const fetchSubCategory = (e) => {
-    console.log(e?.target?.value);
+    // console.log(e?.target?.value,"Subcategory");
 
     AxiosInterceptors.get(
       `${api_itemSubCategory}/${e?.target?.value}`,
@@ -361,7 +367,7 @@ function AddPreProcurement(props) {
     return (
       <>
         <BarLoader />
-        <div className='min-h-screen'></div>
+        <div className="min-h-screen"></div>
       </>
     );
   }
@@ -523,7 +529,7 @@ function AddPreProcurement(props) {
     <>
       {/* <ToastContainer position='top-right' autoClose={3000} /> */}
 
-      <div className=''>
+      <div className="">
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Pre Procurement Proposal"}
@@ -532,29 +538,32 @@ function AddPreProcurement(props) {
 
       <div className={`${formStyle} border border-blue-500 mt-6 shadow-lg`}>
         <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-          <div className=''>
-            <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
-              <div className='col-span-12  w-full mb-20'>
-                <div className=' ml-4 p-2'>
+          <div className="">
+            <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
+              <div className="col-span-12  w-full mb-20">
+                <div className=" ml-4 p-2">
                   <h1 className={`${headingStyle} text-right pb-5 p-6`}>
                     Add Pre Procurement
                   </h1>
                 </div>
-                <div className='hidden md:block lg:block'>
-                  <hr className='border w-full border-gray-200' />
+                <div className="hidden md:block lg:block">
+                  <hr className="border w-full border-gray-200" />
                 </div>
 
-                <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
-                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
+                <div className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4">
+                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Item Category
-                      <span className='text-xl text-red-500 pl-1'>*</span>{" "}
+                      <span className="text-xl text-red-500 pl-1">*</span>{" "}
                     </label>
                     <select
                       {...formik.getFieldProps("itemcategory")}
                       className={`${inputStyle} inline-block w-full relative`}
                       onChange={(e) => {
                         formik.handleChange(e);
+                        setOtherCategory(e.target.value);
+                        console.log(e.target.value, "===========>");
+
                         fetchSubCategory(e);
                         e.target.value ==
                           "e37b33c2-d812-45b1-8e89-f2073ffba2fb" &&
@@ -582,73 +591,175 @@ function AddPreProcurement(props) {
                           {items?.name}
                         </option>
                       ))}
+                      <option>others</option>
                     </select>
-                    <p className='text-red-500 text-xs '>
+                    <p className="text-red-500 text-xs ">
                       {formik.touched.itemcategory && formik.errors.itemcategory
                         ? formik.errors.itemcategory
                         : null}
                     </p>
                   </div>
 
-                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
-                    <label className={`${labelStyle} inline-block mb-2`}>
-                      Items Sub Category
-                      <span className='text-xl text-red-500 pl-1'>*</span>
-                    </label>
-                    <select
-                      {...formik.getFieldProps("itemsubcategory")}
-                      className={`${inputStyle} inline-block w-full relative`}
-                      onChange={formik.handleChange}
-                    >
-                      <option defaultValue={"select"}>select</option>
+                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
+                      <label className={`${labelStyle} inline-block mb-2`}>
+                        Items Sub Category
+                        <span className="text-xl text-red-500 pl-1">*</span>
+                      </label>
+                      <select
+                        {...formik.getFieldProps("itemsubcategory")}
+                        className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
+                      >
+                        <option defaultValue={"select"}>select</option>
 
-                      {subcategory?.length &&
-                        subcategory?.map((items) => (
-                          <option key={items?.id} value={items?.id}>
-                            {items?.name}
-                          </option>
-                        ))}
-                    </select>
+                        {subcategory?.length &&
+                          subcategory?.map((items) => (
+                            <option key={items?.id} value={items?.id}>
+                              {items?.name}
+                            </option>
+                          ))}
+                      </select>
 
-                    <p className='text-red-500 text-xs '>
-                      {formik.touched.itemsubcategory &&
-                      formik.errors.itemsubcategory
-                        ? formik.errors.itemsubcategory
-                        : null}
-                    </p>
-                  </div>
+                      <p className="text-red-500 text-xs ">
+                        {formik.touched.itemsubcategory &&
+                        formik.errors.itemsubcategory
+                          ? formik.errors.itemsubcategory
+                          : null}
+                      </p>
+                    </div>
 
-                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
-                    <label className={`${labelStyle} inline-block mb-2`}>
-                      Brand
-                      <span className='text-xl text-red-500 pl-1'>*</span>
-                    </label>
-                    <select
-                      {...formik.getFieldProps("brand")}
-                      className={`${inputStyle} inline-block w-full relative`}
-                      onChange={formik.handleChange}
-                    >
-                      <option defaultValue={"select"}>select</option>
+                  {/* {otherCategory == "others" ? (
+                    <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
+                      <label className={`${labelStyle} inline-block mb-2`}>
+                        Items Sub Category
+                        <span className="text-xl text-red-500 pl-1">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="itemsubcategory"
+                        className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
+                        value={formik.values.itemsubcategory}
+                      />
 
-                      {brand?.length &&
-                        brand?.map((items) => (
-                          <option key={items?.id} value={items?.id}>
-                            {items?.name}
-                          </option>
-                        ))}
-                    </select>
+                      <p className="text-red-500 text-xs ">
+                        {formik.touched.itemsubcategory &&
+                        formik.errors.itemsubcategory
+                          ? formik.errors.itemsubcategory
+                          : null}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
+                      <label className={`${labelStyle} inline-block mb-2`}>
+                        Items Sub Category
+                        <span className="text-xl text-red-500 pl-1">*</span>
+                      </label>
+                      <select
+                        {...formik.getFieldProps("itemsubcategory")}
+                        className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
+                      >
+                        <option defaultValue={"select"}>select</option>
 
-                    <p className='text-red-500 text-xs '>
-                      {formik.touched.brand && formik.errors.brand
-                        ? formik.errors.brand
-                        : null}
-                    </p>
-                  </div>
+                        {subcategory?.length &&
+                          subcategory?.map((items) => (
+                            <option key={items?.id} value={items?.id}>
+                              {items?.name}
+                            </option>
+                          ))}
+                      </select>
+
+                      <p className="text-red-500 text-xs ">
+                        {formik.touched.itemsubcategory &&
+                        formik.errors.itemsubcategory
+                          ? formik.errors.itemsubcategory
+                          : null}
+                      </p>
+                    </div>
+                  )} */}
+
+
+                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
+                      <label className={`${labelStyle} inline-block mb-2`}>
+                        Brand
+                        <span className="text-xl text-red-500 pl-1">*</span>
+                      </label>
+                      <select
+                        {...formik.getFieldProps("brand")}
+                        className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
+                      >
+                        <option defaultValue={"select"}>select</option>
+
+                        {brand?.length &&
+                          brand?.map((items) => (
+                            <option key={items?.id} value={items?.id}>
+                              {items?.name}
+                            </option>
+                          ))}
+                      </select>
+
+                      <p className="text-red-500 text-xs ">
+                        {formik.touched.brand && formik.errors.brand
+                          ? formik.errors.brand
+                          : null}
+                      </p>
+                    </div>
+
+                  {/* {otherCategory == "others" ? (
+                    <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
+                      <label className={`${labelStyle} inline-block mb-2`}>
+                        Brand
+                        <span className="text-xl text-red-500 pl-1">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="brand"
+                        className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
+                        value={formik.values.brand}
+                      />
+
+                      <p className="text-red-500 text-xs ">
+                        {formik.touched.brand && formik.errors.brand
+                          ? formik.errors.brand
+                          : null}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
+                      <label className={`${labelStyle} inline-block mb-2`}>
+                        Brand
+                        <span className="text-xl text-red-500 pl-1">*</span>
+                      </label>
+                      <select
+                        {...formik.getFieldProps("brand")}
+                        className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
+                      >
+                        <option defaultValue={"select"}>select</option>
+
+                        {brand?.length &&
+                          brand?.map((items) => (
+                            <option key={items?.id} value={items?.id}>
+                              {items?.name}
+                            </option>
+                          ))}
+                      </select>
+
+                      <p className="text-red-500 text-xs ">
+                        {formik.touched.brand && formik.errors.brand
+                          ? formik.errors.brand
+                          : null}
+                      </p>
+                    </div>
+                  )} */}
 
                   {/* --------------------------------------------------------------------------------------------------------- */}
                   {categorySelected?.map((obj, index) => (
-                    <div className=' flex flex-wrap w-1/2' key={index}>
-                      <div className='px-4 w-full mb-4'>
+                    <div className=" flex flex-wrap w-1/2" key={index}>
+                      <div className="px-4 w-full mb-4">
                         <label className={`${labelStyle} inline-block mb-2`}>
                           {obj.label}
                         </label>
@@ -661,7 +772,7 @@ function AddPreProcurement(props) {
                           value={formik.values[obj.name]}
                         />
 
-                        <p className='text-red-500 text-xs '>
+                        <p className="text-red-500 text-xs ">
                           {formik.touched[obj.name] && formik.errors[obj.name]
                             ? formik.errors[obj.name]
                             : null}
@@ -670,19 +781,19 @@ function AddPreProcurement(props) {
                     </div>
                   ))}
 
-                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4'>
+                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-full mb-4">
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Description
                     </label>
                     <textarea
-                      type='text'
-                      name='description'
+                      type="text"
+                      name="description"
                       className={`${inputStyle} inline-block w-full relative h-20`}
                       onChange={formik.handleChange}
                       value={formik.values.description}
                     />
 
-                    <p className='text-red-500 text-xs '>
+                    <p className="text-red-500 text-xs ">
                       {formik.touched.description && formik.errors.description
                         ? formik.errors.description
                         : null}
@@ -690,65 +801,65 @@ function AddPreProcurement(props) {
                   </div>
                 </div>
 
-                <div className='valid-form flex flex-wrap flex-row mx-8'>
-                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                <div className="valid-form flex flex-wrap flex-row mx-8">
+                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
                     <label
                       className={`${labelStyle} inline-block mb-4 font-semibold`}
                     >
                       Quantity
                     </label>
 
-                    <div className='flex items-center space-x-5'>
+                    <div className="flex items-center space-x-5">
                       <div>
                         <label className={`${labelStyle} inline-block mb-2`}>
                           Rate
                         </label>
                         <input
-                          type='number'
-                          name='rate'
+                          type="number"
+                          name="rate"
                           className={`${inputStyle} inline-block w-full relative`}
                           onChange={(e) => {
                             formik.handleChange(e);
                             calculateTotalRate();
                           }}
                           value={formik.values.rate}
-                          placeholder='Rate'
+                          placeholder="Rate"
                         />
                       </div>
-                      <p className='pt-8'>X</p>
+                      <p className="pt-8">X</p>
                       <div>
                         <label className={`${labelStyle} inline-block mb-2`}>
                           Total Quantity
                         </label>
                         <input
-                          type='number'
-                          name='quantity'
+                          type="number"
+                          name="quantity"
                           className={`${inputStyle} inline-block w-full relative`}
                           onChange={(e) => {
                             formik.handleChange(e);
                             calculateTotalRate();
                           }}
                           value={formik.values.quantity}
-                          placeholder='Quantity'
+                          placeholder="Quantity"
                         />
                       </div>
-                      <p className='pt-8'>=</p>
+                      <p className="pt-8">=</p>
                       <div>
                         <label className={`${labelStyle} inline-block mb-2`}>
                           Total Rate
                         </label>
                         <input
-                          type='number'
-                          name='totalRate'
+                          type="number"
+                          name="totalRate"
                           className={`${inputStyle} inline-block w-full relative`}
                           // onChange={formik.handleChange}
                           value={formik.values.totalRate}
-                          placeholder='Total Rate'
+                          placeholder="Total Rate"
                           disabled
                         />
                       </div>
                     </div>
-                    <p className='text-red-500 text-xs '>
+                    <p className="text-red-500 text-xs ">
                       {formik.touched.quantity && formik.errors.quantity
                         ? formik.errors.quantity
                         : null}
@@ -756,7 +867,7 @@ function AddPreProcurement(props) {
                   </div>
                 </div>
 
-                <div className='float-right pt-10 mr-8 space-x-5'>
+                <div className="float-right pt-10 mr-8 space-x-5">
                   <button
                     // type='submit'
                     onClick={openCancelModal}
@@ -768,7 +879,7 @@ function AddPreProcurement(props) {
 
                   {/* <div className='pb-16 mr-8'> */}
                   <button
-                    type='submit'
+                    type="submit"
                     className={`bg-[#4338CA] border-blue-900 border hover:bg-[#4478b7] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                   >
                     Save

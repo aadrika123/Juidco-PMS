@@ -125,7 +125,7 @@ export default function NotificationSidebar() {
 
   const list = (anchor) => (
     <>
-      <div className='flex justify-between  bg-white p-2 sticky top-0 border-b-2'>
+      <div className='flex justify-between  bg-white p-2 sticky top-0 border-b'>
         <h1 className='text-black text-xl'>Notification</h1>
         <div className='rounded-s-lg  bg-red-500 pl-2 pr-2 text-white'>
           <h1 className=''>{notificationCount?.totalCount}</h1>

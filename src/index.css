@@ -45,7 +45,7 @@ body {
   }
   
 
-  @media print {
+  /* @media print {
     body * {
       visibility: hidden;
     }
@@ -59,10 +59,11 @@ body {
       position: absolute;
       left: "25%";
       top: 0;
+      overflow: visible !important;
     }
-  }
+  } */
 
-  @media print {
+  /* @media print {
     body * {
       visibility: hidden;
     }
@@ -100,8 +101,27 @@ body {
     img, table, pre, blockquote {
       page-break-inside: avoid;
     }
-  }
+  } */
 
 
 
   
+  @media print 
+  {
+      @page {
+        size: A4; /* DIN A4 standard, Europe */
+        margin: 0;
+      }
+      html, body {
+        margin-left: 10px;
+          width: 200mm;
+          height: 282mm;
+          font-size: 11px;
+          background: #FFF;
+          overflow: visible;
+      }
+      body {
+          padding-top: 10mm;
+          padding-bottom: 10mm;
+      }
+  }

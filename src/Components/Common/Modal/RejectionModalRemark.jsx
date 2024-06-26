@@ -30,14 +30,14 @@ function RejectionModalRemark({
               alt='alt title'
             />
           </div>
-          <div class=' flex-1'>
+          <div class='px-2 flex-1'>
             <div class=''>
               <h3 class='text-xl  text-center  text-black font-openSans'>
                 {message}
               </h3>
             </div>
           </div>
-          <div className='flex '>
+          <div className='flex px-3'>
             <textarea
               name='sr_remark'
               className='border border-[#5448dd] rounded w-full mt-5 p-2 outline-indigo-200'

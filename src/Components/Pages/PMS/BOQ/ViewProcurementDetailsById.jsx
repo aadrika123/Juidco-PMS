@@ -21,6 +21,7 @@ import { MdArrowRightAlt } from "react-icons/md";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import BoqTimeLine from "@/Components/Common/Timeline/BoqTimeLine";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
+import { useReactToPrint } from "react-to-print";
 
 const ViewProcurementDetailsById = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +32,12 @@ const ViewProcurementDetailsById = () => {
   const { api_fetchAllBoqDetails } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
+
+   //Print
+   const componentRef = useRef();
+   const handlePrint = useReactToPrint({
+     content: () => componentRef.current,
+   });
 
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -67,9 +74,9 @@ const ViewProcurementDetailsById = () => {
       });
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
+  // const handlePrint = () => {
+  //   window.print();
+  // };
 
   return (
     <div>
@@ -93,7 +100,7 @@ const ViewProcurementDetailsById = () => {
         <div className='mt-6'>
           <div
             className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'
-            id='printable-content'
+            ref={componentRef}
           >
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
