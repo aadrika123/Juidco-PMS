@@ -109,13 +109,15 @@ export default function CategoryMaster() {
           onClick={() => setOpenCreateModal(true)}
         >
           <IoMdAdd />
-          {state} Brand
+          Create Brand
         </button>
       </div>
 
       {/* master table */}
       <div className='bg-white p-8 rounded-md m-4'>
-        <h1 className='text-xl font-semibold text-indigo-700'>Brand Master</h1>
+        <h1 className='text-xl font-semibold text-indigo-700'>
+          {state} Master
+        </h1>
         <MasterTable
           loading={loading}
           // tableViewLabel={"View Brands"}
