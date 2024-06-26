@@ -41,13 +41,11 @@ import BoqSearch from "./Components/Pages/PMS/BOQ/BoqSearch";
 import CreateNewBoq from "./Components/Pages/PMS/BOQ/CreateNewBoq";
 import PreviewBoqSummary from "./Components/Pages/PMS/BOQ/PreviewBoqSummary";
 import BoqDetailsById from "./Components/Pages/PMS/BOQ/BoqDetailsById";
-import BoqListing from "./Components/Pages/PMS/BOQ/BoqListIng";
 import BoqListTabs from "./Components/Pages/PMS/BOQ/BoqListTabs";
 import BoqListTabsDa from "./Components/Pages/PMS/BOQ/DA/BoqListTabsDa";
 import TenderFormViewDetails from "./Components/Pages/PMS/TenderForm/TenderFormViewDetails";
 import PrintComponent from "./Components/Common/PrintArea/PrintComponent";
 import AccountantList from "./Components/Pages/PMS/TenderForm/Accountant/AccountantListTabs";
-import DATenderList from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderList";
 import DATenderTabs from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderTabs";
 import ViewProcurementDetailsById from "./Components/Pages/PMS/BOQ/ViewProcurementDetailsById";
 import NotificationSidebar from "./Components/Pages/Others/SideBar/NotificationSidebar";
@@ -61,6 +59,11 @@ import SrViewWarrantybyId from "./Components/Pages/PMS/Inventory/StockReceiver/S
 import DdHandoverList from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DdHandoverList";
 import DDHandoverListTabs from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDHandoverListTabs";
 import DDViewHandoverbyId from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDViewHandoverbyId";
+
+//Master table
+import CategoryMaster from "./Components/Pages/PMS/MasterTable/CategoryMaster";
+import SubCategoryMaster from "./Components/Pages/PMS/MasterTable/SubCategoryMaster";
+import BrandMaster from "./Components/Pages/PMS/MasterTable/BrandMaster";
 
 const queryClient = new QueryClient();
 
@@ -109,7 +112,7 @@ function App() {
   const allRoutes = [
     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 
-    //------------ Stock Receiver -------
+    //------- Stock Receiver -------
     { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
     { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
     {
@@ -135,7 +138,7 @@ function App() {
 
     /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
 
-    //------------ DA -------
+    //------- DA -------
     { path: "/da-post-precurement", element: <PostPrecurementListTabsDa /> },
     {
       path: "/da-post-precurementbyid/:id/:page",
@@ -151,7 +154,7 @@ function App() {
 
     /////////////////////////{*** Received-Inventory ***}//////////////////////////////////////
 
-    //------------ DA ------
+    //------- DA ------
     { path: "/da-received-inventory", element: <ReceivedInvtHomeDa /> },
     {
       path: "/da-received-InvtDetailsById/:id/:page",
@@ -227,21 +230,20 @@ function App() {
     //   element: <NotificationSidebar />,
     // },\
 
-
-     /////////////////////////{*** Distributer Inventory ***}//////////////////////////////////////
-     {
+    /////////////////////////{*** Distributer Inventory ***}//////////////////////////////////////
+    {
       path: "/dd-inventory-proposal",
       element: <DistributerListTabs />,
     },
-     {
+    {
       path: "/dd-stock-proposal",
       element: <StockRequestProposal />,
     },
-     {
+    {
       path: "/dd-viewDetailsById",
       element: <DDViewDetailbyId />,
     },
-    
+
     /////////////////////////{*** SR Inventory ***}//////////////////////////////////////
     {
       path: "/sr-dist-proposal",
@@ -251,7 +253,7 @@ function App() {
       path: "/sr-viewDetailsById",
       element: <SrViewDetailbyId />,
     },
-    
+
     /////////////////////////{*** SR Warranty ***}//////////////////////////////////////
     {
       path: "/sr-warrantyClaim",
@@ -261,7 +263,7 @@ function App() {
       path: "/sr-viewWarrantyById",
       element: <SrViewWarrantybyId />,
     },
-    
+
     /////////////////////////{*** DD Handover ***}//////////////////////////////////////
     {
       path: "/dd-handover",
@@ -271,7 +273,6 @@ function App() {
       path: "/dd-viewHandoverById",
       element: <DDViewHandoverbyId />,
     },
-    
   ];
 
   return (

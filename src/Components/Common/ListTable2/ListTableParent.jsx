@@ -22,6 +22,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import generatePDF from "react-to-pdf";
 import ExportTableData from "../ExportTable/ExportTableData";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const ListTableParent = (props) => {
   // 👉 State constants 👈
@@ -79,15 +80,12 @@ const ListTableParent = (props) => {
       return filtered.join("&");
     };
 
-    // console.log(props.categoryId);
-    console.log(props.subcategoryId);
-
     AxiosInterceptors.get(
       `${props?.api}?
       take=${perPageData}&page=${currentPage}
       &search=${searchFilter}
-      &${returnCategoryFilter("category", filter?.category  || [])}
-      &${returnCategoryFilter("scategory", filter?.subcategory  || [])}
+      &${returnCategoryFilter("category", filter?.category || [])}
+      &${returnCategoryFilter("scategory", filter?.subcategory || [])}
       &${returnCategoryFilter("brand", filter?.brand || [])}
       `
         .split(" ")
@@ -97,12 +95,6 @@ const ListTableParent = (props) => {
     )
       .then((res) => {
         if (res?.data?.status == true) {
-          console.log("success getting list => ", res);
-          console.log(
-            "success current page => ",
-            res?.data?.pagination?.currentPage
-          );
-          // console.log(res?.data?.data)
           props?.getData && props?.allData(res?.data?.data);
           // props?.setRefNo(res?.data?.data[0].reference_no)
           setdataList(res?.data?.data);
@@ -112,15 +104,10 @@ const ListTableParent = (props) => {
           setlastPage(res?.data?.pagination?.currentTake);
           seterrorState(false);
         } else {
-          console.log("false error while getting list => ", res);
           seterrorState(true);
         }
       })
-      .catch(
-        (err) => (
-          console.log("error while getting list => ", err), seterrorState(true)
-        )
-      )
+      .catch((err) => toast.error("Error in fetching Details"))
       .finally(() => {
         setloader(false);
         if (
@@ -228,7 +215,6 @@ const ListTableParent = (props) => {
     const date = new Date();
     setloader(true);
     setcsvStatus(false);
-    console.log(props?.table);
     AxiosInterceptors.post(
       api_exportcsv,
       {
@@ -280,8 +266,6 @@ const ListTableParent = (props) => {
   };
 
   const exportBtnStyle = `bg-green-700 text-white px-2 rounded-md flex items-center gap-1 hover:bg-green-900`;
-  console.log(props?.columns, "props?.columns==========================");
-  console.log(dataList, "datalist================");
 
   return (
     <>
