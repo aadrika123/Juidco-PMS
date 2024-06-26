@@ -61,7 +61,7 @@ export default function CategoryMaster() {
         <div
           className='pr-2 text-indigo-700 font-medium underline cursor-pointer'
           onClick={() =>
-            navigate(`/brandMaster/${id}`, {
+            navigate(`/brandMaster/${cell.row.values.id}`, {
               state: cell.row.values.name,
             })
           }
