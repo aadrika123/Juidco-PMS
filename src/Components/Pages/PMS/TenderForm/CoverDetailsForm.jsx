@@ -164,15 +164,16 @@ const CoverDetailsForm = () => {
   //to insert documents into initial values in tabscover data
   const compareAndAddDocuments = (tabsData, responseData) => {
     return tabsData?.map((obj) => {
-      const key = obj.value; // Assuming 'value' is the key to compare
-      if (responseData?.map((data) => data.type == obj[value])) {
-        return {
-          ...obj,
-          documents: [...data?.docPath],
-        };
-      }
-      return obj;
+      let docUrl = responseData?.find(
+        (data) => data?.type === obj?.value
+      )?.docPath;
+      // if (responseData?.some((data) => data?.type === obj?.value)) {
+      return {
+        ...obj,
+        documents: [...docUrl],
+      };
     });
+    return obj;
   };
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
@@ -184,38 +185,38 @@ const CoverDetailsForm = () => {
         if (response?.data?.status) {
           setCoverDetails(response?.data?.data);
           if (response?.data?.data?.noOfCovers == "1") {
-            setTabData(tabsCover1);
+            // setTabData(tabsCover1);
 
-            // const doc = compareAndAddDocuments(
-            //   tabsCover1,
-            //   response?.data?.cover_details_docs
-            // );
-            // console.log(doc, "docsssss1");
-
+            const doc = compareAndAddDocuments(
+              tabsCover1,
+              response?.data?.data?.cover_details_docs
+            );
+            console.log(doc, "doc===");
+            setTabData(doc);
             autoSelectActiveTab(tabsCover1);
           } else if (response?.data?.data?.noOfCovers == "2") {
-            setTabData(tabsCover2);
-            // const doc = compareAndAddDocuments(
-            //   tabsCover2,
-            //   response?.data?.cover_details_docs
-            // );
-            // console.log(doc, "docsssss2");
+            // setTabData(tabsCover2);
+            const doc = compareAndAddDocuments(
+              tabsCover2,
+              response?.data?.data?.cover_details_docs
+            );
+            setTabData(doc);
             autoSelectActiveTab(tabsCover2);
           } else if (response?.data?.data?.noOfCovers == "3") {
-            setTabData(tabsCover3);
-            // const doc = compareAndAddDocuments(
-            //   tabsCover3,
-            //   response?.data?.cover_details_docs
-            // );
-            // console.log(doc, "docsssss3");
+            // setTabData(tabsCover3);
+            const doc = compareAndAddDocuments(
+              tabsCover3,
+              response?.data?.data?.cover_details_docs
+            );
+            setTabData(doc);
             autoSelectActiveTab(tabsCover3);
           } else if (response?.data?.data?.noOfCovers == "4") {
             setTabData(tabsCover4);
-            // const doc = compareAndAddDocuments(
-            //   tabsCover4,
-            //   response?.data?.cover_details_docs
-            // );
-            // console.log(doc, "docsssss4");
+            const doc = compareAndAddDocuments(
+              tabsCover4,
+              response?.data?.cover_details_docs
+            );
+            setTabData(doc);
             autoSelectActiveTab(tabsCover4);
           }
         } else {
@@ -224,7 +225,8 @@ const CoverDetailsForm = () => {
       })
       .catch(function (error) {
         // toast.error(error);
-        toast.error(error?.response?.data?.message);
+        console.log(error, "err-=======================>>>");
+        toast.error("error?.response?.data?.message");
       })
       .finally(() => {
         setIsLoading(false);
