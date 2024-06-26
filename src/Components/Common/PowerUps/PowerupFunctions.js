@@ -521,12 +521,6 @@ export const checkErrorMessage = (text) => {
   if (foundKeywords?.length == 0) {
     return msg;
   } else {
-    console.log(
-      "%cSQL ERROR MSG ",
-      "color: red; font-size: 1.5em; border: 2px solid red; padding: 5px 20px",
-      "\n",
-      msg
-    );
     return "Error! Please try again later.";
   }
 };

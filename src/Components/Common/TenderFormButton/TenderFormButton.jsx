@@ -14,7 +14,6 @@ const TenderFormButton = ({ resetForm, getDetailData, loading }) => {
 
   const handleBack = (tabNo) => {
     let newTab = tabNo - 1;
-    console.log(newTab);
     navigate(`/${location.pathname}?tabNo=${newTab}`, { state });
   };
 

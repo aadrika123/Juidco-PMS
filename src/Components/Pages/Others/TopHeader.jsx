@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Modal from "react-modal";
 import { FiAlertCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -6,37 +6,23 @@ import { contextVar } from "@/Components/context/contextVar";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
 import { localstorageRemoveEntire } from "@/Components/Common/localstorage";
 import ulb_data from "@/Components/Common/DynamicData";
-import { AiOutlineBars } from "react-icons/ai";
 import { BiLogOutCircle } from "react-icons/bi";
 import PermittedModuleCard from "./PermittedModuleCard";
 import { Tooltip } from "react-tooltip";
-import { BsBell } from "react-icons/bs";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { getLocalStorageItemJsonParsed } from "@/Components/Common/localstorage";
 import NotificationSidebar from "./SideBar/NotificationSidebar";
-import ProjectApiList from "@/Components/api/ProjectApiList";
-import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
-import ApiHeader from "@/Components/api/ApiHeader";
-import toast from "react-hot-toast";
-
 
 const TopHeader = (props) => {
-
-  const { api_fetchNotification } = ProjectApiList();
-
   const [userDetailss, setuserDetails] = useState(
     getLocalStorageItemJsonParsed("userDetails")
   ); // to store user details
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
-  const [notificationState, setnotificationState] = useState(false);
-
-
-
   const { toggleBar, settoggleBar, userDetails } = useContext(contextVar);
 
-  const { brand_tag, brand_logo } = ulb_data();
+  const { brand_tag } = ulb_data();
 
   const navigate = useNavigate();
 
@@ -62,12 +48,6 @@ const TopHeader = (props) => {
     closeModal();
     logoutCallback();
   };
-
-  const [imgSrc, setImgSrc] = useState(userDetails?.imageUrl);
-
-  
-
- 
 
   return (
     <>
@@ -118,13 +98,7 @@ const TopHeader = (props) => {
             </button>
           </span>
           <Tooltip anchorId='notification_icon' className='z-50' />
-          {/* <BsBell
-            id='notification_icon'
-            data-tooltip-content='Show all notifications.'
-            onClick={() => setnotificationState(true)}
-            className='text-3xl font-semibold bg-[#4338CA] text-white rounded p-1 cursor-pointer'
-          /> */}
-          
+
           <NotificationSidebar />
         </div>
       </div>
@@ -178,9 +152,6 @@ const TopHeader = (props) => {
       >
         <PermittedModuleCard closeModuleModal={closeModal} />
       </Modal>
-      {/* {notificationState && (
-        <NotificationComponent setnotificationState={setnotificationState} />
-      )} */}
     </>
   );
 };

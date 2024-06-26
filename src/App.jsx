@@ -41,16 +41,19 @@ import BoqSearch from "./Components/Pages/PMS/BOQ/BoqSearch";
 import CreateNewBoq from "./Components/Pages/PMS/BOQ/CreateNewBoq";
 import PreviewBoqSummary from "./Components/Pages/PMS/BOQ/PreviewBoqSummary";
 import BoqDetailsById from "./Components/Pages/PMS/BOQ/BoqDetailsById";
-import BoqListing from "./Components/Pages/PMS/BOQ/BoqListIng";
 import BoqListTabs from "./Components/Pages/PMS/BOQ/BoqListTabs";
 import BoqListTabsDa from "./Components/Pages/PMS/BOQ/DA/BoqListTabsDa";
 import TenderFormViewDetails from "./Components/Pages/PMS/TenderForm/TenderFormViewDetails";
 import PrintComponent from "./Components/Common/PrintArea/PrintComponent";
 import AccountantList from "./Components/Pages/PMS/TenderForm/Accountant/AccountantListTabs";
-import DATenderList from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderList";
 import DATenderTabs from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderTabs";
 import ViewProcurementDetailsById from "./Components/Pages/PMS/BOQ/ViewProcurementDetailsById";
 import NotificationSidebar from "./Components/Pages/Others/SideBar/NotificationSidebar";
+
+//Master table
+import CategoryMaster from "./Components/Pages/PMS/MasterTable/CategoryMaster";
+import SubCategoryMaster from "./Components/Pages/PMS/MasterTable/SubCategoryMaster";
+import BrandMaster from "./Components/Pages/PMS/MasterTable/BrandMaster";
 
 const queryClient = new QueryClient();
 
@@ -99,7 +102,7 @@ function App() {
   const allRoutes = [
     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 
-    //------------ Stock Receiver -------
+    //------- Stock Receiver -------
     { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
     { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
     {
@@ -125,7 +128,7 @@ function App() {
 
     /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
 
-    //------------ DA -------
+    //------- DA -------
     { path: "/da-post-precurement", element: <PostPrecurementListTabsDa /> },
     {
       path: "/da-post-precurementbyid/:id/:page",
@@ -141,7 +144,7 @@ function App() {
 
     /////////////////////////{*** Received-Inventory ***}//////////////////////////////////////
 
-    //------------ DA ------
+    //------- DA ------
     { path: "/da-received-inventory", element: <ReceivedInvtHomeDa /> },
     {
       path: "/da-received-InvtDetailsById/:id/:page",
@@ -216,6 +219,29 @@ function App() {
       path: "/notifi",
       element: <NotificationSidebar />,
     },
+
+    /////////////////////////{*** Master Table ***}//////////////////////////////////////
+
+    {
+      path: "/categoryMaster",
+      element: <CategoryMaster />,
+    },
+    // {
+    //   path: "/subcategoryMaster/:id",
+    //   element: <SubCategoryMaster />,
+    // },
+    {
+      path: "/subcategoryMaster",
+      element: <SubCategoryMaster />,
+    },
+    {
+      path: "/brandMaster",
+      element: <BrandMaster />,
+    },
+    // {
+    //   path: "/brandMaster/:id",
+    //   element: <BrandMaster />,
+    // },
   ];
 
   return (

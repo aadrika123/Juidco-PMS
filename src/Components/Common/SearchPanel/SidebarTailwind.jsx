@@ -56,7 +56,6 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
     AxiosInterceptors.get(`${api_itemBrand}`.split(" ").join(""), ApiHeader())
       .then((data) => {
         setBrandList(data?.data?.data);
-        console.log(data?.data?.data);
       })
       .catch((err) => {
         console.log(err);
@@ -84,11 +83,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
     });
   };
 
-  const abc = () => {
-    console.log(filter);
-  };
-
-  console.log(api_itemCategory, "---------------->");
+  const abc = () => {};
 
   return (
     <div className='relative h-full '>

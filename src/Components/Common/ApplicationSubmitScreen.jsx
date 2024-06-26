@@ -13,10 +13,6 @@ const ApplicationSubmitScreen = (props) => {
   const [modalIsOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    console.log(
-      "enter in submission screen with application no.  =>  ",
-      props?.appNo
-    );
     props?.openSubmit == true && openModal();
   }, [props?.openSubmit]);
 
@@ -25,7 +21,6 @@ const ApplicationSubmitScreen = (props) => {
     props?.refresh();
     setIsOpen(false);
   };
-  console.log("dfjlsdjfkl", modalIsOpen);
   const afterOpenModal = () => {};
 
   return (

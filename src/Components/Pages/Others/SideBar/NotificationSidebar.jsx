@@ -1,15 +1,6 @@
 import * as React from "react";
 // import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import toast from "react-hot-toast";
 import { BsBell } from "react-icons/bs";
 import { Badge, Card, Grid, Stack } from "@mui/material";
@@ -49,7 +40,7 @@ export default function NotificationSidebar() {
         }
       })
       .catch(function (error) {
-        toast.error("Error while fetching data");
+        // toast.error("Error while fetching Notifications");
         console.log("==2 details by id error...", error);
       })
       .finally(() => {
@@ -69,19 +60,13 @@ export default function NotificationSidebar() {
     )
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data);
-          setNotifiRefresh((prev)=> !prev)
-          //   setNotificationCount(response?.data);
-          //   setNotificationData(response?.data?.data);
-
-          // setisLoading(false);
+          setNotifiRefresh((prev) => !prev);
         } else {
-          // setisLoading(false);
           toast.error(response?.data?.message);
         }
       })
       .catch(function (error) {
-        toast.error("Error while fetching data");
+        toast.error("Error in updating status");
         console.log("==2 details by id error...", error);
       })
       .finally(() => {
@@ -140,10 +125,10 @@ export default function NotificationSidebar() {
 
   const list = (anchor) => (
     <>
-      <div className="flex justify-between  bg-white p-2 sticky top-0 border-b-2">
-        <h1 className="text-black text-xl">Notification</h1>
-        <div className="rounded-s-lg  bg-red-500 pl-2 pr-2 text-white">
-          <h1 className="">{notificationCount?.totalCount}</h1>
+      <div className='flex justify-between  bg-white p-2 sticky top-0 border-b-2'>
+        <h1 className='text-black text-xl'>Notification</h1>
+        <div className='rounded-s-lg  bg-red-500 pl-2 pr-2 text-white'>
+          <h1 className=''>{notificationCount?.totalCount}</h1>
         </div>
       </div>
       {/* <hr className="pb-3 " /> */}
@@ -157,11 +142,11 @@ export default function NotificationSidebar() {
           // paddingTop: "4rem",
         }}
         spacing={1}
-        role="presentation"
+        role='presentation'
         onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}
       >
-        <div className="flex flex-col space-y-2 ">
+        <div className='flex flex-col space-y-2 '>
           {notificationData?.map((data, index) => (
             <Card
               key={index}
@@ -172,13 +157,13 @@ export default function NotificationSidebar() {
                     : " rgb(125,142,196)",
                 // padding: "12rem"
               }}
-              className="bg-[#4338CA] p-3 cursor-pointer "
+              className='bg-[#4338CA] p-3 cursor-pointer '
               onClick={() => notifiNavigate(data?.destination, data?.id)}
             >
-              <div className="">
-                <h1 className="font-semibold text-white pb-2">{data?.title}</h1>
-                <hr className="" />
-                <p className="text-xs pt-2 text-white ">{data?.description}</p>
+              <div className=''>
+                <h1 className='font-semibold text-white pb-2'>{data?.title}</h1>
+                <hr className='' />
+                <p className='text-xs pt-2 text-white '>{data?.description}</p>
               </div>
             </Card>
           ))}
@@ -192,13 +177,13 @@ export default function NotificationSidebar() {
       {["right"].map((anchor) => (
         <React.Fragment key={anchor}>
           <Badge
-            color="error"
+            color='error'
             badgeContent={notificationCount?.unseenCount || 0}
           >
             <BsBell
               onClick={toggleDrawer(anchor, true)}
-              className="text-3xl font-semibold bg-[#4338CA] text-white rounded-md p-1 cursor-pointer "
-              data-tooltip-content="Show all notifications."
+              className='text-3xl font-semibold bg-[#4338CA] text-white rounded-md p-1 cursor-pointer '
+              data-tooltip-content='Show all notifications.'
             >
               {anchor}
             </BsBell>
