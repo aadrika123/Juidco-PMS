@@ -9,6 +9,7 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { contextVar } from "@/Components/context/contextVar";
 import React, { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useReactToPrint } from "react-to-print";
 
 const DDViewDetailbyId = () => {
   const [isLoading, setisLoading] = useState(false);
@@ -22,13 +23,14 @@ const DDViewDetailbyId = () => {
   const navigate = useNavigate();
   const notesheetRef = useRef();
 
-
   let buttonStyle =
     "mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
-  const handlePrint = () => {
-    window.print();
-  };
+  //Print
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   const forwardSRModal = () => {
     setConfModal(true);
@@ -91,15 +93,14 @@ const DDViewDetailbyId = () => {
         <div className="mt-6">
           <div
             className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500"
-            id="printable-content"
+            ref={componentRef}
           >
             <div className="">
               <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
-                View Procurement Request{" "}
+                View Inventory Request{" "}
               </h2>
             </div>
             <div className="flex justify-between">
-              
               <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
                 <h1 className="font-bold">
                   Inventory Request No <span className="text-black">:</span>
@@ -158,7 +159,7 @@ const DDViewDetailbyId = () => {
               </div>
 
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Date</div>
+                <div className="md:w-auto w-[50%] font-bold">Date</div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
                   1236
                   {/* {nullToNA(applicationFullData?.total_rate)} */}
@@ -166,14 +167,14 @@ const DDViewDetailbyId = () => {
               </div>
             </div>
             <div className="p-5 pl-8">
-              <h1 className="font-bold ">Description</h1>
+              <h1 className="font-bold">Description</h1>
               <p className=" pt-2">
                 dexc
                 {/* {nullToNA(applicationFullData?.description)} */}
               </p>
             </div>
-            <div className='flex justify-end w-full mb-5'>
-              <div className='w-[100px]'>
+            <div className="flex justify-end w-full mb-5">
+              <div className="w-[100px]">
                 <ImageDisplay
                   preview={preview}
                   imageDoc={imageDoc}
@@ -195,14 +196,13 @@ const DDViewDetailbyId = () => {
 
               <button
                 onClick={handlePrint}
-                className="mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                className="mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
               >
                 Print
               </button>
             </div>
 
             <div className="space-x-3 flex items-end justify-center">
-
               <button
                 className=" p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]"
                 onClick={forwardSRModal}
@@ -238,21 +238,18 @@ const DDViewDetailbyId = () => {
                 Warranty Claim
               </button>
 
-              <div className='bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700'>
-                    <FileButton
-                      bg={"[#359F6E]"}
-                      hoverBg={"bg-green-700"}
-                      btnLabel={"Upload Notesheet"}
-                      imgRef={notesheetRef}
-                      setImageDoc={setImageDoc}
-                      setPreview={setPreview}
-                      textColor={"white"}
-                      // paddingY={"8"}
-                    />
-                  </div>
-              
+              <div className="bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700">
+                <FileButton
+                  bg={"[#359F6E]"}
+                  hoverBg={"bg-green-700"}
+                  btnLabel={"Upload References"}
+                  imgRef={notesheetRef}
+                  setImageDoc={setImageDoc}
+                  setPreview={setPreview}
+                  textColor={"white"}
+                />
+              </div>
             </div>
-
           </div>
         </div>
       </div>

@@ -1,3 +1,5 @@
+import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
+import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import SuccessModal from "@/Components/Common/Modal/SuccessModal";
@@ -9,21 +11,25 @@ import React, { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 
-const SrViewDetailbyId = () => {
+const DDViewHandoverbyId = () => {
   const [isLoading, setisLoading] = useState(false);
   const [confModal, setConfModal] = useState(false);
-  const [confModal2, setConfModal2] = useState(false);
+  const [retModal, setRetModal] = useState(false);
+  const [deadStockModal, setDeadStockModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+  const [imageDoc, setImageDoc] = useState(false);
+  const [preview, setPreview] = useState();
 
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
+  const notesheetRef = useRef();
 
   let buttonStyle =
     "mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
-
-  let buttonStyl2 =
-    "pl-5 pr-5 p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]";
+  
+    let buttonStyle2 =
+    "p-2 pl-4 pr-4 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]";
 
   //Print
   const componentRef = useRef();
@@ -31,55 +37,86 @@ const SrViewDetailbyId = () => {
     content: () => componentRef.current,
   });
 
-  const cancelModal = () => {
+  const handoverModal = () => {
     setConfModal(true);
   };
+  const returnModal = () => {
+    setRetModal(true);
+  };
+  const deadStockModalfunc = () => {
+    setDeadStockModal(true);
+  };
 
+  const deadConfirmationHandler = () => {
+    setDeadStockModal(false);
+  };
+  const retConfirmationHandler = () => {
+    setRetModal(false);
+  };
   const confirmationHandler = () => {
     setConfModal(false);
+    setSuccessModal(true);
+  };
+  const confirmationHandler2 = () => {
+    setSuccessModal(false);
   };
 
   const handleCancel = () => {
+    setDeadStockModal(false)
+    setRetModal(false)
     setConfModal(false);
   };
 
-  const approveModal = () => {
-    setConfModal2(true);
-  };
-
-  const confirmationHandler2 = () => {
-    setConfModal2(false);
-  };
-
-  const handleCancel2 = () => {
-    setConfModal2(false);
-  };
-
+  if (deadStockModal) {
+    return (
+      <>
+        <ConfirmationModal
+          confirmationHandler={deadConfirmationHandler}
+          handleCancel={handleCancel}
+          message={'Return to "Dead Stock" ?'}
+          //   sideMessage={'By clicking your data will proceed'}
+        />
+      </>
+    );
+  }
   if (confModal) {
     return (
       <>
         <ConfirmationModal
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
-          message={"Are you sure you want to Reject ?"}
+          message={'Are you sure you want to "Handover" ?'}
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
     );
   }
-  if (confModal2) {
+  
+  if (retModal) {
     return (
       <>
         <ConfirmationModal
-          confirmationHandler={confirmationHandler2}
-          handleCancel={handleCancel2}
-          message={"Are you sure you want to Approve ?"}
+          confirmationHandler={retConfirmationHandler}
+          handleCancel={handleCancel}
+          message={'Are you sure you want to "Return" ?'}
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
     );
   }
 
+  if (successModal) {
+    return (
+      <>
+        <SuccessModal
+          confirmationHandler={confirmationHandler2}
+          message={"Your Request has been Handover Successfully"}
+          requestNoMsg={"Reference No:-"}
+          refNo={"123654789"}
+        />
+      </>
+    );
+  }
   return (
     <>
       {isLoading && <LoaderApi />}
@@ -108,18 +145,6 @@ const SrViewDetailbyId = () => {
               </h2>
             </div>
             <div className="flex justify-between">
-              {/* {!applicationFullData?.remark?.length == 0 && ( */}
-              {/* <div className='pb-5 pl-8'>
-                  <h1 className='font-bold text-base text-green-600'>
-                    Remark <span className='text-black'>:</span>
-                    <span className='text-sm pt-2 font-light text-green-600'>
-                      {" "}
-                      {nullToNA(applicationFullData?.remark)}
-                    </span>
-                  </h1>
-                </div> */}
-              {/* )} */}
-
               <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
                 <h1 className="font-bold">
                   Inventory Request No <span className="text-black">:</span>
@@ -192,6 +217,17 @@ const SrViewDetailbyId = () => {
                 {/* {nullToNA(applicationFullData?.description)} */}
               </p>
             </div>
+            <div className="flex justify-end w-full mb-5">
+              <div className="w-[100px]">
+                <ImageDisplay
+                  preview={preview}
+                  imageDoc={imageDoc}
+                  alt={"notesheet document"}
+                  showPreview={"hidden"}
+                  width={"[100px]"}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Buttons */}
@@ -204,26 +240,46 @@ const SrViewDetailbyId = () => {
 
               <button
                 onClick={handlePrint}
-                className="mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                className="mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
               >
                 Print
               </button>
             </div>
 
             <div className="space-x-3 flex items-end justify-center">
+              <div className="bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700">
+                <FileButton
+                  bg={"[#359F6E]"}
+                  hoverBg={"bg-green-700"}
+                  btnLabel={"Upload References"}
+                  imgRef={notesheetRef}
+                  setImageDoc={setImageDoc}
+                  setPreview={setPreview}
+                  textColor={"white"}
+                />
+              </div>
+
               <button
-                className={buttonStyl2}
-                onClick={() => navigate("/dd-stock-proposal")}
+                className={buttonStyle2}
+                onClick={deadStockModalfunc}
               >
-                Edit
+                Dead Stock
               </button>
 
-              <button className={buttonStyl2} onClick={cancelModal}>
-                Reject
+              
+
+              <button
+                className={buttonStyle2}
+                onClick={returnModal}
+              >
+                Return
               </button>
 
-              <button className={buttonStyl2} onClick={approveModal}>
-                Approve
+              <button
+                className={buttonStyle2}
+                onClick={handoverModal}
+              >
+                Handover
               </button>
             </div>
           </div>
@@ -233,4 +289,4 @@ const SrViewDetailbyId = () => {
   );
 };
 
-export default SrViewDetailbyId;
+export default DDViewHandoverbyId;

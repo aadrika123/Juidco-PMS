@@ -56,6 +56,11 @@ import StockRequestProposal from "./Components/Pages/PMS/Inventory/DepartmentalD
 import DDViewDetailbyId from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDViewDetailbyId";
 import StockRecListTabs from "./Components/Pages/PMS/Inventory/StockReceiver/StockRecListTabs";
 import SrViewDetailbyId from "./Components/Pages/PMS/Inventory/StockReceiver/SrViewDetailbyId";
+import SRWarrantyClaim from "./Components/Pages/PMS/Inventory/StockReceiver/SRWarrantyClaim";
+import SrViewWarrantybyId from "./Components/Pages/PMS/Inventory/StockReceiver/SrViewWarrantybyId";
+import DdHandoverList from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DdHandoverList";
+import DDHandoverListTabs from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDHandoverListTabs";
+import DDViewHandoverbyId from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDViewHandoverbyId";
 
 const queryClient = new QueryClient();
 
@@ -170,10 +175,10 @@ function App() {
       path: "/tendering-preview/:page",
       element: <TenderFormViewDetails />,
     },
-    {
-      path: "/tendering-previewPP",
-      element: <PrintComponent />,
-    },
+    // {
+    //   path: "/tendering-previewPP",
+    //   element: <PrintComponent />,
+    // },
     {
       path: "/print-preview",
       element: <ExportTableData />,
@@ -237,15 +242,36 @@ function App() {
       element: <DDViewDetailbyId />,
     },
     
-    /////////////////////////{*** Distributer Inventory ***}//////////////////////////////////////
+    /////////////////////////{*** SR Inventory ***}//////////////////////////////////////
     {
       path: "/sr-dist-proposal",
       element: <StockRecListTabs />,
     },
     {
-     path: "/sr-viewDetailsById",
-     element: <SrViewDetailbyId />,
-   },
+      path: "/sr-viewDetailsById",
+      element: <SrViewDetailbyId />,
+    },
+    
+    /////////////////////////{*** SR Warranty ***}//////////////////////////////////////
+    {
+      path: "/sr-warrantyClaim",
+      element: <SRWarrantyClaim />,
+    },
+    {
+      path: "/sr-viewWarrantyById",
+      element: <SrViewWarrantybyId />,
+    },
+    
+    /////////////////////////{*** DD Handover ***}//////////////////////////////////////
+    {
+      path: "/dd-handover",
+      element: <DDHandoverListTabs />,
+    },
+    {
+      path: "/dd-viewHandoverById",
+      element: <DDViewHandoverbyId />,
+    },
+    
   ];
 
   return (

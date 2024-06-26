@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
@@ -11,6 +11,7 @@ import ApiHeader2 from "@/Components/api/ApiHeader2";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import BoqTimeLine from "@/Components/Common/Timeline/BoqTimeLine";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import { useReactToPrint } from "react-to-print";
 
 export default function PreviewBoqSummary() {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +24,12 @@ export default function PreviewBoqSummary() {
   const { titleBarVisibility } = useContext(contextVar);
 
   const { api_postForwardAndCreateBoq, api_postUpdatedBoq } = ProjectApiList();
+
+   //Print
+   const componentRef = useRef();
+   const handlePrint = useReactToPrint({
+     content: () => componentRef.current,
+   });
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
@@ -52,9 +59,7 @@ export default function PreviewBoqSummary() {
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
-  const handlePrint = () => {
-    window.print();
-  };
+ 
 
   const createAndForwardBoq = async () => {
     setConfirmationModal(false);
@@ -169,7 +174,7 @@ export default function PreviewBoqSummary() {
       />
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         <div
-          id='printable-content'
+          ref={componentRef}
           className=' bg-white rounded font-sans mb-10 border border-[#4338ca] shadow-lg px-4'
         >
           <div className='p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md'>
