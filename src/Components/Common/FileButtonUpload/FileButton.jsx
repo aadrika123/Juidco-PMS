@@ -26,7 +26,6 @@ export default function FileButton({
     if (!file) {
       return toast.error("No File Selected");
     }
-    console.log(file.type, "file======");
     // Check the file type
     if (!validExtensions.includes(file.type)) {
       toast.error(

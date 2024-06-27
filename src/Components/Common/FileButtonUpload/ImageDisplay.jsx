@@ -14,7 +14,6 @@ export default function ImageDisplay({
   url,
 }) {
   const [imageModal, setImageModal] = useState(false);
-  console.log(url, "ul==========", imageDoc, "imageDoc===");
   if (imageModal) {
     return (
       <ImageModal

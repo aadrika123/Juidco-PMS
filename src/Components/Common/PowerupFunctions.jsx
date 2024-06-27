@@ -313,9 +313,7 @@ export const scrollingTop = (elem) => {
 
 // TO LOGOUT WHEN UNAUTHENTICATED
 export const checkAuthentication = (token) => {
-  console.log("token", token);
   if (token.response.data.error == "Unauthenticated.") {
-    console.log("Token has expired.. Need to call logout 3");
   }
 };
 
@@ -508,12 +506,6 @@ export const checkErrorMessage = (text) => {
   if (foundKeywords?.length == 0) {
     return msg;
   } else {
-    console.log(
-      "%cSQL ERROR MSG ",
-      "color: red; font-size: 1.5em; border: 2px solid red; padding: 5px 20px",
-      "\n",
-      msg
-    );
     return "Error! Please try again later.";
   }
 };
