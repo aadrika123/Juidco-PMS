@@ -57,7 +57,7 @@ const TopHeader = (props) => {
     localstorageRemoveEntire();
     navigate("/");
   };
-
+  
   const LogOutUser = () => {
     closeModal();
     logoutCallback();

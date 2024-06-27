@@ -28,15 +28,110 @@ const StockRequestProposal = () => {
 
   const { titleBarVisibility } = useContext(contextVar);
 
-  const navigate = useNavigate()
+  const {api_postStockRequest,api_getActiveCategory,api_getActiveSubCategory,api_getActiveBrand,api_getActiveDesc} = ProjectApiList();
+
+  const navigate = useNavigate();
 
   const [confModal, setConfModal] = useState(false);
+  const [formValues, setFormValues] = useState("");
+  const [category, setCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+  const [brand, setBarnd] = useState("");
+  const [descrip, setDescrip] = useState("");
 
+  const [catID, setCatId] = useState("");
+  const [subCatID, setSubCatId] = useState("");
+  
+  
+  console.log(descrip)
+
+   //activating notification
+   const notify = (toastData, type) => {
+    toast.dismiss();
+    if (type == "success") {
+      toast.success(toastData);
+    }
+    if (type == "error") {
+      toast.error(toastData);
+    }
+  };
+
+  const getCategory = ()=>{
+
+    AxiosInterceptors.get(`${api_getActiveCategory}`, ApiHeader())
+    .then(function (response) {
+      if (response?.data?.status === true) {
+        setCategory(response?.data?.data)
+        notify(response?.data?.message, "success");
+      } else {
+        notify(response?.data?.message, "error");
+      }
+    })
+    .catch(function(res){
+      notify("Something went wrong!");
+    })
+  };
+
+
+  const getSubCategory = (id)=>{
+
+    AxiosInterceptors.get(`${api_getActiveSubCategory}/${id}`, ApiHeader())
+    .then(function (response) {
+      if (response?.data?.status === true) {
+        setSubCategory(response?.data?.data)
+        notify(response?.data?.message, "success");
+      } else {
+        notify(response?.data?.message, "error");
+      }
+    })
+    .catch(function(res){
+      notify("Something went wrong!");
+    })
+  };
+
+  const getBrand = (id)=>{
+
+    AxiosInterceptors.get(`${api_getActiveBrand}/${id}`, ApiHeader())
+    .then(function (response) {
+      if (response?.data?.status === true) {
+        setBarnd(response?.data?.data)
+        notify(response?.data?.message, "success");
+      } else {
+        notify(response?.data?.message, "error");
+      }
+    })
+    .catch(function(res){
+      notify("Something went wrong!");
+    })
+  };
+  
+  const getDesc = ()=>{
+
+    AxiosInterceptors.get(`${api_getActiveDesc}?category=${catID}&scategory=${subCatID}`, ApiHeader())
+    .then(function (response) {
+      if (response?.data?.status === true) {
+        setDescrip(response?.data?.data?.data)
+        notify(response?.data?.message, "success");
+      } else {
+        notify(response?.data?.message, "error");
+      }
+    })
+    .catch(function(res){
+      notify("Something went wrong!");
+    })
+  };
+
+  useEffect(()=>{
+    getCategory();
+    
+  },[])
+  
 
   // intitial value
   const initialValues = {
     empId: "",
     empName: "",
+    category: "",
     subCategory: "",
     brand: "",
     quantAlot: "",
@@ -48,17 +143,45 @@ const StockRequestProposal = () => {
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
+      setFormValues(values);
       setConfModal(true);
     },
     // validationSchema,
   });
 
   const confirmationHandler = (values) => {
-    navigate('/dd-inventory-proposal')
-    console.log("procurement==============>>", values);
+    console.log("form valuessss", formValues);
+    // submitForm()
+    // navigate("/dd-inventory-proposal");
   };
   const handleCancel = () => {
     setConfModal(false);
+  };
+
+  const submitForm = () => {
+    let  requestBody
+
+    requestBody = {
+      emp_id: formValues?.empId,
+      emp_name: formValues?.empName,
+      subcategory: formValues?.subCategory,
+      brand: formValues?.brand,
+      allotted_quantity: Number(formValues?.quantAlot),
+      inventory: formValues?.discription,
+      totQuant: Number(formValues?.totQuant),
+    }
+
+    AxiosInterceptors.post(`${api_postStockRequest}`, requestBody, ApiHeader())
+    .then(function (res) {
+      if (response?.data?.status === true) {
+        notify(response?.data?.message, "success");
+      } else {
+        notify(response?.data?.message, "error");
+      }
+    })
+    .catch(function(res){
+      notify("Something went wrong!");
+    })
   };
 
   const handleOnChange = (e) => {
@@ -175,25 +298,64 @@ const StockRequestProposal = () => {
                   <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
                     <div class="px-4 w-full mb-4">
                       <label className={`${labelStyle} inline-block mb-2`}>
+                        Categories
+                      </label>
+
+                      <select
+                        {...formik.getFieldProps("category")}
+                        className={`${inputStyle} inline-block w-full relative`}
+                        onChange={(e)=>{
+                          setCatId(e.target.value)
+                          getSubCategory(e.target.value);
+                          formik.handleChange(e)
+                          }}
+                      >
+                        <option defaultValue={"select"}>select</option>
+                        {/* <option>Clothes</option>
+                        <option>Furniture</option>
+                        <option>Tech</option> */}
+
+                        {category?.length &&
+                          category?.map((items) => (
+                            <option key={items?.id} value={items?.id}>
+                              {items?.name}
+                            </option>
+                          ))}
+                      </select>
+
+                      <p className="text-red-500 text-xs ">
+                        {formik.touched.category && formik.errors.category
+                          ? formik.errors.category
+                          : null}
+                      </p>
+                    </div>
+                  </div>
+
+
+                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                    <div class="px-4 w-full mb-4">
+                      <label className={`${labelStyle} inline-block mb-2`}>
                         Sub Categories
                       </label>
 
                       <select
                         {...formik.getFieldProps("subCategory")}
                         className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
+                        onChange={(e)=>{
+                          setSubCatId(e.target.value)
+                          getBrand(e.target.value)
+                          formik.handleChange(e)}
+                          }
                       >
                         <option defaultValue={"select"}>select</option>
-                        <option>Clothes</option>
-                        <option>Furniture</option>
-                        <option>Tech</option>
+                        
 
-                        {/* {subcategory?.length &&
-                          subcategory?.map((items) => (
+                        {subCategory?.length &&
+                          subCategory?.map((items) => (
                             <option key={items?.id} value={items?.id}>
                               {items?.name}
                             </option>
-                          ))} */}
+                          ))}
                       </select>
 
                       <p className="text-red-500 text-xs ">
@@ -213,19 +375,19 @@ const StockRequestProposal = () => {
                       <select
                         {...formik.getFieldProps("brand")}
                         className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
+                        onChange={()=>{
+                          getDesc()
+                          formik.handleChange}}
                       >
                         <option defaultValue={"select"}>select</option>
-                        <option>Clothes</option>
-                        <option>Furniture</option>
-                        <option>Tech</option>
+                        
 
-                        {/* {subcategory?.length &&
-                          subcategory?.map((items) => (
+                        {brand?.length &&
+                          brand?.map((items) => (
                             <option key={items?.id} value={items?.id}>
                               {items?.name}
                             </option>
-                          ))} */}
+                          ))}
                       </select>
                       <p className="text-red-500 text-xs ">
                         {formik.touched.brand && formik.errors.brand
@@ -234,6 +396,38 @@ const StockRequestProposal = () => {
                       </p>
                     </div>
                   </div>
+
+
+                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                    <div class="px-4 w-full mb-4">
+                      <label className={`${labelStyle} inline-block mb-2`}>
+                        Discription
+                      </label>
+
+                      <select
+                        {...formik.getFieldProps("discription")}
+                        className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
+                      >
+                        <option defaultValue={"select"}>select</option>
+                        
+
+                        {descrip?.length &&
+                          descrip?.map((items) => (
+                            <option key={items?.id} value={items?.id}>
+                              {items?.description}
+                            </option>
+                          ))}
+                      </select>
+
+                      <p className="text-red-500 text-xs ">
+                        {formik.touched.discription && formik.errors.discription
+                          ? formik.errors.discription
+                          : null}
+                      </p>
+                    </div>
+                  </div>
+               
 
                   <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
                     <div class="px-4 w-full mb-4">
@@ -277,27 +471,7 @@ const StockRequestProposal = () => {
                     </div>
                   </div>
 
-                  <div className="form-group flex-shrink max-w-full px-4 w-full mb-4">
-                    <div class="px-4 w-full mb-4">
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                        Discription
-                      </label>
-
-                      <textarea
-                        name="discription"
-                        className={`${inputStyle} inline-block w-full relative h-20`}
-                        onChange={formik.handleChange}
-                        value={formik.values.discription}
-                      />
-
-                      <p className="text-red-500 text-xs ">
-                        {formik.touched.discription && formik.errors.discription
-                          ? formik.errors.discription
-                          : null}
-                      </p>
-                    </div>
                   </div>
-                </div>
 
                 <div className="float-right pt-10 mr-8 space-x-5">
                   <button

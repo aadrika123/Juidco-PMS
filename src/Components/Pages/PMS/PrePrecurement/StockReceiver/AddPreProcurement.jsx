@@ -302,7 +302,7 @@ function AddPreProcurement(props) {
 
   // submit form
   const submitForm = () => {
-    console.log("data in form", formData);
+    // console.log("data in form", formData);
     setisLoading(true);
     let url;
     let requestBody;

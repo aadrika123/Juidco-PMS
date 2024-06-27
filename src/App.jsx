@@ -238,7 +238,7 @@ function App() {
       element: <StockRequestProposal />,
     },
      {
-      path: "/dd-viewDetailsById",
+      path: "/dd-viewDetailsById/:handNo/:page",
       element: <DDViewDetailbyId />,
     },
     

@@ -24,7 +24,7 @@ const DistributerListTabs = () => {
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { api_fetchProcurementList, api_fetchProcurementDAList } =
+  const { api_getDDSRInbox, api_getDDSROutbox } =
     ProjectApiList();
 
   return (
@@ -81,7 +81,7 @@ const DistributerListTabs = () => {
             <div>
               <DdInventoryList
                 page='inbox'
-                api={api_fetchProcurementList}
+                api={api_getDDSRInbox}
               />
             </div>
           )}
@@ -89,7 +89,7 @@ const DistributerListTabs = () => {
             <div>
               <DdInventoryList
                 page='outbox'
-                api={api_fetchProcurementDAList}
+                api={api_getDDSROutbox}
               />
             </div>
           )}
