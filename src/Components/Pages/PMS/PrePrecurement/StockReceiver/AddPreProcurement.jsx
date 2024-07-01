@@ -74,7 +74,7 @@ function AddPreProcurement(props) {
   const [procurement_no, setProcurement_no] = useState();
   const [otherCategory, setOtherCategory] = useState();
 
-  console.log(otherCategory, "OT");
+  console.log(category, "OT");
 
   // ══════════════════════════════║🔰 form submission declaration 🔰║═══════════════════════════════════
   const [declarationStatus, setdeclarationStatus] = useState();
@@ -268,7 +268,7 @@ function AddPreProcurement(props) {
   const fetchCategory = () => {
     AxiosInterceptors.get(`${api_itemCategory}`, ApiHeader())
       .then(function (response) {
-        setCategory(response.data.data);
+        setCategory(response.data.data.data);
       })
       .catch(function (error) {
         toast.error("Something went wrong");
@@ -586,11 +586,12 @@ function AddPreProcurement(props) {
                     >
                       <option defaultValue={"select"}>select</option>
 
-                      {category?.map((items, index) => (
-                        <option key={index} value={items?.id}>
-                          {items?.name}
-                        </option>
-                      ))}
+                      {category?.length &&
+                        category?.map((items, index) => (
+                          <option key={index} value={items?.id}>
+                            {items?.name}
+                          </option>
+                        ))}
                       <option>others</option>
                     </select>
                     <p className="text-red-500 text-xs ">
@@ -601,111 +602,59 @@ function AddPreProcurement(props) {
                   </div>
 
                   <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                        Items Sub Category
-                        <span className="text-xl text-red-500 pl-1">*</span>
-                      </label>
-                      <select
-                        {...formik.getFieldProps("itemsubcategory")}
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
-                      >
-                        <option defaultValue={"select"}>select</option>
+                    <label className={`${labelStyle} inline-block mb-2`}>
+                      Items Sub Category
+                      <span className="text-xl text-red-500 pl-1">*</span>
+                    </label>
+                    <select
+                      {...formik.getFieldProps("itemsubcategory")}
+                      className={`${inputStyle} inline-block w-full relative`}
+                      onChange={formik.handleChange}
+                    >
+                      <option defaultValue={"select"}>select</option>
 
-                        {subcategory?.length &&
-                          subcategory?.map((items) => (
-                            <option key={items?.id} value={items?.id}>
-                              {items?.name}
-                            </option>
-                          ))}
-                      </select>
+                      {subcategory?.length &&
+                        subcategory?.map((items) => (
+                          <option key={items?.id} value={items?.id}>
+                            {items?.name}
+                          </option>
+                        ))}
+                    </select>
 
-                      <p className="text-red-500 text-xs ">
-                        {formik.touched.itemsubcategory &&
-                        formik.errors.itemsubcategory
-                          ? formik.errors.itemsubcategory
-                          : null}
-                      </p>
-                    </div>
-
-                  {/* {otherCategory == "others" ? (
-                    <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                        Items Sub Category
-                        <span className="text-xl text-red-500 pl-1">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="itemsubcategory"
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
-                        value={formik.values.itemsubcategory}
-                      />
-
-                      <p className="text-red-500 text-xs ">
-                        {formik.touched.itemsubcategory &&
-                        formik.errors.itemsubcategory
-                          ? formik.errors.itemsubcategory
-                          : null}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                        Items Sub Category
-                        <span className="text-xl text-red-500 pl-1">*</span>
-                      </label>
-                      <select
-                        {...formik.getFieldProps("itemsubcategory")}
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
-                      >
-                        <option defaultValue={"select"}>select</option>
-
-                        {subcategory?.length &&
-                          subcategory?.map((items) => (
-                            <option key={items?.id} value={items?.id}>
-                              {items?.name}
-                            </option>
-                          ))}
-                      </select>
-
-                      <p className="text-red-500 text-xs ">
-                        {formik.touched.itemsubcategory &&
-                        formik.errors.itemsubcategory
-                          ? formik.errors.itemsubcategory
-                          : null}
-                      </p>
-                    </div>
-                  )} */}
-
+                    <p className="text-red-500 text-xs ">
+                      {formik.touched.itemsubcategory &&
+                      formik.errors.itemsubcategory
+                        ? formik.errors.itemsubcategory
+                        : null}
+                    </p>
+                  </div>
 
                   <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                        Brand
-                        <span className="text-xl text-red-500 pl-1">*</span>
-                      </label>
-                      <select
-                        {...formik.getFieldProps("brand")}
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
-                      >
-                        <option defaultValue={"select"}>select</option>
+                    <label className={`${labelStyle} inline-block mb-2`}>
+                      Brand
+                      <span className="text-xl text-red-500 pl-1">*</span>
+                    </label>
+                    <select
+                      {...formik.getFieldProps("brand")}
+                      className={`${inputStyle} inline-block w-full relative`}
+                      onChange={formik.handleChange}
+                    >
+                      <option defaultValue={"select"}>select</option>
 
-                        {brand?.length &&
-                          brand?.map((items) => (
-                            <option key={items?.id} value={items?.id}>
-                              {items?.name}
-                            </option>
-                          ))}
-                      </select>
+                      {brand?.length &&
+                        brand?.map((items) => (
+                          <option key={items?.id} value={items?.id}>
+                            {items?.name}
+                          </option>
+                        ))}
+                    </select>
 
-                      <p className="text-red-500 text-xs ">
-                        {formik.touched.brand && formik.errors.brand
-                          ? formik.errors.brand
-                          : null}
-                      </p>
-                    </div>
+                    <p className="text-red-500 text-xs ">
+                      {formik.touched.brand && formik.errors.brand
+                        ? formik.errors.brand
+                        : null}
+                    </p>
+                  </div>
 
                   {/* {otherCategory == "others" ? (
                     <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">

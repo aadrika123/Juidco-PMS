@@ -164,7 +164,7 @@ function DdHandoverList(props) {
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
               navigate(
-                `/sr-viewHandoverById`
+                `/dd-viewHandoverById`
               )
             }
           >

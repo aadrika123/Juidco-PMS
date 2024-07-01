@@ -150,10 +150,21 @@ export default function ProjectApiList() {
     api_getStockRequetById: `${baseUrl}/api/pms/stock-request`,
     api_postForwardtoSR: `${baseUrl}/api/pms/dist/stock-request/to-sr`,
     api_postStockRequest: `${baseUrl}/api/pms/dist/stock-request`,
+    api_editStockRequest: `${baseUrl}/api/pms/stock-request`,
+    api_postStockRequest: `${baseUrl}/api/pms/dist/stock-request`,
     api_getActiveCategory: `${baseUrl}/api/pms/master/category/active`,
     api_getActiveSubCategory: `${baseUrl}/api/pms/master/sub-category/by-category`,
     api_getActiveBrand: `${baseUrl}/api/pms/master/by-subcategory`,
     api_getActiveDesc: `${baseUrl}/api/pms/inventory/by-filter`,
+    api_getActiveQty: `${baseUrl}/api/pms/inventory/total-available`,
+
+    api_getSRStockReqInbox: `${baseUrl}/api/pms/sr/stock-request`,
+    api_getSRStockReqOutbox: `${baseUrl}/api/pms/sr/stock-request/outbox`,
+
+    api_getSrStockRequetById: `${baseUrl}/api/pms/stock-request`,
+    api_approveApplication: `${baseUrl}/api/pms/sr/stock-request/approve`,
+    api_rejectApplication: `${baseUrl}/api/pms/sr/stock-request/reject`,
+
   };
 
   return apiList;
