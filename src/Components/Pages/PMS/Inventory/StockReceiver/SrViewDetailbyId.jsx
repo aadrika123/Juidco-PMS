@@ -1,23 +1,33 @@
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import SuccessModal from "@/Components/Common/Modal/SuccessModal";
 import { nullToNA } from "@/Components/Common/PowerupFunctions";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
+import ApiHeader from "@/Components/api/ApiHeader";
+import ProjectApiList from "@/Components/api/ProjectApiList";
 import { contextVar } from "@/Components/context/contextVar";
-import React, { useContext, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
+import { Toaster, toast } from "react-hot-toast";
 
 const SrViewDetailbyId = () => {
   const [isLoading, setisLoading] = useState(false);
   const [confModal, setConfModal] = useState(false);
   const [confModal2, setConfModal2] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+  const [applicationData, setapplicationFullData] = useState(false);
 
   const { titleBarVisibility } = useContext(contextVar);
 
+  const { api_getSrStockRequetById, api_approveApplication,api_rejectApplication } = ProjectApiList();
+
   const navigate = useNavigate();
+  const { handNo } = useParams();
+
+  // console.log(handNo);
 
   let buttonStyle =
     "mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -36,7 +46,8 @@ const SrViewDetailbyId = () => {
   };
 
   const confirmationHandler = () => {
-    setConfModal(false);
+  rejectApplication()
+  navigate(`/sr-dist-proposal`)
   };
 
   const handleCancel = () => {
@@ -48,12 +59,81 @@ const SrViewDetailbyId = () => {
   };
 
   const confirmationHandler2 = () => {
-    setConfModal2(false);
+    approveApplication()
+    navigate(`/sr-dist-proposal`)
   };
 
   const handleCancel2 = () => {
     setConfModal2(false);
   };
+
+  const getApplicationDetail = () => {
+    // setisLoading(true);
+    AxiosInterceptors.get(`${api_getSrStockRequetById}/${handNo}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setapplicationFullData(response?.data?.data);
+
+          setisLoading(false);
+        } else {
+          setisLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        // console.log("==2 details by id error...", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+  
+  const approveApplication = () => {
+
+    AxiosInterceptors.post(`${api_approveApplication}`,{"stock_handover_no":[`${handNo}`]}, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setapplicationFullData(response?.data?.data);
+
+          setisLoading(false);
+        } else {
+          setisLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        // console.log("==2 details by id error...", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+  
+  const rejectApplication = () => {
+
+    AxiosInterceptors.post(`${api_rejectApplication}`,{"stock_handover_no":[`${handNo}`]}, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setisLoading(false);
+        } else {
+          setisLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        // console.log("==2 details by id error...", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getApplicationDetail();
+  }, []);
 
   if (confModal) {
     return (
@@ -108,24 +188,12 @@ const SrViewDetailbyId = () => {
               </h2>
             </div>
             <div className="flex justify-between">
-              {/* {!applicationFullData?.remark?.length == 0 && ( */}
-              {/* <div className='pb-5 pl-8'>
-                  <h1 className='font-bold text-base text-green-600'>
-                    Remark <span className='text-black'>:</span>
-                    <span className='text-sm pt-2 font-light text-green-600'>
-                      {" "}
-                      {nullToNA(applicationFullData?.remark)}
-                    </span>
-                  </h1>
-                </div> */}
-              {/* )} */}
-
               <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
                 <h1 className="font-bold">
-                  Inventory Request No <span className="text-black">:</span>
+                  Handover No <span className="text-black">:</span>
                   <span className="font-light">
                     {" "}
-                    {/* {nullToNA(applicationFullData?.procurement_no)} */}
+                    {nullToNA(applicationData?.stock_handover_no)}
                   </span>
                 </h1>
               </div>
@@ -134,8 +202,7 @@ const SrViewDetailbyId = () => {
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold">Employee Id</div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  123
-                  {/* {nullToNA(applicationFullData?.category.name)} */}
+                  {nullToNA(applicationData?.emp_id)}
                 </div>
               </div>
 
@@ -144,16 +211,14 @@ const SrViewDetailbyId = () => {
                   Employee Name
                 </div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  ABC
-                  {/* {nullToNA(applicationFullData?.subcategory?.name)} */}
+                  {nullToNA(applicationData?.emp_name)}
                 </div>
               </div>
 
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">Brand</div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  bac
-                  {/* {nullToNA(applicationFullData?.brand?.name)} */}
+                  {nullToNA(applicationData?.brand?.name)}
                 </div>
               </div>
 
@@ -162,8 +227,7 @@ const SrViewDetailbyId = () => {
                   Sub Categories
                 </div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  ABC
-                  {/* {nullToNA(applicationFullData?.rate)} */}
+                  {nullToNA(applicationData?.subcategory?.name)}
                 </div>
               </div>
 
@@ -172,24 +236,21 @@ const SrViewDetailbyId = () => {
                   Quantity Allotted{" "}
                 </div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  1236
-                  {/* {nullToNA(applicationFullData?.total_rate)} */}
+                  {nullToNA(applicationData?.allotted_quantity)}
                 </div>
               </div>
 
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">Date</div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  1236
-                  {/* {nullToNA(applicationFullData?.total_rate)} */}
+                  {nullToNA(applicationData?.createdAt?.split("T")[0])}
                 </div>
               </div>
             </div>
             <div className="p-5 pl-8">
               <h1 className="font-bold ">Description</h1>
               <p className=" pt-2">
-                dexc
-                {/* {nullToNA(applicationFullData?.description)} */}
+                {nullToNA(applicationData?.inventory?.description)}
               </p>
             </div>
           </div>
@@ -213,7 +274,7 @@ const SrViewDetailbyId = () => {
             <div className="space-x-3 flex items-end justify-center">
               <button
                 className={buttonStyl2}
-                onClick={() => navigate("/dd-stock-proposal")}
+                onClick={() => navigate("/dd-stock-proposal/edit",{ state: handNo } )}
               >
                 Edit
               </button>

@@ -24,7 +24,7 @@ const DistributerListTabs = () => {
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { api_fetchProcurementList, api_fetchProcurementDAList } =
+  const { api_getDDSRInbox, api_getDDSROutbox } =
     ProjectApiList();
 
   return (
@@ -41,7 +41,7 @@ const DistributerListTabs = () => {
           <div>
             <button
               className='bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right '
-              onClick={() => navigate(`/dd-stock-proposal`)}
+              onClick={() => navigate(`/dd-stock-proposal/create`)}
             >
               <GoPlus className='m-1 text-[1rem]' />
               Stock Request
@@ -81,7 +81,7 @@ const DistributerListTabs = () => {
             <div>
               <DdInventoryList
                 page='inbox'
-                api={api_fetchProcurementList}
+                api={api_getDDSRInbox}
               />
             </div>
           )}
@@ -89,7 +89,7 @@ const DistributerListTabs = () => {
             <div>
               <DdInventoryList
                 page='outbox'
-                api={api_fetchProcurementDAList}
+                api={api_getDDSROutbox}
               />
             </div>
           )}

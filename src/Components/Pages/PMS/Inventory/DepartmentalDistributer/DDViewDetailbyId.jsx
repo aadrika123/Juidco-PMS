@@ -1,3 +1,4 @@
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
@@ -6,10 +7,14 @@ import SuccessModal from "@/Components/Common/Modal/SuccessModal";
 import { nullToNA } from "@/Components/Common/PowerupFunctions";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
+import ApiHeader from "@/Components/api/ApiHeader";
+import ProjectApiList from "@/Components/api/ProjectApiList";
 import { contextVar } from "@/Components/context/contextVar";
-import React, { useContext, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
+import { Toaster, toast } from "react-hot-toast";
+
 
 const DDViewDetailbyId = () => {
   const [isLoading, setisLoading] = useState(false);
@@ -17,11 +22,17 @@ const DDViewDetailbyId = () => {
   const [successModal, setSuccessModal] = useState(false);
   const [imageDoc, setImageDoc] = useState(false);
   const [preview, setPreview] = useState();
+  const [applicationFullData, setapplicationFullData] = useState();
 
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
+  const {handNo,page} = useParams();
+  // console.log(page)
+
   const notesheetRef = useRef();
+  const { api_getStockRequetById,api_postForwardtoSR } =
+    ProjectApiList();
 
   let buttonStyle =
     "mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -37,16 +48,66 @@ const DDViewDetailbyId = () => {
   };
 
   const confirmationHandler = () => {
+    forwardToSR()
     setConfModal(false);
     setSuccessModal(true);
   };
-  const confirmationHandler2 = () => {
+  const successHandler = () => {
     setSuccessModal(false);
+    navigate(`/dd-inventory-proposal`)
   };
 
   const handleCancel = () => {
     setConfModal(false);
   };
+
+
+   ///////////{*** APPLICATION FULL DETAIL ***}/////////
+
+   const getApplicationDetail = () => {
+    setisLoading(true);
+    AxiosInterceptors.get(
+      `${api_getStockRequetById}/${handNo}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          console.log(response?.data?.data)
+          setapplicationFullData(response?.data?.data);
+
+          setisLoading(false);
+        } else {
+          setisLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        console.log("==2 details by id error...", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
+  const forwardToSR =()=>{
+    setisLoading(true);
+    AxiosInterceptors.post(`${api_postForwardtoSR}`,{"stock_handover_no":[`${handNo}`]},ApiHeader())
+    .then(function(response){
+      if (response?.data?.status) {
+        console.log(response?.data?.data)
+        setisLoading(false);
+      } else {
+        toast.error("Error while fetching data");
+        console.log("==2 details by id error...", error);
+      }
+    })
+    .catch(function(err){
+      toast.error("Erro")
+    })
+  };
+
+  useEffect(()=>{
+    getApplicationDetail()
+  },[])
 
   if (confModal) {
     return (
@@ -55,7 +116,7 @@ const DDViewDetailbyId = () => {
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
           message={"Are you sure you want to Forward ?"}
-          //   sideMessage={'By clicking your data will proceed'}
+          
         />
       </>
     );
@@ -65,10 +126,10 @@ const DDViewDetailbyId = () => {
     return (
       <>
         <SuccessModal
-          confirmationHandler={confirmationHandler2}
+          confirmationHandler={successHandler}
           message={"Your Request has been Submitted Successfully"}
-          requestNoMsg={"Reference No:-"}
-          refNo={"123654789"}
+          requestNoMsg={"Handover No:-"}
+          refNo={handNo}
         />
       </>
     );
@@ -103,10 +164,10 @@ const DDViewDetailbyId = () => {
             <div className="flex justify-between">
               <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
                 <h1 className="font-bold">
-                  Inventory Request No <span className="text-black">:</span>
+                  Handover No <span className="text-black">:</span>
                   <span className="font-light">
                     {" "}
-                    {/* {nullToNA(applicationFullData?.procurement_no)} */}
+                    {nullToNA(applicationFullData?.stock_handover_no)}
                   </span>
                 </h1>
               </div>
@@ -115,8 +176,8 @@ const DDViewDetailbyId = () => {
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold">Employee Id</div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  123
-                  {/* {nullToNA(applicationFullData?.category.name)} */}
+                  
+                  {nullToNA(applicationFullData?.emp_id)}
                 </div>
               </div>
 
@@ -125,26 +186,34 @@ const DDViewDetailbyId = () => {
                   Employee Name
                 </div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  ABC
-                  {/* {nullToNA(applicationFullData?.subcategory?.name)} */}
+                  {nullToNA(applicationFullData?.emp_name)}
                 </div>
               </div>
 
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">Brand</div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  bac
-                  {/* {nullToNA(applicationFullData?.brand?.name)} */}
+                  
+                  {nullToNA(applicationFullData?.brand?.name)}
                 </div>
               </div>
 
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-semibold ">
-                  Sub Categories
+                   Category
                 </div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  ABC
-                  {/* {nullToNA(applicationFullData?.rate)} */}
+                 
+                {nullToNA(applicationFullData?.category?.name)}
+                </div>
+              </div>
+              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-semibold ">
+                  Sub Category
+                </div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                 
+                {nullToNA(applicationFullData?.subcategory?.name)}
                 </div>
               </div>
 
@@ -153,24 +222,22 @@ const DDViewDetailbyId = () => {
                   Quantity Allotted{" "}
                 </div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  1236
-                  {/* {nullToNA(applicationFullData?.total_rate)} */}
+                  {nullToNA(applicationFullData?.allotted_quantity)}
                 </div>
               </div>
 
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold">Date</div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  1236
-                  {/* {nullToNA(applicationFullData?.total_rate)} */}
+                  {nullToNA(applicationFullData?.createdAt?.split("T")[0])}
                 </div>
               </div>
             </div>
             <div className="p-5 pl-8">
               <h1 className="font-bold">Description</h1>
               <p className=" pt-2">
-                dexc
-                {/* {nullToNA(applicationFullData?.description)} */}
+                
+                {nullToNA(applicationFullData?.inventory?.description)}
               </p>
             </div>
             <div className="flex justify-end w-full mb-5">
@@ -203,41 +270,46 @@ const DDViewDetailbyId = () => {
             </div>
 
             <div className="space-x-3 flex items-end justify-center">
+
+            {page == 'inbox' && 
               <button
                 className=" p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]"
                 onClick={forwardSRModal}
               >
                 Forward to Stock Receiver
               </button>
+            }
 
-              <button
+
+              {/* <button
                 className=" p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]"
                 onClick={forwardSRModal}
               >
                 Handover
-              </button>
+              </button> */}
 
-              <button
+              {/* <button
                 className=" p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]"
                 onClick={forwardSRModal}
               >
                 Return
-              </button>
+              </button> */}
 
-              <button
+              {/* <button
                 className=" p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]"
                 onClick={forwardSRModal}
               >
                 Dead Stock
-              </button>
+              </button> */}
 
-              <button
+              {/* <button
                 className=" p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]"
                 onClick={forwardSRModal}
               >
                 Warranty Claim
-              </button>
+              </button> */}
 
+                {page == 'inbox' && 
               <div className="bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700">
                 <FileButton
                   bg={"[#359F6E]"}
@@ -249,6 +321,7 @@ const DDViewDetailbyId = () => {
                   textColor={"white"}
                 />
               </div>
+                }
             </div>
           </div>
         </div>
