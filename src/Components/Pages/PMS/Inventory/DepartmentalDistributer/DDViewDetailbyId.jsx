@@ -186,8 +186,7 @@ const DDViewDetailbyId = () => {
                   Employee Name
                 </div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  ABC
-                  {/* {nullToNA(applicationFullData?.subcategory?.name)} */}
+                  {nullToNA(applicationFullData?.emp_name)}
                 </div>
               </div>
 

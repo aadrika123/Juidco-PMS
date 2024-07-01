@@ -245,7 +245,7 @@ function App() {
       element: <DistributerListTabs />,
     },
     {
-      path: "/dd-stock-proposal",
+      path: "/dd-stock-proposal/:page",
       element: <StockRequestProposal />,
     },
      {
@@ -259,7 +259,7 @@ function App() {
       element: <StockRecListTabs />,
     },
     {
-      path: "/sr-viewDetailsById",
+      path: "/sr-viewDetailsById/:handNo",
       element: <SrViewDetailbyId />,
     },
 

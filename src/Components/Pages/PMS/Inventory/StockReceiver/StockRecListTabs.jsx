@@ -24,7 +24,7 @@ const StockRecListTabs = () => {
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { api_fetchProcurementList, api_fetchProcurementDAList } =
+  const { api_getSRStockReqInbox, api_getSRStockReqOutbox } =
     ProjectApiList();
 
   return (
@@ -81,7 +81,7 @@ const StockRecListTabs = () => {
             <div>
               <DdInventoryList
                 page='inbox'
-                api={api_fetchProcurementList}
+                api={api_getSRStockReqInbox}
               />
             </div>
           )}
@@ -89,7 +89,7 @@ const StockRecListTabs = () => {
             <div>
               <DdInventoryList
                 page='outbox'
-                api={api_fetchProcurementDAList}
+                api={api_getSRStockReqOutbox}
               />
             </div>
           )}
