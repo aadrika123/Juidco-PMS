@@ -70,7 +70,6 @@ export default function BoqDetailsById(props) {
 
   let colouredBtnStyle = `bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`;
 
-
   const fetchBoqDetailsbyId = () => {
     setIsLoading(true);
     AxiosInterceptors.get(`${api_fetchAllBoqDetailsbyId}/${refNo}`, ApiHeader())
@@ -94,7 +93,6 @@ export default function BoqDetailsById(props) {
   const handleRejCancel = () => {
     setBacktoAccModal(false);
   };
-
 
   //boq back to accountant------------
   const backtoAccHandler = () => {
@@ -151,12 +149,12 @@ export default function BoqDetailsById(props) {
 
     AxiosInterceptors.post(
       `${api_postRejectBoq}`,
-      { ...data, reference_no: refNo},
+      { ...data, reference_no: refNo },
       ApiHeader()
     )
       .then(function (response) {
         if (response?.data?.status) {
-          setRejectModal(true)
+          setRejectModal(true);
           toast.success("BOQ is Rejected.");
           navigate("/da-boq");
         } else {
@@ -177,11 +175,9 @@ export default function BoqDetailsById(props) {
     backtoAccHandler();
   };
 
-  const confirmationRejectHandler  = () => {
+  const confirmationRejectHandler = () => {
     rejectBoqHandler();
   };
-
-
 
   useEffect(() => {
     setData((prev) => ({ ...prev, reference_no: refNo }));
@@ -200,7 +196,7 @@ export default function BoqDetailsById(props) {
     );
   }
 
-  if(rejectModal) {
+  if (rejectModal) {
     return (
       <RejectionModalRemark
         confirmationHandler={confirmationRejectHandler}

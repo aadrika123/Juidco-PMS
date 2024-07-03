@@ -243,8 +243,6 @@ const ViewInventoryDetailsById = (props) => {
 
   // console.log(applicationFullData)
 
- 
-
   return (
     <div>
       {isLoading && (
@@ -252,6 +250,7 @@ const ViewInventoryDetailsById = (props) => {
         <LoaderApi />
         // </div>
       )}
+
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
@@ -259,8 +258,23 @@ const ViewInventoryDetailsById = (props) => {
         />
       </div>
 
+      <div className='flex gap-10 m-4 bg-white p-4'>
+        <button
+          className={`${buttonStyle2} w-[6rem]`}
+          onClick={() =>
+            navigate("/create-boq", {
+              state: applicationFullData?.procurement_no,
+            })
+          }
+        >
+          {" "}
+          BOQ{" "}
+        </button>
+        <button className={buttonStyle2}>Pre-Tender Form</button>
+      </div>
+
       {/* //timeline  */}
-      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
+      <div className={`${isLoading ? "blur-[2px]" : ""} mt-10`}>
         <TimeLine status={applicationFullData?.status?.status} />
       </div>
 
@@ -370,63 +384,70 @@ const ViewInventoryDetailsById = (props) => {
 
             {/* <div className='h-[30px]'></div> */}
           </div>
-          <div className='space-x-5 flex justify-end mt-[2rem]'>
-            <button onClick={handlePrint} className={buttonStyle}>
-              Print
+        </div>
+
+        <div className='space-x-5 flex justify-end mt-[2rem]'>
+          <button onClick={handlePrint} className={buttonStyle}>
+            Print
+          </button>
+
+          {page == "outbox" && (
+            <button className={buttonStyle} onClick={() => navigate(-1)}>
+              Back
             </button>
+          )}
 
-            {page == "outbox" && (
-              <button className={buttonStyle} onClick={() => navigate(-1)}>
-                Back
+          {page == "inbox" && (
+            <button
+              className={buttonStyle}
+              onClick={() => {
+                navigate(`/da-edit-pre-procurement/${id}`);
+              }}
+            >
+              Edit
+            </button>
+          )}
+
+          {page == "inbox" && (
+            <>
+              <button className={buttonStyle2} onClick={postBackToSRModal}>
+                Back To Stock Receiver
               </button>
-            )}
 
-            {page == "inbox" && (
+              <button className={buttonStyle2}>Forward to Level II</button>
+
               <button
-                className={buttonStyle}
-                onClick={() => {
-                  navigate(`/da-edit-pre-procurement/${id}`);
-                }}
+                className={`px-3 p-2 text-white bg-[#0F921C]  hover:bg-green-800 rounded-md text-sm`}
+                onClick={postReleaseTenderModal}
               >
-                Edit
+                Approve
               </button>
-            )}
 
-            {page == "inbox" && (
-              <>
-                <button
-                  className={`${buttonStyle} mr-0`}
-                  onClick={postRejectTenderModal}
-                >
-                  Reject
-                </button>
+              {/* <button className={buttonStyle2} onClick={postReleaseTenderModal}>
+                Forward to Level II
+              </button> */}
 
-                <button className={buttonStyle} onClick={postBackToSRModal}>
-                  Back To Stock Receiver
-                </button>
+              <button
+                className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
+                onClick={postRejectTenderModal}
+              >
+                Reject
+              </button>
 
-                <button
-                  className={buttonStyle2}
-                  onClick={postReleaseTenderModal}
-                >
-                  Forward to Accountant
-                </button>
-
-                <div className='bg-[#359F6E] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-700'>
-                  <FileButton
-                    bg={"[#359F6E]"}
-                    hoverBg={"bg-green-700"}
-                    btnLabel={"Upload Notesheet"}
-                    imgRef={notesheetRef}
-                    setImageDoc={setImageDoc}
-                    setPreview={setPreview}
-                    textColor={"white"}
-                    // paddingY={"8"}
-                  />
-                </div>
-              </>
-            )}
-          </div>
+              <div className='bg-[#0F921C] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-800'>
+                <FileButton
+                  bg={"[#0F921C]"}
+                  hoverBg={"bg-green-800"}
+                  btnLabel={"Upload Notesheet"}
+                  imgRef={notesheetRef}
+                  setImageDoc={setImageDoc}
+                  setPreview={setPreview}
+                  textColor={"white"}
+                  // paddingY={"8"}
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -33,6 +33,7 @@ export default function CreateNewBoq() {
   const [cancelModal, setCancelModal] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [uldId, setUlbId] = useState();
+  const [gstChecked, setGstChecked] = useState(false);
 
   const [data, setData] = useState({ reference_no: "", remark: "" });
 
@@ -128,7 +129,6 @@ export default function CreateNewBoq() {
       ApiHeader()
     )
       .then(function (response) {
-        console.log("all boq data fetched ...", response?.data?.data);
         if (response?.data?.status) {
           setApplicationData(response?.data?.data);
           response?.data?.data.map(
@@ -203,21 +203,41 @@ export default function CreateNewBoq() {
   };
 
   //estimated amount with gst cal
-  const estimatedAmountCalc = (gst, editRate) => {
-    let totalAmount = 0;
-    let totalEstAmt = (editRate || applicationData)?.map(
-      (data) => (totalAmount += data?.total_rate)
-    );
-    console.log(totalAmount, "totalAmount");
-    //calculating gst value
-    const gstValue =
-      Number(gst) > 0 ? (1 + Number(gst) / 100) * totalAmount : totalAmount;
-    let roundedGstValue = Math.floor(gstValue * 100) / 100;
-    setPayload((prev) => ({
-      ...prev,
-      gst: Number(gst),
-      estimated_cost: roundedGstValue,
-    }));
+  const estimatedAmountCalc = (alldata, checkedVal) => {
+    // let totalAmount = 0;
+    // let totalEstAmt = (alldata || applicationData)?.map(
+    //   (data) => (totalAmount += data?.total_rate)
+    // );
+    // console.log(totalAmount, "totalAmount");
+    // //calculating gst value
+    // const gstValue =
+    //   Number(gst) > 0 ? (1 + Number(gst) / 100) * totalAmount : totalAmount;
+    // let roundedGstValue = Math.floor(gstValue * 100) / 100;
+    // setPayload((prev) => ({
+    //   ...prev,
+    //   gst: Number(gst),
+    //   estimated_cost: roundedGstValue,
+    // }));
+    let checkStatus = checkedVal ? checkedVal : gstChecked;
+    console.log(checkStatus, "checkStatus");
+
+    if (checkStatus) {
+      let totalAmount = 0;
+      alldata?.map((data) => (totalAmount += data?.total_rate));
+
+      //calculating gst value
+      const gstValue =
+        Number(applicationData?.gst) > 0
+          ? (1 + Number(applicationData?.gst) / 100) * totalAmount
+          : totalAmount;
+      console.log(gstValue, "gstvalue", applicationData, "applicationData");
+      let roundedGstValue = Math.floor(gstValue * 100) / 100;
+      setPayload((prev) => ({
+        ...prev,
+        gst: Number(applicationData?.gst),
+        estimated_cost: roundedGstValue,
+      }));
+    }
   };
 
   //adding rate and calculating amount
@@ -247,7 +267,7 @@ export default function CreateNewBoq() {
             ? Number(e.target.value) * Number(data?.quantity)
             : Number(data?.rate) * Number(data?.quantity),
       }));
-      estimatedAmountCalc(payload?.gst, updatedProcurement);
+      estimatedAmountCalc(updatedProcurement);
 
       return {
         ...prev,
@@ -419,29 +439,50 @@ export default function CreateNewBoq() {
                 )}
             </tbody>
           </table>
-          <div className='flex px-3 py-2 gap-6 bg-white text-center font-bold items-center'>
-            <div className='text-center w-[7%] mr-3 '>#</div>
-            <div className='flex justify-between pl-9 w-2/3'>
-              <p className='text-bold text-sm pt-2'>Add Gst</p>
-              <input
-                placeholder='Add Gst'
-                className='p-1 text-md rounded-md outline-indigo-200 text-center border border-indigo-200'
-                onChange={(e) =>
-                  estimatedAmountCalc(e.target.value, payload?.procurement)
-                }
-                defaultValue={
-                  applicationData[0]?.gst && applicationData[0]?.gst
-                }
-              />
+
+          <div className='flex justify-between p-2'>
+            <div className='p-3'>
+              <div className='flex items-center gap-4 my-1'>
+                <input
+                  type='checkbox'
+                  onChange={() => {
+                    let value;
+                    setGstChecked((prev) => {
+                      value = prev;
+                      return !prev;
+                    });
+                    estimatedAmountCalc(applicationData, !value);
+                  }}
+                />
+                <p className='text-xs w-[4rem]'>GST %</p>
+                <input
+                  placeholder='Add Gst'
+                  className='p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200'
+                  onChange={(e) =>
+                    setApplicationData((prev) => console.log(prev))
+                  }
+                  defaultValue={
+                    applicationData[0]?.gst && applicationData[0]?.gst
+                  }
+                />
+              </div>
+              <div className='flex items-center gap-4'>
+                <input type='checkbox' />
+                <p className='text-xs w-[4rem]'>HSN Code</p>
+                <input
+                  placeholder='Type here...'
+                  className='p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200'
+                  onChange={(e) => console.log("vlaues")}
+                  defaultValue={
+                    applicationData[0]?.gst && applicationData[0]?.gst
+                  }
+                />
+              </div>
             </div>
-            <span>%</span>
-          </div>
-          <div className='flex px-3 py-2 justify-around gap-6 bg-[#4338CA] text-white'>
-            <div className='w-1/3'>
-              <p>Estimated cost including GST</p>
-            </div>
-            <div className='w-2/3 flex justify-center '>
-              <p>
+
+            <div className='w-[20%] p-3'>
+              <p className='text-sm font-medium'>Total Amount</p>
+              <p className='font-semibold text-green-600'>
                 {indianAmount(
                   payload?.estimated_cost ||
                     applicationData[0]?.estimated_cost ||
@@ -450,6 +491,40 @@ export default function CreateNewBoq() {
               </p>
             </div>
           </div>
+
+          {/* <>
+            <div className='flex px-3 py-2 gap-6 bg-white text-center font-bold items-center'>
+              <div className='text-center w-[7%] mr-3 '>#</div>
+              <div className='flex justify-between pl-9 w-2/3'>
+                <p className='text-bold text-sm pt-2'>Add Gst</p>
+                <input
+                  placeholder='Add Gst'
+                  className='p-1 text-md rounded-md outline-indigo-200 text-center border border-indigo-200'
+                  onChange={(e) =>
+                    estimatedAmountCalc(e.target.value, payload?.procurement)
+                  }
+                  defaultValue={
+                    applicationData[0]?.gst && applicationData[0]?.gst
+                  }
+                />
+              </div>
+              <span>%</span>
+            </div>
+            <div className='flex px-3 py-2 justify-around gap-6 bg-[#4338CA] text-white'>
+              <div className='w-1/3'>
+                <p>Estimated cost including GST</p>
+              </div>
+              <div className='w-2/3 flex justify-center '>
+                <p>
+                  {indianAmount(
+                    payload?.estimated_cost ||
+                      applicationData[0]?.estimated_cost ||
+                      0
+                  )}
+                </p>
+              </div>
+            </div>
+          </> */}
         </div>
 
         {/* image upload and view */}
