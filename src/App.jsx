@@ -248,7 +248,7 @@ function App() {
       path: "/dd-stock-proposal/:page",
       element: <StockRequestProposal />,
     },
-     {
+    {
       path: "/dd-viewDetailsById/:handNo/:page",
       element: <DDViewDetailbyId />,
     },
@@ -279,7 +279,7 @@ function App() {
       element: <DDHandoverListTabs />,
     },
     {
-      path: "/dd-viewHandoverById",
+      path: "/dd-viewHandoverById/:id",
       element: <DDViewHandoverbyId />,
     },
   ];

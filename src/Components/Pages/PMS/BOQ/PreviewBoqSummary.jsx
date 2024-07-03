@@ -24,11 +24,11 @@ export default function PreviewBoqSummary() {
 
   const { api_postForwardAndCreateBoq, api_postUpdatedBoq } = ProjectApiList();
 
-   //Print
-   const componentRef = useRef();
-   const handlePrint = useReactToPrint({
-     content: () => componentRef.current,
-   });
+  //Print
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
@@ -58,8 +58,6 @@ export default function PreviewBoqSummary() {
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
- 
-
   const createAndForwardBoq = async () => {
     setConfirmationModal(false);
     setIsLoading(true);
@@ -79,7 +77,7 @@ export default function PreviewBoqSummary() {
           }, 2000);
         } else {
           setIsLoading(false);
-          console.log(response)
+          console.log(response);
           toast.error("Error in Forwarding to DA. Please try again");
         }
       })
@@ -113,7 +111,7 @@ export default function PreviewBoqSummary() {
           }, 2000);
         } else {
           setIsLoading(false);
-          console.log(response,"res")
+          console.log(response, "res");
           toast.error("Error in Forwarding to DA. Please try again");
         }
       })
@@ -201,6 +199,12 @@ export default function PreviewBoqSummary() {
                     Gst:{" "}
                     <span className='font-semibold text-gray-500'>
                       {state?.gst ? `${state?.gst}% ` : "Gst not added"}
+                    </span>
+                  </p>
+                  <p className='text-lg font-bold mb-2'>
+                    HSN Code:{" "}
+                    <span className='font-semibold text-gray-500'>
+                      {state?.hsn_No ? `${state?.hsn_No} ` : "Not added"}
                     </span>
                   </p>
                 </div>

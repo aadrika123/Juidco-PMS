@@ -47,7 +47,6 @@ export default function UploadDoc({
     if (!file) {
       return toast.error("No File Selected");
     }
-    console.log(file.type, "file======");
     // Check the file type
     if (!validExtensions.includes(file.type)) {
       toast.error(
@@ -196,57 +195,56 @@ export default function UploadDoc({
                     </div>
                   </div>
                 ))}
-              {docs?.find((files) => files.type !== tab) &&
-                tabData
-                  ?.find((files) => files.value === tab)
-                  ?.documents?.map((file) => (
-                    <div
-                      className='mb-2 bg-[#EEF1F7] h-14 w-full rounded-md'
-                      key={file.name}
-                    >
-                      <div className='flex justify-between items-center px-6 py-2 '>
-                        <div className='flex items-center gap-4'>
-                          {(file?.type === "application/pdf" ||
-                            file?.type === "text/csv" ||
-                            file?.type ===
-                              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") && (
-                            <img
-                              src={
-                                file.type === "application/pdf"
-                                  ? pdfIcon
-                                  : file.type === "text/csv"
-                                  ? csvIcon
-                                  : xlsxIcon
-                              }
-                              alt='file'
-                              className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-full p-1'
-                            />
-                          )}
+              {tabData
+                ?.find((files) => files.value === tab)
+                ?.documents?.map((file) => (
+                  <div
+                    className='mb-2 bg-[#EEF1F7] h-14 w-full rounded-md'
+                    key={file.name}
+                  >
+                    <div className='flex justify-between items-center px-6 py-2 '>
+                      <div className='flex items-center gap-4'>
+                        {(file?.type === "application/pdf" ||
+                          file?.type === "text/csv" ||
+                          file?.type ===
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") && (
+                          <img
+                            src={
+                              file.type === "application/pdf"
+                                ? pdfIcon
+                                : file.type === "text/csv"
+                                ? csvIcon
+                                : xlsxIcon
+                            }
+                            alt='file'
+                            className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-full p-1'
+                          />
+                        )}
 
-                          {file?.type?.match(/(jpg|jpeg|png)$/) && (
-                            <img
-                              src={URL.createObjectURL(file)}
-                              alt='Image Preview'
-                              // style={{ width: "200px", height: "auto", marginTop: "20px", border: "2px", borderColor: "blue" }}
-                              className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-md p-1'
-                            />
-                          )}
-                          <div className='text-gray-500 text-xs'>
-                            <p className='text-black'>{file?.name}</p>
-                            <p>
-                              {Math.round((file?.size / 1024) * 100) / 100} kb
-                            </p>
-                          </div>
+                        {file?.type?.match(/(jpg|jpeg|png)$/) && (
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt='Image Preview'
+                            // style={{ width: "200px", height: "auto", marginTop: "20px", border: "2px", borderColor: "blue" }}
+                            className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-md p-1'
+                          />
+                        )}
+                        <div className='text-gray-500 text-xs'>
+                          <p className='text-black'>{file?.name}</p>
+                          <p>
+                            {Math.round((file?.size / 1024) * 100) / 100} kb
+                          </p>
                         </div>
-                        <button
-                          className='rounded-full p-3 hover:bg-blue-200'
-                          onClick={() => deleteFileHandler(file?.name)}
-                        >
-                          <RiDeleteBinLine />
-                        </button>
                       </div>
+                      <button
+                        className='rounded-full p-3 hover:bg-blue-200'
+                        onClick={() => deleteFileHandler(file?.name)}
+                      >
+                        <RiDeleteBinLine />
+                      </button>
                     </div>
-                  ))}
+                  </div>
+                ))}
             </div>
           </>
 

@@ -116,7 +116,7 @@ export default function CategoryMaster() {
       {/* master table */}
       <div className='bg-white p-8 rounded-md m-4'>
         <h1 className='text-xl font-semibold text-indigo-700'>
-          {state} Master
+          {state || "Brand"} Master
         </h1>
         <MasterTable
           loading={loading}
