@@ -29,7 +29,6 @@ export default function NotificationSidebar() {
     AxiosInterceptors.get(`${api_fetchNotification}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data?.data);
           setNotificationCount(response?.data);
           setNotificationData(response?.data?.data);
 

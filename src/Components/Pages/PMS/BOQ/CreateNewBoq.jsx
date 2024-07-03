@@ -34,7 +34,6 @@ export default function CreateNewBoq() {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [uldId, setUlbId] = useState();
   const [gstChecked, setGstChecked] = useState(false);
-
   const [data, setData] = useState({ reference_no: "", remark: "" });
 
   const notesheetRef = useRef();
@@ -167,7 +166,6 @@ export default function CreateNewBoq() {
       ApiHeader2()
     )
       .then(function (response) {
-        console.log(response?.data?.st, "upper Status");
         if (response?.data?.status == true) {
           toast.success(response?.data?.message, "success");
           setTimeout(() => {
@@ -218,24 +216,21 @@ export default function CreateNewBoq() {
     //   gst: Number(gst),
     //   estimated_cost: roundedGstValue,
     // }));
-    let checkStatus = checkedVal ? checkedVal : gstChecked;
-    console.log(checkStatus, "checkStatus");
 
-    if (checkStatus) {
-      let totalAmount = 0;
-      alldata?.map((data) => (totalAmount += data?.total_rate));
-
-      //calculating gst value
-      const gstValue =
-        Number(applicationData?.gst) > 0
-          ? (1 + Number(applicationData?.gst) / 100) * totalAmount
-          : totalAmount;
-      console.log(gstValue, "gstvalue", applicationData, "applicationData");
+    /////
+    let totalAmount = 0;
+    alldata?.map((data) => (totalAmount += data?.total_rate));
+    if (checkedVal) {
+      const gstValue = (1 + Number(payload?.gst) / 100) * totalAmount;
       let roundedGstValue = Math.floor(gstValue * 100) / 100;
       setPayload((prev) => ({
         ...prev,
-        gst: Number(applicationData?.gst),
-        estimated_cost: roundedGstValue,
+        estimated_cost: roundedGstValue || totalAmount,
+      }));
+    } else {
+      setPayload((prev) => ({
+        ...prev,
+        estimated_cost: totalAmount,
       }));
     }
   };
@@ -445,34 +440,38 @@ export default function CreateNewBoq() {
               <div className='flex items-center gap-4 my-1'>
                 <input
                   type='checkbox'
-                  onChange={() => {
-                    let value;
-                    setGstChecked((prev) => {
-                      value = prev;
-                      return !prev;
-                    });
-                    estimatedAmountCalc(applicationData, !value);
+                  onChange={(e) => {
+                    const isChecked = e.target.checked;
+                    setGstChecked(isChecked);
+                    estimatedAmountCalc(payload?.procurement, isChecked);
                   }}
                 />
                 <p className='text-xs w-[4rem]'>GST %</p>
                 <input
                   placeholder='Add Gst'
                   className='p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200'
-                  onChange={(e) =>
-                    setApplicationData((prev) => console.log(prev))
-                  }
+                  onChange={(e) => {
+                    setPayload((prev) => ({
+                      ...prev,
+                      gst: Number(e.target.value),
+                    }));
+                  }}
                   defaultValue={
                     applicationData[0]?.gst && applicationData[0]?.gst
                   }
                 />
               </div>
               <div className='flex items-center gap-4'>
-                <input type='checkbox' />
                 <p className='text-xs w-[4rem]'>HSN Code</p>
                 <input
                   placeholder='Type here...'
                   className='p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200'
-                  onChange={(e) => console.log("vlaues")}
+                  onChange={(e) =>
+                    setPayload((prev) => ({
+                      ...prev,
+                      hsn_No: e.target.value,
+                    }))
+                  }
                   defaultValue={
                     applicationData[0]?.gst && applicationData[0]?.gst
                   }

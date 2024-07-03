@@ -24,8 +24,7 @@ const DDHandoverListTabs = () => {
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { api_fetchProcurementDAListInbox, api_fetchProcurementDAListOutbox } =
-    ProjectApiList();
+  const { api_getDDSRInbox, api_getDDSROutbox } = ProjectApiList();
 
   return (
     <>
@@ -38,9 +37,7 @@ const DDHandoverListTabs = () => {
 
       <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
         <div className='mt-14'>
-          <div>
-            
-          </div>
+          <div></div>
 
           <div className='flex ml-5'>
             <button
@@ -73,18 +70,12 @@ const DDHandoverListTabs = () => {
         <div className='mt-4'>
           {activeTab === "inbox" && (
             <div>
-              <DdHandoverList
-                page='inbox'
-                api={api_fetchProcurementDAListInbox}
-              />
+              <DdHandoverList page='inbox' api={api_getDDSRInbox} />
             </div>
           )}
           {activeTab === "outbox" && (
             <div>
-              <DdHandoverList
-                page='outbox'
-                api={api_fetchProcurementDAListOutbox}
-              />
+              <DdHandoverList page='outbox' api={api_getDDSROutbox} />
             </div>
           )}
         </div>

@@ -18,8 +18,6 @@ AxiosInterceptors.interceptors.response.use(
       response.data.message = "Response modified!";
     }
 
-    console.log("sldkjf lksdf lksjdkfl slk fklsdfkl ", response);
-
     return response;
   },
   (error) => {
