@@ -39,26 +39,24 @@ function InventoryDashboard() {
   const { titleBarVisibility } = useContext(contextVar);
 
   // get details by to update
-  useEffect(() => {
-    fetchUlbData();
-  }, []);
-  const fetchUlbData = () => {
-    setisLoading(true);
-    const requestBody = {
-      deviceId: "dashboard",
-    };
-    console.log("request body category id", requestBody);
-    AxiosInterceptors.post(`${api_UlbDashboard}`, requestBody, ApiHeader())
-      .then(function (response) {
-        console.log("ulb details", response.data.data);
-        setulbData(response.data.data);
-        setisLoading(false);
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-        setisLoading(false);
-      });
-  };
+  // useEffect(() => {
+  //   fetchUlbData();
+  // }, []);
+  // const fetchUlbData = () => {
+  //   setisLoading(true);
+  //   const requestBody = {
+  //     deviceId: "dashboard",
+  //   };
+  //   AxiosInterceptors.post(`${api_UlbDashboard}`, requestBody, ApiHeader())
+  //     .then(function (response) {
+  //       setulbData(response.data.data);
+  //       setisLoading(false);
+  //     })
+  //     .catch(function (error) {
+  //       console.log("errorrr.... ", error);
+  //       setisLoading(false);
+  //     });
+  // };
   // loader
   if (isLoading) {
     return (
@@ -68,8 +66,6 @@ function InventoryDashboard() {
       </>
     );
   }
-
-  // console.log("agency data", agencyData)
 
   // charts
   const options = {

@@ -44,7 +44,8 @@ export default function ProjectApiList() {
     api_editProcurement: `${baseUrl}/api/pms/da/pre-procurement/edit`,
     api_editSrProcurement: `${baseUrl}/api/pms/sr/pre-procurement/edit`,
 
-    api_itemCategory: `${baseUrl}/api/pms/master/category `,
+    api_itemCategory: `${baseUrl}/api/pms/master/category`,
+    api_categoryStatusUpdate: `${baseUrl}/api/pms/master/category/switch`,
     api_itemSubCategory: `${baseUrl}/api/pms/master/sub-category/by-category`,
     api_itemSubCategoryAll: `${baseUrl}/api/pms/master/sub-category`,
     api_itemBrand: `${baseUrl}/api/pms/master/by-subcategory`,

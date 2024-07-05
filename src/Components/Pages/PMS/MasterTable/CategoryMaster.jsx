@@ -10,21 +10,25 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
 import { FaEdit } from "react-icons/fa";
+import { FormControlLabel, Switch } from "@mui/material";
 
 export default function CategoryMaster() {
-  const { api_itemCategory } = ProjectApiList();
+  const { api_itemCategory, api_categoryStatusUpdate } = ProjectApiList();
   const { addButtonColor } = ThemeStyleTanker();
   const navigate = useNavigate();
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
-  const [newCategory, setNewCategory] = useState("");
+  const [newCategory, setNewCategory] = useState({ name: "" });
   const [newCategoryUpdate, setNewCategoryUpdate] = useState({});
   const [categoryData, setCategoryData] = useState([]);
   const [activeStatus, setActiveStatus] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [modalAction, setModalAction] = useState("");
 
+  //input onChange
   const changeHandler = (e) => {
-    setNewCategory(e.target.value);
+    const { name, value } = e.target;
+    setNewCategory((prev) => ({ ...prev, [name]: value }));
   };
 
   //tab row click function
@@ -33,22 +37,20 @@ export default function CategoryMaster() {
     navigate(`/subcategoryMaster`);
   };
 
-  //save button function
-  const createNewCategoryHandler = (id) => {
-    //api call with id receiving from category table
-    setOpenCreateModal(false);
-  };
-
-  //cancel button Handler
+  //modal cancel button Handler
   const cancelHandler = () => {
     setOpenCreateModal(false);
   };
 
+  //getting all categories (active and inactive)
   const fetchAllCategory = async () => {
     setLoading(true);
     try {
-      const response = await AxiosInterceptors.get(api_itemCategory, ApiHeader);
-      setCategoryData(response?.data?.data);
+      const response = await AxiosInterceptors.get(
+        api_itemCategory,
+        ApiHeader()
+      );
+      setCategoryData(response?.data?.data?.data);
     } catch (error) {
       console.log("error in category master", error);
       toast.error(error.response.data.message);
@@ -57,10 +59,97 @@ export default function CategoryMaster() {
     }
   };
 
+  //creating new category function
+  const createNewCategoryHandler = async () => {
+    if (newCategory?.name === "") {
+      toast.error("Category field is required");
+      return;
+    }
+    setOpenCreateModal(false);
+
+    //api call with id receiving from category table
+    try {
+      const response = await AxiosInterceptors.post(
+        api_itemCategory,
+        newCategory,
+        ApiHeader()
+      );
+      if (response?.data?.status) {
+        toast.success("New Category is created successfully");
+        fetchAllCategory();
+        setNewCategory({ name: "" });
+      }
+    } catch (error) {
+      console.log(error, "error in creating new category");
+      toast.error(
+        error?.response?.data?.message || "Error in creating new Category"
+      );
+    }
+  };
+
+  //getting catefory data to update
+  const getCategoryByIdHandler = async (id) => {
+    let url = api_itemCategory;
+    //api call with id receiving from category table
+    console.log(url + "/" + id);
+    try {
+      const response = await AxiosInterceptors.get(`${url}/${id}`, ApiHeader());
+      if (response?.data?.status) {
+        console.log(response?.data?.data, "res");
+        setNewCategory({ name: response?.data?.data?.name });
+      }
+    } catch (error) {
+      console.log(error, "error in getting category");
+      toast.error(
+        error?.response?.data?.message || "Error in getting Category"
+      );
+    }
+  };
+
+  //updating status of category
+  const updateStatusHandler = async (id, catName) => {
+    //api call with id to update status
+    try {
+      const response = await AxiosInterceptors.post(
+        api_categoryStatusUpdate,
+        { id },
+        ApiHeader()
+      );
+      if (response?.data?.status) {
+        toast.success(`${catName} Category Status updated successfully`);
+        fetchAllCategory();
+      }
+    } catch (error) {
+      console.log(error, "error in creating new category");
+      toast.error(error?.response?.data?.message || "Error in updating status");
+    }
+  };
+
+  //updating name of category
+  const updateCategoryHandler = async () => {
+    setOpenCreateModal(false);
+    try {
+      const response = await AxiosInterceptors.post(
+        api_itemCategory,
+        newCategory,
+        ApiHeader()
+      );
+      if (response?.data?.status) {
+        toast.success(`Category updated successfully`);
+        fetchAllCategory();
+      }
+    } catch (error) {
+      console.log(error, "error in updating category");
+      toast.error(
+        error?.response?.data?.message || "Error in updating category"
+      );
+    }
+  };
+
   const columns = [
     {
       Header: "Category Id",
-      // accessor: "id",
+      accessor: "id",
       Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.id}</div>,
     },
     {
@@ -85,26 +174,46 @@ export default function CategoryMaster() {
     },
     {
       Header: "Status",
+      accessor: "status",
       Cell: ({ cell }) => (
-        <div className=' font-medium'>
-          {cell.row.values.status === true ? (
-            <p className='text-green-500 bg-green-100 border border-green-500 text-center py-1 rounded-md'>
-              Active
-            </p>
-          ) : (
-            <p className='text-red-500 bg-red-100 border border-red-500 text-center py-1 rounded-md'>
-              Inactive
-            </p>
-          )}
-        </div>
+        <FormControlLabel
+          control={
+            <Switch
+              sx={{ transitionDelay: "250ms" }}
+              checked={cell.row.values.status}
+              name=''
+              onChange={() =>
+                updateStatusHandler(cell.row.values.id, cell.row.values.name)
+              }
+              // color={"secondary"}
+            />
+          }
+          label={
+            cell.row.values.status === true ? (
+              <p className='text-green-500 text-center py-1 text-sm delay-500'>
+                Active
+              </p>
+            ) : (
+              <p className='text-red-500 text-center py-1 text-sm delay-500'>
+                Inactive
+              </p>
+            )
+          }
+        />
       ),
     },
     {
       Header: "Action",
-      accessor: "id",
       Cell: ({ cell }) => (
         <>
-          <button className='' onClick={() => setOpenCreateModal(true)}>
+          <button
+            className=''
+            onClick={() => {
+              setModalAction("edit");
+              setOpenCreateModal(true);
+              getCategoryByIdHandler(cell.row.values.id);
+            }}
+          >
             <FaEdit color={"#4338CA"} fontSize={18} />
           </button>
         </>
@@ -122,7 +231,10 @@ export default function CategoryMaster() {
       <div className='flex justify-end m-4'>
         <button
           className={`${addButtonColor}`}
-          onClick={() => setOpenCreateModal(true)}
+          onClick={() => {
+            setModalAction("add");
+            setOpenCreateModal(true);
+          }}
         >
           <IoMdAdd />
           Create Category
@@ -154,14 +266,16 @@ export default function CategoryMaster() {
         handleClose={() => setOpenCreateModal(false)}
         label={"Category"}
         heading={"Create Category"}
-        name={"category"}
+        name={"name"}
+        nameStatus={"status"}
         onChange={changeHandler}
         open={openCreateModal}
         placeholder={"Create category"}
-        value={newCategory}
+        value={newCategory.name}
         createNewHandler={createNewCategoryHandler}
         onClose={cancelHandler}
-        page={"add"}
+        page={modalAction}
+        updateHandler={updateCategoryHandler}
       />
     </>
   );
