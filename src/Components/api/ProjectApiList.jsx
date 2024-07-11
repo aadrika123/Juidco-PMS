@@ -46,10 +46,16 @@ export default function ProjectApiList() {
 
     api_itemCategory: `${baseUrl}/api/pms/master/category`,
     api_categoryStatusUpdate: `${baseUrl}/api/pms/master/category/switch`,
+    api_subcategoryStatusUpdate: `${baseUrl}/api/pms/master/sub-category/switch`,
+    api_unitStatusUpdate: `${baseUrl}/api/pms/master/unit/switch`,
+    api_brandStatusUpdate: `${baseUrl}/api/pms/master/brand/switch`,
     api_itemSubCategory: `${baseUrl}/api/pms/master/sub-category/by-category`,
     api_itemSubCategoryAll: `${baseUrl}/api/pms/master/sub-category`,
     api_itemBrand: `${baseUrl}/api/pms/master/by-subcategory`,
-    // api_itemBrandNew: `${baseUrl}/api/pms/master/brand`,
+    api_getAllunit: `${baseUrl}/api/pms/master/unit`,
+    api_getAllSupplier: `${baseUrl}/api/pms/master/supplier`,
+    api_updateUnit: `${baseUrl}/api/pms/master/unit/update`,
+    api_itemBrandNew: `${baseUrl}/api/pms/master/brand`,
 
     api_fetchProcessor: `${baseUrl}/api/pms/master/processor `,
     api_fetchRam: `${baseUrl}/api/pms/master/ram `,

@@ -64,6 +64,8 @@ import DDViewHandoverbyId from "./Components/Pages/PMS/Inventory/DepartmentalDis
 import CategoryMaster from "./Components/Pages/PMS/MasterTable/CategoryMaster";
 import SubCategoryMaster from "./Components/Pages/PMS/MasterTable/SubCategoryMaster";
 import BrandMaster from "./Components/Pages/PMS/MasterTable/BrandMaster";
+import UnitMaster from "./Components/Pages/PMS/MasterTable/UnitMaster";
+import SupplierMaster from "./Components/Pages/PMS/MasterTable/SupplierMaster";
 
 const queryClient = new QueryClient();
 
@@ -114,10 +116,9 @@ function App() {
 
     { path: "/categoryMaster", element: <CategoryMaster /> },
     { path: "/subCategoryMaster/:id", element: <SubCategoryMaster /> },
-    // { path: "/subCategoryMaster", element: <SubCategoryMaster /> },
-
-    // { path: "/brandMaster", element: <BrandMaster /> },
     { path: "/brandMaster/:id", element: <BrandMaster /> },
+    { path: "/unitMaster", element: <UnitMaster /> },
+    { path: "/supplierMaster", element: <SupplierMaster /> },
 
     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 

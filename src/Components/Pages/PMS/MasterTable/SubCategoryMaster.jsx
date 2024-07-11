@@ -10,9 +10,14 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import { FaEdit } from "react-icons/fa";
+import { FormControlLabel, Switch } from "@mui/material";
 
 export default function CategoryMaster() {
-  const { api_itemSubCategory } = ProjectApiList();
+  const {
+    api_itemSubCategory,
+    api_subcategoryStatusUpdate,
+    api_itemSubCategoryAll,
+  } = ProjectApiList();
   const { addButtonColor } = ThemeStyleTanker();
 
   const navigate = useNavigate();
@@ -20,23 +25,15 @@ export default function CategoryMaster() {
   const { state } = useLocation();
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
-  const [newSubCategory, setNewSubCategory] = useState("");
+  const [newSubCategory, setNewSubCategory] = useState({ name: "" });
   const [subCategoryData, setSubCategoryData] = useState([]);
+  const [subCategoryId, setSubCategoryId] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const changeHandler = (e) => {
-    setNewSubCategory(e.target.value);
-  };
+  const [modalAction, setModalAction] = useState("");
 
   const tableRowHandler = (id) => {
     // navigate(`/subCategory/${id}`);
-    navigate(`/brandMaster`);
-  };
-
-  //save button function
-  const createNewSubCategoryHandler = (id) => {
-    //api call with id receiving from category table
-    setOpenCreateModal(false);
+    navigate(`/brandMaster/${id}`);
   };
 
   //cancel button Handler
@@ -72,18 +69,32 @@ export default function CategoryMaster() {
     },
     {
       Header: "Status",
+      accessor: "status",
       Cell: ({ cell }) => (
-        <div className=' font-medium'>
-          {cell.row.values.status === true ? (
-            <p className='text-green-500 bg-green-100 border border-green-500 text-center py-1 rounded-md'>
-              Active
-            </p>
-          ) : (
-            <p className='text-red-500 bg-red-100 border border-red-500 text-center py-1 rounded-md'>
-              Inactive
-            </p>
-          )}
-        </div>
+        <FormControlLabel
+          control={
+            <Switch
+              sx={{ transitionDelay: "250ms" }}
+              checked={cell.row.values.status}
+              name=''
+              onChange={() =>
+                updateStatusHandler(cell.row.values.id, cell.row.values.name)
+              }
+              // color={"secondary"}
+            />
+          }
+          label={
+            cell.row.values.status === true ? (
+              <p className='text-green-500 text-center py-1 text-sm delay-500'>
+                Active
+              </p>
+            ) : (
+              <p className='text-red-500 text-center py-1 text-sm delay-500'>
+                Inactive
+              </p>
+            )
+          }
+        />
       ),
     },
     {
@@ -91,7 +102,14 @@ export default function CategoryMaster() {
       accessor: "id",
       Cell: ({ cell }) => (
         <>
-          <button className='' onClick={() => setOpenCreateModal(true)}>
+          <button
+            className=''
+            onClick={() => {
+              setModalAction("edit");
+              setOpenCreateModal(true);
+              getSubCategoryByIdHandler(cell.row.values.id);
+            }}
+          >
             <FaEdit color={"#4338CA"} fontSize={18} />
           </button>
         </>
@@ -116,6 +134,98 @@ export default function CategoryMaster() {
     }
   };
 
+  //getting subcategory data to update
+  const getSubCategoryByIdHandler = async (id) => {
+    setSubCategoryId(id);
+    let url = api_itemSubCategory;
+    //api call with id receiving from category table
+    try {
+      const response = await AxiosInterceptors.get(`${url}/${id}`, ApiHeader());
+      if (response?.data?.status) {
+        setNewSubCategory({ name: response?.data?.data?.name });
+      }
+    } catch (error) {
+      console.log(error, "error in getting subcategory");
+      toast.error(
+        error?.response?.data?.message || "Error in getting SubCategory"
+      );
+    }
+  };
+
+  //creating new sub category function
+  const createNewSubCategoryHandler = async () => {
+    if (newSubCategory?.name === "") {
+      toast.error("Category field is required");
+      return;
+    }
+    setOpenCreateModal(false);
+
+    //api call with id receiving from category table
+    try {
+      const response = await AxiosInterceptors.post(
+        api_itemSubCategoryAll,
+        { ...newSubCategory, category_masterId: id },
+        ApiHeader()
+      );
+      if (response?.data?.status) {
+        toast.success("New Subcategory is created successfully");
+        fetchAllSubCategory();
+        setNewSubCategory({ name: "" });
+      }
+    } catch (error) {
+      console.log(error, "error in creating new subcategory");
+      toast.error(
+        error?.response?.data?.message || "Error in creating new Subcategory"
+      );
+    }
+  };
+
+  //updating status of subcategory
+  const updateStatusHandler = async (id, subcatName) => {
+    //api call with id to update status
+    try {
+      const response = await AxiosInterceptors.post(
+        api_subcategoryStatusUpdate,
+        { id },
+        ApiHeader()
+      );
+      if (response?.data?.status) {
+        toast.success(` Status updated successfully for ${subcatName}`);
+        fetchAllSubCategory();
+      }
+    } catch (error) {
+      console.log(error, "error in updating subcategory status");
+      toast.error(error?.response?.data?.message || "Error in updating status");
+    }
+  };
+
+  //updating name of subcategory
+  const updateSubCategoryHandler = async () => {
+    setOpenCreateModal(false);
+    try {
+      const response = await AxiosInterceptors.post(
+        api_itemSubCategory,
+        { ...newSubCategory, category_masterId: id, id: subCategoryId },
+        ApiHeader()
+      );
+      if (response?.data?.status) {
+        toast.success(`SubCategory updated successfully`);
+        fetchAllSubCategory();
+      }
+    } catch (error) {
+      console.log(error, "error in updating subcategory");
+      toast.error(
+        error?.response?.data?.message || "Error in updating subcategory"
+      );
+    }
+  };
+
+  //input onChange
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
+    setNewSubCategory((prev) => ({ ...prev, [name]: value }));
+  };
+
   useEffect(() => {
     fetchAllSubCategory();
   }, []);
@@ -126,7 +236,10 @@ export default function CategoryMaster() {
       <div className='flex justify-end m-4'>
         <button
           className={`${addButtonColor}`}
-          onClick={() => setOpenCreateModal(true)}
+          onClick={() => {
+            setModalAction("add");
+            setOpenCreateModal(true);
+          }}
         >
           <IoMdAdd />
           Create SubCategory
@@ -156,13 +269,16 @@ export default function CategoryMaster() {
         handleClose={() => setOpenCreateModal(false)}
         label={"SubCategory"}
         heading={"Create SubCategory"}
-        name={"subcategory"}
+        name={"name"}
+        nameStatus={"status"}
         onChange={changeHandler}
         open={openCreateModal}
         placeholder={"Create Subcategory"}
-        value={newSubCategory}
+        value={newSubCategory.name}
         createNewHandler={createNewSubCategoryHandler}
         onClose={cancelHandler}
+        page={modalAction}
+        updateHandler={updateSubCategoryHandler}
       />
     </>
   );
