@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
+import { Autocomplete, TextField } from "@mui/material";
 
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
@@ -24,6 +25,7 @@ import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import { testingData } from "./testinggData";
 
 const StockRequestProposal = (props) => {
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
@@ -38,14 +40,15 @@ const StockRequestProposal = (props) => {
     api_getActiveQty,
     api_getActiveDesc,
     api_getSrStockRequetById,
-    api_editStockRequest
+    api_editStockRequest,
+    api_getEmpDetails,
   } = ProjectApiList();
 
   const navigate = useNavigate();
 
   const state = useLocation();
 
-  const page = useParams()
+  const page = useParams();
   // console.log(page?.page)
 
   // console.log(props?.page)
@@ -53,6 +56,9 @@ const StockRequestProposal = (props) => {
   const [confModal, setConfModal] = useState(false);
   const [formValues, setFormValues] = useState("");
   const [category, setCategory] = useState("");
+  const [empDetails, setEmpdetails] = useState("");
+  const [formattedEmp, setFormattedEmp] = useState([]);
+  const [selectName, setSelectedName] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [brand, setBarnd] = useState("");
   const [descrip, setDescrip] = useState("");
@@ -62,7 +68,7 @@ const StockRequestProposal = (props) => {
   const [subCatID, setSubCatId] = useState("");
   const [applicationFullData, setapplicationFullData] = useState("");
 
-  console.log(applicationFullData);
+  // console.log(empDetails);
 
   //activating notification
   const notify = (toastData, type) => {
@@ -75,6 +81,25 @@ const StockRequestProposal = (props) => {
     }
   };
 
+  const getEmpdetails = () => {
+    // AxiosInterceptors.get(`${api_getEmpDetails}`, ApiHeader())
+    //   .then(function (response) {
+    //     if (response?.data?.status === true) {
+    //       setEmpdetails(response?.data?.data?.data);
+    //       console.log(response?.data?.data?.data)
+    //       formatEmp(response?.data?.data?.data);
+    //       // notify(response?.data?.message, "success");
+    //     } else {
+    //       // notify(response?.data?.message, "error");
+    //     }
+    //   })
+    //   .catch(function (res) {
+    //     notify("Something went wrong!");
+    //   });
+    // console.log(testingData)
+    setEmpdetails(testingData);
+    formatEmp(testingData);
+  };
   const getCategory = () => {
     AxiosInterceptors.get(`${api_getActiveCategory}`, ApiHeader())
       .then(function (response) {
@@ -199,13 +224,13 @@ const StockRequestProposal = (props) => {
       });
   };
 
-  const getAllMasters = (data)=>{
+  const getAllMasters = (data) => {
     // console.log('madarchod',data?.category?.id )
-    getSubCategory(data?.subcategory?.category_masterId)
-    getBrand(data?.brand?.subcategory_masterId)
-    getDescWithParams(data?.category?.id, data?.subcategory?.id  )
-    getQuantity(data?.inventory?.id)
-  }
+    getSubCategory(data?.subcategory?.category_masterId);
+    getBrand(data?.brand?.subcategory_masterId);
+    getDescWithParams(data?.category?.id, data?.subcategory?.id);
+    getQuantity(data?.inventory?.id);
+  };
 
   // const getAllMasters =async  (data) => {
   //   return await new Promise((resolve, reject) => {
@@ -217,12 +242,31 @@ const StockRequestProposal = (props) => {
   //   });
   // };
 
+  const formatEmp = (empDetails) => {
+    if (empDetails) {
+      const temp = empDetails.map((item) => item?.emp_id);
+      setFormattedEmp(temp);
+    }
+  };
+
+  const onChangeEmp = (value) => {
+    if (value) {
+      const selectedEmp = empDetails.filter((item) => item?.emp_id === value);
+      formik.setFieldValue("empId", value);
+      formik.setFieldValue(
+        "empName",
+        selectedEmp[0]?.emp_basic_details?.emp_name
+      );
+    }
+  };
+
   useEffect(() => {
     getApplicationDetail();
     getCategory();
+    getEmpdetails();
   }, []);
 
-  console.log(applicationFullData)
+  // console.log(applicationFullData);
   // intitial value
   const initialValues = {
     empId: applicationFullData?.emp_id || "",
@@ -246,25 +290,27 @@ const StockRequestProposal = (props) => {
   });
 
   const confirmationHandler = (values) => {
-    // console.log("form valuessss", formValues);
+    console.log("form valuessss", formValues);
     submitForm();
-    page?.page == 'edit' ?  navigate(-1):  navigate("/dd-inventory-proposal");
-   ;
+    page?.page == "edit" ? navigate(-1) : navigate("/dd-inventory-proposal");
   };
   const handleCancel = () => {
     setConfModal(false);
   };
 
   const submitForm = () => {
+    let api;
 
-    let api
-
-    page?.page == 'edit' ? api = api_editStockRequest : api = api_postStockRequest;
+    page?.page == "edit"
+      ? (api = api_editStockRequest)
+      : (api = api_postStockRequest);
 
     let requestBody;
 
     requestBody = {
-      ...(page?.page == 'edit' && {stock_handover_no:applicationFullData?.stock_handover_no}),
+      ...(page?.page == "edit" && {
+        stock_handover_no: applicationFullData?.stock_handover_no,
+      }),
       emp_id: formValues?.empId,
       emp_name: formValues?.empName,
       category: formValues?.category,
@@ -367,11 +413,29 @@ const StockRequestProposal = (props) => {
                         Employee Id
                       </label>
 
-                      <input
+                      {/* <input
                         name="empId"
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
                         value={formik.values.empId}
+                      /> */}
+
+                      <Autocomplete
+                        disablePortal
+                        id="combo-box-demo"
+                        options={formattedEmp}
+                        sx={{ width: "100%" }}
+                        size="small"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            sx={{ borderColor: "#4b5563" }}
+                            className={`${inputStyle} inline-block w-full relative mt-2`}
+                          />
+                        )}
+                        onChange={(e, value) => {
+                          onChangeEmp(value);
+                        }}
                       />
 
                       <p className="text-red-500 text-xs ">
@@ -393,6 +457,7 @@ const StockRequestProposal = (props) => {
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
                         value={formik.values.empName}
+                        disabled
                       />
 
                       <p className="text-red-500 text-xs ">
