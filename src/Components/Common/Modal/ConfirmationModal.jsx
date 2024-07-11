@@ -54,7 +54,7 @@ function ConfirmationModal({
 
               <div class=''>
                 <button
-                  className={`bg-[#4338CA] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
+                  className={`bg-[rgb(67,56,202)] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
                   onClick={confirmationHandler}
                 >
                   Continue
