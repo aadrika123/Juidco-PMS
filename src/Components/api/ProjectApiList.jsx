@@ -157,6 +157,7 @@ export default function ProjectApiList() {
     api_getActiveBrand: `${baseUrl}/api/pms/master/by-subcategory`,
     api_getActiveDesc: `${baseUrl}/api/pms/inventory/by-filter`,
     api_getActiveQty: `${baseUrl}/api/pms/inventory/total-available`,
+    api_getEmpDetails: `${baseUrl}/api/hrms/v1/employee/get?limit=100000000000&page=1`,
     api_postHandoverReq: `${baseUrl}/api/pms/dist/stock-request/handover`,
     api_postReturnReq: `${baseUrl}/api/pms/dist/stock-request/return-inv`,
     api_postDeadStockReq: `${baseUrl}/api/pms/dist/stock-request/add-dead-stock`,
