@@ -162,18 +162,31 @@ const CoverDetailsForm = () => {
   };
 
   //to insert documents into initial values in tabscover data
+  // const compareAndAddDocuments = (tabsData, responseData) => {
+  //   console.log(tabsData, "tabsdata", responseData, "responseData");
+  //   return tabsData?.map((obj) => {
+  //     let docUrl = responseData?.find(
+  //       (data) => data?.type === obj?.value
+  //     )?.docPath;
+  //     // if (responseData?.some((data) => data?.type === obj?.value)) {
+  //     return {
+  //       ...obj,
+  //       documents: [...docUrl],
+  //     };
+  //   });
+  //   return obj;
+  // };
+
   const compareAndAddDocuments = (tabsData, responseData) => {
     return tabsData?.map((obj) => {
       let docUrl = responseData?.find(
         (data) => data?.type === obj?.value
       )?.docPath;
-      // if (responseData?.some((data) => data?.type === obj?.value)) {
       return {
         ...obj,
-        documents: [...docUrl],
+        documents: docUrl ? [docUrl] : [],
       };
     });
-    return obj;
   };
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
@@ -186,7 +199,6 @@ const CoverDetailsForm = () => {
           setCoverDetails(response?.data?.data);
           if (response?.data?.data?.noOfCovers == "1") {
             // setTabData(tabsCover1);
-
             const doc = compareAndAddDocuments(
               tabsCover1,
               response?.data?.data?.cover_details_docs
@@ -200,6 +212,7 @@ const CoverDetailsForm = () => {
               tabsCover2,
               response?.data?.data?.cover_details_docs
             );
+            console.log(doc, "doc===");
             setTabData(doc);
             autoSelectActiveTab(tabsCover2);
           } else if (response?.data?.data?.noOfCovers == "3") {
@@ -208,6 +221,7 @@ const CoverDetailsForm = () => {
               tabsCover3,
               response?.data?.data?.cover_details_docs
             );
+            console.log(doc, "doc===");
             setTabData(doc);
             autoSelectActiveTab(tabsCover3);
           } else if (response?.data?.data?.noOfCovers == "4") {

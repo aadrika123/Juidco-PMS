@@ -59,7 +59,7 @@ export default function CategoryMaster() {
       Header: "Brands",
       Cell: ({ cell }) => (
         <div
-          className='pr-2 text-indigo-700 font-medium underline cursor-pointer'
+          className='pr-2 text-indigo-700 font-medium underline cursor-pointer hover:text-indigo-400'
           onClick={() =>
             navigate(`/brandMaster/${cell.row.values.id}`, {
               state: cell.row.values.name,
@@ -136,7 +136,7 @@ export default function CategoryMaster() {
       {/* master table */}
       <div className='bg-white p-8 rounded-md m-4'>
         <h1 className='text-xl font-semibold text-indigo-700'>
-          {state} Master
+          {state || "Sub Category"} Master
         </h1>
 
         <MasterTable

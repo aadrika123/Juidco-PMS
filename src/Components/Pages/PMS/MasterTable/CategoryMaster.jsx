@@ -18,7 +18,9 @@ export default function CategoryMaster() {
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [newCategory, setNewCategory] = useState("");
+  const [newCategoryUpdate, setNewCategoryUpdate] = useState({});
   const [categoryData, setCategoryData] = useState([]);
+  const [activeStatus, setActiveStatus] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const changeHandler = (e) => {
@@ -70,7 +72,7 @@ export default function CategoryMaster() {
       Header: "Sub Category",
       Cell: ({ cell }) => (
         <div
-          className='pr-2 text-indigo-700 font-medium underline cursor-pointer'
+          className='pr-2 text-indigo-700 font-medium underline cursor-pointer hover:text-indigo-400'
           onClick={() =>
             navigate(`/subCategoryMaster/${cell.row.values.id}`, {
               state: cell.row.values.name,
@@ -142,6 +144,8 @@ export default function CategoryMaster() {
           data={categoryData}
           columns={columns}
           fetchedData={categoryData}
+          updatedState={setNewCategoryUpdate}
+          activeStatus={setActiveStatus}
         />
       </div>
 
@@ -157,6 +161,7 @@ export default function CategoryMaster() {
         value={newCategory}
         createNewHandler={createNewCategoryHandler}
         onClose={cancelHandler}
+        page={"add"}
       />
     </>
   );

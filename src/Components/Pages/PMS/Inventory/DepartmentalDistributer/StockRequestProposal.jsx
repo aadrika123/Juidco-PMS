@@ -345,27 +345,6 @@ const StockRequestProposal = (props) => {
   const handleOnChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-
-    // {
-    //   name == "quantAlot" && remaningQtyCalc() && formik.setFieldValue('quantAlot', '')
-    // }
-    // {
-    //   name == "receivedStock" &&
-    //     formik.setFieldValue(
-    //       "receivedStock",
-    //       allowNumberInput(value, formik.values.rate, 100)
-    //     );
-    // }
-    // {
-    //   name == "remStock" &&
-    //     formik.setFieldValue(
-    //       "remStock",
-    //       allowNumberInput(value, formik.values.totalRate, 100)
-    //     );
-    // }
-    // {
-    //   name == "dead_stock" && calculateRemainingStock(value);
-    // }
   };
 
   if (confModal) {
@@ -385,7 +364,7 @@ const StockRequestProposal = (props) => {
     <>
       {/* <ToastContainer position='top-right' autoClose={3000} /> */}
 
-      <div className="">
+      <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Inventory Proposal "}
@@ -394,21 +373,21 @@ const StockRequestProposal = (props) => {
 
       <div className={`${formStyle} border border-blue-500 mt-6 shadow-lg`}>
         <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-          <div className="">
-            <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
-              <div className="col-span-12  w-full mb-20">
-                <div className=" ml-4 p-2">
+          <div className=''>
+            <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
+              <div className='col-span-12  w-full mb-20'>
+                <div className=' ml-4 p-2'>
                   <h1 className={`${headingStyle} text-right pb-5 p-6`}>
                     Stock Request Proposal
                   </h1>
                 </div>
-                <div className="hidden md:block lg:block">
-                  <hr className="border w-full border-gray-200" />
+                <div className='hidden md:block lg:block'>
+                  <hr className='border w-full border-gray-200' />
                 </div>
 
-                <div className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4">
-                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                    <div class="px-4 w-full mb-4">
+                <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                    <div class='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Employee Id
                       </label>
@@ -438,7 +417,7 @@ const StockRequestProposal = (props) => {
                         }}
                       />
 
-                      <p className="text-red-500 text-xs ">
+                      <p className='text-red-500 text-xs '>
                         {formik.touched.empId && formik.errors.empId
                           ? formik.errors.empId
                           : null}
@@ -446,21 +425,21 @@ const StockRequestProposal = (props) => {
                     </div>
                   </div>
 
-                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                    <div class="px-4 w-full mb-4">
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                    <div class='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Employee Name
                       </label>
 
                       <input
-                        name="empName"
+                        name='empName'
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
                         value={formik.values.empName}
                         disabled
                       />
 
-                      <p className="text-red-500 text-xs ">
+                      <p className='text-red-500 text-xs '>
                         {formik.touched.empName && formik.errors.empName
                           ? formik.errors.empName
                           : null}
@@ -468,8 +447,8 @@ const StockRequestProposal = (props) => {
                     </div>
                   </div>
 
-                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                    <div class="px-4 w-full mb-4">
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                    <div class='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Categories
                       </label>
@@ -496,7 +475,7 @@ const StockRequestProposal = (props) => {
                           ))}
                       </select>
 
-                      <p className="text-red-500 text-xs ">
+                      <p className='text-red-500 text-xs '>
                         {formik.touched.category && formik.errors.category
                           ? formik.errors.category
                           : null}
@@ -504,8 +483,8 @@ const StockRequestProposal = (props) => {
                     </div>
                   </div>
 
-                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                    <div class="px-4 w-full mb-4">
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                    <div class='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Sub Categories
                       </label>
@@ -529,7 +508,7 @@ const StockRequestProposal = (props) => {
                           ))}
                       </select>
 
-                      <p className="text-red-500 text-xs ">
+                      <p className='text-red-500 text-xs '>
                         {formik.touched.subCategory && formik.errors.subCategory
                           ? formik.errors.subCategory
                           : null}
@@ -537,8 +516,8 @@ const StockRequestProposal = (props) => {
                     </div>
                   </div>
 
-                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                    <div class="px-4 w-full mb-4">
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                    <div class='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Brand
                       </label>
@@ -560,7 +539,7 @@ const StockRequestProposal = (props) => {
                             </option>
                           ))}
                       </select>
-                      <p className="text-red-500 text-xs ">
+                      <p className='text-red-500 text-xs '>
                         {formik.touched.brand && formik.errors.brand
                           ? formik.errors.brand
                           : null}
@@ -568,8 +547,8 @@ const StockRequestProposal = (props) => {
                     </div>
                   </div>
 
-                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                    <div class="px-4 w-full mb-4">
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                    <div class='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Discription
                       </label>
@@ -592,7 +571,7 @@ const StockRequestProposal = (props) => {
                           ))}
                       </select>
 
-                      <p className="text-red-500 text-xs ">
+                      <p className='text-red-500 text-xs '>
                         {formik.touched.discription && formik.errors.discription
                           ? formik.errors.discription
                           : null}
@@ -600,15 +579,15 @@ const StockRequestProposal = (props) => {
                     </div>
                   </div>
 
-                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                    <div class="px-4 w-full mb-4">
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                    <div class='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Quantity Allotted
                       </label>
 
                       <input
-                        name="quantAlot"
-                        type="number"
+                        name='quantAlot'
+                        type='number'
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={(e) => {
                           remaningQtyCalc(e);
@@ -617,7 +596,7 @@ const StockRequestProposal = (props) => {
                         value={formik.values.quantAlot}
                       />
 
-                      <p className="text-red-500 text-xs ">
+                      <p className='text-red-500 text-xs '>
                         {formik.touched.quantAlot && formik.errors.quantAlot
                           ? formik.errors.quantAlot
                           : null}
@@ -625,21 +604,21 @@ const StockRequestProposal = (props) => {
                     </div>
                   </div>
 
-                  <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                    <div class="px-4 w-full mb-4">
+                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                    <div class='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Total Quantity in Stock
                       </label>
 
                       <input
-                        name="totQuant"
+                        name='totQuant'
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
                         value={quantity}
                         disabled
                       />
 
-                      <p className="text-red-500 text-xs ">
+                      <p className='text-red-500 text-xs '>
                         {formik.touched.totQuant && formik.errors.totQuant
                           ? formik.errors.totQuant
                           : null}
@@ -648,7 +627,7 @@ const StockRequestProposal = (props) => {
                   </div>
                 </div>
 
-                <div className="float-right pt-10 mr-8 space-x-5">
+                <div className='float-right pt-10 mr-8 space-x-5'>
                   <button
                     // type='submit'
                     // onClick={openCancelModal}
@@ -660,7 +639,7 @@ const StockRequestProposal = (props) => {
 
                   {/* <div className='pb-16 mr-8'> */}
                   <button
-                    type="submit"
+                    type='submit'
                     className={`bg-[#4338CA] border-blue-900 border hover:bg-[#4478b7] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                   >
                     Save

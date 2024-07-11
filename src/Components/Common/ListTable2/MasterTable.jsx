@@ -7,6 +7,7 @@ import {
   usePagination,
 } from "react-table";
 import { useMemo, useState, useEffect } from "react";
+import CreateModal from "@/Components/Pages/PMS/MasterTable/components/CreateModal";
 
 export default function MasterTable({
   tableRowHandler,
@@ -20,6 +21,7 @@ export default function MasterTable({
   const columnData = useMemo(() => columns, []);
   const data = useMemo(() => fetchedData, [fetchedData, totalCount]);
   const [pageNo, setpageNo] = useState(0);
+  const [openCreateModal, setOpenCreateModal] = useState(false);
 
   //   useEffect(() => {
   //     setpageNo(0);
@@ -66,6 +68,10 @@ export default function MasterTable({
   //       props.prevPage();
   //     }
   //   };
+
+  const changeHandler = () => {};
+
+  const updateCreateHandler = () => {};
 
   return (
     <>
@@ -162,6 +168,21 @@ export default function MasterTable({
           </div>
         </div>
       </div>
+
+      {/* create category modal */}
+      <CreateModal
+        handleClose={() => setOpenCreateModal(false)}
+        label={"Category"}
+        heading={"Edit Category"}
+        name={"category"}
+        onChange={changeHandler}
+        open={openCreateModal}
+        placeholder={"Create category"}
+        // value={newCategory}
+        updateHandler={updateCreateHandler}
+        onClose={() => setOpenCreateModal(false)}
+        page={"edit"}
+      />
     </>
   );
 }
