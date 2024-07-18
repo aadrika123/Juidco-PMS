@@ -17,9 +17,9 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
 import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 import { contextVar } from "@/Components/context/contextVar";
-import StockReceiverModal from "./StockReceiverModal";
-import ReleaseTenderModal from "./ReleaseTenderModal";
-import DaRejectModal from "./DaRejectModal";
+import StockReceiverModal from "../../PrePrecurement/DepartmentalAdmin/StockReceiverModal";
+import ReleaseTenderModal from "../../PrePrecurement/DepartmentalAdmin/ReleaseTenderModal";
+import DaRejectModal from "../../PrePrecurement/DepartmentalAdmin/DaRejectModal";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
@@ -29,7 +29,7 @@ import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import { useReactToPrint } from "react-to-print";
 import { MdArrowRightAlt } from "react-icons/md";
 
-const ViewInventoryDetailsById = (props) => {
+const ViewLevel2BoqDetails = (props) => {
   const navigate = useNavigate();
   const notesheetRef = useRef();
 
@@ -259,7 +259,7 @@ const ViewInventoryDetailsById = (props) => {
         />
       </div>
 
-      {/* <div className='flex gap-10 m-4 bg-white p-4'>
+      <div className='flex gap-10 m-4 bg-white p-4'>
         <button
           className={`${buttonStyle2} w-[6rem]`}
           onClick={() =>
@@ -274,14 +274,14 @@ const ViewInventoryDetailsById = (props) => {
         <button
           className={buttonStyle2}
           onClick={() =>
-            navigate(`/tendering?tabNo=1`, {
+            navigate(`/tendering-preview/preview`, {
               state: applicationFullData?.procurement_no,
             })
           }
         >
           Pre-Tender Form
         </button>
-      </div> */}
+      </div>
 
       {/* //timeline  */}
       <div className={`${isLoading ? "blur-[2px]" : ""} mt-10`}>
@@ -427,35 +427,29 @@ const ViewInventoryDetailsById = (props) => {
 
           {page == "inbox" && (
             <>
-              <button className={buttonStyle2} onClick={postBackToSRModal}>
+              {/* <button className={buttonStyle2} onClick={postBackToSRModal}>
                 Back To Stock Receiver
-              </button>
+              </button> */}
 
-              {/* <button className={buttonStyle2}>Forward to Level II</button> */}
-
-              {/* <button
+              <button
                 className={`px-3 p-2 text-white bg-[#0F921C]  hover:bg-green-800 rounded-md text-sm`}
                 onClick={postReleaseTenderModal}
               >
                 Approve
-              </button> */}
+              </button>
 
               {/* <button className={buttonStyle2} onClick={postReleaseTenderModal}>
                 Forward to Level II
               </button> */}
 
-              <button
+              {/* <button
                 className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center'
                 onClick={() =>
-                  navigate(`/create-boq`, {
-                    state: {
-                      procurement_no: [applicationFullData?.procurement_no],
-                    },
-                  })
+                  navigate(`/create-boq`, { state: { procurement_no: [id] } })
                 }
               >
                 Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
-              </button>
+              </button> */}
 
               <div className='bg-[#0F921C] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-800'>
                 <FileButton
@@ -477,4 +471,4 @@ const ViewInventoryDetailsById = (props) => {
   );
 };
 
-export default ViewInventoryDetailsById;
+export default ViewLevel2BoqDetails;

@@ -66,6 +66,9 @@ import SubCategoryMaster from "./Components/Pages/PMS/MasterTable/SubCategoryMas
 import BrandMaster from "./Components/Pages/PMS/MasterTable/BrandMaster";
 import UnitMaster from "./Components/Pages/PMS/MasterTable/UnitMaster";
 import SupplierMaster from "./Components/Pages/PMS/MasterTable/SupplierMaster";
+import ViewLevel1Details from "./Components/Pages/PMS/BOQ/level1/ViewLevel1Details";
+import BoqLeveloneTab from "./Components/Pages/PMS/BOQ/level1/BoqLeveloneTab";
+import ViewLevel2BoqDetails from "./Components/Pages/PMS/BOQ/level2/ViewLevel2BoqDetails";
 
 const queryClient = new QueryClient();
 
@@ -118,7 +121,7 @@ function App() {
     { path: "/subCategoryMaster/:id", element: <SubCategoryMaster /> },
     { path: "/brandMaster/:id", element: <BrandMaster /> },
     { path: "/unitMaster", element: <UnitMaster /> },
-    // { path: "/supplierMaster", element: <SupplierMaster /> },
+    { path: "/supplierMaster", element: <SupplierMaster /> },
 
     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 
@@ -203,6 +206,19 @@ function App() {
     {
       path: "/da-pre-tendring",
       element: <DATenderTabs />,
+    },
+
+    // ----------level 1 and level 2
+    { path: "/levelone-boq", element: <BoqLeveloneTab /> },
+    {
+      path: "/leveloneView/:id/:page",
+      element: <ViewLevel1Details />,
+    },
+
+    { path: "/leveltwo-boq", element: <BoqLeveloneTab /> },
+    {
+      path: "/leveltwo/:id/:page",
+      element: <ViewLevel2BoqDetails />,
     },
 
     /////////////////////////{*** BOQ ***}//////////////////////////////////////

@@ -27,17 +27,18 @@ const ViewProcurementDetailsById = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
+  console.log(id, "id ");
 
   const [applicationFullData, setapplicationFullData] = useState();
   const { api_fetchAllBoqDetails } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
 
-   //Print
-   const componentRef = useRef();
-   const handlePrint = useReactToPrint({
-     content: () => componentRef.current,
-   });
+  //Print
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
