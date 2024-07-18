@@ -1,7 +1,7 @@
 import { Modal, Box, Typography, Divider } from "@mui/material";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 
-export default function CreateModal({
+export default function CreateSupplierMasterModa({
   handleClose,
   heading,
   open,

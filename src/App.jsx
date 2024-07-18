@@ -118,7 +118,7 @@ function App() {
     { path: "/subCategoryMaster/:id", element: <SubCategoryMaster /> },
     { path: "/brandMaster/:id", element: <BrandMaster /> },
     { path: "/unitMaster", element: <UnitMaster /> },
-    { path: "/supplierMaster", element: <SupplierMaster /> },
+    // { path: "/supplierMaster", element: <SupplierMaster /> },
 
     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 

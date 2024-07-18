@@ -10,7 +10,22 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
 import { FaEdit } from "react-icons/fa";
-import { FormControlLabel, Switch } from "@mui/material";
+import { FormControlLabel, Modal, Switch, Typography } from "@mui/material";
+import { Box } from "lucide-react";
+import ThemeStyle from "@/Components/Common/ThemeStyle";
+import { useFormik } from "formik";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 3,
+  borderRadius: "10px",
+};
 
 export default function SupplierMaster() {
   const {
@@ -20,6 +35,7 @@ export default function SupplierMaster() {
     api_getAllSupplier,
   } = ProjectApiList();
   const { addButtonColor } = ThemeStyleTanker();
+  const { inputStyle, labelStyle, cancelButtonColor } = ThemeStyle();
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [newUnit, setNewUnit] = useState({ name: "" });
@@ -27,6 +43,24 @@ export default function SupplierMaster() {
   const [loading, setLoading] = useState(false);
   const [modalAction, setModalAction] = useState("");
   const [unitId, setUnitId] = useState();
+
+  const formik = useFormik({
+    // initialValues: initialValues,
+    enableReinitialize: true,
+    // onSubmit: (values) => {
+    //   //validation for dead stock image
+    //   if (
+    //     (formik.values.dead_stock != 0 || formik.values.dead_stock != "") &&
+    //     (imageDoc == "undefined" || imageDoc == null || imageDoc == "")
+    //   ) {
+    //     return toast.error("Please upload dead stock image");
+    //   }
+
+    //   setIsModalOpen(true);
+    //   setPayload(values);
+    // },
+    // validationSchema,
+  });
 
   //input onChange
   const changeHandler = (e) => {
@@ -242,7 +276,7 @@ export default function SupplierMaster() {
       </div>
 
       {/* create unit modal */}
-      <CreateModal
+      {/* <CreateModal
         handleClose={() => setOpenCreateModal(false)}
         label={"Unit"}
         heading={"Create Unit"}
@@ -256,7 +290,86 @@ export default function SupplierMaster() {
         onClose={cancelHandler}
         page={modalAction}
         updateHandler={updateUnitHandler}
-      />
+      /> */}
+
+      <Modal
+        open={openCreateModal}
+        onClose={() => setOpenCreateModal(false)}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <Box sx={style}>
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            {/* {heading} */}
+          </Typography>
+          <hr className='w-full h-2 mb-4' />
+          <div className='px-2 space-y-4 mb-10'>
+            <div className=''>
+              <label className={`${labelStyle} font-semibold font-sans`}>
+                {/* {label} */}
+              </label>
+              <input
+                type='text'
+                // name={name}
+                className={`${inputStyle} inline-block w-full relative mt-2`}
+                // value={value}
+                required
+                // placeholder={placeholder}
+                // onChange={onChange}
+              />
+            </div>
+
+            <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+              <div class='px-4 w-full mb-4'>
+                <label className={`${labelStyle} inline-block mb-2`}>
+                  Received Stock
+                </label>
+
+                <input
+                  name='receivedStock'
+                  disabled
+                  className={`${inputStyle} inline-block w-full relative`}
+                  onChange={formik.handleChange}
+                  value={formik.values.receivedStock}
+                />
+
+                <p className='text-red-500 text-xs '>
+                  {formik.touched.receivedStock && formik.errors.receivedStock
+                    ? formik.errors.receivedStock
+                    : null}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className='flex justify-between gap-2 mt-6 px-2'>
+            <button
+              className={`${cancelButtonColor}`}
+              //  onClick={onClose}
+            >
+              Cancel
+            </button>
+
+            {/* {page === "add" && (
+              <button
+                className={`${addButtonColor}`}
+                // onClick={createNewHandler && createNewHandler}
+              >
+                Save
+              </button>
+            )} */}
+
+            {/* {page === "edit" && (
+              <button
+                className={`${addButtonColor}`}
+                // onClick={updateHandler && updateHandler}
+              >
+                Update
+              </button>
+            )} */}
+          </div>
+        </Box>
+      </Modal>
     </>
   );
 }
