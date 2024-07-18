@@ -11,12 +11,14 @@ import toast from "react-hot-toast";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import { FaEdit } from "react-icons/fa";
 import { FormControlLabel, Switch } from "@mui/material";
+import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 
 export default function CategoryMaster() {
   const {
     api_itemSubCategory,
     api_subcategoryStatusUpdate,
     api_itemSubCategoryAll,
+    api_itemSubCategoryUpdate,
   } = ProjectApiList();
   const { addButtonColor } = ThemeStyleTanker();
 
@@ -45,18 +47,18 @@ export default function CategoryMaster() {
     {
       Header: "Sub Category Id",
       // accessor: "id",
-      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.id}</div>,
+      Cell: ({ cell }) => <div className="pr-2">{cell.row.values.id}</div>,
     },
     {
       Header: "Sub Category",
       accessor: "name",
-      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.name} </div>,
+      Cell: ({ cell }) => <div className="pr-2">{cell.row.values.name} </div>,
     },
     {
       Header: "Brands",
       Cell: ({ cell }) => (
         <div
-          className='pr-2 text-indigo-700 font-medium underline cursor-pointer hover:text-indigo-400'
+          className="pr-2 text-indigo-700 font-medium underline cursor-pointer hover:text-indigo-400"
           onClick={() =>
             navigate(`/brandMaster/${cell.row.values.id}`, {
               state: cell.row.values.name,
@@ -76,7 +78,7 @@ export default function CategoryMaster() {
             <Switch
               sx={{ transitionDelay: "250ms" }}
               checked={cell.row.values.status}
-              name=''
+              name=""
               onChange={() =>
                 updateStatusHandler(cell.row.values.id, cell.row.values.name)
               }
@@ -85,11 +87,11 @@ export default function CategoryMaster() {
           }
           label={
             cell.row.values.status === true ? (
-              <p className='text-green-500 text-center py-1 text-sm delay-500'>
+              <p className="text-green-500 text-center py-1 text-sm delay-500">
                 Active
               </p>
             ) : (
-              <p className='text-red-500 text-center py-1 text-sm delay-500'>
+              <p className="text-red-500 text-center py-1 text-sm delay-500">
                 Inactive
               </p>
             )
@@ -103,7 +105,7 @@ export default function CategoryMaster() {
       Cell: ({ cell }) => (
         <>
           <button
-            className=''
+            className=""
             onClick={() => {
               setModalAction("edit");
               setOpenCreateModal(true);
@@ -137,7 +139,7 @@ export default function CategoryMaster() {
   //getting subcategory data to update
   const getSubCategoryByIdHandler = async (id) => {
     setSubCategoryId(id);
-    let url = api_itemSubCategory;
+    let url = api_itemSubCategoryAll;
     //api call with id receiving from category table
     try {
       const response = await AxiosInterceptors.get(`${url}/${id}`, ApiHeader());
@@ -204,7 +206,7 @@ export default function CategoryMaster() {
     setOpenCreateModal(false);
     try {
       const response = await AxiosInterceptors.post(
-        api_itemSubCategory,
+        api_itemSubCategoryUpdate,
         { ...newSubCategory, category_masterId: id, id: subCategoryId },
         ApiHeader()
       );
@@ -233,24 +235,36 @@ export default function CategoryMaster() {
   return (
     <>
       <TitleBar titleBarVisibility={true} titleText={"SubCategory Master"} />
-      <div className='flex justify-end m-4'>
-        <button
-          className={`${addButtonColor}`}
-          onClick={() => {
-            setModalAction("add");
-            setOpenCreateModal(true);
-          }}
+      <h1 className=" text-indigo-900 pl-4 flex">
+        <span
+          className="cursor-pointer hover:underline"
+          onClick={() => navigate(-1)}
         >
-          <IoMdAdd />
-          Create SubCategory
-        </button>
-      </div>
+          Category Master
+        </span>{" "}
+        <MdOutlineKeyboardDoubleArrowRight className="m-1 text-[1rem]" />{" "}
+        <span className="font-semibold">Sub Category Master</span>
+        <MdOutlineKeyboardDoubleArrowRight className="m-1 text-[1rem] text-gray-400" />{" "}
+        <span className=" text-gray-400">Brand Master</span>
+      </h1>
 
       {/* master table */}
-      <div className='bg-white p-8 rounded-md m-4'>
-        <h1 className='text-xl font-semibold text-indigo-700'>
-          {state || "Sub Category"} Master
-        </h1>
+      <div className="bg-white p-8 rounded-md m-4 border border-blue-500">
+        <div className="flex justify-between m-4">
+          <h1 className="text-xl font-semibold text-indigo-900">
+            {state || "Sub Category"} Master
+          </h1>
+          <button
+            className={`bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right`}
+            onClick={() => {
+              setModalAction("add");
+              setOpenCreateModal(true);
+            }}
+          >
+            <IoMdAdd className="m-1 text-[1rem]" />
+            Create SubCategory
+          </button>
+        </div>
 
         <MasterTable
           tableRowHandler={tableRowHandler}
