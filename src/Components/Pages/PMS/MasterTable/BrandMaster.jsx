@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import {  useLocation, useNavigate, useParams } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 import toast from "react-hot-toast";
 import { FaEdit } from "react-icons/fa";
@@ -11,6 +11,8 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FormControlLabel, Switch } from "@mui/material";
+import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
+
 
 export default function CategoryMaster() {
   const { addButtonColor } = ThemeStyleTanker();
@@ -19,6 +21,8 @@ export default function CategoryMaster() {
 
   const { id } = useParams();
   const { state } = useLocation();
+
+  const navigate = useNavigate()
 
   // console.log(id)
 
@@ -211,24 +215,28 @@ export default function CategoryMaster() {
   return (
     <>
       <TitleBar titleBarVisibility={true} titleText={"Brand Master"} />
-      <div className="flex justify-end m-4">
+      <h1 className=" text-indigo-900 pl-4 flex">
+        Category Master <MdOutlineKeyboardDoubleArrowRight className='m-1 text-[1rem]' /> <span className="cursor-pointer hover:underline" onClick={()=>navigate(-1)}>Sub Category Master</span> <MdOutlineKeyboardDoubleArrowRight className='m-1 text-[1rem]' />  <span className="font-semibold">Brand Master</span> 
+      </h1>
+
+      {/* master table */}
+      <div className="bg-white p-8 rounded-md m-4 border border-blue-500">
+
+        <div className="flex justify-between m-4">
+        <h1 className="text-xl font-semibold text-indigo-900">
+          {state || "Brand"} Master
+        </h1>
         <button
-          className={`${addButtonColor}`}
+          className={`bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right`}
           onClick={() => {
             setModalAction("add");
             setOpenCreateModal(true);
           }}
         >
-          <IoMdAdd />
+          <IoMdAdd className='m-1 text-[1rem]' />
           Create Brand
         </button>
       </div>
-
-      {/* master table */}
-      <div className="bg-white p-8 rounded-md m-4">
-        <h1 className="text-xl font-semibold text-indigo-700">
-          {state || "Brand"} Master
-        </h1>
         <MasterTable
           loading={loading}
           // tableViewLabel={"View Brands"}
