@@ -14,16 +14,18 @@ import { FormControlLabel, Switch } from "@mui/material";
 
 export default function CategoryMaster() {
   const { addButtonColor } = ThemeStyleTanker();
-  const { api_itemBrand, api_itemBrandNew, api_brandStatusUpdate } =
+  const { api_itemBrand, api_itemBrandNew, api_brandStatusUpdate,api_itemBrandUpdate } =
     ProjectApiList();
 
   const { id } = useParams();
   const { state } = useLocation();
 
+  // console.log(id)
+
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [newBrand, setNewBrand] = useState({ name: "" });
   const [brandData, setBrandData] = useState([]);
-  const [brandId, setBrandId] = useState([]);
+  const [brandId, setBrandId] = useState();
   const [loading, setLoading] = useState(false);
   const [modalAction, setModalAction] = useState("");
 
@@ -36,12 +38,12 @@ export default function CategoryMaster() {
     {
       Header: "Brand Id",
       // accessor: "id",
-      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.id}</div>,
+      Cell: ({ cell }) => <div className="pr-2">{cell.row.values.id}</div>,
     },
     {
       Header: "Brand",
       accessor: "name",
-      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.name} </div>,
+      Cell: ({ cell }) => <div className="pr-2">{cell.row.values.name} </div>,
     },
     {
       Header: "Status",
@@ -52,7 +54,7 @@ export default function CategoryMaster() {
             <Switch
               sx={{ transitionDelay: "250ms" }}
               checked={cell.row.values.status}
-              name=''
+              name=""
               onChange={() =>
                 updateStatusHandler(cell.row.values.id, cell.row.values.name)
               }
@@ -61,11 +63,11 @@ export default function CategoryMaster() {
           }
           label={
             cell.row.values.status === true ? (
-              <p className='text-green-500 text-center py-1 text-sm delay-500'>
+              <p className="text-green-500 text-center py-1 text-sm delay-500">
                 Active
               </p>
             ) : (
-              <p className='text-red-500 text-center py-1 text-sm delay-500'>
+              <p className="text-red-500 text-center py-1 text-sm delay-500">
                 Inactive
               </p>
             )
@@ -78,13 +80,40 @@ export default function CategoryMaster() {
       accessor: "id",
       Cell: ({ cell }) => (
         <>
-          <button className='' onClick={() => setOpenCreateModal(true)}>
+          <button
+            className=""
+            onClick={() => {
+              setModalAction("edit");
+              setOpenCreateModal(true);
+              getBrandByIdHandler(cell.row.values.id);
+            }}
+          >
             <FaEdit color={"#4338CA"} fontSize={18} />
           </button>
         </>
       ),
     },
   ];
+
+  //getting subcategory data to update
+  const getBrandByIdHandler = async (id) => {
+    setBrandId(id);
+    let url = api_itemBrandNew;
+    //api call with id receiving from category table
+    try {
+      const response = await AxiosInterceptors.get(`${url}/${id}`, ApiHeader());
+      if (response?.data?.status) {
+        setNewBrand({ name: response?.data?.data?.name });
+      }
+    } catch (error) {
+      console.log(error, "error in getting subcategory");
+      toast.error(
+        error?.response?.data?.message || "Error in getting SubCategory"
+      );
+    }
+  };
+
+  
 
   //fetching all subcategory by category id
   const fetchAllBrandsBySubCategory = async () => {
@@ -102,6 +131,8 @@ export default function CategoryMaster() {
       setLoading(false);
     }
   };
+
+
 
   //creating new brand function
   const createNewBrandHandler = async () => {
@@ -141,12 +172,12 @@ export default function CategoryMaster() {
     try {
       const response = await AxiosInterceptors.post(
         api_brandStatusUpdate,
-        { subcategory: id, id: brandId },
+        {  id },
         ApiHeader()
       );
       if (response?.data?.status) {
         toast.success(`Status updated successfully for ${brandName}`);
-        fetchAllCategory();
+        fetchAllBrandsBySubCategory();
       }
     } catch (error) {
       console.log(error, "error in updating brand status");
@@ -159,8 +190,8 @@ export default function CategoryMaster() {
     setOpenCreateModal(false);
     try {
       const response = await AxiosInterceptors.post(
-        api_itemCategory,
-        { ...newBrand, subcategory: id },
+        api_itemBrandUpdate,
+        { ...newBrand, id:brandId, subcategory: id },
         ApiHeader()
       );
       if (response?.data?.status) {
@@ -180,7 +211,7 @@ export default function CategoryMaster() {
   return (
     <>
       <TitleBar titleBarVisibility={true} titleText={"Brand Master"} />
-      <div className='flex justify-end m-4'>
+      <div className="flex justify-end m-4">
         <button
           className={`${addButtonColor}`}
           onClick={() => {
@@ -194,8 +225,8 @@ export default function CategoryMaster() {
       </div>
 
       {/* master table */}
-      <div className='bg-white p-8 rounded-md m-4'>
-        <h1 className='text-xl font-semibold text-indigo-700'>
+      <div className="bg-white p-8 rounded-md m-4">
+        <h1 className="text-xl font-semibold text-indigo-700">
           {state || "Brand"} Master
         </h1>
         <MasterTable

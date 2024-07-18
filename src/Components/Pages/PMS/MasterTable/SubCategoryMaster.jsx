@@ -17,6 +17,7 @@ export default function CategoryMaster() {
     api_itemSubCategory,
     api_subcategoryStatusUpdate,
     api_itemSubCategoryAll,
+    api_itemSubCategoryUpdate,
   } = ProjectApiList();
   const { addButtonColor } = ThemeStyleTanker();
 
@@ -137,7 +138,7 @@ export default function CategoryMaster() {
   //getting subcategory data to update
   const getSubCategoryByIdHandler = async (id) => {
     setSubCategoryId(id);
-    let url = api_itemSubCategory;
+    let url = api_itemSubCategoryAll;
     //api call with id receiving from category table
     try {
       const response = await AxiosInterceptors.get(`${url}/${id}`, ApiHeader());
@@ -204,7 +205,7 @@ export default function CategoryMaster() {
     setOpenCreateModal(false);
     try {
       const response = await AxiosInterceptors.post(
-        api_itemSubCategory,
+        api_itemSubCategoryUpdate,
         { ...newSubCategory, category_masterId: id, id: subCategoryId },
         ApiHeader()
       );
