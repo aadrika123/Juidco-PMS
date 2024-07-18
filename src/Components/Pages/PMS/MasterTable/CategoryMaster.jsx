@@ -13,17 +13,20 @@ import { FaEdit } from "react-icons/fa";
 import { FormControlLabel, Switch } from "@mui/material";
 
 export default function CategoryMaster() {
-  const { api_itemCategory, api_categoryStatusUpdate } = ProjectApiList();
+  const { api_itemCategory, api_categoryStatusUpdate,api_itemCategoryUpdate } = ProjectApiList();
   const { addButtonColor } = ThemeStyleTanker();
   const navigate = useNavigate();
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [newCategory, setNewCategory] = useState({ name: "" });
+  const [categoryId, setCategoryId] = useState();
   const [newCategoryUpdate, setNewCategoryUpdate] = useState({});
   const [categoryData, setCategoryData] = useState([]);
   const [activeStatus, setActiveStatus] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalAction, setModalAction] = useState("");
+
+  // console.log(categoryId)
 
   //input onChange
   const changeHandler = (e) => {
@@ -97,6 +100,7 @@ export default function CategoryMaster() {
       if (response?.data?.status) {
         console.log(response?.data?.data, "res");
         setNewCategory({ name: response?.data?.data?.name });
+        setCategoryId(response?.data?.data?.id)
       }
     } catch (error) {
       console.log(error, "error in getting category");
@@ -130,8 +134,8 @@ export default function CategoryMaster() {
     setOpenCreateModal(false);
     try {
       const response = await AxiosInterceptors.post(
-        api_itemCategory,
-        newCategory,
+        api_itemCategoryUpdate,
+        {...newCategory,id:categoryId},
         ApiHeader()
       );
       if (response?.data?.status) {
