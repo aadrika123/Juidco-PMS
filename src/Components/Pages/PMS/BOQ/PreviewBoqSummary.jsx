@@ -204,7 +204,7 @@ export default function PreviewBoqSummary() {
                   <p className='text-lg font-bold mb-2'>
                     HSN Code:{" "}
                     <span className='font-semibold text-gray-500'>
-                      {state?.hsn_No ? `${state?.hsn_No} ` : "Not added"}
+                      {state?.hsn_code ? `${state?.hsn_code} ` : "Not added"}
                     </span>
                   </p>
                 </div>

@@ -44,8 +44,20 @@ export default function SupplierMaster() {
   const [modalAction, setModalAction] = useState("");
   const [unitId, setUnitId] = useState();
 
+  const initialValues = {
+    rateOfContractFrom: "",
+    rateOfContractTo: "",
+    supplierName: "",
+    supplerAddress: "",
+    gstNo: "",
+    bankAccName: "",
+    bankAccNo: "",
+    ifsc_code: "",
+    panNo: "",
+  };
+
   const formik = useFormik({
-    // initialValues: initialValues,
+    initialValues: initialValues,
     enableReinitialize: true,
     // onSubmit: (values) => {
     //   //validation for dead stock image
@@ -241,6 +253,7 @@ export default function SupplierMaster() {
     fetchAllUnit();
   }, []);
 
+  console.log(openCreateModal, "open==");
   return (
     <>
       <TitleBar titleBarVisibility={true} titleText={"Unit Master"} />
@@ -295,80 +308,411 @@ export default function SupplierMaster() {
       <Modal
         open={openCreateModal}
         onClose={() => setOpenCreateModal(false)}
-        aria-labelledby='modal-modal-title'
-        aria-describedby='modal-modal-description'
+        aria-labelledby='modal-modal-title1'
+        aria-describedby='modal-modal-description1'
       >
-        <Box sx={style}>
-          <Typography id='modal-modal-title' variant='h6' component='h2'>
-            {/* {heading} */}
-          </Typography>
-          <hr className='w-full h-2 mb-4' />
-          <div className='px-2 space-y-4 mb-10'>
-            <div className=''>
-              <label className={`${labelStyle} font-semibold font-sans`}>
-                {/* {label} */}
-              </label>
-              <input
-                type='text'
-                // name={name}
-                className={`${inputStyle} inline-block w-full relative mt-2`}
-                // value={value}
-                required
-                // placeholder={placeholder}
-                // onChange={onChange}
-              />
-            </div>
+        <div className='bg-white w-1/2 items-center'>
+          {/* <h1>guvjhbnk</h1> */}
+          <>
+            <Typography
+              id='modal-modal-title'
+              variant='h6'
+              component='h2'
+            ></Typography>
+            <hr className='w-full h-2 mb-4' />
 
-            <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-              <div class='px-4 w-full mb-4'>
-                <label className={`${labelStyle} inline-block mb-2`}>
-                  Received Stock
-                </label>
+            <div className='px-2 space-y-4 mb-10'>
+              <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
 
-                <input
-                  name='receivedStock'
-                  disabled
-                  className={`${inputStyle} inline-block w-full relative`}
-                  onChange={formik.handleChange}
-                  value={formik.values.receivedStock}
-                />
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.rateOfContractFrom}
+                  />
 
-                <p className='text-red-500 text-xs '>
-                  {formik.touched.receivedStock && formik.errors.receivedStock
-                    ? formik.errors.receivedStock
-                    : null}
-                </p>
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.rateOfContractFrom &&
+                    formik.errors.rateOfContractFrom
+                      ? formik.errors.rateOfContractFrom
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.rateOfContractTo}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.rateOfContractTo &&
+                    formik.errors.rateOfContractTo
+                      ? formik.errors.rateOfContractTo
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.supplierName}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.supplierName && formik.errors.supplierName
+                      ? formik.errors.supplierName
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.supplerAddress}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.supplerAddress &&
+                    formik.errors.supplerAddress
+                      ? formik.errors.supplerAddress
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.gstNo}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.gstNo && formik.errors.gstNo
+                      ? formik.errors.gstNo
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.bankAccName}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.bankAccName && formik.errors.bankAccName
+                      ? formik.errors.bankAccName
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.bankAccNo}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.bankAccNo && formik.errors.bankAccNo
+                      ? formik.errors.bankAccNo
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.ifsc_code}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.ifsc_code && formik.errors.ifsc_code
+                      ? formik.errors.ifsc_code
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.panNo}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.panNo && formik.errors.panNo
+                      ? formik.errors.panNo
+                      : null}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+            <div className='flex justify-between gap-2 mt-6 px-2'>
+              <button className={`${cancelButtonColor}`}>Cancel</button>
+            </div>
+          </>
+        </div>
+        {/* <Box sx={style} tabIndex='-2'>
+          <h1>guvjhbnk</h1>
+          <>
+            <Typography
+              id='modal-modal-title'
+              variant='h6'
+              component='h2'
+            ></Typography>
+            <hr className='w-full h-2 mb-4' />
 
-          <div className='flex justify-between gap-2 mt-6 px-2'>
-            <button
-              className={`${cancelButtonColor}`}
-              //  onClick={onClose}
-            >
-              Cancel
-            </button>
+            <div className='px-2 space-y-4 mb-10'>
+              <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
 
-            {/* {page === "add" && (
-              <button
-                className={`${addButtonColor}`}
-                // onClick={createNewHandler && createNewHandler}
-              >
-                Save
-              </button>
-            )} */}
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.rateOfContractFrom}
+                  />
 
-            {/* {page === "edit" && (
-              <button
-                className={`${addButtonColor}`}
-                // onClick={updateHandler && updateHandler}
-              >
-                Update
-              </button>
-            )} */}
-          </div>
-        </Box>
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.rateOfContractFrom &&
+                    formik.errors.rateOfContractFrom
+                      ? formik.errors.rateOfContractFrom
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.rateOfContractTo}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.rateOfContractTo &&
+                    formik.errors.rateOfContractTo
+                      ? formik.errors.rateOfContractTo
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.supplierName}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.supplierName && formik.errors.supplierName
+                      ? formik.errors.supplierName
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.supplerAddress}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.supplerAddress &&
+                    formik.errors.supplerAddress
+                      ? formik.errors.supplerAddress
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.gstNo}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.gstNo && formik.errors.gstNo
+                      ? formik.errors.gstNo
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.bankAccName}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.bankAccName && formik.errors.bankAccName
+                      ? formik.errors.bankAccName
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.bankAccNo}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.bankAccNo && formik.errors.bankAccNo
+                      ? formik.errors.bankAccNo
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.ifsc_code}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.ifsc_code && formik.errors.ifsc_code
+                      ? formik.errors.ifsc_code
+                      : null}
+                  </p>
+                </div>
+
+                <div class='px-4 w-full mb-4'>
+                  <label className={`${labelStyle} inline-block mb-2`}>
+                    Rate of Contract From
+                  </label>
+
+                  <input
+                    name='receivedStock'
+                    disabled
+                    className={`${inputStyle} inline-block w-full relative`}
+                    onChange={formik.handleChange}
+                    value={formik.values.panNo}
+                  />
+
+                  <p className='text-red-500 text-xs '>
+                    {formik.touched.panNo && formik.errors.panNo
+                      ? formik.errors.panNo
+                      : null}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className='flex justify-between gap-2 mt-6 px-2'>
+              <button className={`${cancelButtonColor}`}>Cancel</button>
+            </div>
+          </>
+        </Box> */}
       </Modal>
     </>
   );
