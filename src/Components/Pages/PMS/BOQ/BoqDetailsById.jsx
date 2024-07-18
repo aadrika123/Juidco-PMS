@@ -67,6 +67,8 @@ export default function BoqDetailsById(props) {
 
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
+  let buttonStyle2 =
+    " p-2 border border-indigo-500 text-white text-md sm:text-md leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
   let colouredBtnStyle = `bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`;
 
@@ -225,7 +227,7 @@ export default function BoqDetailsById(props) {
           <div className='p-2 bg-[#4338CA] text-white pl-5 mt-6 rounded-md flex justify-between'>
             <h2 className='text-xl '>BOQ Details</h2>
           </div>
-          <div className='bg-white rounded font-sans mb-10 border border-[#4338ca] shadow-lg px-4 mt-5'>
+          <div className='bg-white rounded font-sans mb-10 border border-[#4338ca] shadow-lg px-4 mt-1'>
             <div className='mb-4 p-4 flex justify-between'>
               <div className=''>
                 <p className='text-lg font-bold mb-2'>
@@ -261,10 +263,16 @@ export default function BoqDetailsById(props) {
                     {dataList?.status == 0 && "Pending"}
                   </span>
                 </p>
+                <p className='text-lg font-bold '>
+                  HSN Code:{" "}
+                  <span className='font-semibold text-gray-500'>
+                    {dataList?.hsn_code}
+                  </span>
+                </p>
               </div>
             </div>
 
-            <div className='shaodow-md rounded-md'>
+            <div className='shaodow-md rounded-md overflow-auto'>
               <table className='min-w-full bg-white border-collapse border border-gray-200 rounded-md'>
                 <thead className='bg-indigo-100 text-black rounded-md'>
                   {COLUMNS?.length > 0 &&
@@ -347,7 +355,7 @@ export default function BoqDetailsById(props) {
           <button className={buttonStyle} onClick={handlePrint}>
             Print
           </button>
-          {page &&
+          {/* {page &&
             page == "inbox" &&
             (dataList?.status == 0 || dataList?.status == 1) && (
               <>
@@ -358,9 +366,9 @@ export default function BoqDetailsById(props) {
                   Back to Accountant
                 </button>
               </>
-            )}
+            )} */}
 
-          {page == "inbox" &&
+          {/* {page == "inbox" &&
             (dataList?.status === 0 || dataList?.status === 1) && (
               <button
                 className='bg-red-400  hover:bg-red-500  text-white pb-2 pl-6 pr-6 pt-2 rounded flex'
@@ -368,7 +376,7 @@ export default function BoqDetailsById(props) {
               >
                 Reject BOQ
               </button>
-            )}
+            )} */}
           {page &&
             (page == "inbox" || page == "boq-status") &&
             (dataList?.status == 0 ||
@@ -386,7 +394,7 @@ export default function BoqDetailsById(props) {
               </>
             )}
 
-          {page == "inbox" &&
+          {/* {page == "inbox" &&
             (dataList?.status === 0 || dataList?.status === 1) && (
               <button
                 className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
@@ -394,10 +402,10 @@ export default function BoqDetailsById(props) {
               >
                 Approve BOQ
               </button>
-            )}
+            )} */}
 
           {(page == "inbox" || page == "boq-status") &&
-            dataList?.status == 2 && (
+            dataList?.preTender == null && (
               <div className='flex justify-end items-center'>
                 <button
                   className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
@@ -407,6 +415,35 @@ export default function BoqDetailsById(props) {
                 >
                   Proceed to Pre Tendering{" "}
                   <MdArrowRightAlt className='text-2xl ml-2' />
+                </button>
+              </div>
+            )}
+
+          {dataList?.preTender != null && (
+            <button
+              className={buttonStyle2}
+              onClick={() =>
+                navigate(`/tendering-preview/preview`, {
+                  state: dataList?.reference_no,
+                })
+              }
+            >
+              View Pre-Tender Form
+            </button>
+          )}
+
+          {(page == "inbox" || page == "boq-status") &&
+            dataList?.preTender?.status == 0 &&
+            dataList?.status == 0 &&
+            !dataList?.preTender?.isPartial && (
+              <div className='flex justify-end items-center'>
+                <button
+                  className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
+                  // onClick={() =>
+                  //   navigate(`/tendering?tabNo=1`, { state: refNo })
+                  // }
+                >
+                  Forward To level I
                 </button>
               </div>
             )}

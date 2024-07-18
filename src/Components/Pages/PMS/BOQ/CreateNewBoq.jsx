@@ -41,13 +41,12 @@ export default function CreateNewBoq() {
   const { state } = useLocation();
   const { titleBarVisibility } = useContext(contextVar);
   // let isCreatePage = state?.proNos?.length > 0 ? "create" : "edit/view";
-    let isCreatePage = state ? "create" : "edit/view";
+  let isCreatePage = state ? "create" : "edit/view";
 
   const {
     api_fetchAllBoqDetails,
     api_fetchAllBoqDetailsbyId,
     api_postForwardAndCreateBoq,
-    
   } = ProjectApiList();
 
   let buttonStyle =
@@ -89,7 +88,6 @@ export default function CreateNewBoq() {
   //get boq data by id------------
   const fetchBoqDataListById = () => {
     setisLoading(true);
-
     AxiosInterceptors.get(`${api_fetchAllBoqDetailsbyId}/${state}`, ApiHeader())
       .then(function (response) {
         console.log("boq data fetched by id ...", response?.data?.data);
@@ -122,18 +120,19 @@ export default function CreateNewBoq() {
 
   //fetchg data for boq list---------------
   const fetchBoqDataList = () => {
+    console.log(state.procurement_no, "state.procurement_no]");
     let estAmtWithoutGst = 0;
     setisLoading(true);
     AxiosInterceptors.post(
       `${api_fetchAllBoqDetails}`,
-      { procurement_no: [state] },
+      { procurement_no: state?.procurement_no },
       ApiHeader()
     )
       .then(function (response) {
         if (response?.data?.status) {
           setApplicationData(response?.data?.data);
-          response?.data?.data.map(
-            (data) => (estAmtWithoutGst += data.total_rate)
+          response?.data?.data?.map(
+            (data) => (estAmtWithoutGst += data?.total_rate)
           );
           setPayload((prev) => ({
             ...prev,
@@ -288,7 +287,7 @@ export default function CreateNewBoq() {
     if (imageDoc) {
       setPayload((prev) => ({ ...prev, img: imageDoc }));
     } else {
-      isCreatePage == "create" ?  fetchBoqDataList() : fetchBoqDataListById();
+      isCreatePage == "create" ? fetchBoqDataList() : fetchBoqDataListById();
     }
     const ulb_id = window.localStorage.getItem("ulbId");
     setUlbId(ulb_id);
@@ -464,14 +463,14 @@ export default function CreateNewBoq() {
                 />
               </div>
               <div className='flex items-center gap-4'>
-                <p className='text-xs w-[4rem]'>HSN Code</p>
+                <p className='text-xs w-[4rem] mr-7'>HSN Code</p>
                 <input
                   placeholder='Type here...'
                   className='p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200'
                   onChange={(e) =>
                     setPayload((prev) => ({
                       ...prev,
-                      hsn_No: e.target.value,
+                      hsn_code: e.target.value,
                     }))
                   }
                   defaultValue={
