@@ -270,7 +270,11 @@ const ViewInventoryDetailsById = (props) => {
           {" "}
           BOQ{" "}
         </button>
-        <button className={buttonStyle2}>Pre-Tender Form</button>
+        <button className={buttonStyle2}
+        onClick={() =>
+          navigate(`/tendering?tabNo=1`, { state: applicationFullData?.procurement_no })
+        }
+        >Pre-Tender Form</button>
       </div>
 
       {/* //timeline  */}

@@ -142,7 +142,7 @@ export default function PreviewBoqSummary() {
         <ConfirmationModal
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
-          message={"Are you sure you want to Forward to DA"}
+          message={"Are you sure you want to Save"}
         />
       </>
     );
@@ -154,7 +154,7 @@ export default function PreviewBoqSummary() {
         <ConfirmationModal
           confirmationHandler={() => setShowMessaegModal(false)}
           handleCancel={() => setShowMessaegModal(false)}
-          message={"Successfully Forwarded to DA"}
+          message={"Successfully Saved"}
           sideMessage={`Your Reference No - ${refID}`}
         />
       </>
@@ -301,7 +301,7 @@ export default function PreviewBoqSummary() {
               className={`bg-[#4338ca] hover:bg-[#564cc2] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
               onClick={() => setConfirmationModal(true)}
             >
-              {isLoading ? "Processing..." : "Forward To DA"}
+              {isLoading ? "Processing..." : "Submit"}
             </button>
           )}
           {/* <button
