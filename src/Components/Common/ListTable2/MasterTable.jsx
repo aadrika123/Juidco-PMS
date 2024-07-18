@@ -1,24 +1,18 @@
-import { Switch } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import {
   useTable,
   useSortBy,
   useGlobalFilter,
   usePagination,
 } from "react-table";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import CreateModal from "@/Components/Pages/PMS/MasterTable/components/CreateModal";
 
 export default function MasterTable({
-  tableRowHandler,
-  handleOpen,
-  tableViewLabel,
   columns,
   fetchedData,
   totalCount,
   perPage,
 }) {
-  const columnData = useMemo(() => columns, []);
   const data = useMemo(() => fetchedData, [fetchedData, totalCount]);
   const [pageNo, setpageNo] = useState(0);
   const [openCreateModal, setOpenCreateModal] = useState(false);

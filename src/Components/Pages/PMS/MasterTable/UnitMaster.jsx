@@ -13,130 +13,120 @@ import { FaEdit } from "react-icons/fa";
 import { FormControlLabel, Switch } from "@mui/material";
 
 export default function CategoryMaster() {
-  const { api_itemCategory, api_categoryStatusUpdate } = ProjectApiList();
+  const { api_getAllunit, api_unitStatusUpdate, api_updateUnit } =
+    ProjectApiList();
   const { addButtonColor } = ThemeStyleTanker();
-  const navigate = useNavigate();
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
-  const [newCategory, setNewCategory] = useState({ name: "" });
-  const [newCategoryUpdate, setNewCategoryUpdate] = useState({});
-  const [categoryData, setCategoryData] = useState([]);
-  const [activeStatus, setActiveStatus] = useState([]);
+  const [newUnit, setNewUnit] = useState({ name: "" });
+  const [categoryData, setUnitData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalAction, setModalAction] = useState("");
+  const [unitId, setUnitId] = useState();
 
   //input onChange
   const changeHandler = (e) => {
     const { name, value } = e.target;
-    setNewCategory((prev) => ({ ...prev, [name]: value }));
+    setNewUnit((prev) => ({ ...prev, [name]: value }));
   };
 
   //tab row click function
-  const tableRowHandler = (id) => {
-    // navigate(`/subCategory/${id}`);
-    navigate(`/subcategoryMaster`);
-  };
+  const tableRowHandler = () => {};
 
   //modal cancel button Handler
   const cancelHandler = () => {
     setOpenCreateModal(false);
   };
 
-  //getting all categories (active and inactive)
-  const fetchAllCategory = async () => {
+  //getting all unit (active and inactive)
+  const fetchAllUnit = async () => {
     setLoading(true);
     try {
-      const response = await AxiosInterceptors.get(
-        api_itemCategory,
-        ApiHeader()
-      );
-      setCategoryData(response?.data?.data?.data);
+      const response = await AxiosInterceptors.get(api_getAllunit, ApiHeader());
+      setUnitData(response?.data?.data?.data);
     } catch (error) {
-      console.log("error in category master", error);
+      console.log("error in unit master", error);
       toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }
   };
 
-  //creating new category function
-  const createNewCategoryHandler = async () => {
-    if (newCategory?.name === "") {
-      toast.error("Category field is required");
+  //creating new unit function
+  const createNewUnitHandler = async () => {
+    if (newUnit?.name === "") {
+      toast.error("Unit field is required");
       return;
     }
     setOpenCreateModal(false);
 
-    //api call with id receiving from category table
+    //api call with id receiving from unit table
     try {
       const response = await AxiosInterceptors.post(
-        api_itemCategory,
-        newCategory,
+        api_getAllunit,
+        newUnit,
         ApiHeader()
       );
       if (response?.data?.status) {
-        toast.success("New Category is created successfully");
-        fetchAllCategory();
-        setNewCategory({ name: "" });
+        toast.success("New Unit is created successfully");
+        fetchAllUnit();
+        setNewUnit({ name: "" });
       }
     } catch (error) {
-      console.log(error, "error in creating new category");
+      console.log(error, "error in creating new unit");
       toast.error(
-        error?.response?.data?.message || "Error in creating new Category"
+        error?.response?.data?.message || "Error in creating new Unit"
       );
     }
   };
 
-  //getting category data to update
-  const getCategoryByIdHandler = async (id) => {
-    let url = api_itemCategory;
+  //getting unit data to update
+  const getUnitByIdHandler = async (id) => {
+    setUnitId(id);
+    let url = api_getAllunit;
     //api call with id receiving from category table
-    console.log(url + "/" + id);
     try {
       const response = await AxiosInterceptors.get(`${url}/${id}`, ApiHeader());
       if (response?.data?.status) {
-        console.log(response?.data?.data, "res");
-        setNewCategory({ name: response?.data?.data?.name });
+        setNewUnit({ name: response?.data?.data?.name });
       }
     } catch (error) {
-      console.log(error, "error in getting category");
-      toast.error(
-        error?.response?.data?.message || "Error in getting Category"
-      );
+      console.log(error, "error in getting unit data");
+      toast.error(error?.response?.data?.message || "Error in getting Unit");
     }
   };
 
-  //updating status of category
-  const updateStatusHandler = async (id, catName) => {
+  //updating status of unit
+  const updateStatusHandler = async (id) => {
     //api call with id to update status
     try {
       const response = await AxiosInterceptors.post(
-        api_categoryStatusUpdate,
+        api_unitStatusUpdate,
         { id },
         ApiHeader()
       );
       if (response?.data?.status) {
-        toast.success(`${catName} Category Status updated successfully`);
-        fetchAllCategory();
+        toast.success(`Status updated successfully`);
+        fetchAllUnit();
       }
     } catch (error) {
-      console.log(error, "error in creating new category");
+      console.log(error, "error in updating unit status");
       toast.error(error?.response?.data?.message || "Error in updating status");
     }
   };
 
-  //updating name of category
-  const updateCategoryHandler = async () => {
+  //updating name of unit
+  const updateUnitHandler = async () => {
     setOpenCreateModal(false);
     try {
       const response = await AxiosInterceptors.post(
-        api_itemCategory,
-        newCategory,
+        api_updateUnit,
+        { ...newUnit, id: unitId },
         ApiHeader()
       );
       if (response?.data?.status) {
-        toast.success(`Category updated successfully`);
-        fetchAllCategory();
+        toast.success(`Unit updated successfully`);
+        fetchAllUnit();
       }
     } catch (error) {
       console.log(error, "error in updating category");
@@ -148,29 +138,14 @@ export default function CategoryMaster() {
 
   const columns = [
     {
-      Header: "Category Id",
+      Header: "Id",
       accessor: "id",
       Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.id}</div>,
     },
     {
-      Header: "Category",
+      Header: "Units",
       accessor: "name",
       Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.name} </div>,
-    },
-    {
-      Header: "Sub Category",
-      Cell: ({ cell }) => (
-        <div
-          className='pr-2 text-indigo-700 font-medium underline cursor-pointer hover:text-indigo-400'
-          onClick={() =>
-            navigate(`/subCategoryMaster/${cell.row.values.id}`, {
-              state: cell.row.values.name,
-            })
-          }
-        >
-          View Sub Categories
-        </div>
-      ),
     },
     {
       Header: "Status",
@@ -211,7 +186,7 @@ export default function CategoryMaster() {
             onClick={() => {
               setModalAction("edit");
               setOpenCreateModal(true);
-              getCategoryByIdHandler(cell.row.values.id);
+              getUnitByIdHandler(cell.row.values.id);
             }}
           >
             <FaEdit color={"#4338CA"} fontSize={18} />
@@ -222,12 +197,12 @@ export default function CategoryMaster() {
   ];
 
   useEffect(() => {
-    fetchAllCategory();
+    fetchAllUnit();
   }, []);
 
   return (
     <>
-      <TitleBar titleBarVisibility={true} titleText={"Category Master"} />
+      <TitleBar titleBarVisibility={true} titleText={"Unit Master"} />
       <div className='flex justify-end m-4'>
         <button
           className={`${addButtonColor}`}
@@ -237,15 +212,13 @@ export default function CategoryMaster() {
           }}
         >
           <IoMdAdd />
-          Create Category
+          Create Unit
         </button>
       </div>
 
       {/* master table */}
       <div className='bg-white p-8 rounded-md m-4'>
-        <h1 className='text-xl font-semibold text-indigo-700'>
-          Category Master
-        </h1>
+        <h1 className='text-xl font-semibold text-indigo-700'>Unit Master</h1>
 
         <MasterTable
           tableRowHandler={tableRowHandler}
@@ -256,26 +229,24 @@ export default function CategoryMaster() {
           data={categoryData}
           columns={columns}
           fetchedData={categoryData}
-          updatedState={setNewCategoryUpdate}
-          activeStatus={setActiveStatus}
         />
       </div>
 
-      {/* create category modal */}
+      {/* create unit modal */}
       <CreateModal
         handleClose={() => setOpenCreateModal(false)}
-        label={"Category"}
-        heading={"Create Category"}
+        label={"Unit"}
+        heading={"Create Unit"}
         name={"name"}
         nameStatus={"status"}
         onChange={changeHandler}
         open={openCreateModal}
-        placeholder={"Create category"}
-        value={newCategory.name}
-        createNewHandler={createNewCategoryHandler}
+        placeholder={"Create unit"}
+        value={newUnit.name}
+        createNewHandler={createNewUnitHandler}
         onClose={cancelHandler}
         page={modalAction}
-        updateHandler={updateCategoryHandler}
+        updateHandler={updateUnitHandler}
       />
     </>
   );
