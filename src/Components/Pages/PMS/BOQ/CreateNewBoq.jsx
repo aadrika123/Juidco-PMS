@@ -40,12 +40,14 @@ export default function CreateNewBoq() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { titleBarVisibility } = useContext(contextVar);
-  let isCreatePage = state?.proNos?.length > 0 ? "create" : "edit/view";
+  // let isCreatePage = state?.proNos?.length > 0 ? "create" : "edit/view";
+    let isCreatePage = state ? "create" : "edit/view";
 
   const {
     api_fetchAllBoqDetails,
     api_fetchAllBoqDetailsbyId,
     api_postForwardAndCreateBoq,
+    
   } = ProjectApiList();
 
   let buttonStyle =
@@ -124,7 +126,7 @@ export default function CreateNewBoq() {
     setisLoading(true);
     AxiosInterceptors.post(
       `${api_fetchAllBoqDetails}`,
-      { procurement_no: state?.proNos },
+      { procurement_no: [state] },
       ApiHeader()
     )
       .then(function (response) {
@@ -286,7 +288,7 @@ export default function CreateNewBoq() {
     if (imageDoc) {
       setPayload((prev) => ({ ...prev, img: imageDoc }));
     } else {
-      isCreatePage == "create" ? fetchBoqDataList() : fetchBoqDataListById();
+      isCreatePage == "create" ?  fetchBoqDataList() : fetchBoqDataListById();
     }
     const ulb_id = window.localStorage.getItem("ulbId");
     setUlbId(ulb_id);
