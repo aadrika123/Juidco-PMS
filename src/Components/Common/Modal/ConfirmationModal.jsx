@@ -54,7 +54,7 @@ function ConfirmationModal({
 
               <div class=''>
                 <button
-                  className={`bg-[#4338CA] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
+                  className={`bg-[rgb(67,56,202)] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
                   onClick={confirmationHandler}
                 >
                   Continue
@@ -63,10 +63,10 @@ function ConfirmationModal({
             </div>
 
             <div>
-              <h1 className='text-center pt-5'>
+              {/* <h1 className='text-center pt-5'>
                 <span className='text-red-600 text-xl'>*</span> By Clicking
                 Continue your data will be Processed
-              </h1>
+              </h1> */}
             </div>
           </div>
         </div>

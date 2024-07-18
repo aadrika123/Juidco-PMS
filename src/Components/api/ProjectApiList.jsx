@@ -168,6 +168,7 @@ export default function ProjectApiList() {
     api_postHandoverReq: `${baseUrl}/api/pms/dist/stock-request/handover`,
     api_postReturnReq: `${baseUrl}/api/pms/dist/stock-request/return-inv`,
     api_postDeadStockReq: `${baseUrl}/api/pms/dist/stock-request/add-dead-stock`,
+    api_postWarrantyClaim: `${baseUrl}/api/pms/dist/stock-request/warranty-claim-req`,
 
     api_getSRStockReqInbox: `${baseUrl}/api/pms/sr/stock-request`,
     api_getSRStockReqOutbox: `${baseUrl}/api/pms/sr/stock-request/outbox`,
