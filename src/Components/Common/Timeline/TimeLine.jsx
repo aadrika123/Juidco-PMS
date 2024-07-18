@@ -111,7 +111,7 @@ export default function TimeLine({ status }) {
           )}
         </div>
 
-        {/* Accountant */}
+        {/* Departmental Distributor */}
         <div className='flex flex-col items-center gap-1 relative'>
           <div className='flex justify-center items-center bg-[#4338ca] rounded-full w-10 h-10'>
             {(status === 70 || status === -70 || status === 72) && (
@@ -131,7 +131,7 @@ export default function TimeLine({ status }) {
               status === 6 ||
               status === 7) && <FaCheck color='white' size={16} />}
           </div>
-          <p className='absolute -bottom-[30px] w-[75px] text-sm'>Accountant</p>
+          <p className='absolute -bottom-[30px] w-[152px] text-sm'>Departmental Distributor</p>
           <p className='border font-semibold absolute -top-[38px] px-2 shadow-md bg-white text-xs'>
             {status === 70 || status === -70
               ? "BOQ"

@@ -73,7 +73,7 @@ export default function PreviewBoqSummary() {
           setShowMessaegModal(true);
           setTimeout(() => {
             setIsLoading(false);
-            navigate("/boq-search");
+            navigate("/da-boq");
           }, 2000);
         } else {
           setIsLoading(false);

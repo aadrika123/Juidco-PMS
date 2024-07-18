@@ -101,7 +101,10 @@ const DDViewHandoverbyId = () => {
     AxiosInterceptors.post(`${api_postDeadStockReq}`, body, ApiHeader())
       .then(function (response) {
         if (response?.data?.status == true) {
-          toast.success("Stock Request added to Dead Stock successfully", "success");
+          toast.success(
+            "Stock Request added to Dead Stock successfully",
+            "success"
+          );
           setSuccessModal(true);
           setTimeout(() => {
             navigate("/dd-handover");
@@ -226,7 +229,7 @@ const DDViewHandoverbyId = () => {
       </>
     );
   }
- 
+
   if (deadStockModal) {
     return (
       <>
@@ -400,32 +403,36 @@ const DDViewHandoverbyId = () => {
             </div>
 
             <div className="space-x-3 flex items-end justify-center">
-              <div className="bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700">
-                <FileButton
-                  bg={"[#359F6E]"}
-                  hoverBg={"bg-green-700"}
-                  btnLabel={"Upload References"}
-                  imgRef={notesheetRef}
-                  setImageDoc={setImageDoc}
-                  setPreview={setPreview}
-                  textColor={"white"}
-                />
-              </div>
+              {applicationFullData?.status >= 3 && (
+                <>
+                  <div className="bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700">
+                    <FileButton
+                      bg={"[#359F6E]"}
+                      hoverBg={"bg-green-700"}
+                      btnLabel={"Upload References"}
+                      imgRef={notesheetRef}
+                      setImageDoc={setImageDoc}
+                      setPreview={setPreview}
+                      textColor={"white"}
+                    />
+                  </div>
 
-              <button className={buttonStyle2} onClick={deadStockModalfunc}>
-                Dead Stock
-              </button>
+                  <button className={buttonStyle2} onClick={deadStockModalfunc}>
+                    Dead Stock
+                  </button>
 
-              <button className={buttonStyle2} onClick={returnModal}>
-                Return
-              </button>
+                  <button className={buttonStyle2} onClick={returnModal}>
+                    Return
+                  </button>
 
-              <button className={buttonStyle2} onClick={handoverModal}>
-                Handover
-              </button>
-              <button className={buttonStyle2} onClick={warrantyModal}>
-                Warranty claims
-              </button>
+                  <button className={buttonStyle2} onClick={handoverModal}>
+                    Handover
+                  </button>
+                  <button className={buttonStyle2} onClick={warrantyModal}>
+                    Warranty claims
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>

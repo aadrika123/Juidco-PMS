@@ -712,17 +712,17 @@ const ViewReceivedInvtById = () => {
                     <div className="col-span-12  w-full mb-20">
                       <div className="p-4">
                         <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
-                          Add productts
+                          Add products
                         </h2>
                       </div>
 
                       {product.map((item, index) => (
                         <div
                           key={index}
-                          className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4"
+                          className="p-4 -mt-4 valid-form flex flex-wrap flex-row -mx-4 mx-4"
                         >
-                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-[40%] mb-4">
-                            <div class="px-4 w-full mb-4">
+                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-[40%] ">
+                            <div class="px-4 w-full">
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
