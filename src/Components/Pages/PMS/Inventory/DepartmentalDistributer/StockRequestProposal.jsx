@@ -260,8 +260,10 @@ const StockRequestProposal = (props) => {
     }
   };
 
+  console.log(page,"page")
   useEffect(() => {
-    getApplicationDetail();
+    page?.page == "edit" &&  getApplicationDetail();
+   
     getCategory();
     getEmpdetails();
   }, []);

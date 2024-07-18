@@ -105,6 +105,7 @@ export default function ProjectApiList() {
     api_fetchSrReceivedInvtListInbox: `${baseUrl}/api/pms/sr/rec-inv`,
     api_fetchSrReceivedInvtListOutbox: `${baseUrl}/api/pms/sr/rec-inv/outbox`,
     api_postSrAddInvt: `${baseUrl}/api/pms/sr/rec-inv/add-to-inv`,
+    api_postSrAddProduct: `${baseUrl}/api/pms/sr/rec-inv/add-product`,
     api_fetchSrInvtDetailsList: `${baseUrl}/api/pms/inventory/by-filter`,
 
     //BOQ

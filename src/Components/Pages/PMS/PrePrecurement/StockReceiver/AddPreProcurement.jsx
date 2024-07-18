@@ -80,7 +80,6 @@ function AddPreProcurement(props) {
   const [declarationStatus, setdeclarationStatus] = useState();
   const handleDeclaration = () => {
     setdeclarationStatus((prev) => !prev);
-    console.log(declarationStatus, "declarationStatus=============");
   };
 
   //activating notification
@@ -268,7 +267,7 @@ function AddPreProcurement(props) {
   const fetchCategory = () => {
     AxiosInterceptors.get(`${api_itemCategory}`, ApiHeader())
       .then(function (response) {
-        setCategory(response?.data?.data);
+        setCategory(response?.data?.data?.data);
       })
       .catch(function (error) {
         toast.error("Something went wrong");
@@ -283,7 +282,7 @@ function AddPreProcurement(props) {
       ApiHeader()
     )
       .then(function (response) {
-        console.log(response.data.data, "res subcT");
+        console.log(response?.data?.data, "res subcT");
         setSubCategory(response?.data?.data);
       })
       .catch(function (error) {
