@@ -4,8 +4,8 @@
 //    Date - 23/05/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - SRPostProcurementCancelScreen
-//    DESCRIPTION - SRPostProcurementCancelScreen
+//    Component  - ViewReceivedInvtById
+//    DESCRIPTION - ViewReceivedInvtById
 //////////////////////////////////////////////////////////////////////////////////////
 
 import { useState, useEffect, useContext, useRef } from "react";
