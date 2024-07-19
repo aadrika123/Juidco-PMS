@@ -254,7 +254,7 @@ function App() {
     // {
     //   path: "/notifi",
     //   element: <NotificationSidebar />,
-    // },\
+    // },
 
     /////////////////////////{*** Distributer Inventory ***}//////////////////////////////////////
     {

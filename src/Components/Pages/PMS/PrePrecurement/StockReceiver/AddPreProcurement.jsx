@@ -737,7 +737,7 @@ function AddPreProcurement(props) {
                     <textarea
                       type='text'
                       name='description'
-                      className={`${inputStyle} inline-block w-full relative h-20`}
+                      className={`${inputStyle} inline-block w-full relative h-24`}
                       onChange={formik.handleChange}
                       value={formik.values.description}
                     />
@@ -751,7 +751,7 @@ function AddPreProcurement(props) {
                 </div>
 
                 <div className='valid-form flex flex-wrap flex-row mx-8'>
-                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                  <div className='form-group flex-shrink max-w-full px-4 w-full mb-4'>
                     <label
                       className={`${labelStyle} inline-block mb-4 font-semibold`}
                     >
