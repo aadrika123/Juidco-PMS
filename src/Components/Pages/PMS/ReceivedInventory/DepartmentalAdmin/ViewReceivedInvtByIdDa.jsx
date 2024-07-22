@@ -206,7 +206,7 @@ const ViewReceivedInvtByIdDa = (props) => {
       .then(function (response) {
         if (response?.data?.status == true) {
           setisLoading(false);
-          toast.success("Successfully updated", "success");
+          toast.success("Successfully Stocks Received", "success");
           setTimeout(() => {
             navigate("/da-received-inventory");
           }, 1000);

@@ -118,7 +118,7 @@ function AddPreProcurement() {
   const fetchCategory = () => {
     AxiosInterceptors.get(`${api_itemCategory}`, ApiHeader())
       .then(function (response) {
-        setCategory(response?.data?.data);
+        setCategory(response?.data?.data?.data);
       })
       .catch(function (error) {
         toast.error("Something went wrong");
@@ -133,7 +133,7 @@ function AddPreProcurement() {
       ApiHeader()
     )
       .then(function (response) {
-        console.log(response.data.data, "res subcT");
+        console.log(response?.data?.data, "res subcT");
         setSubCategory(response?.data?.data);
       })
       .catch(function (error) {
@@ -416,7 +416,7 @@ function AddPreProcurement() {
                     <textarea
                       type='text'
                       name='description'
-                      className={`${inputStyle} inline-block w-full relative h-20`}
+                      className={`${inputStyle} inline-block w-full relative h-24`}
                       onChange={formik.handleChange}
                       value={formik.values.description}
                     />
@@ -430,7 +430,7 @@ function AddPreProcurement() {
                 </div>
 
                 <div className='valid-form flex flex-wrap flex-row mx-8'>
-                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                  <div className='form-group flex-shrink max-w-full px-4 w-full mb-4'>
                     <label
                       className={`${labelStyle} inline-block mb-4 font-semibold`}
                     >

@@ -261,6 +261,7 @@ const DDViewDetailbyId = () => {
               </button>
             </div>
 
+            {applicationFullData?.status == 0  && 
             <div className='space-x-3 flex items-end justify-center'>
               {page == "inbox" && (
                 <button
@@ -285,6 +286,7 @@ const DDViewDetailbyId = () => {
                 </div>
               )}
             </div>
+}
           </div>
         </div>
       </div>
