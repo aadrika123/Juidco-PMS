@@ -9,8 +9,115 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 export default function InventoryReports() {
   const [formData, setFormData] = useState();
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
-  // const { api_fetchProcurementList, api_fetchProcurementDAList } =
-  //   ProjectApiList();
+  const { api_fetchProcurementList, api_fetchProcurementDAList } =
+    ProjectApiList();
+
+    const COLUMNS = [
+      {
+        Header: "#",
+        Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+      },
+      {
+        Header: "Order No",
+        accessor: "procurement_no",
+        Cell: ({ cell }) => (
+          <div className='pr-2'>{cell.row.values.procurement_no}</div>
+        ),
+      },
+      {
+        Header: "Category",
+        accessor: "category",
+        Cell: ({ cell }) => (
+          <div className='pr-2'>{cell.row.values.category.name} </div>
+        ),
+      },
+      {
+        Header: "Sub Category",
+        accessor: "subcategory",
+        Cell: ({ cell }) => (
+          <div className='pr-2'>{cell.row.values.subcategory.name} </div>
+        ),
+      },
+      {
+        Header: "Brand",
+        accessor: "brand",
+        Cell: (
+          { cell } // console.log(cell.row.values,"===================celllllll")
+        ) => <div className='pr-2'>{cell.row.values.brand.name || "N/A"}</div>,
+      },
+  
+      {
+        Header: "status",
+        accessor: "status",
+        Cell: ({ cell }) => (
+          <div className='pr-2'>
+            <p className='font-bold text-yellow-800'>
+              {cell.row.values.status.status == -1 && "Back to SR"}
+            </p>
+            <p className='font-bold text-red-500'>
+              {cell.row.values.status.status == -2 && "Rejected"}
+            </p>
+            <p className='font-bold text-blue-800'>
+              {cell.row.values.status.status == 0 && "Pending"}
+            </p>
+            <p className='font-bold text-blue-800'>
+              {cell.row.values.status.status == 1 && "DA's Inbox"}
+            </p>
+            <p className='font-bold text-green-800'>
+              {cell.row.values.status.status == 2 && "Release for Tender"}
+            </p>
+            <p className='font-bold text-green-500'>
+              {cell.row.values.status.status == 3 && "Supplier assigned"}
+            </p>
+            <p className='font-bold text-green-500'>
+              {cell.row.values.status.status == 4 && "Incomplete stocks received"}
+            </p>
+            <p className='font-bold text-green-500'>
+              {cell.row.values.status.status == 5 && "Stocks received"}
+            </p>
+            <p className='font-bold text-green-500'>
+              {cell.row.values.status.status == 69 && "Revised"}
+            </p>
+            <p className='font-bold text-green-500'>
+              {cell.row.values.status.status == 71 && "BOQ already created"}
+            </p>
+            <p className='font-bold text-green-500'>
+              {cell.row.values.status.status == 70 && "Ready for BOQ"}
+            </p>
+            <p className='font-bold text-green-500'>
+              {cell.row.values.status.status == -70 && "BOQ returned from DA"}
+            </p>
+            <p className='font-bold text-green-500'>
+              {cell.row.values.status.status == 72 && "Ready for tendering"}
+            </p>
+            <p className='font-bold text-green-500'>
+              {cell.row.values.status.status == -72 && "Tender back from DA"}
+            </p>
+            <p className='font-bold text-green-500'>
+              {cell.row.values.status.status == 73 && "Tender is ready"}
+            </p>
+          </div>
+        ),
+      },
+      {
+        Header: "Action",
+        accessor: "id",
+        Cell: ({ cell }) => (
+          <>
+            <button
+              className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+              onClick={() =>
+                navigate(
+                  `/da-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`
+                )
+              }
+            >
+              View
+            </button>
+          </>
+        ),
+      },
+    ];
 
   // Initial values
   const initialValues = {
@@ -201,27 +308,32 @@ export default function InventoryReports() {
                 </p>
               </div>
 
-              <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 flex items-center">
-                <button
-                  type="submit"
-                  className={`w-full mt-4 bg-[#4338CA] border-blue-900 border hover:bg-[#4478b7] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                >
-                  Search
-                </button>
-              </div>
+             
             </div>
+            <div className='form-group flex-shrink w-full px-4 flex justify-end'>
+            <button
+              type='submit'
+              className={`mt-4 hover:bg-[#4478b7] bg-blue-700 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+            >
+              Search
+            </button>
+          </div>
           </form>
         </div>
       </div>
 
-      <div className="rounded-md border border-gray-200 bg-white my-2">
-        <ListTableParent
-          // table={tableSelector(props?.page)}
-          // api={api_fetchProcurementList}
-          columns={Columns}
-          // requestBody={requestBody} // sending bodyy
-          // changeData={changeData} // send action for new payload
-        />
+      <div className='border border-gray-200 rounded-md p-2 bg-white'>
+        <h2 className='text-2xl font-semibold p-2 mb-4'>Total Stock</h2>
+
+        <div className='p-2'>
+          <ListTableParent
+            // table={tableSelector(props?.page)}
+            // api={}
+            columns={COLUMNS}
+            // requestBody={requestBody} // sending body
+            // changeData={changeData} // send action for new payload
+          />
+        </div>
       </div>
     </>
   );
