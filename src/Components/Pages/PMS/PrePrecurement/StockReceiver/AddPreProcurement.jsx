@@ -14,16 +14,11 @@ import { useFormik } from "formik";
 
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
 import PreProcurementSubmittedScreen from "./PreProcurementSubmittedScreen";
 import * as yup from "yup";
-import {
-  allowCharacterInput,
-  allowNumberMultiplyInput,
-  allowNumberInput,
-  allowCharacterNumberInput,
-} from "@/Components/Common/PowerUps/PowerupFunctions";
+import { allowNumberInput } from "@/Components/Common/PowerUps/PowerupFunctions";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import PreProcurementCancelScreen from "./PreProcurementCancelScreen";
 import SuccessModal from "./SuccessModal";
@@ -31,16 +26,13 @@ import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { useNavigate } from "react-router-dom";
-// import { ToastContainer, toast } from "react-toastify";
 
-function AddPreProcurement(props) {
+function AddPreProcurement() {
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
 
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-
-  // const notify = () => toast("Successfully Submitted ");
 
   const {
     api_addProcurement,
@@ -50,21 +42,12 @@ function AddPreProcurement(props) {
   } = ProjectApiList();
 
   const [isLoading, setisLoading] = useState(false);
-
-  const [responseScreen, setresponseScreen] = useState();
   const [ulbData, setulbData] = useState();
-  const [ulbAreaVal, setulbAreaVal] = useState();
-  const [errRes, setErrRes] = useState();
   const [ulbId, setulbId] = useState();
 
   const [category, setCategory] = useState();
   const [subcategory, setSubCategory] = useState();
   const [brand, setBrand] = useState();
-  const [processor, setProcessor] = useState();
-  const [ramList, setRamList] = useState();
-  const [OperatingSystem, setOperatingSystem] = useState();
-  const [romList, setRomList] = useState();
-  const [graphicsList, setGraphicsList] = useState();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
@@ -72,15 +55,6 @@ function AddPreProcurement(props) {
   const [formData, setFormData] = useState();
   const [categorySelected, setCategorySelected] = useState([]);
   const [procurement_no, setProcurement_no] = useState();
-  const [otherCategory, setOtherCategory] = useState();
-
-  console.log(category, "OT");
-
-  // ══════════════════════════════║🔰 form submission declaration 🔰║═══════════════════════════════════
-  const [declarationStatus, setdeclarationStatus] = useState();
-  const handleDeclaration = () => {
-    setdeclarationStatus((prev) => !prev);
-  };
 
   //activating notification
   const notify = (toastData, type) => {
@@ -99,32 +73,6 @@ function AddPreProcurement(props) {
     itemcategory: yup.string().required("item category is required"),
     itemsubcategory: yup.string().required("item subcategory is required"),
     brand: yup.string().required("brand is required"),
-    // fieldRequired: yup.string().required("This Field is required"),
-    // brand: yup.string().required("brand is required"),
-
-    // processor: yup.string().required("processor is required"),
-    // ram: yup.string().required("ram is required"),
-    // operatingsystem: yup.string().required("operatingsystem is required"),
-    // rom: yup.string().required("rom is required"),
-    // graphics: yup.string().required("graphics is required"),
-
-    // colour: yup.string().required("Color is required"),
-    // material: yup.string().required("Material  aterial is required"),
-    // dimension: yup.string().required("Dimension  aterial is required"),
-    // room_type: yup.string().required("Room type  aterial is required"),
-    // included_components: yup.string().required("Included components is required"),
-    // size: yup.string().required("Size is required"),
-    // recomended_uses: yup.string().required("Recomended_uses is required"),
-    // bristle: yup.string().required("Bristle is required"),
-    // weight: yup.string().required("Weight is required"),
-
-    // number_of_items: yup.string().required("No of items is required"),
-
-    // number_of_items: yup.string().when("itemcategory", {
-    //   is: "",
-    //   then: yup.string().required("Must enter email address")
-    // }),
-
     description: yup.string().required("Other description is required"),
     rate: yup.number().required("Rate is required"),
   });
@@ -134,116 +82,20 @@ function AddPreProcurement(props) {
     itemcategory: "",
     itemsubcategory: "",
     brand: "",
-    processor: "",
-    ram: "",
-    operatingsystem: "",
-    rom: "",
-    graphics: "",
     description: "",
     quantity: "",
     rate: "",
-
-    //Furniture values
-    number_of_items: "",
-    brand: "",
-    colour: "",
-    material: "",
-    product_dimensions: "",
-    room_type: "",
-    included_components: "",
-    size: "",
-
-    //CleaningSupplies
-    number_of_items: "",
-    brand: "",
-    colour: "",
-    recommendedUsedProducts: "",
-    handle_material: "",
-    bristle: "",
-
-    // safetySecurity
-    number_of_items: "",
-    brand: "",
-    weight: "",
-    recommendedUsedProducts: "",
-    dimension: "",
-
-    // maintenanceAndRepair
-    number_of_items: "",
-    brand: "",
-    colour: "",
-    maintenamce_material: "",
-    items_dimensions: "",
-    items_weight: "",
-
-    // uniform
-    number_of_items: "",
-    brand: "",
-    colour: "",
-    maintenamce_material: "",
   };
 
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log("click");
-      console.log("procurement==============>>", values);
-      // submitForm(values);
       setIsModalOpen(true);
       setFormData(values);
     },
     validationSchema,
   });
-
-  // =========================================================
-
-  const furniture = [
-    { label: "Number of Items", name: "number_of_items", type: "number" },
-    { label: "Brand", name: "brand", type: "text" },
-    { label: "Colour", name: "colour", type: "text" },
-    { label: "Material", name: "material", type: "text" },
-    { label: "Product Dimensions", name: "product_dimensions", type: "text" },
-    { label: "Room Type", name: "room_type", type: "text" },
-    { label: "Included Components", name: "included_components", type: "text" },
-    { label: "Size", name: "size", type: "text" },
-  ];
-
-  const cleaningSupplies = [
-    { label: "Number of Items", name: "number_of_items", type: "number" },
-    { label: "Brand", name: "brand", type: "text" },
-    { label: "Colour", name: "colour", type: "text" },
-    {
-      label: "Recommended Uses For Product",
-      name: "recomended_uses",
-      type: "text",
-    },
-    { label: "Handle Material	", name: "material", type: "text" },
-    { label: "Bristle", name: "bristle", type: "text" },
-  ];
-
-  const safetySecurity = [
-    { label: "Number of Items", name: "number_of_items", type: "number" },
-    { label: "Brand", name: "brand", type: "text" },
-    { label: "Weight", name: "weight", type: "number" },
-    { label: "Dimension", name: "dimension", type: "text" },
-  ];
-
-  const maintenanceAndRepair = [
-    { label: "Number of Items", name: "number_of_items", type: "number" },
-    { label: "Brand", name: "brand", type: "text" },
-    { label: "Colour", name: "colour", type: "text" },
-    { label: "Material	", name: "material", type: "text" },
-    { label: "Dimension", name: "dimension", type: "text" },
-    { label: "Items Weight", name: "weight", type: "number" },
-  ];
-
-  const uniform = [
-    { label: "Number of Items", name: "number_of_items", type: "number" },
-    { label: "Brand", name: "brand", type: "text" },
-    { label: "Colour", name: "colour", type: "text" },
-    { label: "Material	", name: "material", type: "text" },
-  ];
 
   // ══════════════════════════════║🔰calculate the total rate🔰║═══════════════════════════════════
   const calculateTotalRate = () => {
@@ -251,7 +103,6 @@ function AddPreProcurement(props) {
     const quantity = Number(formik.values.quantity) || 0;
     const totalRate = rate * quantity;
     formik.setFieldValue("totalRate", totalRate);
-    console.log(totalRate, "tot Rate");
   };
 
   useEffect(() => {
@@ -296,7 +147,7 @@ function AddPreProcurement(props) {
         setBrand(response.data.data);
       })
       .catch(function (error) {
-        toast.error("Something went wrong");
+        toast.error("Error in fetching Brands");
       });
   };
 
@@ -312,24 +163,7 @@ function AddPreProcurement(props) {
       ulb_id: ulbId,
       category: formData?.itemcategory,
       subcategory: formData?.itemsubcategory,
-
-      processor: formData?.processor,
-      ram: formData?.ram,
-      os: formData?.operatingsystem,
-      rom: formData?.rom,
-      graphics: formData?.graphics,
-
       brand: formData?.brand,
-      colour: formData?.colour,
-      material: formData?.material,
-      dimension: formData?.dimension,
-      room_type: formData?.room_type,
-      included_components: formData?.included_components,
-      size: formData?.size,
-      recomended_uses: formData?.recomended_uses,
-      bristle: formData?.bristle,
-      weight: String(formData?.weight),
-      number_of_items: Number(formData?.number_of_items),
       description: formData?.description,
 
       rate: Number(formData?.rate),
@@ -339,18 +173,15 @@ function AddPreProcurement(props) {
 
     AxiosInterceptors.post(`${url}`, requestBody, ApiHeader())
       .then(function (response) {
-        setresponseScreen(response?.data);
         if (response?.data?.status === true) {
           setisLoading(false);
           setSuccessModal(true);
           notify(response?.data?.message, "success");
-          setdeclarationStatus(false);
           setProcurement_no(response?.data?.procurement_no);
 
           // navigate("/sr-inventory-proposal");
         } else {
           setisLoading(false);
-          setdeclarationStatus(false);
           notify(response?.data?.message, "error");
           navigate("/sr-inventory-proposal");
         }
@@ -358,7 +189,6 @@ function AddPreProcurement(props) {
       .catch(function (error) {
         setisLoading(false);
         notify("Something went wrong!");
-        setdeclarationStatus(false);
         navigate("/sr-inventory-proposal");
       });
   };
@@ -377,86 +207,7 @@ function AddPreProcurement(props) {
     let value = e.target.value;
 
     {
-      name == "cleaningDate" && verifyDateForBookingTanker(value);
-    }
-    {
       name == "itemsubcategory" && fetchBrand(value);
-    }
-    {
-      name == "isWithinUlb" && setulbAreaVal(value);
-    }
-    {
-      name == "isWithinUlb" && fetchLocationListByUlb(value);
-    }
-    {
-      name == "colour" &&
-        formik.setFieldValue(
-          "colour",
-          allowCharacterInput(value, formik.values.colour, 50)
-        );
-    }
-    {
-      name == "material" &&
-        formik.setFieldValue(
-          "material",
-          allowCharacterInput(value, formik.values.material, 50)
-        );
-    }
-    {
-      name == "product_dimensions" &&
-        formik.setFieldValue(
-          "product_dimensions",
-          allowCharacterNumberInput(value, formik.values.product_dimensions, 50)
-        );
-    }
-    {
-      name == "room_type" &&
-        formik.setFieldValue(
-          "room_type",
-          allowCharacterInput(value, formik.values.room_type, 50)
-        );
-    }
-    {
-      name == "included_components" &&
-        formik.setFieldValue(
-          "included_components",
-          allowCharacterInput(value, formik.values.included_components, 50)
-        );
-    }
-    {
-      name == "recomended_uses" &&
-        formik.setFieldValue(
-          "recomended_uses",
-          allowCharacterInput(value, formik.values.recomended_uses, 50)
-        );
-    }
-    {
-      name == "bristle" &&
-        formik.setFieldValue(
-          "bristle",
-          allowCharacterInput(value, formik.values.bristle, 50)
-        );
-    }
-    {
-      name == "size" &&
-        formik.setFieldValue(
-          "size",
-          allowNumberInput(value, formik.values.size, 100)
-        );
-    }
-    {
-      name == "weight" &&
-        formik.setFieldValue(
-          "weight",
-          allowNumberInput(value, formik.values.weight, 100)
-        );
-    }
-    {
-      name == "dimension" &&
-        formik.setFieldValue(
-          "dimension",
-          allowNumberMultiplyInput(value, formik.values.dimension, 100)
-        );
     }
     {
       name == "number_of_items" &&
@@ -524,11 +275,8 @@ function AddPreProcurement(props) {
     );
   }
 
-  // console.log(object)
   return (
     <>
-      {/* <ToastContainer position='top-right' autoClose={3000} /> */}
-
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
@@ -561,27 +309,7 @@ function AddPreProcurement(props) {
                       className={`${inputStyle} inline-block w-full relative`}
                       onChange={(e) => {
                         formik.handleChange(e);
-                        setOtherCategory(e.target.value);
-                        console.log(e.target.value, "===========>");
-
                         fetchSubCategory(e);
-                        e.target.value ==
-                          "e37b33c2-d812-45b1-8e89-f2073ffba2fb" &&
-                          setCategorySelected(furniture);
-                        e.target.value ==
-                          "70824560-2d75-4a9c-b9bd-e3234675c7c2" &&
-                          setCategorySelected(cleaningSupplies);
-                        e.target.value ==
-                          "459df96d-27ad-40a0-86cb-2241043a2c77" &&
-                          setCategorySelected(maintenanceAndRepair);
-                        e.target.value ==
-                          "2c7f0309-d99a-46a5-a07d-2263c6682e77" &&
-                          setCategorySelected(safetySecurity);
-                        e.target.value ==
-                          "f14fb5da-0565-4e04-b98e-fb96cb06135c" &&
-                          setCategorySelected(uniform);
-
-                        // console.log(e.target.value, "---------------->");
                       }}
                     >
                       <option defaultValue={"select"}>select</option>
@@ -655,55 +383,6 @@ function AddPreProcurement(props) {
                         : null}
                     </p>
                   </div>
-
-                  {/* {otherCategory == "others" ? (
-                    <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                        Brand
-                        <span className="text-xl text-red-500 pl-1">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="brand"
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
-                        value={formik.values.brand}
-                      />
-
-                      <p className="text-red-500 text-xs ">
-                        {formik.touched.brand && formik.errors.brand
-                          ? formik.errors.brand
-                          : null}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                        Brand
-                        <span className="text-xl text-red-500 pl-1">*</span>
-                      </label>
-                      <select
-                        {...formik.getFieldProps("brand")}
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
-                      >
-                        <option defaultValue={"select"}>select</option>
-
-                        {brand?.length &&
-                          brand?.map((items) => (
-                            <option key={items?.id} value={items?.id}>
-                              {items?.name}
-                            </option>
-                          ))}
-                      </select>
-
-                      <p className="text-red-500 text-xs ">
-                        {formik.touched.brand && formik.errors.brand
-                          ? formik.errors.brand
-                          : null}
-                      </p>
-                    </div>
-                  )} */}
 
                   {/* --------------------------------------------------------------------------------------------------------- */}
                   {categorySelected?.map((obj, index) => (
@@ -818,15 +497,11 @@ function AddPreProcurement(props) {
 
                 <div className='float-right pt-10 mr-8 space-x-5'>
                   <button
-                    // type='submit'
                     onClick={openCancelModal}
                     className={`bg-white px-5 py-2 text-black rounded leading-5 shadow-lg  hover:bg-[#1A4D8C] hover:text-white border-blue-900 border`}
                   >
                     Cancel
                   </button>
-                  {/* </div> */}
-
-                  {/* <div className='pb-16 mr-8'> */}
                   <button
                     type='submit'
                     className={`bg-[#4338CA] border-blue-900 border hover:bg-[#4478b7] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}

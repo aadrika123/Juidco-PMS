@@ -30,7 +30,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
       ApiHeader()
     )
       .then((data) => {
-        setCategoryList(data?.data?.data);
+        setCategoryList(data?.data?.data?.data);
         // console.log(data?.data?.data);
       })
       .catch((err) => {
@@ -44,7 +44,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
       ApiHeader()
     )
       .then((data) => {
-        setSubCategoryList(data?.data?.data);
+        setSubCategoryList(data?.data?.data?.data);
         // console.log(data?.data?.data);
       })
       .catch((err) => {
