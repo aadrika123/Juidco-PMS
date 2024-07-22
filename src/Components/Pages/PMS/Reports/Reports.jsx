@@ -122,8 +122,8 @@ export default function Reports() {
                 <option>others</option>
               </select>
               <p className='text-red-500 text-xs '>
-                {formik.touched.category && formik.errors.category
-                  ? formik.errors.category
+                {formik.touched.fromDate && formik.errors.fromDate
+                  ? formik.errors.fromDate
                   : null}
               </p>
             </div>
