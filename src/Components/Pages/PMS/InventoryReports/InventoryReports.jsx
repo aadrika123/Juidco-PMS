@@ -219,7 +219,7 @@ export default function InventoryReports() {
           // table={tableSelector(props?.page)}
           // api={api_fetchProcurementList}
           columns={Columns}
-          // requestBody={requestBody} // sending body
+          // requestBody={requestBody} // sending bodyy
           // changeData={changeData} // send action for new payload
         />
       </div>
