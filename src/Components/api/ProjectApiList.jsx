@@ -180,6 +180,10 @@ export default function ProjectApiList() {
     api_getSrStockRequetById: `${baseUrl}/api/pms/stock-request`,
     api_approveApplication: `${baseUrl}/api/pms/sr/stock-request/approve`,
     api_rejectApplication: `${baseUrl}/api/pms/sr/stock-request/reject`,
+
+    // Level 1
+    api_getLevelOneInbox: `${baseUrl}/api/pms/level1`,
+    api_getLevelOneOutbox: `${baseUrl}/api/pms/level1/outbox`,
   };
 
   return apiList;

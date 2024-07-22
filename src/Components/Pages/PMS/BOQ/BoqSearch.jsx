@@ -49,7 +49,7 @@ const BoqSearch = () => {
     AxiosInterceptors.get(`${api_itemCategory}`, ApiHeader())
       .then(function (response) {
         console.log("item Categor", response.data.data);
-        setCategory(response.data.data);
+        setCategory(response.data.data.data);
       })
       .catch(function (error) {
         console.log("errorrr.... ", error);

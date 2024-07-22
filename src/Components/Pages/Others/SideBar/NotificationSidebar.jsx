@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
+import { FaCircleDot } from "react-icons/fa6";
+import { FaCircle } from "react-icons/fa";
+import { getLocalStorageItem } from "@/Components/Common/localstorage";
 
 export default function NotificationSidebar() {
   const { api_fetchNotification, api_readNotification } = ProjectApiList();
@@ -124,45 +127,52 @@ export default function NotificationSidebar() {
 
   const list = (anchor) => (
     <>
-      <div className='flex justify-between  bg-white p-2 sticky top-0 border-b'>
-        <h1 className='text-black text-xl'>Notification</h1>
-        <div className='rounded-s-lg  bg-red-500 pl-2 pr-2 text-white'>
-          <h1 className=''>{notificationCount?.totalCount}</h1>
+      <div className="flex justify-between  bg-white p-2 sticky top-0 border-b">
+        <h1 className="text-black font-semibold text-xl">Notification</h1>
+        <div className="rounded-s-lg  bg-red-500 pl-2 pr-2 text-white">
+          <h1 className="">{notificationCount?.totalCount}</h1>
         </div>
       </div>
-      {/* <hr className="pb-3 " /> */}
 
       <Stack
         sx={{
           width: anchor === "top" || anchor === "bottom" ? "auto" : 350,
           backgroundColor: "white",
-          padding: "1rem",
           height: "100%",
-          // paddingTop: "4rem",
+          padding:"5px",
+          borderBottom: "2px",
         }}
         spacing={1}
-        role='presentation'
+        role="presentation"
         onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}
       >
-        <div className='flex flex-col space-y-2 '>
+        <div className="flex flex-col space-y-2 ">
           {notificationData?.map((data, index) => (
             <Card
               key={index}
               sx={{
                 backgroundColor:
-                  data?.isSeen == false
-                    ? "rgb(67, 56, 202)"
-                    : " rgb(125,142,196)",
-                // padding: "12rem"
+                  data?.isSeen == false ? "white" : "#e0dcf4",
+                boxShadow: "none",
+                transition: "background-color 0.3s ease", 
+                "&:hover": {
+                  backgroundColor: "#e0dcf4",
+                },
               }}
-              className='bg-[#4338CA] p-3 cursor-pointer '
+              className="p-3 cursor-pointer "
               onClick={() => notifiNavigate(data?.destination, data?.id)}
             >
-              <div className=''>
-                <h1 className='font-semibold text-white pb-2'>{data?.title}</h1>
-                <hr className='' />
-                <p className='text-xs pt-2 text-white '>{data?.description}</p>
+              <div className="">
+                <div className="text-blue-700 flex space-x-1 pb-1">
+                  <FaCircleDot className="text-xs mt-[1.5px]" />
+                  <p className="text-xs pr-1">Accountant</p>
+                  <p className="text-xs"><FaCircle className="text-[5px] mt-[5px] text-black" /></p>
+                  <p className="text-[10px] text-black pt-[1px] pl-1">22 July 12:20 AM</p>
+                </div>
+                <h1 className=" text-black">{data?.title}</h1>
+                <p className="text-xs pt-2 text-black ">{data?.description}</p>
+                {/* <hr className="" /> */}
               </div>
             </Card>
           ))}
@@ -176,13 +186,13 @@ export default function NotificationSidebar() {
       {["right"].map((anchor) => (
         <React.Fragment key={anchor}>
           <Badge
-            color='error'
+            color="error"
             badgeContent={notificationCount?.unseenCount || 0}
           >
             <BsBell
               onClick={toggleDrawer(anchor, true)}
-              className='text-3xl font-semibold bg-[#4338CA] text-white rounded-md p-1 cursor-pointer '
-              data-tooltip-content='Show all notifications.'
+              className="text-3xl font-semibold bg-[#4338CA] text-white rounded-md p-1 cursor-pointer "
+              data-tooltip-content="Show all notifications."
             >
               {anchor}
             </BsBell>
