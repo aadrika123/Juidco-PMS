@@ -6,7 +6,7 @@ import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
 export default function Reports() {
   const [formData, setFormData] = useState();
-  const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
+  const { inputStyle, labelStyle } = ThemeStyle();
 
   const COLUMNS = [
     {

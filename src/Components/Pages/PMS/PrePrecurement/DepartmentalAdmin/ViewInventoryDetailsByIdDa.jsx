@@ -259,29 +259,34 @@ const ViewInventoryDetailsById = (props) => {
         />
       </div>
 
-      {/* <div className='flex gap-10 m-4 bg-white p-4'>
-        <button
-          className={`${buttonStyle2} w-[6rem]`}
-          onClick={() =>
-            navigate("/create-boq", {
-              state: applicationFullData?.procurement_no,
-            })
-          }
-        >
-          {" "}
-          BOQ{" "}
-        </button>
-        <button
-          className={buttonStyle2}
-          onClick={() =>
-            navigate(`/tendering?tabNo=1`, {
-              state: applicationFullData?.procurement_no,
-            })
-          }
-        >
-          Pre-Tender Form
-        </button>
-      </div> */}
+      <>
+        <div className='flex gap-10 m-4 bg-white p-4'>
+          {applicationFullData?.status?.status >= 70 && (
+            <button
+              className={`${buttonStyle2} w-[6rem]`}
+              onClick={() =>
+                navigate("/boqSummary", {
+                  state: applicationFullData?.procurement_no,
+                })
+              }
+            >
+              BOQ{" "}
+            </button>
+          )}
+          {applicationFullData?.status?.status >= 71 && (
+            <button
+              className={buttonStyle2}
+              onClick={() =>
+                navigate(`/tendering?tabNo=1`, {
+                  state: applicationFullData?.procurement_no,
+                })
+              }
+            >
+              Pre-Tender Form
+            </button>
+          )}
+        </div>
+      </>
 
       {/* //timeline  */}
       <div className={`${isLoading ? "blur-[2px]" : ""} mt-10`}>
@@ -427,10 +432,6 @@ const ViewInventoryDetailsById = (props) => {
 
           {page == "inbox" && (
             <>
-              <button className={buttonStyle2} onClick={postBackToSRModal}>
-                Back To Stock Receiver
-              </button>
-
               {/* <button className={buttonStyle2}>Forward to Level II</button> */}
 
               {/* <button
@@ -444,31 +445,56 @@ const ViewInventoryDetailsById = (props) => {
                 Forward to Level II
               </button> */}
 
-              <button
-                className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center'
-                onClick={() =>
-                  navigate(`/create-boq`, {
-                    state: {
-                      procurement_no: [applicationFullData?.procurement_no],
-                    },
-                  })
-                }
-              >
-                Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
-              </button>
+              {page == "inbox" && applicationFullData?.status?.status < 70 && (
+                <>
+                  <button className={buttonStyle2} onClick={postBackToSRModal}>
+                    Back To Stock Receiver
+                  </button>
 
-              <div className='bg-[#0F921C] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-800'>
-                <FileButton
-                  bg={"[#0F921C]"}
-                  hoverBg={"bg-green-800"}
-                  btnLabel={"Upload Notesheet"}
-                  imgRef={notesheetRef}
-                  setImageDoc={setImageDoc}
-                  setPreview={setPreview}
-                  textColor={"white"}
-                  // paddingY={"8"}
-                />
-              </div>
+                  <button
+                    className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center'
+                    onClick={() =>
+                      navigate(`/create-boq`, {
+                        state: {
+                          procurement_no: [applicationFullData?.procurement_no],
+                        },
+                      })
+                    }
+                  >
+                    Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
+                  </button>
+
+                  <div className='bg-[#0F921C] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-800'>
+                    <FileButton
+                      bg={"[#0F921C]"}
+                      hoverBg={"bg-green-800"}
+                      btnLabel={"Upload Notesheet"}
+                      imgRef={notesheetRef}
+                      setImageDoc={setImageDoc}
+                      setPreview={setPreview}
+                      textColor={"white"}
+                      // paddingY={"8"}
+                    />
+                  </div>
+                </>
+              )}
+
+              {page === "inbox" &&
+                applicationFullData?.status?.status == 70 && (
+                  <button
+                    className={`bg-[#4478b7] hover:bg-blue-700 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                  >
+                    Proceed to Pre-Tender
+                  </button>
+                )}
+
+              {page === "inbox" && (
+                <button
+                  className={`bg-[#4338ca] hover:bg-blue-600 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                >
+                  Forward to level I
+                </button>
+              )}
             </>
           )}
         </div>
