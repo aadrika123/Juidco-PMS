@@ -69,6 +69,7 @@ import ViewLevel1Details from "./Components/Pages/PMS/BOQ/level1/ViewLevel1Detai
 import BoqLeveloneTab from "./Components/Pages/PMS/BOQ/level1/BoqLeveloneTab";
 import ViewLevel2BoqDetails from "./Components/Pages/PMS/BOQ/level2/ViewLevel2BoqDetails";
 import Reports from "./Components/Pages/PMS/Reports/Reports";
+import InventoryReports from "./Components/Pages/PMS/InventoryReports/InventoryReports";
 
 const queryClient = new QueryClient();
 
@@ -304,6 +305,12 @@ function App() {
     {
       path: "/reports",
       element: <Reports />,
+    },
+
+    // ................................
+    {
+      path: "/InventoryReports",
+      element: <InventoryReports />,
     },
   ];
 
