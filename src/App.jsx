@@ -48,7 +48,6 @@ import PrintComponent from "./Components/Common/PrintArea/PrintComponent";
 import AccountantList from "./Components/Pages/PMS/TenderForm/Accountant/AccountantListTabs";
 import DATenderTabs from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderTabs";
 import ViewProcurementDetailsById from "./Components/Pages/PMS/BOQ/ViewProcurementDetailsById";
-import NotificationSidebar from "./Components/Pages/Others/SideBar/NotificationSidebar";
 import DistributerListTabs from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DistributerListTabs";
 import StockRequestProposal from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/StockRequestProposal";
 import DDViewDetailbyId from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDViewDetailbyId";
@@ -69,6 +68,7 @@ import SupplierMaster from "./Components/Pages/PMS/MasterTable/SupplierMaster";
 import ViewLevel1Details from "./Components/Pages/PMS/BOQ/level1/ViewLevel1Details";
 import BoqLeveloneTab from "./Components/Pages/PMS/BOQ/level1/BoqLeveloneTab";
 import ViewLevel2BoqDetails from "./Components/Pages/PMS/BOQ/level2/ViewLevel2BoqDetails";
+import Reports from "./Components/Pages/PMS/Reports/Reports";
 
 const queryClient = new QueryClient();
 
@@ -298,6 +298,12 @@ function App() {
     {
       path: "/dd-viewHandoverById/:id",
       element: <DDViewHandoverbyId />,
+    },
+
+    /////////////////////////{*** Reports ***}//////////////////////////////////////
+    {
+      path: "/reports",
+      element: <Reports />,
     },
   ];
 
