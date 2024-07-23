@@ -367,7 +367,7 @@ export default function Reports() {
           <div className='form-group flex-shrink w-full px-4 flex justify-end'>
             <button
               type='submit'
-              className={`mt-4 hover:bg-[#4478b7] bg-blue-700 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+              className={`mt-4 hover:bg-[#4478b7] bg-blue-700 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right`}
             >
               Search
             </button>
