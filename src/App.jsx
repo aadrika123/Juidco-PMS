@@ -69,7 +69,8 @@ import ViewLevel1Details from "./Components/Pages/PMS/BOQ/level1/ViewLevel1Detai
 import BoqLeveloneTab from "./Components/Pages/PMS/BOQ/level1/BoqLeveloneTab";
 import ViewLevel2BoqDetails from "./Components/Pages/PMS/BOQ/level2/ViewLevel2BoqDetails";
 import Reports from "./Components/Pages/PMS/Reports/Reports";
-import InventoryReports from "./Components/Pages/PMS/InventoryReports/InventoryReports";
+import InventoryReports from "./Components/Pages/PMS/Reports/InventoryReports";
+import ProductHistoryReports from "./Components/Pages/PMS/Reports/ProductHistoryReports/ProductHistoryReports";
 
 const queryClient = new QueryClient();
 
@@ -152,7 +153,7 @@ function App() {
 
     /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
 
-    //------- DA -------
+    //-------------- DA ----------------
     { path: "/da-post-precurement", element: <PostPrecurementListTabsDa /> },
     {
       path: "/da-post-precurementbyid/:id/:page",
@@ -306,10 +307,14 @@ function App() {
       path: "/reports",
       element: <Reports />,
     },
+    {
+      path: "/product-history-reports",
+      element: <ProductHistoryReports />,
+    },
 
     // ................................
     {
-      path: "/InventoryReports",
+      path: "/inventory-reports",
       element: <InventoryReports />,
     },
   ];
