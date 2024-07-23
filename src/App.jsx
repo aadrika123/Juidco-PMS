@@ -153,7 +153,7 @@ function App() {
 
     /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
 
-    //------- DA -------
+    //-------------- DA ----------------
     { path: "/da-post-precurement", element: <PostPrecurementListTabsDa /> },
     {
       path: "/da-post-precurementbyid/:id/:page",
