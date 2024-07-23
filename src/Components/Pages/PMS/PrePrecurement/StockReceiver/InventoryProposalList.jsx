@@ -99,22 +99,22 @@ function InventoryProposalList(props) {
       Cell: ({ cell }) => (
         <div className="pr-2 w-[12rem]">
           {cell.row.values.status.status == -1 && (
-            <p className="text-red-800 text-center bg-red-100 border-red-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-red-800 text-center bg-red-100 border-red-600 border-[1px] px-1 py-1 rounded-md">
               Back to SR
             </p>
           )}
           {cell.row.values.status.status == -2 && (
-            <p className="text-red-800 text-center bg-red-100 border-red-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-red-800 text-center bg-red-100 border-red-600 border-[1px] px-1 py-1 rounded-md">
               Rejected
             </p>
           )}
           {cell.row.values.status.status == 0 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1 rounded-md">
               Pending
             </p>
           )}
           {cell.row.values.status.status == 1 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1 rounded-md">
               DA's Inbox
             </p>
           )}
