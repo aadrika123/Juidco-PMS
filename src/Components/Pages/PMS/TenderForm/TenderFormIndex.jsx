@@ -40,12 +40,13 @@ const TenderForm = () => {
   let [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const tabNo = Number(searchParams.get("tabNo"));
-
+  
   const location = useLocation();
-
+  
   const { titleBarVisibility } = useContext(contextVar);
-
+  
+  const tabNo = Number(searchParams.get("tabNo"));
+  
   const handleTabClick = (tabNo) => {
     navigate(`/${location.pathname}?tabNo=${tabNo}`);
   };
@@ -55,7 +56,7 @@ const TenderForm = () => {
     { label: "Cover Details", tab: 2, img: cd },
     { label: "Work Details", tab: 3, img: wd },
     { label: "Fee Details", tab: 4, img: fd },
-    { label: "Critical Details", tab: 5, img: cd2 },
+    { label: "Critical Dates", tab: 5, img: cd2 },
     { label: "Bid Openers", tab: 6, img: bo },
     { label: "Preview", tab: 7, img: prev },
   ];
