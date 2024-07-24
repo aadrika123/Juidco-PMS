@@ -260,7 +260,7 @@ function App() {
 
     /////////////////////////{*** Distributer Inventory ***}//////////////////////////////////////
     {
-      path: "/dd-inventory-proposal",
+      path: "/dd-inventory-proposal", // status not updated
       element: <DistributerListTabs />,
     },
     {
@@ -274,7 +274,7 @@ function App() {
 
     /////////////////////////{*** SR Inventory ***}//////////////////////////////////////
     {
-      path: "/sr-dist-proposal",
+      path: "/sr-dist-proposal",  // status not updated
       element: <StockRecListTabs />,
     },
     {
@@ -284,7 +284,7 @@ function App() {
 
     /////////////////////////{*** SR Warranty ***}//////////////////////////////////////
     {
-      path: "/sr-warrantyClaim",
+      path: "/sr-warrantyClaim",  // status not updated
       element: <SRWarrantyClaim />,
     },
     {
@@ -294,7 +294,7 @@ function App() {
 
     /////////////////////////{*** DD Handover ***}//////////////////////////////////////
     {
-      path: "/dd-handover",
+      path: "/dd-handover",  // status not updated
       element: <DDHandoverListTabs />,
     },
     {
