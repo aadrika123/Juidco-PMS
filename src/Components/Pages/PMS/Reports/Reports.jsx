@@ -3,10 +3,14 @@ import Report from "@/assets/Images/reports.svg";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
+import ProjectApiList from "@/Components/api/ProjectApiList";
 
 export default function Reports() {
   const [formData, setFormData] = useState();
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
+
+  const { api_fetchProcurementList, api_fetchProcurementDAList } =
+    ProjectApiList();
 
   const   COLUMNS = [
     {

@@ -18,8 +18,9 @@ import { FaChartPie } from "react-icons/fa";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
+import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
-const InventoryHistoryReports = () => {
+const InventoryHistoryReports = (props) => {
   const [activeTab, setActiveTab] = useState("assign_history");
 
   const { titleBarVisibility } = useContext(contextVar);
@@ -30,13 +31,6 @@ const InventoryHistoryReports = () => {
 
   return (
     <>
-      {/* <div className=''>
-        <TitleBar
-          titleBarVisibility={titleBarVisibility}
-          titleText={"Precurement History Reports"}
-        />
-      </div> */}
-
       <div className="">
         <div className="flex ml-5">
           <button
@@ -100,22 +94,67 @@ const InventoryHistoryReports = () => {
 
       <div className="mt-4">
         {activeTab === "assign_history" && (
-          <div className="p-5">Assign History</div>
+          <div className="p-5">
+              <ListTableParent
+                columns={props?.COLUMNS}
+                api={api_fetchProcurementList}
+                // table={tableSelector(props?.page)}
+                // requestBody={requestBody} // sending body
+                // changeData={changeData} // send action for new payload
+              />
+          </div>
         )}
 
         {activeTab === "return_history" && (
-          <div className="p-5">Return History</div>
+          <div className="p-5">
+              <ListTableParent
+                columns={props?.COLUMNS}
+                api={api_fetchProcurementList}
+                // table={tableSelector(props?.page)}
+                // requestBody={requestBody} // sending body
+                // changeData={changeData} // send action for new payload
+              />
+
+          </div>
         )}
 
         {activeTab === "claim_warranty_history" && (
-          <div className="p-5">Claim Warranty History</div>
+          <div className="p-5">
+            <div className="p-2">
+              <ListTableParent
+                columns={props?.COLUMNS}
+                // table={tableSelector(props?.page)}
+                api={api_fetchProcurementList}
+                // requestBody={requestBody} // sending body
+                // changeData={changeData} // send action for new payload
+              />
+            </div>
+          </div>
         )}
 
         {activeTab === "repair_history" && (
-          <div className="p-5">Repair History</div>
+          <div className="p-5">
+              <ListTableParent
+                columns={props?.COLUMNS}
+                api={api_fetchProcurementList}
+                // table={tableSelector(props?.page)}
+                // requestBody={requestBody} // sending body
+                // changeData={changeData} // send action for new payload
+              />
+            </div>
         )}
 
-        {activeTab === "dead_stock" && <div className="p-5">Dead Stock</div>}
+        {activeTab === "dead_stock" && (
+          <div className="p-5">
+              <ListTableParent
+                columns={props?.COLUMNS}
+                api={api_fetchProcurementList}
+                // table={tableSelector(props?.page)}
+                // requestBody={requestBody} // sending body
+                // changeData={changeData} // send action for new payload
+              />
+          </div>
+        )}
       </div>
     </>
   );

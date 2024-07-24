@@ -11,7 +11,7 @@
 // src/components/ProductHistoryReports.js
 import React, { useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 // import ProductHistoryReportList from "./ProductHistoryReportList";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaChartPie } from "react-icons/fa";
@@ -19,9 +19,12 @@ import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import InventoryHistoryReports from "./InventoryHistoryReports";
+import Report from "@/assets/Images/reports.svg";
+import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
 const ProductHistoryReports = () => {
   const [activeTab, setActiveTab] = useState("pre_prec_history");
+  let [searchParams, setSearchParams] = useSearchParams();
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -29,85 +32,151 @@ const ProductHistoryReports = () => {
   const { api_fetchProcurementList, api_fetchProcurementDAList } =
     ProjectApiList();
 
+  const location = useLocation();
+  const tabNo = Number(searchParams.get("tabNo"));
+
+  const handleTabClick = (tabNo) => {
+    navigate(`/${location.pathname}?tabNo=${tabNo}`);
+  };
+
+  const COLUMNS = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
+    },
+    {
+      Header: "Order No",
+      accessor: "procurement_no",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.procurement_no}</div>
+      ),
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.category.name} </div>
+      ),
+    },
+    {
+      Header: "Sub Category",
+      accessor: "subcategory",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.subcategory.name} </div>
+      ),
+    },
+    {
+      Header: "Brand",
+      accessor: "brand",
+      Cell: (
+        { cell } // console.log(cell.row.values,"===================celllllll")
+      ) => <div className="pr-2">{cell.row.values.brand.name || "N/A"}</div>,
+    },
+
+    // {
+    //   Header: "status",
+    //   accessor: "status",
+    //   Cell: ({ cell }) => (
+    //     <div className='pr-2'>
+    //       <p className='font-bold text-yellow-800'>
+    //         {cell.row.values.status.status == -1 && "Back to SR"}
+    //       </p>
+    //       <p className='font-bold text-red-500'>
+    //         {cell.row.values.status.status == -2 && "Rejected"}
+    //       </p>
+
+    //     </div>
+    //   ),
+    // },
+    {
+      Header: "Action",
+      accessor: "id",
+      Cell: ({ cell }) => (
+        <>
+          <button className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]">
+            View
+          </button>
+        </>
+      ),
+    },
+  ];
+
+  const btnDetails = [
+    { label: "Pre Procurement History", tab: 1 },
+    { label: "Post Procurement History", tab: 2 },
+    { label: "Inventory History", tab: 3 },
+  ];
+
   return (
     <>
-      <div className=''>
+      <div className="">
         <TitleBar
           titleBarVisibility={titleBarVisibility}
-          titleText={"Precurement History Reports"}
+          titleText={"Procurement History Reports"}
         />
       </div>
 
-      <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
-        <div className='mt-14'>
-          {/* <div>
-            <button
-              className='bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right '
-              onClick={() => navigate(`/sr-add-pre-procurement`)}
-            >
-              <GoPlus className='m-1 text-[1rem]' />
-              Request Inventory
-            </button>
-          </div> */}
+      <div className="bg-[#4338ca] p-2 rounded-md px-6">
+        <h2 className="text-xl font-medium flex items-center gap-3 text-white">
+          <img alt="report icon" src={Report} />
+          Procurement History Reports
+        </h2>
+      </div>
 
-          <div className='flex ml-5'>
-            <button
-              className={`py-2 px-4 ${
-                activeTab === "pre_prec_history"
-                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                  : "text-gray-500"
-              } focus:outline-none flex border border-[#4338ca] rounded`}
-              onClick={() => setActiveTab("pre_prec_history")}
-            >
-              <FaChartPie className='m-1 text-[1rem]' />
-              Pre Procurement History
-            </button>
-
-            <button
-              className={`ml-4 py-2 px-4 ${
-                activeTab === "post_prec_history"
-                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                  : "text-gray-500"
-              } focus:outline-none flex border border-[#4338ca] rounded`}
-              onClick={() => setActiveTab("post_prec_history")}
-            >
-              <FaChartPie className='m-1 text-[1rem]' />
-              Post Procurement History
-            </button>
-
-            <button
-              className={`ml-4 py-2 px-4 ${
-                activeTab === "invt_history"
-                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                  : "text-gray-500"
-              } focus:outline-none flex border border-[#4338ca] rounded`}
-              onClick={() => setActiveTab("invt_history")}
-            >
-              <FaChartPie className='m-1 text-[1rem]' />
-              Inventory History
-            </button>
+      <div className="mt-3">
+        <div className="flex">
+          <div className="flex mt-6">
+            {btnDetails?.map((item, index) => (
+              <button
+                key={index}
+                className={`py-2 px-2 mr-5 ${
+                  tabNo === item.tab
+                    ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
+                    : "text-gray-500 bg-white "
+                } focus:outline-none flex shadow-xl border border-gray-300 rounded`}
+                onClick={() => handleTabClick(item.tab)}
+              >
+                <FaChartPie className="m-1 text-[1rem]" />
+                {item.label}
+              </button>
+            ))}
           </div>
         </div>
-
-        <hr className='w-[76rem] mt-2' />
-
-        <div className='mt-4'>
-          {activeTab === "pre_prec_history" && (
-            <div className="p-5">
-             Pre Prec History 
+      </div>
+      <div className="container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl">
+        <div className="mt-4">
+          {tabNo === 1 && (
+            <div className={`${tabNo >= 1 ? "" : "disabled:bg-red-300"}`}>
+              <div className="p-7">
+                <ListTableParent
+                  columns={COLUMNS}
+                  api={api_fetchProcurementList}
+                  // table={tableSelector(props?.page)}
+                  // requestBody={requestBody} // sending body
+                  // changeData={changeData} // send action for new payload
+                />
+              </div>
             </div>
           )}
 
-          {activeTab === "post_prec_history" && (
-            <div className="p-5">
-            Post Prec History 
-           </div>
+          {tabNo === 2 && (
+            <div className={`${tabNo >= 2 ? "" : "disabled:bg-red-300"}`}>
+              <div className="p-7">
+                <ListTableParent
+                  columns={COLUMNS}
+                  api={api_fetchProcurementList}
+                  // table={tableSelector(props?.page)}
+                  // requestBody={requestBody} // sending body
+                  // changeData={changeData} // send action for new payload
+                />
+              </div>
+            </div>
           )}
 
-          {activeTab === "invt_history" && (
-           <div className="p-5">
-          <InventoryHistoryReports/>
-          </div>
+          {tabNo === 3 && (
+            <div className={`${tabNo >= 2 ? "" : "disabled:bg-red-300"}`}>
+              <InventoryHistoryReports COLUMNS={COLUMNS} />
+            </div>
           )}
         </div>
       </div>

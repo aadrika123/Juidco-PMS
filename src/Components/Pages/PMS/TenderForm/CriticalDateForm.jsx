@@ -85,19 +85,183 @@ const CriticalDateForm = () => {
   ];
 
   const validationSchema = Yup.object({
-    publishingDate: Yup.string().required(),
-    bidOpeningDate: Yup.string().required(),
-    docSaleStartDate: Yup.string().required(),
-    docSaleEndDate: Yup.string().required(),
-    seekClariStrtDate: Yup.string().required(),
-    seekClariEndDate: Yup.string().required(),
-    bidSubStrtDate: Yup.string().required(),
-    bidSubEndDate: Yup.string().required(),
-    preBidMettingDate: Yup.string().required(),
+    publishingDate: Yup.string()
+      .required("publishing date is required")
+      .test("publishingDate", (value, validationContex) => {
+        const { createError } = validationContex;
+        if (new Date(value) < new Date()) {
+          return createError({
+            message: "publishing date should be greater then current date",
+          });
+        }
+        return true;
+      }),
+
+    bidOpeningDate: Yup.string()
+      .required("bid opening date is required")
+      .test("bidOpeningDate", (value, validationContex) => {
+        const {
+          createError,
+          parent: {
+            publishingDate,
+            bidSubEndDate,
+            docSaleEndDate,
+            seekClariEndDate,
+          },
+        } = validationContex;
+        const bsed = new Date(bidSubEndDate);
+        bsed.setDate(bsed.getDate() + 15);
+        const bid_o_date = new Date(value);
+        if (bid_o_date < new Date(publishingDate)) {
+          return createError({
+            message: "bid opening date should be greater then publishing date",
+          });
+        } else if (bid_o_date < bsed) {
+          return createError({
+            message:
+              "bid opening date should be 15 days greater then bid submission end date",
+          });
+        } else if (bid_o_date < new Date(docSaleEndDate)) {
+          return createError({
+            message:
+              "bid opening date should be greater then document sale end date",
+          });
+        } else if (bid_o_date < new Date(seekClariEndDate)) {
+          return createError({
+            message:
+              "bid opening date should be greater then seek clarification end date",
+          });
+        }
+        return true;
+      }),
+
+    docSaleStartDate: Yup.string()
+      .required("document sale start is required")
+      .test("docSaleStartDate", (value, validationContex) => {
+        const {
+          createError,
+          parent: { publishingDate },
+        } = validationContex;
+        if (new Date(value) < new Date(publishingDate)) {
+          return createError({
+            message:
+              "document sale start date should be greater then publishing date",
+          });
+        }
+        return true;
+      }),
+
+    docSaleEndDate: Yup.string()
+      .required("document sale end is required")
+      .test("bidOpeningDate", (value, validationContex) => {
+        const {
+          createError,
+          parent: { docSaleStartDate },
+        } = validationContex;
+        if (new Date(value) < new Date(docSaleStartDate)) {
+          return createError({
+            message:
+              "document sale end date should be greater then document sale start date",
+          });
+        }
+        return true;
+      }),
+
+    seekClariStrtDate: Yup.string()
+      .required("seek clarification start is required")
+      .test("seekClariStrtDate", (value, validationContex) => {
+        const {
+          createError,
+          parent: { publishingDate },
+        } = validationContex;
+        if (new Date(value) < new Date(publishingDate)) {
+          return createError({
+            message:
+              "seek clarification start date should be greater then seek clarification start date",
+          });
+        }
+        return true;
+      }),
+
+    seekClariEndDate: Yup.string()
+      .required("seek clarification end is required")
+      .test("seekClariEndDate", (value, validationContex) => {
+        const {
+          createError,
+          parent: { seekClariStrtDate },
+        } = validationContex;
+        if (new Date(value) < new Date(seekClariStrtDate)) {
+          return createError({
+            message:
+              "seek clarification end date should be greater then seek clarification start date",
+          });
+        }
+        return true;
+      }),
+
+    bidSubStrtDate: Yup.string()
+      .required("bid submission start is required")
+      .test("bidSubStrtDate", (value, validationContex) => {
+        const {
+          createError,
+          parent: { publishingDate },
+        } = validationContex;
+        if (new Date(value) < new Date(publishingDate)) {
+          return createError({
+            message:
+              "bid submission start date should be greater then publishing date",
+          });
+        }
+        return true;
+      }),
+
+    bidSubEndDate: Yup.string()
+      .required("bid submission end is required")
+      .test("bidSubEndDate", (value, validationContex) => {
+        const {
+          createError,
+          parent: { bidSubStrtDate, publishingDate },
+        } = validationContex;
+        const pd = new Date(publishingDate);
+        pd.setDate(pd.getDate() + 15);
+        if (new Date(value) < new Date(bidSubStrtDate)) {
+          return createError({
+            message:
+              "bid submission end date should be greater then bid submission start date",
+          });
+        } else if (new Date(value) < pd) {
+          return createError({
+            message:
+              "bid submission end date should be 15 days greater then publishing date",
+          });
+        }
+        return true;
+      }),
+
+    preBidMettingDate: Yup.string()
+      .required("pre bid meeting is required")
+      .test("preBidMettingDate", (value, validationContex) => {
+        const {
+          createError,
+          parent: { publishingDate, bidOpeningDate },
+        } = validationContex;
+        if (new Date(value) < new Date(publishingDate)) {
+          return createError({
+            message:
+              "pre bid meeting date should be greater then publishing date",
+          });
+        } else if (new Date(value) > new Date(bidOpeningDate)) {
+          return createError({
+            message:
+              "pre bid meeting date should be greater then bid opeining date",
+          });
+        }
+        return true;
+      }),
   });
 
   // 2022-04-17T15:30
-  console.log(criticalDateData);
+  // console.log(criticalDateData);
 
   const initialValues = {
     reference_no: "",
@@ -168,9 +332,9 @@ const CriticalDateForm = () => {
   return (
     <>
       {/* Heading  */}
-      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl mb-3'>
-        <img src={fd} className='pl-2' />
-        <h1 className='pt-1 pl-2 text-xl'>Critical Dates</h1>
+      <div className="bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl mb-3">
+        <img src={fd} className="pl-2" />
+        <h1 className="pt-1 pl-2 text-xl">Critical Dates</h1>
       </div>
 
       {/* Form Starting */}
@@ -200,23 +364,19 @@ const CriticalDateForm = () => {
               }) => (
                 <Form>
                   <>
-                    <div className='grid grid-cols-2 container mx-auto capitalize'>
-                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
-                        <div className=''>
+                    <div className="grid grid-cols-2 container mx-auto capitalize">
+                      <div className="p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
+                        <div className="">
                           <label
-                            for='default-input'
-                            className={`block mb-2 text-sm font-medium text-gray-900 ${
-                              errors.publishingDate &&
-                              touched.publishingDate &&
-                              "text-red-500"
-                            }`}
+                            for="default-input"
+                            className={`block mb-2 text-sm font-medium text-gray-900`}
                           >
                             Publishing Date
-                            <span className='text-red-500'>*</span>
+                            <span className="text-red-500">*</span>
                           </label>
                           <DateTimePicker
-                            className='w-3/4'
-                            name='publishingDate'
+                            className="w-3/4"
+                            name="publishingDate"
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("publishingDate", dateTime);
@@ -231,23 +391,24 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
+                          {errors.publishingDate && touched.publishingDate && (
+                            <div className="text-red-500 text-sm mt-1">
+                              {errors.publishingDate}
+                            </div>
+                          )}
                         </div>
 
-                        <div className=''>
+                        <div className="">
                           <label
-                            for='default-input'
-                            className={`block mb-2 text-sm font-medium text-gray-900 ${
-                              errors.bidOpeningDate &&
-                              touched.bidOpeningDate &&
-                              "text-red-500"
-                            }`}
+                            for="default-input"
+                            className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Bid Opening Date
-                            <span className='text-red-500'>*</span>
+                            <span className="text-red-500">*</span>
                           </label>
                           <DateTimePicker
-                            className='w-3/4'
-                            name='bidOpeningDate'
+                            className="w-3/4"
+                            name="bidOpeningDate"
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("bidOpeningDate", dateTime);
@@ -258,25 +419,26 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
+                          {errors.bidOpeningDate && touched.bidOpeningDate && (
+                            <div className="text-red-500 text-sm mt-1">
+                              {errors.bidOpeningDate}
+                            </div>
+                          )}
                         </div>
                       </div>
 
-                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
-                        <div className=''>
+                      <div className="p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
+                        <div className="">
                           <label
-                            for='default-input'
-                            className={`block mb-2 text-sm font-medium text-gray-900 ${
-                              errors.docSaleStartDate &&
-                              touched.docSaleStartDate &&
-                              "text-red-500"
-                            }`}
+                            for="default-input"
+                            className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Document Sale Start Date
-                            <span className='text-red-500'>*</span>
+                            <span className="text-red-500">*</span>
                           </label>
                           <DateTimePicker
-                            className='w-3/4'
-                            name='docSaleStartDate'
+                            className="w-3/4"
+                            name="docSaleStartDate"
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("docSaleStartDate", dateTime);
@@ -287,23 +449,24 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
+                          {errors.docSaleStartDate && touched.docSaleStartDate && (
+                            <div className="text-red-500 text-sm mt-1">
+                              {errors.docSaleStartDate}
+                            </div>
+                          )}
                         </div>
 
-                        <div className=''>
+                        <div className="">
                           <label
-                            for='default-input'
-                            className={`block mb-2 text-sm font-medium text-gray-900 ${
-                              errors.docSaleEndDate &&
-                              touched.docSaleEndDate &&
-                              "text-red-500"
-                            }`}
+                            for="default-input"
+                            className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Document Sale End Date
-                            <span className='text-red-500'>*</span>
+                            <span className="text-red-500">*</span>
                           </label>
                           <DateTimePicker
-                            className='w-3/4'
-                            name='docSaleEndDate'
+                            className="w-3/4"
+                            name="docSaleEndDate"
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("docSaleEndDate", dateTime);
@@ -314,25 +477,26 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
+                          {errors.docSaleEndDate && touched.docSaleEndDate && (
+                            <div className="text-red-500 text-sm mt-1">
+                              {errors.docSaleEndDate}
+                            </div>
+                          )}
                         </div>
                       </div>
 
-                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
-                        <div className=''>
+                      <div className="p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
+                        <div className="">
                           <label
-                            for='default-input'
-                            className={`block mb-2 text-sm font-medium text-gray-900 ${
-                              errors.seekClariStrtDate &&
-                              touched.seekClariStrtDate &&
-                              "text-red-500"
-                            }`}
+                            for="default-input"
+                            className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Seek Clarification Start Date
-                            <span className='text-red-500'>*</span>
+                            <span className="text-red-500">*</span>
                           </label>
                           <DateTimePicker
-                            className='w-3/4'
-                            name='seekClariStrtDate'
+                            className="w-3/4"
+                            name="seekClariStrtDate"
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("seekClariStrtDate", dateTime);
@@ -343,23 +507,24 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
+                          {errors.seekClariStrtDate && touched.seekClariStrtDate && (
+                            <div className="text-red-500 text-sm mt-1">
+                              {errors.seekClariStrtDate}
+                            </div>
+                          )}
                         </div>
 
-                        <div className=''>
+                        <div className="">
                           <label
-                            for='default-input'
-                            className={`block mb-2 text-sm font-medium text-gray-900 ${
-                              errors.seekClariEndDate &&
-                              touched.seekClariEndDate &&
-                              "text-red-500"
-                            }`}
+                            for="default-input"
+                            className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Seek Clarification End Date
-                            <span className='text-red-500'>*</span>
+                            <span className="text-red-500">*</span>
                           </label>
                           <DateTimePicker
-                            className='w-3/4'
-                            name='seekClariEndDate'
+                            className="w-3/4"
+                            name="seekClariEndDate"
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("seekClariEndDate", dateTime);
@@ -370,25 +535,26 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
+                          {errors.seekClariEndDate && touched.seekClariEndDate && (
+                            <div className="text-red-500 text-sm mt-1">
+                              {errors.seekClariEndDate}
+                            </div>
+                          )}
                         </div>
                       </div>
 
-                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
-                        <div className=''>
+                      <div className="p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
+                        <div className="">
                           <label
-                            for='default-input'
-                            className={`block mb-2 text-sm font-medium text-gray-900 ${
-                              errors.bidSubStrtDate &&
-                              touched.bidSubStrtDate &&
-                              "text-red-500"
-                            }`}
+                            for="default-input"
+                            className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Bid Submission Start Date
-                            <span className='text-red-500'>*</span>
+                            <span className="text-red-500">*</span>
                           </label>
                           <DateTimePicker
-                            className='w-3/4'
-                            name='bidSubStrtDate'
+                            className="w-3/4"
+                            name="bidSubStrtDate"
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("bidSubStrtDate", dateTime);
@@ -399,23 +565,24 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
+                          {errors.bidSubStrtDate && touched.bidSubStrtDate && (
+                            <div className="text-red-500 text-sm mt-1">
+                              {errors.bidSubStrtDate}
+                            </div>
+                          )}
                         </div>
 
-                        <div className=''>
+                        <div className="">
                           <label
-                            for='default-input'
-                            className={`block mb-2 text-sm font-medium text-gray-900 ${
-                              errors.bidSubEndDate &&
-                              touched.bidSubEndDate &&
-                              "text-red-500"
-                            }`}
+                            for="default-input"
+                            className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Bid Submission End Date
-                            <span className='text-red-500'>*</span>
+                            <span className="text-red-500">*</span>
                           </label>
                           <DateTimePicker
-                            className='w-3/4'
-                            name='bidSubEndDate'
+                            className="w-3/4"
+                            name="bidSubEndDate"
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("bidSubEndDate", dateTime);
@@ -426,25 +593,26 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
+                          {errors.bidSubEndDate && touched.bidSubEndDate && (
+                            <div className="text-red-500 text-sm mt-1">
+                              {errors.bidSubEndDate}
+                            </div>
+                          )}
                         </div>
                       </div>
 
-                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md col-span-2'>
-                        <div className=''>
+                      <div className="p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md col-span-2">
+                        <div className="">
                           <label
-                            for='default-input'
-                            className={`block mb-2 text-sm font-medium text-gray-900 ${
-                              errors.preBidMettingDate &&
-                              touched.preBidMettingDate &&
-                              "text-red-500"
-                            }`}
+                            for="default-input"
+                            className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Pre Bid Meeting Date
-                            <span className='text-red-500'>*</span>
+                            <span className="text-red-500">*</span>
                           </label>
                           <DateTimePicker
-                            className='w-3/4'
-                            name='preBidMettingDate'
+                            className="w-3/4"
+                            name="preBidMettingDate"
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("preBidMettingDate", dateTime);
@@ -455,6 +623,11 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
+                          {errors.preBidMettingDate && touched.preBidMettingDate && (
+                            <div className="text-red-500 text-sm mt-1">
+                              {errors.preBidMettingDate}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
