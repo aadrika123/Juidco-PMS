@@ -114,62 +114,62 @@ function InventoryProposalList(props) {
             </p>
           )}
           {cell.row.values.status.status == 1 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               DA's Inbox
             </p>
           )}
           {cell.row.values.status.status == 2 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Release for Tender
             </p>
           )}
           {cell.row.values.status.status == 3 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Supplier assigned
             </p>
           )}
           {cell.row.values.status.status == 4 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Incomplete stocks received
             </p>
           )}
           {cell.row.values.status.status == 5 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Stocks received
             </p>
           )}
           {cell.row.values.status.status == 69 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Revised
             </p>
           )}
           {cell.row.values.status.status == 71 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               BOQ already created
             </p>
           )}
           {cell.row.values.status.status == 70 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Ready for BOQ
             </p>
           )}
           {cell.row.values.status.status == -70 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               BOQ returned from DA
             </p>
           )}
           {cell.row.values.status.status == 72 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Ready for tendering
             </p>
           )}
           {cell.row.values.status.status == -72 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Tender back from DA
             </p>
           )}
           {cell.row.values.status.status == 73 && (
-            <p className="text-green-800 text-center bg-green-100 border-green-600 border-[1px] px-1 py-1  rounded-md">
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Tender is ready
             </p>
           )}
