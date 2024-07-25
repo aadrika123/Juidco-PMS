@@ -103,6 +103,11 @@ function InventoryProposalList(props) {
               Stocks received
             </p>
           )}
+          {cell.row.values.status == 6 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Dead Stock Pending
+            </p>
+          )}
           {cell.row.values.status == 69 && (
             <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Revised
