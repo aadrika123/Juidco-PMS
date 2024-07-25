@@ -71,6 +71,8 @@ import ViewLevel2BoqDetails from "./Components/Pages/PMS/BOQ/level2/ViewLevel2Bo
 import Reports from "./Components/Pages/PMS/Reports/Reports";
 import InventoryReports from "./Components/Pages/PMS/Reports/InventoryReports";
 import ProductHistoryReports from "./Components/Pages/PMS/Reports/ProductHistoryReports/ProductHistoryReports";
+import BiddingInitialForm from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingInitialForm";
+import BiddingViewById from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingViewById";
 
 const queryClient = new QueryClient();
 
@@ -211,13 +213,13 @@ function App() {
     },
 
     // ----------level 1 and level 2
-    { path: "/levelone-boq", element: <BoqLeveloneTab /> },
+    { path: "/levelone-boq", element: <BoqLeveloneTab /> }, // need to check the status after getting the dataList
     {
       path: "/leveloneView/:id/:page",
       element: <ViewLevel1Details />,
     },
 
-    { path: "/leveltwo-boq", element: <BoqLeveloneTab /> },
+    { path: "/leveltwo-boq", element: <BoqLeveloneTab /> }, // need to check the status after getting the dataList
     {
       path: "/leveltwo/:id/:page",
       element: <ViewLevel2BoqDetails />,
@@ -234,7 +236,7 @@ function App() {
       element: <ViewProcurementDetailsById />,
     },
     {
-      path: "/boq-search",
+      path: "/boq-search",   // need to check the status after getting the dataList
       element: <BoqSearch />,
     },
     {
@@ -260,7 +262,7 @@ function App() {
 
     /////////////////////////{*** Distributer Inventory ***}//////////////////////////////////////
     {
-      path: "/dd-inventory-proposal", // status not updated
+      path: "/dd-inventory-proposal",
       element: <DistributerListTabs />,
     },
     {
@@ -274,7 +276,7 @@ function App() {
 
     /////////////////////////{*** SR Inventory ***}//////////////////////////////////////
     {
-      path: "/sr-dist-proposal",  // status not updated
+      path: "/sr-dist-proposal",  
       element: <StockRecListTabs />,
     },
     {
@@ -284,7 +286,7 @@ function App() {
 
     /////////////////////////{*** SR Warranty ***}//////////////////////////////////////
     {
-      path: "/sr-warrantyClaim",  // status not updated
+      path: "/sr-warrantyClaim",  
       element: <SRWarrantyClaim />,
     },
     {
@@ -294,7 +296,7 @@ function App() {
 
     /////////////////////////{*** DD Handover ***}//////////////////////////////////////
     {
-      path: "/dd-handover",  // status not updated
+      path: "/dd-handover",  
       element: <DDHandoverListTabs />,
     },
     {
@@ -310,13 +312,25 @@ function App() {
     {
       path: "/product-history-reports",
       element: <ProductHistoryReports />,
-    },
-
-    // ................................
+    },    
     {
       path: "/inventory-reports",
       element: <InventoryReports />,
     },
+    
+    /////////////////////////{*** Bidding ***}//////////////////////////////////////
+    
+    {
+      path: "/bidding-input-form",
+      element: <BiddingInitialForm />,
+    },
+    {
+      path: "/biddingViewById",
+      element: <BiddingViewById />,
+    },
+
+
+
   ];
 
   return (
