@@ -68,6 +68,8 @@ import ViewLevel1Details from "./Components/Pages/PMS/BOQ/level1/ViewLevel1Detai
 import BoqLeveloneTab from "./Components/Pages/PMS/BOQ/level1/BoqLeveloneTab";
 import ViewLevel2BoqDetails from "./Components/Pages/PMS/BOQ/level2/ViewLevel2BoqDetails";
 import Reports from "./Components/Pages/PMS/Reports/Reports";
+import InventoryReports from "./Components/Pages/PMS/Reports/InventoryReports";
+import ProductHistoryReports from "./Components/Pages/PMS/Reports/ProductHistoryReports/ProductHistoryReports";
 
 const queryClient = new QueryClient();
 
@@ -150,7 +152,7 @@ function App() {
 
     /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
 
-    //------- DA -------
+    //-------------- DA ----------------
     { path: "/da-post-precurement", element: <PostPrecurementListTabsDa /> },
     {
       path: "/da-post-precurementbyid/:id/:page",
@@ -257,7 +259,7 @@ function App() {
 
     /////////////////////////{*** Distributer Inventory ***}//////////////////////////////////////
     {
-      path: "/dd-inventory-proposal",
+      path: "/dd-inventory-proposal", // status not updated
       element: <DistributerListTabs />,
     },
     {
@@ -271,7 +273,7 @@ function App() {
 
     /////////////////////////{*** SR Inventory ***}//////////////////////////////////////
     {
-      path: "/sr-dist-proposal",
+      path: "/sr-dist-proposal",  // status not updated
       element: <StockRecListTabs />,
     },
     {
@@ -281,7 +283,7 @@ function App() {
 
     /////////////////////////{*** SR Warranty ***}//////////////////////////////////////
     {
-      path: "/sr-warrantyClaim",
+      path: "/sr-warrantyClaim",  // status not updated
       element: <SRWarrantyClaim />,
     },
     {
@@ -291,7 +293,7 @@ function App() {
 
     /////////////////////////{*** DD Handover ***}//////////////////////////////////////
     {
-      path: "/dd-handover",
+      path: "/dd-handover",  // status not updated
       element: <DDHandoverListTabs />,
     },
     {
@@ -303,6 +305,16 @@ function App() {
     {
       path: "/reports",
       element: <Reports />,
+    },
+    {
+      path: "/product-history-reports",
+      element: <ProductHistoryReports />,
+    },
+
+    // ................................
+    {
+      path: "/inventory-reports",
+      element: <InventoryReports />,
     },
   ];
 

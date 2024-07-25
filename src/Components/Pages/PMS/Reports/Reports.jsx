@@ -3,12 +3,16 @@ import Report from "@/assets/Images/reports.svg";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
+import ProjectApiList from "@/Components/api/ProjectApiList";
 
 export default function Reports() {
   const [formData, setFormData] = useState();
   const { inputStyle, labelStyle } = ThemeStyle();
 
-  const COLUMNS = [
+  const { api_fetchProcurementList, api_fetchProcurementDAList } =
+    ProjectApiList();
+
+  const   COLUMNS = [
     {
       Header: "#",
       Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
@@ -367,7 +371,7 @@ export default function Reports() {
           <div className='form-group flex-shrink w-full px-4 flex justify-end'>
             <button
               type='submit'
-              className={`mt-4 bg-[#4478b7] hover:bg-blue-700 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+              className={`mt-4 hover:bg-[#4478b7] bg-blue-700 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right`}
             >
               Search
             </button>
