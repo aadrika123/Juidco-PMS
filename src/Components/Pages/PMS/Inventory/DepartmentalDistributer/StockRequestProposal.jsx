@@ -49,9 +49,6 @@ const StockRequestProposal = (props) => {
   const state = useLocation();
 
   const page = useParams();
-  // console.log(page?.page)
-
-  // console.log(props?.page)
 
   const [confModal, setConfModal] = useState(false);
   const [formValues, setFormValues] = useState("");
@@ -107,11 +104,11 @@ const StockRequestProposal = (props) => {
           setCategory(response?.data?.data);
           // notify(response?.data?.message, "success");
         } else {
-          notify(response?.data?.message, "error");
+          toast.error(response?.data?.message, "error");
         }
       })
       .catch(function (res) {
-        notify("Something went wrong!");
+        toast.error("Something went wrong!");
       });
   };
 
@@ -236,7 +233,7 @@ const StockRequestProposal = (props) => {
   //   return await new Promise((resolve, reject) => {
   //     getSubCategory(data?.subcategory?.id);
   //     getBrand(data?.brand?.id);
-  //     getDesc(data?.discription);
+  //     getDesc(data?.description);
   //     console.log('control test')
   //     resolve()
   //   });
@@ -259,11 +256,11 @@ const StockRequestProposal = (props) => {
       );
     }
   };
-
-  console.log(page,"page")
   useEffect(() => {
-    page?.page == "edit" &&  getApplicationDetail();
-   
+    if (page?.edit === "edit") {
+      getApplicationDetail();
+    }
+
     getCategory();
     getEmpdetails();
   }, []);
@@ -278,7 +275,7 @@ const StockRequestProposal = (props) => {
     brand: applicationFullData?.brand?.id || "",
     quantAlot: applicationFullData?.allotted_quantity || "",
     totQuant: applicationFullData?.totQuant || "",
-    discription: applicationFullData?.inventory?.id || "",
+    description: applicationFullData?.inventory?.id || "",
   };
 
   const formik = useFormik({
@@ -292,7 +289,6 @@ const StockRequestProposal = (props) => {
   });
 
   const confirmationHandler = (values) => {
-    console.log("form valuessss", formValues);
     submitForm();
     page?.page == "edit" ? navigate(-1) : navigate("/dd-inventory-proposal");
   };
@@ -319,7 +315,7 @@ const StockRequestProposal = (props) => {
       subcategory: formValues?.subCategory,
       brand: formValues?.brand,
       allotted_quantity: Number(formValues?.quantAlot),
-      inventory: formValues?.discription,
+      inventory: formValues?.description,
       // totQuant: Number(formValues?.totQuant),
     };
 
@@ -336,14 +332,6 @@ const StockRequestProposal = (props) => {
       });
   };
 
-  const remaningQtyCalc = (e) => {
-    if (e.target.value > quantity) {
-      formik.setFieldValue("quantAlot", "");
-      e.target.value = null;
-      toast.error("Quantity exceeds available stock!");
-    }
-  };
-
   const handleOnChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -355,7 +343,7 @@ const StockRequestProposal = (props) => {
         <ConfirmationModal
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
-          message={"Are you sure you want to Save ?"}
+          message={"Are you sure you want to Proceed ?"}
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
@@ -403,10 +391,10 @@ const StockRequestProposal = (props) => {
 
                       <Autocomplete
                         disablePortal
-                        id="combo-box-demo"
+                        id='combo-box-demo'
                         options={formattedEmp}
                         sx={{ width: "100%" }}
-                        size="small"
+                        size='small'
                         renderInput={(params) => (
                           <TextField
                             {...params}
@@ -552,11 +540,11 @@ const StockRequestProposal = (props) => {
                   <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                     <div class='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
-                        Discription
+                        description
                       </label>
 
                       <select
-                        {...formik.getFieldProps("discription")}
+                        {...formik.getFieldProps("description")}
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={(e) => {
                           getQuantity(e.target.value);
@@ -574,8 +562,8 @@ const StockRequestProposal = (props) => {
                       </select>
 
                       <p className='text-red-500 text-xs '>
-                        {formik.touched.discription && formik.errors.discription
-                          ? formik.errors.discription
+                        {formik.touched.description && formik.errors.description
+                          ? formik.errors.description
                           : null}
                       </p>
                     </div>
@@ -589,10 +577,9 @@ const StockRequestProposal = (props) => {
 
                       <input
                         name='quantAlot'
-                        type='number'
+                        type='text'
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={(e) => {
-                          remaningQtyCalc(e);
                           formik.handleChange(e);
                         }}
                         value={formik.values.quantAlot}
@@ -601,28 +588,6 @@ const StockRequestProposal = (props) => {
                       <p className='text-red-500 text-xs '>
                         {formik.touched.quantAlot && formik.errors.quantAlot
                           ? formik.errors.quantAlot
-                          : null}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                    <div class='px-4 w-full mb-4'>
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                        Total Quantity in Stock
-                      </label>
-
-                      <input
-                        name='totQuant'
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
-                        value={quantity}
-                        disabled
-                      />
-
-                      <p className='text-red-500 text-xs '>
-                        {formik.touched.totQuant && formik.errors.totQuant
-                          ? formik.errors.totQuant
                           : null}
                       </p>
                     </div>

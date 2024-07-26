@@ -66,7 +66,8 @@ export default function ProjectApiList() {
     api_fetchRom: `${baseUrl}/api/pms/master/rom `,
     api_fetchGraphics: `${baseUrl}/api/pms/master/graphics `,
 
-    api_fetchProcurementList: `${baseUrl}/api/pms/sr/pre-procurement`,
+    api_fetchStockList: `${baseUrl}/api/pms/sr/pre-procurement`,
+    api_fetchProcurementList: `${baseUrl}/api/pms/sr/pre-procurement`, //--copy pf the just above row
     api_fetchProcurementListInbox: `${baseUrl}/api/pms/sr/post-procurement`,
     api_fetchProcurementDAList: `${baseUrl}/api/pms/sr/pre-procurement/outbox`,
     api_fetchProcurementDetailById: `${baseUrl}/api/pms/sr/pre-procurement`,
@@ -159,7 +160,7 @@ export default function ProjectApiList() {
     api_getDDSRInbox: `${baseUrl}/api/pms/dist/stock-request`,
     api_getDDSROutbox: `${baseUrl}/api/pms/dist/stock-request/outbox`,
     api_getStockRequetById: `${baseUrl}/api/pms/stock-request`,
-    api_postForwardtoSR: `${baseUrl}/api/pms/dist/stock-request/to-sr`,
+    api_postStockReqForwardtoDA: `${baseUrl}/api/pms/dist/stock-request/to-da`,
     api_postStockRequest: `${baseUrl}/api/pms/dist/stock-request`,
     api_editStockRequest: `${baseUrl}/api/pms/stock-request`,
     api_postStockRequest: `${baseUrl}/api/pms/dist/stock-request`,
@@ -184,6 +185,10 @@ export default function ProjectApiList() {
     // Level 1
     api_getLevelOneInbox: `${baseUrl}/api/pms/level1`,
     api_getLevelOneOutbox: `${baseUrl}/api/pms/level1/outbox`,
+
+    //updated
+    api_fetchStockRequestDAInbox: `${baseUrl}/api/pms/da/stock-request/`,
+    api_fetchStockRequestDAOutbox: `${baseUrl}/api/pms/da/stock-request/outbox`,
   };
 
   return apiList;

@@ -7,7 +7,7 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 
 export default function Reports() {
   const [formData, setFormData] = useState();
-  const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
+  const { inputStyle, labelStyle } = ThemeStyle();
 
   const { api_fetchProcurementList, api_fetchProcurementDAList } =
     ProjectApiList();
