@@ -75,18 +75,6 @@ const InventoryProposalListTabs = () => {
               <FaChartPie className='m-1 text-[1rem]' />
               Outbox
             </button>
-
-            <button
-              className={`ml-4 py-2 px-4 ${
-                activeTab === "createMultipleProcReq"
-                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                  : "text-gray-500"
-              } focus:outline-none flex border border-[#4338ca] rounded`}
-              onClick={() => setActiveTab("createMultipleProcReq")}
-            >
-              <FaChartPie className='m-1 text-[1rem]' />
-              Create Multiple Procurement Request
-            </button>
           </div>
         </div>
 

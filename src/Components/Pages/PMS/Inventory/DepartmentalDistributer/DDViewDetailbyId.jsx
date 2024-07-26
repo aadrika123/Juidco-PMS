@@ -30,7 +30,8 @@ const DDViewDetailbyId = () => {
   // console.log(page)
 
   const notesheetRef = useRef();
-  const { api_getStockRequetById, api_postForwardtoSR } = ProjectApiList();
+  const { api_getStockRequetById, api_postStockReqForwardtoDA } =
+    ProjectApiList();
 
   let buttonStyle =
     "mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -41,14 +42,13 @@ const DDViewDetailbyId = () => {
     content: () => componentRef.current,
   });
 
-  const forwardSRModal = () => {
+  const forwardDAModal = () => {
     setConfModal(true);
   };
 
   const confirmationHandler = () => {
-    forwardToSR();
+    forwardToDA();
     setConfModal(false);
-    setSuccessModal(true);
   };
   const successHandler = () => {
     setSuccessModal(false);
@@ -84,24 +84,23 @@ const DDViewDetailbyId = () => {
       });
   };
 
-  const forwardToSR = () => {
+  const forwardToDA = () => {
     setisLoading(true);
     AxiosInterceptors.post(
-      `${api_postForwardtoSR}`,
+      `${api_postStockReqForwardtoDA}`,
       { stock_handover_no: [`${handNo}`] },
       ApiHeader()
     )
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data?.data);
+          setSuccessModal(true);
           setisLoading(false);
         } else {
-          toast.error("Error while fetching data");
-          console.log("==2 details by id error...", error);
+          console.log("error in forwarding to da...", error);
         }
       })
       .catch(function (err) {
-        toast.error("Erro");
+        toast.error(err?.response?.data?.message);
       });
   };
 
@@ -115,7 +114,7 @@ const DDViewDetailbyId = () => {
         <ConfirmationModal
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
-          message={"Are you sure you want to Forward ?"}
+          message={"Are you sure you want to Forward to Departmental Admin?"}
         />
       </>
     );
@@ -261,32 +260,32 @@ const DDViewDetailbyId = () => {
               </button>
             </div>
 
-            {applicationFullData?.status == 0  && 
-            <div className='space-x-3 flex items-end justify-center'>
-              {page == "inbox" && (
-                <button
-                  className=' p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]'
-                  onClick={forwardSRModal}
-                >
-                  Forward to Stock Receiver
-                </button>
-              )}
+            {applicationFullData?.status == 0 && (
+              <div className='space-x-3 flex items-end justify-center'>
+                {page == "inbox" && (
+                  <button
+                    className=' p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]'
+                    onClick={forwardDAModal}
+                  >
+                    Forward to Departmental Admin
+                  </button>
+                )}
 
-              {page == "inbox" && (
-                <div className='bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700'>
-                  <FileButton
-                    bg={"[#359F6E]"}
-                    hoverBg={"bg-green-700"}
-                    btnLabel={"Upload References"}
-                    imgRef={notesheetRef}
-                    setImageDoc={setImageDoc}
-                    setPreview={setPreview}
-                    textColor={"white"}
-                  />
-                </div>
-              )}
-            </div>
-}
+                {page == "inbox" && (
+                  <div className='bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700'>
+                    <FileButton
+                      bg={"[#359F6E]"}
+                      hoverBg={"bg-green-700"}
+                      btnLabel={"Upload References"}
+                      imgRef={notesheetRef}
+                      setImageDoc={setImageDoc}
+                      setPreview={setPreview}
+                      textColor={"white"}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

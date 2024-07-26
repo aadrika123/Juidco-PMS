@@ -18,7 +18,7 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 const InventoryProposalListTabs = () => {
   const [activeTab, setActiveTab] = useState("inbox");
-  const { api_fetchProcurementDAListInbox, api_fetchProcurementDAListOutbox } =
+  const { api_fetchStockRequestDAInbox, api_fetchStockRequestDAOutbox } =
     ProjectApiList();
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -71,7 +71,7 @@ const InventoryProposalListTabs = () => {
             <div>
               <InventoryProposalList
                 page='inbox'
-                api={api_fetchProcurementDAListInbox}
+                api={api_fetchStockRequestDAInbox}
               />
             </div>
           )}
@@ -79,7 +79,7 @@ const InventoryProposalListTabs = () => {
             <div>
               <InventoryProposalList
                 page='outbox'
-                api={api_fetchProcurementDAListOutbox}
+                api={api_fetchStockRequestDAOutbox}
               />
             </div>
           )}

@@ -13,12 +13,25 @@ export default function CreateMultipleProcurement() {
 
   const [category, setCategory] = useState();
   const [subcategory, setSubCategory] = useState();
+  const [categoryId, setCategoryId] = useState();
+  const [subCategoryId, setSubCategoryId] = useState();
   const [pagination, setPagination] = useState();
   const [loading, setLoading] = useState(false);
   const [proNos, setProNos] = useState([]);
-  const [count, setCount] = useState(0);
+  const [applicationFullData, setapplicationFullData] = useState([]);
 
-  const { api_getActiveCategory, api_itemSubCategory } = ProjectApiList();
+  const { api_getActiveCategory, api_itemSubCategory, api_getDDSRInbox } =
+    ProjectApiList();
+
+  const columns = [
+    { header: "" },
+    { header: "Handover No" },
+    { header: "Category" },
+    { header: "Sub Category" },
+    { header: "Employee" },
+    { header: "Alloted Qunatity" },
+    { header: "Action" },
+  ];
 
   const fetchCategory = () => {
     AxiosInterceptors.get(`${api_getActiveCategory}`, ApiHeader())
@@ -31,14 +44,36 @@ export default function CreateMultipleProcurement() {
   };
 
   const fetchSubCategory = (catId) => {
+    setCategoryId(catId);
     AxiosInterceptors.get(`${api_itemSubCategory}/${catId}`, ApiHeader())
       .then(function (response) {
         setSubCategory(response.data.data);
       })
       .catch(function (error) {
-        toast.error("Something went wrong");
+        toast.error(error.response.data.message || "Error in getting response");
         console.log("errorrr.... ", error);
       });
+  };
+
+  const getReqStockData = () => {
+    AxiosInterceptors.get(
+      `${api_getDDSRInbox}?category=${categoryId}&subCategory=${subCategoryId}`,
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          setapplicationFullData(response?.data?.data);
+        } else {
+          // toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.message || "Error in getting data");
+        console.log("Error on getting data", error);
+      });
+    // .finally(() => {
+    //   setisLoading(false);
+    // });
   };
 
   useEffect(() => {
@@ -50,7 +85,7 @@ export default function CreateMultipleProcurement() {
     <>
       <div className='container mx-auto bg-white'>
         <h1 className='text-[25px] flex justify-end pr-3 pt-2 font-bold'>
-          Create multiple Procurement{" "}
+          Multiple Stock Request{" "}
         </h1>
         <div className='flex p-8 justify-between items-center'>
           <div className='flex'>
@@ -87,7 +122,7 @@ export default function CreateMultipleProcurement() {
                 // {...formik.getFieldProps("itemsubcategory")}
                 className={`${inputStyle} inline-block w-full relative`}
                 onChange={(e) => {
-                  //   setSubCategoryId(e.target.value);
+                  setSubCategoryId(e.target.value);
                 }}
               >
                 <option defaultValue={"select"}>select</option>
@@ -104,7 +139,7 @@ export default function CreateMultipleProcurement() {
             <div className='pt-9'>
               <button
                 className='bg-[#4338CA] hover:bg-[#5f54df] px-7 py-2 text-white font-semibold rounded shadow-lg'
-                // onClick={boqListingFunc}
+                onClick={getReqStockData}
               >
                 Search
               </button>
@@ -116,8 +151,7 @@ export default function CreateMultipleProcurement() {
               className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
               //   onClick={prepareForBoq}
             >
-              Create Multiple Procurement{" "}
-              <MdArrowRightAlt className='text-2xl ml-2' />
+              Forward to DA <MdArrowRightAlt className='text-2xl ml-2' />
             </button>
           </div>
         </div>
@@ -131,12 +165,13 @@ export default function CreateMultipleProcurement() {
             <>
               <div>
                 <BoqListTable
-                  // dataList={dataList}
+                  dataList={applicationFullData}
                   setProNos={setProNos}
                   proNos={proNos}
                   page='inbox'
                   // setCount={setCount}
                   // count={count}
+                  columns={columns}
                   pagination={pagination}
                 />
                 {/* {dataList?.length > 0 ? (
