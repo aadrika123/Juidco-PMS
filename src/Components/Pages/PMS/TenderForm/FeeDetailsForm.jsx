@@ -82,21 +82,7 @@ const FeeDetailsForm = () => {
     emdFeePayableTo: feeDetailData?.emdFeePayableTo || "",
   };
 
-  // const initialValues = {
-  //   reference_no:state,
-  //   tenderFee: "",
-  //   processingFee: "",
-  //   tenderFeePayableTo: "",
-  //   tenderFeePayableAt: "",
-  //   surcharges: "",
-  //   otherCharges: "",
-  //   emdAmount: "",
-  //   emdPercentage: "",
-  //   emd_exemption: "yes",
-  //   emd_fee: "fixed",
-  //   emdFeePayableAt: "",
-  //   emdFeePayableTo: "",
-  // };
+ 
 
   // submit form
   const submitForm = async (values) => {
