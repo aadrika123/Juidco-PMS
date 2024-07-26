@@ -73,6 +73,8 @@ import InventoryReports from "./Components/Pages/PMS/Reports/InventoryReports";
 import ProductHistoryReports from "./Components/Pages/PMS/Reports/ProductHistoryReports/ProductHistoryReports";
 import BiddingInitialForm from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingInitialForm";
 import BiddingViewById from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingViewById";
+import TechnicalComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/TechnicalComparision";
+import BiddingDetails from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingDetailForm/BiddingDetailTabs";
 
 const queryClient = new QueryClient();
 
@@ -327,6 +329,14 @@ function App() {
     {
       path: "/biddingViewById",
       element: <BiddingViewById />,
+    },
+    {
+      path: "/tech-commparision",
+      element: <TechnicalComparision />,
+    },
+    {
+      path: "/bidding-details",
+      element: <BiddingDetails />,
     },
 
 
