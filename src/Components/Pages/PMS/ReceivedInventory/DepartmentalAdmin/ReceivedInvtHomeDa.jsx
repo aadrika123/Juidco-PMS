@@ -24,6 +24,8 @@ const ReceivedInvtHomeDa = () => {
     api_fetchDaReceivedInvtListOutbox,
   } = ProjectApiList();
 
+
+  
   return (
     <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
       <div>
