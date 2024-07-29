@@ -23,7 +23,7 @@ const ProtectedRoutes = () => {
     const navigate = useNavigate() 
 
     // 👉 Api Constants 👈
-    const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar)
+    const { setheartBeatCounter, settoggleBar } = useContext(contextVar)
 
     // 👉 Checking token 👈
     useEffect(() => {

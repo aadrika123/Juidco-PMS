@@ -74,6 +74,7 @@ import BiddingInitialForm from "./Components/Pages/PMS/Bidding/InventoryAdmin/Bi
 import BiddingViewById from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingViewById";
 import TechnicalComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/TechnicalComparision";
 import BiddingDetails from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingDetailForm/BiddingDetailTabs";
+import BiddingType from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingType";
 
 const queryClient = new QueryClient();
 
@@ -89,6 +90,7 @@ function App() {
   const [refresh, setrefresh] = useState(0);
   const [titleBarVisibility, settitleBarVisibility] = useState(true);
   const [heartBeatCounter, setheartBeatCounter] = useState(1); // to check authentication
+  const [biddersCount, setBiddersCount] = useState()
   const [toggleBar, settoggleBar] = useState(
     window.innerWidth <= 763 ? false : true
   ); // toggle state for Side Bar
@@ -116,6 +118,7 @@ function App() {
     settoggleBar,
     refresh,
     setrefresh,
+   
   };
 
   // 👉 Routes Json 👈
@@ -336,6 +339,10 @@ function App() {
     {
       path: "/bidding-details",
       element: <BiddingDetails />,
+    },
+    {
+      path: "/bidding-type",
+      element: <BiddingType />,
     },
 
 
