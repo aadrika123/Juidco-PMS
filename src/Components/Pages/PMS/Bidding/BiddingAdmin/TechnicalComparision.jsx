@@ -3,14 +3,16 @@ import techIcon from "@/Components/assets/TechIcon.svg";
 import { IoAddSharp } from "react-icons/io5";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { contextVar } from "@/Components/context/contextVar";
-import { AiOutlineThunderbolt } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 
 const TechnicalComparision = () => {
-  const { titleBarVisibility } = useContext(contextVar);
+  const { titleBarVisibility , setBiddersCount} = useContext(contextVar);
+
+  
+
   const [showFields, setShowFields] = useState(false);
   const [formValues, setFormValues] = useState({
     criterias: [],
@@ -77,7 +79,7 @@ const TechnicalComparision = () => {
   return (
     <>
       <TitleBar
-        titleBarVisibility={titleBarVisibility}
+        titleBarVisibility={true}
         titleText={"Technical Comparison"}
       />
       <div className="bg-white rounded-lg shadow-xl space-y-5 border border-blue-500">
@@ -198,8 +200,10 @@ const TechnicalComparision = () => {
                 ...prev,
                 no_of_bidder: e.target.value,
               }));
+              localStorage.setItem('biddersCount', e.target.value);
             }}
           />
+
         </div>
 
         <div className="space-x-4 flex justify-end m-7">
