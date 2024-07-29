@@ -182,6 +182,11 @@ export default function ProjectApiList() {
     api_approveApplication: `${baseUrl}/api/pms/sr/stock-request/approve`,
     api_rejectApplication: `${baseUrl}/api/pms/sr/stock-request/reject`,
 
+    api_forwardStockReqToI: `${baseUrl}/api/pms/da/stock-request/to-ia`,
+    api_iaStockReqInbox: `${baseUrl}/api/pms/ia/stock-request/`,
+    api_iaStockReqOubox: `${baseUrl}/api/pms/ia/stock-request/outbox`,
+    api_iaStockReqApprove: `${baseUrl}/api/pms/ia/stock-request/approve`,
+
     // Level 1
     api_getLevelOneInbox: `${baseUrl}/api/pms/level1`,
     api_getLevelOneOutbox: `${baseUrl}/api/pms/level1/outbox`,

@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////////////////////
-//    Author - Almaash alam
+//    Author - Almaash Alam
 //    Version - 1.0
-//    Date - 23/05/2024
+//    Date - 25/05/2024
 //    Revision - 1
 //    Project - JUIDCO
 //    Component  - InventoryProposalList
 //    DESCRIPTION - InventoryProposalList
-/////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
@@ -26,69 +26,57 @@ function InventoryProposalList(props) {
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
     {
-      Header: "#",
-      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
-    },
-    {
       Header: "Handover No",
       accessor: "stock_handover_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values?.stock_handover_no}</div>
+        <div className='pr-2'>{cell.row.values.stock_handover_no}</div>
+      ),
+    },
+    {
+      Header: "Employee Id",
+      accessor: "emp_id",
+      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.emp_id}</div>,
+    },
+    {
+      Header: "Employee Name",
+      accessor: "emp_name",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.emp_name}</div>
       ),
     },
     {
       Header: "Category",
-      accessor: "inventory.category.name",
+      accessor: "inventory?.category?.name",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {cell.row.values["inventory.category.name"]}{" "}
+          {cell.row.original.inventory?.category?.name}{" "}
         </div>
       ),
     },
     {
       Header: "Sub Category",
-      accessor: "inventory.subcategory.name",
+      accessor: "inventory?.subcategory?.name",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {cell.row.values["inventory.subcategory.name"]}{" "}
-        </div>
-      ),
-    },
-    // {
-    //   Header: "Unit",
-    //   accessor: "inventory.unit.name",
-    //   Cell: (
-    //     { cell } // console.log(cell.row.values,"===================celllllll")
-    //   ) => (
-    //     <div className='pr-2'>
-    //       {cell.row.values["inventory.unit.name"] || "N/A"}
-    //     </div>
-    //   ),
-    // },
-    {
-      Header: "Employee",
-      accessor: "emp_name",
-      Cell: (
-        { cell } // console.log(cell.row.values,"===================celllllll")
-      ) => <div className='pr-2'>{cell.row.values.emp_name || "N/A"}</div>,
-    },
-    {
-      Header: "Requested Quantity",
-      accessor: "allotted_quantity",
-      Cell: (
-        { cell } // console.log(cell.row.values,"===================celllllll")
-      ) => (
-        <div className='pr-2 text-center'>
-          {cell.row.values?.allotted_quantity || "N/A"}
+          {cell.row.original.inventory?.subcategory?.name}{" "}
         </div>
       ),
     },
 
     {
+      Header: "Requested Quantity",
+      accessor: "allotted_quantity",
+      Cell: ({ cell }) => (
+        <div className='pr-2 text-center'>
+          {cell.row.values.allotted_quantity}
+        </div>
+      ),
+    },
+    {
       Header: <p className='text-center'>Status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
-        <div className='pr-2 w-[12rem]'>
+        <div className=' w-[12rem]'>
           {cell.row.values.status == -1 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Back to DA
@@ -154,16 +142,16 @@ function InventoryProposalList(props) {
               Returned to Inventory
             </p>
           )}
-          {cell.row.values.status == 52 && (
+          {cell.row.values.status.status == 52 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Returned to DA
             </p>
           )}
           {/* {cell.row.values.status.status == -5 && (
-          <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-            Rejected
-          </p>
-        )} */}
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Rejected
+            </p>
+          )} */}
         </div>
       ),
     },
@@ -171,8 +159,8 @@ function InventoryProposalList(props) {
     //   Header: "Remark",
     //   accessor: "remark",
     //   Cell: ({ cell }) => (
-    //     <div className='pr-2 text-green-800 truncate w-14'>
-    //       {cell.row.values.remark || "N/A"}
+    //     <div className='pr-2 text-green-800 truncate'>
+    //       {cell.row.values.remark || ""}
     //     </div>
     //   ),
     // },
@@ -182,10 +170,10 @@ function InventoryProposalList(props) {
       Cell: ({ cell }) => (
         <>
           <button
-            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+            className='bg-[#4338CA] text-white px-5 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
               navigate(
-                `/da-viewInventoryDetailsById/${cell.row.values.stock_handover_no}/${props.page}`
+                `/iaViewStockRequestById/${cell.row.values.id}/${props.page}`
               )
             }
           >
@@ -209,11 +197,11 @@ function InventoryProposalList(props) {
   const tableSelector = (page) => {
     switch (page) {
       case "inbox":
-        return "DAIN";
+        return "SRIN";
       case "outbox":
-        return "DAOUT";
+        return "SROUT";
       default:
-        return "DAIN";
+        return "SRIN";
     }
   };
 
@@ -221,19 +209,16 @@ function InventoryProposalList(props) {
     <>
       {loader && <BarLoader />}
       <div className='container mx-auto p-4'>
-        <div className=''>
-          <div className='flex justify-between'></div>
-        </div>
-
         <div className='grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 '>
           <div className='col-span-12'>
             <>
               <ListTableParent
                 table={tableSelector(props?.page)}
-                api={props?.api}
+                api={props.api}
                 columns={COLUMNS}
                 requestBody={requestBody} // sending body
                 changeData={changeData} // send action for new payload
+                showDiv={true}
               />
             </>
           </div>

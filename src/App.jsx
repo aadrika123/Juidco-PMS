@@ -74,6 +74,7 @@ import BiddingInitialForm from "./Components/Pages/PMS/Bidding/InventoryAdmin/Bi
 import BiddingViewById from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingViewById";
 import TechnicalComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/TechnicalComparision";
 import BiddingDetails from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingDetailForm/BiddingDetailTabs";
+import InventoryAdminTabs from "./Components/Pages/PMS/StockRequest/InventoryAdmin/InventoryAdminTabs";
 
 const queryClient = new QueryClient();
 
@@ -134,10 +135,10 @@ function App() {
     { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
     { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
     {
-      path: "/sr-viewInventoryDetailsById/:id/:page",
+      path: "/iaViewStockRequestById/:id/:page",
       element: <ViewInventoryDetailsById />,
     },
-    { path: "/sr-add-pre-procurement", element: <AddPreProcurement /> },
+    { path: "/create-pre-procurement", element: <AddPreProcurement /> },
     { path: "/sr-edit-pre-procurement/:id", element: <SrEditPreProcurement /> },
     { path: "/sr-rejectedlist", element: <RejectedListTabs /> },
     { path: "/sr-releasedlist", element: <ReleasedListTabs /> },
@@ -237,7 +238,7 @@ function App() {
       element: <ViewProcurementDetailsById />,
     },
     {
-      path: "/boq-search",   // need to check the status after getting the dataList
+      path: "/boq-search", // need to check the status after getting the dataList
       element: <BoqSearch />,
     },
     {
@@ -277,7 +278,7 @@ function App() {
 
     /////////////////////////{*** SR Inventory ***}//////////////////////////////////////
     {
-      path: "/sr-dist-proposal",  
+      path: "/sr-dist-proposal",
       element: <StockRecListTabs />,
     },
     {
@@ -287,17 +288,21 @@ function App() {
 
     /////////////////////////{*** SR Warranty ***}//////////////////////////////////////
     {
-      path: "/sr-warrantyClaim",  
+      path: "/sr-warrantyClaim",
       element: <SRWarrantyClaim />,
     },
     {
       path: "/sr-viewWarrantyById",
       element: <SrViewWarrantybyId />,
     },
+    {
+      path: "/inventory-stockRequest",
+      element: <InventoryAdminTabs />,
+    },
 
     /////////////////////////{*** DD Handover ***}//////////////////////////////////////
     {
-      path: "/dd-handover",  
+      path: "/dd-handover",
       element: <DDHandoverListTabs />,
     },
     {
@@ -313,14 +318,14 @@ function App() {
     {
       path: "/product-history-reports",
       element: <ProductHistoryReports />,
-    },    
+    },
     {
       path: "/inventory-reports",
       element: <InventoryReports />,
     },
-    
+
     /////////////////////////{*** Bidding ***}//////////////////////////////////////
-    
+
     {
       path: "/bidding-input-form",
       element: <BiddingInitialForm />,
@@ -337,9 +342,6 @@ function App() {
       path: "/bidding-details",
       element: <BiddingDetails />,
     },
-
-
-
   ];
 
   return (

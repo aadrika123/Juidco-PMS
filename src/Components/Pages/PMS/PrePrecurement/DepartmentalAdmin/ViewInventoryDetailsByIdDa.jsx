@@ -27,7 +27,6 @@ import ApiHeader2 from "@/Components/api/ApiHeader2";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import { useReactToPrint } from "react-to-print";
-import { MdArrowRightAlt } from "react-icons/md";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
@@ -47,11 +46,11 @@ const ViewInventoryDetailsById = (props) => {
   const [preview, setPreview] = useState();
 
   const {
-    api_fetchProcurementDADetailByIdinbox,
-    api_fetchProcurementDADetailByIdOutbox,
+    api_getStockRequetById,
     api_postBackToSR,
     api_postForwardtoAcc,
     api_postRejectTender,
+    api_forwardStockReqToI,
   } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
@@ -80,10 +79,10 @@ const ViewInventoryDetailsById = (props) => {
     seterroState(false);
 
     if (page == "inbox") {
-      url = api_fetchProcurementDADetailByIdinbox;
+      url = api_getStockRequetById;
     }
     if (page == "outbox") {
-      url = api_fetchProcurementDADetailByIdOutbox;
+      url = api_getStockRequetById;
     }
 
     AxiosInterceptors.get(`${url}/${id}`, ApiHeader())
@@ -208,6 +207,39 @@ const ViewInventoryDetailsById = (props) => {
       });
   };
 
+  const forwardToIa = () => {
+    setisLoading(true);
+
+    // seterroState(false);
+
+    AxiosInterceptors.post(
+      `${api_forwardStockReqToI}`,
+      { stock_handover_no: [id] },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success("Successfully forwarded to Inventory Admin");
+          setTimeout(() => {
+            navigate("/da-inventory-proposal");
+          }, 500);
+        } else {
+          // toast.error(response?.data?.mmessage || "something went wrong");
+          // navigate("/da-inventory-proposal");
+          // toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error in forwarding to Inventory Admin");
+        navigate("/da-inventory-proposal");
+        console.log("errorrr.... ", error);
+        // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
   if (isModalOpen3) {
     return (
       <>
@@ -255,13 +287,13 @@ const ViewInventoryDetailsById = (props) => {
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
-          titleText={"Inventory Proposal Details"}
+          titleText={"Stock Request Proposal Details"}
         />
       </div>
 
       <>
         <div className='flex gap-10 m-4 bg-white p-4'>
-          {applicationFullData?.status?.status >= 70 && (
+          {/* {applicationFullData?.status?.status >= 70 && (
             <button
               className={`${buttonStyle2} w-[6rem]`}
               onClick={() =>
@@ -272,8 +304,8 @@ const ViewInventoryDetailsById = (props) => {
             >
               BOQ{" "}
             </button>
-          )}
-          {applicationFullData?.status?.status >= 71 && (
+          )} */}
+          {/* {applicationFullData?.status?.status >= 71 && (
             <button
               className={buttonStyle2}
               onClick={() =>
@@ -284,7 +316,7 @@ const ViewInventoryDetailsById = (props) => {
             >
               Pre-Tender Form
             </button>
-          )}
+          )} */}
         </div>
       </>
 
@@ -302,29 +334,17 @@ const ViewInventoryDetailsById = (props) => {
           >
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-                View Procurement Request{" "}
+                View Stock Handover Request{" "}
               </h2>
             </div>
 
             <div className='flex justify-between'>
-              {!applicationFullData?.remark?.length == 0 && (
-                <div className='pb-5 pl-8'>
-                  <h1 className='font-bold text-base text-green-600'>
-                    Remark <span className='text-black'>:</span>
-                    <span className='text-md pt-2 font-ligh text-green-600'>
-                      {" "}
-                      {nullToNA(applicationFullData?.remark)}
-                    </span>
-                  </h1>
-                </div>
-              )}
-
               <div className='pl-8 text-[1rem] text-[#4338CA]'>
                 <h1 className=''>
-                  Procurement Request No <span className='text-black'>:</span>
+                  Handover Request No <span className='text-black'>:</span>
                   <span className='font-bold'>
                     {" "}
-                    {nullToNA(applicationFullData?.procurement_no)}
+                    {nullToNA(applicationFullData?.stock_handover_no)}
                   </span>
                 </h1>
               </div>
@@ -332,11 +352,27 @@ const ViewInventoryDetailsById = (props) => {
 
             <div className='grid md:grid-cols-4 gap-4 ml-8'>
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>Employee Id</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.emp_id)}
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  Employee Name
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.emp_name)}
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
                   Item Category
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.category.name)}
+                  {nullToNA(applicationFullData?.inventory?.category.name)}
                 </div>
               </div>
 
@@ -345,37 +381,30 @@ const ViewInventoryDetailsById = (props) => {
                   Item Sub Category
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.subcategory?.name)}
+                  {nullToNA(applicationFullData?.inventory?.subcategory?.name)}
                 </div>
               </div>
 
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>Brand</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.brand?.name)}
+                  {nullToNA(applicationFullData?.inventory?.brand?.name)}
                 </div>
               </div>
 
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-semibold '>
-                  Rate per Quantity
-                </div>
+                <div className='md:w-auto w-[50%] font-bold '>Unit</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.rate)}
+                  {nullToNA(applicationFullData?.inventory?.unit?.name)}
                 </div>
               </div>
 
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.quantity)}
+                <div className='md:w-auto w-[50%] font-bold '>
+                  Requested Quantity
                 </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>Total Rate</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.total_rate)}
+                  {nullToNA(applicationFullData?.allotted_quantity)}
                 </div>
               </div>
             </div>
@@ -383,7 +412,7 @@ const ViewInventoryDetailsById = (props) => {
             <div className='p-5 pl-8'>
               <h1 className='font-bold '>Description</h1>
               <p className=' pt-2'>
-                {nullToNA(applicationFullData?.description)}
+                {nullToNA(applicationFullData?.inventory?.description)}
               </p>
             </div>
 
@@ -447,11 +476,11 @@ const ViewInventoryDetailsById = (props) => {
 
               {page == "inbox" && applicationFullData?.status?.status < 70 && (
                 <>
-                  <button className={buttonStyle2} onClick={postBackToSRModal}>
+                  {/* <button className={buttonStyle2} onClick={postBackToSRModal}>
                     Back To Stock Receiver
-                  </button>
+                  </button> */}
 
-                  <button
+                  {/* <button
                     className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center'
                     onClick={() =>
                       navigate(`/create-boq`, {
@@ -462,7 +491,7 @@ const ViewInventoryDetailsById = (props) => {
                     }
                   >
                     Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
-                  </button>
+                  </button> */}
 
                   <div className='bg-[#0F921C] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-800'>
                     <FileButton
@@ -479,20 +508,21 @@ const ViewInventoryDetailsById = (props) => {
                 </>
               )}
 
-              {page === "inbox" &&
+              {/* {page === "inbox" &&
                 applicationFullData?.status?.status == 70 && (
                   <button
                     className={`bg-[#4478b7] hover:bg-blue-700 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                   >
                     Proceed to Pre-Tender
                   </button>
-                )}
+                )} */}
 
               {page === "inbox" && (
                 <button
                   className={`bg-[#4338ca] hover:bg-blue-600 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                  onClick={forwardToIa}
                 >
-                  Forward to level I
+                  Forward to Inventory Admin
                 </button>
               )}
             </>
