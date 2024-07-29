@@ -30,7 +30,8 @@ const BoqListTable = (props) => {
           { header: "Status" },
           { header: "Action" },
         ]
-      : [
+      : props?.page == "outbox"
+      ? [
           { header: "#" },
           { header: "S No" },
           { header: "Procurement No" },
@@ -39,7 +40,8 @@ const BoqListTable = (props) => {
           { header: "Brand" },
           { header: "Description" },
           { header: "Action" },
-        ];
+        ]
+      : props?.columns;
 
   // console.log(count,"counting");
 
@@ -95,7 +97,7 @@ const BoqListTable = (props) => {
           </thead>
 
           <tbody>
-            {props?.dataList?.length &&
+            {props?.dataList?.length ? (
               props?.dataList.map((items, index) => (
                 <tr
                   className='text-start text-black border-b hover:bg-[#fafafb]'
@@ -108,38 +110,41 @@ const BoqListTable = (props) => {
                         type='checkbox'
                         className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer'
                         onChange={() => {
-                          handleChange(items?.procurement_no);
+                          handleChange(items?.stock_handover_no);
                         }}
-                        
                       />
                     </div>
                   </td>
 
-                  <td className='px-6 py-2'>{index + 1}</td>
+                  {/* <td className='px-6 py-2'>{index + 1}</td> */}
                   {props?.page == "outbox" ? (
                     <td className='px-6 py-2'>{items?.reference_no}</td>
                   ) : (
-                    <td className='px-6 py-2'>{items?.procurement_no}</td>
+                    <td className='px-6 py-2'>{items?.stock_handover_no}</td>
                   )}
                   {props?.page == "outbox" ? (
                     <td className='px-6 py-2'>
                       {items?.procurements[0]?.category?.name}
                     </td>
                   ) : (
-                    <td className='px-4 py-2'>{items?.category.name}</td>
+                    <td className='px-4 py-2'>
+                      {items?.inventory?.category?.name}
+                    </td>
                   )}
                   {props?.page == "outbox" ? (
                     <td className='px-6 py-2'>{items?.estimated_cost}</td>
                   ) : (
-                    <td className='px-4 py-2'>{items?.subcategory?.name}</td>
+                    <td className='px-4 py-2'>
+                      {items?.inventory?.subcategory?.name}
+                    </td>
                   )}
                   {props?.page == "outbox" ? (
                     <td className='px-6 py-2'>{items?.status}</td>
                   ) : (
-                    <td className='px-4 py-2'>{items?.brand?.name}</td>
+                    <td className='px-4 py-2'>{items?.emp_name}</td>
                   )}
                   {props?.page != "outbox" && (
-                    <td className='px-4 py-2'>{items.description}</td>
+                    <td className='px-4 py-2'>{items?.allotted_quantity}</td>
                   )}
                   {/* <td className="px-6 py-4">{items.subcategory.name}</td>
                   <td className="px-6 py-4">{items.brand.name}</td>
@@ -159,7 +164,10 @@ const BoqListTable = (props) => {
                     </button>
                   </td>
                 </tr>
-              ))}
+              ))
+            ) : (
+              <p></p>
+            )}
           </tbody>
         </table>
 

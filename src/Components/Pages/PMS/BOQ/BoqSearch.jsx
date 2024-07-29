@@ -20,7 +20,6 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import BoqListTable from "@/Components/Common/ExportTable/BoqListTable";
 import { MdArrowRightAlt } from "react-icons/md";
 import ShimmerEffectInline from "@/Components/Common/Loaders/ShimmerEffectInline";
-import { FaChartPie } from "react-icons/fa6";
 import toast from "react-hot-toast";
 
 const BoqSearch = () => {
@@ -48,7 +47,6 @@ const BoqSearch = () => {
   const fetchCategory = () => {
     AxiosInterceptors.get(`${api_itemCategory}`, ApiHeader())
       .then(function (response) {
-        console.log("item Categor", response.data.data);
         setCategory(response.data.data.data);
       })
       .catch(function (error) {
@@ -62,7 +60,6 @@ const BoqSearch = () => {
 
     AxiosInterceptors.get(`${api_itemSubCategory}/${catId}`, ApiHeader())
       .then(function (response) {
-        console.log("item Categor", response.data.data);
         setSubCategory(response.data.data);
       })
       .catch(function (error) {
@@ -107,21 +104,6 @@ const BoqSearch = () => {
         setLoading(false);
       });
   };
-
-  // console.log(outboxData,"out box data");
-
-  // const fetchOutboxBoq = () => {
-
-  //   AxiosInterceptors.get(`${api_fetchBoqListOutbox}`, ApiHeader())
-  //     .then(function (response) {
-  //       console.log("item Categor", response.data.data);
-  //       setOutboxData(response.data.data.data);
-  //     })
-  //     .catch(function (error) {
-  //       toast.error("Something went wrong");
-  //       console.log("errorrr.... ", error);
-  //     });
-  // };
 
   const prepareForBoq = () => {
     if (!proNos.length) {
@@ -221,42 +203,6 @@ const BoqSearch = () => {
           </div>
         </div>
 
-        {/* <div className=' flex justify-start'> */}
-        {/* <div className='flex ml-12'> */}
-        {/* <button
-              className={`py-2 px-4 ${
-                activeTab === "inbox"
-                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                  : "text-gray-500"
-              } focus:outline-none flex border border-[#4338ca] rounded`}
-              onClick={() => setActiveTab("inbox")}
-            >
-              <FaChartPie className='m-1 text-[1rem]' />
-              Inbox
-            </button> */}
-        {/* <button
-              className={`ml-4 py-2 px-4 ${
-                activeTab === "outbox"
-                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                  : "text-gray-500"
-              } focus:outline-none flex border border-[#4338ca] rounded`}
-              onClick={() => setActiveTab("outbox")}
-            >
-              <FaChartPie className='m-1 text-[1rem]' />
-              Outbox
-            </button> */}
-        {/* </div> */}
-
-        {/* <div className=' mr-5'>
-            <button
-              className='bg-[#4338ca] hover:bg-[#3d3592] text-white p-2 rounded flex'
-              onClick={prepareForBoq}
-            >
-              Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
-            </button>
-          </div> */}
-        {/* </div> */}
-
         <hr className='w-[76rem] mt-2 mb-10' />
 
         <div className='mt-4'>
@@ -287,23 +233,6 @@ const BoqSearch = () => {
                   )}
                 </div>
               )}
-
-              {/* {activeTab === "outbox" && (
-                <div>
-                  {outboxData?.length > 0 ? (
-                    <BoqListTable
-                      dataList={outboxData}
-                      page='outbox'
-                      // setProNos={setProNos}
-                      // proNos={proNos}
-                    />
-                  ) : (
-                    <div className='bg-red-100 border flex justify-center items-center border-red-400 text-red-700 rounded text-center m-3'>
-                      <h1 className='p-3'>No Data Available</h1>
-                    </div>
-                  )}
-                </div>
-              )} */}
             </>
           )}
         </div>

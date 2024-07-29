@@ -44,7 +44,6 @@ import BoqDetailsById from "./Components/Pages/PMS/BOQ/BoqDetailsById";
 import BoqListTabs from "./Components/Pages/PMS/BOQ/BoqListTabs";
 import BoqListTabsDa from "./Components/Pages/PMS/BOQ/DA/BoqListTabsDa";
 import TenderFormViewDetails from "./Components/Pages/PMS/TenderForm/TenderFormViewDetails";
-import PrintComponent from "./Components/Common/PrintArea/PrintComponent";
 import AccountantList from "./Components/Pages/PMS/TenderForm/Accountant/AccountantListTabs";
 import DATenderTabs from "./Components/Pages/PMS/TenderForm/DepartmentalAdmin/DATenderTabs";
 import ViewProcurementDetailsById from "./Components/Pages/PMS/BOQ/ViewProcurementDetailsById";

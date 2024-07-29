@@ -18,6 +18,7 @@ import { FaChartPie } from "react-icons/fa";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
+import CreateMultipleProcurement from "./CreateMultipleProcurement";
 
 const InventoryProposalListTabs = () => {
   const [activeTab, setActiveTab] = useState("inbox");
@@ -40,13 +41,15 @@ const InventoryProposalListTabs = () => {
       <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
         <div className='mt-14'>
           <div>
-            <button
-              className='bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right '
-              onClick={() => navigate(`/sr-add-pre-procurement`)}
-            >
-              <GoPlus className='m-1 text-[1rem]' />
-              Request Inventory
-            </button>
+            {activeTab === "inbox" && (
+              <button
+                className='bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right '
+                onClick={() => navigate(`/sr-add-pre-procurement`)}
+              >
+                <GoPlus className='m-1 text-[1rem]' />
+                Request Inventory
+              </button>
+            )}
           </div>
 
           <div className='flex ml-5'>
@@ -91,6 +94,14 @@ const InventoryProposalListTabs = () => {
               <InventoryProposalList
                 page='outbox'
                 api={api_fetchProcurementDAList}
+              />
+            </div>
+          )}
+          {activeTab === "createMultipleProcReq" && (
+            <div>
+              <CreateMultipleProcurement
+                page='createMultipleProcReq'
+                api={api_fetchProcurementList}
               />
             </div>
           )}
