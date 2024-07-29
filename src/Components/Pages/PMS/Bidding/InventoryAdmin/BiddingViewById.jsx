@@ -12,6 +12,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import { Toaster, toast } from "react-hot-toast";
+import BiddingViewModal from "./BiddingViewModal";
 
 const BiddingViewById = () => {
   const [isLoading, setisLoading] = useState(false);
@@ -20,7 +21,7 @@ const BiddingViewById = () => {
   const [imageDoc, setImageDoc] = useState(false);
   const [preview, setPreview] = useState();
   const [applicationFullData, setapplicationFullData] = useState();
-
+  const [showModal, setShowModal] = useState(false);
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
@@ -118,7 +119,16 @@ const BiddingViewById = () => {
       </>
     );
   }
+  // ...................................
+  const handleConfirmClick = () => {
+    if (window.confirm("Are you sure you want to proceed?")) {
+      setShowModal(true);
+    }
+  };
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
   if (successModal) {
     return (
       <>
@@ -252,17 +262,32 @@ const BiddingViewById = () => {
           {/* Buttons */}
 
           <div className="space-x-5 flex justify-between mt-[2rem]">
-            <div className="space-x-3 flex items-end justify-center">
-              <button className={buttonStyle} onClick={() => navigate(-1)}>
-                Back
-              </button>
+            <div className="flex flex-1 justify-between">
+              <div className="space-x-3 flex items-end justify-center">
+                <button className={buttonStyle} onClick={() => navigate(-1)}>
+                  Back
+                </button>
 
-              <button
-                onClick={handlePrint}
-                className="mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
-              >
-                Print
-              </button>
+                <button
+                  onClick={handlePrint}
+                  className="mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                >
+                  Print
+                </button>
+              </div>
+              <div className="space-x-3 flex items-end justify-end">
+                <button className={buttonStyle} onClick={() => navigate(-1)}>
+                  Cancel
+                </button>
+
+                <button
+                  onClick={handleConfirmClick}
+                  className="mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                >
+                  Confirm
+                </button>
+                {showModal && <BiddingViewModal closeModal={closeModal} />}
+              </div>
             </div>
 
             {applicationFullData?.status == 0 && (
