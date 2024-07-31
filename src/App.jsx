@@ -74,7 +74,7 @@ import BiddingInitialForm from "./Components/Pages/PMS/Bidding/InventoryAdmin/Bi
 import BiddingViewById from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingViewById";
 import TechnicalComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/TechnicalComparision";
 import BiddingDetails from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingDetailForm/BiddingDetailTabs";
-import InventoryAdminTabs from "./Components/Pages/PMS/StockRequest/InventoryAdmin/InventoryAdminTabs";
+import InventoryAdminTabs from "./Components/Pages/PMS/StockRequest/InventoryAdminTabs/InventoryAdminTabs";
 
 const queryClient = new QueryClient();
 
@@ -295,6 +295,10 @@ function App() {
       path: "/sr-viewWarrantyById",
       element: <SrViewWarrantybyId />,
     },
+    // {
+    //   path: "/inventory-stockRequestOld",
+    //   element: <InventoryAdminTabs />,
+    // },
     {
       path: "/inventory-stockRequest",
       element: <InventoryAdminTabs />,

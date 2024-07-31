@@ -173,7 +173,7 @@ function InventoryProposalList(props) {
             className='bg-[#4338CA] text-white px-5 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
               navigate(
-                `/iaViewStockRequestById/${cell.row.values.id}/${props.page}`
+                `/iaViewStockRequestById/${cell.row.values.stock_handover_no}/${props.page}`
               )
             }
           >

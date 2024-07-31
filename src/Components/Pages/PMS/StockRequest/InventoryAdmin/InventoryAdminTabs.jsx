@@ -19,13 +19,19 @@ import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 
-const InventoryAdminTabs = () => {
+const InventoryAdminTabsOld = () => {
   const [activeTab, setActiveTab] = useState("inbox");
 
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
   const { api_iaStockReqInbox, api_iaStockReqOubox } = ProjectApiList();
+
+  const btnDetails = [
+    { label: "Pre Procurement History", tab: 1 },
+    { label: "Post Procurement History", tab: 2 },
+    { label: "Inventory History", tab: 3 },
+  ];
 
   return (
     <>
@@ -39,19 +45,31 @@ const InventoryAdminTabs = () => {
       <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
         <div className='mt-14'>
           <div>
-            {activeTab === "inbox" && (
-              <button
-                className='bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right '
-                onClick={() => navigate(`/create-pre-procurement`)}
-              >
-                <GoPlus className='m-1 text-[1rem]' />
-                Request Inventory
-              </button>
-            )}
+            <button
+              className='bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right '
+              onClick={() => navigate(`/create-pre-procurement`)}
+            >
+              <GoPlus className='m-1 text-[1rem]' />
+              Request Inventory
+            </button>
           </div>
 
           <div className='flex ml-5'>
-            <button
+            {btnDetails?.map((item, index) => (
+              <button
+                key={index}
+                className={`py-2 px-2 mr-5 ${
+                  tabNo === item.tab
+                    ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
+                    : "text-gray-500 bg-white "
+                } focus:outline-none flex shadow-xl border border-gray-300 rounded`}
+                onClick={() => handleTabClick(item.tab)}
+              >
+                <FaChartPie className='m-1 text-[1rem]' />
+                {item.label}
+              </button>
+            ))}
+            {/* <button
               className={`py-2 px-4 ${
                 activeTab === "inbox"
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
@@ -60,7 +78,7 @@ const InventoryAdminTabs = () => {
               onClick={() => setActiveTab("inbox")}
             >
               <FaChartPie className='m-1 text-[1rem]' />
-              Inbox
+              Stock Requests
             </button>
             <button
               className={`ml-4 py-2 px-4 ${
@@ -71,8 +89,8 @@ const InventoryAdminTabs = () => {
               onClick={() => setActiveTab("outbox")}
             >
               <FaChartPie className='m-1 text-[1rem]' />
-              Outbox
-            </button>
+              Pre-Procurement Inbox
+            </button> */}
           </div>
         </div>
 
@@ -95,4 +113,4 @@ const InventoryAdminTabs = () => {
   );
 };
 
-export default InventoryAdminTabs;
+export default InventoryAdminTabsOld;
