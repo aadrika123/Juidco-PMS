@@ -93,7 +93,7 @@ const TabsMenu = (props) => {
           <div className='p-5'>
             <ListTableParent
               columns={props?.COLUMNS}
-              api={api_fetchProcurementList}
+              api={api_fetchProcurementDAList}
               // table={tableSelector(props?.page)}
               // requestBody={requestBody} // sending body
               // changeData={changeData} // send action for new payload

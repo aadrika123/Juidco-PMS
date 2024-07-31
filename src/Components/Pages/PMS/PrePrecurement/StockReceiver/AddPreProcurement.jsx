@@ -47,6 +47,7 @@ function AddPreProcurement() {
   } = ProjectApiList();
 
   const [isLoading, setisLoading] = useState(false);
+  const [itemCategory, setItemCategory] = useState();
   const [ulbData, setulbData] = useState();
   const [ulbId, setulbId] = useState();
 
@@ -72,7 +73,7 @@ function AddPreProcurement() {
   // ══════════════════════════════║🔰 validationSchema 🔰║═══════════════════════════════════
 
   const validationSchema = yup.object({
-    itemcategory: yup.string().required("Item category is required"),
+    // itemcategory: yup.string().required("Item category is required"),
     unit: yup.string().required("Unit is required"),
     brand: yup.string(),
     description: yup.string().required("Description is required"),
@@ -81,7 +82,7 @@ function AddPreProcurement() {
 
   // intitial value
   const initialValues = {
-    itemcategory: "",
+    // itemcategory: "",
     itemsubcategory: "",
     brand: "",
     unit: "",
@@ -93,8 +94,9 @@ function AddPreProcurement() {
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
       setFormData((prev) => [...prev, values]);
+      resetForm();
     },
     validationSchema,
   });
@@ -103,8 +105,8 @@ function AddPreProcurement() {
   const calculateTotalRate = () => {
     const rate = Number(formik.values.rate) || 0;
     const quantity = Number(formik.values.quantity) || 0;
-    const totalRate = rate * quantity;
-    formik.setFieldValue("totalRate", totalRate);
+    const total_rate = rate * quantity;
+    formik.setFieldValue("total_rate", total_rate);
   };
 
   // ══════════════════════════════║🔰 function to get ward list  🔰║═══════════════════════════════════
@@ -160,7 +162,7 @@ function AddPreProcurement() {
     // console.log("data in form", formData);
     setisLoading(true);
     let requestBody = {
-      category: formik.values.itemcategory,
+      category: itemCategory,
       procurement: formData,
     };
     // console.log(requestBody, "requestBody");
@@ -190,8 +192,12 @@ function AddPreProcurement() {
       })
       .finally(() => {
         setisLoading(false);
-        navigate("/inventory-stockRequest");
       });
+  };
+
+  const modalHandleClick = () => {
+    setSuccessModal(false);
+    navigate("/inventory-stockRequest?tabNo=2");
   };
 
   useEffect(() => {
@@ -234,10 +240,10 @@ function AddPreProcurement() {
         );
     }
     {
-      name == "totalRate" &&
+      name == "total_rate" &&
         formik.setFieldValue(
-          "totalRate",
-          allowNumberInput(value, formik.values.totalRate, 100)
+          "total_rate",
+          allowNumberInput(value, formik.values.total_rate, 100)
         );
     }
   };
@@ -261,6 +267,7 @@ function AddPreProcurement() {
           successModal={successModal}
           setSuccessModal={setSuccessModal}
           procurement_no={procurement_no}
+          handleClick={modalHandleClick}
         />
       </>
     );
@@ -310,7 +317,7 @@ function AddPreProcurement() {
                       {...formik.getFieldProps("itemcategory")}
                       className={`${inputStyle} inline-block w-full relative`}
                       onChange={(e) => {
-                        formik.handleChange(e);
+                        setItemCategory(e.target.value);
                         fetchSubCategory(e);
                       }}
                     >
@@ -334,7 +341,7 @@ function AddPreProcurement() {
                 {/* {console.log(formData)} */}
                 <div class='shadow-md sm:rounded-lg my-10 mx-6 mb-10'>
                   {formData.length ? (
-                    <table class='w-full text-sm text-left rtl:text-right px-6 '>
+                    <table class='w-full text-sm text-left rtl:text-right px-6 overflow-auto'>
                       <thead class='text-xs text-gray-700 uppercase bg-slate-200'>
                         <tr>
                           <th scope='col' class='px-6 py-3'>
@@ -400,7 +407,7 @@ function AddPreProcurement() {
                               {indianAmount(form.rate)}
                             </td>
                             <td class='px-6 py-4'>
-                              {indianAmount(form.totalRate)}
+                              {indianAmount(form.total_rate)}
                             </td>
                             <td class='px-6 py-4 text-right cursor-pointer'>
                               <span class=' hover:text-red-500'>
@@ -598,10 +605,10 @@ function AddPreProcurement() {
                           </label>
                           <input
                             type='number'
-                            name='totalRate'
+                            name='total_rate'
                             className={`${inputStyle} inline-block w-full relative`}
                             // onChange={formik.handleChange}
-                            value={formik.values.totalRate}
+                            value={formik.values.total_rate}
                             placeholder='Total Rate'
                             disabled
                           />
