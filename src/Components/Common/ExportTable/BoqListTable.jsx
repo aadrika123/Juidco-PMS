@@ -49,11 +49,11 @@ const BoqListTable = (props) => {
   const handleChange = (id) => {
     if (!props?.proNos.includes(id)) {
       props?.setProNos((prev) => [...prev, id]);
-      props?.setCount((prev) => prev + 1);
+      // props?.setCount((prev) => prev + 1);
     } else {
       let data = props?.proNos.filter((item) => item != id);
       props?.setProNos(data);
-      props?.setCount((prev) => prev - 1);
+      // props?.setCount((prev) => prev - 1);
     }
   };
 

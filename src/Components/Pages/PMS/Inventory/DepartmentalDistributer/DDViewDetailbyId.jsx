@@ -138,7 +138,7 @@ const DDViewDetailbyId = () => {
 
       <TitleBar
         titleBarVisibility={titleBarVisibility}
-        titleText={"Inventory Proposal Details"}
+        titleText={"Stock Request Details"}
       />
 
       {/* //timeline  */}
@@ -156,13 +156,13 @@ const DDViewDetailbyId = () => {
           >
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-                View Inventory Request{" "}
+                View Stock Request{" "}
               </h2>
             </div>
             <div className='flex justify-between'>
               <div className='pl-8 pb-5 text-[1.2rem] text-[#4338CA]'>
                 <h1 className='font-bold'>
-                  Handover No <span className='text-black'>:</span>
+                  Stock Handover No <span className='text-black'>:</span>
                   <span className='font-light'>
                     {" "}
                     {nullToNA(applicationFullData?.stock_handover_no)}
@@ -188,30 +188,38 @@ const DDViewDetailbyId = () => {
               </div>
 
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>Brand</div>
+                <div className='md:w-auto w-[50%] font-semibold '>Category</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.brand?.name)}
+                  {nullToNA(applicationFullData?.inventory?.category?.name)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-semibold '>Category</div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.category?.name)}
-                </div>
-              </div>
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold '>
                   Sub Category
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.subcategory?.name)}
+                  {nullToNA(applicationFullData?.inventory?.subcategory?.name)}
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>Brand</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.inventory?.brand?.name)}
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>Unit</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.inventory?.unit?.name)}
                 </div>
               </div>
 
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  Quantity Allotted{" "}
+                  Quantity Requested{" "}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.allotted_quantity)}

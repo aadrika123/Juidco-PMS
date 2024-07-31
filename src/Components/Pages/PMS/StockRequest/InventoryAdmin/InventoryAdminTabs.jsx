@@ -8,7 +8,10 @@
 //    DESCRIPTION - InventoryProposalListTabs
 //////////////////////////////////////////////////////////////////////////////////////
 
+// src/components/InventoryProposalListTabs.js
 import React, { useState } from "react";
+import { GoPlus } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 import InventoryProposalList from "./InventoryProposalList";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaChartPie } from "react-icons/fa";
@@ -16,32 +19,57 @@ import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 
-const InventoryProposalListTabs = () => {
+const InventoryAdminTabsOld = () => {
   const [activeTab, setActiveTab] = useState("inbox");
-  const { api_fetchStockRequestDAInbox, api_fetchStockRequestDAOutbox } =
-    ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
+
+  const navigate = useNavigate();
+  const { api_iaStockReqInbox, api_iaStockReqOubox } = ProjectApiList();
+
+  const btnDetails = [
+    { label: "Pre Procurement History", tab: 1 },
+    { label: "Post Procurement History", tab: 2 },
+    { label: "Inventory History", tab: 3 },
+  ];
 
   return (
     <>
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
-          titleText={"Stock Request"}
+          titleText={"Inventory Proposal"}
         />
       </div>
 
       <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
-        <div>
-          <h1 className='text-[35px] text-right pb-5 pr-5 font-bold pt-5'>
-            Stock Request
-          </h1>
-        </div>
-
-        <div className=''>
-          <div className='flex ml-5'>
+        <div className='mt-14'>
+          <div>
             <button
+              className='bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right '
+              onClick={() => navigate(`/create-pre-procurement`)}
+            >
+              <GoPlus className='m-1 text-[1rem]' />
+              Request Inventory
+            </button>
+          </div>
+
+          <div className='flex ml-5'>
+            {btnDetails?.map((item, index) => (
+              <button
+                key={index}
+                className={`py-2 px-2 mr-5 ${
+                  tabNo === item.tab
+                    ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
+                    : "text-gray-500 bg-white "
+                } focus:outline-none flex shadow-xl border border-gray-300 rounded`}
+                onClick={() => handleTabClick(item.tab)}
+              >
+                <FaChartPie className='m-1 text-[1rem]' />
+                {item.label}
+              </button>
+            ))}
+            {/* <button
               className={`py-2 px-4 ${
                 activeTab === "inbox"
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
@@ -50,7 +78,7 @@ const InventoryProposalListTabs = () => {
               onClick={() => setActiveTab("inbox")}
             >
               <FaChartPie className='m-1 text-[1rem]' />
-              Inbox
+              Stock Requests
             </button>
             <button
               className={`ml-4 py-2 px-4 ${
@@ -61,27 +89,22 @@ const InventoryProposalListTabs = () => {
               onClick={() => setActiveTab("outbox")}
             >
               <FaChartPie className='m-1 text-[1rem]' />
-              Outbox
-            </button>
+              Pre-Procurement Inbox
+            </button> */}
           </div>
         </div>
-        <hr className='w-[76rem] mt-5' />
+
+        <hr className='w-[76rem]' />
 
         <div className='mt-4'>
           {activeTab === "inbox" && (
             <div>
-              <InventoryProposalList
-                page='inbox'
-                api={api_fetchStockRequestDAInbox}
-              />
+              <InventoryProposalList page='inbox' api={api_iaStockReqInbox} />
             </div>
           )}
           {activeTab === "outbox" && (
             <div>
-              <InventoryProposalList
-                page='outbox'
-                api={api_fetchStockRequestDAOutbox}
-              />
+              <InventoryProposalList page='outbox' api={api_iaStockReqOubox} />
             </div>
           )}
         </div>
@@ -90,4 +113,4 @@ const InventoryProposalListTabs = () => {
   );
 };
 
-export default InventoryProposalListTabs;
+export default InventoryAdminTabsOld;

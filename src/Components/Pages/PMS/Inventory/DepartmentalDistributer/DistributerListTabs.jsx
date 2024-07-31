@@ -17,7 +17,6 @@ import { FaChartPie } from "react-icons/fa";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
-import CreateMultipleProcurement from "../../PrePrecurement/StockReceiver/CreateMultipleProcurement";
 
 const DistributerListTabs = () => {
   const [activeTab, setActiveTab] = useState("inbox");
@@ -33,7 +32,7 @@ const DistributerListTabs = () => {
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
-          titleText={"Inventory Proposal"}
+          titleText={"Stock Request"}
         />
       </div>
 
@@ -73,18 +72,6 @@ const DistributerListTabs = () => {
               <FaChartPie className='m-1 text-[1rem]' />
               Outbox
             </button>
-
-            <button
-              className={`ml-4 py-2 px-4 ${
-                activeTab === "createMultipleStockReq"
-                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                  : "text-gray-500"
-              } focus:outline-none flex border border-[#4338ca] rounded`}
-              onClick={() => setActiveTab("createMultipleStockReq")}
-            >
-              <FaChartPie className='m-1 text-[1rem]' />
-              Multiple Stock Request
-            </button>
           </div>
         </div>
 
@@ -99,14 +86,6 @@ const DistributerListTabs = () => {
           {activeTab === "outbox" && (
             <div>
               <DdInventoryList page='outbox' api={api_getDDSROutbox} />
-            </div>
-          )}
-          {activeTab === "createMultipleStockReq" && (
-            <div>
-              <CreateMultipleProcurement
-                page='createMultipleStockReq'
-                api={api_fetchStockList}
-              />
             </div>
           )}
         </div>

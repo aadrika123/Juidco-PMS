@@ -18,7 +18,7 @@ import { FaChartPie } from "react-icons/fa";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
-import CreateMultipleProcurement from "./CreateMultipleProcurement";
+import CreateMultipleProcurement from "../../StockRequest/InventoryAdmin/CreateMultipleProcurement";
 
 const InventoryProposalListTabs = () => {
   const [activeTab, setActiveTab] = useState("inbox");
@@ -44,7 +44,7 @@ const InventoryProposalListTabs = () => {
             {activeTab === "inbox" && (
               <button
                 className='bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right '
-                onClick={() => navigate(`/sr-add-pre-procurement`)}
+                onClick={() => navigate(`/create-pre-procurement`)}
               >
                 <GoPlus className='m-1 text-[1rem]' />
                 Request Inventory

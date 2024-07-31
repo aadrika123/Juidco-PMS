@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { MdArrowRightAlt } from "react-icons/md";
 import ApiHeader from "@/Components/api/ApiHeader";
 
-export default function CreateMultipleProcurement() {
+export default function CreateMultipleProcurement({ api }) {
   const { inputStyle, labelStyle } = ThemeStyle();
 
   const [category, setCategory] = useState();
@@ -20,7 +20,7 @@ export default function CreateMultipleProcurement() {
   const [proNos, setProNos] = useState([]);
   const [applicationFullData, setapplicationFullData] = useState([]);
 
-  const { api_getActiveCategory, api_itemSubCategory, api_getDDSRInbox } =
+  const { api_getActiveCategory, api_itemSubCategory, api_addProcurement } =
     ProjectApiList();
 
   const columns = [
@@ -29,7 +29,7 @@ export default function CreateMultipleProcurement() {
     { header: "Category" },
     { header: "Sub Category" },
     { header: "Employee" },
-    { header: "Alloted Qunatity" },
+    { header: "Requested Quantity" },
     { header: "Action" },
   ];
 
@@ -57,9 +57,27 @@ export default function CreateMultipleProcurement() {
 
   const getReqStockData = () => {
     AxiosInterceptors.get(
-      `${api_getDDSRInbox}?category=${categoryId}&subCategory=${subCategoryId}`,
+      `${api}?category=${categoryId}&subCategory=${subCategoryId}`,
       ApiHeader()
     )
+      .then(function (response) {
+        if (response?.data?.status) {
+          setapplicationFullData(response?.data?.data);
+        } else {
+          // toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.message || "Error in getting data");
+        console.log("Error on getting data", error);
+      });
+    // .finally(() => {
+    //   setisLoading(false);
+    // });
+  };
+
+  const forwardMultipleReq = () => {
+    AxiosInterceptors.post(api_addProcurement, { stocks: proNos }, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
@@ -138,7 +156,7 @@ export default function CreateMultipleProcurement() {
 
             <div className='pt-9'>
               <button
-                className='bg-[#4338CA] hover:bg-[#5f54df] px-7 py-2 text-white font-semibold rounded shadow-lg'
+                className='bg-[#4338CA] hover:bg-[#7d7a9b] px-7 py-2 text-white font-semibold rounded shadow-lg'
                 onClick={getReqStockData}
               >
                 Search
@@ -149,7 +167,7 @@ export default function CreateMultipleProcurement() {
           <div className='pt-4 flex justify-center items-center'>
             <button
               className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
-              //   onClick={prepareForBoq}
+              onClick={forwardMultipleReq}
             >
               Forward to DA <MdArrowRightAlt className='text-2xl ml-2' />
             </button>
