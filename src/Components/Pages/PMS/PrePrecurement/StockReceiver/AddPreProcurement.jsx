@@ -95,6 +95,9 @@ function AddPreProcurement() {
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values, { resetForm }) => {
+      const brandName = getBrandName(values.brand)
+      values = {...values, brand: brandName}
+      // console.log(values,"values===>")
       setFormData((prev) => [...prev, values]);
       resetForm();
     },
@@ -129,7 +132,7 @@ function AddPreProcurement() {
       ApiHeader()
     )
       .then(function (response) {
-        console.log(response?.data?.data, "res subcT");
+        // console.log(response?.data?.data, "res subcT");
         setSubCategory(response?.data?.data);
       })
       .catch(function (error) {
@@ -176,10 +179,9 @@ function AddPreProcurement() {
         if (response?.data?.status === true) {
           setisLoading(false);
           setSuccessModal(true);
-          notify(response?.data?.message, "success");
+          // notify(response?.data?.message, "success");
           setProcurement_no(response?.data?.procurement_no);
-
-          // navigate("/sr-inventory-proposal");
+            // navigate("/sr-inventory-proposal");
         } else {
           setisLoading(false);
           // notify(response?.data?.message, "error");
@@ -188,7 +190,7 @@ function AddPreProcurement() {
       })
       .catch(function (error) {
         setisLoading(false);
-        notify("Something went wrong!");
+        toast.error("Something went wrong!");
       })
       .finally(() => {
         setisLoading(false);
@@ -213,10 +215,15 @@ function AddPreProcurement() {
     return (
       <>
         <BarLoader />
-        <div className='min-h-screen'></div>
+        <div className="min-h-screen"></div>
       </>
     );
   }
+
+  const getBrandName = (id) => {
+    const name = brand?.find((obj) => obj.id === id)?.name;
+    return name
+  };
 
   const handleOnChange = (e) => {
     let name = e.target.name;
@@ -287,7 +294,7 @@ function AddPreProcurement() {
 
   return (
     <>
-      <div className=''>
+      <div className="">
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Pre Procurement Proposal"}
@@ -296,22 +303,22 @@ function AddPreProcurement() {
 
       <div className={`${formStyle} border border-blue-500 mt-6 shadow-lg`}>
         <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-          <div className=''>
-            <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
-              <div className='col-span-12  w-full mb-20'>
-                <div className=' ml-4 p-2'>
+          <div className="">
+            <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
+              <div className="col-span-12  w-full mb-20">
+                <div className=" ml-4 p-2">
                   <h1 className={`${headingStyle} text-right pb-3 p-6`}>
                     Add Pre Procurement
                   </h1>
                 </div>
-                <div className='hidden md:block lg:block'>
-                  <hr className='border w-full border-gray-200' />
+                <div className="hidden md:block lg:block">
+                  <hr className="border w-full border-gray-200" />
                 </div>
-                <div className='px-5 mt-4'>
-                  <div className='form-group flex-shrink max-w-full md:w-1/3 px-4 mb-4'>
+                <div className="px-5 mt-4">
+                  <div className="form-group flex-shrink max-w-full md:w-1/3 px-4 mb-4">
                     <label className={`${labelStyle} inline-block mb-2`}>
                       Item Category
-                      <span className='text-xl text-red-500 pl-1'>*</span>{" "}
+                      <span className="text-xl text-red-500 pl-1">*</span>{" "}
                     </label>
                     <select
                       {...formik.getFieldProps("itemcategory")}
@@ -331,7 +338,7 @@ function AddPreProcurement() {
                         ))}
                       <option>others</option>
                     </select>
-                    <p className='text-red-500 text-xs '>
+                    <p className="text-red-500 text-xs ">
                       {formik.touched.itemcategory && formik.errors.itemcategory
                         ? formik.errors.itemcategory
                         : null}
@@ -339,36 +346,36 @@ function AddPreProcurement() {
                   </div>
                 </div>
                 {/* {console.log(formData)} */}
-                <div class='shadow-md sm:rounded-lg my-10 mx-6 mb-10'>
+                <div class="shadow-md sm:rounded-lg my-10 mx-6 mb-10 overflow-auto">
                   {formData.length ? (
-                    <table class='w-full text-sm text-left rtl:text-right px-6 overflow-auto'>
-                      <thead class='text-xs text-gray-700 uppercase bg-slate-200'>
+                    <table class="w-full text-sm text-left rtl:text-right px-6 overflow-auto">
+                      <thead class="text-xs text-gray-700 uppercase bg-slate-200">
                         <tr>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope="col" class="px-6 py-3">
                             S No.
                           </th>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope="col" class="px-6 py-3">
                             SubCategory
                           </th>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope="col" class="px-6 py-3">
                             Brand
                           </th>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope="col" class="px-6 py-3">
                             Unit
                           </th>
-                          <th scope='col' class='px-6 py-3 w-[5rem]'>
+                          <th scope="col" class="px-6 py-3 w-[5rem]">
                             Description
                           </th>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope="col" class="px-6 py-3">
                             Total Qunatity
                           </th>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope="col" class="px-6 py-3">
                             Rate
                           </th>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope="col" class="px-6 py-3">
                             Total Rate
                           </th>
-                          <th scope='col' class='px-6 py-3'>
+                          <th scope="col" class="px-6 py-3">
                             {/* <span class=' hover:text-red-500'>
                               <MdOutlineDelete />
                             </span> */}
@@ -377,43 +384,42 @@ function AddPreProcurement() {
                       </thead>
                       <tbody>
                         {formData?.map((form, index) => (
-                          <tr class='bg-white border-b hover:bg-gray-50 '>
-                            <td class='px-6 py-4'>{index + 1}</td>
-                            <td class='px-6 py-4'>
+                          <tr class="bg-white border-b hover:bg-gray-50 ">
+                            <td class="px-6 py-4">{index + 1}</td>
+                            <td class="px-6 py-4">
                               {
                                 subcategory?.find(
                                   (subcat) => subcat.id === form.itemsubcategory
                                 )?.name
                               }
                             </td>
-                            <td class='px-6 py-4'>
+                            <td class="px-6 py-4">
                               {
-                                brand?.find((data) => data.id === form.brand)
-                                  ?.name
+                                form?.brand
                               }
                             </td>
-                            <td class='px-6 py-4'>
+                            <td class="px-6 py-4">
                               {" "}
                               {
                                 units?.find((data) => data.id === form.unit)
                                   ?.name
                               }
                             </td>
-                            <td class='px-6 py-4 w-[10rem] whitespace-normal break-words'>
+                            <td class="px-6 py-4 w-[10rem] whitespace-normal break-words">
                               {form.description}
                             </td>
-                            <td class='px-6 py-4 '>{form.quantity}</td>
-                            <td class='px-6 py-4 '>
+                            <td class="px-6 py-4 ">{form.quantity}</td>
+                            <td class="px-6 py-4 ">
                               {indianAmount(form.rate)}
                             </td>
-                            <td class='px-6 py-4'>
+                            <td class="px-6 py-4">
                               {indianAmount(form.total_rate)}
                             </td>
-                            <td class='px-6 py-4 text-right cursor-pointer'>
-                              <span class=' hover:text-red-500'>
+                            <td class="px-6 py-4 text-right cursor-pointer">
+                              <span class=" hover:text-red-500">
                                 <MdOutlineDelete
                                   fontSize={18}
-                                  color='red'
+                                  color="red"
                                   onClick={() => handleDelete(index)}
                                 />
                               </span>
@@ -427,12 +433,12 @@ function AddPreProcurement() {
                   )}
                 </div>
 
-                <div className='mb-24 m-10 p-3 border border-gray-200 shadow-md rounded'>
-                  <div className=' valid-form flex flex-wrap flex-row'>
-                    <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
+                <div className="mb-24 m-10 p-3 border border-gray-200 shadow-md rounded">
+                  <div className=" valid-form flex flex-wrap flex-row">
+                    <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Items Sub Category
-                        <span className='text-xl text-red-500 pl-1'>*</span>
+                        <span className="text-xl text-red-500 pl-1">*</span>
                       </label>
                       <select
                         {...formik.getFieldProps("itemsubcategory")}
@@ -449,7 +455,7 @@ function AddPreProcurement() {
                           ))}
                       </select>
 
-                      <p className='text-red-500 text-xs '>
+                      <p className="text-red-500 text-xs ">
                         {formik.touched.itemsubcategory &&
                         formik.errors.itemsubcategory
                           ? formik.errors.itemsubcategory
@@ -457,10 +463,10 @@ function AddPreProcurement() {
                       </p>
                     </div>
 
-                    <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
+                    <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Unit
-                        <span className='text-xl text-red-500 pl-1'>*</span>
+                        <span className="text-xl text-red-500 pl-1">*</span>
                       </label>
                       <select
                         {...formik.getFieldProps("unit")}
@@ -477,14 +483,14 @@ function AddPreProcurement() {
                           ))}
                       </select>
 
-                      <p className='text-red-500 text-xs '>
+                      <p className="text-red-500 text-xs ">
                         {formik.touched.unit && formik.errors.unit
                           ? formik.errors.unit
                           : null}
                       </p>
                     </div>
 
-                    <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
+                    <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Brand
                         {/* <span className='text-xl text-red-500 pl-1'>*</span> */}
@@ -504,7 +510,7 @@ function AddPreProcurement() {
                           ))}
                       </select>
 
-                      <p className='text-red-500 text-xs '>
+                      <p className="text-red-500 text-xs ">
                         {formik.touched.brand && formik.errors.brand
                           ? formik.errors.brand
                           : null}
@@ -513,8 +519,8 @@ function AddPreProcurement() {
 
                     {/* --------------------------------------------------------------------------------------------------------- */}
                     {categorySelected?.map((obj, index) => (
-                      <div className=' flex flex-wrap w-1/2' key={index}>
-                        <div className='px-4 w-full mb-4'>
+                      <div className=" flex flex-wrap w-1/2" key={index}>
+                        <div className="px-4 w-full mb-4">
                           <label className={`${labelStyle} inline-block mb-2`}>
                             {obj.label}
                           </label>
@@ -527,7 +533,7 @@ function AddPreProcurement() {
                             value={formik.values[obj.name]}
                           />
 
-                          <p className='text-red-500 text-xs '>
+                          <p className="text-red-500 text-xs ">
                             {formik.touched[obj.name] && formik.errors[obj.name]
                               ? formik.errors[obj.name]
                               : null}
@@ -536,19 +542,19 @@ function AddPreProcurement() {
                       </div>
                     ))}
 
-                    <div className='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-2'>
+                    <div className="form-group flex-shrink max-w-full px-4 w-full md:w-full mb-2">
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Description
                       </label>
                       <textarea
-                        type='text'
-                        name='description'
+                        type="text"
+                        name="description"
                         className={`${inputStyle} inline-block w-full relative h-24`}
                         onChange={formik.handleChange}
                         value={formik.values.description}
                       />
 
-                      <p className='text-red-500 text-xs '>
+                      <p className="text-red-500 text-xs ">
                         {formik.touched.description && formik.errors.description
                           ? formik.errors.description
                           : null}
@@ -556,65 +562,65 @@ function AddPreProcurement() {
                     </div>
                   </div>
 
-                  <div className='valid-form flex flex-wrap flex-row mx-4'>
-                    <div className='form-group flex-shrink max-w-full w-full mb-4'>
+                  <div className="valid-form flex flex-wrap flex-row mx-4">
+                    <div className="form-group flex-shrink max-w-full w-full mb-4">
                       <label
                         className={`${labelStyle} inline-block mb-4 font-semibold`}
                       >
                         Quantity
                       </label>
 
-                      <div className='flex items-center space-x-5'>
+                      <div className="flex items-center space-x-5">
                         <div>
                           <label className={`${labelStyle} inline-block mb-2`}>
                             Rate
                           </label>
                           <input
-                            type='number'
-                            name='rate'
+                            type="number"
+                            name="rate"
                             className={`${inputStyle} inline-block w-full relative`}
                             onChange={(e) => {
                               formik.handleChange(e);
                               calculateTotalRate();
                             }}
                             value={formik.values.rate}
-                            placeholder='Rate'
+                            placeholder="Rate"
                           />
                         </div>
-                        <p className='pt-8'>X</p>
+                        <p className="pt-8">X</p>
                         <div>
                           <label className={`${labelStyle} inline-block mb-2`}>
                             Total Quantity
                           </label>
                           <input
-                            type='number'
-                            name='quantity'
+                            type="number"
+                            name="quantity"
                             className={`${inputStyle} inline-block w-full relative`}
                             onChange={(e) => {
                               formik.handleChange(e);
                               calculateTotalRate();
                             }}
                             value={formik.values.quantity}
-                            placeholder='Quantity'
+                            placeholder="Quantity"
                           />
                         </div>
-                        <p className='pt-8'>=</p>
+                        <p className="pt-8">=</p>
                         <div>
                           <label className={`${labelStyle} inline-block mb-2`}>
                             Total Rate
                           </label>
                           <input
-                            type='number'
-                            name='total_rate'
+                            type="number"
+                            name="total_rate"
                             className={`${inputStyle} inline-block w-full relative`}
                             // onChange={formik.handleChange}
                             value={formik.values.total_rate}
-                            placeholder='Total Rate'
+                            placeholder="Total Rate"
                             disabled
                           />
                         </div>
                       </div>
-                      <p className='text-red-500 text-xs '>
+                      <p className="text-red-500 text-xs ">
                         {formik.touched.quantity && formik.errors.quantity
                           ? formik.errors.quantity
                           : null}
@@ -622,20 +628,20 @@ function AddPreProcurement() {
                     </div>
                   </div>
 
-                  <div className='flex justify-end pt-4  space-x-5'>
+                  <div className="flex justify-end pt-4  space-x-5">
                     <button
-                      type='submit'
+                      type="submit"
                       // type='button'
                       // onClick
                       className={`bg-blue-500 flex items-center gap-2 rounded-md hover:bg-[#4478b7] px-4 py-2.5 text-white font-semibold leading-5 shadow-lg `}
                     >
-                      <IoMdAddCircleOutline className='text-xl' />
+                      <IoMdAddCircleOutline className="text-xl" />
                       Add
                     </button>
                   </div>
                 </div>
 
-                <div className='flex justify-end gap-3 mt-8 pr-8'>
+                <div className="flex justify-end gap-3 mt-8 pr-8">
                   <button
                     onClick={openCancelModal}
                     className={`bg-white px-2 py-3 text-black rounded leading-5 shadow-lg  hover:bg-[#1A4D8C] hover:text-white border-blue-900 border`}
@@ -643,7 +649,7 @@ function AddPreProcurement() {
                     Cancel
                   </button>
                   <button
-                    type='button'
+                    type="button"
                     onClick={() => setIsModalOpen(true)}
                     className={`bg-[#4338CA] border-blue-900 border hover:bg-[#4478b7] px-7 py-3 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                   >
