@@ -230,13 +230,13 @@ function BoqListing(props) {
         <div className="pr-2">{cell.row.values?.category?.name} </div>
       ),
     },
-    {
-      Header: "Sub Category",
-      accessor: "subcategory",
-      Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values?.subcategory?.name} </div>
-      ),
-    },
+    // {
+    //   Header: "Sub Category",
+    //   accessor: "subcategory",
+    //   Cell: ({ cell }) => (
+    //     <div className="pr-2">{cell.row.values?.subcategory?.name} </div>
+    //   ),
+    // },
     {
       Header: "Total Rate",
       accessor: "total_rate",
@@ -246,58 +246,67 @@ function BoqListing(props) {
     },
 
     {
-      Header: "Status",
+      Header: <p className="text-center">Status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
-        <div className="pr-2">
-          <p className="font-bold text-yellow-800">
-            {cell.row.values.status == -1 && "Back from DA"}
-          </p>
-          <p className="font-bold text-red-500">
-            {cell.row.values.status == -2 && "Rejected"}
-          </p>
-          <p className="font-bold text-blue-800">
-            {cell.row.values.status == 0 && "Pending"}
-          </p>
-          <p className="font-bold text-blue-800">
-            {cell.row.values.status == 1 && "DA's Inbox"}
-          </p>
-          <p className="font-bold text-green-800">
-            {cell.row.values.status == 2 && "Approved by DA"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == 3 && "Supplier Assigned"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == 4 && "Incomplete stocks received"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == 5 && "Stocks received"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status.status == 69 && "Revised"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status.status == 70 && "Ready for BOQ"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status.status == 71 && "BOQ already created"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status.status == -70 && "BOQ returned from DA"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status.status == 72 && "Ready for tendering"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status.status == -72 && "Tender back from DA"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status.status == 73 && "Tender is ready"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status.status == 69 && "Revised"}
-          </p>
+        <div className='pr-2'>
+           {cell.row.values?.status == 0 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Pending
+            </p>
+          )}
+           {cell.row.values?.status == 10 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Level 1
+            </p>
+          )}
+           {cell.row.values?.status == 11 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
+              Returned from Level 1
+            </p>
+          )}
+           {cell.row.values?.status == 12 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
+              Rejected by Level 1
+            </p>
+          )}
+           {cell.row.values?.status == 13 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Revised by Level 1
+            </p>
+          )}
+           {cell.row.values?.status == 14 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Approved by Level 1
+            </p>
+          )}
+           {cell.row.values?.status == 20 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Level 2 inbox
+            </p>
+          )}
+           {cell.row.values?.status == 21 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
+              Return from Level 2 
+            </p>
+          )}
+           {cell.row.values?.status == 22 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
+              Rejected by Level 2 
+            </p>
+          )}
+           {cell.row.values?.status == 23 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Revised by Level 2 
+            </p>
+          )}
+           {cell.row.values?.status == 24 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Approved by Level 2 
+            </p>
+          )}
+
+
         </div>
       ),
     },
@@ -309,7 +318,8 @@ function BoqListing(props) {
           <button
             className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
             onClick={() =>
-              navigate(`/viewProcurement/${cell.row.values.procurement_no}`)
+              // navigate(`/viewProcurement/${cell.row.values.procurement_no}`)
+              navigate(`/ia-viewPreProcurementById/${cell.row.values.procurement_no}/${props?.activeTab}`)
             }
           >
             View
@@ -349,7 +359,7 @@ function BoqListing(props) {
               <ListTableParent
                 table={tableSelector(props?.page)}
                 api={props.api}
-                columns={props?.page == "inbox" ? COLUMNS2 : COLUMNS}
+                columns={COLUMNS2}
                 requestBody={requestBody}
                 changeData={changeData}
                 showDiv={true}
