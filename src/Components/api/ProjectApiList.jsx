@@ -40,7 +40,7 @@ export default function ProjectApiList() {
     api_getWaterTankerBookingDetailsById: `${baseUrl}/api/water-tanker/get-booking-details-by-id `, //get -by -id
 
     //Api for PMS
-    api_addProcurement: `${baseUrl}/api/pms/sr/pre-procurement`,
+    api_addProcurement: `${baseUrl}/api/pms/ia/pre-procurement`,
     api_editProcurement: `${baseUrl}/api/pms/da/pre-procurement/edit`,
     api_editSrProcurement: `${baseUrl}/api/pms/sr/pre-procurement/edit`,
 
@@ -67,9 +67,9 @@ export default function ProjectApiList() {
     api_fetchGraphics: `${baseUrl}/api/pms/master/graphics `,
 
     api_fetchStockList: `${baseUrl}/api/pms/sr/pre-procurement`,
-    api_fetchProcurementList: `${baseUrl}/api/pms/sr/pre-procurement`, //--copy pf the just above row
+    api_fetchProcurementList: `${baseUrl}/api/pms/ia/pre-procurement`, //--copy pf the just above row
     api_fetchProcurementListInbox: `${baseUrl}/api/pms/sr/post-procurement`,
-    api_fetchProcurementDAList: `${baseUrl}/api/pms/sr/pre-procurement/outbox`,
+    api_fetchProcurementDAList: `${baseUrl}/api/pms/ia/pre-procurement/outbox`,
     api_fetchProcurementDetailById: `${baseUrl}/api/pms/sr/pre-procurement`,
     api_fetchOutboxProcurementDetailById: `${baseUrl}/api/pms/sr/pre-procurement/outbox`,
     api_postForwardToDA: `${baseUrl}/api/pms/sr/pre-procurement/to-da`,

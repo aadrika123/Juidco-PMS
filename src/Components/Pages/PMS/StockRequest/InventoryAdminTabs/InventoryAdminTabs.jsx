@@ -12,8 +12,6 @@
 import React, { useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-// import ProductHistoryReportList from "./ProductHistoryReportList";
-import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaChartPie } from "react-icons/fa";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
@@ -21,7 +19,6 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 import TabsMenu from "./TabsMenu";
 
 const InventoryAdminTabs = () => {
-  const [activeTab, setActiveTab] = useState("pre_prec_history");
   let [searchParams, setSearchParams] = useSearchParams();
 
   const { titleBarVisibility } = useContext(contextVar);
@@ -29,7 +26,7 @@ const InventoryAdminTabs = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
-  const tabNo = Number(searchParams.get("tabNo"));
+  const tabNo = Number(searchParams.get("tabNo") || "?tabNo=1");
 
   const handleTabClick = (tabNo) => {
     navigate(`/${location.pathname}?tabNo=${tabNo}`);
@@ -78,10 +75,12 @@ const InventoryAdminTabs = () => {
       ),
     },
     {
-      Header: "Requested Quantity",
+      Header: <p className='text-center'>Requested Quantity</p>,
       accessor: "allotted_quantity",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.allotted_quantity} </div>
+        <div className='pr-2 text-center'>
+          {cell.row.values.allotted_quantity}{" "}
+        </div>
       ),
     },
 

@@ -19,7 +19,6 @@ function SuccessModal(props) {
 
   const handleClick = () => {
     props?.setSuccessModal(false);
-    navigate(`/sr-inventory-proposal`);
   };
 
   return (
@@ -53,7 +52,9 @@ function SuccessModal(props) {
               <div class=''>
                 <button
                   className={`bg-[#4338CA] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
-                  onClick={handleClick}
+                  onClick={
+                    props?.handleClick ? props?.handleClick : handleClick
+                  }
                 >
                   Continue
                 </button>
