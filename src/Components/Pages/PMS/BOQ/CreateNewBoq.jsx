@@ -56,7 +56,7 @@ export default function CreateNewBoq() {
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
     {
-      header: "Sr.No",
+      header: "Sub Category",
       isEditable: false,
     },
     {
@@ -76,7 +76,11 @@ export default function CreateNewBoq() {
       isEditable: true,
     },
     {
-      header: "Amount",
+      header: "Gst",
+      isEditable: false,
+    },
+    {
+      header: "Total",
       isEditable: false,
     },
     {
@@ -90,7 +94,6 @@ export default function CreateNewBoq() {
     setisLoading(true);
     AxiosInterceptors.get(`${api_fetchAllBoqDetailsbyId}/${state}`, ApiHeader())
       .then(function (response) {
-        console.log("boq data fetched by id ...", response?.data?.data);
         if (response?.data?.status) {
           setApplicationData(response?.data?.data);
           setData((prev) => ({
@@ -109,6 +112,7 @@ export default function CreateNewBoq() {
           setisLoading(false);
         } else {
           toast.error(response?.data?.message);
+          setisLoading(false);
         }
       })
       .catch(function (error) {
@@ -120,7 +124,6 @@ export default function CreateNewBoq() {
 
   //fetchg data for boq list---------------
   const fetchBoqDataList = () => {
-    console.log(state.procurement_no, "state.procurement_no]");
     let estAmtWithoutGst = 0;
     setisLoading(true);
     AxiosInterceptors.post(
@@ -142,6 +145,7 @@ export default function CreateNewBoq() {
           setisLoading(false);
         } else {
           toast.error(response?.data?.message);
+          setisLoading(false);
         }
       })
       .catch(function (error) {
@@ -192,6 +196,21 @@ export default function CreateNewBoq() {
       const updatedProcurement = prev.procurement.map((data) => ({
         ...data,
         remark: data.procurement_no === procNo ? e.target.value : data.remark,
+      }));
+      return {
+        ...prev,
+        procurement: updatedProcurement,
+        img: imageDoc,
+      };
+    });
+  };
+
+  //adding gst
+  const addGstHandler = (e, procNo) => {
+    setPayload((prev) => {
+      const updatedProcurement = prev.procurement.map((data) => ({
+        ...data,
+        gst: data.procurement_no === procNo ? e.target.value : data?.gst,
       }));
       return {
         ...prev,
@@ -273,6 +292,12 @@ export default function CreateNewBoq() {
     });
   };
 
+  const includeGstForProc = () => {
+    if (gstChecked) {
+      payload?.map((data) => {});
+    }
+  };
+
   //send to da fn
   const confirmationHandlertoDa = () => {
     forwardToDA();
@@ -324,6 +349,18 @@ export default function CreateNewBoq() {
           isLoading ? "blur-[2px]" : ""
         }`}
       >
+        <div className='flex justify-end gap-4 my-1 ml-4'>
+          <input
+            type='checkbox'
+            onChange={(e) => {
+              const isChecked = e.target.checked;
+              setGstChecked(isChecked);
+              estimatedAmountCalc(payload?.procurement, isChecked);
+            }}
+            className='w-4'
+          />
+          <p className='text-md font-semibold'>is Gst included</p>
+        </div>
         <div className='p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md'>
           <h2 className='text-2xl '>
             {isCreatePage == "create"
@@ -359,9 +396,7 @@ export default function CreateNewBoq() {
                       {row?.quantity}
                     </td>
                     <td className='border border-gray-200 px-4 py-2 text-sm'>
-                      {row?.category?.name == "Cleaning Appliances"
-                        ? "L"
-                        : "kg"}
+                      {row?.unit}
                     </td>
                     <td className='border border-gray-200 text-md w-[30px] px-1'>
                       <input
@@ -371,6 +406,35 @@ export default function CreateNewBoq() {
                           changeRateAmountHandler(e, row?.procurement_no)
                         }
                       />
+                    </td>
+                    <td className='border border-gray-200 text-md w-[30px] px-1'>
+                      <div className='flex items-center gap-4 my-1'>
+                        {/* <input
+                          type='checkbox'
+                          onChange={(e) => {
+                            const isChecked = e.target.checked;
+                            setGstChecked(isChecked);
+                            estimatedAmountCalc(
+                              payload?.procurement,
+                              isChecked
+                            );
+                          }}
+                        /> */}
+                        {/* <p className='text-xs w-[4rem]'>GST %</p> */}
+                        <input
+                          placeholder='Add Gst'
+                          className='p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200'
+                          onChange={(e) => {
+                            setPayload((prev) => ({
+                              ...prev,
+                              gst: Number(e.target.value),
+                            }));
+                          }}
+                          defaultValue={
+                            applicationData[0]?.gst && applicationData[0]?.gst
+                          }
+                        />
+                      </div>
                     </td>
                     <td className='border border-gray-200 px-4 py-2 text-sm'>
                       {payload?.procurement[index]?.total_rate ||
@@ -403,9 +467,7 @@ export default function CreateNewBoq() {
                         {row?.quantity}
                       </td>
                       <td className='border border-gray-200 px-4 py-2 text-sm'>
-                        {row?.category?.name == "Cleaning Appliances"
-                          ? "L"
-                          : "kg"}
+                        {row?.unit}
                       </td>
                       <td className='border border-gray-200 text-md w-[30px] px-1'>
                         <input
@@ -425,7 +487,7 @@ export default function CreateNewBoq() {
                           placeholder='Enter remarks...'
                           className='outline-indigo-400 text-md px-2 h-[30px] rounded-md w-full'
                           onChange={(e) =>
-                            addRemarkHandler(e, row?.procurement_no)
+                            addGstHandler(e, row?.procurement_no)
                           }
                           defaultValue={row?.remark || ""}
                         />
@@ -438,7 +500,7 @@ export default function CreateNewBoq() {
 
           <div className='flex justify-between p-2'>
             <div className='p-3'>
-              <div className='flex items-center gap-4 my-1'>
+              {/* <div className='flex items-center gap-4 my-1'>
                 <input
                   type='checkbox'
                   onChange={(e) => {
@@ -461,7 +523,7 @@ export default function CreateNewBoq() {
                     applicationData[0]?.gst && applicationData[0]?.gst
                   }
                 />
-              </div>
+              </div> */}
               <div className='flex items-center gap-4'>
                 <p className='text-xs w-[4rem] mr-7'>HSN Code</p>
                 <input
