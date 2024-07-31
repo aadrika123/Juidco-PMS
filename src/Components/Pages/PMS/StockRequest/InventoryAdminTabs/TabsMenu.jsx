@@ -112,6 +112,66 @@ const TabsMenu = (props) => {
     },
   ];
 
+  const P_COLUMNS = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+    },
+    {
+      Header: "Procurement No",
+      accessor: "procurement_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.procurement_no}</div>
+      ),
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original?.category?.name} </div>
+      ),
+    },
+    {
+      Header: "Total Rate",
+      accessor: "total_rate",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original.total_rate} </div>
+      ),
+    },
+    {
+      Header: "status",
+      accessor: "status",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          <p className='font-bold text-yellow-800'>
+            {cell.row.values.status == -1 && "Back to SR"}
+          </p>
+          <p className='font-bold text-red-500'>
+            {cell.row.values.status == -2 && "Rejected"}
+          </p>
+        </div>
+      ),
+    },
+    {
+      Header: "Action",
+      accessor: "id",
+      Cell: ({ cell }) => (
+        <>
+          <button
+            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+            onClick={() =>
+              navigate(
+                `/ia-viewPreProcurementById/${cell.row.values.procurement_no}/${activeTab}`
+              )
+            }
+          >
+            View
+          </button>
+        </>
+      ),
+    },
+  ];
+
   return (
     <>
       <div className=''>
@@ -158,7 +218,7 @@ const TabsMenu = (props) => {
         {activeTab === "inbox" && props?.page === "procurement" && (
           <div className='p-5'>
             <ListTableParent
-              columns={COLUMNS}
+              columns={P_COLUMNS}
               api={api_fetchProcurementList}
               // table={tableSelector(props?.page)}
               // requestBody={requestBody} // sending body
@@ -182,7 +242,7 @@ const TabsMenu = (props) => {
         {activeTab === "outbox" && props?.page === "procurement" && (
           <div className='p-5'>
             <ListTableParent
-              columns={COLUMNS}
+              columns={P_COLUMNS}
               api={api_fetchProcurementDAList}
               // table={tableSelector(props?.page)}
               // requestBody={requestBody} // sending body

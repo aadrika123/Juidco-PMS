@@ -96,6 +96,9 @@ function AddPreProcurement() {
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values, { resetForm }) => {
+      const brandName = getBrandName(values.brand);
+      values = { ...values, brand: brandName };
+      // console.log(values,"values===>")
       setFormData((prev) => [...prev, values]);
       resetForm();
     },
@@ -130,7 +133,7 @@ function AddPreProcurement() {
       ApiHeader()
     )
       .then(function (response) {
-        console.log(response?.data?.data, "res subcT");
+        // console.log(response?.data?.data, "res subcT");
         setSubCategory(response?.data?.data);
       })
       .catch(function (error) {
@@ -177,9 +180,8 @@ function AddPreProcurement() {
         if (response?.data?.status === true) {
           setisLoading(false);
           setSuccessModal(true);
-          notify(response?.data?.message, "success");
+          // notify(response?.data?.message, "success");
           setProcurement_no(response?.data?.procurement_no);
-
           // navigate("/sr-inventory-proposal");
         } else {
           setisLoading(false);
@@ -189,7 +191,7 @@ function AddPreProcurement() {
       })
       .catch(function (error) {
         setisLoading(false);
-        notify("Something went wrong!");
+        toast.error("Something went wrong!");
       })
       .finally(() => {
         setisLoading(false);
@@ -218,6 +220,11 @@ function AddPreProcurement() {
       </>
     );
   }
+
+  const getBrandName = (id) => {
+    const name = brand?.find((obj) => obj.id === id)?.name;
+    return name;
+  };
 
   const handleOnChange = (e) => {
     let name = e.target.name;
@@ -340,7 +347,7 @@ function AddPreProcurement() {
                   </div>
                 </div>
                 {/* {console.log(formData)} */}
-                <div class='shadow-md sm:rounded-lg my-10 mx-6 mb-10'>
+                <div class='shadow-md sm:rounded-lg my-10 mx-6 mb-10 overflow-auto'>
                   {formData.length ? (
                     <table class='w-full text-sm text-left rtl:text-right px-6 overflow-auto'>
                       <thead class='text-xs text-gray-700 uppercase bg-slate-200'>
@@ -387,12 +394,7 @@ function AddPreProcurement() {
                                 )?.name
                               }
                             </td>
-                            <td class='px-6 py-4'>
-                              {
-                                brand?.find((data) => data.id === form.brand)
-                                  ?.name
-                              }
-                            </td>
+                            <td class='px-6 py-4'>{form?.brand}</td>
                             <td class='px-6 py-4'>
                               {" "}
                               {
