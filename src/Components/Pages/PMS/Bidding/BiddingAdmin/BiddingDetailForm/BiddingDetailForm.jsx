@@ -1,5 +1,5 @@
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import icon from "@/Components/assets/FeaturedIcon.svg";
@@ -7,11 +7,19 @@ import { Description } from "@mui/icons-material";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useNavigate } from "react-router-dom";
-
+import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
+import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 
 const BiddingDetailForm = () => {
+  const navigate = useNavigate();
+  const inputFileRef = useRef();
 
-    const navigate = useNavigate();
+  const [basicDetailData, setBasicDetailData] = useState();
+  const [preview, setPreview] = useState();
+  const [imageDoc, setImageDoc] = useState();
+
+
+
 
   const emdConfirmation = [
     { label: "Yes", value: "yes" },
@@ -35,19 +43,19 @@ const BiddingDetailForm = () => {
   ];
 
   const initialValues = {
-    bidderName: '',
-    panNo: '',
-    gstNo: '',
-    address: '',
-    bankName: '',
-    bankAccNo: '',
-    ifscCode: '',
-    // 
-    emd_conf: '',
-    tranc_mode: '',
-    ddNumber: '',
-    transaction: '',
-        
+    bidderName: "",
+    panNo: "",
+    gstNo: "",
+    address: "",
+    bankName: "",
+    bankAccNo: "",
+    ifscCode: "",
+    //
+    emd_conf: "no",
+    tranc_mode: "online",
+    ddNumber: "",
+    transaction: "cash",
+    trancNumber: "",
   };
 
   return (
@@ -57,9 +65,8 @@ const BiddingDetailForm = () => {
         // validationSchema={validationSchema}
         enableReinitialize={true}
         onSubmit={(values, { resetForm }) => {
-            console.log(values)
-            navigate(`/bidding-details?tabNo=${2}`);
-          
+          console.log(values);
+          navigate(`/bidding-details?tabNo=${2}`);
         }}
       >
         {({
@@ -200,7 +207,7 @@ const BiddingDetailForm = () => {
                 </div>
               </div>
 
-              <div className="p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex justify-between">
+              <div className="p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex ">
                 <div className="border-r-2">
                   <RadioButtonsGroup
                     fields={emdConfirmation}
@@ -211,57 +218,82 @@ const BiddingDetailForm = () => {
                     errors={errors.emd_conf}
                     touched={touched.emd_conf}
                     setFieldValue={setFieldValue}
-                    // defaultValue={"yes"}
                   />
                 </div>
 
-                <div className="border-r-2">
-                  <RadioButtonsGroup
-                    fields={transc}
-                    title={"Transaction Mode"}
-                    name={"tranc_mode"}
-                    values={values.tranc_mode}
-                    handleChange={handleChange}
-                    errors={errors.tranc_mode}
-                    touched={touched.tranc_mode}
-                    setFieldValue={setFieldValue}
-                    // defaultValue={"yes"}
-                  />
-                </div>
+                {values?.emd_conf == "yes" && (
+                  <>
+                    <div className="border-r-2 ml-10">
+                      <RadioButtonsGroup
+                        fields={transc}
+                        title={"Transaction Mode"}
+                        name={"tranc_mode"}
+                        values={values.tranc_mode}
+                        handleChange={handleChange}
+                        errors={errors.tranc_mode}
+                        touched={touched.tranc_mode}
+                        setFieldValue={setFieldValue}
+                      />
+                    </div>
 
-                <div className="border-r-2">
-                  <RadioButtonsGroup
-                    fields={transcMode}
-                    title={"Transaction"}
-                    name={"transaction"}
-                    values={values.transaction}
-                    handleChange={handleChange}
-                    errors={errors.transaction}
-                    touched={touched.transaction}
-                    setFieldValue={setFieldValue}
-                    // defaultValue={"yes"}
-                  />
-                </div>
+                    {values?.tranc_mode == "offline" ? (
+                      <>
+                        <div className="border-r-2 ml-10">
+                          <RadioButtonsGroup
+                            fields={transcMode}
+                            title={"Transaction"}
+                            name={"transaction"}
+                            values={values.transaction}
+                            handleChange={handleChange}
+                            errors={errors.transaction}
+                            touched={touched.transaction}
+                            setFieldValue={setFieldValue}
+                          />
+                        </div>
 
-                <div className="border-r-2 w-[30%]">
-                  <label
-                    for="default-input"
-                    className={`block mb-2 text-sm font-medium text-gray-900`}
-                  >
-                    DD Number
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 "
-                    placeholder="DD Nuber"
-                    name="ddNumber"
-                    onChange={handleChange}
-                    value={values.ddNumber}
-                  />
-                </div>
+                        {values?.transaction == "dd" && (
+                          <div className="border-r-2 ml-10">
+                            <label
+                              for="default-input"
+                              className={`block mb-2 text-sm font-medium text-gray-900`}
+                            >
+                              DD Number
+                              <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 "
+                              placeholder="DD Nuber"
+                              name="ddNumber"
+                              onChange={handleChange}
+                              value={values.ddNumber}
+                            />
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="border-r-2 ml-10">
+                        <label
+                          for="default-input"
+                          className={`block mb-2 text-sm font-medium text-gray-900`}
+                        >
+                          Transaction Number
+                          <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 "
+                          placeholder="Transaction Number"
+                          name="trancNumber"
+                          onChange={handleChange}
+                          value={values.trancNumber}
+                        />
+                      </div>
+                    )}
+                  </>
+                )}
 
-                <div className="">
+                {/* <div className=" ml-10">
                   <div className="">
                     <h1
                       className={`block mb-2 text-sm font-medium text-gray-900`}
@@ -273,6 +305,31 @@ const BiddingDetailForm = () => {
                     <button className="bg-[#4338ca] px-4 py-2 text-white rounded-md text-xs">
                       Upload Documment
                     </button>
+                  </div>
+                </div> */}
+
+                <div className="flex justify-end gap-3 ">
+                  <div className="w-[40%] ml-10">
+                    <ImageDisplay
+                      url={basicDetailData?.doc[0]?.docUrl}
+                      preview={preview}
+                      imageDoc={imageDoc}
+                      alt={"uploaded document"}
+                      showPreview={"hidden"}
+                      width={"[50px]"}
+                    />
+                  </div>
+
+                  <div className="">
+                    <FileButton
+                      bg={"[#4338CA]"}
+                      hoverBg={"bg-indigo-300"}
+                      btnLabel={"Upload Referance Document"}
+                      imgRef={inputFileRef}
+                      setImageDoc={setImageDoc}
+                      setPreview={setPreview}
+                      textColor={"white"}
+                    />
                   </div>
                 </div>
               </div>
