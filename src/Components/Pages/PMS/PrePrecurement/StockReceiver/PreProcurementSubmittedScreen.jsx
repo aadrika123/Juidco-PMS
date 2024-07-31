@@ -15,9 +15,6 @@ import { useNavigate } from "react-router-dom";
 function PreProcurementSubmittedScreen(props) {
   const navigate = useNavigate();
 
-  console.log(props.id);
-  console.log(props.page);
-
   const handleClick = () => {
     props?.submitForm();
     props?.setIsModalOpen(false);
@@ -28,7 +25,7 @@ function PreProcurementSubmittedScreen(props) {
   };
 
   const handleCancilClick = () => {
-    window.location.reload();
+    props?.setIsModalOpen(false);
   };
   return (
     <>
