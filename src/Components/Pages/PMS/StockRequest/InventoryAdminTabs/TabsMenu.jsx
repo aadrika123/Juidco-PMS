@@ -77,21 +77,105 @@ const TabsMenu = (props) => {
       ),
     },
 
-    // {
-    //   Header: "status",
-    //   accessor: "status",
-    //   Cell: ({ cell }) => (
-    //     <div className='pr-2'>
-    //       <p className='font-bold text-yellow-800'>
-    //         {cell.row.values.status.status == -1 && "Back to SR"}
-    //       </p>
-    //       <p className='font-bold text-red-500'>
-    //         {cell.row.values.status.status == -2 && "Rejected"}
-    //       </p>
-
-    //     </div>
-    //   ),
-    // },
+    {
+      Header: <p className="text-center">Status</p>,
+      accessor: "status",
+      Cell: ({ cell }) => (
+        <div className='pr-2 w-[12rem]'>
+          {cell.row.values.status == -1 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
+              Returned
+            </p>
+          )}
+          {cell.row.values.status == -2 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
+              Rejected
+            </p>
+          )}
+          {cell.row.values.status == 0 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Pending
+            </p>
+          )}
+          {cell.row.values.status == 1 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Revised from DA
+            </p>
+          )}
+          {cell.row.values.status == 2 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Forwarded to DA
+            </p>
+          )}
+          {cell.row.values.status == 80 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Forwarded to IA
+            </p>
+          )}
+          {cell.row.values.status == 81 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Returned from Inventory Admin
+            </p>
+          )}
+          {cell.row.values.status == 82 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Inventory Admin Rejected
+            </p>
+          )}
+          {cell.row.values.status == 3 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Approved
+            </p>
+          )}
+          {cell.row.values.status == 4 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Handover Pending
+            </p>
+          )}
+          {cell.row.values.status == 41 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Alloted
+            </p>
+          )}
+          {cell.row.values.status == 5 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Return Pending
+            </p>
+          )}
+          {cell.row.values.status == 51 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Returned to Inventory
+            </p>
+          )}
+          {cell.row.values.status == 52 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Returned to DD
+            </p>
+          )}
+          {cell.row.values.status == -5 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Rejected
+            </p>
+          )}
+          {cell.row.values.status == 6 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Dead stock pending
+            </p>
+          )}
+          {cell.row.values.status == 61 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+             Added to dead stock
+            </p>
+          )}
+          {cell.row.values.status == 62 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+             Returned to DD
+            </p>
+          )}
+          
+        </div>
+      ),
+    },
     {
       Header: "Action",
       accessor: "id",
@@ -139,16 +223,67 @@ const TabsMenu = (props) => {
       ),
     },
     {
-      Header: "status",
+      Header: <p className="text-center">status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          <p className='font-bold text-yellow-800'>
-            {cell.row.values.status == -1 && "Back to SR"}
-          </p>
-          <p className='font-bold text-red-500'>
-            {cell.row.values.status == -2 && "Rejected"}
-          </p>
+           {cell.row.values?.status == 0 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Pending
+            </p>
+          )}
+           {cell.row.values?.status == 10 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Level 1
+            </p>
+          )}
+           {cell.row.values?.status == 11 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
+              Level 1 Returned
+            </p>
+          )}
+           {cell.row.values?.status == 12 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
+              Level 1 Rejected
+            </p>
+          )}
+           {cell.row.values?.status == 13 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Level 1 Revised
+            </p>
+          )}
+           {cell.row.values?.status == 14 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Level 1 Approved
+            </p>
+          )}
+           {cell.row.values?.status == 20 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Level 2
+            </p>
+          )}
+           {cell.row.values?.status == 21 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
+              Level 2 Return
+            </p>
+          )}
+           {cell.row.values?.status == 22 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
+              Level 2 Rejected
+            </p>
+          )}
+           {cell.row.values?.status == 23 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Level 2 Revised
+            </p>
+          )}
+           {cell.row.values?.status == 24 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Level 2 Approved
+            </p>
+          )}
+
+
         </div>
       ),
     },
