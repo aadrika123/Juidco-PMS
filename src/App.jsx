@@ -76,6 +76,7 @@ import TechnicalComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/Te
 import BiddingDetails from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingDetailForm/BiddingDetailTabs";
 import InventoryAdminTabs from "./Components/Pages/PMS/StockRequest/InventoryAdminTabs/InventoryAdminTabs";
 import BiddingType from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingType";
+import ViewPreProcurementById from "./Components/Pages/PMS/PrePrecurement/InventoryAdmin/ViewPreProcurementById";
 
 const queryClient = new QueryClient();
 
@@ -136,7 +137,7 @@ function App() {
     //------- Stock Receiver -------
     { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
     { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
-    
+
     { path: "/create-pre-procurement", element: <AddPreProcurement /> },
     { path: "/sr-edit-pre-procurement/:id", element: <SrEditPreProcurement /> },
     { path: "/sr-rejectedlist", element: <RejectedListTabs /> },
@@ -152,6 +153,10 @@ function App() {
     {
       path: "/da-viewInventoryDetailsById/:id/:page",
       element: <ViewInventoryDetailsByIdDa />,
+    },
+    {
+      path: "/ia-viewPreProcurementById/:id/:page",
+      element: <ViewPreProcurementById />,
     },
 
     /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////

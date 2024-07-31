@@ -194,6 +194,9 @@ export default function ProjectApiList() {
     //updated
     api_fetchStockRequestDAInbox: `${baseUrl}/api/pms/da/stock-request/`,
     api_fetchStockRequestDAOutbox: `${baseUrl}/api/pms/da/stock-request/outbox`,
+
+    //pre-procure
+    api_fetchProcurementById: `${baseUrl}/api/pms/procurement/`,
   };
 
   return apiList;

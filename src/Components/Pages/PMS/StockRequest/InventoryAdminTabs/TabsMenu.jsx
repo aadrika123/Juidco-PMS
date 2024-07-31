@@ -20,7 +20,6 @@ const TabsMenu = (props) => {
 
   // console.log(activeTab)
 
-
   const {
     api_fetchProcurementList,
     api_fetchProcurementDAList,
@@ -98,8 +97,13 @@ const TabsMenu = (props) => {
       accessor: "id",
       Cell: ({ cell }) => (
         <>
-          <button className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
-          onClick={()=>navigate(`/iaViewStockRequestById/${cell.row.values.stock_handover_no}/${activeTab}`)}
+          <button
+            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+            onClick={() =>
+              navigate(
+                `/iaViewStockRequestById/${cell.row.values.stock_handover_no}/${activeTab}`
+              )
+            }
           >
             View
           </button>
@@ -107,7 +111,7 @@ const TabsMenu = (props) => {
       ),
     },
   ];
- 
+
   const P_COLUMNS = [
     {
       Header: "#",
@@ -124,18 +128,14 @@ const TabsMenu = (props) => {
       Header: "Category",
       accessor: "category",
       Cell: ({ cell }) => (
-        <div className='pr-2'>
-          {cell.row.original?.category?.name}{" "}
-        </div>
+        <div className='pr-2'>{cell.row.original?.category?.name} </div>
       ),
     },
     {
       Header: "Total Rate",
       accessor: "total_rate",
       Cell: ({ cell }) => (
-        <div className='pr-2'>
-          {cell.row.original.total_rate}{" "}
-        </div>
+        <div className='pr-2'>{cell.row.original.total_rate} </div>
       ),
     },
     {
@@ -149,7 +149,6 @@ const TabsMenu = (props) => {
           <p className='font-bold text-red-500'>
             {cell.row.values.status == -2 && "Rejected"}
           </p>
-
         </div>
       ),
     },
@@ -158,8 +157,13 @@ const TabsMenu = (props) => {
       accessor: "id",
       Cell: ({ cell }) => (
         <>
-          <button className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
-          onClick={()=>navigate(`/iaViewStockRequestById/${cell.row.values.procurement_no}/${activeTab}`)}
+          <button
+            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+            onClick={() =>
+              navigate(
+                `/ia-viewPreProcurementById/${cell.row.values.procurement_no}/${activeTab}`
+              )
+            }
           >
             View
           </button>
