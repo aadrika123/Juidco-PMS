@@ -77,6 +77,7 @@ import BiddingDetails from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingD
 import InventoryAdminTabs from "./Components/Pages/PMS/StockRequest/InventoryAdminTabs/InventoryAdminTabs";
 import BiddingType from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingType";
 import ViewPreProcurementById from "./Components/Pages/PMS/PrePrecurement/InventoryAdmin/ViewPreProcurementById";
+import BoqLeveltwoTab from "./Components/Pages/PMS/BOQ/level2/BoqLeveltwoTab";
 
 const queryClient = new QueryClient();
 
@@ -219,13 +220,13 @@ function App() {
     },
 
     // ----------level 1 and level 2
-    { path: "/levelone-boq", element: <BoqLeveloneTab /> }, // need to check the status after getting the dataList
+    { path: "/levelone", element: <BoqLeveloneTab /> }, // need to check the status after getting the dataList
     {
       path: "/leveloneView/:id/:page",
       element: <ViewLevel1Details />,
     },
 
-    { path: "/leveltwo-boq", element: <BoqLeveloneTab /> }, // need to check the status after getting the dataList
+    { path: "/leveltwo", element: <BoqLeveltwoTab /> }, // need to check the status after getting the dataList
     {
       path: "/leveltwo/:id/:page",
       element: <ViewLevel2BoqDetails />,
