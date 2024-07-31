@@ -91,7 +91,7 @@ function InventoryProposalList(props) {
         <div className='pr-2 w-[12rem]'>
           {cell.row.values.status == -1 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Back to DA
+              Returned
             </p>
           )}
           {cell.row.values.status == -2 && (
@@ -111,12 +111,12 @@ function InventoryProposalList(props) {
           )}
           {cell.row.values.status == 2 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              DA's inbox
+              Forwarded to DA
             </p>
           )}
           {cell.row.values.status == 80 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Inventory Admin Inbox
+              Forwarded to IA
             </p>
           )}
           {cell.row.values.status == 81 && (
@@ -156,14 +156,30 @@ function InventoryProposalList(props) {
           )}
           {cell.row.values.status == 52 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Returned to DA
+              Returned to DD
             </p>
           )}
-          {/* {cell.row.values.status.status == -5 && (
-          <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-            Rejected
-          </p>
-        )} */}
+          {cell.row.values.status == -5 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Rejected
+            </p>
+          )}
+          {cell.row.values.status == 6 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Dead stock pending
+            </p>
+          )}
+          {cell.row.values.status == 61 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+             Added to dead stock
+            </p>
+          )}
+          {cell.row.values.status == 62 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+             Returned to DD
+            </p>
+          )}
+          
         </div>
       ),
     },
