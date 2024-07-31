@@ -205,7 +205,7 @@ const ViewInventoryDetailsById = (props) => {
                   Stock Request No <span className='text-black'>:</span>
                   <span className='font-light'>
                     {" "}
-                    {nullToNA(applicationFullData?.stock_request_no)}
+                    {nullToNA(applicationFullData?.stock_handover_no)}
                   </span>
                 </h1>
               </div>
@@ -260,14 +260,14 @@ const ViewInventoryDetailsById = (props) => {
                   Requested Quantity
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.alloted_quantity)}
+                  {nullToNA(applicationFullData?.allotted_quantity)}
                 </div>
               </div>
             </div>
             <div className='p-5 pl-8'>
               <h1 className='font-bold '>Description</h1>
               <p className=' pt-2'>
-                {nullToNA(applicationFullData?.description)}
+                {nullToNA(applicationFullData?.inventory?.description)}
               </p>
             </div>
             <div className='flex justify-end w-full mb-5'>

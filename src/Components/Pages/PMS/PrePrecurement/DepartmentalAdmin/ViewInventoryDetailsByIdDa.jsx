@@ -256,7 +256,7 @@ const ViewInventoryDetailsById = (props) => {
       <>
         <StockReceiverModal
           postBackToSR={postBackToSR}
-          setRemark={setRemark}
+          forwardToIa={forwardToIa}
           setIsModalOpen={setIsModalOpen}
         />
       </>
@@ -519,8 +519,9 @@ const ViewInventoryDetailsById = (props) => {
 
               {page === "inbox" && (
                 <button
-                  className={`bg-[#4338ca] hover:bg-blue-600 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                  onClick={forwardToIa}
+                  className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                  // onClick={forwardToIa}
+                  onClick={()=>setIsModalOpen(true)}
                 >
                   Forward to Inventory Admin
                 </button>

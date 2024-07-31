@@ -136,10 +136,7 @@ function App() {
     //------- Stock Receiver -------
     { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
     { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
-    {
-      path: "/iaViewStockRequestById/:id/:page",
-      element: <ViewInventoryDetailsById />,
-    },
+    
     { path: "/create-pre-procurement", element: <AddPreProcurement /> },
     { path: "/sr-edit-pre-procurement/:id", element: <SrEditPreProcurement /> },
     { path: "/sr-rejectedlist", element: <RejectedListTabs /> },
@@ -264,7 +261,7 @@ function App() {
     //   element: <NotificationSidebar />,
     // },
 
-    /////////////////////////{*** Distributer Inventory ***}//////////////////////////////////////
+    /////////////////////////{*** (DD) Distributer Inventory ***}//////////////////////////////////////
     {
       path: "/dd-inventory-proposal",
       element: <DistributerListTabs />,
@@ -288,7 +285,7 @@ function App() {
       element: <SrViewDetailbyId />,
     },
 
-    /////////////////////////{*** SR Warranty ***}//////////////////////////////////////
+    /////////////////////////{*** SR Warranty and Inventory ***}//////////////////////////////////////
     {
       path: "/sr-warrantyClaim",
       element: <SRWarrantyClaim />,
@@ -304,6 +301,10 @@ function App() {
     {
       path: "/inventory-stockRequest",
       element: <InventoryAdminTabs />,
+    },
+    {
+      path: "/iaViewStockRequestById/:id/:page",
+      element: <ViewInventoryDetailsById />,
     },
 
     /////////////////////////{*** DD Handover ***}//////////////////////////////////////
