@@ -4,8 +4,8 @@
 //    Date - 22/07/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - BoqLeveloneTab
-//    DESCRIPTION - BoqLeveloneTab
+//    Component  - BoqLeveltwoTab
+//    DESCRIPTION - BoqLeveltwoTab
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
@@ -18,13 +18,13 @@ import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import BoqListing from "../BoqListIng";
 
-const BoqLeveloneTab = () => {
+const BoqLeveltwoTab = () => {
   const [activeTab, setActiveTab] = useState("inbox");
 
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const {  api_getLevelOneOutbox, api_getLevelOneInbox } =
+  const {  api_getLevelTwoOutbox, api_getLevelTwoInbox } =
     ProjectApiList();
 
   return (
@@ -72,12 +72,12 @@ const BoqLeveloneTab = () => {
         <div className='mt-4'>
           {activeTab === "inbox" && (
             <div>
-              <BoqListing page='inbox' api={api_getLevelOneInbox} activeTab={activeTab} />
+              <BoqListing page='inbox' api={api_getLevelTwoInbox} activeTab={activeTab} />
             </div>
           )}
           {activeTab === "outbox" && (
             <div>
-              <BoqListing page='outbox' api={api_getLevelOneOutbox} activeTab={activeTab} />
+              <BoqListing page='outbox' api={api_getLevelTwoOutbox} activeTab={activeTab} />
             </div>
           )}
         </div>
@@ -86,4 +86,4 @@ const BoqLeveloneTab = () => {
   );
 };
 
-export default BoqLeveloneTab;
+export default BoqLeveltwoTab;

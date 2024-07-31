@@ -186,10 +186,20 @@ export default function ProjectApiList() {
     api_iaStockReqInbox: `${baseUrl}/api/pms/ia/stock-request/`,
     api_iaStockReqOubox: `${baseUrl}/api/pms/ia/stock-request/outbox`,
     api_iaStockReqApprove: `${baseUrl}/api/pms/ia/stock-request/approve`,
+    
+    api_forwardLevelone: `${baseUrl}/api/pms/ia/pre-procurement/to-level1`,
+    api_forwardLeveltwo: `${baseUrl}/api/pms/level1/to-level2`,
 
     // Level 1
     api_getLevelOneInbox: `${baseUrl}/api/pms/level1`,
     api_getLevelOneOutbox: `${baseUrl}/api/pms/level1/outbox`,
+    api_approveByLevelone: `${baseUrl}/api/pms/level1/approve`,
+
+
+    // Level 2
+    api_getLevelTwoInbox: `${baseUrl}/api/pms/level2`,
+    api_getLevelTwoOutbox: `${baseUrl}/api/pms/level2/outbox`,
+    api_approveByLeveltwo: `${baseUrl}/api/pms/level2/approve`,
 
     //updated
     api_fetchStockRequestDAInbox: `${baseUrl}/api/pms/da/stock-request/`,
