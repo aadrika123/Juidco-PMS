@@ -63,15 +63,15 @@ function InventoryProposalList(props) {
     },
     {
       Header: "Requested Quantity ",
-      accessor: "alloted_quantity",
+      accessor: "allotted_quantity",
       Cell: ({ cell }) => (
         <div className='pr-2 text-center'>
-          {cell.row?.values?.alloted_quantity || "N/A"}
+          {cell.row?.values?.allotted_quantity || "N/A"}
         </div>
       ),
     },
     {
-      Header: "status",
+      Header: <p className="text-center">status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2'>

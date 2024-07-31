@@ -16,8 +16,8 @@ function StockReceiverModal(props) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    props?.postBackToSR();
-    navigate(`/sr-inventory-proposal`);
+    props?.forwardToIa();
+    // navigate(`/sr-inventory-proposal`);
   };
 
   const handleCancilClick = () => {
@@ -39,12 +39,12 @@ function StockReceiverModal(props) {
           <div class=' flex-1'>
             <div class=''>
               <h3 class='text-xl  text-center  text-black font-openSans'>
-                Sure to go Back to "Stock Receiver"
+                Sure to Forward to "Inventory Admin" ?
               </h3>
             </div>
           </div>
 
-          <div className='flex justify-center'>
+          {/* <div className='flex justify-center'>
             <textarea
               name='sr_remark'
               className='border border-[#5448dd] rounded w-[22rem]  mt-5 p-2'
@@ -52,7 +52,7 @@ function StockReceiverModal(props) {
               onChange={(e) => props.setRemark(e.target.value)}
               required
             />
-          </div>
+          </div> */}
 
           <div className='flex flex-col m-8'>
             <div className='flex justify-center space-x-5'>
@@ -75,12 +75,12 @@ function StockReceiverModal(props) {
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <h1 className='text-center pt-5'>
                 <span className='text-red-600 text-xl'>*</span> By Clicking
                 Continue your data will be Processed
               </h1>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
