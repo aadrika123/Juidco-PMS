@@ -20,7 +20,6 @@ const TabsMenu = (props) => {
 
   // console.log(activeTab)
 
-
   const {
     api_fetchProcurementList,
     api_fetchProcurementDAList,
@@ -98,8 +97,13 @@ const TabsMenu = (props) => {
       accessor: "id",
       Cell: ({ cell }) => (
         <>
-          <button className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
-          onClick={()=>navigate(`/iaViewStockRequestById/${cell.row.values.stock_handover_no}/${activeTab}`)}
+          <button
+            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+            onClick={() =>
+              navigate(
+                `/iaViewStockRequestById/${cell.row.values.stock_handover_no}/${activeTab}`
+              )
+            }
           >
             View
           </button>
@@ -179,7 +183,7 @@ const TabsMenu = (props) => {
           <div className='p-5'>
             <ListTableParent
               columns={COLUMNS}
-              api={api_fetchProcurementList}
+              api={api_fetchProcurementDAList}
               // table={tableSelector(props?.page)}
               // requestBody={requestBody} // sending body
               // changeData={changeData} // send action for new payload

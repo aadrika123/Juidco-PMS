@@ -61,6 +61,7 @@ function AddPreProcurement() {
   const [successModal, setSuccessModal] = useState(false);
   const [formData, setFormData] = useState([]);
   const [categorySelected, setCategorySelected] = useState([]);
+
   const [procurement_no, setProcurement_no] = useState();
 
   const handleDelete = (index) => {
@@ -83,7 +84,7 @@ function AddPreProcurement() {
   // intitial value
   const initialValues = {
     // itemcategory: "",
-    itemsubcategory: "",
+    subcategory: "",
     brand: "",
     unit: "",
     description: "",
@@ -223,7 +224,7 @@ function AddPreProcurement() {
     let value = e.target.value;
 
     {
-      name == "itemsubcategory" && fetchBrand(value);
+      name == "subcategory" && fetchBrand(value);
     }
     {
       name == "quantity" &&
@@ -382,7 +383,7 @@ function AddPreProcurement() {
                             <td class='px-6 py-4'>
                               {
                                 subcategory?.find(
-                                  (subcat) => subcat.id === form.itemsubcategory
+                                  (subcat) => subcat.id === form.subcategory
                                 )?.name
                               }
                             </td>
@@ -435,7 +436,7 @@ function AddPreProcurement() {
                         <span className='text-xl text-red-500 pl-1'>*</span>
                       </label>
                       <select
-                        {...formik.getFieldProps("itemsubcategory")}
+                        {...formik.getFieldProps("subcategory")}
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
                       >
@@ -450,9 +451,8 @@ function AddPreProcurement() {
                       </select>
 
                       <p className='text-red-500 text-xs '>
-                        {formik.touched.itemsubcategory &&
-                        formik.errors.itemsubcategory
-                          ? formik.errors.itemsubcategory
+                        {formik.touched.subcategory && formik.errors.subcategory
+                          ? formik.errors.subcategory
                           : null}
                       </p>
                     </div>
