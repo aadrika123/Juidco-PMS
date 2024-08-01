@@ -29,6 +29,7 @@ import { useReactToPrint } from "react-to-print";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
 import StockReceiverModal from "../DepartmentalAdmin/StockReceiverModal";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import { MdArrowRightAlt } from "react-icons/md";
 
 const ViewPreProcurementById = () => {
   const navigate = useNavigate();
@@ -103,7 +104,7 @@ const ViewPreProcurementById = () => {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
           setTableData(response?.data?.data?.tran_dtls);
-          setProcNo(response?.data?.data?.procurement_no)
+          setProcNo(response?.data?.data?.procurement_no);
         } else {
           // toast.error("Error while getting details...");
           // seterroState(true);
@@ -254,7 +255,7 @@ const ViewPreProcurementById = () => {
         setisLoading(false);
       });
   };
-  
+
   const forwardToLevelTwo = () => {
     setisLoading(true);
 
@@ -287,7 +288,7 @@ const ViewPreProcurementById = () => {
         setisLoading(false);
       });
   };
-  
+
   const approveByLevelTwo = () => {
     setisLoading(true);
 
@@ -354,28 +355,28 @@ const ViewPreProcurementById = () => {
       });
   };
 
-  const confirmationHandler =()=>{
-    forwardToLevelOne()
-  }
- 
-  const confirmationHandler2 =()=>{
-    forwardToLevelTwo()
-  }
-  
-  const confirmationHandler3 =()=>{
-    approveByLevelTwo()
-  }
+  const confirmationHandler = () => {
+    forwardToLevelOne();
+  };
 
-  const confirmationHandlerlevelOne =()=>{
-    approveByLevelOne()
-  }
+  const confirmationHandler2 = () => {
+    forwardToLevelTwo();
+  };
 
-  const handleCancel =()=>{
-    setIsModalOpen(false)
-    setIsModalOpenlvl2(false)
-    setisModalOpenlAprvl1(false)
-    setisModalOpenlAprvl2(false)
-  }
+  const confirmationHandler3 = () => {
+    approveByLevelTwo();
+  };
+
+  const confirmationHandlerlevelOne = () => {
+    approveByLevelOne();
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setIsModalOpenlvl2(false);
+    setisModalOpenlAprvl1(false);
+    setisModalOpenlAprvl2(false);
+  };
 
   if (isModalOpen3) {
     return (
@@ -507,79 +508,82 @@ const ViewPreProcurementById = () => {
                 </h1>
               </div>
             </div>
-            
+
             <div className='flex justify-between'>
               <div className='pl-8 text-[1rem] text-black flex justify-between w-full'>
                 <h1 className=''>
-                Category <span className='text-black'>:</span>
+                  Category <span className='text-black'>:</span>
                   <span className='font-bold'>
                     {" "}
                     {nullToNA(applicationFullData?.category?.name)}
                   </span>
                 </h1>
-                
               </div>
             </div>
 
-            {applicationFullData?.procurement_stocks?.map((procData,index) => (
+            {applicationFullData?.procurement_stocks?.map((procData, index) => (
               <>
-              <div><p className="text-xs pl-5">Procurement Item: {index+1}</p></div>
-              <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow'>
-                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Subcategory
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {procData?.subCategory?.name}
-                  </div>
+                <div>
+                  <p className='text-xs pl-5'>Procurement Item: {index + 1}</p>
                 </div>
+                <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow'>
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
+                      Subcategory
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {procData?.subCategory?.name}
+                    </div>
+                  </div>
 
-                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Unit</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(procData?.unit?.name)}
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Unit</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(procData?.unit?.name)}
+                    </div>
                   </div>
-                </div>
 
-                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Brand</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(procData?.brand?.name)}
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Brand</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(procData?.brand?.name)}
+                    </div>
                   </div>
-                </div>
 
-                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(procData?.quantity)}
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(procData?.quantity)}
+                    </div>
                   </div>
-                </div>
 
-                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Per Unit Rate
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
+                      Per Unit Rate
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {indianAmount(nullToNA(procData?.rate))}
+                    </div>
                   </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {indianAmount(nullToNA(procData?.rate))}
-                  </div>
-                </div>
 
-                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Total Rate</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {indianAmount(nullToNA(procData?.total_rate))}
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
+                      Total Rate
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {indianAmount(nullToNA(procData?.total_rate))}
+                    </div>
                   </div>
-                </div>
 
-                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Description
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(procData?.description)}
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
+                      Description
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(procData?.description)}
+                    </div>
                   </div>
                 </div>
-              </div>
               </>
             ))}
 
@@ -619,14 +623,29 @@ const ViewPreProcurementById = () => {
             </button>
           )}
 
-          {page == "inbox" &&
-          <button
-            className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
-            onClick={postRejectTenderModal}
-          >
-            Reject
-          </button>
-}
+          {(page == "inbox" || applicationFullData?.status == 14) && (
+            <button
+              className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center'
+              onClick={() =>
+                navigate(`/create-boq`, {
+                  state: {
+                    procurement_no: [applicationFullData?.procurement_no],
+                  },
+                })
+              }
+            >
+              Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
+            </button>
+          )}
+
+          {page == "inbox" && (
+            <button
+              className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
+              onClick={postRejectTenderModal}
+            >
+              Reject
+            </button>
+          )}
 
           {page == "inbox" && (
             <>
@@ -688,56 +707,56 @@ const ViewPreProcurementById = () => {
 
               {page === "inbox" && (
                 <>
+                  {/* for level 1 */}
+                  {(applicationFullData?.status == 10 ||
+                    applicationFullData?.status == 13) && (
+                    <button
+                      className={`bg-[#21b031] hover:bg-[#1e6727] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                      // onClick={forwardToIa}
+                      onClick={() => setisModalOpenlAprvl1(true)}
+                    >
+                      Approve
+                    </button>
+                  )}
+                  {applicationFullData?.status == 0 && (
+                    <button
+                      className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                      // onClick={forwardToIa}
+                      onClick={() => setIsModalOpen(true)}
+                    >
+                      Forward to Level 1
+                    </button>
+                  )}
+                  {applicationFullData?.status == 10 && (
+                    <button
+                      className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                      // onClick={forwardToIa}
+                      onClick={() => setIsModalOpenlvl2(true)}
+                    >
+                      Forward to Level 2
+                    </button>
+                  )}
 
-                 {/* for level 1 */}
-                 {(applicationFullData?.status == 10 || applicationFullData?.status == 13) && 
-                <button
-                  className={`bg-[#21b031] hover:bg-[#1e6727] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                  // onClick={forwardToIa}
-                  onClick={() => setisModalOpenlAprvl1(true)}
-                >
-                  Approve
-                </button>
-                }
-                {applicationFullData?.status == 0 && 
-                <button
-                  className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                  // onClick={forwardToIa}
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  Forward to Level 1
-                </button>
-                }
-                {applicationFullData?.status == 10 && 
-                <button
-                  className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                  // onClick={forwardToIa}
-                  onClick={() => setIsModalOpenlvl2(true)}
-                >
-                  Forward to Level 2
-                </button>
-                }
-                
-                {/* for level 2 */}
-                {(applicationFullData?.status == 20 || applicationFullData?.status == 23) && 
-                <button
-                  className={`bg-[#21b031] hover:bg-[#1e6727] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                  // onClick={forwardToIa}
-                  onClick={() => setisModalOpenlAprvl2(true)}
-                >
-                  Approve
-                </button>
-                }
+                  {/* for level 2 */}
+                  {(applicationFullData?.status == 20 ||
+                    applicationFullData?.status == 23) && (
+                    <button
+                      className={`bg-[#21b031] hover:bg-[#1e6727] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                      // onClick={forwardToIa}
+                      onClick={() => setisModalOpenlAprvl2(true)}
+                    >
+                      Approve
+                    </button>
+                  )}
 
-                {applicationFullData?.status == 24 && 
-                <button
-                  className={`bg-[#21b031] hover:bg-[#1e6727] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                  // onClick={forwardToIa}
-                >
-                  Prepare BOQ
-                </button>
-                }
-               
+                  {applicationFullData?.status == 24 && (
+                    <button
+                      className={`bg-[#21b031] hover:bg-[#1e6727] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                      // onClick={forwardToIa}
+                    >
+                      Prepare BOQ
+                    </button>
+                  )}
                 </>
               )}
             </>
