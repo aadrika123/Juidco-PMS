@@ -336,7 +336,7 @@ const ViewPreProcurementById = () => {
         if (response?.data?.status == true) {
           toast.success("Successfully Approved");
           setTimeout(() => {
-            navigate("/leveltwo");
+            navigate("/levelone");
           }, 500);
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
@@ -468,7 +468,7 @@ const ViewPreProcurementById = () => {
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
-          titleText={"Stock Request Proposal Details"}
+          titleText={"Pre-Procurement Details"}
         />
       </div>
 
@@ -623,7 +623,7 @@ const ViewPreProcurementById = () => {
             </button>
           )}
 
-          {(page == "inbox" || applicationFullData?.status == 14) && (
+          {page == "inbox" && applicationFullData?.status == 14 && (
             <button
               className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center'
               onClick={() =>
@@ -634,7 +634,7 @@ const ViewPreProcurementById = () => {
                 })
               }
             >
-              Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
+              Prepare BOQ
             </button>
           )}
 

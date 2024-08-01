@@ -123,6 +123,7 @@ export default function ProjectApiList() {
     api_postBacktoAcc: `${baseUrl}/api/pms/da/pre-procurement/boq/return-boq`, //boq back to acc
     api_postForwardBoq: `${baseUrl}/api/pms/da/pre-procurement/boq/approve`, //approve boq
     api_postRejectBoq: `${baseUrl}/api/pms/da/pre-procurement/boq/reject`, //reject boq
+    api_forwardBoqToFinance: `${baseUrl}/api/pms/da/pre-procurement/boq/to-finance`,
 
     //tendring form
     api_postBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
@@ -186,7 +187,7 @@ export default function ProjectApiList() {
     api_iaStockReqInbox: `${baseUrl}/api/pms/ia/stock-request/`,
     api_iaStockReqOubox: `${baseUrl}/api/pms/ia/stock-request/outbox`,
     api_iaStockReqApprove: `${baseUrl}/api/pms/ia/stock-request/approve`,
-    
+
     api_forwardLevelone: `${baseUrl}/api/pms/ia/pre-procurement/to-level1`,
     api_forwardLeveltwo: `${baseUrl}/api/pms/level1/to-level2`,
 
@@ -194,7 +195,6 @@ export default function ProjectApiList() {
     api_getLevelOneInbox: `${baseUrl}/api/pms/level1`,
     api_getLevelOneOutbox: `${baseUrl}/api/pms/level1/outbox`,
     api_approveByLevelone: `${baseUrl}/api/pms/level1/approve`,
-
 
     // Level 2
     api_getLevelTwoInbox: `${baseUrl}/api/pms/level2`,
@@ -206,7 +206,7 @@ export default function ProjectApiList() {
     api_fetchStockRequestDAOutbox: `${baseUrl}/api/pms/da/stock-request/outbox`,
 
     //pre-procure
-    api_fetchProcurementById: `${baseUrl}/api/pms/procurement/`,
+    api_fetchProcurementById: `${baseUrl}/api/pms/procurement`,
   };
 
   return apiList;

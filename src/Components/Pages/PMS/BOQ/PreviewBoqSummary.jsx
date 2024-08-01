@@ -22,6 +22,9 @@ export default function PreviewBoqSummary() {
   const navigate = useNavigate();
   const { titleBarVisibility } = useContext(contextVar);
 
+  // const { payload } = state;
+  const summaryData = state;
+
   const { api_postForwardAndCreateBoq, api_postUpdatedBoq } = ProjectApiList();
 
   //Print
@@ -48,7 +51,10 @@ export default function PreviewBoqSummary() {
       header: "Rate",
     },
     {
-      header: "Amount",
+      header: "Gst %",
+    },
+    {
+      header: "Total Amount",
     },
     {
       header: "Remark",
@@ -61,9 +67,19 @@ export default function PreviewBoqSummary() {
   const createAndForwardBoq = async () => {
     setConfirmationModal(false);
     setIsLoading(true);
-    let body = { ...state, ulb_id: uldId, amount: state?.total_rate };
+    if (!summaryData?.gstChecked) {
+      summaryData.procurement = summaryData.procurement.map((data) => ({
+        ...data,
+        gst: "",
+      }));
+    }
+    let body = {
+      ...summaryData,
+      ulb_id: uldId,
+      amount: summaryData?.total_rate,
+    };
     let formData = new FormData();
-    formData.append("img", state?.img);
+    formData.append("img", summaryData?.img);
     formData.append("boqData", JSON.stringify(body));
 
     AxiosInterceptors.post(api_postForwardAndCreateBoq, formData, ApiHeader2())
@@ -73,11 +89,10 @@ export default function PreviewBoqSummary() {
           setShowMessaegModal(true);
           setTimeout(() => {
             setIsLoading(false);
-            navigate("/da-boq");
+            navigate("/inventory-stockRequest?tabNo=2");
           }, 2000);
         } else {
           setIsLoading(false);
-          console.log(response);
           toast.error("Error in Forwarding to DA. Please try again");
         }
       })
@@ -92,13 +107,13 @@ export default function PreviewBoqSummary() {
     setConfirmationModal(false);
     setIsLoading(true);
     let body = {
-      ...state,
+      ...summaryData,
       ulb_id: uldId,
-      amount: state?.total_rate,
-      reference_no: state?.reference_no,
+      amount: summaryData?.total_rate,
+      reference_no: summaryData?.reference_no,
     };
     let formData = new FormData();
-    formData.append("img", state?.img);
+    formData.append("img", summaryData?.img);
     formData.append("boqData", JSON.stringify(body));
 
     AxiosInterceptors.put(`${api_postUpdatedBoq}`, formData, ApiHeader2())
@@ -111,8 +126,7 @@ export default function PreviewBoqSummary() {
           }, 2000);
         } else {
           setIsLoading(false);
-          console.log(response, "res");
-          toast.error("Error in Forwarding to DA. Please try again");
+          toast.error("Error in Creating BOQ. Please try again");
         }
       })
       .catch(function (error) {
@@ -142,7 +156,7 @@ export default function PreviewBoqSummary() {
         <ConfirmationModal
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
-          message={"Are you sure you want to Save"}
+          message={"Are you sure you want to create BOQ ?"}
         />
       </>
     );
@@ -184,27 +198,31 @@ export default function PreviewBoqSummary() {
                   <p className='text-lg font-bold mb-2'>
                     Category:{" "}
                     <span className='font-semibold text-gray-500'>
-                      {state?.procurement[0]?.category?.name}
+                      {summaryData?.category}
                     </span>
                   </p>
-                  <p className='text-lg font-bold'>
+                  {/* <p className='text-lg font-bold'>
                     SubCategory:{" "}
                     <span className='font-semibold text-gray-500'>
-                      {state?.procurement[0]?.subcategory?.name}
+                      {summaryData?.procurement[0]?.subcategory?.name}
                     </span>
-                  </p>
+                  </p> */}
                 </div>
                 <div>
                   <p className='text-lg font-bold mb-2'>
                     Gst:{" "}
                     <span className='font-semibold text-gray-500'>
-                      {state?.gst ? `${state?.gst}% ` : "Gst not added"}
+                      {summaryData?.gstChecked
+                        ? "Gst included"
+                        : "Gst not included"}
                     </span>
                   </p>
                   <p className='text-lg font-bold mb-2'>
                     HSN Code:{" "}
                     <span className='font-semibold text-gray-500'>
-                      {state?.hsn_code ? `${state?.hsn_code} ` : "Not added"}
+                      {summaryData?.hsn_code
+                        ? `${summaryData?.hsn_code} `
+                        : "Not added"}
                     </span>
                   </p>
                 </div>
@@ -225,8 +243,8 @@ export default function PreviewBoqSummary() {
                     ))}
                 </thead>
                 <tbody className='font-normal text-center '>
-                  {state?.procurement?.length > 0 &&
-                    state?.procurement?.map((row, index) => (
+                  {summaryData?.procurement?.length > 0 &&
+                    summaryData?.procurement?.map((row, index) => (
                       <tr key={row?.procurement_no}>
                         <td className='border border-gray-200 px-4 py-2'>
                           {index + 1}
@@ -246,9 +264,11 @@ export default function PreviewBoqSummary() {
                           {row?.rate}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
-                          {row?.total_rate}
+                          {summaryData?.gstChecked ? row?.gst : "-"}
                         </td>
-
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                          {indianAmount(row?.total_rate)}
+                        </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {row?.remark}
                         </td>
@@ -260,20 +280,24 @@ export default function PreviewBoqSummary() {
 
             <div className='p-2 px-8 bg-[#4338CA] text-white flex justify-between mt-6 rounded-t-md '>
               <h2 className='text-xl'>Estimated Cost</h2>
-              <h2 className='text-xl'>{indianAmount(state?.estimated_cost)}</h2>
+              <h2 className='text-xl'>
+                {indianAmount(summaryData?.estimated_cost)}
+              </h2>
             </div>
 
             <div className='m-4'>
               <p className='text-lg font-semibold px-2'>
                 Remark -{" "}
                 <span className='text-gray-400'>
-                  {state?.remark || "No remark added"}
+                  {summaryData?.remark || "No remark added"}
                 </span>{" "}
               </p>
               <div className='flex justify-end mb-4'>
                 <ImageDisplay
-                  preview={state?.img && URL.createObjectURL(state?.img)}
-                  imageDoc={state?.img}
+                  preview={
+                    summaryData?.img && URL.createObjectURL(summaryData?.img)
+                  }
+                  imageDoc={summaryData?.img}
                   alt={"Notesheet doc"}
                   showPreview={"hidden"}
                   width={"[100px]"}
@@ -287,9 +311,9 @@ export default function PreviewBoqSummary() {
           <button className={buttonStyle} onClick={handlePrint}>
             Print
           </button>
-          {state?.status === 0 ||
-          state?.status === 1 ||
-          state?.status === -1 ? (
+          {summaryData?.status === 0 ||
+          summaryData?.status === 1 ||
+          summaryData?.status === -1 ? (
             <button
               className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
               onClick={() => updateBoqChanges(true)}
@@ -301,7 +325,7 @@ export default function PreviewBoqSummary() {
               className={`bg-[#4338ca] hover:bg-[#564cc2] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
               onClick={() => setConfirmationModal(true)}
             >
-              {isLoading ? "Processing..." : "Submit"}
+              {isLoading ? "Processing..." : "Create BOQ"}
             </button>
           )}
           {/* <button
