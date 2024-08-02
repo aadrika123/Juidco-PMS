@@ -251,6 +251,32 @@ export default function BoqDetailsById(props) {
       </div>
 
       <div className={`${isLoading ? "opacity-40" : ""}`}>
+        {page == "inbox" && dataList?.status == 50 && (
+          <div className='flex gap-5'>
+            <button
+              className={colouredBtnStyle}
+              onClick={() =>
+                navigate(`/biddingViewById/${dataList?.reference_no}`)
+              }
+            >
+              View Pre-Tender Basic Info
+            </button>
+          </div>
+        )}
+
+        {page == "inbox" && dataList?.status == 60 && (
+          <button
+            className={colouredBtnStyle}
+            onClick={() =>
+              navigate(`/tendering-preview/preview`, {
+                state: dataList?.reference_no,
+              })
+            }
+          >
+            View Tendering Form
+          </button>
+        )}
+
         <div ref={componentRef} className=' '>
           <div className='p-2 bg-[#4338CA] text-white pl-5 mt-6 rounded-md flex justify-between'>
             <h2 className='text-xl '>BOQ Details</h2>
@@ -423,16 +449,29 @@ export default function BoqDetailsById(props) {
               </>
             )}
 
-            {page == "inbox" && dataList?.status == 42 && 
+          {page == "inbox" && dataList?.status == 42 && (
             <button
-            className={colouredBtnStyle}
-            onClick={() =>
-              navigate(`/bidding-input-form/${dataList?.reference_no}`)
-            }
-          >
-            Fill Pre Tender Info
-          </button>
-          }
+              className={colouredBtnStyle}
+              onClick={() =>
+                navigate(`/bidding-input-form/${dataList?.reference_no}`)
+              }
+            >
+              Fill Pre Tender Basic Info
+            </button>
+          )}
+
+          {page == "inbox" && dataList?.status == 50 && (
+            <button
+              className={colouredBtnStyle}
+              onClick={() =>
+                navigate(`/tendering?tabNo=1`, {
+                  state: dataList?.reference_no,
+                })
+              }
+            >
+              Proceed to Pre-Tender
+            </button>
+          )}
 
           {/* {page == "inbox" &&
             (dataList?.status === 0 || dataList?.status === 1) && (
