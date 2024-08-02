@@ -126,6 +126,8 @@ export default function ProjectApiList() {
     api_forwardBoqToFinance: `${baseUrl}/api/pms/da/pre-procurement/boq/to-finance`,
 
     //tendring form
+    api_postPreTenderDetails: `${baseUrl}/api/pms/pre-tender/details`,
+
     api_postBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
     api_getBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
     api_postWorkDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/work-details`,
@@ -211,6 +213,7 @@ export default function ProjectApiList() {
 
     //pre-procure
     api_fetchProcurementById: `${baseUrl}/api/pms/procurement`,
+    api_fetchProcurementDetById: `${baseUrl}/api/pms/pre-tender/details`,
   };
 
   return apiList;
