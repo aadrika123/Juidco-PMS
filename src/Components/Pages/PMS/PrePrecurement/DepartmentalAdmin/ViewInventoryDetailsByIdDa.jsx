@@ -279,9 +279,9 @@ const ViewInventoryDetailsById = (props) => {
   return (
     <div>
       {isLoading && (
-        // <div className='fixed inset-0 flex items-center justify-center z-50'>
+        <div className='fixed inset-0 flex items-center justify-center z-50'>
         <LoaderApi />
-        // </div>
+        </div>
       )}
 
       <div className=''>

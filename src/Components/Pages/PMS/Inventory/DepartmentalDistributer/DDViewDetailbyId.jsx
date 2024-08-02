@@ -134,7 +134,11 @@ const DDViewDetailbyId = () => {
   }
   return (
     <>
-      {isLoading && <LoaderApi />}
+      {isLoading && (
+        <div className='fixed inset-0 flex items-center justify-center z-50'>
+        <LoaderApi />
+        </div>
+      )}
 
       <TitleBar
         titleBarVisibility={titleBarVisibility}
