@@ -1,19 +1,17 @@
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
-import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import SuccessModal from "@/Components/Common/Modal/SuccessModal";
-import { nullToNA } from "@/Components/Common/PowerupFunctions";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { contextVar } from "@/Components/context/contextVar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import { Toaster, toast } from "react-hot-toast";
 import BiddingViewModal from "./BiddingViewModal";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
+import { indianAmount } from "@/Components/Common/PowerupFunctions";
 
 const BiddingViewById = () => {
   const [isLoading, setisLoading] = useState(false);
@@ -26,11 +24,9 @@ const BiddingViewById = () => {
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { handNo, page } = useParams();
-  // console.log(page)
+  const { id } = useParams();
 
-  const notesheetRef = useRef();
-  const { api_getStockRequetById, api_postForwardtoSR } = ProjectApiList();
+  const { api_postForwardtoSR, api_fetchProcurementDetById } = ProjectApiList();
 
   let buttonStyle =
     "mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -63,10 +59,9 @@ const BiddingViewById = () => {
 
   const getApplicationDetail = () => {
     setisLoading(true);
-    AxiosInterceptors.get(`${api_getStockRequetById}/${handNo}`, ApiHeader())
+    AxiosInterceptors.get(`${api_fetchProcurementDetById}/${id}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data?.data);
           setapplicationFullData(response?.data?.data);
 
           setisLoading(false);
@@ -164,17 +159,17 @@ const BiddingViewById = () => {
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         {/* <div className="flex justify-end"></div> */}
         {/* Basic Details */}
-        <div className="">
-          <div className="">
-            <h2 className=" text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md">
+        <div className=''>
+          <div className=''>
+            <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md'>
               Pre-Tendering View{" "}
             </h2>
           </div>
           <div
-            className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500"
+            className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'
             ref={componentRef}
           >
-            <div className="flex justify-between">
+            <div className='flex justify-between'>
               {/* <div className="pl-8  text-[1.2rem] text-[#4338CA]">
                 <h1 className="font-bold">
                   Handover No <span className="text-black">:</span>
@@ -185,75 +180,80 @@ const BiddingViewById = () => {
                 </h1>
               </div> */}
             </div>
-            <div className="grid md:grid-rows-4-4 gap-6 ml-8">
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold">EMD </div>
-                <div className="md:w-auto w-[50%] text-gray-800 ">
-                  Yes
+            <div className='grid md:grid-rows-4-4 gap-6 ml-8'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold'>EMD </div>
+                <div className='md:w-auto w-[50%] text-gray-800 '>
+                  {applicationFullData?.emd == true ? "Yes" : "No"}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex md:flex-col-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex md:flex-col-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   Tender Estimated Amount
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-800 ">
-                  ₹25,90,980
+                <div className='md:w-auto w-[50%] text-gray-800 '>
+                  {indianAmount(applicationFullData?.estimated_amount)}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">EMD Type </div>
-                <div className="md:w-auto w-[50%] text-gray-800 ">
-                  10% (₹2,59,980)
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>EMD Type </div>
+                <div className='md:w-auto w-[50%] text-gray-800 '>
+                  {applicationFullData?.emd_type}{" "}
+                  {applicationFullData?.emd_value}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-semibold ">
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-semibold '>
                   PBG Amount{" "}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-800 ">
-                  ₹ 67,000
+                <div className='md:w-auto w-[50%] text-gray-800 '>
+                  {applicationFullData?.pbg_type}{" "}
+                  {applicationFullData?.pbg_value}
                 </div>
               </div>
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-semibold ">
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-semibold '>
                   Tendering Type{" "}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-800 ">
-                  Least Cost Tender - Technical Qulaity
+                <div className='md:w-auto w-[50%] text-gray-800 '>
+                  {applicationFullData?.tendering_type}
                 </div>
               </div>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">Tenure </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 ">
-                    2 Years
-                  </div>
-                </div>
 
-                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold">
-                    Minimum Supplier{" "}
+              {applicationFullData?.tendering_type === "rateContract" && (
+                <div className='grid md:grid-cols-3 gap-4'>
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Tenure </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 '>
+                      {applicationFullData?.tenure}
+                    </div>
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 ">
-                    4
-                  </div>
-                </div>
 
-                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold">
-                    Maximum Supplier{" "}
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold'>
+                      Minimum Supplier{" "}
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 '>
+                      {applicationFullData?.min_supplier}
+                    </div>
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 ">
-                    5
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold'>
+                      Maximum Supplier{" "}
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 '>
+                      {applicationFullData?.max_supplier}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
-            <div className="flex justify-end w-full mb-5">
-              <div className="w-[100px]">
+            <div className='flex justify-end w-full mb-5'>
+              <div className='w-[100px]'>
                 <ImageDisplay
                   preview={preview}
                   imageDoc={imageDoc}
@@ -267,28 +267,30 @@ const BiddingViewById = () => {
 
           {/* Buttons */}
 
-          <div className="space-x-5 flex justify-between mt-[2rem]">
-            <div className="flex flex-1 justify-between">
-              <div className="space-x-3 flex items-end justify-center">
+          <div className='space-x-5 flex justify-between mt-[2rem]'>
+            <div className='flex flex-1 justify-between'>
+              <div className='space-x-3 flex items-end justify-center'>
                 <button className={buttonStyle} onClick={() => navigate(-1)}>
                   Back
                 </button>
 
                 <button
                   onClick={handlePrint}
-                  className="mr-1 pb-2 pl-9 pr-9 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                  className='mr-1 pb-2 pl-9 pr-9 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
                 >
                   Print
                 </button>
               </div>
-              <div className="space-x-3 flex">
-                <button className={`pb-2 pl-9 pr-9 pt-2 rounded hover:bg-red-700 bg-red-500 text-white border-red-600`} >
+              <div className='space-x-3 flex'>
+                <button
+                  className={`pb-2 pl-9 pr-9 pt-2 rounded hover:bg-red-700 bg-red-500 text-white border-red-600`}
+                >
                   Reject
                 </button>
 
                 <button
                   onClick={() => setShowModal(true)}
-                  className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                  className='mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
                 >
                   Confirm
                 </button>

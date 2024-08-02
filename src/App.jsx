@@ -344,7 +344,7 @@ function App() {
       element: <BiddingInitialForm />,
     },
     {
-      path: "/biddingViewById",
+      path: "/biddingViewById/:id",
       element: <BiddingViewById />,
     },
     {

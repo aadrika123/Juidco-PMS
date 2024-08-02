@@ -263,10 +263,6 @@ const TenderFormViewDetails = () => {
     setImageModal(true);
   };
 
-  {
-    console.log(state, "state");
-  }
-
   if (backtoAccModal) {
     return (
       <RejectionModalRemark

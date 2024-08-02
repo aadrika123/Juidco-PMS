@@ -3,59 +3,92 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader from "@/Components/api/ApiHeader";
+import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
 const BiddingInitialForm = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [emdPercentageValue, setEmdPercentageValue] = useState();
   const [pbgPercentageValue, setPbgPercentageValue] = useState();
+  const  {id} = useParams()
+
+  const { api_postPreTenderDetails } = ProjectApiList();
 
   const allowResubmission = [
     { label: "Yes", value: "yes" },
     { label: "No", value: "no" },
   ];
+  const initialValues = {
+    estimated_amount: "",
+    emd: "",
+    emd_type: "percentage",
+    emd_value: "",
+    pbg_type: "percentage",
+    // tendering_type:"",
+    pbg_value: "",
+    tenure: "",
+    minSupplier: "",
+    maxSupplier: "",
+  };
+
+  const validationSchema = Yup.object({
+      estimated_amount: Yup.number()
+        .required("Tender amount is required")
+        .min(0, "Tender amount cannot be negative"),
+      emd_value: Yup.number()
+        .required("EMD amount is required")
+        .min(0, "EMD amount cannot be negative"),
+      pbg_value: Yup.number()
+        .required("PBG Percentage is required")
+        .min(0, "PBG Percentage  cannot be negative"),
+        // tendering_type: Yup.string()
+        // .required("Tendering type is required")
+        // .min(0, "tendering type is negative"),
+      // tenure: Yup.number()
+      //   .required("Tenure  is required")
+      //   .min(0, "Tenure  cannot be negative"),
+      // minSupplier: Yup.number()
+      //   .required("Minimum Supplier’s/ services Provider  is required")
+      //   .min(0, "Minimum Supplier’s/ services Provider  cannot be negative"),
+      // maxSupplier: Yup.number()
+      //   .required("Maximum Supplier’s/ services Provider is required")
+      //   .min(0, "Maximum Supplier’s/ services Provider  cannot be negative"),
+    });
 
   const formik = useFormik({
-    initialValues: {
-      tenderAmount: "",
-      emd: "",
-      emd_type: "percentage",
-      emd_value: "",
-      pbg_type: "percentage",
-      pbg_value: "",
-      tenure: "",
-      minSupplier: "",
-      maxSupplier: "",
-    },
-    // validationSchema: Yup.object({
-    //   tenderAmount: Yup.number()
-    //     .required("Tender amount is required")
-    //     .min(0, "Tender amount cannot be negative"),
-    //   emd_value: Yup.number()
-    //     .required("EMD amount is required")
-    //     .min(0, "EMD amount cannot be negative"),
-    //   emd_value: Yup.number()
-    //     .required("EMD Percantage is required")
-    //     .min(0, "EMD Percantage cannot be negative"),
-    //   pbg_value: Yup.number()
-    //     .required("PBG amount is required")
-    //     .min(0, "PBG amount cannot be negative"),
-    //   pbg_value: Yup.number()
-    //     .required("PBG Percentage is required")
-    //     .min(0, "PBG Percentage  cannot be negative"),
-    //   tenure: Yup.number()
-    //     .required("Tenure  is required")
-    //     .min(0, "Tenure  cannot be negative"),
-    //   minSupplier: Yup.number()
-    //     .required("Minimum Supplier’s/ services Provider  is required")
-    //     .min(0, "Minimum Supplier’s/ services Provider  cannot be negative"),
-    //   maxSupplier: Yup.number()
-    //     .required("Maximum Supplier’s/ services Provider is required")
-    //     .min(0, "Maximum Supplier’s/ services Provider  cannot be negative"),
-    // }),
+    initialValues,
+    validationSchema,
     onSubmit: (values) => {
       console.log(values);
+      createPreTenderInfo(values)
     },
   });
+
+  const createPreTenderInfo = async (data) => {
+    // setIsLoading(true);
+    data = {...data, reference_no: id, "tendering_type" : selectedOption }
+
+    AxiosInterceptors.post(api_postPreTenderDetails, data, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          // setShowMessaegModal(true);
+          setTimeout(() => {
+            // setIsLoading(false);
+            navigate("/inventory-stockRequest?tabNo=2");
+          }, 2000);
+        } else {
+          // setIsLoading(false);
+          toast.error("Error in Creating form.");
+        }
+      })
+      .catch(function (error) {
+        // setIsLoading(false);
+        toast.error(error?.response?.data?.error);
+      });
+  };
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -71,12 +104,12 @@ const BiddingInitialForm = () => {
   // calculating Tot Percentages
 
   const totPercentageEmd = () => {
-    const result = (formik.values.emd_value / 100) * formik.values.tenderAmount;
+    const result = (formik.values.emd_value / 100) * formik.values.estimated_amount;
     setEmdPercentageValue(result);
   };
 
   const totPercentagePbg = () => {
-    const result = (formik.values.pbg_value / 100) * formik.values.tenderAmount;
+    const result = (formik.values.pbg_value / 100) * formik.values.estimated_amount;
     setPbgPercentageValue(result);
   };
 
@@ -131,13 +164,13 @@ const BiddingInitialForm = () => {
               </div>
             </div>
 
-            {/* Enter tenderAmount */}
+            {/* Enter estimated_amount */}
 
             <div className="flex justify-between w-full p-2 px-4">
               <div className="flex-col w-1/2">
                 <div>
                   <label
-                    htmlFor="tenderAmount"
+                    htmlFor="estimated_amount"
                     className="block font-semibold text-gray-700 mb-2"
                   >
                     Tender Estimated Amount
@@ -145,7 +178,7 @@ const BiddingInitialForm = () => {
                 </div>
                 <div>
                   <label
-                    htmlFor="tenderAmount"
+                    htmlFor="estimated_amount"
                     className="block font-medium text-gray-700 mb-2"
                   >
                     Enter Tender Amount
@@ -155,20 +188,20 @@ const BiddingInitialForm = () => {
               <div className="flex flex-col w-1/2 justify-end gap-4">
                 <div>
                   <input
-                    id="tenderAmount"
-                    name="tenderAmount"
+                    id="estimated_amount"
+                    name="estimated_amount"
                     placeholder="Enter Tender Amount"
                     type="number"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.tenderAmount}
+                    value={formik.values.estimated_amount}
                     className="rounded-md h-[50px] w-full border-2 p-4"
                   />
                 </div>
                 <div>
-                  {formik.touched.tenderAmount && formik.errors.tenderAmount ? (
+                  {formik.touched.estimated_amount && formik.errors.estimated_amount ? (
                     <div className="text-red-500 text-sm flex-col">
-                      {formik.errors.tenderAmount}
+                      {formik.errors.estimated_amount}
                     </div>
                   ) : null}
                 </div>
@@ -181,7 +214,7 @@ const BiddingInitialForm = () => {
               <div className="flex-col w-1/2">
                 <div>
                   <label
-                    htmlFor="tenderAmount"
+                    htmlFor="estimated_amount"
                     className="block font-semibold text-gray-700 mb-2"
                   >
                     EMD Type
@@ -189,13 +222,13 @@ const BiddingInitialForm = () => {
                 </div>
                 <div>
                   <label
-                    htmlFor="tenderAmount"
+                    htmlFor="estimated_amount"
                     className="block font-medium text-gray-700 mb-2"
                   >
                     Percentage or Fixed
                   </label>
                   <select
-                    id="tenderAmount"
+                    id="estimated_amount"
                     name="emd_type"
                     value={formik.values.emd_type}
                     onChange={formik.handleChange}
@@ -275,7 +308,7 @@ const BiddingInitialForm = () => {
               <div className="flex-col w-1/2">
                 <div>
                   <label
-                    htmlFor="tenderAmount"
+                    htmlFor="estimated_amount"
                     className="block font-semibold text-gray-700 mb-2"
                   >
                     PBG Amount
@@ -283,13 +316,13 @@ const BiddingInitialForm = () => {
                 </div>
                 <div>
                   <label
-                    htmlFor="tenderAmount"
+                    htmlFor="estimated_amount"
                     className="block font-medium text-gray-700 mb-2"
                   >
                     Percentage or Fixed
                   </label>
                   <select
-                    id="tenderAmount"
+                    id="estimated_amount"
                     name="pbg_type"
                     value={formik.values.pbg_type}
                     onChange={formik.handleChange}
@@ -367,7 +400,7 @@ const BiddingInitialForm = () => {
               <div className="flex-col ">
                 <div>
                   <label
-                    htmlFor="tenderAmount"
+                    htmlFor="estimated_amount"
                     className="block font-semibold text-gray-700 mb-2"
                   >
                     Tendering Type
@@ -375,8 +408,9 @@ const BiddingInitialForm = () => {
                 </div>
                 <div>
                   <label
-                    htmlFor="tenderAmount"
+                    htmlFor="estimated_amount"
                     className="block font-medium text-gray-700 mb-2"
+                    name="tendering_type"
                   >
                     Select Tendering Type
                   </label>
@@ -389,22 +423,22 @@ const BiddingInitialForm = () => {
                   className=" h-[50px] border-2 rounded-md p-2 w-full"
                 >
                   <option value="">---- select -----</option>
-                  <option value="leastCost">Least Cost</option>
+                  <option value="least_cost">Least Cost</option>
                   <option value="qcbs">QCBS</option>
-                  <option value="rateContract">Rate Contract</option>
+                  <option value="rate_contract">Rate Contract</option>
                 </select>
               </div>
             </div>
           </div>
 
-          {selectedOption === "rateContract" && (
+          {selectedOption === "rate_contract" && (
             <div className="flex  gap-4 rounded-md border border-gray-200 bg-white  mt-5 p-8">
               <div className="flex justify-between w-full px-6">
                 <div className="flex flex-col">
                   <div>
                     {" "}
                     <label
-                      htmlFor="tenderAmount"
+                      htmlFor="estimated_amount"
                       className="block font-medium text-gray-700 mb-2 "
                     >
                       Tenure
@@ -436,7 +470,7 @@ const BiddingInitialForm = () => {
                   <div>
                     {" "}
                     <label
-                      htmlFor="tenderAmount"
+                      htmlFor="estimated_amount"
                       className="block font-medium text-gray-700 mb-2"
                     >
                       Minimum Supplier’s/ services Provider
@@ -467,7 +501,7 @@ const BiddingInitialForm = () => {
                   <div>
                     {" "}
                     <label
-                      htmlFor="tenderAmount"
+                      htmlFor="estimated_amount"
                       className="block font-medium text-gray-700 mb-2"
                     >
                       Maximum Supplier’s/ services Provider
