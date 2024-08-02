@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 import { useNavigate } from "react-router-dom";
+import { indianAmount } from "@/Components/Common/PowerupFunctions";
 
 const TabsMenu = (props) => {
   const [activeTab, setActiveTab] = useState("inbox");
@@ -219,7 +220,7 @@ const TabsMenu = (props) => {
       Header: "Total Rate",
       accessor: "total_rate",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.original.total_rate} </div>
+        <div className='pr-2'>{indianAmount(cell.row.original.total_rate)} </div>
       ),
     },
     {
