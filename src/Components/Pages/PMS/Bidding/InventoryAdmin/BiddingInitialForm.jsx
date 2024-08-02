@@ -2,16 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
+import { indianAmount } from "@/Components/Common/PowerupFunctions";
 
 const BiddingInitialForm = () => {
-  const [totalAmountAfterDeduction, setTotalAmountAfterDeduction] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
-    const [selectedOptionPercantageAmt, setselectedOptionPercantageAmt] =
-    useState("percentage");
-  
-  const [selectedOptionPbgPercantageAmt, setselectedOptionPbgPercantageAmt] =
-    useState("percentage");
-
+  const [emdPercentageValue, setEmdPercentageValue] = useState();
+  const [pbgPercentageValue, setPbgPercentageValue] = useState();
 
   const allowResubmission = [
     { label: "Yes", value: "yes" },
@@ -21,11 +17,11 @@ const BiddingInitialForm = () => {
   const formik = useFormik({
     initialValues: {
       tenderAmount: "",
-      allow_resubmission: "",
-      emdAmount: "",
-      emdPercentage: "",
-      pbgAmount: "",
-      pbgPercentage: "",
+      emd: "",
+      emd_type: "percentage",
+      emd_value: "",
+      pbg_type: "percentage",
+      pbg_value: "",
       tenure: "",
       minSupplier: "",
       maxSupplier: "",
@@ -34,16 +30,16 @@ const BiddingInitialForm = () => {
     //   tenderAmount: Yup.number()
     //     .required("Tender amount is required")
     //     .min(0, "Tender amount cannot be negative"),
-    //   emdAmount: Yup.number()
+    //   emd_value: Yup.number()
     //     .required("EMD amount is required")
     //     .min(0, "EMD amount cannot be negative"),
-    //   emdPercentage: Yup.number()
+    //   emd_value: Yup.number()
     //     .required("EMD Percantage is required")
     //     .min(0, "EMD Percantage cannot be negative"),
-    //   pbgAmount: Yup.number()
+    //   pbg_value: Yup.number()
     //     .required("PBG amount is required")
     //     .min(0, "PBG amount cannot be negative"),
-    //   pbgPercentage: Yup.number()
+    //   pbg_value: Yup.number()
     //     .required("PBG Percentage is required")
     //     .min(0, "PBG Percentage  cannot be negative"),
     //   tenure: Yup.number()
@@ -72,43 +68,24 @@ const BiddingInitialForm = () => {
     setselectedOptionPbgPercantageAmt(event.target.value);
   };
 
+  // calculating Tot Percentages
 
-
-  const handleEmdChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "emdAmount" && value !== "") {
-      const percentage = (value / formik.values.tenderAmount) * 100;
-      formik.setFieldValue("emdPercentage", percentage);
-    } else if (name === "emdPercentage" && value !== "") {
-      const amount = (value * formik.values.tenderAmount) / 100;
-      formik.setFieldValue("emdAmount", String(amount));
-    }
-    formik.setFieldValue(name, value);
+  const totPercentageEmd = () => {
+    const result = (formik.values.emd_value / 100) * formik.values.tenderAmount;
+    setEmdPercentageValue(result);
   };
 
-  const handlePbgChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "pbgAmount" && value !== "") {
-      const percentage = (value / formik.values.tenderAmount) * 100;
-      formik.setFieldValue("pbgPercentage", percentage);
-    } else if (name === "pbgPercentage" && value !== "") {
-      const amount = (value * formik.values.tenderAmount) / 100;
-      formik.setFieldValue("pbgAmount", String(amount));
-    }
-    formik.setFieldValue(name, value);
+  const totPercentagePbg = () => {
+    const result = (formik.values.pbg_value / 100) * formik.values.tenderAmount;
+    setPbgPercentageValue(result);
   };
+
+  // console.log(emdPercentageValue)
 
   useEffect(() => {
-    const emdAmount = formik.values.emdAmount || 0;
-    const pbgAmount = formik.values.pbgAmount || 0;
-    const tenderAmount = formik.values.tenderAmount || 0;
-    const totalDeduction = parseFloat(emdAmount) + parseFloat(pbgAmount);
-    setTotalAmountAfterDeduction(tenderAmount - totalDeduction);
-  }, [
-    formik.values.emdAmount,
-    formik.values.pbgAmount,
-    formik.values.tenderAmount,
-  ]);
+    totPercentageEmd();
+    totPercentagePbg();
+  });
 
   return (
     <>
@@ -119,7 +96,7 @@ const BiddingInitialForm = () => {
           </h2>
         </div>
         <form onSubmit={formik.handleSubmit}>
-          <div className="rounded-md border border-gray-200 bg-white p-8 mt-5">
+          <div className="rounded-md border border-gray-200 bg-white p-4 mt-5">
             <div className="flex justify-between mr-8 m-8">
               <div className="flex-col">
                 <div>
@@ -139,25 +116,25 @@ const BiddingInitialForm = () => {
                   </label>
                 </div>
               </div>
-              <div className="flex  flex-1 justify-center ml-96 gap-4 ">
+              <div className="flex  flex-1 justify-center ml-10  gap-4 ">
                 <RadioButtonsGroup
                   className="flex justify-start"
                   fields={allowResubmission}
                   title={"EMD"}
-                  name={"allow_resubmission"}
-                  values={formik.values.allow_resubmission}
+                  name={"emd"}
+                  values={formik.values.emd}
                   handleChange={formik.handleChange}
                   setFieldValue={formik.setFieldValue}
-                  // errors={errors.allow_resubmission}
-                  // touched={touched.allow_resubmission}
+                  // errors={errors.emd}
+                  // touched={touched.emd}
                 />
               </div>
             </div>
 
             {/* Enter tenderAmount */}
 
-            <div className="flex justify-between mr-8 m-8">
-              <div className="flex-col">
+            <div className="flex justify-between w-full p-2 px-4">
+              <div className="flex-col w-1/2">
                 <div>
                   <label
                     htmlFor="tenderAmount"
@@ -175,7 +152,7 @@ const BiddingInitialForm = () => {
                   </label>
                 </div>
               </div>
-              <div className="flex flex-col justify-end gap-4">
+              <div className="flex flex-col w-1/2 justify-end gap-4">
                 <div>
                   <input
                     id="tenderAmount"
@@ -185,7 +162,7 @@ const BiddingInitialForm = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.tenderAmount}
-                    className="rounded-md w-[515px] h-[50px] border-2 p-4"
+                    className="rounded-md h-[50px] w-full border-2 p-4"
                   />
                 </div>
                 <div>
@@ -200,8 +177,8 @@ const BiddingInitialForm = () => {
 
             {/*EMD Percentage or amount */}
 
-            <div className="flex justify-between mr-8 m-8">
-              <div className="flex-col">
+            <div className="flex justify-between p-2 px-4">
+              <div className="flex-col w-1/2">
                 <div>
                   <label
                     htmlFor="tenderAmount"
@@ -219,82 +196,71 @@ const BiddingInitialForm = () => {
                   </label>
                   <select
                     id="tenderAmount"
-                    value={selectedOptionPercantageAmt}
-                    onChange={handleOptionChange1}
+                    name="emd_type"
+                    value={formik.values.emd_type}
+                    onChange={formik.handleChange}
+                    // value={selectedOptionPercantageAmt}
+                    // onChange={handleOptionChange1}
                     className="rounded-md border-2 h-7"
                   >
                     <option value="percentage">Percentage</option>
-                    <option value="fixed">Fixed Amount</option>
+                    <option value="fixed_amount">Fixed Amount</option>
                   </select>
                 </div>
               </div>
-              <div className="flex flex-col justify-end gap-4">
-                {selectedOptionPercantageAmt === "percentage" && (
-                  <div className="flex flex-row gap-1">
-                    <div>
-                      <div>
+              <div className="flex flex-col w-1/2">
+                {formik.values.emd_type === "percentage" && (
+                  <div className="flex justify-between w-full">
+                    <div className="w-[75%]">
+                      <div className="flex">
                         <input
-                          id="emdPercentage"
-                          name="emdPercentage"
+                          id="emd_value"
+                          name="emd_value"
                           type="number"
                           placeholder="Enter Percantage %"
-                          onChange={handleEmdChange}
+                          onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          value={formik.values.emdPercentage}
-                          className="rounded-md w-[257px] h-[50px] border-2 p-4"
+                          value={formik.values.emd_value}
+                          className="rounded-md w-full h-[50px] border-2 p-4"
                         />
+                        <p className="text-xl pt-2 ml-2 mr-6">%</p>
                       </div>
-                      <div>
-                        {formik.touched.emdPercentage &&
-                        formik.errors.emdPercentage ? (
+
+                      <div className="w-[10rem]">
+                        {formik.touched.emd_value && formik.errors.emd_value ? (
                           <div className="text-red-500 text-sm flex-col">
-                            {formik.errors.emdPercentage}
+                            {formik.errors.emd_value}
                           </div>
                         ) : null}
                       </div>
                     </div>
-                    <div>
+                    <div className="flex justify-center items-center">
                       <div>
-                        <input
-                          id="emdPercentageAmount"
-                          name="emdPercentageAmount"
-                          type="number"
-                          placeholder="Percentage Amount"
-                          onChange={handleEmdChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.emdAmount}
-                          disabled
-                          className="rounded-md w-[257px] h-[50px] border-2 p-4"
-                        />
+                        <p>{indianAmount(emdPercentageValue)}</p>
                       </div>
-                      <div>
-                        {formik.touched.emdAmount && formik.errors.emdAmount ? (
-                          <div className="text-red-500 text-sm flex-col">
-                            {formik.errors.emdAmount}
-                          </div>
-                        ) : null}
-                      </div>
+                      
                     </div>
                   </div>
                 )}
-                {selectedOptionPercantageAmt === "fixed" && (
-                  <div>
+                {formik.values.emd_type === "fixed_amount" && (
+                  <div className=" w-full">
                     <div>
                       <input
-                        id="emdAmount"
-                        name="emdAmount"
+                        id="emd_value"
+                        name="emd_value"
                         type="number"
                         placeholder="Enter fixed amount"
-                        onChange={handlePbgChange}
+                        onChange={formik.handleChange}
+                        // onChange={handlePbgChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.emdAmount}
-                        className="rounded-md w-[515px] h-[50px] border-2 p-4"
+                        value={formik.values.emd_value}
+                        className="rounded-md h-[50px] border-2 p-4 w-full"
                       />
                     </div>
                     <div>
-                      {formik.touched.emdAmount && formik.errors.emdAmount ? (
+                      {formik.touched.emd_value && formik.errors.emd_value ? (
                         <div className="text-red-500 text-sm flex-col">
-                          {formik.errors.emdAmount}
+                          {formik.errors.emd_value}
                         </div>
                       ) : null}
                     </div>
@@ -305,8 +271,8 @@ const BiddingInitialForm = () => {
 
             {/*PBG Percentage or amount */}
 
-            <div className="flex justify-between mr-8 m-8">
-              <div className="flex-col">
+            <div className="flex justify-between p-2 px-4">
+              <div className="flex-col w-1/2">
                 <div>
                   <label
                     htmlFor="tenderAmount"
@@ -324,82 +290,70 @@ const BiddingInitialForm = () => {
                   </label>
                   <select
                     id="tenderAmount"
-                    value={selectedOptionPbgPercantageAmt}
-                    onChange={handleOptionChange2}
+                    name="pbg_type"
+                    value={formik.values.pbg_type}
+                    onChange={formik.handleChange}
+                    // value={selectedOptionPbgPercantageAmt}
+                    // onChange={handleOptionChange2}
                     className="rounded-md border-2 h-7"
                   >
                     <option value="percentage">Percentage</option>
-                    <option value="fixed">Fixed Amount</option>
+                    <option value="fixed_amount">Fixed Amount</option>
                   </select>
                 </div>
               </div>
-              <div className="flex flex-col justify-end gap-4">
-                {selectedOptionPbgPercantageAmt === "percentage" && (
-                  <div className="flex flex-row gap-1">
-                    <div>
-                      <div>
+              <div className="flex flex-col w-1/2">
+                {formik.values.pbg_type === "percentage" && (
+                  <div className="flex justify-between w-full">
+                    <div className="w-[75%]">
+                      <div className="flex">
                         <input
-                          id="pbgPercentage"
-                          name="pbgPercentage"
+                          id="pbg_value"
+                          name="pbg_value"
                           type="number"
                           placeholder="Enter Percantage %"
-                          onChange={handlePbgChange}
+                          onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          value={formik.values.pbgPercentage}
-                          className="rounded-md w-[257px] h-[50px] border-2 p-4"
+                          value={formik.values.pbg_value}
+                          className="rounded-md w-full h-[50px] border-2 p-4"
                         />
+                        <p className="text-xl pt-2 ml-2 mr-6">%</p>
                       </div>
                       <div>
-                        {formik.touched.pbgPercentage &&
-                        formik.errors.pbgPercentage ? (
+                        {formik.touched.pbg_value && formik.errors.pbg_value ? (
                           <div className="text-red-500 text-sm flex-col">
-                            {formik.errors.pbgPercentage}
+                            {formik.errors.pbg_value}
                           </div>
                         ) : null}
                       </div>
                     </div>
-                    <div>
-                      <div>
-                        <input
-                          id="pbgAmount"
-                          name="pbgAmount"
-                          type="number"
-                          placeholder="Percentage Amount"
-                          onChange={handlePbgChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.pbgAmount}
-                          disabled
-                          className="rounded-md w-[257px] h-[50px] border-2 p-4"
-                        />
+                  
+                      <div className="flex justify-center items-center">
+                        <p>{indianAmount(pbgPercentageValue)}</p>
                       </div>
-                      <div>
-                        {formik.touched.pbgAmount && formik.errors.pbgAmount ? (
-                          <div className="text-red-500 text-sm flex-col">
-                            {formik.errors.pbgAmount}
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
+                      
+                    
                   </div>
                 )}
-                {selectedOptionPbgPercantageAmt === "fixed" && (
+                {formik.values.pbg_type === "fixed_amount" && (
                   <div>
                     <div>
                       <input
-                        id="pbgAmount"
-                        name="pbgAmount"
+                        id="pbg_value"
+                        name="pbg_value"
                         type="number"
                         placeholder="Enter fixed amount"
-                        onChange={handlePbgChange}
+                        onChange={formik.handleChange}
+                        // onChange={handlePbgChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.pbgAmount}
-                        className="rounded-md w-[515px] h-[50px] border-2 p-4"
+                        value={formik.values.pbg_value}
+                        className="rounded-md h-[50px] border-2 p-4 w-full"
                       />
                     </div>
                     <div>
-                      {formik.touched.pbgAmount && formik.errors.pbgAmount ? (
+                      {formik.touched.pbg_value && formik.errors.pbg_value ? (
                         <div className="text-red-500 text-sm flex-col">
-                          {formik.errors.pbgAmount}
+                          {formik.errors.pbg_value}
                         </div>
                       ) : null}
                     </div>
@@ -408,8 +362,9 @@ const BiddingInitialForm = () => {
               </div>
             </div>
             {/*  */}
-            <div className="flex justify-between mr-8 m-8">
-              <div className="flex-col">
+
+            <div className="flex justify-between p-2 px-4 w-full">
+              <div className="flex-col ">
                 <div>
                   <label
                     htmlFor="tenderAmount"
@@ -427,15 +382,13 @@ const BiddingInitialForm = () => {
                   </label>
                 </div>
               </div>
-              <div className="flex justify-end gap-4">
+              <div className="w-1/2">
                 <select
                   value={selectedOption}
                   onChange={handleOptionChange}
-                  className="w-[515px] h-[50px] border-2 rounded-md p-2"
+                  className=" h-[50px] border-2 rounded-md p-2 w-full"
                 >
-                  <option value="">
-                    ---- select ----- 
-                  </option>
+                  <option value="">---- select -----</option>
                   <option value="leastCost">Least Cost</option>
                   <option value="qcbs">QCBS</option>
                   <option value="rateContract">Rate Contract</option>
