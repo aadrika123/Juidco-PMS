@@ -49,6 +49,9 @@ export default function BoqDetailsById(props) {
       header: "Description",
     },
     {
+      header: "Item name",
+    },
+    {
       header: "Quantity",
     },
     {
@@ -321,12 +324,13 @@ export default function BoqDetailsById(props) {
                           {row?.description}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
+                          {row?.subCategory?.name}
+                        </td>
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {row?.quantity}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
-                          {row?.category?.name == "Cleaning Appliances"
-                            ? "L"
-                            : "kg"}
+                          {row?.category?.name}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {row?.rate}
@@ -418,6 +422,17 @@ export default function BoqDetailsById(props) {
                 </button>
               </>
             )}
+
+            {page == "inbox" && dataList?.status == 42 && 
+            <button
+            className={colouredBtnStyle}
+            onClick={() =>
+              navigate(`/bidding-input-form/${dataList?.reference_no}`)
+            }
+          >
+            Fill Pre Tender Info
+          </button>
+          }
 
           {/* {page == "inbox" &&
             (dataList?.status === 0 || dataList?.status === 1) && (

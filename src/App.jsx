@@ -340,7 +340,7 @@ function App() {
     /////////////////////////{*** Bidding ***}//////////////////////////////////////
 
     {
-      path: "/bidding-input-form",
+      path: "/bidding-input-form/:id",
       element: <BiddingInitialForm />,
     },
     {
