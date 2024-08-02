@@ -48,7 +48,8 @@ const ViewPreProcurementById = () => {
   const [isModalOpenlReject1, setisModalOpenlReject1] = useState(false);
   const [isModalOpenlReject2, setisModalOpenlReject2] = useState(false);
   const [isModalOpenlBackToIA, setisModalOpenlBackToIA] = useState(false);
-  const [isModalOpenlBackToLevel1, setisModalOpenlBackToLevel1] = useState(false);
+  const [isModalOpenlBackToLevel1, setisModalOpenlBackToLevel1] =
+    useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [remark, setRemark] = useState("");
@@ -462,7 +463,7 @@ const ViewPreProcurementById = () => {
         setisLoading(false);
       });
   };
-  
+
   const backByLvl2toLevelone = () => {
     setisLoading(true);
 
@@ -491,8 +492,6 @@ const ViewPreProcurementById = () => {
         setisLoading(false);
       });
   };
-
-
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // confirmation handeler of Modals
@@ -706,7 +705,6 @@ const ViewPreProcurementById = () => {
                     {" "}
                     {indianAmount(nullToNA(applicationFullData?.total_rate))}
                   </span>
-                  
                 </h1>
               </div>
             </div>
@@ -825,28 +823,45 @@ const ViewPreProcurementById = () => {
             </button>
           )}
 
-          {/* Reject of Level 1 */}
-          {page == "inbox" && (applicationFullData?.status == 10  ||
-                    applicationFullData?.status == 21 ||
-                    applicationFullData?.status == 13) && (
+          {page == "inbox" && applicationFullData?.status == 14 && (
             <button
-              className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
-              onClick={() => setisModalOpenlReject1(true)}
+              className="bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center"
+              onClick={() =>
+                navigate(`/create-boq`, {
+                  state: {
+                    procurement_no: [applicationFullData?.procurement_no],
+                  },
+                })
+              }
             >
-              Reject
+              Prepare BOQ
             </button>
           )}
 
+          {/* Reject of Level 1 */}
+          {page == "inbox" &&
+            (applicationFullData?.status == 10 ||
+              applicationFullData?.status == 21 ||
+              applicationFullData?.status == 13) && (
+              <button
+                className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
+                onClick={() => setisModalOpenlReject1(true)}
+              >
+                Reject
+              </button>
+            )}
+
           {/* Reject of Level 2 */}
-          {page == "inbox" && (applicationFullData?.status == 20 ||
-                    applicationFullData?.status == 23) && (
-            <button
-              className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
-              onClick={() => setisModalOpenlReject2(true)}
-            >
-              Reject
-            </button>
-          )}
+          {page == "inbox" &&
+            (applicationFullData?.status == 20 ||
+              applicationFullData?.status == 23) && (
+              <button
+                className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
+                onClick={() => setisModalOpenlReject2(true)}
+              >
+                Reject
+              </button>
+            )}
 
           {page == "inbox" && (
             <>
@@ -921,7 +936,7 @@ const ViewPreProcurementById = () => {
                     </button>
                   )}
 
-                  {(applicationFullData?.status == 10  ||
+                  {(applicationFullData?.status == 10 ||
                     applicationFullData?.status == 21) && (
                     <button
                       className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
@@ -931,9 +946,9 @@ const ViewPreProcurementById = () => {
                       Back To Inventory Admin
                     </button>
                   )}
-                  
+
                   {(applicationFullData?.status == 20 ||
-                    applicationFullData?.status == 23 ) && (
+                    applicationFullData?.status == 23) && (
                     <button
                       className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                       // onClick={forwardToIa}
@@ -943,7 +958,8 @@ const ViewPreProcurementById = () => {
                     </button>
                   )}
 
-                  {(applicationFullData?.status == 0  || applicationFullData?.status == 11) && (
+                  {(applicationFullData?.status == 0 ||
+                    applicationFullData?.status == 11) && (
                     <button
                       className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                       // onClick={forwardToIa}
@@ -953,7 +969,7 @@ const ViewPreProcurementById = () => {
                     </button>
                   )}
 
-                  {(applicationFullData?.status == 10  ||
+                  {(applicationFullData?.status == 10 ||
                     applicationFullData?.status == 21 ||
                     applicationFullData?.status == 13) && (
                     <button
