@@ -51,6 +51,7 @@ const ViewPreProcurementById = () => {
   const [isModalOpenlBackToIA, setisModalOpenlBackToIA] = useState(false);
   const [isModalOpenlBackToLevel1, setisModalOpenlBackToLevel1] =
     useState(false);
+
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [remark, setRemark] = useState("");
@@ -826,7 +827,7 @@ const ViewPreProcurementById = () => {
 
           {page == "inbox" && applicationFullData?.status == 14 && (
             <button
-              className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center'
+              className="bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center"
               onClick={() =>
                 navigate(`/create-boq`, {
                   state: {
@@ -839,16 +840,30 @@ const ViewPreProcurementById = () => {
             </button>
           )}
 
+          {/* Reject of Level 1 */}
           {page == "inbox" &&
-            applicationFullData?.status ==
-              14(
-                <button
-                  className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
-                  onClick={postRejectTenderModal}
-                >
-                  Reject
-                </button>
-              )}
+            (applicationFullData?.status == 10 ||
+              applicationFullData?.status == 21 ||
+              applicationFullData?.status == 13) && (
+              <button
+                className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
+                onClick={() => setisModalOpenlReject1(true)}
+              >
+                Reject
+              </button>
+            )}
+
+          {/* Reject of Level 2 */}
+          {page == "inbox" &&
+            (applicationFullData?.status == 20 ||
+              applicationFullData?.status == 23) && (
+              <button
+                className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
+                onClick={() => setisModalOpenlReject2(true)}
+              >
+                Reject
+              </button>
+            )}
 
           {page == "inbox" && (
             <>
