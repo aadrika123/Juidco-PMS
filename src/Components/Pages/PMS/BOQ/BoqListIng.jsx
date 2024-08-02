@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
 import { useNavigate } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
+import { indianAmount } from "@/Components/Common/PowerupFunctions";
 
 function BoqListing(props) {
   const navigate = useNavigate();
@@ -241,7 +242,7 @@ function BoqListing(props) {
       Header: "Total Rate",
       accessor: "total_rate",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.total_rate} </div>
+        <div className="pr-2">{indianAmount(cell.row.values.total_rate)} </div>
       ),
     },
 
@@ -272,7 +273,7 @@ function BoqListing(props) {
           )}
            {cell.row.values?.status == 13 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Revised by Level 1
+              Revised by IA
             </p>
           )}
            {cell.row.values?.status == 14 && (
@@ -297,7 +298,7 @@ function BoqListing(props) {
           )}
            {cell.row.values?.status == 23 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Revised by Level 2 
+              Revised by Level 1 
             </p>
           )}
            {cell.row.values?.status == 24 && (

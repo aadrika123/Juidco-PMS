@@ -7,9 +7,12 @@ import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import { useNavigate } from "react-router-dom";
 
 const TechnicalComparision = () => {
   const { titleBarVisibility , setBiddersCount} = useContext(contextVar);
+
+  const navigate = useNavigate()
 
   
 
@@ -20,7 +23,7 @@ const TechnicalComparision = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log(formValues);
+  // console.log(formValues);
 
   // intitial value
   const initialValues = {
@@ -61,6 +64,7 @@ const TechnicalComparision = () => {
   const confirmationHandler = () => {
     console.log(formValues);
     setIsModalOpen(false);
+    navigate(`/bidding-details?tabNo=1`)
   };
 
   const handleCancel = () => {
@@ -208,6 +212,7 @@ const TechnicalComparision = () => {
                 no_of_bidder: e.target.value,
               }));
               localStorage.setItem('biddersCount', e.target.value);
+              
             }}
           />
 
