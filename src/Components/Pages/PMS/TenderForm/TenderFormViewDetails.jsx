@@ -48,7 +48,7 @@ const TenderFormViewDetails = () => {
   });
 
   const confirmationHandler = () => {
-    navigate("/da-boq");
+    navigate("/inventoryAdmin-boq");
     setIsSuccessModal(false);
   };
 

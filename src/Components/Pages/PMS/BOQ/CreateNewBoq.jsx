@@ -27,7 +27,7 @@ import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 export default function CreateNewBoq() {
   const [imageDoc, setImageDoc] = useState();
   const [isLoading, setisLoading] = useState(false);
-  const [applicationData, setApplicationData] = useState([]);
+  const [applicationData, setApplicationData] = useState();
   const [payload, setPayload] = useState({});
   const [preview, setPreview] = useState();
   const [cancelModal, setCancelModal] = useState(false);
@@ -46,6 +46,7 @@ export default function CreateNewBoq() {
   const {
     api_fetchAllBoqDetails,
     api_fetchAllBoqDetailsbyId,
+    api_fetchProcurementById,
     api_postForwardAndCreateBoq,
   } = ProjectApiList();
 
@@ -56,7 +57,7 @@ export default function CreateNewBoq() {
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
     {
-      header: "Sr.No",
+      header: "Sub Category",
       isEditable: false,
     },
     {
@@ -76,7 +77,11 @@ export default function CreateNewBoq() {
       isEditable: true,
     },
     {
-      header: "Amount",
+      header: "Gst %",
+      isEditable: false,
+    },
+    {
+      header: "Total",
       isEditable: false,
     },
     {
@@ -90,25 +95,27 @@ export default function CreateNewBoq() {
     setisLoading(true);
     AxiosInterceptors.get(`${api_fetchAllBoqDetailsbyId}/${state}`, ApiHeader())
       .then(function (response) {
-        console.log("boq data fetched by id ...", response?.data?.data);
         if (response?.data?.status) {
           setApplicationData(response?.data?.data);
           setData((prev) => ({
             ...prev,
-            reference_no: response?.data?.data[0]?.reference_no,
+            reference_no: response?.data?.data?.reference_no,
           }));
           setPayload((prev) => ({
             ...prev,
-            procurement: [...response?.data?.data[0].procurements],
-            estimated_cost: response?.data?.data[0]?.estimated_cost,
-            gst: response?.data?.data[0]?.gst,
-            remark: response?.data?.data[0]?.remark,
-            reference_no: response?.data?.data[0]?.reference_no,
-            status: response?.data?.data[0]?.status,
+            category: response?.data?.data?.category?.name,
+            procurement_no: response?.data?.data?.procurement_no,
+            procurement: [...response?.data?.data?.procurement_stocks],
+            estimated_cost: response?.data?.data?.total_rate,
+            // gst: response?.data?.data[0]?.gst,
+            remark: response?.data?.data?.remark,
+            reference_no: response?.data?.data?.reference_no,
+            status: response?.data?.data?.status,
           }));
           setisLoading(false);
         } else {
           toast.error(response?.data?.message);
+          setisLoading(false);
         }
       })
       .catch(function (error) {
@@ -120,28 +127,34 @@ export default function CreateNewBoq() {
 
   //fetchg data for boq list---------------
   const fetchBoqDataList = () => {
-    console.log(state.procurement_no, "state.procurement_no]");
     let estAmtWithoutGst = 0;
     setisLoading(true);
-    AxiosInterceptors.post(
-      `${api_fetchAllBoqDetails}`,
-      { procurement_no: state?.procurement_no },
+    // AxiosInterceptors.post(
+    //   `${api_fetchProcurementById}`,
+    //   { procurement_no: state?.procurement_no },
+    //   ApiHeader()
+    // )
+    AxiosInterceptors.get(
+      `${api_fetchProcurementById}/${state?.procurement_no}`,
       ApiHeader()
     )
       .then(function (response) {
         if (response?.data?.status) {
           setApplicationData(response?.data?.data);
-          response?.data?.data?.map(
+          response?.data?.data?.procurement_stocks?.map(
             (data) => (estAmtWithoutGst += data?.total_rate)
           );
           setPayload((prev) => ({
             ...prev,
-            procurement: [...response?.data?.data],
+            category: response?.data?.data?.category?.name,
+            procurement_no: response?.data?.data?.procurement_no,
+            procurement: [...response?.data?.data?.procurement_stocks],
             estimated_cost: estAmtWithoutGst,
           }));
           setisLoading(false);
         } else {
           toast.error(response?.data?.message);
+          setisLoading(false);
         }
       })
       .catch(function (error) {
@@ -187,11 +200,38 @@ export default function CreateNewBoq() {
   };
 
   //adding remarks
-  const addRemarkHandler = (e, procNo) => {
+  const addRemarkHandler = (e, procId) => {
+    setPayload((prev) => {
+      const updatedProcurement = prev.procurement?.map((data) => ({
+        ...data,
+        remark: data?.id === procId ? e.target.value : data?.remark,
+      }));
+      return {
+        ...prev,
+        procurement: updatedProcurement,
+        img: imageDoc,
+      };
+    });
+
+    setApplicationData((prev) => {
+      const updatedProcurement = prev.procurement_stocks?.map((data) => ({
+        ...data,
+        remark: data?.id === procId ? e.target.value : data?.remark,
+      }));
+      return {
+        ...prev,
+        procurement: updatedProcurement,
+        img: imageDoc,
+      };
+    });
+  };
+
+  //adding gst
+  const addGstHandler = (e, procNo) => {
     setPayload((prev) => {
       const updatedProcurement = prev.procurement.map((data) => ({
         ...data,
-        remark: data.procurement_no === procNo ? e.target.value : data.remark,
+        gst: data.id === procNo ? e.target.value : data?.gst,
       }));
       return {
         ...prev,
@@ -226,42 +266,74 @@ export default function CreateNewBoq() {
       let roundedGstValue = Math.floor(gstValue * 100) / 100;
       setPayload((prev) => ({
         ...prev,
-        estimated_cost: roundedGstValue || totalAmount,
+        estimated_cost: roundedGstValue || Math.round(totalAmount),
       }));
     } else {
       setPayload((prev) => ({
         ...prev,
-        estimated_cost: totalAmount,
+        estimated_cost: Math.round(totalAmount),
       }));
     }
   };
 
-  //adding rate and calculating amount
-  const changeRateAmountHandler = (e, procNo) => {
-    const updatedProcurement = applicationData?.map((data) => ({
-      ...data,
-      total_rate:
-        data?.procurement_no === procNo
-          ? Number(e.target.value) * Number(data?.quantity)
-          : data?.total_rate,
-      rate:
-        data?.procurement_no === procNo ? Number(e.target.value) : data?.rate,
+  //adding gst for each procurement stocks
+  const addGstForEachProc = (e, procId) => {
+    const updatedProcurement = applicationData?.procurement_stocks?.map(
+      (data) => {
+        const gstVal = Number(e.target.value);
+        if (data.id === procId) {
+          return {
+            ...data,
+            gst: gstVal,
+          };
+        }
+        return data;
+      }
+    );
+
+    setApplicationData((prev) => ({
+      ...prev,
+      procurement_stocks: updatedProcurement,
     }));
-    setApplicationData(updatedProcurement);
+
+    setPayload((prev) => ({
+      ...prev,
+      procurement: updatedProcurement,
+    }));
+  };
+
+  //adding rate and calculating amount
+  const changeRateAmountHandler = (e, procId) => {
+    const updatedProcurement = applicationData?.procurement_stocks?.map(
+      (data) => {
+        const newRate = Number(e.target.value);
+        const newTotalRate = Math.round(newRate * Number(data.quantity));
+
+        if (data.id === procId) {
+          return {
+            ...data,
+            rate: newRate,
+            total_rate: newTotalRate,
+          };
+        }
+
+        return data;
+      }
+    );
+
+    setApplicationData((prev) => ({
+      ...prev,
+      procurement_stocks: updatedProcurement,
+    }));
 
     setPayload((prev) => {
       const updatedProcurement = prev.procurement?.map((data) => ({
         ...data,
-        rate:
-          data?.procurement_no === procNo ? Number(e.target.value) : data?.rate,
+        rate: data?.id === procId ? Number(e.target.value) : data?.rate,
         total_rate:
-          data?.procurement_no === procNo
-            ? Number(e.target.value) * Number(data?.quantity)
-            : Number(data?.rate) * Number(data?.quantity),
-        amount:
-          data?.procurement_no === procNo
-            ? Number(e.target.value) * Number(data?.quantity)
-            : Number(data?.rate) * Number(data?.quantity),
+          data?.id === procId
+            ? Math.round(Number(e.target.value) * Number(data?.quantity))
+            : Math.round(Number(data?.rate) * Number(data?.quantity)),
       }));
       estimatedAmountCalc(updatedProcurement);
 
@@ -271,6 +343,66 @@ export default function CreateNewBoq() {
         img: imageDoc,
       };
     });
+  };
+
+  // const includeGstForProc = () => {
+  //   if (gstChecked) {
+  //     const updatedGstValue = payload?.procurement?.map((data) => {
+  //       const gstValue = (1 + Number(data?.gst) / 100);
+  //       data?.total_rate = gstValue * Number(total_rate)
+  //     })
+  //     setPayload(prev => ({
+  //       ...prev, procurement: updatedGstValue
+  //     }))
+  //     estimatedAmountCalc(updatedGstValue)
+  //   }else {
+  //     const updatedGstValue = payload?.procurement?.map((data) => {
+  //       data?.gst = ""
+  //     })
+  //     setPayload(prev => ({
+  //       ...prev, procurement: updatedGstValue
+  //     }))
+  //   }
+  // };
+
+  //triggered on is gst included clicked
+  const includeGstForProc = (checkStatus) => {
+    if (checkStatus) {
+      const updatedGstValue = applicationData?.procurement_stocks?.map(
+        (data) => {
+          const gstValue = 1 + Number(data?.gst) / 100;
+          return {
+            ...data,
+            total_rate: gstValue * Number(data?.total_rate), // Corrected reference to data.total_rate
+          };
+        }
+      );
+
+      setPayload((prev) => ({
+        ...prev,
+        procurement: updatedGstValue,
+      }));
+
+      // setApplicationData((prev) => ({
+      //   ...prev,
+      //   procurement_stocks: updatedGstValue,
+      // }));
+
+      estimatedAmountCalc(updatedGstValue);
+    } else {
+      const updatedGstValue = applicationData?.procurement_stocks?.map(
+        (data) => ({
+          ...data,
+          total_rate: data?.total_rate,
+        })
+      );
+
+      setPayload((prev) => ({
+        ...prev,
+        procurement: updatedGstValue,
+      }));
+      estimatedAmountCalc(updatedGstValue);
+    }
   };
 
   //send to da fn
@@ -324,6 +456,18 @@ export default function CreateNewBoq() {
           isLoading ? "blur-[2px]" : ""
         }`}
       >
+        <div className='flex justify-end gap-4 my-1 ml-4'>
+          <input
+            type='checkbox'
+            onChange={(e) => {
+              const isChecked = e.target.checked;
+              setGstChecked(isChecked);
+              includeGstForProc(isChecked);
+            }}
+            className='w-4'
+          />
+          <p className='text-md font-semibold'>is Gst included</p>
+        </div>
         <div className='p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md'>
           <h2 className='text-2xl '>
             {isCreatePage == "create"
@@ -346,11 +490,11 @@ export default function CreateNewBoq() {
             </thead>
             <tbody className='font-normal text-center '>
               {isCreatePage == "create" &&
-                applicationData?.length > 0 &&
-                applicationData?.map((row, index) => (
+                applicationData?.procurement_stocks?.length > 0 &&
+                applicationData?.procurement_stocks?.map((row, index) => (
                   <tr key={row?.procurement_no}>
                     <td className='border border-gray-200 px-4 py-2'>
-                      {index + 1}
+                      {row?.subCategory?.name}
                     </td>
                     <td className='border border-gray-200 px-4 py-2 text-sm'>
                       {row?.description}
@@ -359,31 +503,49 @@ export default function CreateNewBoq() {
                       {row?.quantity}
                     </td>
                     <td className='border border-gray-200 px-4 py-2 text-sm'>
-                      {row?.category?.name == "Cleaning Appliances"
-                        ? "L"
-                        : "kg"}
+                      {row?.unit?.name}
                     </td>
-                    <td className='border border-gray-200 text-md w-[30px] px-1'>
+                    <td className='border border-gray-200 text-md px-1'>
                       <input
-                        className='outline-indigo-400 text-md px-2 h-[30px] border border-gray-300 rounded-md'
+                        className='outline-indigo-400 text-md px-2 border border-gray-300 rounded-md text-center'
                         defaultValue={row?.rate}
-                        onChange={(e) =>
-                          changeRateAmountHandler(e, row?.procurement_no)
-                        }
+                        onChange={(e) => changeRateAmountHandler(e, row?.id)}
                       />
                     </td>
+                    <td className='border border-gray-200 text-md w-[30px] px-1'>
+                      <div className='flex items-center gap-4 my-1'>
+                        {/* <input
+                          type='checkbox'
+                          onChange={(e) => {
+                            const isChecked = e.target.checked;
+                            setGstChecked(isChecked);
+                            estimatedAmountCalc(
+                              payload?.procurement,
+                              isChecked
+                            );
+                          }}
+                        /> */}
+                        {/* <p className='text-xs w-[4rem]'>GST %</p> */}
+                        <input
+                          placeholder='Add Gst'
+                          className='p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200'
+                          onChange={(e) => addGstForEachProc(e, row?.id)}
+                          defaultValue={row?.gst}
+                        />
+                      </div>
+                    </td>
                     <td className='border border-gray-200 px-4 py-2 text-sm'>
-                      {payload?.procurement[index]?.total_rate ||
-                        row?.total_rate}
+                      {indianAmount(
+                        payload?.procurement[index]?.total_rate ||
+                          row?.total_rate
+                      )}
                     </td>
 
                     <td className='border border-gray-200 p-1'>
                       <input
                         placeholder='Enter remarks...'
                         className='outline-indigo-400 text-md px-2 h-[30px] rounded-md w-full'
-                        onChange={(e) =>
-                          addRemarkHandler(e, row?.procurement_no)
-                        }
+                        onChange={(e) => addRemarkHandler(e, row?.id)}
                       />
                     </td>
                   </tr>
@@ -392,7 +554,7 @@ export default function CreateNewBoq() {
               {isCreatePage != "create" &&
                 applicationData?.map((data) =>
                   data?.procurements.map((row, index) => (
-                    <tr key={row?.procurement_no}>
+                    <tr key={row?.id}>
                       <td className='border border-gray-200 px-4 py-2'>
                         {index + 1}
                       </td>
@@ -403,17 +565,13 @@ export default function CreateNewBoq() {
                         {row?.quantity}
                       </td>
                       <td className='border border-gray-200 px-4 py-2 text-sm'>
-                        {row?.category?.name == "Cleaning Appliances"
-                          ? "L"
-                          : "kg"}
+                        {row?.unit}
                       </td>
                       <td className='border border-gray-200 text-md w-[30px] px-1'>
                         <input
                           className='outline-indigo-400 text-md px-2 h-[30px] border border-gray-300 rounded-md'
                           defaultValue={row?.rate}
-                          onChange={(e) =>
-                            changeRateAmountHandler(e, row?.procurement_no)
-                          }
+                          onChange={(e) => changeRateAmountHandler(e, row?.id)}
                         />
                       </td>
                       <td className='border border-gray-200 px-4 py-2 text-sm'>
@@ -424,9 +582,7 @@ export default function CreateNewBoq() {
                         <input
                           placeholder='Enter remarks...'
                           className='outline-indigo-400 text-md px-2 h-[30px] rounded-md w-full'
-                          onChange={(e) =>
-                            addRemarkHandler(e, row?.procurement_no)
-                          }
+                          onChange={(e) => addGstHandler(e, row?.id)}
                           defaultValue={row?.remark || ""}
                         />
                       </td>
@@ -438,7 +594,7 @@ export default function CreateNewBoq() {
 
           <div className='flex justify-between p-2'>
             <div className='p-3'>
-              <div className='flex items-center gap-4 my-1'>
+              {/* <div className='flex items-center gap-4 my-1'>
                 <input
                   type='checkbox'
                   onChange={(e) => {
@@ -461,7 +617,7 @@ export default function CreateNewBoq() {
                     applicationData[0]?.gst && applicationData[0]?.gst
                   }
                 />
-              </div>
+              </div> */}
               <div className='flex items-center gap-4'>
                 <p className='text-xs w-[4rem] mr-7'>HSN Code</p>
                 <input
@@ -474,7 +630,7 @@ export default function CreateNewBoq() {
                     }))
                   }
                   defaultValue={
-                    applicationData[0]?.gst && applicationData[0]?.gst
+                    applicationData?.hsn_code && applicationData?.hsn_code
                   }
                 />
               </div>
@@ -484,9 +640,7 @@ export default function CreateNewBoq() {
               <p className='text-sm font-medium'>Total Amount</p>
               <p className='font-semibold text-green-600'>
                 {indianAmount(
-                  payload?.estimated_cost ||
-                    applicationData[0]?.estimated_cost ||
-                    0
+                  payload?.estimated_cost || applicationData?.total_rate || 0
                 )}
               </p>
             </div>
@@ -537,7 +691,7 @@ export default function CreateNewBoq() {
               onChange={(e) =>
                 setPayload((prev) => ({ ...prev, remark: e.target.value }))
               }
-              defaultValue={applicationData[0]?.remark || ""}
+              defaultValue={applicationData?.remark || ""}
               required
             />
           </div>
@@ -583,21 +737,27 @@ export default function CreateNewBoq() {
           Back
         </button>
 
-        {applicationData[0]?.status === -1 && (
+        {/* {applicationData[0]?.status === -1 && (
           <button
             className={colouredBtnStyle}
             onClick={() => setConfirmationModal(true)}
           >
             Forward to DA
           </button>
-        )}
+        )} */}
 
         <button
           className={`bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
           onClick={() =>
             navigate(
               "/boqSummary",
-              isCreatePage == "create" ? { state: payload } : { state: payload }
+              isCreatePage == "create"
+                ? {
+                    state: gstChecked
+                      ? { ...payload, gstChecked }
+                      : { ...payload },
+                  }
+                : { state: payload }
             )
           }
         >

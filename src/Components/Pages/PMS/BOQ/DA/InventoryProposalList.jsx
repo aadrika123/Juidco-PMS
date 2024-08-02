@@ -31,7 +31,7 @@ function InventoryProposalList(props) {
       Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
-      Header: "Tender Reference No",
+      Header: "Reference No",
       accessor: "reference_no",
       Cell: ({ cell }) => (
         <div className='pr-2'>{cell.row.values.reference_no}</div>
@@ -39,10 +39,10 @@ function InventoryProposalList(props) {
     },
     {
       Header: "Category",
-      accessor: "procurements",
+      accessor: "procurement_stocks[0]?.category?.name",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {cell.row.values.procurements[0]?.category?.name}
+          {cell.row.original.procurement_stocks[0]?.category?.name}
         </div>
       ),
     },
@@ -56,82 +56,82 @@ function InventoryProposalList(props) {
       ),
     },
     {
-      Header: "status",
+      Header: <p className='text-center'>Status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-        {cell.row.values.status == -1 && (
-            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+          {cell.row.values.status == -1 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Back to SR
             </p>
           )}
           {cell.row.values.status == -2 && (
-            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Rejected
             </p>
           )}
           {cell.row.values.status == 0 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Pending
             </p>
           )}
           {cell.row.values.status == 1 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               DA's Inbox
             </p>
           )}
           {cell.row.values.status == 2 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Release for Tender
             </p>
           )}
           {cell.row.values.status == 3 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Supplier assigned
             </p>
           )}
           {cell.row.values.status == 4 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Incomplete stocks received
             </p>
           )}
           {cell.row.values.status == 5 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Stocks received
             </p>
           )}
           {cell.row.values.status == 69 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Revised
             </p>
           )}
           {cell.row.values.status == 71 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               BOQ already created
             </p>
           )}
           {cell.row.values.status == 70 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Ready for BOQ
             </p>
           )}
           {cell.row.values.status == -70 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               BOQ returned from DA
             </p>
           )}
           {cell.row.values.status == 72 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Ready for tendering
             </p>
           )}
           {cell.row.values.status == -72 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Tender back from DA
             </p>
           )}
           {cell.row.values.status == 73 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Tender is ready
             </p>
           )}
