@@ -96,8 +96,8 @@ const BiddingInitialForm = () => {
           </h2>
         </div>
         <form onSubmit={formik.handleSubmit}>
-          <div className="rounded-md border border-gray-200 bg-white p-4 mt-5">
-            <div className="flex justify-between mr-8 m-8">
+          <div className="rounded-md border border-gray-200 bg-white p-6 mt-5 ">
+            <div className="flex justify-between p-4">
               <div className="flex-col">
                 <div>
                   <label
