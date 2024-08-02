@@ -259,7 +259,7 @@ function App() {
       element: <BoqDetailsById />,
     },
     {
-      path: "/da-boq",
+      path: "/inventoryAdmin-boq",
       element: <BoqListTabsDa />,
     },
     // {

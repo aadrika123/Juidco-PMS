@@ -29,6 +29,7 @@ import { useReactToPrint } from "react-to-print";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
 import StockReceiverModal from "../DepartmentalAdmin/StockReceiverModal";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import { MdArrowRightAlt } from "react-icons/md";
 import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
 
 const ViewPreProcurementById = () => {
@@ -48,7 +49,8 @@ const ViewPreProcurementById = () => {
   const [isModalOpenlReject1, setisModalOpenlReject1] = useState(false);
   const [isModalOpenlReject2, setisModalOpenlReject2] = useState(false);
   const [isModalOpenlBackToIA, setisModalOpenlBackToIA] = useState(false);
-  const [isModalOpenlBackToLevel1, setisModalOpenlBackToLevel1] = useState(false);
+  const [isModalOpenlBackToLevel1, setisModalOpenlBackToLevel1] =
+    useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [remark, setRemark] = useState("");
@@ -462,7 +464,7 @@ const ViewPreProcurementById = () => {
         setisLoading(false);
       });
   };
-  
+
   const backByLvl2toLevelone = () => {
     setisLoading(true);
 
@@ -491,8 +493,6 @@ const ViewPreProcurementById = () => {
         setisLoading(false);
       });
   };
-
-
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // confirmation handeler of Modals
@@ -666,10 +666,10 @@ const ViewPreProcurementById = () => {
         // </div>
       )}
 
-      <div className="">
+      <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
-          titleText={"Stock Request Proposal Details"}
+          titleText={"Pre-Procurement Details"}
         />
       </div>
 
@@ -680,42 +680,41 @@ const ViewPreProcurementById = () => {
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         {/* Basic Details */}
-        <div className="mt-6">
+        <div className='mt-6'>
           <div
-            className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500"
+            className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'
             ref={componentRef}
           >
-            <div className="">
-              <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
+            <div className=''>
+              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
                 View Pre Procurement Details{" "}
               </h2>
             </div>
 
-            <div className="flex justify-between">
-              <div className="pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full">
-                <h1 className="">
-                  Procurement No <span className="text-black">:</span>
-                  <span className="font-bold">
+            <div className='flex justify-between'>
+              <div className='pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full'>
+                <h1 className=''>
+                  Procurement No <span className='text-black'>:</span>
+                  <span className='font-bold'>
                     {" "}
                     {nullToNA(applicationFullData?.procurement_no)}
                   </span>
                 </h1>
-                <h1 className="text-black">
-                  Procurement Total <span className="text-black">:</span>
-                  <span className="font-bold">
+                <h1 className='text-black'>
+                  Procurement Total <span className='text-black'>:</span>
+                  <span className='font-bold'>
                     {" "}
                     {indianAmount(nullToNA(applicationFullData?.total_rate))}
                   </span>
-                  
                 </h1>
               </div>
             </div>
 
-            <div className="flex justify-between">
-              <div className="pl-8 text-[1rem] text-black flex justify-between w-full">
-                <h1 className="">
-                  Category <span className="text-black">:</span>
-                  <span className="font-bold">
+            <div className='flex justify-between'>
+              <div className='pl-8 text-[1rem] text-black flex justify-between w-full'>
+                <h1 className=''>
+                  Category <span className='text-black'>:</span>
+                  <span className='font-bold'>
                     {" "}
                     {nullToNA(applicationFullData?.category?.name)}
                   </span>
@@ -726,62 +725,62 @@ const ViewPreProcurementById = () => {
             {applicationFullData?.procurement_stocks?.map((procData, index) => (
               <>
                 <div>
-                  <p className="text-xs pl-5">Procurement Item: {index + 1}</p>
+                  <p className='text-xs pl-5'>Procurement Item: {index + 1}</p>
                 </div>
-                <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow">
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow'>
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       Subcategory
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {procData?.subCategory?.name}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">Unit</div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Unit</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {nullToNA(procData?.unit?.name)}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">Brand</div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Brand</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {nullToNA(procData?.brand?.name)}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {nullToNA(procData?.quantity)}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       Per Unit Rate
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {indianAmount(nullToNA(procData?.rate))}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       Total Rate
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {indianAmount(nullToNA(procData?.total_rate))}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       Description
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {nullToNA(procData?.description)}
                     </div>
                   </div>
@@ -789,7 +788,7 @@ const ViewPreProcurementById = () => {
               </>
             ))}
 
-            <div className="flex justify-end mb-4">
+            <div className='flex justify-end mb-4'>
               <ImageDisplay
                 preview={preview}
                 imageDoc={imageDoc}
@@ -803,7 +802,7 @@ const ViewPreProcurementById = () => {
           </div>
         </div>
 
-        <div className="space-x-5 flex justify-end mt-[2rem]">
+        <div className='space-x-5 flex justify-end mt-[2rem]'>
           <button onClick={handlePrint} className={buttonStyle}>
             Print
           </button>
@@ -825,28 +824,31 @@ const ViewPreProcurementById = () => {
             </button>
           )}
 
-          {/* Reject of Level 1 */}
-          {page == "inbox" && (applicationFullData?.status == 10  ||
-                    applicationFullData?.status == 21 ||
-                    applicationFullData?.status == 13) && (
+          {page == "inbox" && applicationFullData?.status == 14 && (
             <button
-              className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
-              onClick={() => setisModalOpenlReject1(true)}
+              className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center'
+              onClick={() =>
+                navigate(`/create-boq`, {
+                  state: {
+                    procurement_no: [applicationFullData?.procurement_no],
+                  },
+                })
+              }
             >
-              Reject
+              Prepare BOQ
             </button>
           )}
 
-          {/* Reject of Level 2 */}
-          {page == "inbox" && (applicationFullData?.status == 20 ||
-                    applicationFullData?.status == 23) && (
-            <button
-              className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
-              onClick={() => setisModalOpenlReject2(true)}
-            >
-              Reject
-            </button>
-          )}
+          {page == "inbox" &&
+            applicationFullData?.status ==
+              14(
+                <button
+                  className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
+                  onClick={postRejectTenderModal}
+                >
+                  Reject
+                </button>
+              )}
 
           {page == "inbox" && (
             <>
@@ -882,7 +884,7 @@ const ViewPreProcurementById = () => {
                     Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
                   </button> */}
 
-                  <div className="bg-[#0F921C] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-800">
+                  <div className='bg-[#0F921C] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-800'>
                     <FileButton
                       bg={"[#0F921C]"}
                       hoverBg={"bg-green-800"}
@@ -921,7 +923,7 @@ const ViewPreProcurementById = () => {
                     </button>
                   )}
 
-                  {(applicationFullData?.status == 10  ||
+                  {(applicationFullData?.status == 10 ||
                     applicationFullData?.status == 21) && (
                     <button
                       className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
@@ -931,9 +933,9 @@ const ViewPreProcurementById = () => {
                       Back To Inventory Admin
                     </button>
                   )}
-                  
+
                   {(applicationFullData?.status == 20 ||
-                    applicationFullData?.status == 23 ) && (
+                    applicationFullData?.status == 23) && (
                     <button
                       className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                       // onClick={forwardToIa}
@@ -943,7 +945,8 @@ const ViewPreProcurementById = () => {
                     </button>
                   )}
 
-                  {(applicationFullData?.status == 0  || applicationFullData?.status == 11) && (
+                  {(applicationFullData?.status == 0 ||
+                    applicationFullData?.status == 11) && (
                     <button
                       className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                       // onClick={forwardToIa}
@@ -953,7 +956,7 @@ const ViewPreProcurementById = () => {
                     </button>
                   )}
 
-                  {(applicationFullData?.status == 10  ||
+                  {(applicationFullData?.status == 10 ||
                     applicationFullData?.status == 21 ||
                     applicationFullData?.status == 13) && (
                     <button

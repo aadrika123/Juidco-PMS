@@ -29,6 +29,7 @@ export default function BoqDetailsById(props) {
     api_postBacktoAcc,
     api_postForwardBoq,
     api_postRejectBoq,
+    api_forwardBoqToFinance,
   } = ProjectApiList();
 
   const { refNo, page } = useParams();
@@ -76,7 +77,6 @@ export default function BoqDetailsById(props) {
     setIsLoading(true);
     AxiosInterceptors.get(`${api_fetchAllBoqDetailsbyId}/${refNo}`, ApiHeader())
       .then(function (response) {
-        console.log("item Categor", response?.data);
         setDatalist(response?.data?.data[0]);
       })
       .catch(function (error) {
@@ -102,10 +102,9 @@ export default function BoqDetailsById(props) {
     setIsLoading(true);
     AxiosInterceptors.post(`${api_postBacktoAcc}`, data, ApiHeader())
       .then(function (response) {
-        console.log("boq data fetched by id ...", response?.data?.data);
         if (response?.data?.status) {
           toast.success("Successfully sent to Accountant");
-          navigate("/da-boq");
+          navigate("/inventoryAdmin-boq");
         } else {
           toast.error("Error in sending back to Accountant");
         }
@@ -131,9 +130,35 @@ export default function BoqDetailsById(props) {
       .then(function (response) {
         if (response?.data?.status) {
           toast.success("BOQ is Approved Successfully!!");
-          navigate("/da-boq");
+          navigate("/inventoryAdmin-boq");
         } else {
           toast.error("Error in approving. Please try Again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  //forward to finance
+  const forwardBoqFinanceHandler = () => {
+    setIsLoading(true);
+
+    AxiosInterceptors.post(
+      `${api_forwardBoqToFinance}`,
+      { reference_no: refNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("BOQ has been set to Finance Successfully!!");
+          navigate("/inventoryAdmin-boq");
+        } else {
+          toast.error("Error in Forwarding Boq. Please try Again");
         }
       })
       .catch(function (error) {
@@ -158,7 +183,7 @@ export default function BoqDetailsById(props) {
         if (response?.data?.status) {
           setRejectModal(true);
           toast.success("BOQ is Rejected.");
-          navigate("/da-boq");
+          navigate("/inventoryAdmin-boq");
         } else {
           toast.error("Error in approving. Please try Again");
         }
@@ -239,24 +264,24 @@ export default function BoqDetailsById(props) {
                 <p className='text-lg font-bold mb-2'>
                   Category:{" "}
                   <span className='font-semibold text-gray-500'>
-                    {dataList?.procurements[0]?.category?.name}
+                    {dataList?.procurement_stocks[0]?.category?.name}
                   </span>
                 </p>
-                <p className='text-lg font-bold'>
+                {/* <p className='text-lg font-bold'>
                   SubCategory:{" "}
                   <span className='font-semibold text-gray-500'>
-                    {dataList?.procurements[0]?.subcategory?.name}
+                    {dataList?.procurement_stocks[0]?.subcategory?.name}
                   </span>
-                </p>
+                </p> */}
               </div>
 
               <div className=''>
-                <p className='text-lg font-bold'>
+                {/* <p className='text-lg font-bold'>
                   GST:{" "}
                   <span className='font-semibold text-gray-500'>
                     {dataList?.gst}%
                   </span>
-                </p>
+                </p> */}
                 <p className='text-lg font-bold '>
                   Status:{" "}
                   <span className='font-semibold text-blue-500'>
@@ -286,8 +311,8 @@ export default function BoqDetailsById(props) {
                     ))}
                 </thead>
                 <tbody className='font-normal text-center '>
-                  {dataList?.procurements?.length > 0 &&
-                    dataList?.procurements?.map((row, index) => (
+                  {dataList?.procurement_stocks?.length > 0 &&
+                    dataList?.procurement_stocks?.map((row, index) => (
                       <tr key={row?.procurement_no}>
                         <td className='border border-gray-200 px-4 py-2'>
                           {index + 1}
@@ -404,20 +429,20 @@ export default function BoqDetailsById(props) {
               </button>
             )} */}
 
-          {(page == "inbox" || page == "boq-status") &&
-            dataList?.preTender == null && (
-              <div className='flex justify-end items-center'>
-                <button
-                  className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
-                  onClick={() =>
-                    navigate(`/tendering?tabNo=1`, { state: refNo })
-                  }
-                >
-                  Proceed to Pre Tendering{" "}
-                  <MdArrowRightAlt className='text-2xl ml-2' />
-                </button>
-              </div>
-            )}
+          {page == "inbox" && dataList?.status == 0 && (
+            <div className='flex justify-end items-center'>
+              <button
+                className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
+                onClick={forwardBoqFinanceHandler}
+                // onClick={() =>
+                //   navigate(`/tendering?tabNo=1`, { state: refNo })
+                // }
+              >
+                Forward to Finance
+                <MdArrowRightAlt className='text-2xl ml-2' />
+              </button>
+            </div>
+          )}
 
           {dataList?.preTender != null && (
             <button
@@ -432,7 +457,7 @@ export default function BoqDetailsById(props) {
             </button>
           )}
 
-          {(page == "inbox" || page == "boq-status") &&
+          {/* {(page == "inbox" || page == "boq-status") &&
             dataList?.preTender?.status == 0 &&
             dataList?.status == 0 &&
             !dataList?.preTender?.isPartial && (
@@ -446,7 +471,7 @@ export default function BoqDetailsById(props) {
                   Forward To level I
                 </button>
               </div>
-            )}
+            )} */}
         </div>
       </div>
     </div>

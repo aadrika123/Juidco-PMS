@@ -13,6 +13,7 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 import { useNavigate } from "react-router-dom";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
+import { indianAmount } from "@/Components/Common/PowerupFunctions";
 
 const TabsMenu = (props) => {
   const [activeTab, setActiveTab] = useState("inbox");
@@ -79,7 +80,7 @@ const TabsMenu = (props) => {
     },
 
     {
-      Header: <p className="text-center">Status</p>,
+      Header: <p className='text-center'>Status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2 w-[12rem]'>
@@ -165,15 +166,14 @@ const TabsMenu = (props) => {
           )}
           {cell.row.values.status == 61 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-             Added to dead stock
+              Added to dead stock
             </p>
           )}
           {cell.row.values.status == 62 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-             Returned to DD
+              Returned to DD
             </p>
           )}
-          
         </div>
       ),
     },
@@ -220,71 +220,71 @@ const TabsMenu = (props) => {
       Header: "Total Rate",
       accessor: "total_rate",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{indianAmount(cell.row.original.total_rate)} </div>
+        <div className='pr-2'>
+          {indianAmount(cell.row.original.total_rate)}{" "}
+        </div>
       ),
     },
     {
-      Header: <p className="text-center">status</p>,
+      Header: <p className='text-center'>status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-           {cell.row.values?.status == 0 && (
+          {cell.row.values?.status == 0 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Pending
             </p>
           )}
-           {cell.row.values?.status == 10 && (
+          {cell.row.values?.status == 10 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 1
             </p>
           )}
-           {cell.row.values?.status == 11 && (
+          {cell.row.values?.status == 11 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Level 1 Returned
             </p>
           )}
-           {cell.row.values?.status == 12 && (
+          {cell.row.values?.status == 12 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Level 1 Rejected
             </p>
           )}
-           {cell.row.values?.status == 13 && (
+          {cell.row.values?.status == 13 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 1 Revised
             </p>
           )}
-           {cell.row.values?.status == 14 && (
+          {cell.row.values?.status == 14 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 1 Approved
             </p>
           )}
-           {cell.row.values?.status == 20 && (
+          {cell.row.values?.status == 20 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 2
             </p>
           )}
-           {cell.row.values?.status == 21 && (
+          {cell.row.values?.status == 21 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Level 2 Return
             </p>
           )}
-           {cell.row.values?.status == 22 && (
+          {cell.row.values?.status == 22 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Level 2 Rejected
             </p>
           )}
-           {cell.row.values?.status == 23 && (
+          {cell.row.values?.status == 23 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 2 Revised
             </p>
           )}
-           {cell.row.values?.status == 24 && (
+          {cell.row.values?.status == 24 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 2 Approved
             </p>
           )}
-
-
         </div>
       ),
     },
