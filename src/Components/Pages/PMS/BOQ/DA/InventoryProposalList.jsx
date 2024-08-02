@@ -60,14 +60,14 @@ function InventoryProposalList(props) {
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {cell.row.values.status == -1 && (
+          {cell.row.values.status == -43 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Back to SR
+              Rejected from Finance
             </p>
           )}
-          {cell.row.values.status == -2 && (
-            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Rejected
+          {cell.row.values.status == 41 && (
+            <p className='text-orange-400 text-center bg-status_reject_bg border-orange-400 border-[1px] px-1 py-1  rounded-md'>
+              Returned from Finance
             </p>
           )}
           {cell.row.values.status == 0 && (
@@ -75,14 +75,14 @@ function InventoryProposalList(props) {
               Pending
             </p>
           )}
-          {cell.row.values.status == 1 && (
-            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              DA's Inbox
+          {cell.row.values.status == 40 && (
+            <p className='text-yellow-400 text-center bg-yellow-50 border-yellow-400 border-[1px] px-1 py-1  rounded-md'>
+              Finance Approval Pending
             </p>
           )}
-          {cell.row.values.status == 2 && (
+          {cell.row.values.status == 42 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Release for Tender
+              Approved by Finance
             </p>
           )}
           {cell.row.values.status == 3 && (

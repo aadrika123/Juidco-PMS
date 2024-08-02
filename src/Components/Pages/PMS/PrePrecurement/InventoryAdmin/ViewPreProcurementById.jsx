@@ -284,7 +284,7 @@ const ViewPreProcurementById = () => {
     )
       .then(function (response) {
         if (response?.data?.status == true) {
-          toast.success("Successfully forwarded to Level 1");
+          toast.success("Successfully forwarded to Level 2");
           setTimeout(() => {
             navigate("/levelone");
           }, 500);
@@ -825,20 +825,23 @@ const ViewPreProcurementById = () => {
             </button>
           )}
 
-          {page == "inbox" && applicationFullData?.status == 14 && (
-            <button
-              className="bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center"
-              onClick={() =>
-                navigate(`/create-boq`, {
-                  state: {
-                    procurement_no: [applicationFullData?.procurement_no],
-                  },
-                })
-              }
-            >
-              Prepare BOQ
-            </button>
-          )}
+          {page == "inbox" &&
+            (applicationFullData?.status == 14 ||
+              applicationFullData?.status == 24) && (
+              <button
+                className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center'
+                onClick={() =>
+                  navigate(`/create-boq`, {
+                    state: {
+                      procurement_no: [applicationFullData?.procurement_no],
+                    },
+                  })
+                }
+              >
+                Prepare BOQ
+                <MdArrowRightAlt />
+              </button>
+            )}
 
           {/* Reject of Level 1 */}
           {page == "inbox" &&
@@ -992,15 +995,6 @@ const ViewPreProcurementById = () => {
                       onClick={() => setisModalOpenlAprvl2(true)}
                     >
                       Approve
-                    </button>
-                  )}
-
-                  {applicationFullData?.status == 24 && (
-                    <button
-                      className={`bg-[#21b031] hover:bg-[#1e6727] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                      // onClick={forwardToIa}
-                    >
-                      Prepare BOQ
                     </button>
                   )}
                 </>

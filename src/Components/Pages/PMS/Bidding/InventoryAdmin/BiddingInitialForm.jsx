@@ -263,6 +263,7 @@ const BiddingInitialForm = () => {
                           onChange={handleEmdChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.emdAmount}
+                          disabled
                           className="rounded-md w-[257px] h-[50px] border-2 p-4"
                         />
                       </div>
@@ -367,6 +368,7 @@ const BiddingInitialForm = () => {
                           onChange={handlePbgChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.pbgAmount}
+                          disabled
                           className="rounded-md w-[257px] h-[50px] border-2 p-4"
                         />
                       </div>
@@ -444,13 +446,13 @@ const BiddingInitialForm = () => {
 
           {selectedOption === "rateContract" && (
             <div className="flex  gap-4 rounded-md border border-gray-200 bg-white  mt-5 p-8">
-              <div className="flex gap-8">
+              <div className="flex justify-between w-full px-6">
                 <div className="flex flex-col">
                   <div>
                     {" "}
                     <label
                       htmlFor="tenderAmount"
-                      className="block font-semibold text-gray-700 mb-2 "
+                      className="block font-medium text-gray-700 mb-2 "
                     >
                       Tenure
                     </label>
@@ -482,7 +484,7 @@ const BiddingInitialForm = () => {
                     {" "}
                     <label
                       htmlFor="tenderAmount"
-                      className="block font-semibold text-gray-700 mb-2"
+                      className="block font-medium text-gray-700 mb-2"
                     >
                       Minimum Supplier’s/ services Provider
                     </label>
@@ -513,7 +515,7 @@ const BiddingInitialForm = () => {
                     {" "}
                     <label
                       htmlFor="tenderAmount"
-                      className="block font-semibold text-gray-700 mb-2"
+                      className="block font-medium text-gray-700 mb-2"
                     >
                       Maximum Supplier’s/ services Provider
                     </label>
