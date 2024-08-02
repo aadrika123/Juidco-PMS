@@ -13,7 +13,6 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 import { useNavigate } from "react-router-dom";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
-import { indianAmount } from "@/Components/Common/PowerupFunctions";
 
 const TabsMenu = (props) => {
   const [activeTab, setActiveTab] = useState("inbox");
