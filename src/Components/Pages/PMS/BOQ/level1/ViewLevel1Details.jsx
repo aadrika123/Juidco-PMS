@@ -105,6 +105,7 @@ const ViewLevel1Details = (props) => {
         setisLoading(false);
       });
   };
+  
   const postReleaseTenderModal = () => {
     setIsModalOpen2(true);
   };
@@ -140,6 +141,7 @@ const ViewLevel1Details = (props) => {
         setisLoading(false);
       });
   };
+
   const postBackToSR = () => {
     setisLoading(true);
 

@@ -14,14 +14,14 @@ const BiddingInitialForm = () => {
 
 
   const allowResubmission = [
-    { label: "Yes", value: "1" },
-    { label: "No", value: "2" },
+    { label: "Yes", value: "yes" },
+    { label: "No", value: "no" },
   ];
 
   const formik = useFormik({
     initialValues: {
       tenderAmount: "",
-      allowResubmission: "",
+      allow_resubmission: "",
       emdAmount: "",
       emdPercentage: "",
       pbgAmount: "",
@@ -30,32 +30,32 @@ const BiddingInitialForm = () => {
       minSupplier: "",
       maxSupplier: "",
     },
-    validationSchema: Yup.object({
-      tenderAmount: Yup.number()
-        .required("Tender amount is required")
-        .min(0, "Tender amount cannot be negative"),
-      emdAmount: Yup.number()
-        .required("EMD amount is required")
-        .min(0, "EMD amount cannot be negative"),
-      emdPercentage: Yup.number()
-        .required("EMD Percantage is required")
-        .min(0, "EMD Percantage cannot be negative"),
-      pbgAmount: Yup.number()
-        .required("PBG amount is required")
-        .min(0, "PBG amount cannot be negative"),
-      pbgPercentage: Yup.number()
-        .required("PBG Percentage is required")
-        .min(0, "PBG Percentage  cannot be negative"),
-      tenure: Yup.number()
-        .required("Tenure  is required")
-        .min(0, "Tenure  cannot be negative"),
-      minSupplier: Yup.number()
-        .required("Minimum Supplier’s/ services Provider  is required")
-        .min(0, "Minimum Supplier’s/ services Provider  cannot be negative"),
-      maxSupplier: Yup.number()
-        .required("Maximum Supplier’s/ services Provider is required")
-        .min(0, "Maximum Supplier’s/ services Provider  cannot be negative"),
-    }),
+    // validationSchema: Yup.object({
+    //   tenderAmount: Yup.number()
+    //     .required("Tender amount is required")
+    //     .min(0, "Tender amount cannot be negative"),
+    //   emdAmount: Yup.number()
+    //     .required("EMD amount is required")
+    //     .min(0, "EMD amount cannot be negative"),
+    //   emdPercentage: Yup.number()
+    //     .required("EMD Percantage is required")
+    //     .min(0, "EMD Percantage cannot be negative"),
+    //   pbgAmount: Yup.number()
+    //     .required("PBG amount is required")
+    //     .min(0, "PBG amount cannot be negative"),
+    //   pbgPercentage: Yup.number()
+    //     .required("PBG Percentage is required")
+    //     .min(0, "PBG Percentage  cannot be negative"),
+    //   tenure: Yup.number()
+    //     .required("Tenure  is required")
+    //     .min(0, "Tenure  cannot be negative"),
+    //   minSupplier: Yup.number()
+    //     .required("Minimum Supplier’s/ services Provider  is required")
+    //     .min(0, "Minimum Supplier’s/ services Provider  cannot be negative"),
+    //   maxSupplier: Yup.number()
+    //     .required("Maximum Supplier’s/ services Provider is required")
+    //     .min(0, "Maximum Supplier’s/ services Provider  cannot be negative"),
+    // }),
     onSubmit: (values) => {
       console.log(values);
     },
@@ -81,7 +81,7 @@ const BiddingInitialForm = () => {
       formik.setFieldValue("emdPercentage", percentage);
     } else if (name === "emdPercentage" && value !== "") {
       const amount = (value * formik.values.tenderAmount) / 100;
-      formik.setFieldValue("emdAmount", amount);
+      formik.setFieldValue("emdAmount", String(amount));
     }
     formik.setFieldValue(name, value);
   };
@@ -93,7 +93,7 @@ const BiddingInitialForm = () => {
       formik.setFieldValue("pbgPercentage", percentage);
     } else if (name === "pbgPercentage" && value !== "") {
       const amount = (value * formik.values.tenderAmount) / 100;
-      formik.setFieldValue("pbgAmount", amount);
+      formik.setFieldValue("pbgAmount", String(amount));
     }
     formik.setFieldValue(name, value);
   };
@@ -135,7 +135,7 @@ const BiddingInitialForm = () => {
                     htmlFor="emd-description"
                     className="block font-medium text-gray-700 mb-2"
                   >
-                    EMD Description:
+                    EMD Description
                   </label>
                 </div>
               </div>
@@ -143,11 +143,11 @@ const BiddingInitialForm = () => {
                 <RadioButtonsGroup
                   className="flex justify-start"
                   fields={allowResubmission}
-                  // title={"Allow Resubmission"}
+                  title={"EMD"}
                   name={"allow_resubmission"}
-                  values={"allow_resubmission"}
-                  // handleChange={handleChange}
-                  // setFieldValue={setFieldValue}
+                  values={formik.values.allow_resubmission}
+                  handleChange={formik.handleChange}
+                  setFieldValue={formik.setFieldValue}
                   // errors={errors.allow_resubmission}
                   // touched={touched.allow_resubmission}
                 />
@@ -221,7 +221,7 @@ const BiddingInitialForm = () => {
                     id="tenderAmount"
                     value={selectedOptionPercantageAmt}
                     onChange={handleOptionChange1}
-                    className="rounded-md border-2"
+                    className="rounded-md border-2 h-7"
                   >
                     <option value="percentage">Percentage</option>
                     <option value="fixed">Fixed Amount</option>
@@ -325,7 +325,7 @@ const BiddingInitialForm = () => {
                     id="tenderAmount"
                     value={selectedOptionPbgPercantageAmt}
                     onChange={handleOptionChange2}
-                    className="rounded-md border-2"
+                    className="rounded-md border-2 h-7"
                   >
                     <option value="percentage">Percentage</option>
                     <option value="fixed">Fixed Amount</option>
@@ -432,7 +432,7 @@ const BiddingInitialForm = () => {
                   className="w-[515px] h-[50px] border-2 rounded-md p-2"
                 >
                   <option value="">
-                    Select Least Cost , QCBS, Rate Contract
+                    ---- select ----- 
                   </option>
                   <option value="leastCost">Least Cost</option>
                   <option value="qcbs">QCBS</option>

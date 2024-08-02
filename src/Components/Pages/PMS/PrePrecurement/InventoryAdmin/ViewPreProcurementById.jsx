@@ -30,6 +30,7 @@ import { indianAmount } from "@/Components/Common/PowerupFunctions";
 import StockReceiverModal from "../DepartmentalAdmin/StockReceiverModal";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import { MdArrowRightAlt } from "react-icons/md";
+import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
 
 const ViewPreProcurementById = () => {
   const navigate = useNavigate();
@@ -45,12 +46,18 @@ const ViewPreProcurementById = () => {
   const [isModalOpenlvl2, setIsModalOpenlvl2] = useState(false);
   const [isModalOpenlAprvl1, setisModalOpenlAprvl1] = useState(false);
   const [isModalOpenlAprvl2, setisModalOpenlAprvl2] = useState(false);
+  const [isModalOpenlReject1, setisModalOpenlReject1] = useState(false);
+  const [isModalOpenlReject2, setisModalOpenlReject2] = useState(false);
+  const [isModalOpenlBackToIA, setisModalOpenlBackToIA] = useState(false);
+  const [isModalOpenlBackToLevel1, setisModalOpenlBackToLevel1] =
+    useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [remark, setRemark] = useState("");
   const [imageDoc, setImageDoc] = useState();
   const [preview, setPreview] = useState();
   const [procNo, setProcNo] = useState();
+  const [data, setData] = useState({ procurement_no: "", remark: "" });
 
   const {
     api_getStockRequetById,
@@ -63,6 +70,10 @@ const ViewPreProcurementById = () => {
     api_forwardLeveltwo,
     api_approveByLeveltwo,
     api_approveByLevelone,
+    api_rejectByLevelone,
+    api_rejectByLeveltwo,
+    api_backByLevel1toIA,
+    api_backByLevel2toLevel1,
   } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
@@ -105,6 +116,10 @@ const ViewPreProcurementById = () => {
           setapplicationFullData(response?.data?.data);
           setTableData(response?.data?.data?.tran_dtls);
           setProcNo(response?.data?.data?.procurement_no);
+          setData((prev) => ({
+            ...prev,
+            procurement_no: response?.data?.data?.procurement_no,
+          }));
         } else {
           // toast.error("Error while getting details...");
           // seterroState(true);
@@ -130,11 +145,11 @@ const ViewPreProcurementById = () => {
     setIsModalOpen3(true);
   };
 
-  const postRejectTender = () => {
+  const postReject = () => {
     setisLoading(true);
 
     AxiosInterceptors.post(
-      `${api_postRejectTender}`,
+      `${api_rejectByLevelone}`,
       { preProcurement: [id], remark: remark },
       ApiHeader()
     )
@@ -355,6 +370,133 @@ const ViewPreProcurementById = () => {
       });
   };
 
+  const rejectByLevelOne = () => {
+    setisLoading(true);
+
+    // seterroState(false);
+
+    AxiosInterceptors.post(
+      `${api_rejectByLevelone}`,
+      { procurement_no: procNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success("Successfully Rejected");
+          setTimeout(() => {
+            navigate("/levelone");
+          }, 500);
+        } else {
+          // toast.error(response?.data?.mmessage || "something went wrong");
+          // navigate("/da-inventory-proposal");
+          // toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error in forwarding to Inventory Admin");
+        navigate("/da-inventory-proposal");
+        console.log("errorrr.... ", error);
+        // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
+  const rejectByLeveltwo = () => {
+    setisLoading(true);
+
+    // seterroState(false);
+
+    AxiosInterceptors.post(
+      `${api_rejectByLeveltwo}`,
+      { procurement_no: procNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success("Successfully Rejected");
+          setTimeout(() => {
+            navigate("/leveltwo");
+          }, 500);
+        } else {
+          // toast.error(response?.data?.mmessage || "something went wrong");
+          // navigate("/da-inventory-proposal");
+          // toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error in forwarding to Inventory Admin");
+        navigate("/da-inventory-proposal");
+        console.log("errorrr.... ", error);
+        // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
+  const backByLevelonetoIA = () => {
+    setisLoading(true);
+
+    // seterroState(false);
+
+    AxiosInterceptors.post(`${api_backByLevel1toIA}`, data, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success("Successfully Rejected");
+          setTimeout(() => {
+            navigate("/levelone");
+          }, 500);
+        } else {
+          // toast.error(response?.data?.mmessage || "something went wrong");
+          // navigate("/da-inventory-proposal");
+          // toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error in forwarding to Inventory Admin");
+        navigate("/da-inventory-proposal");
+        console.log("errorrr.... ", error);
+        // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
+  const backByLvl2toLevelone = () => {
+    setisLoading(true);
+
+    // seterroState(false);
+
+    AxiosInterceptors.post(`${api_backByLevel2toLevel1}`, data, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success("Successfully Rejected");
+          setTimeout(() => {
+            navigate("/leveltwo");
+          }, 500);
+        } else {
+          // toast.error(response?.data?.mmessage || "something went wrong");
+          // navigate("/da-inventory-proposal");
+          // toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error in forwarding to Inventory Admin");
+        navigate("/da-inventory-proposal");
+        console.log("errorrr.... ", error);
+        // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // confirmation handeler of Modals
+
   const confirmationHandler = () => {
     forwardToLevelOne();
   };
@@ -370,25 +512,41 @@ const ViewPreProcurementById = () => {
   const confirmationHandlerlevelOne = () => {
     approveByLevelOne();
   };
+  const confirmationHandlerRejectlevelOne = () => {
+    rejectByLevelOne();
+  };
+  const confirmationHandlerRejectleveltwo = () => {
+    rejectByLeveltwo();
+  };
+  const confirmationHandlerBacktoIA = () => {
+    backByLevelonetoIA();
+  };
+  const confirmationHandlerBacktoLevel1 = () => {
+    backByLvl2toLevelone();
+  };
 
   const handleCancel = () => {
     setIsModalOpen(false);
     setIsModalOpenlvl2(false);
     setisModalOpenlAprvl1(false);
     setisModalOpenlAprvl2(false);
+    setisModalOpenlReject1(false);
+    setisModalOpenlReject2(false);
+    setisModalOpenlBackToIA(false);
+    setisModalOpenlBackToLevel1(false);
   };
 
-  if (isModalOpen3) {
-    return (
-      <>
-        <DaRejectModal
-          postRejectTender={postRejectTender}
-          setRemark={setRemark}
-          setIsModalOpen3={setIsModalOpen3}
-        />
-      </>
-    );
-  }
+  // if (isModalOpen3) {
+  //   return (
+  //     <>
+  //       <DaRejectModal
+  //         postRejectTender={postRejectTender}
+  //         setRemark={setRemark}
+  //         setIsModalOpen3={setIsModalOpen3}
+  //       />
+  //     </>
+  //   );
+  // }
 
   if (isModalOpen) {
     return (
@@ -444,18 +602,61 @@ const ViewPreProcurementById = () => {
     );
   }
 
-  // if (isModalOpen2) {
-  //   return (
-  //     <>
-  //       <ReleaseTenderModal
-  //         postReleaseTender={postReleaseTender}
-  //         setIsModalOpen2={setIsModalOpen2}
-  //       />
-  //     </>
-  //   );
-  // }
+  //for level 1 reject
+  if (isModalOpenlReject1) {
+    return (
+      <>
+        <ConfirmationModal
+          confirmationHandler={confirmationHandlerRejectlevelOne}
+          handleCancel={handleCancel}
+          message={'Are you sure want to " Reject " ?'}
+          //   sideMessage={'By clicking your data will proceed'}
+        />
+      </>
+    );
+  }
 
-  // console.log(applicationFullData)
+  //for level 2 reject
+  if (isModalOpenlReject2) {
+    return (
+      <>
+        <ConfirmationModal
+          confirmationHandler={confirmationHandlerRejectleveltwo}
+          handleCancel={handleCancel}
+          message={'Are you sure want to " Reject " ?'}
+          //   sideMessage={'By clicking your data will proceed'}
+        />
+      </>
+    );
+  }
+
+  //for Back to Invt Admin
+  if (isModalOpenlBackToIA) {
+    return (
+      <>
+        <RejectionModalRemark
+          confirmationHandler={confirmationHandlerBacktoIA}
+          handleCancel={handleCancel}
+          message={"Are you sure, want to send back to IA? "}
+          setData={setData}
+        />
+      </>
+    );
+  }
+
+  //for Back to Level 1
+  if (isModalOpenlBackToLevel1) {
+    return (
+      <>
+        <RejectionModalRemark
+          confirmationHandler={confirmationHandlerBacktoLevel1}
+          handleCancel={handleCancel}
+          message={"Are you sure, want to send back to Level 1? "}
+          setData={setData}
+        />
+      </>
+    );
+  }
 
   return (
     <div>
@@ -638,14 +839,16 @@ const ViewPreProcurementById = () => {
             </button>
           )}
 
-          {page == "inbox" && (
-            <button
-              className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
-              onClick={postRejectTenderModal}
-            >
-              Reject
-            </button>
-          )}
+          {page == "inbox" &&
+            applicationFullData?.status ==
+              14(
+                <button
+                  className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
+                  onClick={postRejectTenderModal}
+                >
+                  Reject
+                </button>
+              )}
 
           {page == "inbox" && (
             <>
@@ -707,9 +910,10 @@ const ViewPreProcurementById = () => {
 
               {page === "inbox" && (
                 <>
-                  {/* for level 1 */}
+                  {/*Approve for level 1 */}
                   {(applicationFullData?.status == 10 ||
-                    applicationFullData?.status == 13) && (
+                    applicationFullData?.status == 13 ||
+                    applicationFullData?.status == 21) && (
                     <button
                       className={`bg-[#21b031] hover:bg-[#1e6727] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                       // onClick={forwardToIa}
@@ -718,7 +922,31 @@ const ViewPreProcurementById = () => {
                       Approve
                     </button>
                   )}
-                  {applicationFullData?.status == 0 && (
+
+                  {(applicationFullData?.status == 10 ||
+                    applicationFullData?.status == 21) && (
+                    <button
+                      className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                      // onClick={forwardToIa}
+                      onClick={() => setisModalOpenlBackToIA(true)}
+                    >
+                      Back To Inventory Admin
+                    </button>
+                  )}
+
+                  {(applicationFullData?.status == 20 ||
+                    applicationFullData?.status == 23) && (
+                    <button
+                      className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                      // onClick={forwardToIa}
+                      onClick={() => setisModalOpenlBackToLevel1(true)}
+                    >
+                      Back To Level 1
+                    </button>
+                  )}
+
+                  {(applicationFullData?.status == 0 ||
+                    applicationFullData?.status == 11) && (
                     <button
                       className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                       // onClick={forwardToIa}
@@ -727,7 +955,10 @@ const ViewPreProcurementById = () => {
                       Forward to Level 1
                     </button>
                   )}
-                  {applicationFullData?.status == 10 && (
+
+                  {(applicationFullData?.status == 10 ||
+                    applicationFullData?.status == 21 ||
+                    applicationFullData?.status == 13) && (
                     <button
                       className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                       // onClick={forwardToIa}
@@ -737,7 +968,7 @@ const ViewPreProcurementById = () => {
                     </button>
                   )}
 
-                  {/* for level 2 */}
+                  {/*Approve for level 2 */}
                   {(applicationFullData?.status == 20 ||
                     applicationFullData?.status == 23) && (
                     <button

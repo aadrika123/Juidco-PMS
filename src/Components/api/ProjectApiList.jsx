@@ -195,11 +195,15 @@ export default function ProjectApiList() {
     api_getLevelOneInbox: `${baseUrl}/api/pms/level1`,
     api_getLevelOneOutbox: `${baseUrl}/api/pms/level1/outbox`,
     api_approveByLevelone: `${baseUrl}/api/pms/level1/approve`,
+    api_rejectByLevelone: `${baseUrl}/api/pms/level1/reject`,
+    api_backByLevel1toIA: `${baseUrl}/api/pms/level1/return`,
 
     // Level 2
     api_getLevelTwoInbox: `${baseUrl}/api/pms/level2`,
     api_getLevelTwoOutbox: `${baseUrl}/api/pms/level2/outbox`,
     api_approveByLeveltwo: `${baseUrl}/api/pms/level2/approve`,
+    api_rejectByLeveltwo: `${baseUrl}/api/pms/level2/reject`,
+    api_backByLevel2toLevel1: `${baseUrl}/api/pms/level2/return`,
 
     //updated
     api_fetchStockRequestDAInbox: `${baseUrl}/api/pms/da/stock-request/`,

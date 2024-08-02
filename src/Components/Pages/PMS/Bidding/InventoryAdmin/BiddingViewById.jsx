@@ -13,6 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import { Toaster, toast } from "react-hot-toast";
 import BiddingViewModal from "./BiddingViewModal";
+import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 const BiddingViewById = () => {
   const [isLoading, setisLoading] = useState(false);
@@ -32,7 +33,7 @@ const BiddingViewById = () => {
   const { api_getStockRequetById, api_postForwardtoSR } = ProjectApiList();
 
   let buttonStyle =
-    "mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
+    "mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
   //Print
   const componentRef = useRef();
@@ -120,15 +121,16 @@ const BiddingViewById = () => {
     );
   }
   // ...................................
-  const handleConfirmClick = () => {
-    if (window.confirm("Are you sure you want to proceed?")) {
-      setShowModal(true);
-    }
-  };
+  // const handleConfirmClick = () => {
+  //   if (window.confirm("Are you sure you want to proceed?")) {
+  //     setShowModal(true);
+  //   }
+  // };
 
   const closeModal = () => {
     setShowModal(false);
   };
+
   if (successModal) {
     return (
       <>
@@ -141,35 +143,39 @@ const BiddingViewById = () => {
       </>
     );
   }
+
+  if (showModal) {
+    return (
+      <>
+        <BiddingViewModal closeModal={closeModal} />
+      </>
+    );
+  }
+
   return (
     <>
       {isLoading && <LoaderApi />}
 
-      {/* <TitleBar
+      <TitleBar
         titleBarVisibility={titleBarVisibility}
-        titleText={"Inventory Proposal Details"}
-      /> */}
-
-      {/* //timeline 
-      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
-        <TimeLine />
-      </div> */}
+        titleText={"Bidding Details"}
+      />
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
-        <div className="flex justify-end"></div>
+        {/* <div className="flex justify-end"></div> */}
         {/* Basic Details */}
-        <div className="mt-6">
+        <div className="">
+          <div className="">
+            <h2 className=" text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md">
+              Pre-Tendering View{" "}
+            </h2>
+          </div>
           <div
             className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500"
             ref={componentRef}
           >
-            <div className="">
-              <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
-                Pre-Tendering View{" "}
-              </h2>
-            </div>
             <div className="flex justify-between">
-              <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
+              {/* <div className="pl-8  text-[1.2rem] text-[#4338CA]">
                 <h1 className="font-bold">
                   Handover No <span className="text-black">:</span>
                   <span className="font-light">
@@ -177,13 +183,13 @@ const BiddingViewById = () => {
                     {nullToNA(applicationFullData?.stock_handover_no)}
                   </span>
                 </h1>
-              </div>
+              </div> */}
             </div>
-            <div className="grid md:grid-rows-4-4 gap-4 ml-8">
+            <div className="grid md:grid-rows-4-4 gap-6 ml-8">
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold">EMD </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.emp_id)}
+                <div className="md:w-auto w-[50%] text-gray-800 ">
+                  Yes
                 </div>
               </div>
 
@@ -191,15 +197,15 @@ const BiddingViewById = () => {
                 <div className="md:w-auto w-[50%] font-bold ">
                   Tender Estimated Amount
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.emp_name)}
+                <div className="md:w-auto w-[50%] text-gray-800 ">
+                  ₹25,90,980
                 </div>
               </div>
 
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">EMD Type </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.brand?.name)}
+                <div className="md:w-auto w-[50%] text-gray-800 ">
+                  10% (₹2,59,980)
                 </div>
               </div>
 
@@ -207,23 +213,23 @@ const BiddingViewById = () => {
                 <div className="md:w-auto w-[50%] font-semibold ">
                   PBG Amount{" "}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.category?.name)}
+                <div className="md:w-auto w-[50%] text-gray-800 ">
+                  ₹ 67,000
                 </div>
               </div>
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-semibold ">
                   Tendering Type{" "}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.subcategory?.name)}
+                <div className="md:w-auto w-[50%] text-gray-800 ">
+                  Least Cost Tender - Technical Qulaity
                 </div>
               </div>
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                   <div className="md:w-auto w-[50%] font-bold ">Tenure </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                    {nullToNA(applicationFullData?.allotted_quantity)}
+                  <div className="md:w-auto w-[50%] text-gray-800 ">
+                    2 Years
                   </div>
                 </div>
 
@@ -231,8 +237,8 @@ const BiddingViewById = () => {
                   <div className="md:w-auto w-[50%] font-bold">
                     Minimum Supplier{" "}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                    {nullToNA(applicationFullData?.createdAt?.split("T")[0])}
+                  <div className="md:w-auto w-[50%] text-gray-800 ">
+                    4
                   </div>
                 </div>
 
@@ -240,8 +246,8 @@ const BiddingViewById = () => {
                   <div className="md:w-auto w-[50%] font-bold">
                     Maximum Supplier{" "}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                    {nullToNA(applicationFullData?.createdAt?.split("T")[0])}
+                  <div className="md:w-auto w-[50%] text-gray-800 ">
+                    5
                   </div>
                 </div>
               </div>
@@ -270,27 +276,26 @@ const BiddingViewById = () => {
 
                 <button
                   onClick={handlePrint}
-                  className="mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                  className="mr-1 pb-2 pl-9 pr-9 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
                 >
                   Print
                 </button>
               </div>
-              <div className="space-x-3 flex items-end justify-end">
-                <button className={buttonStyle} onClick={() => navigate(-1)}>
-                  Cancel
+              <div className="space-x-3 flex">
+                <button className={`pb-2 pl-9 pr-9 pt-2 rounded hover:bg-red-700 bg-red-500 text-white border-red-600`} >
+                  Reject
                 </button>
 
                 <button
-                  onClick={handleConfirmClick}
-                  className="mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                  onClick={() => setShowModal(true)}
+                  className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
                 >
                   Confirm
                 </button>
-                {showModal && <BiddingViewModal closeModal={closeModal} />}
               </div>
             </div>
 
-            {applicationFullData?.status == 0 && (
+            {/* {applicationFullData?.status == 0 && (
               <div className="space-x-3 flex items-end justify-center">
                 {page == "inbox" && (
                   <button
@@ -315,7 +320,7 @@ const BiddingViewById = () => {
                   </div>
                 )}
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
