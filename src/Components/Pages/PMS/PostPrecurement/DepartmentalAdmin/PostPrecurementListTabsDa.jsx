@@ -31,14 +31,14 @@ const PostPrecurementListTabsDa = () => {
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
-          titleText={"Inventory Proposal List"}
+          titleText={"Post Procurement"}
         />
       </div>
 
       <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
         <div>
           <h1 className='text-[35px] text-right pb-5 pr-5 font-bold pt-5'>
-            Inventory Proposal
+            Post Procurement
           </h1>
         </div>
 
