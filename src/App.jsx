@@ -135,14 +135,19 @@ function App() {
 
     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 
-    //------- Stock Receiver -------
-    { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
-    { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
-
-    { path: "/create-pre-procurement", element: <AddPreProcurement /> },
-    { path: "/sr-edit-pre-procurement/:id", element: <SrEditPreProcurement /> },
-    { path: "/sr-rejectedlist", element: <RejectedListTabs /> },
-    { path: "/sr-releasedlist", element: <ReleasedListTabs /> },
+    /////////////////////////{*** (DD) Distributer Inventory ***}//////////////////////////////////////
+    {
+      path: "/dd-inventory-proposal",
+      element: <DistributerListTabs />,
+    },
+    {
+      path: "/dd-stock-proposal/:page",
+      element: <StockRequestProposal />,
+    },
+    {
+      path: "/dd-viewDetailsById/:handNo/:page",
+      element: <DDViewDetailbyId />,
+    },
 
     //------------ DA ----------
     { path: "/da-inventory-dashboard", element: <InventoryDashboardDa2 /> },
@@ -159,6 +164,75 @@ function App() {
       path: "/ia-viewPreProcurementById/:id/:page",
       element: <ViewPreProcurementById />,
     },
+
+    // -------------------------- IA ----------------------------
+
+    {
+      path: "/inventory-stockRequest",
+      element: <InventoryAdminTabs />,
+    },
+    {
+      path: "/iaViewStockRequestById/:id/:page",
+      element: <ViewInventoryDetailsById />,
+    },
+
+    //  ----------------------  DD Handover --------------------
+    {
+      path: "/dd-handover",
+      element: <DDHandoverListTabs />,
+    },
+    {
+      path: "/dd-viewHandoverById/:id",
+      element: <DDViewHandoverbyId />,
+    },
+
+    // ----------level 1 and level 2 ------------------------------------
+
+    { path: "/levelone", element: <BoqLeveloneTab /> }, // need to check the status after getting the dataList
+    {
+      path: "/leveloneView/:id/:page",
+      element: <ViewLevel1Details />,
+    },
+
+    { path: "/leveltwo", element: <BoqLeveltwoTab /> }, // need to check the status after getting the dataList
+    {
+      path: "/leveltwo/:id/:page",
+      element: <ViewLevel2BoqDetails />,
+    },
+
+   // ---------------- Boq --------------------------------------------- 
+    {
+      path: "/create-boq",
+      element: <CreateNewBoq />,
+    },
+    {
+      path: "/boqSummary",
+      element: <PreviewBoqSummary />,
+    },
+    {
+      path: "/inventoryAdmin-boq",
+      element: <BoqListTabsDa />,
+    },
+    {
+      path: "/boq-details-byId/:refNo/:page",
+      element: <BoqDetailsById />,
+    },
+    
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //------- Stock Receiver -------
+    { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
+    { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
+
+    { path: "/create-pre-procurement", element: <AddPreProcurement /> },
+    { path: "/sr-edit-pre-procurement/:id", element: <SrEditPreProcurement /> },
+    { path: "/sr-rejectedlist", element: <RejectedListTabs /> },
+    { path: "/sr-releasedlist", element: <ReleasedListTabs /> },
 
     /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
 
@@ -219,18 +293,7 @@ function App() {
       element: <DATenderTabs />,
     },
 
-    // ----------level 1 and level 2
-    { path: "/levelone", element: <BoqLeveloneTab /> }, // need to check the status after getting the dataList
-    {
-      path: "/leveloneView/:id/:page",
-      element: <ViewLevel1Details />,
-    },
-
-    { path: "/leveltwo", element: <BoqLeveltwoTab /> }, // need to check the status after getting the dataList
-    {
-      path: "/leveltwo/:id/:page",
-      element: <ViewLevel2BoqDetails />,
-    },
+    
 
     /////////////////////////{*** BOQ ***}//////////////////////////////////////
 
@@ -246,40 +309,11 @@ function App() {
       path: "/boq-search", // need to check the status after getting the dataList
       element: <BoqSearch />,
     },
-    {
-      path: "/create-boq",
-      element: <CreateNewBoq />,
-    },
-    {
-      path: "/boqSummary",
-      element: <PreviewBoqSummary />,
-    },
-    {
-      path: "/boq-details-byId/:refNo/:page",
-      element: <BoqDetailsById />,
-    },
-    {
-      path: "/inventoryAdmin-boq",
-      element: <BoqListTabsDa />,
-    },
+    
     // {
     //   path: "/notifi",
     //   element: <NotificationSidebar />,
     // },
-
-    /////////////////////////{*** (DD) Distributer Inventory ***}//////////////////////////////////////
-    {
-      path: "/dd-inventory-proposal",
-      element: <DistributerListTabs />,
-    },
-    {
-      path: "/dd-stock-proposal/:page",
-      element: <StockRequestProposal />,
-    },
-    {
-      path: "/dd-viewDetailsById/:handNo/:page",
-      element: <DDViewDetailbyId />,
-    },
 
     /////////////////////////{*** SR Inventory ***}//////////////////////////////////////
     {
@@ -291,7 +325,7 @@ function App() {
       element: <SrViewDetailbyId />,
     },
 
-    /////////////////////////{*** SR Warranty and Inventory ***}//////////////////////////////////////
+    /////////////////////////{*** SR Warranty ***}//////////////////////////////////////
     {
       path: "/sr-warrantyClaim",
       element: <SRWarrantyClaim />,
@@ -299,28 +333,6 @@ function App() {
     {
       path: "/sr-viewWarrantyById",
       element: <SrViewWarrantybyId />,
-    },
-    // {
-    //   path: "/inventory-stockRequestOld",
-    //   element: <InventoryAdminTabs />,
-    // },
-    {
-      path: "/inventory-stockRequest",
-      element: <InventoryAdminTabs />,
-    },
-    {
-      path: "/iaViewStockRequestById/:id/:page",
-      element: <ViewInventoryDetailsById />,
-    },
-
-    /////////////////////////{*** DD Handover ***}//////////////////////////////////////
-    {
-      path: "/dd-handover",
-      element: <DDHandoverListTabs />,
-    },
-    {
-      path: "/dd-viewHandoverById/:id",
-      element: <DDViewHandoverbyId />,
     },
 
     /////////////////////////{*** Reports ***}//////////////////////////////////////
@@ -379,7 +391,7 @@ function App() {
               ))}
             </Route>
 
-            <Route path='*' element={<ErrorPage />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </contextVar.Provider>
       </>
