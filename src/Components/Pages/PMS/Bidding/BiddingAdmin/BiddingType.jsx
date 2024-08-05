@@ -15,7 +15,7 @@ const BiddingType = () => {
   const numberOfBidders = [
     { bidderHeading: `B1`, compName: `Raju Pvt Ltd.` },
     { bidderHeading: `B2`, compName: `Farhan Pvt Ltd.` },
-    { bidderHeading: `B3`, compName: `Rancho Pvt Ltd.` },
+    { bidderHeading: `B3`, compName: `Milimeter Pvt Ltd.` },
     { bidderHeading: `B4`, compName: `Rancho Pvt Ltd.` },
   ];
 
@@ -56,7 +56,7 @@ const BiddingType = () => {
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
       console.log(bidderDetails, "nnnn===");
     },
     // validationSchema,
