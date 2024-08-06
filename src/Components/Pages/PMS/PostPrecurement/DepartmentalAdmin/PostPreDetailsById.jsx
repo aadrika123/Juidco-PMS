@@ -15,14 +15,13 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
-import { MdTag } from "react-icons/md";
 import { contextVar } from "@/Components/context/contextVar";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import PreProcurementCancelScreen from "./PostProcurementCancelScreen";
 import PreProcurementSubmittedScreen from "./PreProcurementSubmittedScreen";
-
+import { indianAmount } from "@/Components/Common/PowerupFunctions";
 import { FaDivide } from "react-icons/fa";
 import {
   allowCharacterInput,
@@ -31,6 +30,7 @@ import {
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
+import { MdDeleteOutline } from "react-icons/md";
 
 const PostPreDetailsById = (props) => {
   const navigate = useNavigate();
@@ -304,77 +304,107 @@ const PostPreDetailsById = (props) => {
         <div className='mt-6' id='printable-content'>
           <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
             <div className=''>
-              <h2 className='font-semibold text-2xl pl-7 pb-2 pt-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-                View Procurement Request{" "}
+              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+                View Pre Procurement Details{" "}
               </h2>
             </div>
 
-            <div className='pl-8 pb-5 text-[1.2rem] text-[#4338CA]'>
-              <h1 className='font-bold'>
-                Procurement Request No <span className='text-black'>:</span>
-                <span className='font-light'>
-                  {" "}
-                  {nullToNA(applicationFullData?.procurement_no)}
-                </span>
-              </h1>
-            </div>
-
-            <div className='grid md:grid-cols-4 gap-4 ml-8'>
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  Item Category
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.category.name)}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
-                  Item Sub Category
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.subcategory?.name)}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>Brand</div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.brand?.name)}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-semibold '>
-                  Rate per quantity
-                </div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.rate)}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.quantity)}
-                </div>
-              </div>
-
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>Total Rate</div>
-                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.total_rate)}
-                </div>
+            <div className='flex justify-between'>
+              <div className='pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full'>
+                <h1 className=''>
+                  Procurement No <span className='text-black'>:</span>
+                  <span className='font-bold'>
+                    {" "}
+                    {nullToNA(applicationFullData?.procurement_no)}
+                  </span>
+                </h1>
+                <h1 className='text-black'>
+                  Procurement Total <span className='text-black'>:</span>
+                  <span className='font-bold'>
+                    {" "}
+                    {indianAmount(nullToNA(applicationFullData?.total_rate))}
+                  </span>
+                </h1>
               </div>
             </div>
 
-            <div className='p-5 pl-8'>
-              <h1 className='font-bold '>Description</h1>
-              <p className=' pt-2'>
-                {nullToNA(applicationFullData?.description)}
-              </p>
+            <div className='flex justify-between'>
+              <div className='pl-8 text-[1rem] text-black flex justify-between w-full'>
+                <h1 className=''>
+                  Category <span className='text-black'>:</span>
+                  <span className='font-bold'>
+                    {" "}
+                    {nullToNA(applicationFullData?.category?.name)}
+                  </span>
+                </h1>
+              </div>
             </div>
+
+            {applicationFullData?.procurement_stocks?.map((procData, index) => (
+              <>
+                <div>
+                  <p className='text-xs pl-5'>Procurement Item: {index + 1}</p>
+                </div>
+                <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow'>
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
+                      Subcategory
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {procData?.subCategory?.name}
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Unit</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(procData?.unit?.name)}
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Brand</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(procData?.brand?.name)}
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(procData?.quantity)}
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
+                      Per Unit Rate
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {indianAmount(nullToNA(procData?.rate))}
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
+                      Total Rate
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {indianAmount(nullToNA(procData?.total_rate))}
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
+                      Description
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(procData?.description)}
+                    </div>
+                  </div>
+                </div>
+              </>
+            ))}
 
             <div className='h-[30px]'></div>
           </div>
@@ -387,16 +417,31 @@ const PostPreDetailsById = (props) => {
                 <div className=''>
                   <div className=' grid md:grid-cols-1 lg:grid-cols-12 container mx-auto capitalize'>
                     <div className='col-span-12  w-full mb-20'>
-                      <div className=' ml-4 p-2 mt-2'>
+                      {/* <div className=' ml-4 p-2 mt-2'>
                         <h1
                           className={`${headingStyle} text-left pb-2 pt-2 pl-6  bg-[#4338ca] text-white rounded-md`}
                         >
                           Inventory Details
                         </h1>
+                      </div> */}
+
+                      <div className='bg-[#4338ca] text-white px-4 py-2 w-full flex justify-between items-center rounded-t-md'>
+                        <div>
+                          <h2 className='text-xl font-bold'>Add Supplier</h2>
+                        </div>
+                        <div>
+                          {/* <button>
+                            <IoMdAdd />
+                          </button> */}
+                          {/* <p></p> */}
+                          <button className='mr-3 hover:bg-indigo-500 hover:rounded-full p-3'>
+                            <MdDeleteOutline color='white' fontSize={24} />
+                          </button>
+                        </div>
                       </div>
 
-                      <div className='p-12 -mt-4 valid-form flex flex-wrap md:flex-row -mx-4'>
-                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                      <div className='p-6 valid-form flex flex-wrap md:flex-row'>
+                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2'>
                           <div class='px-4 w-full mb-4'>
                             <label
                               className={`${labelStyle} inline-block mb-2`}
@@ -422,7 +467,7 @@ const PostPreDetailsById = (props) => {
                           </div>
                         </div>
 
-                        <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                        <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2'>
                           <div class='px-4 w-full mb-4'>
                             <label
                               className={`${labelStyle} inline-block mb-2`}
@@ -446,7 +491,7 @@ const PostPreDetailsById = (props) => {
                           </div>
                         </div>
 
-                        <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                        <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2'>
                           <div class='px-4 w-full mb-4'>
                             <label
                               className={`${labelStyle} inline-block mb-2`}
@@ -471,119 +516,346 @@ const PostPreDetailsById = (props) => {
                           </div>
                         </div>
 
-                        <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2'>
                           <div class='px-4 w-full mb-4'>
                             <label
                               className={`${labelStyle} inline-block mb-2`}
                             >
-                              GST%
+                              Supplier Name{" "}
+                              <span className='text-red-500'>*</span>
                             </label>
 
                             <input
                               type='text'
-                              name='gst'
+                              name='supplier_name'
                               className={`${inputStyle} inline-block w-full relative`}
                               onChange={formik.handleChange}
-                              value={formik.values.gst}
+                              value={formik.values.supplier_name}
                             />
 
-                            {/* <select
-                            {...formik.getFieldProps("itemsubcategory")}
-                            className={`${inputStyle} inline-block w-full relative`}
-                            onChange={formik.handleChange}
-                          >
-                            <option selected>select</option>
-                            <option select>5%</option>
-                            <option select>12%</option>
-                            <option select>18%</option>
-                            <option select>28%</option>
-
-                          </select> */}
-                            <div className='flex mt-2'>
-                              <input
-                                type='checkbox'
-                                checked={isGstAdded}
-                                onChange={() => {
-                                  const newState = !isGstAdded;
-                                  setIsGstAdded(newState);
-                                  calculateTotalRate(
-                                    formik.values.final_rate,
-                                    formik.values.gst,
-                                    newState
-                                  );
-                                }}
-                                // onClick={() => setIsGstAdded((prev) => !prev)}
-                              />{" "}
-                              <p className='text-md pl-2'>add GST in Bill</p>
-                            </div>
-
-                            <p className='text-red-500 text-xs'>
-                              {formik.touched.gst && formik.errors.gst
-                                ? formik.errors.gst
+                            <p className='text-red-500 text-xs '>
+                              {formik.touched.supplier_name &&
+                              formik.errors.supplier_name
+                                ? formik.errors.supplier_name
                                 : null}
                             </p>
                           </div>
                         </div>
 
-                        <div className=' ml-2 p-2 w-full'>
-                          <h1 className={`${headingStyle} text-left pb-10`}>
-                            Calculation
-                          </h1>
+                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2'>
+                          <div class='px-4 w-full mb-4'>
+                            <label
+                              className={`${labelStyle} inline-block mb-2`}
+                            >
+                              Supplier Name{" "}
+                              <span className='text-red-500'>*</span>
+                            </label>
 
-                          <div class='form-group flex-shrink max-w-full px-4 w-full md:w-2/3 mb-4'>
-                            <div className='flex items-center space-x-5'>
-                              <div className='space-y-2'>
-                                <label>Total price</label>
-                                <input
-                                  type='number'
-                                  name='total_price'
-                                  className={`${inputStyle} inline-block w-full relative`}
-                                  // onChange={(e) => {
-                                  //   formik.handleChange(e);
-                                  //   calculateTotalRate();
-                                  // }}
-                                  disabled
-                                  value={formik.values.total_price}
-                                  placeholder='Total Price'
-                                />
-                              </div>
-                              <FaDivide className='text-[2.5rem]  pt-5 mt-3' />
-                              <div className='space-y-2'>
-                                <label>Total Quantity</label>
-                                <input
-                                  type='number'
-                                  name='total_quantity'
-                                  className={`${inputStyle} inline-block w-full relative`}
-                                  // onChange={(e) => {
-                                  //   formik.handleChange(e);
-                                  //   calculateTotalRate();
-                                  // }}
-                                  disabled
-                                  value={formik.values.total_quantity}
-                                  placeholder='Total Quantity'
-                                />
-                              </div>
+                            <input
+                              type='text'
+                              name='supplier_name'
+                              className={`${inputStyle} inline-block w-full relative`}
+                              onChange={formik.handleChange}
+                              value={formik.values.supplier_name}
+                            />
 
-                              <p className='text-[2rem] pt-5 mt-3'>=</p>
-                              <div className='space-y-2'>
-                                <label>Unit Price</label>
-                                <input
-                                  type='number'
-                                  name='unit_price'
-                                  className={`${inputStyle} inline-block w-full relative`}
-                                  // onChange={formik.handleChange}
-                                  value={formik.values.unit_price}
-                                  placeholder='Per Price'
-                                  disabled
-                                />
-                              </div>
-                            </div>
                             <p className='text-red-500 text-xs '>
-                              {formik.touched.total_quantity &&
-                              formik.errors.total_quantity
-                                ? formik.errors.total_quantity
+                              {formik.touched.supplier_name &&
+                              formik.errors.supplier_name
+                                ? formik.errors.supplier_name
                                 : null}
                             </p>
+                          </div>
+                        </div>
+
+                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2'>
+                          <div class='px-4 w-full mb-4'>
+                            <label
+                              className={`${labelStyle} inline-block mb-2`}
+                            >
+                              Supplier Name{" "}
+                              <span className='text-red-500'>*</span>
+                            </label>
+
+                            <input
+                              type='text'
+                              name='supplier_name'
+                              className={`${inputStyle} inline-block w-full relative`}
+                              onChange={formik.handleChange}
+                              value={formik.values.supplier_name}
+                            />
+
+                            <p className='text-red-500 text-xs '>
+                              {formik.touched.supplier_name &&
+                              formik.errors.supplier_name
+                                ? formik.errors.supplier_name
+                                : null}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2'>
+                          <div class='px-4 w-full mb-4'>
+                            <label
+                              className={`${labelStyle} inline-block mb-2`}
+                            >
+                              Supplier Name{" "}
+                              <span className='text-red-500'>*</span>
+                            </label>
+
+                            <input
+                              type='text'
+                              name='supplier_name'
+                              className={`${inputStyle} inline-block w-full relative`}
+                              onChange={formik.handleChange}
+                              value={formik.values.supplier_name}
+                            />
+
+                            <p className='text-red-500 text-xs '>
+                              {formik.touched.supplier_name &&
+                              formik.errors.supplier_name
+                                ? formik.errors.supplier_name
+                                : null}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2'>
+                          <div class='px-4 w-full mb-4'>
+                            <label
+                              className={`${labelStyle} inline-block mb-2`}
+                            >
+                              Supplier Name{" "}
+                              <span className='text-red-500'>*</span>
+                            </label>
+
+                            <input
+                              type='text'
+                              name='supplier_name'
+                              className={`${inputStyle} inline-block w-full relative`}
+                              onChange={formik.handleChange}
+                              value={formik.values.supplier_name}
+                            />
+
+                            <p className='text-red-500 text-xs '>
+                              {formik.touched.supplier_name &&
+                              formik.errors.supplier_name
+                                ? formik.errors.supplier_name
+                                : null}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2'>
+                          <div class='px-4 w-full mb-4'>
+                            <label
+                              className={`${labelStyle} inline-block mb-2`}
+                            >
+                              Supplier Name{" "}
+                              <span className='text-red-500'>*</span>
+                            </label>
+
+                            <input
+                              type='text'
+                              name='supplier_name'
+                              className={`${inputStyle} inline-block w-full relative`}
+                              onChange={formik.handleChange}
+                              value={formik.values.supplier_name}
+                            />
+
+                            <p className='text-red-500 text-xs '>
+                              {formik.touched.supplier_name &&
+                              formik.errors.supplier_name
+                                ? formik.errors.supplier_name
+                                : null}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className='p-2 py-3 md:w-full shadow-xl shadow-gray-300 m-8 rounded-md'>
+                          <div className='flex items-center'>
+                            <h2 className='md:w-1/2 text-xl font-semibold'>
+                              Add Procurement Item for Supplier
+                            </h2>
+
+                            <div className='px-5 mt-4 md:w-1/2'>
+                              <div className='form-group flex-shrink max-w-full px-4 mb-4'>
+                                <label
+                                  className={`${labelStyle} inline-block mb-2`}
+                                >
+                                  Item Category
+                                  <span className='text-xl text-red-500 pl-1'>
+                                    *
+                                  </span>{" "}
+                                </label>
+                                <select
+                                  {...formik.getFieldProps("itemcategory")}
+                                  className={`${inputStyle} inline-block w-full relative`}
+                                  onChange={(e) => {
+                                    // setItemCategory(e.target.value);
+                                    // fetchSubCategory(e);
+                                  }}
+                                >
+                                  <option defaultValue={"select"}>
+                                    select
+                                  </option>
+
+                                  {/* {category?.length &&
+                                  category?.map((items, index) => (
+                                    <option key={index} value={items?.id}>
+                                      {items?.name}
+                                    </option>
+                                  ))} */}
+                                  <option>others</option>
+                                </select>
+                                <p className='text-red-500 text-xs '>
+                                  {/* {formik.touched.itemcategory &&
+                                formik.errors.itemcategory
+                                  ? formik.errors.itemcategory
+                                  : null} */}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className='md:w-full'>
+                            <>
+                              <div className='mb-3'>
+                                <p className='text-xs pl-5'>
+                                  {/* Procurement Item: {index + 1} */}
+                                  Procurement Item:
+                                </p>
+                              </div>
+                              <div className='grid md:grid-cols-4 gap-4 ml-8 bg-white p-5 rounded shadow'>
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='md:w-auto w-[50%] font-bold '>
+                                    Subcategory
+                                  </div>
+                                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                    {/* {procData?.subCategory?.name} */}
+                                  </div>
+                                </div>
+
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='md:w-auto w-[50%] font-bold '>
+                                    Unit
+                                  </div>
+                                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                    {/* {nullToNA(procData?.unit?.name)} */}
+                                  </div>
+                                </div>
+
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='md:w-auto w-[50%] font-bold '>
+                                    Brand
+                                  </div>
+                                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                    {/* {nullToNA(procData?.brand?.name)} */}
+                                  </div>
+                                </div>
+
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='md:w-auto w-[50%] font-bold '>
+                                    Quantity
+                                  </div>
+                                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                    {/* {nullToNA(procData?.quantity)} */}
+                                  </div>
+                                </div>
+
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='md:w-auto w-[50%] font-bold '>
+                                    Per Unit Rate
+                                  </div>
+                                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                    {/* {indianAmount(nullToNA(procData?.rate))} */}
+                                  </div>
+                                </div>
+
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='md:w-auto w-[50%] font-bold '>
+                                    Total Rate
+                                  </div>
+                                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                    {/* {indianAmount(
+                                      nullToNA(procData?.total_rate)
+                                    )} */}
+                                  </div>
+                                </div>
+
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='md:w-auto w-[50%] font-bold '>
+                                    Description
+                                  </div>
+                                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                    {/* {nullToNA(procData?.description)} */}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className='px-4 p-2 w-full mt-3'>
+                                <h1
+                                  className={`text-lg text-left font-semibold px-4 mb-2`}
+                                >
+                                  Calculation
+                                </h1>
+
+                                <div class='form-group flex-shrink max-w-full px-4 w-full md:w-2/3 mb-4'>
+                                  <div className='flex items-center space-x-5'>
+                                    <div className='space-y-2'>
+                                      <label>Total price</label>
+                                      <input
+                                        type='number'
+                                        name='total_price'
+                                        className={`${inputStyle} inline-block w-full relative`}
+                                        // onChange={(e) => {
+                                        //   formik.handleChange(e);
+                                        //   calculateTotalRate();
+                                        // }}
+                                        disabled
+                                        value={formik.values.total_price}
+                                        placeholder='Total Price'
+                                      />
+                                    </div>
+                                    <FaDivide className='text-[2.5rem]  pt-5 mt-3' />
+                                    <div className='space-y-2'>
+                                      <label>Total Quantity</label>
+                                      <input
+                                        type='number'
+                                        name='total_quantity'
+                                        className={`${inputStyle} inline-block w-full relative`}
+                                        // onChange={(e) => {
+                                        //   formik.handleChange(e);
+                                        //   calculateTotalRate();
+                                        // }}
+                                        disabled
+                                        value={formik.values.total_quantity}
+                                        placeholder='Total Quantity'
+                                      />
+                                    </div>
+
+                                    <p className='text-[2rem] pt-5 mt-3'>=</p>
+                                    <div className='space-y-2'>
+                                      <label>Unit Price</label>
+                                      <input
+                                        type='number'
+                                        name='unit_price'
+                                        className={`${inputStyle} inline-block w-full relative`}
+                                        // onChange={formik.handleChange}
+                                        value={formik.values.unit_price}
+                                        placeholder='Per Price'
+                                        disabled
+                                      />
+                                    </div>
+                                  </div>
+                                  <p className='text-red-500 text-xs '>
+                                    {formik.touched.total_quantity &&
+                                    formik.errors.total_quantity
+                                      ? formik.errors.total_quantity
+                                      : null}
+                                  </p>
+                                </div>
+                              </div>
+                            </>
                           </div>
                         </div>
                       </div>
