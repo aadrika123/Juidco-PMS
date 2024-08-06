@@ -27,7 +27,6 @@ import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import { useReactToPrint } from "react-to-print";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
-import StockReceiverModal from "../DepartmentalAdmin/StockReceiverModal";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import { MdArrowRightAlt } from "react-icons/md";
 import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
@@ -64,8 +63,6 @@ const ViewPreProcurementById = () => {
     api_getStockRequetById,
     api_postBackToSR,
     api_postForwardtoAcc,
-    api_postRejectTender,
-    api_forwardStockReqToI,
     api_fetchProcurementById,
     api_forwardLevelone,
     api_forwardLeveltwo,
@@ -136,16 +133,6 @@ const ViewPreProcurementById = () => {
       });
   };
 
-  const postBackToSRModal = () => {
-    setIsModalOpen(true);
-  };
-  const postReleaseTenderModal = () => {
-    setIsModalOpen2(true);
-  };
-  const postRejectTenderModal = () => {
-    setIsModalOpen3(true);
-  };
-
   const postReject = () => {
     setisLoading(true);
 
@@ -200,39 +187,6 @@ const ViewPreProcurementById = () => {
       .catch(function (error) {
         toast.error(error?.response?.data?.message);
         console.log("errorrr.... ", error);
-      })
-      .finally(() => {
-        setisLoading(false);
-      });
-  };
-
-  const postReleaseTender = () => {
-    setisLoading(true);
-    // let preProcurement = [id];
-    let formData = new FormData();
-    formData.append("img", imageDoc);
-    formData.append("preProcurement", JSON.stringify([id]));
-
-    // seterroState(false);
-
-    AxiosInterceptors.post(`${api_postForwardtoAcc}`, formData, ApiHeader2())
-      .then(function (response) {
-        if (response?.data?.status == true) {
-          toast.success(response?.data?.message, "success");
-          setTimeout(() => {
-            navigate("/da-inventory-proposal");
-          }, 1000);
-        } else {
-          toast.error(response?.data?.mmessage || "something went wrong");
-          navigate("/da-inventory-proposal");
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        toast.error("Something went wrong");
-        navigate("/da-inventory-proposal");
-        console.log("errorrr.... ", error);
-        // setdeclarationStatus(false);
       })
       .finally(() => {
         setisLoading(false);

@@ -372,6 +372,12 @@ function App() {
       path: "/bidding-type",
       element: <BiddingType />,
     },
+
+    /////////////////////////{*** Service Request ***}//////////////////////////////////////
+    {
+      path: "/service-request",
+      element: <BiddingType />,
+    },
     {
       path: "/bidding-type-byId",
       element: <BiddingTypeViewById />,
