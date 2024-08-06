@@ -2,18 +2,37 @@ import React, { useState } from "react";
 // import { TbCircleLetterNFilled } from "react-icons/tb";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import { useFormik } from "formik";
+import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
+import img from '@/Components/assets/page.pdf'
+
 
 const BiddingType = () => {
   const [markingType, setMarkingType] = useState("Numeric");
   const [bidderDetails, setBidderDetails] = useState([]);
   const [confModal, setConfModal] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
+  const [imageModal, setImageModal] = useState(false);
+
 
   const numberOfBidders = [
-    { bidderHeading: `B1`, compName: `Raju Pvt Ltd.` },
-    { bidderHeading: `B2`, compName: `Farhan Pvt Ltd.` },
-    { bidderHeading: `B3`, compName: `Milimeter Pvt Ltd.` },
-    { bidderHeading: `B4`, compName: `Rancho Pvt Ltd.` },
+    { bidderHeading: `B1`, compName: `Raju Pvt Ltd.` , doc:"Uploaded Document"},
+    { bidderHeading: `B2`, compName: `Farhan Pvt Ltd.`, doc:"Uploaded Document" },
+    { bidderHeading: `B3`, compName: `Milimeter Pvt Ltd.`, doc:"Uploaded Document" },
+    { bidderHeading: `B4`, compName: `Rancho Pvt Ltd.`, doc:"Uploaded Document" },
+    { bidderHeading: `B4`, compName: `Rancho Pvt Ltd.`, doc:"Uploaded Document" },
+    { bidderHeading: `B4`, compName: `Rancho Pvt Ltd.`, doc:"Uploaded Document" },
+    { bidderHeading: `B4`, compName: `Rancho Pvt Ltd.`, doc:"Uploaded Document" },
+  ];
+  
+  const document = [
+    { doc: "Document Uploaded" },
+    { doc: "Document Uploaded" },
+    { doc: "Document Uploaded" },
+    { doc: "Document Uploaded" },
+    { doc: "Document Uploaded" },
+    { doc: "Document Uploaded" },
+    { doc: "Document Uploaded" },
+    { doc: "Document Uploaded" },
   ];
 
   const creteria = [
@@ -53,7 +72,8 @@ const BiddingType = () => {
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log(bidderDetails, "nnnn===");
+      // console.log(values);
+      console.log("Bidder DEtails", bidderDetails);
     },
     // validationSchema,
   });
@@ -192,6 +212,18 @@ const BiddingType = () => {
     );
   }
 
+  if (imageModal) {
+    return (
+      <>
+        <ImageModal
+          imageModal={imageModal}
+          setImageModal={setImageModal}
+          imageUrl={img}
+        />
+      </>
+    );
+  }
+
   return (
     <>
       <div className='ml-20 mr-20'>
@@ -220,11 +252,35 @@ const BiddingType = () => {
         </div>
       </div>
 
+      {/* <div className="m-5 border-[3px] border-white flex">
+        <div className="p-4 pr-36 ">
+          <h1>All Creteria </h1>
+          <p className="text-sm text-gray-400">Document Uploaded by Bidder</p>
+        </div>
+
+        <div className=" w-[50rem] overflow-y-auto flex">
+        {document?.map((data) => (
+          <div className="w-52 border-[2px] border-white flex justify-center items-center">
+            <h1 className="border border-[#4338ca] rounded-full pl-3 pr-3 hover:bg-[#4338ca] cursor-pointer hover:text-white">
+              {data?.doc}
+            </h1>
+          </div>
+        ))}
+        </div>
+
+      </div> */}
+
       <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-        <div className=''>
-          <div className='flex m-6'>
-            <div className='bg-white w-[25rem] '>
-              <div className='p-8 border border-gray-00'>
+        <div className="">
+          <div className="flex m-6">
+            <div className="bg-white w-[25rem] ">
+              <div className="p-[1.4rem] border border-gray-00">
+                <h1>All Criteria </h1>
+                <p className="text-sm text-gray-400">
+                  Docement Uploaded by Bidder{" "}
+                </p>
+              </div>
+              <div className="p-8 border border-gray-00">
                 <h1>Criteria Details </h1>
                 <p className='text-sm text-gray-400'>
                   Criteria For Technical Quality Comparison{" "}
@@ -250,14 +306,26 @@ const BiddingType = () => {
                 )}
               </div>
             </div>
-            <div className='w-[80%] overflow-x-auto flex'>
+
+            <div className="w-[80%] overflow-x-auto flex">
               {numberOfBidders?.map((data) => (
-                <div className='bg-white w-full'>
-                  <div className='p-7 border-t border-gray-100 text-center w-[10rem]'>
-                    <h1 className='text-2xl font-bold'>
+                <div className="bg-white w-full">
+                  
+                  <div className="p-7 border-t border-gray-100 text-center w-[10rem]">
+                    <h1 className="border border-[#4338ca] rounded-full text-xs hover:bg-[#4338ca] cursor-pointer hover:text-white "
+                    onClick={()=>setImageModal(true)}
+                    >
+                      
+                      Document Uploaded
+                    </h1>
+                    
+                  </div>
+
+                  <div className="p-7 border-t border-gray-100 text-center w-[10rem]">
+                    <h1 className="text-2xl font-bold">
                       {data?.bidderHeading}{" "}
                     </h1>
-                    <p className='text-sm text-gray-400 truncate'>
+                    <p className="text-sm text-gray-400 truncate">
                       {data?.compName}{" "}
                     </p>
                   </div>
@@ -267,28 +335,13 @@ const BiddingType = () => {
                       {creteria?.map((crite, index) => (
                         <div className='pl-8 pr-8 pt-6 pb-[1.55rem] border-t border-gray-200'>
                           <input
-                            type='text'
+                            type="text"
                             name={data?.bidderHeading} // Example bidderHeading name
                             // name={`${crite?.input}${data?.bidderHeading}`}
-                            className='border text-center border-blue-400 rounded w-full h-8 outline-blue-300'
+                            className="border text-center border-blue-400 rounded w-full h-8 outline-blue-300"
                             onChange={(e) =>
                               handleChange(e, crite, data?.bidderHeading)
                             }
-                            // onChange={(e) =>
-                            // setBidderDetails((prev) => {
-                            //   const existingEntries = Array.isArray(prev[data?.bidderHeading]) ? prev[data?.bidderHeading] : [];
-                            //   return {
-                            //     ...prev,
-                            //     [data?.bidderHeading]: [
-                            //       ...existingEntries, // Spread existing entries
-                            //       {
-                            //         value: e.target.value, // New value from input
-                            //         criteria: crite?.creteria, // Criteria from current item
-                            //       },
-                            //     ],
-                            //   };
-                            // })
-                            // }
                             value={
                               formik.values.crite?.input.data?.bidderHeading
                             }
