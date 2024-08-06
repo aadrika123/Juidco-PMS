@@ -19,7 +19,7 @@ export default function LoaderApi() {
           <div className="bg-[#4338a44] flex justify-center items-center aspect-video w-[10rem]  rounded-[80%]">
             <ThreeDots
               visible={true}
-              color="white"
+              color="gray"
               height={80}
               width={80}
               ariaLabel="circles-loading"

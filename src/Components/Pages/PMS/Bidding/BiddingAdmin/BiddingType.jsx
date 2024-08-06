@@ -5,14 +5,14 @@ import { useFormik } from "formik";
 
 const BiddingType = () => {
   const [markingType, setMarkingType] = useState("Numeric");
-  const [bidderDetails, setBidderDetails] = useState({});
+  const [bidderDetails, setBidderDetails] = useState([]);
   const [confModal, setConfModal] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
 
   const numberOfBidders = [
     { bidderHeading: `B1`, compName: `Raju Pvt Ltd.` },
     { bidderHeading: `B2`, compName: `Farhan Pvt Ltd.` },
-    { bidderHeading: `B3`, compName: `Rancho Pvt Ltd.` },
+    { bidderHeading: `B3`, compName: `Milimeter Pvt Ltd.` },
     { bidderHeading: `B4`, compName: `Rancho Pvt Ltd.` },
   ];
 
@@ -94,18 +94,80 @@ const BiddingType = () => {
     setCancelModal(false);
   };
 
-  const handleChange = (e, crite) => {
-    const { name, value } = e.target;
+  // const handleChange = (e, crite, bidderName) => {
+  // const { value } = e.target;
+  // console.log(value, "value");
 
-    setBidderDetails((prev) => ({
-      ...prev,
-      [name]: [
-        ...(Array.isArray(prev[name]) ? prev[name] : []),
-        { value: value, criteria: crite?.creteria },
-      ],
-    }));
+  //   setBidderDetails((prev) => {
+  // const currentBidderDetails = Array.isArray(prev[bidderName])
+  //   ? [...prev[bidderName]]
+  //   : [];
+
+  // const criteriaIndex = currentBidderDetails.findIndex(
+  //   (item) => item.criteria === crite?.input
+  // );
+
+  //     if (criteriaIndex !== -1) {
+  //       // Update the existing criteria object
+  //       currentBidderDetails[criteriaIndex].value = value;
+  //     } else {
+  //       // Add a new criteria object
+  //       currentBidderDetails.push({ value: value, criteria: crite?.input });
+  //     }
+
+  //     return {
+  //       ...prev,
+  //       [bidderName]: currentBidderDetails,
+  //     };
+  //   });
+  // };
+
+  const handleChange = (e, crite, bidderName) => {
+    const { value } = e.target;
+
+    setBidderDetails((prev) => {
+      // Find the existing bidder data index
+      const bidderIndex = prev.findIndex((item) => item.id === bidderName);
+
+      let updatedBidders;
+      if (bidderIndex !== -1) {
+        // Existing bidder found, update its criteria
+        updatedBidders = prev.map((item, index) => {
+          if (index === bidderIndex) {
+            // Find the criteria index
+            const criteriaIndex = item.criteria.findIndex(
+              (crit) => crit.id === crite?.input
+            );
+
+            let updatedCriteria;
+            if (criteriaIndex !== -1) {
+              // Update the existing criteria object
+              updatedCriteria = item.criteria.map((crit, i) =>
+                i === criteriaIndex ? { ...crit, value } : crit
+              );
+            } else {
+              // Add new criteria object
+              updatedCriteria = [...item.criteria, { id: crite?.input, value }];
+            }
+
+            return { ...item, criteria: updatedCriteria };
+          }
+          return item;
+        });
+      } else {
+        // No existing bidder, add new bidder with criteria
+        updatedBidders = [
+          ...prev,
+          {
+            id: bidderName,
+            criteria: [{ id: crite?.input, value }],
+          },
+        ];
+      }
+
+      return updatedBidders;
+    });
   };
-
   if (confModal) {
     return (
       <>
@@ -195,7 +257,9 @@ const BiddingType = () => {
                     <h1 className='text-2xl font-bold'>
                       {data?.bidderHeading}{" "}
                     </h1>
-                    <p className='text-sm text-gray-400'>{data?.compName} </p>
+                    <p className='text-sm text-gray-400 truncate'>
+                      {data?.compName}{" "}
+                    </p>
                   </div>
 
                   {markingType == "Numeric" && (
@@ -204,10 +268,12 @@ const BiddingType = () => {
                         <div className='pl-8 pr-8 pt-6 pb-[1.55rem] border-t border-gray-200'>
                           <input
                             type='text'
-                            name={`B${index + 1}`} // Example bidderHeading name
+                            name={data?.bidderHeading} // Example bidderHeading name
                             // name={`${crite?.input}${data?.bidderHeading}`}
                             className='border text-center border-blue-400 rounded w-full h-8 outline-blue-300'
-                            onChange={(e) => handleChange(e, crite)}
+                            onChange={(e) =>
+                              handleChange(e, crite, data?.bidderHeading)
+                            }
                             // onChange={(e) =>
                             // setBidderDetails((prev) => {
                             //   const existingEntries = Array.isArray(prev[data?.bidderHeading]) ? prev[data?.bidderHeading] : [];

@@ -278,6 +278,7 @@ export default function CreateNewBoq() {
 
   //adding gst for each procurement stocks
   const addGstForEachProc = (e, procId) => {
+    console.log(procId,"procIdd")
     const updatedProcurement = applicationData?.procurement_stocks?.map(
       (data) => {
         const gstVal = Number(e.target.value);
