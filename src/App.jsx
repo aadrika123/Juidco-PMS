@@ -78,6 +78,7 @@ import InventoryAdminTabs from "./Components/Pages/PMS/StockRequest/InventoryAdm
 import BiddingType from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingType";
 import ViewPreProcurementById from "./Components/Pages/PMS/PrePrecurement/InventoryAdmin/ViewPreProcurementById";
 import BoqLeveltwoTab from "./Components/Pages/PMS/BOQ/level2/BoqLeveltwoTab";
+import BiddingTypeViewById from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingTypeViewById";
 
 const queryClient = new QueryClient();
 
@@ -370,6 +371,10 @@ function App() {
     {
       path: "/bidding-type",
       element: <BiddingType />,
+    },
+    {
+      path: "/bidding-type-byId",
+      element: <BiddingTypeViewById />,
     },
   ];
 
