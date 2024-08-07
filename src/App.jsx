@@ -81,6 +81,7 @@ import BoqLeveltwoTab from "./Components/Pages/PMS/BOQ/level2/BoqLeveltwoTab";
 import BiddingTypeViewById from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingTypeViewById";
 import BiddingComparisionTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingDetailForm/BiddingComparisionTabs";
 import BiddingComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingComparision";
+import TenderingAdminTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/TenderingAdminTabs";
 
 const queryClient = new QueryClient();
 
@@ -203,7 +204,7 @@ function App() {
       element: <ViewLevel2BoqDetails />,
     },
 
-   // ---------------- Boq --------------------------------------------- 
+    // ---------------- Boq ---------------------------------------------
     {
       path: "/create-boq",
       element: <CreateNewBoq />,
@@ -220,9 +221,6 @@ function App() {
       path: "/boq-details-byId/:refNo/:page",
       element: <BoqDetailsById />,
     },
-    
-
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -296,8 +294,6 @@ function App() {
       element: <DATenderTabs />,
     },
 
-    
-
     /////////////////////////{*** BOQ ***}//////////////////////////////////////
 
     {
@@ -312,7 +308,7 @@ function App() {
       path: "/boq-search", // need to check the status after getting the dataList
       element: <BoqSearch />,
     },
-    
+
     // {
     //   path: "/notifi",
     //   element: <NotificationSidebar />,
@@ -353,7 +349,10 @@ function App() {
     },
 
     /////////////////////////{*** Bidding ***}//////////////////////////////////////
-
+    {
+      path: "/tendering-admin",
+      element: <TenderingAdminTabs />,
+    },
     {
       path: "/bidding-input-form/:id",
       element: <BiddingInitialForm />,
@@ -408,7 +407,7 @@ function App() {
               ))}
             </Route>
 
-            <Route path="*" element={<ErrorPage />} />
+            <Route path='*' element={<ErrorPage />} />
           </Routes>
         </contextVar.Provider>
       </>

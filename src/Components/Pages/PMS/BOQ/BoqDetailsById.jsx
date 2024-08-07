@@ -30,6 +30,7 @@ export default function BoqDetailsById(props) {
     api_postForwardBoq,
     api_postRejectBoq,
     api_forwardBoqToFinance,
+    api_forwardBoqToTA,
   } = ProjectApiList();
 
   const { refNo, page } = useParams();
@@ -158,10 +159,35 @@ export default function BoqDetailsById(props) {
     )
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("BOQ has been set to Finance Successfully!!");
+          toast.success("BOQ sent to Finance Successfully!!");
           navigate("/inventoryAdmin-boq");
         } else {
           toast.error("Error in Forwarding Boq. Please try Again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  //forward to finance
+  const forwardBoqTAHandler = () => {
+    setIsLoading(true);
+
+    AxiosInterceptors.post(
+      `${api_forwardBoqToTA}`,
+      { reference_no: refNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Procurement sent for Bidding successfully");
+          navigate("/inventoryAdmin-boq");
+        } else {
+          toast.error("Error in Forwarding. Please try Again");
         }
       })
       .catch(function (error) {
@@ -317,7 +343,15 @@ export default function BoqDetailsById(props) {
                 <p className='text-lg font-bold '>
                   Status:{" "}
                   <span className='font-semibold text-blue-500'>
-                    {dataList?.status == 0 && "Pending"}
+                    {(dataList?.status == 0 && "Pending") ||
+                      (dataList?.status == 41 && "Returned from Finance") ||
+                      (dataList?.status == 43 && "Rejected from Finance") ||
+                      (dataList?.status == 40 && "Finance Approval Pending") ||
+                      (dataList?.status == 42 && "Approved by Finance") ||
+                      (dataList?.status == 50 &&
+                        "Basic Pre-tender Info completed") ||
+                      (dataList?.status == 60 && "Pre Tender form Submitted") ||
+                      (dataList?.status == 70 && "Tendering Admin Inbox")}
                   </span>
                 </p>
                 <p className='text-lg font-bold '>
@@ -491,11 +525,20 @@ export default function BoqDetailsById(props) {
               <button
                 className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
                 onClick={forwardBoqFinanceHandler}
-                // onClick={() =>
-                //   navigate(`/tendering?tabNo=1`, { state: refNo })
-                // }
               >
                 Forward to Finance
+                <MdArrowRightAlt className='text-2xl ml-2' />
+              </button>
+            </div>
+          )}
+
+          {page == "inbox" && dataList?.status == 60 && (
+            <div className='flex justify-end items-center'>
+              <button
+                className={`${colouredBtnStyle} flex items-center`}
+                onClick={forwardBoqTAHandler}
+              >
+                Forward for Bidding
                 <MdArrowRightAlt className='text-2xl ml-2' />
               </button>
             </div>
@@ -513,22 +556,6 @@ export default function BoqDetailsById(props) {
               View Pre-Tender Form
             </button>
           )}
-
-          {/* {(page == "inbox" || page == "boq-status") &&
-            dataList?.preTender?.status == 0 &&
-            dataList?.status == 0 &&
-            !dataList?.preTender?.isPartial && (
-              <div className='flex justify-end items-center'>
-                <button
-                  className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
-                  // onClick={() =>
-                  //   navigate(`/tendering?tabNo=1`, { state: refNo })
-                  // }
-                >
-                  Forward To level I
-                </button>
-              </div>
-            )} */}
         </div>
       </div>
     </div>
