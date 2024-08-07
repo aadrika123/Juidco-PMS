@@ -105,26 +105,26 @@ function InventoryProposalList(props) {
               Revised
             </p>
           )}
-          {cell.row.values.status == 71 && (
+          {/* {cell.row.values.status == 71 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               BOQ already created
             </p>
-          )}
-          {cell.row.values.status == 70 && (
+          )} */}
+          {/* {cell.row.values.status == 70 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Ready for BOQ
             </p>
-          )}
-          {cell.row.values.status == -70 && (
+          )} */}
+          {/* {cell.row.values.status == -70 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               BOQ returned from DA
             </p>
-          )}
-          {cell.row.values.status == 72 && (
+          )} */}
+          {/* {cell.row.values.status == 72 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Ready for tendering
             </p>
-          )}
+          )} */}
           {cell.row.values.status == -72 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Tender back from DA
