@@ -72,13 +72,15 @@ import InventoryReports from "./Components/Pages/PMS/Reports/InventoryReports";
 import ProductHistoryReports from "./Components/Pages/PMS/Reports/ProductHistoryReports/ProductHistoryReports";
 import BiddingInitialForm from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingInitialForm";
 import BiddingViewById from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingViewById";
-import TechnicalComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/TechnicalComparision";
+import TechnicalComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingComparision";
 import BiddingDetails from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingDetailForm/BiddingDetailTabs";
 import InventoryAdminTabs from "./Components/Pages/PMS/StockRequest/InventoryAdminTabs/InventoryAdminTabs";
 import BiddingType from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingType";
 import ViewPreProcurementById from "./Components/Pages/PMS/PrePrecurement/InventoryAdmin/ViewPreProcurementById";
 import BoqLeveltwoTab from "./Components/Pages/PMS/BOQ/level2/BoqLeveltwoTab";
 import BiddingTypeViewById from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingTypeViewById";
+import BiddingComparisionTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingDetailForm/BiddingComparisionTabs";
+import BiddingComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingComparision";
 
 const queryClient = new QueryClient();
 
@@ -361,8 +363,12 @@ function App() {
       element: <BiddingViewById />,
     },
     {
-      path: "/tech-commparision",
-      element: <TechnicalComparision />,
+      path: "/bidding-commparision",
+      element: <BiddingComparision />,
+    },
+    {
+      path: "/bidding-commparision-tabs",
+      element: <BiddingComparisionTabs />,
     },
     {
       path: "/bidding-details",
