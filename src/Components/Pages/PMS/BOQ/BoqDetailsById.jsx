@@ -250,32 +250,35 @@ export default function BoqDetailsById(props) {
         <BoqTimeLine status={dataList?.status} />
       </div>
 
-      <div className={`${isLoading ? "opacity-40" : ""}`}>
-        {page == "inbox" && dataList?.status == 50 && (
-          <div className='flex gap-5'>
+      <div className={`${isLoading ? "opacity-40" : ""} `}>
+        <div className='flex gap-4'>
+          {page == "inbox" &&
+            (dataList?.status == 50 || dataList?.status == 60) && (
+              <div className='flex gap-5'>
+                <button
+                  className={colouredBtnStyle}
+                  onClick={() =>
+                    navigate(`/biddingViewById/${dataList?.reference_no}`)
+                  }
+                >
+                  View Pre-Tender Basic Info
+                </button>
+              </div>
+            )}
+
+          {page == "inbox" && dataList?.status == 60 && (
             <button
               className={colouredBtnStyle}
               onClick={() =>
-                navigate(`/biddingViewById/${dataList?.reference_no}`)
+                navigate(`/tendering-preview/preview`, {
+                  state: dataList?.reference_no,
+                })
               }
             >
-              View Pre-Tender Basic Info
+              View Tendering Form
             </button>
-          </div>
-        )}
-
-        {page == "inbox" && dataList?.status == 60 && (
-          <button
-            className={colouredBtnStyle}
-            onClick={() =>
-              navigate(`/tendering-preview/preview`, {
-                state: dataList?.reference_no,
-              })
-            }
-          >
-            View Tendering Form
-          </button>
-        )}
+          )}
+        </div>
 
         <div ref={componentRef} className=' '>
           <div className='p-2 bg-[#4338CA] text-white pl-5 mt-6 rounded-md flex justify-between'>

@@ -153,7 +153,7 @@ const BiddingViewById = () => {
 
       <TitleBar
         titleBarVisibility={titleBarVisibility}
-        titleText={"Bidding Details"}
+        titleText={"Basic Pre Tendering Details"}
       />
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
@@ -162,7 +162,7 @@ const BiddingViewById = () => {
         <div className=''>
           <div className=''>
             <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md'>
-              Pre-Tendering View{" "}
+              Basic Pre-Tendering Info{" "}
             </h2>
           </div>
           <div
@@ -282,11 +282,11 @@ const BiddingViewById = () => {
                 </button>
               </div>
               <div className='space-x-3 flex'>
-                <button
+                {/* <button
                   className={`pb-2 pl-9 pr-9 pt-2 rounded hover:bg-red-700 bg-red-500 text-white border-red-600`}
                 >
                   Reject
-                </button>
+                </button> */}
 
                 <button
                   onClick={() => setShowModal(true)}

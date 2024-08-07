@@ -60,7 +60,7 @@ function InventoryProposalList(props) {
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {cell.row.values.status == -43 && (
+          {cell.row.values.status == 43 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Rejected from Finance
             </p>
@@ -85,19 +85,19 @@ function InventoryProposalList(props) {
               Approved by Finance
             </p>
           )}
-          {cell.row.values.status == 3 && (
+          {cell.row.values.status == 50 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Supplier assigned
+              Basic Pre Tender Details Completed
             </p>
           )}
-          {cell.row.values.status == 4 && (
+          {cell.row.values.status == 60 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Incomplete stocks received
+              Pre-Tender Form Submitted
             </p>
           )}
-          {cell.row.values.status == 5 && (
+          {cell.row.values.status == 70 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Stocks received
+              Tendering Admin Inbox
             </p>
           )}
           {cell.row.values.status == 69 && (
