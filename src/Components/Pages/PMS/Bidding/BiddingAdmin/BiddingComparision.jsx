@@ -9,7 +9,7 @@ import { useFormik } from "formik";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
 
-const TechnicalComparision = () => {
+const BiddingComparision = () => {
   const { titleBarVisibility , setBiddersCount} = useContext(contextVar);
 
   const navigate = useNavigate()
@@ -235,4 +235,4 @@ const TechnicalComparision = () => {
   );
 };
 
-export default TechnicalComparision;
+export default BiddingComparision;
