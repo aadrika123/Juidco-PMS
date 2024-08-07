@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import { useFormik } from "formik";
 import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
-import img from '@/Components/assets/page.pdf'
-
+import img from "@/Components/assets/page.pdf";
 
 const BiddingType = () => {
   const [markingType, setMarkingType] = useState("Numeric");
@@ -13,17 +12,44 @@ const BiddingType = () => {
   const [cancelModal, setCancelModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
 
-
   const numberOfBidders = [
-    { bidderHeading: `B1`, compName: `Raju Pvt Ltd.` , doc:"Uploaded Document"},
-    { bidderHeading: `B2`, compName: `Farhan Pvt Ltd.`, doc:"Uploaded Document" },
-    { bidderHeading: `B3`, compName: `Milimeter Pvt Ltd.`, doc:"Uploaded Document" },
-    { bidderHeading: `B4`, compName: `Rancho Pvt Ltd.`, doc:"Uploaded Document" },
-    { bidderHeading: `B4`, compName: `Rancho Pvt Ltd.`, doc:"Uploaded Document" },
-    { bidderHeading: `B4`, compName: `Rancho Pvt Ltd.`, doc:"Uploaded Document" },
-    { bidderHeading: `B4`, compName: `Rancho Pvt Ltd.`, doc:"Uploaded Document" },
+    {
+      bidderHeading: `B1`,
+      compName: `Raju Pvt Ltd.`,
+      doc: "Uploaded Document",
+    },
+    {
+      bidderHeading: `B2`,
+      compName: `Farhan Pvt Ltd.`,
+      doc: "Uploaded Document",
+    },
+    {
+      bidderHeading: `B3`,
+      compName: `Milimeter Pvt Ltd.`,
+      doc: "Uploaded Document",
+    },
+    {
+      bidderHeading: `B4`,
+      compName: `Rancho Pvt Ltd.`,
+      doc: "Uploaded Document",
+    },
+    {
+      bidderHeading: `B4`,
+      compName: `Rancho Pvt Ltd.`,
+      doc: "Uploaded Document",
+    },
+    {
+      bidderHeading: `B4`,
+      compName: `Rancho Pvt Ltd.`,
+      doc: "Uploaded Document",
+    },
+    {
+      bidderHeading: `B4`,
+      compName: `Rancho Pvt Ltd.`,
+      doc: "Uploaded Document",
+    },
   ];
-  
+
   const document = [
     { doc: "Document Uploaded" },
     { doc: "Document Uploaded" },
@@ -67,6 +93,8 @@ const BiddingType = () => {
     acc[input] = "";
     return acc;
   });
+
+  // Generate validation schema based on criteria
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -143,6 +171,7 @@ const BiddingType = () => {
   // };
 
   const handleChange = (e, crite, bidderName) => {
+    console.log(e.target.value, "val", crite, "crite", bidderName, "bidder");
     const { value } = e.target;
 
     setBidderDetails((prev) => {
@@ -188,6 +217,54 @@ const BiddingType = () => {
       return updatedBidders;
     });
   };
+
+  const handleSymbolicChange = (e, crite, bidderName) => {
+    const { value } = e.target;
+    console.log(value, "value");
+
+    setBidderDetails((prev) => {
+      const bidderIndex = prev.findIndex((item) => item.id === bidderName);
+      let updatedBidders;
+      if (bidderIndex !== -1) {
+        updatedBidders = prev.map((item, index) => {
+          if (index === bidderIndex) {
+            const criteriaIndex = item.criteria.findIndex(
+              (crit) => crit.id === crite?.input
+            );
+
+            let updatedCriteria;
+            if (criteriaIndex !== -1) {
+              updatedCriteria = item.criteria.map((crit, i) =>
+                i === criteriaIndex ? { ...crit, value } : crit
+              );
+            } else {
+              updatedCriteria = [...item.criteria, { id: crite?.input, value }];
+            }
+
+            updatedCriteria?.map(
+              (obj) => (obj.total = obj.total + Number(value))
+            );
+
+            console.log(updatedCriteria, "updatedCriteria");
+
+            return { ...item, criteria: updatedCriteria };
+          }
+          return item;
+        });
+      } else {
+        updatedBidders = [
+          ...prev,
+          {
+            id: bidderName,
+            criteria: [{ id: crite?.input, value }],
+          },
+        ];
+      }
+
+      return updatedBidders;
+    });
+  };
+
   if (confModal) {
     return (
       <>
@@ -242,6 +319,7 @@ const BiddingType = () => {
             <select
               className={`pl-3 pr-3 border border-blue-400 rounded-md w-full h-10 outline-blue-300`}
               onChange={(e) => {
+                console.log(e.target.value, "val");
                 setMarkingType(e.target.value);
               }}
             >
@@ -271,16 +349,16 @@ const BiddingType = () => {
       </div> */}
 
       <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-        <div className="">
-          <div className="flex m-6">
-            <div className="bg-white w-[25rem] ">
-              <div className="p-[1.4rem] border border-gray-00">
+        <div className=''>
+          <div className='flex m-6'>
+            <div className='bg-white w-[25rem] '>
+              <div className='p-[1.4rem] border border-gray-00'>
                 <h1>All Criteria </h1>
-                <p className="text-sm text-gray-400">
+                <p className='text-sm text-gray-400'>
                   Docement Uploaded by Bidder{" "}
                 </p>
               </div>
-              <div className="p-8 border border-gray-00">
+              <div className='p-8 border border-gray-00'>
                 <h1>Criteria Details </h1>
                 <p className='text-sm text-gray-400'>
                   Criteria For Technical Quality Comparison{" "}
@@ -307,25 +385,23 @@ const BiddingType = () => {
               </div>
             </div>
 
-            <div className="w-[80%] overflow-x-auto flex">
+            <div className='w-[80%] overflow-x-auto flex'>
               {numberOfBidders?.map((data) => (
-                <div className="bg-white w-full">
-                  
-                  <div className="p-7 border-t border-gray-100 text-center w-[10rem]">
-                    <h1 className="border border-[#4338ca] rounded-full text-xs hover:bg-[#4338ca] cursor-pointer hover:text-white "
-                    onClick={()=>setImageModal(true)}
+                <div className='bg-white w-full'>
+                  <div className='p-7 border-t border-gray-100 text-center w-[10rem]'>
+                    <h1
+                      className='border border-[#4338ca] rounded-full text-xs hover:bg-[#4338ca] cursor-pointer hover:text-white '
+                      onClick={() => setImageModal(true)}
                     >
-                      
                       Document Uploaded
                     </h1>
-                    
                   </div>
 
-                  <div className="p-7 border-t border-gray-100 text-center w-[10rem]">
-                    <h1 className="text-2xl font-bold">
+                  <div className='p-7 border-t border-gray-100 text-center w-[10rem]'>
+                    <h1 className='text-2xl font-bold'>
                       {data?.bidderHeading}{" "}
                     </h1>
-                    <p className="text-sm text-gray-400 truncate">
+                    <p className='text-sm text-gray-400 truncate'>
                       {data?.compName}{" "}
                     </p>
                   </div>
@@ -335,10 +411,10 @@ const BiddingType = () => {
                       {creteria?.map((crite, index) => (
                         <div className='pl-8 pr-8 pt-6 pb-[1.55rem] border-t border-gray-200'>
                           <input
-                            type="text"
+                            type='text'
                             name={data?.bidderHeading} // Example bidderHeading name
                             // name={`${crite?.input}${data?.bidderHeading}`}
-                            className="border text-center border-blue-400 rounded w-full h-8 outline-blue-300"
+                            className='border text-center border-blue-400 rounded w-full h-8 outline-blue-300'
                             onChange={(e) =>
                               handleChange(e, crite, data?.bidderHeading)
                             }
@@ -360,24 +436,36 @@ const BiddingType = () => {
                     <>
                       {creteria?.map((crite) => (
                         <div className=' border-t border-r border-gray-200 pl-3 pr-3 pt-5 pb-[1.05rem]'>
-                          <div class='flex justify-around'>
-                            <div class='inline-flex items-center'>
+                          <div className='flex justify-around'>
+                            <div className='inline-flex items-center'>
                               <label
-                                class='relative flex items-center p-3 rounded-full cursor-pointer'
-                                htmlFor='custom-style1'
+                                className='relative flex items-center p-3 rounded-full cursor-pointer'
+                                htmlFor={`custom-style1-${data?.bidderHeading}-${crite?.input}`}
                               >
                                 <input
                                   name={`${data?.bidderHeading} ${crite?.input}`}
                                   type='radio'
-                                  class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border border-red-300 bg-red-900/5 p-0 text-red-900 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-red-500 before:opacity-0 before:transition-opacity checked:border-red-900 checked:before:bg-red-900 hover:before:opacity-0"
-                                  id='custom-style1'
-                                  onChange={() =>
-                                    console.log(
-                                      `${data?.bidderHeading} ${crite?.input} cross`
+                                  className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border border-red-300 bg-red-900/5 p-0 text-red-900 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-red-500 before:opacity-0 before:transition-opacity checked:border-red-900 checked:before:bg-red-900 hover:before:opacity-0"
+                                  id={`custom-style1-${data?.bidderHeading}-${crite?.input}`}
+                                  // onChange={() =>
+                                  //   console.log(
+                                  //     `${data?.bidderHeading} ${crite?.input} cross`
+                                  //   )
+                                  // }
+                                  onChange={(e) =>
+                                    handleSymbolicChange(
+                                      e,
+                                      crite,
+                                      data?.bidderHeading
                                     )
                                   }
+                                  // value={
+                                  //   formik.values.crite?.input.data
+                                  //     ?.bidderHeading
+                                  // }
+                                  value='0'
                                 />
-                                <span class='absolute text-red-900 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100'>
+                                <span className='absolute text-red-900 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100'>
                                   <svg
                                     xmlns='http://www.w3.org/2000/svg'
                                     x='0px'
@@ -402,27 +490,34 @@ const BiddingType = () => {
                                 </span>
                               </label>
                               <label
-                                class='mt-px font-light text-gray-700 cursor-pointer select-none'
+                                className='mt-px font-light text-gray-700 cursor-pointer select-none'
                                 htmlFor='custom-style1'
                               ></label>
                             </div>
-                            <div class='inline-flex items-center'>
+                            <div className='inline-flex items-center'>
                               <label
-                                class='relative flex items-center p-3 rounded-full cursor-pointer'
-                                htmlFor='custom-style2'
+                                className='relative flex items-center p-3 rounded-full cursor-pointer'
+                                htmlFor={`custom-style2-${data?.bidderHeading}-${crite?.input}`}
                               >
                                 <input
                                   name={`${data?.bidderHeading} ${crite?.input}`}
                                   type='radio'
-                                  class="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border border-green-300 bg-green-900/5 p-0 text-green-900 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-green-500 before:opacity-0 before:transition-opacity checked:border-green-900 checked:before:bg-green-900 hover:before:opacity-0"
-                                  id='custom-style2'
-                                  onChange={() =>
-                                    console.log(
-                                      `${data?.bidderHeading} ${crite?.input} tick`
+                                  className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-full border border-green-300 bg-green-900/5 p-0 text-green-900 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-green-500 before:opacity-0 before:transition-opacity checked:border-green-900 checked:before:bg-green-900 hover:before:opacity-0"
+                                  id={`custom-style2-${data?.bidderHeading}-${crite?.input}`}
+                                  onChange={(e) =>
+                                    handleSymbolicChange(
+                                      e,
+                                      crite,
+                                      data?.bidderHeading
                                     )
                                   }
+                                  // value={
+                                  //   formik.values.crite?.input.data
+                                  //     ?.bidderHeading
+                                  // }
+                                  value='1'
                                 />
-                                <span class='absolute text-green-900 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100'>
+                                <span className='absolute text-green-900 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100'>
                                   <svg
                                     xmlns='http://www.w3.org/2000/svg'
                                     x='0px'
@@ -443,7 +538,7 @@ const BiddingType = () => {
                                 </span>
                               </label>
                               <label
-                                class='mt-px font-light text-gray-700 cursor-pointer select-none'
+                                className='mt-px font-light text-gray-700 cursor-pointer select-none'
                                 htmlFor='custom-style2'
                               ></label>
                             </div>
