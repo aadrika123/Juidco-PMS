@@ -216,7 +216,7 @@ function TenderListings(props) {
           <button
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
-              navigate(`/biddingViewById/${cell.row.values.reference_no}`)
+              navigate(`/biddingViewById/${cell.row.values.reference_no}/${props.page}`)
             }
           >
             View

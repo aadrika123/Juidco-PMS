@@ -358,16 +358,16 @@ function App() {
       element: <BiddingInitialForm />,
     },
     {
-      path: "/biddingViewById/:id",
+      path: "/biddingViewById/:id/:page",
       element: <BiddingViewById />,
-    },
-    {
-      path: "/bidding-commparision",
-      element: <BiddingComparision />,
     },
     {
       path: "/bidding-commparision-tabs",
       element: <BiddingComparisionTabs />,
+    },
+    {
+      path: "/bidding-commparision",
+      element: <BiddingComparision />,
     },
     {
       path: "/bidding-details",

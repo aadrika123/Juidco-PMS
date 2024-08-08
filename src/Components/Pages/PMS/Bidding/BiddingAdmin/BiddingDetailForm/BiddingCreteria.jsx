@@ -17,7 +17,6 @@ const BiddingCreteria = (props) => {
   const [showFields, setShowFields] = useState(false);
   const [formValues, setFormValues] = useState({
     criteria: [],
-    no_of_bidder: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -34,12 +33,12 @@ const BiddingCreteria = (props) => {
     enableReinitialize: true,
     onSubmit: (values) => {
       setFormValues((prev) => ({ criteria: [...prev["criteria"], values] }));
-      // console.log(values)
+      // console.log("okijuhygtfcvgbhyunimnubyv")
     },
     // validationSchema,
   });
 
-  console.log(formValues);
+  // console.log(formValues);
 
   const handleOnChange = (e) => {
     let name = e.target.name;
@@ -54,6 +53,38 @@ const BiddingCreteria = (props) => {
     // }
   };
 
+
+  //------------------- Apis ------------------------
+
+  const submitHandler = () => {
+    // setIsLoading(true);
+
+    AxiosInterceptors.post(
+      `${api_postBidType}`,
+      { reference_no:refNo ,bid_type: tabValue},
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+         
+          toast.success("Bid Type saved Succefull");
+          // navigate(`/bidding-commparision-tabs?tabNo=1`,{state:refNo});
+        } else {
+          toast.error("Error in approving. Please try Again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        // setIsLoading(false);
+      });
+  };
+
+
+  // -----------------------------------------------------
+
   const handleDelete = (index) => {
     const newFormData = formValues.filter((_, i) => i !== index);
     setFormValues(newFormData);
@@ -62,8 +93,6 @@ const BiddingCreteria = (props) => {
   const confirmationHandler = () => {
     console.log(formValues);
 
-    setIsModalOpen(false);
-    navigate(`/bidding-details?tabNo=1`);
   };
 
   const handleCancel = () => {
@@ -242,9 +271,10 @@ const BiddingCreteria = (props) => {
           <button
             className="border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded"
             onClick={() => {
+              confirmationHandler()
               navigate(`/bidding-commparision-tabs?tabNo=${props.tabNo}`);
             }}
-            type="submit"
+          
           >
             Save & Next
           </button>

@@ -219,6 +219,13 @@ export default function ProjectApiList() {
     //tendering admin
     api_fetchTAInbox: `${baseUrl}/api/pms/ta`,
     api_fetchTAOutbox: `${baseUrl}/api/pms/ta/outbox`,
+
+
+
+    api_postBidType: `${baseUrl}/api/pms/ta/bid-type`,
+    api_getBidType: `${baseUrl}/api/pms/bidding`,
+
+
   };
 
   return apiList;

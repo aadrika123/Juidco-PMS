@@ -284,7 +284,7 @@ export default function BoqDetailsById(props) {
                 <button
                   className={colouredBtnStyle}
                   onClick={() =>
-                    navigate(`/biddingViewById/${dataList?.reference_no}`)
+                    navigate(`/biddingViewById/${dataList?.reference_no}/view`)
                   }
                 >
                   View Pre-Tender Basic Info
