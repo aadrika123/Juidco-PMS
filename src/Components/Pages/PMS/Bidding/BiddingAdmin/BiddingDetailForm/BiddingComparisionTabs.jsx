@@ -9,9 +9,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 // src/components/BiddingComparisionTabs.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { FaChartPie } from "react-icons/fa";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
@@ -20,11 +20,26 @@ import BiddingCreteria from "./BiddingCreteria";
 // import TabsMenu from "./TabsMenu";
 import techIcon from "@/Components/assets/TechIcon.svg";
 import { HiArrowPathRoundedSquare } from "react-icons/hi2";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader from "@/Components/api/ApiHeader";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import toast from "react-hot-toast";
+
 
 const BiddingComparisionTabs = () => {
   let [searchParams, setSearchParams] = useSearchParams();
+  const [bidderData, setBidderData] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
+
 
   const { titleBarVisibility } = useContext(contextVar);
+  const { api_getBidType } = ProjectApiList();
+
+
+  const {state} = useLocation()
+//   console.log(state)
+
+console.log(bidderData)
 
   const navigate = useNavigate();
 
@@ -40,6 +55,33 @@ const BiddingComparisionTabs = () => {
     { label: "Financial Comparision", tab: 2 },
     { label: "Bidder Details", tab: 3 },
   ];
+
+  const getApplicationDetail = () => {
+    setisLoading(true);
+    AxiosInterceptors.get(`${api_getBidType}/${state}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setBidderData(response?.data?.data);
+
+          setisLoading(false);
+        } else {
+          setisLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        console.log("details by id error...", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
+
+  useEffect(()=>{
+    getApplicationDetail()
+  },[])
 
   return (
     <>
