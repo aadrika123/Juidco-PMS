@@ -323,8 +323,8 @@ const BiddingCreteria = (props) => {
           {location?.search == "?tabNo=3" ? (
             <button
               className="border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded"
-              // onClick={() => submitCreteria()}
-              onClick={() => navigate(`/bidding-details?tabNo=1`,{state : props?.bidderData?.reference_no})}
+              onClick={() => submitCreteria()}
+              // onClick={() => navigate(`/bidding-details?tabNo=1`,{state : props?.bidderData?.reference_no})}
             >
               Submit
             </button>
