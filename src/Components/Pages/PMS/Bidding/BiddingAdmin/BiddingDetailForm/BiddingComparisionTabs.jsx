@@ -42,7 +42,7 @@ const BiddingComparisionTabs = () => {
   const { state } = useLocation();
   // console.log(state)
 
-  console.log(state, "state");
+  // console.log(state, "state");
 
   const navigate = useNavigate();
 

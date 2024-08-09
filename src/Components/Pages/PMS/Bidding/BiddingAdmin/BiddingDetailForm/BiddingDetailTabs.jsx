@@ -39,16 +39,18 @@ const BiddingDetails = () => {
   const [biddersCounts, setBidderCount] = useState();
 
   const navigate = useNavigate();
-  const {state} = useLocation()
+  const { state } = useLocation();
 
-  console.log(bidderData)
+  // console.log(parseInt(response?.data?.bidder_master?.length))
 
   const { setBiddersCount, titleBarVisibility } = useContext(contextVar);
 
   const tabNo = Number(searchParams.get("tabNo"));
 
+  // console.log(location.pathname)
+
   const handleTabClick = (tabNo) => {
-    navigate(`/${location.pathname}?tabNo=${tabNo}`);
+    navigate(`?tabNo=${tabNo}`);
   };
 
   const createBtnDetais = (num) => {
@@ -66,14 +68,27 @@ const BiddingDetails = () => {
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
 
-  const getApplicationDetail = () => {
+  const getApplicationDetail = (ref_no = state) => {
     setisLoading(true);
-    AxiosInterceptors.get(`${api_getBidType}/${state}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getBidType}/${ref_no}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           setBidderData(response?.data?.data);
-          setBidderCount(response?.data?.data?.no_of_bidders);
+          createBtnDetais(response?.data?.data?.no_of_bidders);
           setisLoading(false);
+
+          if (
+            parseInt(response?.data?.data?.no_of_bidders) ===
+            parseInt(response?.data?.data?.bidder_master?.length)
+          ) {
+            navigate(`/bidding-type?tabNo=1`);
+          } else {
+            navigate(
+              `?tabNo=${
+                Number(response?.data?.data?.bidder_master?.length) + 1
+              }`
+            );
+          }
         } else {
           setisLoading(false);
           toast.error(response?.data?.message);
@@ -91,11 +106,7 @@ const BiddingDetails = () => {
   // console.log(biddersCounts)
 
   useEffect(() => {
-
-    getApplicationDetail()
-
-    const biddersCount = localStorage.getItem("biddersCount");
-    biddersCount && createBtnDetais(biddersCount);
+    getApplicationDetail();
   }, []);
 
   return (
@@ -125,7 +136,7 @@ const BiddingDetails = () => {
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
                   : "text-gray-500 bg-white "
               } focus:outline-none flex shadow-xl border border-gray-300 rounded`}
-              // onClick={() => handleTabClick(item.tab)}
+              onClick={() => handleTabClick(item.tab)}
             >
               <img src={item.img} className="pr-2" />
               {item.label}
@@ -141,7 +152,11 @@ const BiddingDetails = () => {
               <div
                 className={`${tabNo >= item.tab ? "" : "disabled:bg-red-300"}`}
               >
-                <BiddingDetailForm bidderData={bidderData} />
+                <BiddingDetailForm
+                  bidderData={bidderData}
+                  tabNo={tabNo}
+                  getApplicationDetail={getApplicationDetail}
+                />
               </div>
             )}
           </>
