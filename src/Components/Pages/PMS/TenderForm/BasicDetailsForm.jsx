@@ -17,7 +17,7 @@ import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const BasicDetailsForm = () => {
   const inputFileRef = useRef();
-  const {state} = useLocation()
+  const { state } = useLocation();
   const { api_postBasicDetails, api_getBasicDetails } = ProjectApiList();
 
   const [preview, setPreview] = useState();
@@ -95,7 +95,7 @@ const BasicDetailsForm = () => {
 
   // Initial values for additional form fields can go here
   const initialValues = {
-    reference_no: referenceNo || state || '',
+    reference_no: referenceNo || state || "",
     tender_type: basicDetailData?.tender_type || [],
     contract_form: basicDetailData?.contract_form || [],
     tender_category: basicDetailData?.tender_category || [],
@@ -119,7 +119,7 @@ const BasicDetailsForm = () => {
     AxiosInterceptors.post(api_postBasicDetails, formData, ApiHeader2())
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("Basic data Submitted successfully");
+          toast.success("Basic details Submitted successfully");
           navigate(`/tendering?tabNo=${2}`);
         } else {
           // toast.error("Error in submitting basic details");
@@ -138,7 +138,10 @@ const BasicDetailsForm = () => {
 
   const getApplicationDetail = (refNo) => {
     setIsLoading(true);
-    AxiosInterceptors.get(`${api_getBasicDetails}/${state || refNo}`, ApiHeader())
+    AxiosInterceptors.get(
+      `${api_getBasicDetails}/${state || refNo}`,
+      ApiHeader()
+    )
       .then(function (response) {
         if (response?.data?.status) {
           setBasicDetailData(response?.data?.data);
@@ -163,6 +166,8 @@ const BasicDetailsForm = () => {
 
   return (
     <>
+      {isLoading && <LoaderApi />}
+
       <div
         className={`bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl `}
       >

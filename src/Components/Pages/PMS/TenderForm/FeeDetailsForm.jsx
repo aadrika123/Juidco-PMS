@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const FeeDetailsForm = () => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const FeeDetailsForm = () => {
     tenderFeePayableTo: Yup.string().required(),
     tenderFeePayableAt: Yup.string().required(),
     surcharges: Yup.string(),
-    otherCharges: Yup.string().required(),
+    otherCharges: Yup.string(),
     emdAmount: Yup.string().required(),
     emd_fee: Yup.string().required(),
     emd_exemption: Yup.string().required(),
@@ -81,8 +82,6 @@ const FeeDetailsForm = () => {
     emdFeePayableAt: feeDetailData?.emdFeePayableAt || "",
     emdFeePayableTo: feeDetailData?.emdFeePayableTo || "",
   };
-
- 
 
   // submit form
   const submitForm = async (values) => {
@@ -135,6 +134,7 @@ const FeeDetailsForm = () => {
 
   return (
     <>
+      {isLoading && <LoaderApi />}
       {/* Heading  */}
       <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
         <img src={fd} className='pl-2' />
@@ -170,7 +170,7 @@ const FeeDetailsForm = () => {
                   <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-2'>
                     <div className=''>
                       <label
-                        for='default-input'
+                        htmlfor='default-input'
                         className={`block mb-2 text-sm font-medium text-gray-900 ${
                           errors.tenderFee &&
                           touched.tenderFee &&
@@ -192,7 +192,7 @@ const FeeDetailsForm = () => {
 
                     <div className=''>
                       <label
-                        for='default-input'
+                        htmlfor='default-input'
                         className={`block mb-2 text-sm font-medium text-gray-900 ${
                           errors.processingFee &&
                           touched.processingFee &&
@@ -214,7 +214,7 @@ const FeeDetailsForm = () => {
 
                     <div className=''>
                       <label
-                        for='default-input'
+                        htmlfor='default-input'
                         className={`block mb-2 text-sm font-medium text-gray-900 mt-5 ${
                           errors.tenderFeePayableTo &&
                           touched.tenderFeePayableTo &&
@@ -236,7 +236,7 @@ const FeeDetailsForm = () => {
 
                     <div className=''>
                       <label
-                        for='default-input'
+                        htmlfor='default-input'
                         className={`block mb-2 text-sm font-medium text-gray-900 mt-5 ${
                           errors.tenderFeePayableAt &&
                           touched.tenderFeePayableAt &&
@@ -258,7 +258,7 @@ const FeeDetailsForm = () => {
 
                     <div className=''>
                       <label
-                        for='default-input'
+                        htmlfor='default-input'
                         className={`block mb-2 text-sm font-medium text-gray-900 mt-5 ${
                           errors.surcharges &&
                           touched.surcharges &&
@@ -266,7 +266,7 @@ const FeeDetailsForm = () => {
                         }`}
                       >
                         Surcharges
-                        <span className='text-red-500'>*</span>
+                        {/* <span className='text-red-500'>*</span> */}
                       </label>
                       <input
                         type='number'
@@ -280,7 +280,7 @@ const FeeDetailsForm = () => {
 
                     <div className=''>
                       <label
-                        for='default-input'
+                        htmlfor='default-input'
                         className={`block mb-2 text-sm font-medium text-gray-900 mt-5 ${
                           errors.otherCharges &&
                           touched.otherCharges &&
@@ -288,7 +288,7 @@ const FeeDetailsForm = () => {
                         }`}
                       >
                         Other Charges
-                        <span className='text-red-500'>*</span>
+                        {/* <span className='text-red-500'>*</span> */}
                       </label>
                       <input
                         type='number'
@@ -343,7 +343,7 @@ const FeeDetailsForm = () => {
                     {values.emd_fee == "fixed" ? (
                       <div className=''>
                         <label
-                          for='default-input'
+                          htmlfor='default-input'
                           className={`block mb-2 text-sm font-medium text-gray-900 ${
                             errors.emdAmount &&
                             touched.emdAmount &&
@@ -366,7 +366,7 @@ const FeeDetailsForm = () => {
                     ) : (
                       <div className=''>
                         <label
-                          for='default-input'
+                          htmlfor='default-input'
                           className={`block mb-2 text-sm font-medium text-gray-900 ${
                             errors.emdPercentage &&
                             touched.emdPercentage &&
@@ -396,7 +396,7 @@ const FeeDetailsForm = () => {
                   >
                     <div className=''>
                       <label
-                        for='default-input'
+                        htmlfor='default-input'
                         className={`block mb-2 text-sm font-medium text-gray-900 ${
                           errors.emdFeePayableAt &&
                           touched.emdFeePayableAt &&
@@ -419,7 +419,7 @@ const FeeDetailsForm = () => {
 
                     <div className=''>
                       <label
-                        for='default-input'
+                        htmlfor='default-input'
                         className={`block mb-2 text-sm font-medium text-gray-900 ${
                           errors.emdFeePayableTo &&
                           touched.emdFeePayableTo &&

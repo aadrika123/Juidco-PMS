@@ -10,6 +10,7 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import toast from "react-hot-toast";
 import ApiHeader from "@/Components/api/ApiHeader";
 import { useEffect, useState } from "react";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const WorkDetailsForm = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const WorkDetailsForm = () => {
 
   const tenderValue = [
     { label: "INR", value: "inr" },
-    { label: "USA", value: "usa" },
+    { label: "USD", value: "usd" },
     { label: "EUR", value: "eur" },
   ];
 
@@ -179,6 +180,7 @@ const WorkDetailsForm = () => {
 
   return (
     <>
+      {isLoading && <LoaderApi />}
       {/* Heading  */}
       <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
         <img src={wd} className='pl-2' />

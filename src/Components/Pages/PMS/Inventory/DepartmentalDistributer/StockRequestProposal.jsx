@@ -1,25 +1,13 @@
 import React, { useEffect, useState } from "react";
+import * as Yup from "yup";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
 import { Autocomplete, TextField } from "@mui/material";
 
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
-// import { ToastContainer, toast } from "react-toastify";
-import { Toaster, toast } from "react-hot-toast";
-
-import BarLoader from "@/Components/Common/Loaders/BarLoader";
-// import PreProcurementSubmittedScreen from "./PreProcurementSubmittedScreen";
-import * as yup from "yup";
-import {
-  allowCharacterInput,
-  allowNumberMultiplyInput,
-  allowNumberInput,
-  allowCharacterNumberInput,
-} from "@/Components/Common/PowerUps/PowerupFunctions";
+import { toast } from "react-hot-toast";
 import ProjectApiList from "@/Components/api/ProjectApiList";
-// import PreProcurementCancelScreen from "./PreProcurementCancelScreen";
-// import SuccessModal from "./SuccessModal";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
@@ -142,9 +130,9 @@ const StockRequestProposal = (props) => {
       });
   };
 
-  const getDesc = () => {
+  const getDesc = (subCat) => {
     AxiosInterceptors.get(
-      `${api_getActiveDesc}?category=${catID}&scategory=${subCatID}`,
+      `${api_getActiveDesc}?category=${catID}&scategory=${subCat || subCatID}`,
       ApiHeader()
     )
       .then(function (response) {
@@ -229,16 +217,6 @@ const StockRequestProposal = (props) => {
     getQuantity(data?.inventory?.id);
   };
 
-  // const getAllMasters =async  (data) => {
-  //   return await new Promise((resolve, reject) => {
-  //     getSubCategory(data?.subcategory?.id);
-  //     getBrand(data?.brand?.id);
-  //     getDesc(data?.description);
-  //     console.log('control test')
-  //     resolve()
-  //   });
-  // };
-
   const formatEmp = (empDetails) => {
     if (empDetails) {
       const temp = empDetails.map((item) => item?.emp_id);
@@ -278,6 +256,15 @@ const StockRequestProposal = (props) => {
     description: applicationFullData?.inventory?.id || "",
   };
 
+  const validationSchema = Yup.object({
+    empId: Yup.string().required("Employee Id is required"),
+    empName: Yup.string().required("Employee Id is required"),
+    category: Yup.string().required("Category is required"),
+    subCategory: Yup.string().required("Sub Category is required"),
+    quantAlot: Yup.string(),
+    description: Yup.string().required("Description is required"),
+  });
+
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
@@ -285,7 +272,7 @@ const StockRequestProposal = (props) => {
       setFormValues(values);
       setConfModal(true);
     },
-    // validationSchema,
+    validationSchema,
   });
 
   const confirmationHandler = (values) => {
@@ -314,7 +301,7 @@ const StockRequestProposal = (props) => {
       category: formValues?.category,
       subcategory: formValues?.subCategory,
       brand: formValues?.brand,
-      allotted_quantity: Number(formValues?.quantAlot),
+      allotted_quantity: Number(formValues?.quantAlot) || 1,
       inventory: formValues?.description,
       // totQuant: Number(formValues?.totQuant),
     };
@@ -377,7 +364,7 @@ const StockRequestProposal = (props) => {
 
                 <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
                   <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                    <div class='px-4 w-full mb-4'>
+                    <div className='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Employee Id
                       </label>
@@ -416,7 +403,7 @@ const StockRequestProposal = (props) => {
                   </div>
 
                   <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                    <div class='px-4 w-full mb-4'>
+                    <div className='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Employee Name
                       </label>
@@ -438,7 +425,7 @@ const StockRequestProposal = (props) => {
                   </div>
 
                   <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                    <div class='px-4 w-full mb-4'>
+                    <div className='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Categories
                       </label>
@@ -474,7 +461,7 @@ const StockRequestProposal = (props) => {
                   </div>
 
                   <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                    <div class='px-4 w-full mb-4'>
+                    <div className='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Sub Categories
                       </label>
@@ -484,6 +471,7 @@ const StockRequestProposal = (props) => {
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={(e) => {
                           setSubCatId(e.target.value);
+                          getDesc(e.target.value);
                           getBrand(e.target.value);
                           formik.handleChange(e);
                         }}
@@ -507,7 +495,7 @@ const StockRequestProposal = (props) => {
                   </div>
 
                   <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                    <div class='px-4 w-full mb-4'>
+                    <div className='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Brand
                       </label>
@@ -516,7 +504,6 @@ const StockRequestProposal = (props) => {
                         {...formik.getFieldProps("brand")}
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={(e) => {
-                          getDesc();
                           formik.handleChange(e);
                         }}
                       >
@@ -538,7 +525,7 @@ const StockRequestProposal = (props) => {
                   </div>
 
                   <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                    <div class='px-4 w-full mb-4'>
+                    <div className='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         description
                       </label>
@@ -570,7 +557,7 @@ const StockRequestProposal = (props) => {
                   </div>
 
                   <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                    <div class='px-4 w-full mb-4'>
+                    <div className='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Quantity Allotted
                       </label>

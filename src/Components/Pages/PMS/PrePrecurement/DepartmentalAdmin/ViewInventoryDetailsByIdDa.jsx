@@ -222,7 +222,7 @@ const ViewInventoryDetailsById = (props) => {
           toast.success("Successfully forwarded to Inventory Admin");
           setTimeout(() => {
             navigate("/da-inventory-proposal");
-          }, 500);
+          }, 200);
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
           // navigate("/da-inventory-proposal");
@@ -280,7 +280,7 @@ const ViewInventoryDetailsById = (props) => {
     <div>
       {isLoading && (
         <div className='fixed inset-0 flex items-center justify-center z-50'>
-        <LoaderApi />
+          <LoaderApi />
         </div>
       )}
 
@@ -521,7 +521,7 @@ const ViewInventoryDetailsById = (props) => {
                 <button
                   className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                   // onClick={forwardToIa}
-                  onClick={()=>setIsModalOpen(true)}
+                  onClick={() => setIsModalOpen(true)}
                 >
                   Forward to Inventory Admin
                 </button>

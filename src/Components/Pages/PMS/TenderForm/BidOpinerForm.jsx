@@ -10,6 +10,7 @@ import ApiHeader2 from "@/Components/api/ApiHeader2";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const BidOpinerForm = () => {
   const inputFileRefs = useRef([]);
@@ -342,6 +343,7 @@ const BidOpinerForm = () => {
 
   return (
     <>
+      {isLoading && <LoaderApi />}
       {/* Heading  */}
       <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
         <img src={bo} className='pl-2' />

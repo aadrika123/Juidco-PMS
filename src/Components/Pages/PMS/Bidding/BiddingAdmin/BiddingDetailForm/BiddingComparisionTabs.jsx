@@ -34,15 +34,13 @@ const BiddingComparisionTabs = () => {
   let [searchParams, setSearchParams] = useSearchParams();
   const [bidderData, setBidderData] = useState();
   const [isLoading, setisLoading] = useState(false);
-  const [referenceNo, setRferenceNo] = useState();
+  const [tabDetails, setTabDetails] = useState([]);
 
   const { titleBarVisibility } = useContext(contextVar);
   const { api_getBidType } = ProjectApiList();
 
   const { state } = useLocation();
   // console.log(state)
-
-  console.log(state, "state");
 
   const navigate = useNavigate();
 
@@ -53,8 +51,18 @@ const BiddingComparisionTabs = () => {
     navigate(`/${location.pathname}?tabNo=${tabNo}`);
   };
 
-  const btnDetails = [
+  const finTech = [
     { label: "Technical Comparision", tab: 1 },
+    { label: "Financial Comparision", tab: 2 },
+    { label: "Bidder Details", tab: 3 },
+  ];
+
+  const technical = [
+    { label: "Technical Comparision", tab: 1 },
+    { label: "Bidder Details", tab: 3 },
+  ];
+
+  const financial = [
     { label: "Financial Comparision", tab: 2 },
     { label: "Bidder Details", tab: 3 },
   ];
@@ -66,6 +74,18 @@ const BiddingComparisionTabs = () => {
         if (response?.data?.status) {
           setBidderData(response?.data?.data);
           setisLoading(false);
+          console.log(
+            response?.response?.data?.bid_type,
+            "===response?.response?.data?.bid_type"
+          );
+          //setting tab buttons
+          if (response?.response?.data?.bid_type === "fintech") {
+            setTabDetails(finTech);
+          } else if (response?.response?.data?.bid_type === "technical") {
+            setTabDetails(technical);
+          } else {
+            setTabDetails(financial);
+          }
         } else {
           setisLoading(false);
           toast.error(response?.data?.message);
@@ -88,17 +108,17 @@ const BiddingComparisionTabs = () => {
 
   return (
     <>
-      <div className="">
+      <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Bidding Comparision"}
         />
       </div>
 
-      <div className="">
-        <div className="flex justify-between items-center">
-          <div className="flex mt-2">
-            {btnDetails?.map((item, index) => (
+      <div className=''>
+        <div className='flex justify-between items-center'>
+          <div className='flex mt-2'>
+            {tabDetails?.map((item, index) => (
               <button
                 key={index}
                 disabled
@@ -109,17 +129,17 @@ const BiddingComparisionTabs = () => {
                 } focus:outline-none flex shadow-xl border border-gray-300 rounded justify-center items-center space-x-4`}
                 onClick={() => handleTabClick(item.tab)}
               >
-                <HiArrowPathRoundedSquare className="m-1 text-[1.2rem]" />
+                <HiArrowPathRoundedSquare className='m-1 text-[1.2rem]' />
 
                 {item.label}
               </button>
             ))}
           </div>
-          <div className="mt-6"></div>
+          <div className='mt-6'></div>
         </div>
       </div>
-      <div className="container mx-auto rounded  mt-6">
-        <div className="mt-4">
+      <div className='container mx-auto rounded  mt-6'>
+        <div className='mt-4'>
           {tabNo === 1 && (
             <div
               className={`${tabNo >= 1 ? "stockReq" : "disabled:bg-red-300"}`}
