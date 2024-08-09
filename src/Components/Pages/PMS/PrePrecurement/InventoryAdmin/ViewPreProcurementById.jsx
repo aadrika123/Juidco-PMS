@@ -274,7 +274,7 @@ const ViewPreProcurementById = () => {
           toast.success("Successfully Approved");
           setTimeout(() => {
             navigate("/leveltwo");
-          }, 500);
+          }, 100);
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
           // navigate("/da-inventory-proposal");
@@ -307,7 +307,7 @@ const ViewPreProcurementById = () => {
           toast.success("Successfully Approved");
           setTimeout(() => {
             navigate("/levelone");
-          }, 500);
+          }, 100);
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
           // navigate("/da-inventory-proposal");

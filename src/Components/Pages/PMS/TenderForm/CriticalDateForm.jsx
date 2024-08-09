@@ -14,6 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const CriticalDateForm = () => {
   const inputFileRef = useRef();
@@ -331,10 +332,11 @@ const CriticalDateForm = () => {
 
   return (
     <>
+      {isLoading && <LoaderApi />}
       {/* Heading  */}
-      <div className="bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl mb-3">
-        <img src={fd} className="pl-2" />
-        <h1 className="pt-1 pl-2 text-xl">Critical Dates</h1>
+      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl mb-3'>
+        <img src={fd} className='pl-2' />
+        <h1 className='pt-1 pl-2 text-xl'>Critical Dates</h1>
       </div>
 
       {/* Form Starting */}
@@ -350,7 +352,6 @@ const CriticalDateForm = () => {
               validationSchema={validationSchema}
               enableReinitialize={true}
               onSubmit={(values) => {
-                console.log("Form values", values);
                 submitForm(values);
               }}
             >
@@ -364,19 +365,19 @@ const CriticalDateForm = () => {
               }) => (
                 <Form>
                   <>
-                    <div className="grid grid-cols-2 container mx-auto capitalize">
-                      <div className="p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
-                        <div className="">
+                    <div className='grid grid-cols-2 container mx-auto capitalize'>
+                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                        <div className=''>
                           <label
-                            for="default-input"
+                            for='default-input'
                             className={`block mb-2 text-sm font-medium text-gray-900`}
                           >
                             Publishing Date
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <DateTimePicker
-                            className="w-3/4"
-                            name="publishingDate"
+                            className='w-3/4'
+                            name='publishingDate'
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("publishingDate", dateTime);
@@ -392,23 +393,23 @@ const CriticalDateForm = () => {
                             }
                           />
                           {errors.publishingDate && touched.publishingDate && (
-                            <div className="text-red-500 text-sm mt-1">
+                            <div className='text-red-500 text-sm mt-1'>
                               {errors.publishingDate}
                             </div>
                           )}
                         </div>
 
-                        <div className="">
+                        <div className=''>
                           <label
-                            for="default-input"
+                            for='default-input'
                             className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Bid Opening Date
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <DateTimePicker
-                            className="w-3/4"
-                            name="bidOpeningDate"
+                            className='w-3/4'
+                            name='bidOpeningDate'
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("bidOpeningDate", dateTime);
@@ -420,25 +421,25 @@ const CriticalDateForm = () => {
                             }
                           />
                           {errors.bidOpeningDate && touched.bidOpeningDate && (
-                            <div className="text-red-500 text-sm mt-1">
+                            <div className='text-red-500 text-sm mt-1'>
                               {errors.bidOpeningDate}
                             </div>
                           )}
                         </div>
                       </div>
 
-                      <div className="p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
-                        <div className="">
+                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                        <div className=''>
                           <label
-                            for="default-input"
+                            for='default-input'
                             className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Document Sale Start Date
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <DateTimePicker
-                            className="w-3/4"
-                            name="docSaleStartDate"
+                            className='w-3/4'
+                            name='docSaleStartDate'
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("docSaleStartDate", dateTime);
@@ -449,24 +450,25 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
-                          {errors.docSaleStartDate && touched.docSaleStartDate && (
-                            <div className="text-red-500 text-sm mt-1">
-                              {errors.docSaleStartDate}
-                            </div>
-                          )}
+                          {errors.docSaleStartDate &&
+                            touched.docSaleStartDate && (
+                              <div className='text-red-500 text-sm mt-1'>
+                                {errors.docSaleStartDate}
+                              </div>
+                            )}
                         </div>
 
-                        <div className="">
+                        <div className=''>
                           <label
-                            for="default-input"
+                            for='default-input'
                             className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Document Sale End Date
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <DateTimePicker
-                            className="w-3/4"
-                            name="docSaleEndDate"
+                            className='w-3/4'
+                            name='docSaleEndDate'
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("docSaleEndDate", dateTime);
@@ -478,25 +480,25 @@ const CriticalDateForm = () => {
                             }
                           />
                           {errors.docSaleEndDate && touched.docSaleEndDate && (
-                            <div className="text-red-500 text-sm mt-1">
+                            <div className='text-red-500 text-sm mt-1'>
                               {errors.docSaleEndDate}
                             </div>
                           )}
                         </div>
                       </div>
 
-                      <div className="p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
-                        <div className="">
+                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                        <div className=''>
                           <label
-                            for="default-input"
+                            for='default-input'
                             className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Seek Clarification Start Date
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <DateTimePicker
-                            className="w-3/4"
-                            name="seekClariStrtDate"
+                            className='w-3/4'
+                            name='seekClariStrtDate'
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("seekClariStrtDate", dateTime);
@@ -507,24 +509,25 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
-                          {errors.seekClariStrtDate && touched.seekClariStrtDate && (
-                            <div className="text-red-500 text-sm mt-1">
-                              {errors.seekClariStrtDate}
-                            </div>
-                          )}
+                          {errors.seekClariStrtDate &&
+                            touched.seekClariStrtDate && (
+                              <div className='text-red-500 text-sm mt-1'>
+                                {errors.seekClariStrtDate}
+                              </div>
+                            )}
                         </div>
 
-                        <div className="">
+                        <div className=''>
                           <label
-                            for="default-input"
+                            for='default-input'
                             className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Seek Clarification End Date
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <DateTimePicker
-                            className="w-3/4"
-                            name="seekClariEndDate"
+                            className='w-3/4'
+                            name='seekClariEndDate'
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("seekClariEndDate", dateTime);
@@ -535,26 +538,27 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
-                          {errors.seekClariEndDate && touched.seekClariEndDate && (
-                            <div className="text-red-500 text-sm mt-1">
-                              {errors.seekClariEndDate}
-                            </div>
-                          )}
+                          {errors.seekClariEndDate &&
+                            touched.seekClariEndDate && (
+                              <div className='text-red-500 text-sm mt-1'>
+                                {errors.seekClariEndDate}
+                              </div>
+                            )}
                         </div>
                       </div>
 
-                      <div className="p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md">
-                        <div className="">
+                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md'>
+                        <div className=''>
                           <label
-                            for="default-input"
+                            for='default-input'
                             className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Bid Submission Start Date
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <DateTimePicker
-                            className="w-3/4"
-                            name="bidSubStrtDate"
+                            className='w-3/4'
+                            name='bidSubStrtDate'
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("bidSubStrtDate", dateTime);
@@ -566,23 +570,23 @@ const CriticalDateForm = () => {
                             }
                           />
                           {errors.bidSubStrtDate && touched.bidSubStrtDate && (
-                            <div className="text-red-500 text-sm mt-1">
+                            <div className='text-red-500 text-sm mt-1'>
                               {errors.bidSubStrtDate}
                             </div>
                           )}
                         </div>
 
-                        <div className="">
+                        <div className=''>
                           <label
-                            for="default-input"
+                            for='default-input'
                             className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Bid Submission End Date
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <DateTimePicker
-                            className="w-3/4"
-                            name="bidSubEndDate"
+                            className='w-3/4'
+                            name='bidSubEndDate'
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("bidSubEndDate", dateTime);
@@ -594,25 +598,25 @@ const CriticalDateForm = () => {
                             }
                           />
                           {errors.bidSubEndDate && touched.bidSubEndDate && (
-                            <div className="text-red-500 text-sm mt-1">
+                            <div className='text-red-500 text-sm mt-1'>
                               {errors.bidSubEndDate}
                             </div>
                           )}
                         </div>
                       </div>
 
-                      <div className="p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md col-span-2">
-                        <div className="">
+                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md col-span-2'>
+                        <div className=''>
                           <label
-                            for="default-input"
+                            for='default-input'
                             className={`block mb-2 text-sm font-medium text-gray-900 `}
                           >
                             Pre Bid Meeting Date
-                            <span className="text-red-500">*</span>
+                            <span className='text-red-500'>*</span>
                           </label>
                           <DateTimePicker
-                            className="w-3/4"
-                            name="preBidMettingDate"
+                            className='w-3/4'
+                            name='preBidMettingDate'
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("preBidMettingDate", dateTime);
@@ -623,11 +627,12 @@ const CriticalDateForm = () => {
                                 : null
                             }
                           />
-                          {errors.preBidMettingDate && touched.preBidMettingDate && (
-                            <div className="text-red-500 text-sm mt-1">
-                              {errors.preBidMettingDate}
-                            </div>
-                          )}
+                          {errors.preBidMettingDate &&
+                            touched.preBidMettingDate && (
+                              <div className='text-red-500 text-sm mt-1'>
+                                {errors.preBidMettingDate}
+                              </div>
+                            )}
                         </div>
                       </div>
                     </div>

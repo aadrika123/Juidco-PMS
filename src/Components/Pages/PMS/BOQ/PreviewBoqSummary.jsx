@@ -176,6 +176,8 @@ export default function PreviewBoqSummary() {
     );
   }
 
+  console.log(summaryData?.procurement, "vvvvvvvvvv");
+
   return (
     <div>
       {isLoading && <LoaderApi />}

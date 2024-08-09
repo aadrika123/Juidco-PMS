@@ -278,7 +278,6 @@ export default function CreateNewBoq() {
 
   //adding gst for each procurement stocks
   const addGstForEachProc = (e, procId) => {
-    console.log(procId,"procIdd")
     const updatedProcurement = applicationData?.procurement_stocks?.map(
       (data) => {
         const gstVal = Number(e.target.value);
@@ -457,18 +456,27 @@ export default function CreateNewBoq() {
           isLoading ? "blur-[2px]" : ""
         }`}
       >
-        <div className='flex justify-end gap-4 my-1 ml-4'>
-          <input
-            type='checkbox'
-            onChange={(e) => {
-              const isChecked = e.target.checked;
-              setGstChecked(isChecked);
-              includeGstForProc(isChecked);
-            }}
-            className='w-4'
-          />
-          <p className='text-md font-semibold'>is Gst included</p>
+        <div className='flex justify-between items-center w-full'>
+          <div className='flex gap-1'>
+            <h4 className='text-base font-semibold text-gray-600'>
+              Procurement No -
+            </h4>
+            <p className='text-sm'>{applicationData?.procurement_no}</p>
+          </div>
+          <div className='flex justify-end gap-4 my-1 ml-4'>
+            <input
+              type='checkbox'
+              onChange={(e) => {
+                const isChecked = e.target.checked;
+                setGstChecked(isChecked);
+                includeGstForProc(isChecked);
+              }}
+              className='w-4'
+            />
+            <p className='text-md font-semibold'>is Gst included</p>
+          </div>
         </div>
+
         <div className='p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md'>
           <h2 className='text-2xl '>
             {isCreatePage == "create"
@@ -749,7 +757,10 @@ export default function CreateNewBoq() {
 
         <button
           className={`bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
-          onClick={() =>
+          onClick={() => {
+            if (!payload?.hsn_code?.trim().length) {
+              return toast.error("Please add HSN code");
+            }
             navigate(
               "/boqSummary",
               isCreatePage == "create"
@@ -759,8 +770,8 @@ export default function CreateNewBoq() {
                       : { ...payload },
                   }
                 : { state: payload }
-            )
-          }
+            );
+          }}
         >
           Proceed
         </button>

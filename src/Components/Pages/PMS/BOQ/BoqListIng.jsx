@@ -29,20 +29,20 @@ function BoqListing(props) {
   const COLUMNS = [
     {
       Header: "#",
-      Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
       Header: "Reference No",
       accessor: "reference_no",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.reference_no}</div>
+        <div className='pr-2'>{cell.row.values.reference_no}</div>
       ),
     },
     {
       Header: "Category",
       accessor: "procurements",
       Cell: ({ cell }) => (
-        <div className="pr-2">
+        <div className='pr-2'>
           {cell.row.values?.procurements[0]?.category?.name}{" "}
         </div>
       ),
@@ -51,7 +51,7 @@ function BoqListing(props) {
       Header: "Estimated Cost",
       accessor: "estimated_cost",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.estimated_cost} </div>
+        <div className='pr-2'>{cell.row.values.estimated_cost} </div>
       ),
     },
 
@@ -59,84 +59,84 @@ function BoqListing(props) {
       Header: "Status",
       accessor: "status",
       Cell: ({ cell }) => (
-        <div className="pr-2">
+        <div className='pr-2'>
           {cell.row.values.status == -1 && (
-            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Back from DA
             </p>
           )}
           {cell.row.values.status == -2 && (
-            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Rejected
             </p>
           )}
           {cell.row.values.status == 0 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Pending
             </p>
           )}
           {cell.row.values.status == 1 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               DA's Inbox
             </p>
           )}
           {cell.row.values.status == 2 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Approved by DA
             </p>
           )}
           {cell.row.values.status == 3 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Supplier assigned
             </p>
           )}
           {cell.row.values.status == 4 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Incomplete stocks received
             </p>
           )}
           {cell.row.values.status == 5 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Stocks received
             </p>
           )}
           {cell.row.values.status == 69 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Revised
             </p>
           )}
           {cell.row.values.status.status == 70 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Ready for BOQ
             </p>
           )}
           {cell.row.values.status.status == 71 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               BOQ already created
             </p>
           )}
           {cell.row.values.status.status == -70 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               BOQ returned from DA
             </p>
           )}
           {cell.row.values.status.status == 72 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Ready for tendering
             </p>
           )}
           {cell.row.values.status.status == -72 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Tender back from DA
             </p>
           )}
           {cell.row.values.status.status == 73 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Tender is ready
             </p>
           )}
           {cell.row.values.status.status == 69 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Revised
             </p>
           )}
@@ -198,7 +198,7 @@ function BoqListing(props) {
       Cell: ({ cell }) => (
         <>
           <button
-            className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
+            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
               navigate(
                 `/boq-details-byId/${cell.row.values.reference_no}/${props?.page}`
@@ -215,20 +215,20 @@ function BoqListing(props) {
   const COLUMNS2 = [
     {
       Header: "#",
-      Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
       Header: "Procurement No",
       accessor: "procurement_no",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.procurement_no}</div>
+        <div className='pr-2'>{cell.row.values.procurement_no}</div>
       ),
     },
     {
       Header: "Category",
       accessor: "category",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values?.category?.name} </div>
+        <div className='pr-2'>{cell.row.values?.category?.name} </div>
       ),
     },
     // {
@@ -242,72 +242,70 @@ function BoqListing(props) {
       Header: "Total Rate",
       accessor: "total_rate",
       Cell: ({ cell }) => (
-        <div className="pr-2">{indianAmount(cell.row.values.total_rate)} </div>
+        <div className='pr-2'>{indianAmount(cell.row.values.total_rate)} </div>
       ),
     },
 
     {
-      Header: <p className="text-center">Status</p>,
+      Header: <p className='text-center'>Status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-           {cell.row.values?.status == 0 && (
+          {cell.row.values?.status == 0 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Pending
             </p>
           )}
-           {cell.row.values?.status == 10 && (
+          {cell.row.values?.status == 10 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 1
             </p>
           )}
-           {cell.row.values?.status == 11 && (
+          {cell.row.values?.status == 11 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Returned from Level 1
             </p>
           )}
-           {cell.row.values?.status == 12 && (
+          {cell.row.values?.status == 12 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Rejected by Level 1
             </p>
           )}
-           {cell.row.values?.status == 13 && (
+          {cell.row.values?.status == 13 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Revised by IA
             </p>
           )}
-           {cell.row.values?.status == 14 && (
+          {cell.row.values?.status == 14 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Approved by Level 1
             </p>
           )}
-           {cell.row.values?.status == 20 && (
+          {cell.row.values?.status == 20 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Level 2 inbox
+              Waiting for Approval
             </p>
           )}
-           {cell.row.values?.status == 21 && (
+          {cell.row.values?.status == 21 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Return from Level 2 
+              Return from Level 2
             </p>
           )}
-           {cell.row.values?.status == 22 && (
+          {cell.row.values?.status == 22 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Rejected by Level 2 
+              Rejected by Level 2
             </p>
           )}
-           {cell.row.values?.status == 23 && (
+          {cell.row.values?.status == 23 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Revised by Level 1 
+              Revised by Level 1
             </p>
           )}
-           {cell.row.values?.status == 24 && (
+          {cell.row.values?.status == 24 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Approved by Level 2 
+              Approved by Level 2
             </p>
           )}
-
-
         </div>
       ),
     },
@@ -317,10 +315,12 @@ function BoqListing(props) {
       Cell: ({ cell }) => (
         <>
           <button
-            className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
+            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
               // navigate(`/viewProcurement/${cell.row.values.procurement_no}`)
-              navigate(`/ia-viewPreProcurementById/${cell.row.values.procurement_no}/${props?.activeTab}`)
+              navigate(
+                `/ia-viewPreProcurementById/${cell.row.values.procurement_no}/${props?.activeTab}`
+              )
             }
           >
             View
@@ -334,7 +334,7 @@ function BoqListing(props) {
     return (
       <>
         <BarLoader />
-        <div className="min-h-screen"></div>
+        <div className='min-h-screen'></div>
       </>
     );
   }
@@ -353,9 +353,9 @@ function BoqListing(props) {
   return (
     <>
       {loader && <BarLoader />}
-      <div className="container mx-auto p-4">
-        <div className="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 ">
-          <div className="col-span-12">
+      <div className='container mx-auto p-4'>
+        <div className='grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 '>
+          <div className='col-span-12'>
             <>
               <ListTableParent
                 table={tableSelector(props?.page)}

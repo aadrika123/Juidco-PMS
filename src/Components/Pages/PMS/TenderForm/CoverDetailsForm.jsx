@@ -136,6 +136,7 @@ const CoverDetailsForm = () => {
     AxiosInterceptors.post(api_postCoverDetails, values, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
+          setIsLoading(false);
           toast.success("Cover Details Submitted successfully");
           navigate(`/tendering?tabNo=${3}`);
         } else {
@@ -143,11 +144,9 @@ const CoverDetailsForm = () => {
         }
       })
       .catch(function (error) {
+        setIsLoading(false);
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         toast.error(error?.response?.data?.error);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   };
 
@@ -203,7 +202,6 @@ const CoverDetailsForm = () => {
               tabsCover1,
               response?.data?.data?.cover_details_docs
             );
-            console.log(doc, "doc===");
             setTabData(doc);
             autoSelectActiveTab(tabsCover1);
           } else if (response?.data?.data?.noOfCovers == "2") {
@@ -212,7 +210,6 @@ const CoverDetailsForm = () => {
               tabsCover2,
               response?.data?.data?.cover_details_docs
             );
-            console.log(doc, "doc===");
             setTabData(doc);
             autoSelectActiveTab(tabsCover2);
           } else if (response?.data?.data?.noOfCovers == "3") {
@@ -221,7 +218,6 @@ const CoverDetailsForm = () => {
               tabsCover3,
               response?.data?.data?.cover_details_docs
             );
-            console.log(doc, "doc===");
             setTabData(doc);
             autoSelectActiveTab(tabsCover3);
           } else if (response?.data?.data?.noOfCovers == "4") {
@@ -269,6 +265,8 @@ const CoverDetailsForm = () => {
 
   return (
     <>
+      {isLoading && <LoaderApi />}
+
       {/* Heading */}
       <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
         <img src={cdIcon} className='pl-2' alt='folder icon' />
