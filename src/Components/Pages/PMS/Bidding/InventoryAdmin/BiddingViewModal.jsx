@@ -118,10 +118,10 @@ const BiddingViewModal = ({ closeModal,refNo }) => {
           </button>
           <button
             className="border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-10 py-2 rounded"
-            // onClick={()=>submitHandler()}
-            onClick={()=>
-              navigate(`/bidding-commparision-tabs?tabNo=1`,{state:refNo})
-            }
+            onClick={()=>submitHandler()}
+            // onClick={()=>
+            //   navigate(`/bidding-commparision-tabs?tabNo=1`,{state:refNo})
+            // }
           >
             Confirm
           </button>
