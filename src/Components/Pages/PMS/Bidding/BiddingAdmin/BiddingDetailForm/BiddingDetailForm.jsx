@@ -9,16 +9,31 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useNavigate } from "react-router-dom";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader2 from "@/Components/api/ApiHeader2";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import toast from "react-hot-toast";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const BiddingDetailForm = (props) => {
+  const { api_addBidder } = ProjectApiList();
+
   const navigate = useNavigate();
+
   const inputFileRef = useRef();
+  const inputFileTechRef = useRef();
+  const inputFileFincRef = useRef();
 
   const [basicDetailData, setBasicDetailData] = useState();
   const [preview, setPreview] = useState();
+  const [techPreview, setTechPreview] = useState();
+  const [fincPreview, setFincPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
+  const [techImageDoc, setTechImageDoc] = useState();
+  const [fincImageDoc, setFincImageDoc] = useState();
+  const [isLoading, setisLoading] = useState(false);
 
-  // console.log(props?.bidderData)
+  console.log(props?.bidderData)
 
   const emdConfirmation = [
     { label: "Yes", value: "yes" },
@@ -35,8 +50,8 @@ const BiddingDetailForm = (props) => {
     { label: "DD", value: "dd" },
   ];
 
-
   const initialValues = {
+    // reference_no:"",
     name: "",
     pan_no: "",
     gst_no: "",
@@ -44,7 +59,7 @@ const BiddingDetailForm = (props) => {
     bank: "",
     account_no: "",
     ifsc: "",
-    bidding_amount:"",
+    bidding_amount: "",
     //
     emd: "no",
     payment_mode: "online",
@@ -53,15 +68,65 @@ const BiddingDetailForm = (props) => {
     transaction_no: "",
   };
 
+  const submitBiddigData = (data) => {
+    setisLoading(true);
+    // setConfirmationModal(false);
+    data = { ...data, reference_no: props?.bidderData?.reference_no };
+
+    let formData = new FormData();
+    formData.append("emd_doc", imageDoc);
+    formData.append("tech_doc", techImageDoc);
+    formData.append("fin_doc", fincImageDoc);
+    formData.append("bidder", JSON.stringify(data));
+
+    AxiosInterceptors.post(`${api_addBidder}`, formData, ApiHeader2())
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success(response?.data?.message, "success");
+          props?.getApplicationDetail(props?.bidderData?.reference_no)
+          
+        } else {
+          toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        console.log("errorrr.... ", error);
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
+
+  // console.log(props?.tabNo)
   return (
     <>
+      {isLoading && <LoaderApi />}
+
       <Formik
         initialValues={initialValues}
         // validationSchema={validationSchema}
         enableReinitialize={true}
         onSubmit={(values, { resetForm }) => {
-          console.log(values);
-          navigate(`/bidding-details?tabNo=${2}`);
+          submitBiddigData(values);
+
+          // props?.bidderData?.bidder_master?.length <=
+          // props?.bidderData?.no_of_bidders
+          //   ? submitBiddigData(values)
+          //   : navigate(`/bidding-type?tabNo=1`);
+
+          console.log(
+            "bidder",
+            values,
+            ",emd_doc:",
+            imageDoc?.name,
+            ",tech_doc:",
+            techImageDoc?.name,
+            ",fin_doc:",
+            fincImageDoc?.name
+          );
+          // navigate(`/bidding-details?tabNo=${2}`);
         }}
       >
         {({
@@ -348,7 +413,7 @@ const BiddingDetailForm = (props) => {
               </div>
 
               <div className="mt-8 ">
-                {/* financial creteria */}
+                {/* technical creteria */}
                 {props?.bidderData?.techCriteria?.length > 0 && (
                   <Accordion defaultExpanded>
                     <AccordionSummary
@@ -389,21 +454,34 @@ const BiddingDetailForm = (props) => {
                         ))}
                       </div>
 
-                      <div className="flex justify-end mr-8">
-                        <div className="flex flex-col">
-                          <h1
-                            className={`block mb-2 text-sm font-medium text-gray-900`}
-                          >
-                            Upload Referance Document
-                          </h1>
-                          <button className="bg-[#4338ca] px-6 py-2 text-white rounded-md text-xs hover:bg-[#5b4df1]">
-                            Upload Documment
-                          </button>
+                      <div className="flex justify-end gap-3 ">
+                        <div className="w-[40%] ml-10">
+                          <ImageDisplay
+                            url={basicDetailData?.doc[0]?.docUrl}
+                            preview={techPreview}
+                            imageDoc={techImageDoc}
+                            alt={"uploaded Tech document"}
+                            showPreview={"hidden"}
+                            width={"[50px]"}
+                          />
+                        </div>
+
+                        <div className="">
+                          <FileButton
+                            bg={"[#4338CA]"}
+                            hoverBg={"bg-indigo-300"}
+                            btnLabel={"Upload Tech Document"}
+                            imgRef={inputFileTechRef}
+                            setImageDoc={setTechImageDoc}
+                            setPreview={setTechPreview}
+                            textColor={"white"}
+                          />
                         </div>
                       </div>
                     </AccordionDetails>
                   </Accordion>
-                )}
+                )}{" "}
+                <br />
                 {/* financial creteria */}
                 {props?.bidderData?.finCriteria?.length > 0 && (
                   <Accordion defaultExpanded>
@@ -417,7 +495,7 @@ const BiddingDetailForm = (props) => {
                       aria-controls="panel1-content"
                       id="panel1-header"
                     >
-                      Technical Comparison
+                      Financial Comparison
                     </AccordionSummary>
                     <AccordionDetails>
                       <div className="relative overflow-x-auto">
@@ -445,16 +523,28 @@ const BiddingDetailForm = (props) => {
                         ))}
                       </div>
 
-                      <div className="flex justify-end mr-8">
-                        <div className="flex flex-col">
-                          <h1
-                            className={`block mb-2 text-sm font-medium text-gray-900`}
-                          >
-                            Upload Referance Document
-                          </h1>
-                          <button className="bg-[#4338ca] px-6 py-2 text-white rounded-md text-xs hover:bg-[#5b4df1]">
-                            Upload Documment
-                          </button>
+                      <div className="flex justify-end gap-3 ">
+                        <div className="w-[40%] ml-10">
+                          <ImageDisplay
+                            url={basicDetailData?.doc[0]?.docUrl}
+                            preview={fincPreview}
+                            imageDoc={fincImageDoc}
+                            alt={"uploaded document"}
+                            showPreview={"hidden"}
+                            width={"[50px]"}
+                          />
+                        </div>
+
+                        <div className="">
+                          <FileButton
+                            bg={"[#4338CA]"}
+                            hoverBg={"bg-indigo-300"}
+                            btnLabel={"Upload Finc Document"}
+                            imgRef={inputFileFincRef}
+                            setImageDoc={setFincImageDoc}
+                            setPreview={setFincPreview}
+                            textColor={"white"}
+                          />
                         </div>
                       </div>
                     </AccordionDetails>
