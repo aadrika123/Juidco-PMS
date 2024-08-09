@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import techIcon from "@/Components/assets/TechIcon.svg";
 import { IoAddSharp } from "react-icons/io5";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
@@ -7,20 +7,32 @@ import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import ApiHeader from "@/Components/api/ApiHeader";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import toast from "react-hot-toast";
 
 const BiddingCreteria = (props) => {
   const { titleBarVisibility, setBiddersCount } = useContext(contextVar);
 
+  const location = useLocation();
+
+  // console.log(location?.search)
+
   const navigate = useNavigate();
+  const { api_addCreteria ,api_submitCreteria} = ProjectApiList();
 
   const [showFields, setShowFields] = useState(false);
   const [formValues, setFormValues] = useState({
     criteria: [],
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [creteriaType, setCreteriaType] = useState();
+  const [bidderNo, setBidderNo] = useState();
 
-  // console.log(formValues);
+  // console.log(bidderNo);
+  console.log(props?.bidderData,"==vv");
 
   // intitial value
   const initialValues = {
@@ -53,24 +65,57 @@ const BiddingCreteria = (props) => {
     // }
   };
 
-
   //------------------- Apis ------------------------
 
-  const submitHandler = () => {
+  const addCreteria = () => {
     // setIsLoading(true);
 
     AxiosInterceptors.post(
-      `${api_postBidType}`,
-      { reference_no:refNo ,bid_type: tabValue},
+      `${api_addCreteria}`,
+      {
+        reference_no: props?.bidderData?.reference_no,
+        criteria: formValues?.criteria,
+        criteria_type: creteriaType,
+      },
       ApiHeader()
     )
       .then(function (response) {
         if (response?.data?.status) {
-         
-          toast.success("Bid Type saved Succefull");
-          // navigate(`/bidding-commparision-tabs?tabNo=1`,{state:refNo});
+          toast.success("Creteria Added Succefully");
+          navigate(`/bidding-commparision-tabs?tabNo=${props.tabNo}`);
         } else {
-          toast.error("Error in approving. Please try Again");
+          toast.error("Error in Adding. Please try Again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        g;
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        // setIsLoading(false);
+      });
+  };
+ 
+
+
+  const submitCreteria = () => {
+    // setIsLoading(true);
+
+    AxiosInterceptors.post(
+      `${api_submitCreteria}`,
+      {
+        reference_no: props?.bidderData?.reference_no,
+        no_of_bidders: Number(bidderNo)
+      },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Bidder Added Succefully");
+          navigate(`/bidding-details?tabNo=1`,{state:props?.bidderData?.reference_no})
+        } else {
+          toast.error("Error in Adding. Please try Again");
         }
       })
       .catch(function (error) {
@@ -82,6 +127,16 @@ const BiddingCreteria = (props) => {
       });
   };
 
+  // -----------------------------------------------------
+
+  useEffect(() => {
+    if (location?.search == "?tabNo=1") {
+      setCreteriaType("technical");
+    }
+    if (location?.search == "?tabNo=2") {
+      setCreteriaType("financial");
+    }
+  });
 
   // -----------------------------------------------------
 
@@ -92,7 +147,6 @@ const BiddingCreteria = (props) => {
 
   const confirmationHandler = () => {
     console.log(formValues);
-
   };
 
   const handleCancel = () => {
@@ -238,10 +292,7 @@ const BiddingCreteria = (props) => {
               className="border border-blue-400 rounded w-full h-10 outline-blue-300 px-2"
               placeholder=" Enter Number of Bidder Participated"
               onChange={(e) => {
-                setFormValues((prev) => ({
-                  ...prev,
-                  no_of_bidder: e.target.value,
-                }));
+                setBidderNo(e.target.value);
                 localStorage.setItem("biddersCount", e.target.value);
               }}
             />
@@ -268,16 +319,24 @@ const BiddingCreteria = (props) => {
           {/* <button className="border border-[#4338ca] hover:bg-[#4338ca] hover:text-white px-10 py-2 rounded">
             Reset
           </button> */}
-          <button
-            className="border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded"
-            onClick={() => {
-              confirmationHandler()
-              navigate(`/bidding-commparision-tabs?tabNo=${props.tabNo}`);
-            }}
-          
-          >
-            Save & Next
-          </button>
+
+          {location?.search == "?tabNo=3" ? (
+            <button
+              className="border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded"
+              // onClick={() => submitCreteria()}
+              onClick={() => navigate(`/bidding-details?tabNo=1`,{state : props?.bidderData?.reference_no})}
+            >
+              Submit
+            </button>
+          ) : (
+            <button
+              className="border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded"
+              onClick={() => addCreteria()}
+              // onClick={() =>  navigate(`/bidding-commparision-tabs?tabNo=${props.tabNo}`)}
+            >
+              Save & Next
+            </button>
+          )}
         </div>
       </div>
     </>

@@ -18,22 +18,22 @@ const TenderFormButton = ({ resetForm, getDetailData, loading }) => {
   };
 
   return (
-    <div className='mb-5'>
+    <div className="mb-5">
       <button
-        className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left'
+        className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-left"
         onClick={() => handleBack(tabNo)}
       >
         Back
       </button>
       <button
-        className='bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse'
-        type='submit'
+        className="bg-[#4338CA] mt-5 py-2 px-4 text-sm text-white rounded hover:bg-white hover:text-[#4338ca] border border-[#4338ca] flex float-right animate-pulse"
+        type="submit"
       >
         {loading ? "Loading..." : "Save & Next"}
       </button>
       {getDetailData == null && (
         <button
-          className='bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right'
+          className="bg-white mt-5 py-2 px-4 text-sm text-black rounded hover:bg-[#4338CA] hover:text-white border border-[#4338ca] mr-5 flex float-right"
           onClick={() => resetForm()}
         >
           Reset

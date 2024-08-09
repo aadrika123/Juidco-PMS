@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 
-const BiddingDetailForm = () => {
+const BiddingDetailForm = (props) => {
   const navigate = useNavigate();
   const inputFileRef = useRef();
 
@@ -18,8 +18,7 @@ const BiddingDetailForm = () => {
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
 
-
-
+  // console.log(props?.bidderData)
 
   const emdConfirmation = [
     { label: "Yes", value: "yes" },
@@ -36,26 +35,22 @@ const BiddingDetailForm = () => {
     { label: "DD", value: "dd" },
   ];
 
-  const creteriaAcc = [
-    { creteria: "creteria 1", description: "description 1" },
-    { creteria: "creteria 2", description: "description 2" },
-    { creteria: "creteria 3", description: "description 3" },
-  ];
 
   const initialValues = {
-    bidderName: "",
-    panNo: "",
-    gstNo: "",
+    name: "",
+    pan_no: "",
+    gst_no: "",
     address: "",
-    bankName: "",
-    bankAccNo: "",
-    ifscCode: "",
+    bank: "",
+    account_no: "",
+    ifsc: "",
+    bidding_amount:"",
     //
-    emd_conf: "no",
-    tranc_mode: "online",
-    ddNumber: "",
-    transaction: "cash",
-    trancNumber: "",
+    emd: "no",
+    payment_mode: "online",
+    dd_no: "",
+    offline_mode: "cash",
+    transaction_no: "",
   };
 
   return (
@@ -92,9 +87,9 @@ const BiddingDetailForm = () => {
                     type="text"
                     className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 "
                     placeholder="Bidder Name"
-                    name="bidderName"
+                    name="name"
                     onChange={handleChange}
-                    value={values.bidderName}
+                    value={values.name}
                   />
                 </div>
 
@@ -110,9 +105,9 @@ const BiddingDetailForm = () => {
                     type="text"
                     className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
                     placeholder="PAN No"
-                    name="panNo"
+                    name="pan_no"
                     onChange={handleChange}
-                    value={values.panNo}
+                    value={values.pan_no}
                   />
                 </div>
 
@@ -128,9 +123,9 @@ const BiddingDetailForm = () => {
                     type="text"
                     className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
                     placeholder="GST No"
-                    name="gstNo"
+                    name="gst_no"
                     onChange={handleChange}
-                    value={values.gstNo}
+                    value={values.gst_no}
                   />
                 </div>
 
@@ -139,13 +134,13 @@ const BiddingDetailForm = () => {
                     for="default-input"
                     className={`block mb-2 text-sm font-medium text-gray-900 mt-5 `}
                   >
-                    Address
+                    address
                     <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
-                    placeholder="Address"
+                    placeholder="address"
                     name="address"
                     onChange={handleChange}
                     value={values.address}
@@ -164,9 +159,9 @@ const BiddingDetailForm = () => {
                     type="text"
                     className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
                     placeholder="Bank Name"
-                    name="bankName"
+                    name="bank"
                     onChange={handleChange}
-                    value={values.bankName}
+                    value={values.bank}
                   />
                 </div>
 
@@ -182,9 +177,9 @@ const BiddingDetailForm = () => {
                     type="number"
                     className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
                     placeholder="Bank Account No"
-                    name="bankAccNo"
+                    name="account_no"
                     onChange={handleChange}
-                    value={values.bankAccNo}
+                    value={values.account_no}
                   />
                 </div>
 
@@ -200,9 +195,27 @@ const BiddingDetailForm = () => {
                     type="text"
                     className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
                     placeholder="IFSC Code"
-                    name="ifscCode"
+                    name="ifsc"
                     onChange={handleChange}
-                    value={values.ifscCode}
+                    value={values.ifsc}
+                  />
+                </div>
+
+                <div className="">
+                  <label
+                    for="default-input"
+                    className={`block mb-2 text-sm font-medium text-gray-900 mt-5`}
+                  >
+                    Bidding Amount
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
+                    placeholder="Bidding Amount"
+                    name="bidding_amount"
+                    onChange={handleChange}
+                    value={values.bidding_amount}
                   />
                 </div>
               </div>
@@ -212,46 +225,46 @@ const BiddingDetailForm = () => {
                   <RadioButtonsGroup
                     fields={emdConfirmation}
                     title={"EMD"}
-                    name={"emd_conf"}
-                    values={values.emd_conf}
+                    name={"emd"}
+                    values={values.emd}
                     handleChange={handleChange}
-                    errors={errors.emd_conf}
-                    touched={touched.emd_conf}
+                    errors={errors.emd}
+                    touched={touched.emd}
                     setFieldValue={setFieldValue}
                   />
                 </div>
 
-                {values?.emd_conf == "yes" && (
+                {values?.emd == "yes" && (
                   <>
                     <div className="border-r-2 ml-10">
                       <RadioButtonsGroup
                         fields={transc}
                         title={"Transaction Mode"}
-                        name={"tranc_mode"}
-                        values={values.tranc_mode}
+                        name={"payment_mode"}
+                        values={values.payment_mode}
                         handleChange={handleChange}
-                        errors={errors.tranc_mode}
-                        touched={touched.tranc_mode}
+                        errors={errors.payment_mode}
+                        touched={touched.payment_mode}
                         setFieldValue={setFieldValue}
                       />
                     </div>
 
-                    {values?.tranc_mode == "offline" ? (
+                    {values?.payment_mode == "offline" ? (
                       <>
                         <div className="border-r-2 ml-10">
                           <RadioButtonsGroup
                             fields={transcMode}
                             title={"Transaction"}
-                            name={"transaction"}
-                            values={values.transaction}
+                            name={"offline_mode"}
+                            values={values.offline_mode}
                             handleChange={handleChange}
-                            errors={errors.transaction}
-                            touched={touched.transaction}
+                            errors={errors.offline_mode}
+                            touched={touched.offline_mode}
                             setFieldValue={setFieldValue}
                           />
                         </div>
 
-                        {values?.transaction == "dd" && (
+                        {values?.offline_mode == "dd" && (
                           <div className="border-r-2 ml-10">
                             <label
                               for="default-input"
@@ -264,9 +277,9 @@ const BiddingDetailForm = () => {
                               type="text"
                               className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 "
                               placeholder="DD Nuber"
-                              name="ddNumber"
+                              name="dd_no"
                               onChange={handleChange}
-                              value={values.ddNumber}
+                              value={values.dd_no}
                             />
                           </div>
                         )}
@@ -284,9 +297,9 @@ const BiddingDetailForm = () => {
                           type="text"
                           className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 "
                           placeholder="Transaction Number"
-                          name="trancNumber"
+                          name="transaction_no"
                           onChange={handleChange}
-                          value={values.trancNumber}
+                          value={values.transaction_no}
                         />
                       </div>
                     )}
@@ -335,57 +348,118 @@ const BiddingDetailForm = () => {
               </div>
 
               <div className="mt-8 ">
-                <Accordion defaultExpanded>
-                  <AccordionSummary
-                    style={{
-                      backgroundColor: "#4338CA",
-                      color: "white",
-                      borderRadius: "5px",
-                    }}
-                    expandIcon={<ExpandMoreIcon className="text-white" />}
-                    aria-controls="panel1-content"
-                    id="panel1-header"
-                  >
-                    Criteria for Technical Comparison
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <div className="relative overflow-x-auto">
-                      {creteriaAcc.map((data) => (
-                        <div className="border border-gray-300 rounded-xl flex m-5">
-                          <div className="w-[7%] flex items-center">
-                            <img
-                              src={icon}
-                              alt=""
-                              className="max-w-none h-10 ml-5"
-                            />
-                          </div>
-
-                          <div className="p-3 w-[75%]">
-                            <div className="flex space-x-[6.2rem]">
-                              <h1 className=" text-base">{data.creteria} </h1>
+                {/* financial creteria */}
+                {props?.bidderData?.techCriteria?.length > 0 && (
+                  <Accordion defaultExpanded>
+                    <AccordionSummary
+                      style={{
+                        backgroundColor: "#4338CA",
+                        color: "white",
+                        borderRadius: "5px",
+                      }}
+                      expandIcon={<ExpandMoreIcon className="text-white" />}
+                      aria-controls="panel1-content"
+                      id="panel1-header"
+                    >
+                      Technical Comparison
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <div className="relative overflow-x-auto">
+                        {props?.bidderData?.techCriteria.map((data) => (
+                          <div className="border border-gray-300 rounded-xl flex m-5">
+                            <div className="w-[7%] flex items-center">
+                              <img
+                                src={icon}
+                                alt=""
+                                className="max-w-none h-10 ml-5"
+                              />
                             </div>
-                            <div className="flex space-x-[5rem]">
-                              <h1 className=" text-sm">{data.description} </h1>
+
+                            <div className="p-3 w-[75%]">
+                              <div className="flex space-x-[6.2rem]">
+                                <h1 className=" text-base">{data.heading} </h1>
+                              </div>
+                              <div className="flex space-x-[5rem]">
+                                <h1 className=" text-sm">
+                                  {data.description}{" "}
+                                </h1>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="flex justify-end mr-8">
-                      <div className="flex flex-col">
-                        <h1
-                          className={`block mb-2 text-sm font-medium text-gray-900`}
-                        >
-                          Upload Referance Document
-                        </h1>
-                        <button className="bg-[#4338ca] px-6 py-2 text-white rounded-md text-xs hover:bg-[#5b4df1]">
-                          Upload Documment
-                        </button>
+                        ))}
                       </div>
-                    </div>
-                  </AccordionDetails>
-                </Accordion>
+
+                      <div className="flex justify-end mr-8">
+                        <div className="flex flex-col">
+                          <h1
+                            className={`block mb-2 text-sm font-medium text-gray-900`}
+                          >
+                            Upload Referance Document
+                          </h1>
+                          <button className="bg-[#4338ca] px-6 py-2 text-white rounded-md text-xs hover:bg-[#5b4df1]">
+                            Upload Documment
+                          </button>
+                        </div>
+                      </div>
+                    </AccordionDetails>
+                  </Accordion>
+                )}
+                {/* financial creteria */}
+                {props?.bidderData?.finCriteria?.length > 0 && (
+                  <Accordion defaultExpanded>
+                    <AccordionSummary
+                      style={{
+                        backgroundColor: "#4338CA",
+                        color: "white",
+                        borderRadius: "5px",
+                      }}
+                      expandIcon={<ExpandMoreIcon className="text-white" />}
+                      aria-controls="panel1-content"
+                      id="panel1-header"
+                    >
+                      Technical Comparison
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <div className="relative overflow-x-auto">
+                        {props?.bidderData?.finCriteria.map((data) => (
+                          <div className="border border-gray-300 rounded-xl flex m-5">
+                            <div className="w-[7%] flex items-center">
+                              <img
+                                src={icon}
+                                alt=""
+                                className="max-w-none h-10 ml-5"
+                              />
+                            </div>
+
+                            <div className="p-3 w-[75%]">
+                              <div className="flex space-x-[6.2rem]">
+                                <h1 className=" text-base">{data.heading} </h1>
+                              </div>
+                              <div className="flex space-x-[5rem]">
+                                <h1 className=" text-sm">
+                                  {data.description}{" "}
+                                </h1>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="flex justify-end mr-8">
+                        <div className="flex flex-col">
+                          <h1
+                            className={`block mb-2 text-sm font-medium text-gray-900`}
+                          >
+                            Upload Referance Document
+                          </h1>
+                          <button className="bg-[#4338ca] px-6 py-2 text-white rounded-md text-xs hover:bg-[#5b4df1]">
+                            Upload Documment
+                          </button>
+                        </div>
+                      </div>
+                    </AccordionDetails>
+                  </Accordion>
+                )}
               </div>
 
               <TenderFormButton

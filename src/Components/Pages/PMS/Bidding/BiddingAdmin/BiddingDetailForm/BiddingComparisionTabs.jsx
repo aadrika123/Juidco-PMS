@@ -11,7 +11,12 @@
 // src/components/BiddingComparisionTabs.js
 import React, { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { FaChartPie } from "react-icons/fa";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
@@ -25,21 +30,19 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import toast from "react-hot-toast";
 
-
 const BiddingComparisionTabs = () => {
   let [searchParams, setSearchParams] = useSearchParams();
-  const [bidderData, setBidderData] = useState(false);
+  const [bidderData, setBidderData] = useState();
   const [isLoading, setisLoading] = useState(false);
-
+  const [referenceNo, setRferenceNo] = useState();
 
   const { titleBarVisibility } = useContext(contextVar);
   const { api_getBidType } = ProjectApiList();
 
+  const { state } = useLocation();
+  // console.log(state)
 
-  const {state} = useLocation()
-//   console.log(state)
-
-console.log(bidderData)
+  console.log(state, "state");
 
   const navigate = useNavigate();
 
@@ -56,13 +59,12 @@ console.log(bidderData)
     { label: "Bidder Details", tab: 3 },
   ];
 
-  const getApplicationDetail = () => {
+  const getApplicationDetail = (ref) => {
     setisLoading(true);
-    AxiosInterceptors.get(`${api_getBidType}/${state}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getBidType}/${ref}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           setBidderData(response?.data?.data);
-
           setisLoading(false);
         } else {
           setisLoading(false);
@@ -78,10 +80,11 @@ console.log(bidderData)
       });
   };
 
-
-  useEffect(()=>{
-    getApplicationDetail()
-  },[])
+  useEffect(() => {
+    state && localStorage.setItem("reference_no", state);
+    const ref = localStorage.getItem("reference_no");
+    getApplicationDetail(ref);
+  }, []);
 
   return (
     <>
@@ -125,6 +128,7 @@ console.log(bidderData)
                 heading={"Technical Comparision"}
                 page={"stockReq"}
                 tabNo={"2"}
+                bidderData={bidderData}
               />
             </div>
           )}
@@ -138,6 +142,7 @@ console.log(bidderData)
                 heading={"Financial Comparision"}
                 page={"procurement"}
                 tabNo={"3"}
+                bidderData={bidderData}
               />
             </div>
           )}
@@ -151,6 +156,7 @@ console.log(bidderData)
                 heading={"Financial Comparision"}
                 page={"procurement"}
                 tabNo={"4"}
+                bidderData={bidderData}
               />
             </div>
           )}

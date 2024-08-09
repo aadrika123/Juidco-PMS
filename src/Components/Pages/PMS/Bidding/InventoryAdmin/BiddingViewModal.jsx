@@ -54,7 +54,7 @@ const BiddingViewModal = ({ closeModal,refNo }) => {
         if (response?.data?.status) {
          
           toast.success("Bid Type saved Succefull");
-          // navigate(`/bidding-commparision-tabs?tabNo=1`,{state:refNo});
+          navigate(`/bidding-commparision-tabs?tabNo=1`,{state:refNo});
         } else {
           toast.error("Error in approving. Please try Again");
         }
