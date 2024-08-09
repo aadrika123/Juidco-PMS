@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import techIcon from "@/Components/assets/TechIcon.svg";
 import featureicon from "@/Components/assets/Featuredicon1.svg";
-import featureicons from "@/Components/assets/Featuredicon.svg";
 import { useNavigate } from "react-router-dom";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";

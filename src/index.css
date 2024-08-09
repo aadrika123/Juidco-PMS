@@ -125,3 +125,15 @@ body {
           padding-bottom: 10mm;
       }
   }
+
+
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.blink {
+    /* @apply animate-blink; Tailwind's built-in animation class */
+    animation: blink 1s infinite;
+}
