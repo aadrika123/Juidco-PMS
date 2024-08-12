@@ -52,19 +52,19 @@ const BiddingComparisionTabs = () => {
   };
 
   const finTech = [
-    { label: "Technical Comparision", tab: 1 },
-    { label: "Financial Comparision", tab: 2 },
+    { label: "Technical Comparision", tab: 1, value: "technical" },
+    { label: "Financial Comparision", tab: 2, value: "financial" },
     { label: "Bidder Details", tab: 3 },
   ];
 
   const technical = [
-    { label: "Technical Comparision", tab: 1 },
-    { label: "Bidder Details", tab: 3 },
+    { label: "Technical Comparision", tab: 1, value: "technical" },
+    { label: "Bidder Details", tab: 2 },
   ];
 
   const financial = [
-    { label: "Financial Comparision", tab: 2 },
-    { label: "Bidder Details", tab: 3 },
+    { label: "Financial Comparision", tab: 1, value: "financial" },
+    { label: "Bidder Details", tab: 2 },
   ];
 
   const getApplicationDetail = (ref) => {
@@ -74,14 +74,10 @@ const BiddingComparisionTabs = () => {
         if (response?.data?.status) {
           setBidderData(response?.data?.data);
           setisLoading(false);
-          console.log(
-            response?.response?.data?.bid_type,
-            "===response?.response?.data?.bid_type"
-          );
           //setting tab buttons
-          if (response?.response?.data?.bid_type === "fintech") {
+          if (response?.data?.data?.bid_type === "fintech") {
             setTabDetails(finTech);
-          } else if (response?.response?.data?.bid_type === "technical") {
+          } else if (response?.data?.data?.bid_type === "technical") {
             setTabDetails(technical);
           } else {
             setTabDetails(financial);
@@ -139,8 +135,23 @@ const BiddingComparisionTabs = () => {
         </div>
       </div>
       <div className='container mx-auto rounded  mt-6'>
-        <div className='mt-4'>
-          {tabNo === 1 && (
+        {tabDetails?.map((tabs) => (
+          <div
+            className={`${tabNo >= 1 ? "stockReq" : "disabled:bg-red-300"} ${
+              tabs.tab !== tabNo ? "hidden" : ""
+            }`}
+          >
+            <BiddingCreteria
+              heading={tabs?.label}
+              page={"stockReq"}
+              tabNo={tabs?.tab}
+              bidderData={bidderData}
+              tabDetails={tabDetails}
+            />
+          </div>
+        ))}
+        {/* <div className='mt-4'>
+          {tabNo === [i] && (
             <div
               className={`${tabNo >= 1 ? "stockReq" : "disabled:bg-red-300"}`}
             >
@@ -180,7 +191,7 @@ const BiddingComparisionTabs = () => {
               />
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </>
   );

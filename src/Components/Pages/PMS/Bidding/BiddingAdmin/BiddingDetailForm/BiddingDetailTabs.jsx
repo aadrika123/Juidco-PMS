@@ -36,17 +36,14 @@ const BiddingDetails = () => {
   const [bidDetails, setBidDetails] = useState();
   const [bidderData, setBidderData] = useState(false);
   const [isLoading, setisLoading] = useState(false);
-  const [biddersCounts, setBidderCount] = useState();
 
   const navigate = useNavigate();
 
   // console.log(parseInt(response?.data?.bidder_master?.length))
 
-  const { setBiddersCount, titleBarVisibility, referenceNo } =
-    useContext(contextVar);
+  const { titleBarVisibility } = useContext(contextVar);
 
   const { state } = useLocation();
-  console.log(state, "state state state");
 
   const tabNo = Number(searchParams.get("tabNo"));
 

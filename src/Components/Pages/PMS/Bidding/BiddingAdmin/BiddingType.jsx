@@ -21,7 +21,7 @@ const BiddingType = () => {
   const { api_getBidType } = ProjectApiList();
 
   const { state } = useLocation();
-  console.log(state, "state====in bidding type");
+  // console.log(state)
 
   const numberOfBidders = [
     {

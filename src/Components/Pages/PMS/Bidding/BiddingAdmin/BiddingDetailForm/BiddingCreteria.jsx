@@ -32,7 +32,6 @@ const BiddingCreteria = (props) => {
   const [bidderNo, setBidderNo] = useState();
 
   // console.log(bidderNo);
-  console.log(props?.bidderData, "==vv");
   // setReferenceNo(props?.bidderData?.reference_no);
   // intitial value
   const initialValues = {
@@ -75,21 +74,22 @@ const BiddingCreteria = (props) => {
       {
         reference_no: props?.bidderData?.reference_no,
         criteria: formValues?.criteria,
-        criteria_type: creteriaType,
+        criteria_type: tabDetails.value,
       },
       ApiHeader()
     )
       .then(function (response) {
         if (response?.data?.status) {
           toast.success("Creteria Added Succefully");
-          navigate(`/bidding-commparision-tabs?tabNo=${props.tabNo}`);
+          navigate(`/bidding-commparision-tabs?tabNo=${props.tabNo + 1}`, {
+            state: props?.bidderData?.reference_no,
+          });
         } else {
           toast.error("Error in Adding. Please try Again");
         }
       })
       .catch(function (error) {
         console.log(error, "err res");
-        g;
         toast.error(error?.response?.data?.error);
       })
       .finally(() => {
@@ -169,7 +169,7 @@ const BiddingCreteria = (props) => {
   return (
     <>
       <div className='bg-white border border-blue-500 rounded-lg shadow-xl space-y-5 '>
-        {props.tabNo != 4 && (
+        {props.heading !== "Bidder Details" && (
           <>
             <div className='p-7'>
               <h1 className='text-xl font-medium'>
@@ -280,7 +280,7 @@ const BiddingCreteria = (props) => {
 
         {/* Bidder Details */}
 
-        {props.tabNo == 4 && (
+        {props.heading == "Bidder Details" && (
           <div className='p-7'>
             <h1 className='text-xl font-medium'>Bidder’s</h1>
             <p className='font-extralight text-xs underline pb-4'>
@@ -303,7 +303,7 @@ const BiddingCreteria = (props) => {
       {/* Bidder Details */}
       <div className='flex justify-between mt-5'>
         <div className=''>
-          {props.tabNo != 2 && (
+          {props.tabNo != 1 && (
             <button
               className='border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded'
               onClick={() => {
@@ -316,31 +316,30 @@ const BiddingCreteria = (props) => {
         </div>
 
         <div className='space-x-4 flex justify-end'>
-          {/* <button className="border border-[#4338ca] hover:bg-[#4338ca] hover:text-white px-10 py-2 rounded">
-            Reset
-          </button> */}
-
-          {location?.search == "?tabNo=3" ? (
+          {props?.heading == "Bidder Details" ? (
             <button
-              className='border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded'
-              // onClick={() => submitCreteria()}
-              onClick={() =>
-                navigate(`/bidding-details?tabNo=1`, {
-                  state: props?.bidderData?.reference_no,
-                })
-              }
+              className='border border-[rgb(67,56,202)] bg-[rgb(67,56,202)] hover:bg-[#342b96] text-white px-6 py-2 rounded'
+              onClick={() => submitCreteria()}
+              // onClick={() =>
+              //   navigate(`/bidding-details?tabNo=1`, {
+              //     state: props?.bidderData?.reference_no,
+              //   })
+              // }
             >
               Submit
             </button>
           ) : (
             <button
               className='border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded'
-              // onClick={() => addCreteria()}
-              onClick={() =>
-                navigate(`/bidding-commparision-tabs?tabNo=${props.tabNo}`, {
-                  state: props?.bidderData?.reference_no,
-                })
-              }
+              onClick={() => addCreteria()}
+              // onClick={() =>
+              //   navigate(
+              //     `/bidding-commparision-tabs?tabNo=${props.tabNo + 1}`,
+              //     {
+              //       state: props?.bidderData?.reference_no,
+              //     }
+              //   )
+              // }
             >
               Save & Next
             </button>

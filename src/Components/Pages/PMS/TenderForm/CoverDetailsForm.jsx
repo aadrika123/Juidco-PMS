@@ -12,6 +12,7 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import { TailSpin } from "react-loader-spinner";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const tabsCover1 = [
   {
