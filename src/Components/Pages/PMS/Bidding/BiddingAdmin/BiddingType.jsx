@@ -4,6 +4,7 @@ import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import { useFormik } from "formik";
 import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
 import img from "@/Components/assets/page.pdf";
+import { useLocation } from "react-router-dom";
 
 const BiddingType = () => {
   const [markingType, setMarkingType] = useState("Numeric");
@@ -11,6 +12,9 @@ const BiddingType = () => {
   const [confModal, setConfModal] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
+
+  const {state} = useLocation()
+  // console.log(state)
 
   const numberOfBidders = [
     {

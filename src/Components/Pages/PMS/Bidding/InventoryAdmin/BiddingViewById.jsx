@@ -20,15 +20,17 @@ const BiddingViewById = () => {
   const [imageDoc, setImageDoc] = useState(false);
   const [preview, setPreview] = useState();
   const [applicationFullData, setapplicationFullData] = useState();
+  const [biddingData, setBiddingData] = useState();
   const [showModal, setShowModal] = useState(false);
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
   const { id, page } = useParams();
 
- 
+  // console.log(biddingData?.reference_no)
 
-  const { api_postForwardtoSR, api_fetchProcurementDetById } = ProjectApiList();
+  const { api_postForwardtoSR, api_fetchProcurementDetById, api_getBidType } =
+    ProjectApiList();
 
   let buttonStyle =
     "mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -81,6 +83,28 @@ const BiddingViewById = () => {
       });
   };
 
+  const getBiddingDetail = () => {
+    setisLoading(true);
+    AxiosInterceptors.get(`${api_getBidType}/${id}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setBiddingData(response?.data?.data);
+
+          setisLoading(false);
+        } else {
+          setisLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        console.log("details by id error...", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
   const forwardToSR = () => {
     setisLoading(true);
     AxiosInterceptors.post(
@@ -104,6 +128,7 @@ const BiddingViewById = () => {
 
   useEffect(() => {
     getApplicationDetail();
+    getBiddingDetail();
   }, []);
 
   if (confModal) {
@@ -117,6 +142,7 @@ const BiddingViewById = () => {
       </>
     );
   }
+
   // ...................................
   // const handleConfirmClick = () => {
   //   if (window.confirm("Are you sure you want to proceed?")) {
@@ -140,7 +166,6 @@ const BiddingViewById = () => {
       </>
     );
   }
-
 
   if (showModal) {
     return (
@@ -172,17 +197,7 @@ const BiddingViewById = () => {
             className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500"
             ref={componentRef}
           >
-            <div className="flex justify-between">
-              {/* <div className="pl-8  text-[1.2rem] text-[#4338CA]">
-                <h1 className="font-bold">
-                  Handover No <span className="text-black">:</span>
-                  <span className="font-light">
-                    {" "}
-                    {nullToNA(applicationFullData?.stock_handover_no)}
-                  </span>
-                </h1>
-              </div> */}
-            </div>
+            <div className="flex justify-between"></div>
             <div className="grid md:grid-rows-4-4 gap-6 ml-8">
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold">EMD </div>
@@ -225,6 +240,16 @@ const BiddingViewById = () => {
                   {applicationFullData?.tendering_type}
                 </div>
               </div>
+              {biddingData?.bid_type && (
+                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                  <div className="md:w-auto w-[50%] font-semibold ">
+                    Bid Type{" "}
+                  </div>
+                  <div className="md:w-auto w-[50%] text-gray-800 ">
+                    {biddingData?.bid_type}
+                  </div>
+                </div>
+              )}
 
               {applicationFullData?.tendering_type === "rateContract" && (
                 <div className="grid md:grid-cols-3 gap-4">
@@ -268,6 +293,255 @@ const BiddingViewById = () => {
             </div>
           </div>
 
+          {/* Bidding Comparision Details */}
+          {biddingData?.techCriteria.length > 0 &&
+            biddingData?.finCriteria.length > 0 && (
+              <>
+                <div className="">
+                  <h2 className=" text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10">
+                    Criteria type Info{" "}
+                  </h2>
+                </div>
+                <div
+                  className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 flex"
+                  ref={componentRef}
+                >
+                  <div className="mt-5 w-[50%]">
+                    {biddingData?.techCriteria.length > 0 && (
+                      <>
+                        <h1 className="font-bold ">Technical Criteria</h1>
+
+                        {biddingData?.techCriteria.map((data) => (
+                          <>
+                            <div className="grid md:grid-rows-4-4 gap-6 ml-8 mb-5">
+                              <div className="md:flex-1 md:block flex md:flex-col-reverse justify-between">
+                                <div className="md:w-auto w-[50%] text-gray-800 ">
+                                  Creteria Type:{" "}
+                                  <span className="font-bold">
+                                    {data?.criteria_type}
+                                  </span>
+                                </div>
+                                <div className="md:w-auto w-[50%] text-gray-800 ">
+                                  Heading:{" "}
+                                  <span className="font-bold">
+                                    {data?.heading}
+                                  </span>
+                                </div>
+                                <div className="md:w-auto w-[50%] text-gray-800 ">
+                                  Description:{" "}
+                                  <span className="font-bold">
+                                    {data?.description}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </>
+                        ))}
+                      </>
+                    )}
+                  </div>
+
+                  <div className="">
+                    {biddingData?.finCriteria.length > 0 && (
+                      <>
+                        <h1 className="font-bold ">Financial Criteria</h1>
+
+                        {biddingData?.finCriteria.map((data) => (
+                          <>
+                            <div className="grid md:grid-rows-4-4 gap-6 ml-8 mb-5">
+                              <div className="md:flex-1 md:block flex md:flex-col-reverse justify-between">
+                                <div className="md:w-auto w-[50%] text-gray-800 ">
+                                  Creteria Type:{" "}
+                                  <span className="font-bold">
+                                    {data?.criteria_type}
+                                  </span>
+                                </div>
+                                <div className="md:w-auto w-[50%] text-gray-800 ">
+                                  Heading:{" "}
+                                  <span className="font-bold">
+                                    {data?.heading}
+                                  </span>
+                                </div>
+                                <div className="md:w-auto w-[50%] text-gray-800 ">
+                                  Description:{" "}
+                                  <span className="font-bold">
+                                    {data?.description}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+
+          {/* Bidding Master Details */}
+          {biddingData?.bidder_master.length > 0 && (
+            <>
+              <div className="">
+                <h2 className=" text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10">
+                  Bidding Master Info{" "}
+                </h2>
+              </div>
+              <div
+                className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 "
+                ref={componentRef}
+              >
+                <div className="mt-5">
+                  {biddingData?.bidder_master.length > 0 && (
+                    <>
+                      {/* <h1 className="font-bold ">Technical Criteria</h1> */}
+
+                      {biddingData?.bidder_master.map((data, index) => (
+                        <>
+                          <div className="grid md:grid-rows-4-4 gap-6 mb-5 bg-slate-100 rounded-xl">
+                            <h1 className="p-3 bg-slate-300 rounded ">
+                              Bidder {index + 1}
+                            </h1>
+                            <div className="flex justify-between mb-2 px-4 pb-0">
+                              <div className="">
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">
+                                    Bidder Name :{" "}
+                                  </span>
+                                  <span className="font-bold">
+                                    {data?.name}
+                                  </span>
+                                </div>
+
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">Gst No: </span>
+                                  <span className="font-bold">
+                                    {data?.gst_no}
+                                  </span>
+                                </div>
+
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">Pan No: </span>
+                                  <span className="font-bold">
+                                    {data?.pan_no}
+                                  </span>
+                                </div>
+
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">Address: </span>
+                                  <span className="font-bold">
+                                    {data?.address}
+                                  </span>
+                                </div>
+
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">Bank Name: </span>
+                                  <span className="font-bold">
+                                    {data?.bank}
+                                  </span>
+                                </div>
+
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">Bank Acc No: </span>
+                                  <span className="font-bold">
+                                    {data?.account_no}
+                                  </span>
+                                </div>
+
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">IFSC Code: </span>
+                                  <span className="font-bold">
+                                    {data?.ifsc}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className="">
+                                <span className="text-sm"></span>{" "}
+                                <div className="md:w-auto w-[50%] text-gray-800 pb-1 ">
+                                  <span className="text-sm">EMD : </span>
+                                  <span className="font-bold">
+                                    {data?.emd == true ? "Yes" : "No"}
+                                  </span>
+                                </div>
+                                {/* <div className="md:w-auto w-[50%] text-gray-800 pb-1 ">
+                                  <span className="text-sm">EMD Doc : </span>
+                                  <span className="font-bold">
+                                    {data?.emd_doc}
+                                  </span>
+                                </div> */}
+                                <div className="md:w-auto w-[50%] text-gray-800 pb-1 ">
+                                  <span className="text-sm">
+                                    Payment Mode :{" "}
+                                  </span>
+                                  <span className="font-bold">
+                                    {data?.payment_mode}
+                                  </span>
+                                </div>
+                                <div className="md:w-auto w-[50%] text-gray-800 pb-1 ">
+                                  <span className="text-sm">
+                                    Offline Mode :{" "}
+                                  </span>
+                                  <span className="font-bold">
+                                    {data?.offline_mode}
+                                  </span>
+                                </div>
+                                <div className="md:w-auto w-[50%] text-gray-800 pb-1 ">
+                                  <span className="text-sm">DD no : </span>
+                                  <span className="font-bold">
+                                    {data?.dd_no}
+                                  </span>
+                                </div>
+                                <div className="md:w-auto w-[50%] text-gray-800 pb-1 ">
+                                  <span className="text-sm"> DD no : </span>
+                                  <span className="font-bold">
+                                    {data?.transaction_no}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="">
+                                <h1 className="font-bold pb-5">
+                                  Bidder Documents
+                                </h1>
+                                <div className="flex justify-between space-x-5">
+                                  <div className="w-[100px]">
+                                    <ImageDisplay
+                                      url={data?.emd_doc}
+                                      className="w-20 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
+                                      alt={"uploaded doc"}
+                                      preview={""}
+                                    />
+                                    <h1 className="text-sm text-center">
+                                      Emd Document
+                                    </h1>
+                                  </div>
+
+                                  {data?.bidder_doc?.map((bidDoc) => (
+                                    <div className="w-[100px]">
+                                      <ImageDisplay
+                                        url={bidDoc?.doc_path}
+                                        className="w-20 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
+                                        alt={"uploaded doc"}
+                                        preview={""}
+                                      />
+                                      <h1 className="text-sm text-center">
+                                        {bidDoc?.criteria_type} Document
+                                      </h1>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ))}
+                    </>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
+
           {/* Buttons */}
 
           <div className="space-x-5 flex justify-between mt-[2rem]">
@@ -285,12 +559,33 @@ const BiddingViewById = () => {
                 </button>
               </div>
               <div className="space-x-3 flex">
-                {/* <button
-                  className={`pb-2 pl-9 pr-9 pt-2 rounded hover:bg-red-700 bg-red-500 text-white border-red-600`}
-                >
-                  Reject
-                </button> */}
-                {page == "inbox" && (
+                {page === "inbox" && !biddingData?.comparison?.length && (
+                  <button
+                    onClick={() =>
+                      navigate(`/bidding-type`, {
+                        state: biddingData?.reference_no,
+                      })
+                    }
+                    className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl "
+                  >
+                   Fill Bidder Comparison Form
+                  </button>
+                )}
+
+                {page === "inbox" && !biddingData?.bidder_master?.length && (
+                  <button
+                  onClick={() =>
+                    navigate(`/bidding-details?tabNo=1`, {
+                      state: biddingData?.reference_no,
+                    })
+                  }
+                    className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl "
+                  >
+                    Proceed to fill Bidder Details Form
+                  </button>
+                )}
+
+                {page === "inbox" && !biddingData?.bid_type && (
                   <button
                     onClick={() => setShowModal(true)}
                     className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl "
@@ -298,6 +593,29 @@ const BiddingViewById = () => {
                     Confirm
                   </button>
                 )}
+                {page === "inbox" && !biddingData?.bid_type && (
+                  <button
+                    // onClick={() => setShowModal(true)}
+                    className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl "
+                  >
+                    Confirm
+                  </button>
+                )}
+
+                {page === "inbox" && biddingData?.bid_type === "technical"
+                  ? !biddingData?.techCriteria?.length
+                  : biddingData?.bid_type === "financial"
+                  ? !biddingData?.finCriteria?.length
+                  : (biddingData?.bid_type === "fintech" &&
+                      !biddingData?.techCriteria?.length) ||
+                    (!biddingData?.finCriteria?.length && (
+                      <button
+                        onClick={() => navigate(`/bidding-commparision-tabs?tabNo=1`)}
+                        className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl "
+                      >
+                        Fill criteria and description
+                      </button>
+                    ))}
               </div>
             </div>
 
