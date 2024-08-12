@@ -14,7 +14,7 @@ const BiddingType = () => {
   const [imageModal, setImageModal] = useState(false);
 
   const {state} = useLocation()
-  // console.log(state)
+  console.log(state)
 
   const numberOfBidders = [
     {
@@ -37,33 +37,23 @@ const BiddingType = () => {
       compName: `Rancho Pvt Ltd.`,
       doc: "Uploaded Document",
     },
-    {
-      bidderHeading: `B4`,
-      compName: `Rancho Pvt Ltd.`,
-      doc: "Uploaded Document",
-    },
-    {
-      bidderHeading: `B4`,
-      compName: `Rancho Pvt Ltd.`,
-      doc: "Uploaded Document",
-    },
-    {
-      bidderHeading: `B4`,
-      compName: `Rancho Pvt Ltd.`,
-      doc: "Uploaded Document",
-    },
+    // {
+    //   bidderHeading: `B4`,
+    //   compName: `Rancho Pvt Ltd.`,
+    //   doc: "Uploaded Document",
+    // },
+    // {
+    //   bidderHeading: `B4`,
+    //   compName: `Rancho Pvt Ltd.`,
+    //   doc: "Uploaded Document",
+    // },
+    // {
+    //   bidderHeading: `B4`,
+    //   compName: `Rancho Pvt Ltd.`,
+    //   doc: "Uploaded Document",
+    // },
   ];
 
-  const document = [
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-  ];
 
   const creteria = [
     {
