@@ -79,9 +79,9 @@ const BiddingComparisionTabs = () => {
             "===response?.response?.data?.bid_type"
           );
           //setting tab buttons
-          if (response?.response?.data?.bid_type === "fintech") {
+          if (response?.data?.data?.bid_type === "fintech") {
             setTabDetails(finTech);
-          } else if (response?.response?.data?.bid_type === "technical") {
+          } else if (response?.data?.data?.bid_type === "technical") {
             setTabDetails(technical);
           } else {
             setTabDetails(financial);
