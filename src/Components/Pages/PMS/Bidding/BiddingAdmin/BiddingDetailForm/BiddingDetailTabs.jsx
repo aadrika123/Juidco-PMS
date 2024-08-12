@@ -30,7 +30,7 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
 
 const BiddingDetails = () => {
-  const { api_getBidType } = ProjectApiList();
+  const { api_getBidType, api_submitBidder } = ProjectApiList();
 
   let [searchParams, setSearchParams] = useSearchParams();
   const [bidDetails, setBidDetails] = useState();
@@ -74,6 +74,7 @@ const BiddingDetails = () => {
       .then(function (response) {
         if (response?.data?.status) {
           setBidderData(response?.data?.data);
+          // console.log(response?.data?.data?.reference_no)
           createBtnDetais(response?.data?.data?.no_of_bidders);
           setisLoading(false);
 
@@ -81,6 +82,9 @@ const BiddingDetails = () => {
             parseInt(response?.data?.data?.no_of_bidders) ===
             parseInt(response?.data?.data?.bidder_master?.length)
           ) {
+            if (response?.data?.data?.creationStatus === 2) {
+              submitBidder();
+            }
             navigate(`/bidding-type?tabNo=1`, {
               state,
             });
@@ -88,7 +92,8 @@ const BiddingDetails = () => {
             navigate(
               `?tabNo=${
                 Number(response?.data?.data?.bidder_master?.length) + 1
-              }`
+              }`,
+              { state }
             );
           }
         } else {
@@ -102,6 +107,33 @@ const BiddingDetails = () => {
       })
       .finally(() => {
         setisLoading(false);
+      });
+  };
+
+  //
+  const submitBidder = () => {
+    // setIsLoading(true);
+
+    AxiosInterceptors.post(
+      `${api_submitBidder}`,
+      { reference_no: state },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Bidder Submitted Succefully");
+          // navigate(`/bidding-commparision-tabs?tabNo=${props.tabNo}`);
+        } else {
+          toast.error("Error in Submitting. Please try Again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        g;
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        // setIsLoading(false);
       });
   };
 

@@ -227,6 +227,7 @@ export default function ProjectApiList() {
     api_addCreteria: `${baseUrl}/api/pms/ta/add-criteria`,
     api_submitCreteria: `${baseUrl}/api/pms/ta/submit-criteria`,
     api_addBidder: `${baseUrl}/api/pms/ta/add-bidder`,
+    api_submitBidder: `${baseUrl}/api/pms/ta/submit-bidder`,
 
 
   };

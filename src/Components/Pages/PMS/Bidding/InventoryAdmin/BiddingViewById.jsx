@@ -27,7 +27,7 @@ const BiddingViewById = () => {
   const navigate = useNavigate();
   const { id, page } = useParams();
 
-  // console.log(biddingData?.reference_no)
+  // console.log(biddingData?.creationStatus)
 
   const { api_postForwardtoSR, api_fetchProcurementDetById, api_getBidType } =
     ProjectApiList();
@@ -130,6 +130,46 @@ const BiddingViewById = () => {
     getApplicationDetail();
     getBiddingDetail();
   }, []);
+
+  const btnLabel = (status) => {
+    switch (status) {
+      case 0 || null || undefined:
+        return "Type Selection";
+      case 1:
+        return "Criteria Addition";
+      case 2:
+        return "Bidder Addition";
+      case 3:
+        return "Comparison";
+      default:
+        return "Continue";
+    }
+  };
+
+  const btnNavigate = (status) => {
+    switch (status) {
+      case 0 || null || undefined:
+        setShowModal(true);
+        break;
+      case 1:
+        navigate(`/bidding-commparision-tabs`, {
+          state: biddingData?.reference_no,
+        });
+        break;
+      case 2:
+        navigate(`/bidding-details?tabNo=1`, {
+          state: biddingData?.reference_no,
+        });
+        break;
+      case 3:
+        navigate(`/bidding-type`, {
+          state: biddingData?.reference_no,
+        });
+        break;
+      default:
+        break;
+    }
+  };
 
   if (confModal) {
     return (
@@ -559,53 +599,50 @@ const BiddingViewById = () => {
                 </button>
               </div>
               <div className='space-x-3 flex'>
-                {page === "inbox" &&
-                  biddingData?.bid_type &&
-                  !biddingData?.comparison?.length && (
-                    <button
-                      onClick={() =>
-                        navigate(`/bidding-type`, {
-                          state: biddingData?.reference_no,
-                        })
-                      }
-                      className='mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl '
-                    >
-                      Fill Bidder Comparison Form
-                    </button>
-                  )}
+                {/* {page === "inbox" && !biddingData?.comparison?.length && ( */}
+                {/* <button
+                    onClick={() =>
+                      navigate(`/bidding-type`, {
+                        state: biddingData?.reference_no,
+                      })
+                    }
+                    className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl "
+                  >
+                   Fill Bidder Comparison Form
+                  </button> */}
+                {/* )} */}
 
-                {page === "inbox" &&
-                  biddingData?.bid_type &&
-                  (biddingData?.bid_type === "technical"
-                    ? !biddingData?.techCriteria?.length
-                    : biddingData?.bid_type === "financial"
-                    ? !biddingData?.finCriteria?.length
-                    : biddingData?.bid_type === "fintech" &&
-                      !biddingData?.techCriteria?.length) && (
-                    <button
-                      onClick={() =>
-                        navigate(`/bidding-details?tabNo=1`, {
-                          state: biddingData?.reference_no,
-                        })
-                      }
-                      className='mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl '
-                    >
-                      Proceed to fill Bidder Details Form
-                    </button>
-                  )}
+                {/* {page === "inbox" && !biddingData?.bidder_master?.length && ( */}
+                {/* <button
+                  onClick={() =>
+                    navigate(`/bidding-details?tabNo=1`, {
+                      state: biddingData?.reference_no,
+                    })
+                  }
+                    className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl "
+                  >
+                    Proceed to fill Bidder Details Form
+                  </button> */}
+                {/* )} */}
 
-                {page === "inbox" && !biddingData?.bid_type && (
+                {page === "inbox" && (
                   <button
-                    onClick={() => setShowModal(true)}
+                    onClick={() => btnNavigate(biddingData?.creationStatus)}
                     className='mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl '
+                  >
+                    {btnLabel(biddingData?.creationStatus)}
+                  </button>
+                )}
+                {/* {page === "inbox" && !biddingData?.bid_type && (
+                  <button
+                    // onClick={() => setShowModal(true)}
+                    className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl "
                   >
                     Confirm
                   </button>
-                )}
+                )} */}
 
-                {page === "inbox" &&
-                biddingData?.bid_type &&
-                biddingData?.bid_type === "technical"
+                {/* {page === "inbox" && biddingData?.bid_type === "technical"
                   ? !biddingData?.techCriteria?.length
                   : biddingData?.bid_type === "financial"
                   ? !biddingData?.finCriteria?.length
@@ -620,7 +657,7 @@ const BiddingViewById = () => {
                       >
                         Fill criteria and description
                       </button>
-                    )}
+                    ))} */}
               </div>
             </div>
 
