@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
@@ -9,9 +9,12 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import { contextVar } from "@/Components/context/contextVar";
 
 const BiddingInitialForm = () => {
   const navigate = useNavigate();
+  const context = useContext(contextVar);
+  console.log(context, "===context");
   const [selectedOption, setSelectedOption] = useState("");
   const [emdPercentageValue, setEmdPercentageValue] = useState();
   const [isLoading, setIsLoading] = useState(false);

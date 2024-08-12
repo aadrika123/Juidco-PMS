@@ -20,7 +20,8 @@ const BoqListTabsDa = () => {
   const [activeTab, setActiveTab] = useState("inbox");
   const { api_fetchDaBoqListInbox, api_fetchDaBoqListOutbox } =
     ProjectApiList();
-  const { titleBarVisibility } = useContext(contextVar);
+  const { titleBarVisibility, reference_no } = useContext(contextVar);
+  console.log(reference_no, "-----refff");
 
   return (
     <>

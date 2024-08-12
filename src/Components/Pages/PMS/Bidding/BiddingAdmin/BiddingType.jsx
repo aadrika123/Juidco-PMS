@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { TbCircleLetterNFilled } from "react-icons/tb";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import { useFormik } from "formik";
 import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
 import img from "@/Components/assets/page.pdf";
+import { useLocation } from "react-router-dom";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import toast from "react-hot-toast";
+import ApiHeader from "@/Components/api/ApiHeader";
 
 const BiddingType = () => {
   const [markingType, setMarkingType] = useState("Numeric");
@@ -11,6 +16,12 @@ const BiddingType = () => {
   const [confModal, setConfModal] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
+
+  const { api_getBidType } = ProjectApiList();
+
+  const { state } = useLocation();
+  console.log(state, "state====in bidding type");
 
   const numberOfBidders = [
     {
@@ -265,6 +276,44 @@ const BiddingType = () => {
     });
   };
 
+  const getApplicationDetail = () => {
+    setisLoading(true);
+    AxiosInterceptors.get(`${api_getBidType}/${state}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          console.log(response?.data, "resp in type");
+          // setBidderData(response?.data?.data);
+          // createBtnDetais(response?.data?.data?.no_of_bidders);
+          setisLoading(false);
+
+          // if (
+          //   parseInt(response?.data?.data?.no_of_bidders) ===
+          //   parseInt(response?.data?.data?.bidder_master?.length)
+          // ) {
+          //   navigate(`/bidding-type?tabNo=1`, {
+          //     state,
+          //   });
+          // } else {
+          //   navigate(
+          //     `?tabNo=${
+          //       Number(response?.data?.data?.bidder_master?.length) + 1
+          //     }`
+          //   );
+          // }
+        } else {
+          setisLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        console.log("details by id error...", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
   if (confModal) {
     return (
       <>
@@ -276,6 +325,10 @@ const BiddingType = () => {
       </>
     );
   }
+
+  useEffect(() => {
+    getApplicationDetail();
+  }, []);
 
   if (cancelModal) {
     return (

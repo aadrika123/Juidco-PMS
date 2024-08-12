@@ -20,7 +20,7 @@ export default function PreviewBoqSummary() {
   const [refID, setRefId] = useState();
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { titleBarVisibility } = useContext(contextVar);
+  const { titleBarVisibility, setReferenceNo } = useContext(contextVar);
 
   // const { payload } = state;
   const summaryData = state;
@@ -87,6 +87,7 @@ export default function PreviewBoqSummary() {
       .then(function (response) {
         if (response?.data?.status) {
           setRefId(response?.data?.reference_no);
+          setReferenceNo(response?.data?.reference_no);
           setShowMessaegModal(true);
           setTimeout(() => {
             setIsLoading(false);
@@ -175,8 +176,6 @@ export default function PreviewBoqSummary() {
       </>
     );
   }
-
-  console.log(summaryData?.procurement, "vvvvvvvvvv");
 
   return (
     <div>

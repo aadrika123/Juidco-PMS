@@ -39,11 +39,14 @@ const BiddingDetails = () => {
   const [biddersCounts, setBidderCount] = useState();
 
   const navigate = useNavigate();
-  const { state } = useLocation();
 
   // console.log(parseInt(response?.data?.bidder_master?.length))
 
-  const { setBiddersCount, titleBarVisibility } = useContext(contextVar);
+  const { setBiddersCount, titleBarVisibility, referenceNo } =
+    useContext(contextVar);
+
+  const { state } = useLocation();
+  console.log(state, "state state state");
 
   const tabNo = Number(searchParams.get("tabNo"));
 
@@ -68,9 +71,9 @@ const BiddingDetails = () => {
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
 
-  const getApplicationDetail = (ref_no = state) => {
+  const getApplicationDetail = () => {
     setisLoading(true);
-    AxiosInterceptors.get(`${api_getBidType}/${ref_no}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getBidType}/${state}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           setBidderData(response?.data?.data);
@@ -81,7 +84,9 @@ const BiddingDetails = () => {
             parseInt(response?.data?.data?.no_of_bidders) ===
             parseInt(response?.data?.data?.bidder_master?.length)
           ) {
-            navigate(`/bidding-type?tabNo=1`);
+            navigate(`/bidding-type?tabNo=1`, {
+              state,
+            });
           } else {
             navigate(
               `?tabNo=${
@@ -111,23 +116,23 @@ const BiddingDetails = () => {
 
   return (
     <>
-      <div className="">
+      <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Bidding Form"}
         />
       </div>
 
-      <div className="container mx-auto rounded mt-6 ">
-        <div className="p-5 border shadow-xl rounded-md flex bg-white w-full justify-between">
-          <div className="w-1/2 flex">
-            <img src={tender} className="w-11" />
+      <div className='container mx-auto rounded mt-6 '>
+        <div className='p-5 border shadow-xl rounded-md flex bg-white w-full justify-between'>
+          <div className='w-1/2 flex'>
+            <img src={tender} className='w-11' />
 
-            <h1 className="font-bold text-xl pt-2 pl-3">Bidder Details</h1>
+            <h1 className='font-bold text-xl pt-2 pl-3'>Bidder Details</h1>
           </div>
         </div>
 
-        <div className="flex mt-6">
+        <div className='flex mt-6'>
           {bidDetails?.map((item, index) => (
             <button
               key={index}
@@ -138,14 +143,14 @@ const BiddingDetails = () => {
               } focus:outline-none flex shadow-xl border border-gray-300 rounded`}
               onClick={() => handleTabClick(item.tab)}
             >
-              <img src={item.img} className="pr-2" />
+              <img src={item.img} className='pr-2' />
               {item.label}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className='mt-4'>
         {bidDetails?.map((item, index) => (
           <>
             {tabNo === item.tab && (
