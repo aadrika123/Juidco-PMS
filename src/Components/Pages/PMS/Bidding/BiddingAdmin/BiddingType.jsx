@@ -4,23 +4,25 @@ import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import { useFormik } from "formik";
 import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
 import img from "@/Components/assets/page.pdf";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import toast from "react-hot-toast";
 import ApiHeader from "@/Components/api/ApiHeader";
 
 const BiddingType = () => {
-  const [markingType, setMarkingType] = useState("Numeric");
+  const navigate = useNavigate();
+  const [markingType, setMarkingType] = useState("numeric");
   const [bidderDetails, setBidderDetails] = useState([]);
   const [criteriaData, setCriteriaData] = useState([]);
   const [confModal, setConfModal] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [confirmationModal, setConfirmationModal] = useState(false);
 
-  const { api_getBidType } = ProjectApiList();
+  const { api_getBidType, api_PostCompareBidder } = ProjectApiList();
 
   const { state } = useLocation();
 
@@ -81,14 +83,14 @@ const BiddingType = () => {
   ];
 
   const getApplicationDetail = () => {
-    setisLoading(true);
+    setIsLoading(true);
     AxiosInterceptors.get(`${api_getBidType}/${state}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           setCriteriaData(response?.data?.data);
-          setisLoading(false);
+          setIsLoading(false);
         } else {
-          setisLoading(false);
+          setIsLoading(false);
           toast.error(response?.data?.message);
         }
       })
@@ -97,7 +99,7 @@ const BiddingType = () => {
         console.log("details by id error...", error);
       })
       .finally(() => {
-        setisLoading(false);
+        setIsLoading(false);
       });
   };
 
@@ -108,55 +110,25 @@ const BiddingType = () => {
       ? "techCriteria"
       : [];
 
-  // const initialValues = creteria?.[bidType]?.reduce((acc, { input }) => {
-  //   acc[input] = "";
-  //   return acc;
-  // });
+  const initialValues = {};
 
-  // intitial value
-  // const initialValues = {
-  //   itemcategory: "",
-  //   itemsubcategory: "",
-  //   brand: "",
-  //   description: "",
-  //   quantity: "",
-  //   rate: "",
-  // };
+  bidderDetails?.forEach((bidder) => {
+    bidder.comparison_criteria.forEach((criteria) => {
+      initialValues[`${bidder.bidder_id}-${criteria.criteria_id}`] =
+        criteria.value || "";
+    });
+  });
 
   // Generate validation schema based on criteria
 
   const formik = useFormik({
-    // initialValues: initialValues,
+    initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
-      // console.log(values);
-      console.log("Bidder DEtails", bidderDetails);
+      setConfirmationModal(true);
     },
     // validationSchema,
   });
-
-  const handleOnChange = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-
-    // {
-    //   name == "itemsubcategory" && fetchBrand(value);
-    // }
-    // {
-    //   name == "number_of_items" &&
-    //     formik.setFieldValue(
-    //       "number_of_items",
-    //       allowNumberInput(value, formik.values.number_of_items, 100)
-    //     );
-    // }
-    // {
-    //   name == "quantity" &&
-    //     formik.setFieldValue(
-    //       "quantity",
-    //       allowNumberInput(value, formik.values.quantity, 100)
-    //     );
-    // }
-  };
 
   const confirmationHandlerCnf = () => {
     setConfModal(false);
@@ -170,59 +142,6 @@ const BiddingType = () => {
     setConfModal(false);
     setCancelModal(false);
   };
-
-  // const handleChange = (e, crite, bidderName) => {
-  //   const { value } = e.target;
-  //   console.log(value, "val");
-
-  //   setBidderDetails((prev) => {
-  //     // Find the existing bidder data index
-  //     const bidderIndex = prev.findIndex(
-  //       (item) => item.bidder_id === bidderName
-  //     );
-
-  //     let updatedBidders;
-  //     if (bidderIndex !== -1) {
-  //       // Existing bidder found, update its criteria
-  //       updatedBidders = prev.map((item, index) => {
-  //         if (index === bidderIndex) {
-  //           // Find the criteria index
-  //           const criteriaIndex = item?.comparison_criteria.findIndex(
-  //             (crit) => crit.id === crite?.id
-  //           );
-
-  //           let updatedCriteria;
-  //           if (criteriaIndex !== -1) {
-  //             // Update the existing comparison_criteria object
-  //             updatedCriteria = item.comparison_criteria.map((crit, i) =>
-  //               i === criteriaIndex ? { ...crit, value } : crit
-  //             );
-  //           } else {
-  //             // Add new comparison_criteria object
-  //             updatedCriteria = [
-  //               ...item.comparison_criteria,
-  //               { criteria_id: crite?.id, value },
-  //             ];
-  //           }
-
-  //           return { ...item, comparison_criteria: updatedCriteria };
-  //         }
-  //         return item;
-  //       });
-  //     } else {
-  //       // No existing bidder, add new bidder with criteria
-  //       updatedBidders = [
-  //         ...prev,
-  //         {
-  //           bidder_id: bidderName,
-  //           comparison_criteria: [{ criteria_id: crite?.id, value }],
-  //         },
-  //       ];
-  //     }
-
-  //     return updatedBidders;
-  //   });
-  // };
 
   const handleChange = (e, crite, bidderName) => {
     const { value } = e.target;
@@ -274,7 +193,8 @@ const BiddingType = () => {
           },
         ];
       }
-
+      console.log(updatedBidders, "updatedBidders");
+      console.log(bidderDetails, "bidderDetails");
       return updatedBidders;
     });
   };
@@ -323,6 +243,41 @@ const BiddingType = () => {
     });
   };
 
+  //on submitting function
+  const postBidderComarisonData = async () => {
+    setConfirmationModal(false);
+    setIsLoading(true);
+    let body = {
+      reference_no: state,
+      comparison_type: markingType,
+      comparison_data: [...bidderDetails],
+      criteria_type: criteriaData?.bid_type,
+    };
+
+    AxiosInterceptors.post(`${api_PostCompareBidder}`, body, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Successfully Saved the Data for Bidders");
+          setTimeout(() => {
+            setIsLoading(false);
+            navigate(`/bidding-type-byId/${state}`);
+          }, 2000);
+        } else {
+          setIsLoading(false);
+          toast.error("Error in saving Data. Please try again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        setIsLoading(false);
+        toast.error(error?.response?.data?.error);
+      });
+  };
+
+  useEffect(() => {
+    getApplicationDetail();
+  }, []);
+
   if (confModal) {
     return (
       <>
@@ -335,9 +290,17 @@ const BiddingType = () => {
     );
   }
 
-  useEffect(() => {
-    getApplicationDetail();
-  }, []);
+  if (confirmationModal) {
+    return (
+      <>
+        <ConfirmationModal
+          confirmationHandler={postBidderComarisonData}
+          handleCancel={handleCancel}
+          message={"Are you sure you want to save the Bidder Details ?"}
+        />
+      </>
+    );
+  }
 
   if (cancelModal) {
     return (
@@ -381,35 +344,20 @@ const BiddingType = () => {
             <select
               className={`pl-3 pr-3 border border-blue-400 rounded-md w-full h-10 outline-blue-300`}
               onChange={(e) => {
+                console.log(e.target.value, "====");
                 setMarkingType(e.target.value);
               }}
             >
-              <option defaultValue={"numeric"}>Numeric</option>
-              <option>Symbolic</option>
+              <option defaultValue={"numeric"} value={"numeric"}>
+                Numeric
+              </option>
+              <option value={"symbolic"}>Symbolic</option>
             </select>
           </div>
         </div>
       </div>
 
-      {/* <div className="m-5 border-[3px] border-white flex">
-        <div className="p-4 pr-36 ">
-          <h1>All Creteria </h1>
-          <p className="text-sm text-gray-400">Document Uploaded by Bidder</p>
-        </div>
-
-        <div className=" w-[50rem] overflow-y-auto flex">
-        {document?.map((data) => (
-          <div className="w-52 border-[2px] border-white flex justify-center items-center">
-            <h1 className="border border-[#4338ca] rounded-full pl-3 pr-3 hover:bg-[#4338ca] cursor-pointer hover:text-white">
-              {data?.doc}
-            </h1>
-          </div>
-        ))}
-        </div>
-
-      </div> */}
-
-      <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
+      <form onSubmit={formik.handleSubmit} onChange={formik.handleChange}>
         <div className=''>
           <div className='flex m-6'>
             <div className='bg-white w-[25rem] '>
@@ -468,19 +416,19 @@ const BiddingType = () => {
                     </p>
                   </div>
 
-                  {markingType == "Numeric" && (
+                  {markingType == "numeric" && (
                     <>
                       {criteriaData?.[bidType].map((crite, index) => (
                         <div className='pl-8 pr-8 pt-6 pb-[1.55rem] border-t border-gray-200'>
                           <input
                             type='text'
-                            name={bidder?.id} // Example bidderHeading name
-                            // name={`${crite?.input}${data?.bidderHeading}`}
+                            // name={bidder?.id} // Example bidderHeading name
+                            name={`${bidder?.id}-${crite?.id}`}
                             className='border text-center border-bslue-400 rounded w-full h-8 outline-blue-300'
                             onChange={(e) => handleChange(e, crite, bidder?.id)}
-                            // value={
-                            //   formik.values.crite?.input.data?.bidderHeading
-                            // }
+                            value={
+                              formik.values[`${bidder?.id}-${crite?.id}`] || ""
+                            }
                           />
                         </div>
                       ))}
@@ -492,7 +440,7 @@ const BiddingType = () => {
                     </>
                   )}
 
-                  {markingType == "Symbolic" && (
+                  {markingType == "symbolic" && (
                     <>
                       {criteriaData?.[bidType]?.map((crite) => (
                         <div className=' border-t border-r border-gray-200 pl-3 pr-3 pt-5 pb-[1.05rem]'>
@@ -519,10 +467,6 @@ const BiddingType = () => {
                                       bidder?.heading
                                     )
                                   }
-                                  // value={
-                                  //   formik.values.crite?.input.data
-                                  //     ?.bidderHeading
-                                  // }
                                   value='0'
                                 />
                                 <span className='absolute text-red-900 transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100'>

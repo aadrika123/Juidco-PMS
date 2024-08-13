@@ -387,7 +387,7 @@ function App() {
       element: <BiddingType />,
     },
     {
-      path: "/bidding-type-byId",
+      path: "/bidding-type-byId/:id",
       element: <BiddingTypeViewById />,
     },
   ];
