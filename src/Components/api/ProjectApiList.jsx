@@ -220,16 +220,14 @@ export default function ProjectApiList() {
     api_fetchTAInbox: `${baseUrl}/api/pms/ta`,
     api_fetchTAOutbox: `${baseUrl}/api/pms/ta/outbox`,
 
-
-
     api_postBidType: `${baseUrl}/api/pms/ta/bid-type`,
     api_getBidType: `${baseUrl}/api/pms/bidding`,
+    api_PostCompareBidder: `${baseUrl}/api/pms/ta/compare`,
+    api_getCompareBidder: `${baseUrl}/api/pms/ta/comparison-result`,
     api_addCreteria: `${baseUrl}/api/pms/ta/add-criteria`,
     api_submitCreteria: `${baseUrl}/api/pms/ta/submit-criteria`,
     api_addBidder: `${baseUrl}/api/pms/ta/add-bidder`,
     api_submitBidder: `${baseUrl}/api/pms/ta/submit-bidder`,
-
-
   };
 
   return apiList;
