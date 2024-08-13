@@ -228,6 +228,8 @@ export default function ProjectApiList() {
     api_submitCreteria: `${baseUrl}/api/pms/ta/submit-criteria`,
     api_addBidder: `${baseUrl}/api/pms/ta/add-bidder`,
     api_submitBidder: `${baseUrl}/api/pms/ta/submit-bidder`,
+    api_postWinner: `${baseUrl}/api/pms/ta/select-winner`,
+    api_finalizeWinner: `${baseUrl}/api/pms/ta/comparison-finalize`,
   };
 
   return apiList;

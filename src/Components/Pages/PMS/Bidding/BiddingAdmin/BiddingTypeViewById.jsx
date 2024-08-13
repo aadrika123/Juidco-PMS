@@ -12,11 +12,15 @@ import { useParams } from "react-router-dom";
 
 const BiddingTypeViewById = () => {
   const { id } = useParams();
-  const { api_getCompareBidder } = ProjectApiList();
+  const { api_getCompareBidder, api_postWinner, api_finalizeWinner } =
+    ProjectApiList();
   const [imageModal, setImageModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [applicationData, setApplicationData] = useState();
   const { titleBarVisibility } = useContext(contextVar);
+
+  const [selectedBidder, setSelectedBidder] = useState([]);
+  let temp = [];
 
   const creteria = [
     {
@@ -123,6 +127,53 @@ const BiddingTypeViewById = () => {
       });
   };
 
+  // console.log("---------------------------->", applicationData?.bid_type);
+
+  const selectWinnerPost = async () => {
+    setIsLoading(true);
+    let payload = { reference_no: id, winners: selectedBidder };
+
+    AxiosInterceptors.post(api_postWinner, payload, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Winner Selected Succesfully");
+          if (applicationData?.bid_type == "fintech") finalizeWinner();
+        } else {
+          setIsLoading(false);
+          toast.error("Error in Creating form.");
+        }
+      })
+      .catch(function (error) {
+        setIsLoading(false);
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const finalizeWinner = async () => {
+    setIsLoading(true);
+    let payload = { reference_no: id };
+
+    AxiosInterceptors.post(api_finalizeWinner, payload, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Winner Finalize Succesfully");
+        } else {
+          setIsLoading(false);
+          toast.error("Error in Creating form.");
+        }
+      })
+      .catch(function (error) {
+        setIsLoading(false);
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   useEffect(() => {
     getApplicationDetail();
   }, []);
@@ -138,6 +189,8 @@ const BiddingTypeViewById = () => {
       </>
     );
   }
+
+  // console.log("winner:", selectedBidder);
 
   return (
     <>
@@ -159,9 +212,15 @@ const BiddingTypeViewById = () => {
           <div className='bg-white p-2 mt-5 rounded-md '>
             {/* 1st Info */}
             <div className='relative overflow-x-auto'>
-              <table className='w-full text-sm text-left rtl:text-right text-gray-500'>
+              <table className='w-full text-sm text-left rtl:text-right border-b  text-gray-500'>
                 <thead className=' text-gray-500  bg-gray-200 '>
                   <tr>
+                    <th
+                      scope='col'
+                      className=' text-center border-r border-l border-gray-300'
+                    >
+                      Select
+                    </th>
                     <th
                       scope='col'
                       className='px-6 py-5 text-center border-r border-l border-gray-300'
@@ -170,19 +229,24 @@ const BiddingTypeViewById = () => {
                     </th>
 
                     {applicationData?.comparison?.map((data) =>
-                      data?.comparison_criteria?.map((criteData) => (
-                        <th
-                          scope='col'
-                          className='px-6 py-5 text-center border-r border-gray-300'
-                        >
-                          <p className='text-base'>
-                            {criteData?.criteria?.heading}
-                          </p>
-                          <p className='text-sm'>
-                            {criteData?.criteria?.description}
-                          </p>
-                        </th>
-                      ))
+                      data?.comparison_criteria?.map((criteData) => {
+                        if (!temp.includes(criteData?.criteria?.id)) {
+                          temp.push(criteData?.criteria?.id);
+                          return (
+                            <th
+                              scope='col'
+                              className='px-6 py-5 text-center border-r border-gray-300'
+                            >
+                              <p className='text-base'>
+                                {criteData?.criteria?.heading}
+                              </p>
+                              <p className='text-sm'>
+                                {criteData?.criteria?.description}
+                              </p>
+                            </th>
+                          );
+                        }
+                      })
                     )}
                   </tr>
                 </thead>
@@ -191,61 +255,39 @@ const BiddingTypeViewById = () => {
                     <tr className='bg-white '>
                       <th
                         scope='row'
+                        className=' text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap'
+                      >
+                        <input
+                          type='checkbox'
+                          onClick={() =>
+                            setSelectedBidder([
+                              ...selectedBidder,
+                              data?.bidder_master?.id,
+                            ])
+                          }
+                        />
+                      </th>
+                      <th
+                        scope='row'
                         className='px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap'
                       >
                         {data?.bidder_master?.name}
                       </th>
                       {data?.comparison_criteria?.map((criteData) => (
                         <>
-                          <td className='px-6 py-5 text-center border-r border-gray-300'>
+                          <td className='px-6 py-5 text-center border-r  border-gray-300'>
                             {criteData?.value}
                           </td>
                         </>
                       ))}
-                      {/* // <td className='px-6 py-5 text-center border-r border-gray-300'>
-                      //   {data?.cret02}
-                      // </td>
-                      // <td className='px-6 py-5 text-center border-r border-gray-300'>
-                      //   {data?.cret03}
-                      // </td>
-                      // <td className='px-6 py-5 text-center border-r border-gray-300'>
-                      //   {data?.cret04}
-                      // </td>
-                      // <td className='px-6 py-5 text-center border-r border-gray-300'>
-                      //   {data?.cret05}
-                      // </td>
-                      // <td className='px-6 py-5 text-center border-r border-gray-300'>
-                      //   {data?.total}
-                      // </td>
-                      // <td className='px-6 py-5 text-center border-r border-gray-300'>
-                      //   {data?.rank}
-                      // </td>
- */}
                     </tr>
                   ))}
                 </tbody>
-                <tfoot>
-                  <tr className='font-semibold text-gray-900'>
-                    <th
-                      scope='row'
-                      className='px-6  text-center text-base border-b border-l text-white border-gray-300'
-                    >
-                      Total
-                    </th>
-                    <td className='px-6  text-center border-b border-l border-gray-300'></td>
-                    <td className='px-6  text-center border-b border-l border-gray-300'></td>
-                    <td className='px-6  text-center border-b border-l border-gray-300'></td>
-                    <td className='px-6  text-center border-b border-l border-gray-300'></td>
-                    <td className='px-6  text-center border-b border-l border-gray-300'></td>
-                    <td className='px-6  text-center border-b border-l border-gray-300'></td>
-                    <td className='px-6  text-center border-b border-l border-r border-gray-300'></td>
-                  </tr>
-                </tfoot>
               </table>
             </div>
 
             {/* 2nd Info */}
-            <div className='mt-14'>
+            {/* <div className='mt-14'>
               <div className='relative overflow-x-auto'>
                 <table className='w-full text-sm text-left rtl:text-right text-gray-500'>
                   <thead className='  bg-[#4338ca] text-white '>
@@ -333,14 +375,17 @@ const BiddingTypeViewById = () => {
                   </tfoot>
                 </table>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className='flex justify-end space-x-5 mt-8'>
           <button className='bg-white  hover:bg-[#4338CA] hover:text-white border border-blue-700 px-10 py-2 rounded flex'>
             Cancel
           </button>
-          <button className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white px-10 py-2 rounded flex'>
+          <button
+            className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white px-10 py-2 rounded flex'
+            onClick={() => selectWinnerPost()}
+          >
             Confirm
           </button>
         </div>
