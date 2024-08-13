@@ -45,32 +45,21 @@ const BiddingType = () => {
       compName: `Rancho Pvt Ltd.`,
       doc: "Uploaded Document",
     },
-    {
-      bidderHeading: `B4`,
-      compName: `Rancho Pvt Ltd.`,
-      doc: "Uploaded Document",
-    },
-    {
-      bidderHeading: `B4`,
-      compName: `Rancho Pvt Ltd.`,
-      doc: "Uploaded Document",
-    },
-    {
-      bidderHeading: `B4`,
-      compName: `Rancho Pvt Ltd.`,
-      doc: "Uploaded Document",
-    },
-  ];
-
-  const document = [
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
-    { doc: "Document Uploaded" },
+    // {
+    //   bidderHeading: `B4`,
+    //   compName: `Rancho Pvt Ltd.`,
+    //   doc: "Uploaded Document",
+    // },
+    // {
+    //   bidderHeading: `B4`,
+    //   compName: `Rancho Pvt Ltd.`,
+    //   doc: "Uploaded Document",
+    // },
+    // {
+    //   bidderHeading: `B4`,
+    //   compName: `Rancho Pvt Ltd.`,
+    //   doc: "Uploaded Document",
+    // },
   ];
 
   const creteria = [
