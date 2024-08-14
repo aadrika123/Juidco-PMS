@@ -1,8 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import techIcon from "@/Components/assets/TechIcon.svg";
+import React, { useState } from "react";
 import { IoAddSharp } from "react-icons/io5";
-import TitleBar from "@/Components/Pages/Others/TitleBar";
-import { contextVar } from "@/Components/context/contextVar";
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { useFormik } from "formik";
@@ -14,8 +11,6 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import toast from "react-hot-toast";
 
 const BiddingCreteria = (props) => {
-  const location = useLocation();
-
   // console.log(location?.search)
 
   const navigate = useNavigate();
@@ -62,8 +57,6 @@ const BiddingCreteria = (props) => {
     //     );
     // }
   };
-
-  console.log(creteriaType)
 
   //------------------- Apis ------------------------
 
