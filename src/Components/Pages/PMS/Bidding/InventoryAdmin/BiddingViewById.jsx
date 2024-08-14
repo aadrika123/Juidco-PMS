@@ -137,8 +137,12 @@ const BiddingViewById = () => {
         return "Bidder Addition";
       case 3:
         return "Bidding Comparison";
-      case 4:
+      case 41:
         return "Finalize Comparison";
+      case 42:
+        return "Finalize Comparison";
+      case 4:
+        return "View Finalize Winner";
       default:
         return "Continue";
     }
@@ -163,8 +167,14 @@ const BiddingViewById = () => {
         navigate(`/bidding-type`, {
           state: biddingData?.reference_no,
         });
-      case 4:
+      case 41:
         navigate(`/bidding-type-byId/${biddingData?.reference_no}`);
+        break;
+      case 42:
+        navigate(`/bidding-type-byId/${biddingData?.reference_no}`);
+        break;
+      case 4:
+        navigate(`/bidding-type-result/${biddingData?.reference_no}`);
         break;
       default:
         break;
@@ -354,8 +364,8 @@ const BiddingViewById = () => {
           </div>
 
           {/* Bidding Comparision Details */}
-          {biddingData?.techCriteria.length > 0 &&
-            biddingData?.finCriteria.length > 0 && (
+          {biddingData?.techCriteria.length > 0 ||
+            (biddingData?.finCriteria.length > 0 && (
               <>
                 <div className=''>
                   <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10'>
@@ -366,8 +376,8 @@ const BiddingViewById = () => {
                   className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 flex w-full justify-between'
                   ref={componentRef}
                 >
-                  <div className='mt-5 w-[45%] '>
-                    {biddingData?.techCriteria.length > 0 && (
+                  {biddingData?.techCriteria.length > 0 && (
+                    <div className='mt-5 w-[45%] '>
                       <>
                         <div className='bg-slate-100 w-full'>
                           <h1 className='font-bold p-3 text-center bg-slate-300 rounded'>
@@ -402,11 +412,11 @@ const BiddingViewById = () => {
                           ))}
                         </div>
                       </>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
-                  <div className='w-[45%]'>
-                    {biddingData?.finCriteria.length > 0 && (
+                  {biddingData?.finCriteria.length > 0 && (
+                    <div className='w-[45%]'>
                       <>
                         <div className='bg-slate-100 w-full'>
                           <h1 className='font-bold p-3 text-center bg-slate-300 rounded '>
@@ -441,11 +451,11 @@ const BiddingViewById = () => {
                           ))}
                         </div>
                       </>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </>
-            )}
+            ))}
 
           {/* Bidding Master Details */}
           {biddingData?.bidder_master.length > 0 && (
@@ -616,6 +626,65 @@ const BiddingViewById = () => {
             </>
           )}
 
+          {/* Bidding Type Details */}
+          <>
+            <div className=''>
+              <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10'>
+                Bidding Type Info{" "}
+              </h2>
+            </div>
+            <div
+              className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 overflow-auto h-[30rem]'
+              ref={componentRef}
+            >
+              <div className='mt-5'>
+                {biddingData?.bidder_master.length > 0 && (
+                  <>
+                    {biddingData?.comparison.map((comp) =>
+                      comp?.comparison_criteria.map((data, index) => (
+                        <>
+                          <div className='grid md:grid-rows-4-4 gap-6 mb-5 bg-slate-100 rounded-xl'>
+                            <h1 className='p-3 bg-slate-300 rounded '>
+                              {comp?.bidder_master?.name} Bidding Type Info..
+                            </h1>
+                            <div className='flex justify-between mb-2 px-4 pb-0'>
+                              <div className='w-[20%]'>
+                                <div className=' text-gray-800 pb-1 flex flex-col '>
+                                  <span className='text-sm'>Heading : </span>
+                                  <span className='font-bold '>
+                                    {data?.criteria?.heading}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className='w-[40%]'>
+                                <div className=' text-gray-800 pb-1  flex flex-col '>
+                                  <span className='text-sm'>Description: </span>
+                                  <span className='font-bold'>
+                                    {data?.criteria?.description}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className='w-[20%]'>
+                                <div className=' text-gray-800 pb-1  flex flex-col '>
+                                  <span className='text-sm'>Value: </span>
+                                  <span className='font-bold'>
+                                    {data?.value}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ))
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+          </>
+
           {/* Buttons */}
 
           <div className='space-x-5 flex justify-between mt-[2rem]'>
@@ -633,32 +702,6 @@ const BiddingViewById = () => {
                 </button>
               </div>
               <div className='space-x-3 flex'>
-                {/* {page === "inbox" && !biddingData?.comparison?.length && ( */}
-                {/* <button
-                    onClick={() =>
-                      navigate(`/bidding-type`, {
-                        state: biddingData?.reference_no,
-                      })
-                    }
-                    className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl "
-                  >
-                   Fill Bidder Comparison Form
-                  </button> */}
-                {/* )} */}
-
-                {/* {page === "inbox" && !biddingData?.bidder_master?.length && ( */}
-                {/* <button
-                  onClick={() =>
-                    navigate(`/bidding-details?tabNo=1`, {
-                      state: biddingData?.reference_no,
-                    })
-                  }
-                    className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl "
-                  >
-                    Proceed to fill Bidder Details Form
-                  </button> */}
-                {/* )} */}
-
                 {page === "inbox" && (
                   <button
                     onClick={() => btnNavigate(biddingData?.creationStatus)}

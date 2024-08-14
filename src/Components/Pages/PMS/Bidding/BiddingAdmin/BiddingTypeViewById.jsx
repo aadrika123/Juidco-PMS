@@ -111,7 +111,8 @@ const BiddingTypeViewById = () => {
     AxiosInterceptors.post(api_finalizeWinner, payload, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("Successfully selected the winners!!.");
+          toast.success("Winner Finalize Succesfully");
+          navigate(`/bidding-type-result/${id}`, { state: id });
         } else {
           setIsLoading(false);
           toast.error("Error in selecting winners");
