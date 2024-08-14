@@ -82,6 +82,7 @@ import BiddingTypeViewById from "./Components/Pages/PMS/Bidding/BiddingAdmin/Bid
 import BiddingComparisionTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingDetailForm/BiddingComparisionTabs";
 import BiddingComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingComparision";
 import TenderingAdminTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/TenderingAdminTabs";
+import BiddingTypeResultView from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingTypeResultView";
 
 const queryClient = new QueryClient();
 
@@ -389,6 +390,10 @@ function App() {
     {
       path: "/bidding-type-byId/:id",
       element: <BiddingTypeViewById />,
+    },
+    {
+      path: "/bidding-type-result/:id",
+      element: <BiddingTypeResultView />,
     },
   ];
 
