@@ -123,10 +123,16 @@ const BiddingCreteria = (props) => {
 
   // -----------------------------------------------------
 
-  const handleDelete = (index) => {
-    const newFormData = formValues.filter((_, i) => i !== index);
-    setFormValues(newFormData);
-  };
+  const handleDelete = (heading, desc) => {
+    const newCriteria = formValues?.criteria?.filter(
+        (data) => !(data?.heading === heading && data?.description === desc)
+    );
+
+    setFormValues({
+        ...formValues,
+        criteria: newCriteria
+    });
+};
 
   const confirmationHandler = () => {
     console.log(formValues);
@@ -181,7 +187,7 @@ const BiddingCreteria = (props) => {
 
             <div className='pb-1'></div>
 
-            {formValues?.criteria.map((data, index) => (
+            {formValues?.criteria?.map((data, index) => (
               <div className='border border-gray-300 rounded-xl flex m-5 cursor-pointer hover:border hover:bg-gray-50 hover:border-blue-500'>
                 <div className='p-3  w-[5%]'>
                   <h1>{index + 1}.</h1>
@@ -202,12 +208,12 @@ const BiddingCreteria = (props) => {
                 </div>
 
                 <div className=' flex justify-end items-center space-x-4 w-[20%]'>
-                  <button className='border border-blue-400 bg-blue-100 w-8 h-8 pl-2 rounded-full text-blue-600'>
+                  {/* <button className='border border-blue-400 bg-blue-100 w-8 h-8 pl-2 rounded-full text-blue-600'>
                     <FaEdit />
-                  </button>
+                  </button> */}
                   <button
                     className='border border-blue-400 bg-blue-100 w-8 h-8 pl-2 rounded-full text-blue-600'
-                    onClick={() => handleDelete(index)}
+                    onClick={() => handleDelete(data.heading, data.description)}
                   >
                     <AiFillDelete />
                   </button>

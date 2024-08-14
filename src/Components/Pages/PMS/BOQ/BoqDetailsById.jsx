@@ -393,15 +393,15 @@ export default function BoqDetailsById(props) {
                           {row?.quantity}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
-                          {row?.category?.name}
+                          {row?.unit?.name}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
-                          {row?.rate}
+                          {indianAmount(row?.rate)}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
-                          {row?.total_rate ||
+                          {indianAmount(row?.total_rate ||
                             row?.amount ||
-                            Number(row?.quantity) * Number(row?.rate)}
+                            Number(row?.quantity) * Number(row?.rate))}
                         </td>
 
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
@@ -429,7 +429,7 @@ export default function BoqDetailsById(props) {
                 <div className='flex justify-end mb-4'>
                   <ImageDisplay
                     // preview={dataList?.boq_doc?.imageUrl}
-                    url={dataList?.boq_doc[0]?.imageUrl}
+                    url={dataList?.boq_doc[0]?.docPath}
                     imageDoc={dataList?.img}
                     alt={"Notesheet doc"}
                     showPreview={"hidden"}
@@ -469,7 +469,7 @@ export default function BoqDetailsById(props) {
                 Reject BOQ
               </button>
             )} */}
-          {page &&
+          {/* {page &&
             (page == "inbox" || page == "boq-status") &&
             (dataList?.status == 0 ||
               dataList?.status == 1 ||
@@ -484,7 +484,7 @@ export default function BoqDetailsById(props) {
                   Edit
                 </button>
               </>
-            )}
+            )} */}
 
           {page == "inbox" && dataList?.status == 42 && (
             <button
