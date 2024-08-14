@@ -256,10 +256,12 @@ const BiddingViewById = () => {
               </div>
 
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>EMD Type </div>
+                <div className='md:w-auto w-[50%] font-bold '>EMD Amount </div>
                 <div className='md:w-auto w-[50%] text-gray-800 '>
-                  {applicationFullData?.emd_type}{" "}
-                  {applicationFullData?.emd_value}
+                  {` ${indianAmount(applicationFullData?.emd_value)} 
+                  (${
+                    applicationFullData?.emd_type === "fixed" ? "Fixed" : ""
+                  })`}
                 </div>
               </div>
 
@@ -268,8 +270,14 @@ const BiddingViewById = () => {
                   PBG Amount{" "}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 '>
-                  {applicationFullData?.pbg_type}{" "}
-                  {applicationFullData?.pbg_value}
+                  <span className='text-sm text-gray-500'>
+                    {applicationFullData?.pbg_type == "percentage"
+                      ? applicationFullData?.pbg_value
+                      : indianAmount(applicationFullData?.pbg_value)}
+                  </span>
+                  {applicationFullData?.pbg_type == "percentage"
+                    ? "%"
+                    : "Fixed"}{" "}
                 </div>
               </div>
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
@@ -277,7 +285,13 @@ const BiddingViewById = () => {
                   Tendering Type{" "}
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800'>
-                  {applicationFullData?.tendering_type}
+                  {applicationFullData?.tendering_type === "qcbs"
+                    ? "Quality And Cost Based Selection"
+                    : applicationFullData?.tendering_type === "least_cost"
+                    ? "Least Cost"
+                    : applicationFullData?.tendering_type === "rate_contract"
+                    ? "Rate Contract"
+                    : ""}
                 </div>
               </div>
               {biddingData?.bid_type && (
@@ -286,7 +300,13 @@ const BiddingViewById = () => {
                     Bid Type{" "}
                   </div>
                   <div className='md:w-auto w-[50%] text-gray-800 '>
-                    {biddingData?.bid_type}
+                    {biddingData?.bid_type == "fintech"
+                      ? "Financial + Technology"
+                      : biddingData?.bid_type == "technical"
+                      ? "Technical"
+                      : biddingData?.bid_type == "financial"
+                      ? "Financial"
+                      : ""}
                   </div>
                 </div>
               )}
@@ -450,6 +470,12 @@ const BiddingViewById = () => {
                             <h1 className='p-3 bg-slate-300 rounded '>
                               Bidder {index + 1}
                             </h1>
+                            <div className='w-full flex justify-end items-end px-3 py-2'>
+                              <p>Bidding Amount - </p>
+                              <p className='text-lg font-semibold'>
+                                {indianAmount(data?.bidding_amount)}
+                              </p>
+                            </div>
                             <div className='flex justify-between mb-2 px-4 pb-0'>
                               <div className=''>
                                 <div className=' text-gray-800 pb-1 '>
@@ -516,7 +542,7 @@ const BiddingViewById = () => {
                                     Payment Mode :{" "}
                                   </span>
                                   <span className='font-bold'>
-                                    {data?.payment_mode}
+                                    {(data?.payment_mode).toUpperCase()}
                                   </span>
                                 </div>
                                 <div className='md:w-auto w-[50%] text-gray-800 pb-1 '>
@@ -524,21 +550,28 @@ const BiddingViewById = () => {
                                     Offline Mode :{" "}
                                   </span>
                                   <span className='font-bold'>
-                                    {data?.offline_mode}
+                                    {data?.offline_mode.toUpperCase()}
                                   </span>
                                 </div>
-                                <div className='md:w-auto w-[50%] text-gray-800 pb-1 '>
-                                  <span className='text-sm'>DD no : </span>
-                                  <span className='font-bold'>
-                                    {data?.dd_no}
-                                  </span>
-                                </div>
-                                <div className='md:w-auto w-[50%] text-gray-800 pb-1 '>
-                                  <span className='text-sm'> DD no : </span>
-                                  <span className='font-bold'>
-                                    {data?.transaction_no}
-                                  </span>
-                                </div>
+                                {data?.offline_mode == "dd" && (
+                                  <div className='md:w-auto w-[50%] text-gray-800 pb-1 '>
+                                    <span className='text-sm'>DD no : </span>
+                                    <span className='font-bold'>
+                                      {data?.dd_no || ""}
+                                    </span>
+                                  </div>
+                                )}
+                                {data?.transaction_no && (
+                                  <div className='md:w-auto w-[50%] text-gray-800 pb-1 '>
+                                    <span className='text-sm'>
+                                      {" "}
+                                      Transaction no :{" "}
+                                    </span>
+                                    <span className='font-bold'>
+                                      {data?.transaction_no}
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                               <div className=''>
                                 <h1 className='font-bold pb-5'>
@@ -634,31 +667,6 @@ const BiddingViewById = () => {
                     {btnLabel(biddingData?.creationStatus)}
                   </button>
                 )}
-                {/* {page === "inbox" && !biddingData?.bid_type && (
-                  <button
-                    // onClick={() => setShowModal(true)}
-                    className="mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl "
-                  >
-                    Confirm
-                  </button>
-                )} */}
-
-                {/* {page === "inbox" && biddingData?.bid_type === "technical"
-                  ? !biddingData?.techCriteria?.length
-                  : biddingData?.bid_type === "financial"
-                  ? !biddingData?.finCriteria?.length
-                  : biddingData?.bid_type === "fintech" &&
-                    (!biddingData?.techCriteria?.length ||
-                      !biddingData?.finCriteria?.length) && (
-                      <button
-                        onClick={() =>
-                          navigate(`/bidding-commparision-tabs?tabNo=1`)
-                        }
-                        className='mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl '
-                      >
-                        Fill criteria and description
-                      </button>
-                    ))} */}
               </div>
             </div>
           </div>
