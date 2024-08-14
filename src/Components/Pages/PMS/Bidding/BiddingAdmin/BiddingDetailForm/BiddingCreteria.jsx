@@ -63,6 +63,8 @@ const BiddingCreteria = (props) => {
     // }
   };
 
+  console.log(creteriaType)
+
   //------------------- Apis ------------------------
 
   const addCreteria = () => {

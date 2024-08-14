@@ -53,8 +53,10 @@ const BiddingType = () => {
       ? "finCriteria"
       : criteriaData?.bid_type === "technical"
       ? "techCriteria"
-      : criteriaData?.bid_type === "fintech"
+      : criteriaData?.bid_type === "fintech" && criteriaData?.creationStatus == 3
       ? "techCriteria"
+      : criteriaData?.bid_type === "fintech" && criteriaData?.creationStatus == 41
+      ? "finCriteria"
       : [];
 
   const initialValues = {};

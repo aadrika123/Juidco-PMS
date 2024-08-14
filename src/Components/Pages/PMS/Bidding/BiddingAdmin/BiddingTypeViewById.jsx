@@ -8,103 +8,25 @@ import toast from "react-hot-toast";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const BiddingTypeViewById = () => {
   const { id } = useParams();
-  const { api_getCompareBidder, api_postWinner, api_finalizeWinner } =
-    ProjectApiList();
+  const navigate = useNavigate();
+  const {
+    api_getCompareBidder,
+    api_postWinner,
+    api_finalizeWinner,
+    api_getBidType,
+  } = ProjectApiList();
   const [imageModal, setImageModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [applicationData, setApplicationData] = useState();
+  const [biddingData, setBiddingData] = useState();
   const { titleBarVisibility } = useContext(contextVar);
 
   const [selectedBidder, setSelectedBidder] = useState([]);
   let temp = [];
-
-  const creteria = [
-    {
-      cret: "creteria 1",
-    },
-    {
-      cret: "creteria 2",
-    },
-    {
-      cret: "creteria 3",
-    },
-    {
-      cret: "creteria 4",
-    },
-    {
-      cret: "creteria 5",
-    },
-    {
-      cret: "Total",
-    },
-    {
-      cret: "Rank",
-    },
-  ];
-
-  const biddingData = [
-    {
-      name: "Raju Pvt Ltd",
-      cret01: "1",
-      cret02: "2",
-      cret03: "3",
-      cret04: "4",
-      cret05: "5",
-      total: "25",
-      rank: "L1",
-    },
-    {
-      name: "Raju Pvt Ltd",
-      cret01: "1",
-      cret02: "2",
-      cret03: "3",
-      cret04: "4",
-      cret05: "5",
-      total: "25",
-      rank: "L1",
-    },
-    {
-      name: "Raju Pvt Ltd",
-      cret01: "1",
-      cret02: "2",
-      cret03: "3",
-      cret04: "4",
-      cret05: "5",
-      total: "25",
-      rank: "L1",
-    },
-  ];
-
-  const biddingData2 = [
-    {
-      sno: "Raju Pvt Ltd",
-      tenderRefNo: "1",
-      bidderName: "2",
-      biddingPrice: "3",
-      rank: "4",
-      doc: "5",
-    },
-    {
-      sno: "Rancho Pvt Ltd",
-      tenderRefNo: "1",
-      bidderName: "2",
-      biddingPrice: "3",
-      rank: "4",
-      doc: "5",
-    },
-    {
-      sno: "Farhan Pvt Ltd",
-      tenderRefNo: "1",
-      bidderName: "2",
-      biddingPrice: "3",
-      rank: "4",
-      doc: "5",
-    },
-  ];
 
   const getApplicationDetail = () => {
     setIsLoading(true);
@@ -127,7 +49,29 @@ const BiddingTypeViewById = () => {
       });
   };
 
-  // console.log("---------------------------->", applicationData?.bid_type);
+  const getBiddingDetail = () => {
+    setIsLoading(true);
+    AxiosInterceptors.get(`${api_getBidType}/${id}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setBiddingData(response?.data?.data);
+
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        console.log("details by id error...", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  console.log("---------->", applicationData?.finComparison);
 
   const selectWinnerPost = async () => {
     setIsLoading(true);
@@ -137,7 +81,16 @@ const BiddingTypeViewById = () => {
       .then(function (response) {
         if (response?.data?.status) {
           toast.success("Winner Selected Succesfully");
-          if (applicationData?.bid_type == "fintech") finalizeWinner();
+          
+          if (
+            applicationData?.bid_type === "fintech" &&
+            applicationData?.finComparison == false
+          ) {
+            navigate("/bidding-type", { state: id });
+          } else {
+            finalizeWinner();
+          }
+
         } else {
           setIsLoading(false);
           toast.error("Error in Creating form.");
@@ -175,6 +128,7 @@ const BiddingTypeViewById = () => {
   };
 
   useEffect(() => {
+    getBiddingDetail();
     getApplicationDetail();
   }, []);
 
@@ -190,7 +144,7 @@ const BiddingTypeViewById = () => {
     );
   }
 
-  // console.log("winner:", selectedBidder);
+  console.log("winner:", applicationData);
 
   return (
     <>
@@ -201,29 +155,37 @@ const BiddingTypeViewById = () => {
         titleText={"Bidding Type Details"}
       />
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
-        <div className=''>
-          <h2 className=' text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-            On the Basis of Technical Qualification the Analysis are :-
+        <div className="">
+          <h2 className=" text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
+            On the Basis of{" "}
+            {applicationData?.bid_type == "technical"
+              ? "Technical"
+              : applicationData?.bid_type == "financial"
+              ? "Financial"
+              : ""}{" "}
+            Qualification the Analysis are :-
           </h2>
         </div>
 
         {/* Bidder details */}
-        <div className=''>
-          <div className='bg-white p-2 mt-5 rounded-md '>
+        <div className="">
+          <div className="bg-white p-2 mt-5 rounded-md ">
             {/* 1st Info */}
-            <div className='relative overflow-x-auto'>
-              <table className='w-full text-sm text-left rtl:text-right border-b  text-gray-500'>
-                <thead className=' text-gray-500  bg-gray-200 '>
+            <div className="relative overflow-x-auto">
+              <table className="w-full text-sm text-left rtl:text-right border-b  text-gray-500">
+                <thead className=" text-gray-500  bg-gray-200 ">
                   <tr>
+                    {/* {(applicationData?.bid_type == "fintech" && (applicationData?.techComparison == false || applicationData?.finComparison == false)|| (applicationData?.bid_type == "financial" && applicationData?.finComparison == false) ) &&  */}
                     <th
-                      scope='col'
-                      className=' text-center border-r border-l border-gray-300'
+                      scope="col"
+                      className=" text-center border-r border-l border-gray-300"
                     >
                       Select
                     </th>
+                    {/* // } */}
                     <th
-                      scope='col'
-                      className='px-6 py-5 text-center border-r border-l border-gray-300'
+                      scope="col"
+                      className="px-6 py-5 text-center border-r border-l border-gray-300"
                     >
                       Bidder name
                     </th>
@@ -234,13 +196,13 @@ const BiddingTypeViewById = () => {
                           temp.push(criteData?.criteria?.id);
                           return (
                             <th
-                              scope='col'
-                              className='px-6 py-5 text-center border-r border-gray-300'
+                              scope="col"
+                              className="px-6 py-5 text-center border-r border-gray-300"
                             >
-                              <p className='text-base'>
+                              <p className="text-base">
                                 {criteData?.criteria?.heading}
                               </p>
-                              <p className='text-sm'>
+                              <p className="text-sm">
                                 {criteData?.criteria?.description}
                               </p>
                             </th>
@@ -248,17 +210,31 @@ const BiddingTypeViewById = () => {
                         }
                       })
                     )}
+
+                    <th
+                      scope="col"
+                      className="px-6 py-5 text-center border-r border-l border-gray-300"
+                    >
+                      Total
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-5 text-center border-r border-l border-gray-300"
+                    >
+                      Rank
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {applicationData?.comparison?.map((data) => (
-                    <tr className='bg-white '>
+                  {applicationData?.comparison?.map((data, index) => (
+                    <tr className="bg-white ">
+                      {/* {applicationData?.bid_type == "fintech" && (applicationData?.techComparison == false || applicationData?.finComparison == false) &&  */}
                       <th
-                        scope='row'
-                        className=' text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap'
+                        scope="row"
+                        className=" text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
                       >
                         <input
-                          type='checkbox'
+                          type="checkbox"
                           onClick={() =>
                             setSelectedBidder([
                               ...selectedBidder,
@@ -267,19 +243,32 @@ const BiddingTypeViewById = () => {
                           }
                         />
                       </th>
+                      {/* } */}
                       <th
-                        scope='row'
-                        className='px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap'
+                        scope="row"
+                        className="px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
                       >
                         {data?.bidder_master?.name}
                       </th>
                       {data?.comparison_criteria?.map((criteData) => (
                         <>
-                          <td className='px-6 py-5 text-center border-r  border-gray-300'>
+                          <td className="px-6 py-5 text-center border-r  border-gray-300">
                             {criteData?.value}
                           </td>
                         </>
                       ))}
+                      <th
+                        scope="row"
+                        className="px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
+                      >
+                        {data?.total_score}
+                      </th>
+                      <th
+                        scope="row"
+                        className="px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
+                      >
+                        L{index + 1}
+                      </th>
                     </tr>
                   ))}
                 </tbody>
@@ -378,12 +367,12 @@ const BiddingTypeViewById = () => {
             </div> */}
           </div>
         </div>
-        <div className='flex justify-end space-x-5 mt-8'>
-          <button className='bg-white  hover:bg-[#4338CA] hover:text-white border border-blue-700 px-10 py-2 rounded flex'>
+        <div className="flex justify-end space-x-5 mt-8">
+          <button className="bg-white  hover:bg-[#4338CA] hover:text-white border border-blue-700 px-10 py-2 rounded flex">
             Cancel
           </button>
           <button
-            className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white px-10 py-2 rounded flex'
+            className="bg-[#4338CA]  hover:bg-[#5a50c6]  text-white px-10 py-2 rounded flex"
             onClick={() => selectWinnerPost()}
           >
             Confirm
