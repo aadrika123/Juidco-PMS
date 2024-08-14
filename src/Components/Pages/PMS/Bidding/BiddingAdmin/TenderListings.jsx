@@ -75,34 +75,44 @@ function TenderListings(props) {
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {cell.row.original.boq?.bid_details?.status == 0 && (
+          {cell.row.original.boq?.bid_details?.creationStatus == 0 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Proceed for Bidding
             </p>
           )}
-          {cell.row.original.boq?.bid_details?.status == 1 && (
+          {cell.row.original.boq?.bid_details == null && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Proceed for Bidding
+            </p>
+          )}
+          {cell.row.original.boq?.bid_details?.creationStatus == 1 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Bidding Type Selected
             </p>
           )}
-          {cell.row.original.boq?.bid_details?.status == 2 && (
+          {cell.row.original.boq?.bid_details?.creationStatus == 2 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Criteria and Description added
             </p>
           )}
-          {cell.row.original.boq?.bid_details?.status == 3 && (
+          {cell.row.original.boq?.bid_details?.creationStatus == 3 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Bidders Details Added
             </p>
           )}
-          {cell.row.original.boq?.bid_details?.status == 3 && (
+          {cell.row.original.boq?.bid_details?.creationStatus == 41 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Bidders Comaprison Completed
+              Technical Winner Selected
             </p>
           )}
-          {cell.row.original.boq?.bid_details?.status == 3 && (
+          {cell.row.original.boq?.bid_details?.creationStatus == 42 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Bidders Data Analysed
+              Financial Winner Selected
+            </p>
+          )}
+          {cell.row.original.boq?.bid_details?.creationStatus == 4 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Bidding Completed
             </p>
           )}
         </div>

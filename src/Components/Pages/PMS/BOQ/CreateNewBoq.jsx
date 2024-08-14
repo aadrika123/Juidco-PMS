@@ -42,9 +42,8 @@ export default function CreateNewBoq() {
   const { titleBarVisibility } = useContext(contextVar);
   // let isCreatePage = state?.proNos?.length > 0 ? "create" : "edit/view";
   let isCreatePage = state ? "create" : "edit/view";
-
+console.log(state,"state boq")
   const {
-    api_fetchAllBoqDetails,
     api_fetchAllBoqDetailsbyId,
     api_fetchProcurementById,
     api_postForwardAndCreateBoq,
@@ -53,7 +52,6 @@ export default function CreateNewBoq() {
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
-  let colouredBtnStyle = `bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`;
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
     {
@@ -278,7 +276,8 @@ export default function CreateNewBoq() {
 
   //adding gst for each procurement stocks
   const addGstForEachProc = (e, procId) => {
-    const updatedProcurement = applicationData?.procurement_stocks?.map(
+    // const updatedProcurement = applicationData?.procurement_stocks?.map(
+      const updatedProcurement = payload?.procurement?.map(
       (data) => {
         const gstVal = Number(e.target.value);
         if (data.id === procId) {
@@ -290,7 +289,6 @@ export default function CreateNewBoq() {
         return data;
       }
     );
-
     setApplicationData((prev) => ({
       ...prev,
       procurement_stocks: updatedProcurement,
@@ -754,7 +752,6 @@ export default function CreateNewBoq() {
             Forward to DA
           </button>
         )} */}
-
         <button
           className={`bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
           onClick={() => {
