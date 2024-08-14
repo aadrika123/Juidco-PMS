@@ -9,8 +9,9 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { useNavigate, useParams } from "react-router-dom";
+import { CleanHands } from "@mui/icons-material";
 
-const BiddingTypeViewById = () => {
+const BiddingTypeResultView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const {
@@ -20,6 +21,7 @@ const BiddingTypeViewById = () => {
     api_getBidType,
   } = ProjectApiList();
   const [imageModal, setImageModal] = useState(false);
+  const [imageData, setImageData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [applicationData, setApplicationData] = useState();
   const [biddingData, setBiddingData] = useState();
@@ -71,61 +73,80 @@ const BiddingTypeViewById = () => {
       });
   };
 
-  console.log("---------->", applicationData?.finComparison);
+  // console.log("---------->", applicationData?.finComparison);
 
-  const selectWinnerPost = async () => {
-    setIsLoading(true);
-    let payload = { reference_no: id, winners: selectedBidder };
+  // const selectWinnerPost = async () => {
+  //   setIsLoading(true);
+  //   let payload = { reference_no: id, winners: selectedBidder };
 
-    AxiosInterceptors.post(api_postWinner, payload, ApiHeader())
-      .then(function (response) {
-        if (response?.data?.status) {
-          toast.success("Winner Selected Succesfully");
-          
-          if (
-            applicationData?.bid_type === "fintech" &&
-            applicationData?.finComparison == false
-          ) {
-            navigate("/bidding-type", { state: id });
-          } else {
-            finalizeWinner();
-          }
+  //   AxiosInterceptors.post(api_postWinner, payload, ApiHeader())
+  //     .then(function (response) {
+  //       if (response?.data?.status) {
+  //         toast.success("Winner Selected Succesfully");
 
-        } else {
-          setIsLoading(false);
-          toast.error("Error in Creating form.");
+  //         if (
+  //           applicationData?.bid_type === "fintech" &&
+  //           applicationData?.finComparison == false
+  //         ) {
+  //           navigate("/bidding-type", { state: id });
+  //         } else {
+  //           finalizeWinner();
+  //         }
+
+  //       } else {
+  //         setIsLoading(false);
+  //         toast.error("Error in Creating form.");
+  //       }
+  //     })
+  //     .catch(function (error) {
+  //       setIsLoading(false);
+  //       toast.error(error?.response?.data?.error);
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // };
+
+  // const finalizeWinner = async () => {
+  //   setIsLoading(true);
+  //   let payload = { reference_no: id };
+
+  //   AxiosInterceptors.post(api_finalizeWinner, payload, ApiHeader())
+  //     .then(function (response) {
+  //       if (response?.data?.status) {
+  //         toast.success("Winner Finalize Succesfully");
+  //       } else {
+  //         setIsLoading(false);
+  //         toast.error("Error in Creating form.");
+  //       }
+  //     })
+  //     .catch(function (error) {
+  //       setIsLoading(false);
+  //       toast.error(error?.response?.data?.error);
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // };
+
+  // console.log(biddingData?.bidder_master)
+
+  const setImageFunc = (id) => {
+    const bidder = biddingData?.bidder_master.filter((obj) => id == obj?.id);
+
+    if (bidder?.length > 1) {
+      return toast.error("Two Bidders With Same ID's are found");
+    }
+
+    if (biddingData?.bid_type == "fintech") {
+      bidder[0].bidder_doc?.map((data) => {
+        if (data?.criteria_type == "financial") {
+          setImageData(data?.doc_path);
         }
-      })
-      .catch(function (error) {
-        setIsLoading(false);
-        toast.error(error?.response?.data?.error);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
-  };
-
-  const finalizeWinner = async () => {
-    setIsLoading(true);
-    let payload = { reference_no: id };
-
-    AxiosInterceptors.post(api_finalizeWinner, payload, ApiHeader())
-      .then(function (response) {
-        if (response?.data?.status) {
-          toast.success("Winner Finalize Succesfully");
-          navigate(`/bidding-type-result/${id}`, { state: id });
-        } else {
-          setIsLoading(false);
-          toast.error("Error in Creating form.");
-        }
-      })
-      .catch(function (error) {
-        setIsLoading(false);
-        toast.error(error?.response?.data?.error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    } else {
+      setImageData(bidder[0]?.bidder_doc[0]?.doc_path);
+    }
   };
 
   useEffect(() => {
@@ -139,13 +160,13 @@ const BiddingTypeViewById = () => {
         <ImageModal
           imageModal={imageModal}
           setImageModal={setImageModal}
-          imageUrl={img}
+          imageUrl={imageData}
         />
       </>
     );
   }
 
-  console.log("winner:", applicationData);
+  // console.log("winner:", biddingData);
 
   return (
     <>
@@ -176,14 +197,12 @@ const BiddingTypeViewById = () => {
               <table className="w-full text-sm text-left rtl:text-right border-b  text-gray-500">
                 <thead className=" text-gray-500  bg-gray-200 ">
                   <tr>
-                    {/* {(applicationData?.bid_type == "fintech" && (applicationData?.techComparison == false || applicationData?.finComparison == false)|| (applicationData?.bid_type == "financial" && applicationData?.finComparison == false) ) &&  */}
                     <th
                       scope="col"
                       className=" text-center border-r border-l border-gray-300"
                     >
-                      Select
+                      S no.
                     </th>
-                    {/* // } */}
                     <th
                       scope="col"
                       className="px-6 py-5 text-center border-r border-l border-gray-300"
@@ -214,7 +233,7 @@ const BiddingTypeViewById = () => {
 
                     <th
                       scope="col"
-                      className="px-6 py-5 text-center border-r border-l border-gray-300"
+                      className="px-6 py-5 text-center border-r border-l border-gray-300 bg-[#4338ca] text-white"
                     >
                       Total
                     </th>
@@ -229,22 +248,12 @@ const BiddingTypeViewById = () => {
                 <tbody>
                   {applicationData?.comparison?.map((data, index) => (
                     <tr className="bg-white ">
-                      {/* {applicationData?.bid_type == "fintech" && (applicationData?.techComparison == false || applicationData?.finComparison == false) &&  */}
                       <th
                         scope="row"
-                        className=" text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
+                        className="px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
                       >
-                        <input
-                          type="checkbox"
-                          onClick={() =>
-                            setSelectedBidder([
-                              ...selectedBidder,
-                              data?.bidder_master?.id,
-                            ])
-                          }
-                        />
+                        {index + 1}
                       </th>
-                      {/* } */}
                       <th
                         scope="row"
                         className="px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
@@ -277,106 +286,84 @@ const BiddingTypeViewById = () => {
             </div>
 
             {/* 2nd Info */}
-            {/* <div className='mt-14'>
-              <div className='relative overflow-x-auto'>
-                <table className='w-full text-sm text-left rtl:text-right text-gray-500'>
-                  <thead className='  bg-[#4338ca] text-white '>
+            <div className="mt-14">
+              <div className="relative overflow-x-auto">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-b">
+                  <thead className="  bg-[#4338ca] text-white ">
                     <tr>
                       <th
-                        scope='col'
-                        className='px-6 py-5 text-center border-r border-gray-300'
+                        scope="col"
+                        className="px-6 py-5 text-center border-r border-gray-300"
                       >
                         S No.
                       </th>
                       <th
-                        scope='col'
-                        className='px-6 py-5 text-center border-r border-gray-300'
+                        scope="col"
+                        className="px-6 py-5 text-center border-r border-gray-300"
                       >
                         Tender Reference No
                       </th>
                       <th
-                        scope='col'
-                        className='px-6 py-5 text-center border-r border-gray-300'
+                        scope="col"
+                        className="px-6 py-5 text-center border-r border-gray-300"
                       >
                         Bidder Name
                       </th>
                       <th
-                        scope='col'
-                        className='px-6 py-5 text-center border-r border-gray-300'
+                        scope="col"
+                        className="px-6 py-5 text-center border-r border-gray-300"
                       >
                         Bidding Price
                       </th>
+
                       <th
-                        scope='col'
-                        className='px-6 py-5 text-center border-r border-gray-300'
-                      >
-                        Rank
-                      </th>
-                      <th
-                        scope='col'
-                        className='px-6 py-5 text-center border-r border-gray-300'
+                        scope="col"
+                        className="px-6 py-5 text-center border-r border-gray-300"
                       >
                         Uploaded Document
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {biddingData2?.map((data) => (
-                      <tr className='bg-white '>
+                    {/* {console.log(biddingData?.bidder_master)} */}
+                    {biddingData?.bidder_master?.map((data, index) => (
+                      <tr className="bg-white ">
                         <th
-                          scope='row'
-                          className='px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap'
+                          scope="row"
+                          className="px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
                         >
-                          {data?.sno}
+                          {index + 1}
                         </th>
-                        <td className='px-6 py-5 text-center border-r border-gray-300'>
-                          {data?.tenderRefNo}
+                        <td className="px-6 py-5 text-center border-r border-gray-300">
+                          {biddingData?.reference_no}
                         </td>
-                        <td className='px-6 py-5 text-center border-r border-gray-300'>
-                          {data?.bidderName}
+                        <td className="px-6 py-5 text-center border-r border-gray-300">
+                          {data?.name}
                         </td>
-                        <td className='px-6 py-5 text-center border-r border-gray-300'>
-                          {data?.biddingPrice}
+                        <td className="px-6 py-5 text-center border-r border-gray-300">
+                          {data?.bidding_amount}
                         </td>
-                        <td className='px-6 py-5 text-center border-r border-gray-300'>
-                          {data?.rank}
-                        </td>
+
                         <td
-                          className='px-6 py-5 text-center border-r border-gray-300 cursor-pointer text-blue-800'
-                          onClick={() => setImageModal(true)}
+                          className="px-6 py-5 text-center border-r border-gray-300 cursor-pointer text-blue-800 hover:underline"
+                          onClick={() => {
+                            setImageFunc(data?.id);
+                            setImageModal(true);
+                          }}
                         >
                           View
                         </td>
                       </tr>
                     ))}
                   </tbody>
-                  <tfoot>
-                    <tr className='font-semibold text-gray-900'>
-                      <th
-                        scope='row'
-                        className='px-6 py-3 text-center border-b border-l border-r border-gray-300'
-                      ></th>
-                      <td className='px-6 py-3 text-center border-b border-l border-r border-gray-300'></td>
-                      <td className='px-6 py-3 text-center border-b border-l border-r border-gray-300'></td>
-                      <td className='px-6 py-3 text-center border-b border-l border-r border-gray-300'></td>
-                      <td className='px-6 py-3 text-center border-b border-l border-r border-gray-300'></td>
-                      <td className='px-6 py-3 text-center border-b border-l border-r border-gray-300'></td>
-                    </tr>
-                  </tfoot>
                 </table>
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
         <div className="flex justify-end space-x-5 mt-8">
           <button className="bg-white  hover:bg-[#4338CA] hover:text-white border border-blue-700 px-10 py-2 rounded flex">
-            Cancel
-          </button>
-          <button
-            className="bg-[#4338CA]  hover:bg-[#5a50c6]  text-white px-10 py-2 rounded flex"
-            onClick={() => selectWinnerPost()}
-          >
-            Confirm
+            Back
           </button>
         </div>
       </div>
@@ -384,4 +371,4 @@ const BiddingTypeViewById = () => {
   );
 };
 
-export default BiddingTypeViewById;
+export default BiddingTypeResultView;
