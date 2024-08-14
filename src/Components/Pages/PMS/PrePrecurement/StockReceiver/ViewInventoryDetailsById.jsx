@@ -23,6 +23,7 @@ import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import { useReactToPrint } from "react-to-print";
+import StockRequestTimeline from "@/Components/Common/Timeline/StockRequestTimeline";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
@@ -183,7 +184,7 @@ const ViewInventoryDetailsById = (props) => {
 
       {/* //timeline  */}
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
-        <TimeLine status={applicationFullData?.status?.status} />
+        <StockRequestTimeline status={applicationFullData?.status} />
       </div>
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>

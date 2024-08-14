@@ -27,6 +27,7 @@ import ApiHeader2 from "@/Components/api/ApiHeader2";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import { useReactToPrint } from "react-to-print";
+import StockRequestTimeline from "@/Components/Common/Timeline/StockRequestTimeline";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
@@ -63,9 +64,6 @@ const ViewInventoryDetailsById = (props) => {
 
   let buttonStyle =
     " mr-1 pb-3 pl-6 pr-6 pt-3 border border-indigo-500 text-indigo-800 text-md leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
-
-  let buttonStyle2 =
-    " p-2 border border-indigo-500 text-white text-md sm:text-md leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
   useEffect(() => {
     getApplicationDetail();
@@ -292,37 +290,12 @@ const ViewInventoryDetailsById = (props) => {
       </div>
 
       <>
-        <div className='flex gap-10 m-4 bg-white p-4'>
-          {/* {applicationFullData?.status?.status >= 70 && (
-            <button
-              className={`${buttonStyle2} w-[6rem]`}
-              onClick={() =>
-                navigate("/boqSummary", {
-                  state: applicationFullData?.procurement_no,
-                })
-              }
-            >
-              BOQ{" "}
-            </button>
-          )} */}
-          {/* {applicationFullData?.status?.status >= 71 && (
-            <button
-              className={buttonStyle2}
-              onClick={() =>
-                navigate(`/tendering?tabNo=1`, {
-                  state: applicationFullData?.procurement_no,
-                })
-              }
-            >
-              Pre-Tender Form
-            </button>
-          )} */}
-        </div>
+        <div className='flex gap-10 m-4 bg-white p-4'></div>
       </>
 
       {/* //timeline  */}
       <div className={`${isLoading ? "blur-[2px]" : ""} mt-10`}>
-        <TimeLine status={applicationFullData?.status?.status} />
+        <StockRequestTimeline status={applicationFullData?.status} />
       </div>
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>

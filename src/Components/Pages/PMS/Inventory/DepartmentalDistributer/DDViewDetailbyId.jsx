@@ -14,6 +14,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import { Toaster, toast } from "react-hot-toast";
+import StockRequestTimeline from "@/Components/Common/Timeline/StockRequestTimeline";
 
 const DDViewDetailbyId = () => {
   const [isLoading, setisLoading] = useState(false);
@@ -136,7 +137,7 @@ const DDViewDetailbyId = () => {
     <>
       {isLoading && (
         <div className='fixed inset-0 flex items-center justify-center z-50'>
-        <LoaderApi />
+          <LoaderApi />
         </div>
       )}
 
@@ -147,7 +148,8 @@ const DDViewDetailbyId = () => {
 
       {/* //timeline  */}
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
-        <TimeLine />
+        {/* <TimeLine /> */}
+        <StockRequestTimeline status={applicationFullData?.status} />
       </div>
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>

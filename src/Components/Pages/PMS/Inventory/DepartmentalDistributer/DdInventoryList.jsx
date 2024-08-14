@@ -71,7 +71,7 @@ function InventoryProposalList(props) {
       ),
     },
     {
-      Header: <p className="text-center">status</p>,
+      Header: <p className='text-left'>status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2 w-[12rem]'>
@@ -157,15 +157,14 @@ function InventoryProposalList(props) {
           )}
           {cell.row.values.status == 61 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-             Added to dead stock
+              Added to dead stock
             </p>
           )}
           {cell.row.values.status == 62 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-             Returned to DD
+              Returned to DD
             </p>
           )}
-          
         </div>
       ),
     },
