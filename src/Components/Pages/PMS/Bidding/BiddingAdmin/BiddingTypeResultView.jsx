@@ -10,6 +10,7 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { useNavigate, useParams } from "react-router-dom";
 import { CleanHands } from "@mui/icons-material";
+import { indianAmount } from "@/Components/Common/PowerupFunctions";
 
 const BiddingTypeResultView = () => {
   const { id } = useParams();
@@ -217,12 +218,12 @@ const BiddingTypeResultView = () => {
                           return (
                             <th
                               scope="col"
-                              className="px-6 py-5 text-center border-r border-gray-300"
+                              className="px-6 py-5 text-center border-r border-gray-300 "
                             >
                               <p className="text-base">
                                 {criteData?.criteria?.heading}
                               </p>
-                              <p className="text-sm">
+                              <p className="text-sm truncate w-[15rem]">
                                 {criteData?.criteria?.description}
                               </p>
                             </th>
@@ -341,7 +342,7 @@ const BiddingTypeResultView = () => {
                           {data?.name}
                         </td>
                         <td className="px-6 py-5 text-center border-r border-gray-300">
-                          {data?.bidding_amount}
+                          {indianAmount(data?.bidding_amount)}
                         </td>
 
                         <td
@@ -362,9 +363,16 @@ const BiddingTypeResultView = () => {
           </div>
         </div>
         <div className="flex justify-end space-x-5 mt-8">
-          <button className="bg-white  hover:bg-[#4338CA] hover:text-white border border-blue-700 px-10 py-2 rounded flex">
-            Back
+          <button className=" bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-10 py-2 rounded flex"
+          onClick={()=>navigate(`/biddingViewById/${biddingData?.reference_no}/inbox`)}
+          >
+            Back to Bidding Page
           </button>
+          {/* <button className="bg-white  hover:bg-[#4338CA] hover:text-white border border-blue-700 px-10 py-2 rounded flex"
+          onClick={()=>navigate(-1)}
+          >
+            Back
+          </button> */}
         </div>
       </div>
     </>

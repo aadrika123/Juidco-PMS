@@ -19,13 +19,15 @@ const BiddingType = () => {
   const [confModal, setConfModal] = useState(false);
   const [cancelModal, setCancelModal] = useState(false);
   const [imageModal, setImageModal] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
 
   const { api_getBidType, api_PostCompareBidder } = ProjectApiList();
 
   const { state } = useLocation();
+
+  console.log(imageUrl,"imgurl")
 
   const getApplicationDetail = () => {
     setIsLoading(true);
@@ -253,36 +255,81 @@ const BiddingType = () => {
     setBidderDetails((prev) => [...updatedData]);
   };
 
+  // const imageHandler = (id) => {
+  //   setImageModal(true);
+  //   const bidder = criteriaData?.bidder_master?.filter((obj) => id == obj?.id);
+
+  //   if (bidder?.length > 1) {
+  //     return toast.error("Two Bidders With Same ID's are found");
+  //   }
+
+  //   if (criteriaData?.bid_type == "fintech") {
+  //     if (!criteriaData?.techComparison && !criteriaData?.finComparison) {
+  //       bidder[0]?.bidder_doc?.map((data) => {
+          
+  //         if(data?.criteria_type === "technical"){
+  //           console.log(data?.doc_path,"iff")
+  //           setImageUrl(data?.doc_path)
+  //         }else{
+  //           setImageUrl("");
+  //         }
+  //       });
+
+  //       return;
+  //     } else if (!criteriaData?.finComparison && criteriaData?.techComparison) {
+  //       bidder[0]?.bidder_doc?.map((data) => {
+
+  //         if(data?.criteria_type === "financial"){
+  //           console.log(data?.doc_path,"else")
+  //           setImageUrl(data?.doc_path)
+  //         }else{
+  //           setImageUrl("");
+  //         }
+
+  //       });
+  //       return;
+  //     }
+  //   } else {
+  //     setImageUrl(bidder[0]?.bidder_doc[0]?.doc_path);
+  //   }
+  // };
+
+  //assign total score to the response
+
   const imageHandler = (id) => {
     setImageModal(true);
     const bidder = criteriaData?.bidder_master?.filter((obj) => id == obj?.id);
-
+  
     if (bidder?.length > 1) {
       return toast.error("Two Bidders With Same ID's are found");
     }
-
+  
+    let imageUrl = ""; // Local variable to store the image URL
+  
     if (criteriaData?.bid_type == "fintech") {
       if (!criteriaData?.techComparison && !criteriaData?.finComparison) {
-        bidder[0]?.bidder_doc?.map((data) => {
-          data?.criteria_type === "technical"
-            ? setImageUrl(data?.doc_path)
-            : setImageUrl("");
+        bidder[0]?.bidder_doc?.forEach((data) => {
+          if (data?.criteria_type === "technical") {
+            imageUrl = data?.doc_path;  // Store the URL here
+            console.log(imageUrl, "iff");
+          }
         });
-        return;
       } else if (!criteriaData?.finComparison && criteriaData?.techComparison) {
-        bidder[0]?.bidder_doc?.map((data) => {
-          data?.criteria_type === "financial"
-            ? setImageUrl(data?.doc_path)
-            : setImageUrl("");
+        bidder[0]?.bidder_doc?.forEach((data) => {
+          if (data?.criteria_type === "financial") {
+            imageUrl = data?.doc_path;  // Store the URL here
+            console.log(imageUrl, "else");
+          }
         });
-        return;
       }
     } else {
-      setImageUrl(bidder[0]?.bidder_doc[0]?.doc_path);
+      imageUrl = bidder[0]?.bidder_doc[0]?.doc_path;
     }
+  
+    // Set the image URL in the state after determining the correct value
+    setImageUrl(imageUrl);
   };
-
-  //assign total score to the response
+  
 
   useEffect(() => {
     getApplicationDetail();
@@ -445,9 +492,9 @@ const BiddingType = () => {
               <div className='w-[80%] overflow-x-auto flex'>
                 {criteriaData?.bidder_master?.map((bidder) => (
                   <div className='bg-white w-full'>
-                    <div className='p-7 border-t border-gray-100 text-center w-[10rem]'>
+                    <div className='p-7 border-t border-gray-100 text-center'>
                       <h1
-                        className='border border-[#4338ca] rounded-full text-xs hover:bg-[#4338ca] cursor-pointer hover:text-white '
+                        className='border border-[#4338ca] rounded-full text-xs hover:bg-[#4338ca] cursor-pointer hover:text-white py-2'
                         onClick={() => {
                           imageHandler(bidder?.id);
                           // setImageModal(true);
@@ -457,11 +504,9 @@ const BiddingType = () => {
                       </h1>
                     </div>
 
-                    <div className='p-7 border-t border-gray-100 text-center w-[10rem]'>
-                      <h1 className='text-2xl font-bold'>{bidder?.name} </h1>
-                      <p className='text-sm text-gray-400 truncate'>
-                        {/* {data?.compName}{" "} */}
-                      </p>
+                    <div className='p-7 border-t border-gray-100 text-center'>
+                      <h1 className='text-2xl font-bold text-center'>{bidder?.name} </h1>
+                     
                     </div>
 
                     {markingType == "numeric" && (

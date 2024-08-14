@@ -13,6 +13,7 @@ import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import PreTenderingTimeline from "@/Components/Common/Timeline/PreTenderingTimeline";
 import { useReactToPrint } from "react-to-print";
+import { indianAmount } from "@/Components/Common/PowerupFunctions";
 
 const TenderFormViewDetails = () => {
   const { state } = useLocation();
@@ -672,13 +673,13 @@ const TenderFormViewDetails = () => {
                 <h1>
                   <span className={descTitle}>Tender Fee :</span>{" "}
                   <span className={descText}>
-                    {previewData?.fee_details?.tenderFee}
+                    {indianAmount(previewData?.fee_details?.tenderFee)}
                   </span>
                 </h1>
                 <h1>
                   <span className={descTitle}>Processing Fee :</span>{" "}
                   <span className={descText}>
-                    {previewData?.fee_details?.processingFee}
+                    {indianAmount(previewData?.fee_details?.processingFee)}
                   </span>
                 </h1>
               </div>
@@ -702,13 +703,13 @@ const TenderFormViewDetails = () => {
                 <h1>
                   <span className={descTitle}>Surg Charges :</span>{" "}
                   <span className={descText}>
-                    {previewData?.fee_details?.surcharges}
+                    {indianAmount(previewData?.fee_details?.surcharges)}
                   </span>
                 </h1>
                 <h1>
                   <span className={descTitle}>Other Charges :</span>{" "}
                   <span className={descText}>
-                    {previewData?.fee_details?.otherCharges}
+                    {indianAmount(previewData?.fee_details?.otherCharges)}
                   </span>
                 </h1>
               </div>
@@ -743,7 +744,7 @@ const TenderFormViewDetails = () => {
                 <h1>
                   <span className={descTitle}>EMD Amount :</span>{" "}
                   <span className={descText}>
-                    {previewData?.fee_details?.emdAmount}
+                    {indianAmount(previewData?.fee_details?.emdAmount)}
                   </span>
                 </h1>
                 <h1>

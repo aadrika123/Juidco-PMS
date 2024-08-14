@@ -153,48 +153,7 @@ const BiddingComparisionTabs = () => {
             />
           </div>
         ))}
-        {/* <div className='mt-4'>
-          {tabNo === [i] && (
-            <div
-              className={`${tabNo >= 1 ? "stockReq" : "disabled:bg-red-300"}`}
-            >
-              <BiddingCreteria
-                heading={"Technical Comparision"}
-                page={"stockReq"}
-                tabNo={"2"}
-                bidderData={bidderData}
-              />
-            </div>
-          )}
-          {tabNo === 2 && (
-            <div
-              className={`${
-                tabNo >= 2 ? "procurement" : "disabled:bg-red-300"
-              }`}
-            >
-              <BiddingCreteria
-                heading={"Financial Comparision"}
-                page={"procurement"}
-                tabNo={"3"}
-                bidderData={bidderData}
-              />
-            </div>
-          )}
-          {tabNo === 3 && (
-            <div
-              className={`${
-                tabNo >= 3 ? "procurement" : "disabled:bg-red-300"
-              }`}
-            >
-              <BiddingCreteria
-                heading={"Financial Comparision"}
-                page={"procurement"}
-                tabNo={"4"}
-                bidderData={bidderData}
-              />
-            </div>
-          )}
-        </div> */}
+        
       </div>
     </>
   );

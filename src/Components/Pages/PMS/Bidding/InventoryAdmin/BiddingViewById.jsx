@@ -130,13 +130,13 @@ const BiddingViewById = () => {
   const btnLabel = (status) => {
     switch (status) {
       case 0 || null || undefined:
-        return "Type Selection";
+        return "Proceed for Type Selection";
       case 1:
-        return "Criteria Addition";
+        return "Proceed for Criteria Addition";
       case 2:
-        return "Bidder Addition";
+        return "Proceed to Add Bidders";
       case 3:
-        return "Bidding Comparison";
+        return "Continue Bidding Comparison";
       case 41:
         return "Finalize Comparison";
       case 42:
@@ -268,7 +268,7 @@ const BiddingViewById = () => {
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>EMD Amount </div>
                 <div className='md:w-auto w-[50%] text-gray-800 '>
-                  {` ${indianAmount(applicationFullData?.emd_value)} 
+                  {applicationFullData?.emd_type === "percentage" ? `${applicationFullData?.emd_value} %` : ` ${indianAmount(applicationFullData?.emd_value)} 
                   (${
                     applicationFullData?.emd_type === "fixed" ? "Fixed" : ""
                   })`}
@@ -626,8 +626,10 @@ const BiddingViewById = () => {
             </>
           )}
 
-          {/* Bidding Type Details */}
+{/* Bidding Type Details */}
+{biddingData?.bidder_master.length > 0 && (
           <>
+
             <div className=''>
               <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10'>
                 Bidding Type Info{" "}
@@ -684,6 +686,7 @@ const BiddingViewById = () => {
               </div>
             </div>
           </>
+          )}
 
           {/* Buttons */}
 
