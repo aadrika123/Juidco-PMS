@@ -22,7 +22,6 @@ import { contextVar } from "@/Components/context/contextVar";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
-import ApiHeader2 from "@/Components/api/ApiHeader2";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import { useReactToPrint } from "react-to-print";
@@ -50,9 +49,6 @@ const ViewPreProcurementById = () => {
   const [isModalOpenlBackToIA, setisModalOpenlBackToIA] = useState(false);
   const [isModalOpenlBackToLevel1, setisModalOpenlBackToLevel1] =
     useState(false);
-
-  const [isModalOpen2, setIsModalOpen2] = useState(false);
-  const [isModalOpen3, setIsModalOpen3] = useState(false);
   const [remark, setRemark] = useState("");
   const [imageDoc, setImageDoc] = useState();
   const [preview, setPreview] = useState();
@@ -61,8 +57,6 @@ const ViewPreProcurementById = () => {
 
   const {
     api_getStockRequetById,
-    api_postBackToSR,
-    api_postForwardtoAcc,
     api_fetchProcurementById,
     api_forwardLevelone,
     api_forwardLeveltwo,
@@ -86,9 +80,6 @@ const ViewPreProcurementById = () => {
 
   let buttonStyle =
     " mr-1 pb-3 pl-6 pr-6 pt-3 border border-indigo-500 text-indigo-800 text-md leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
-
-  let buttonStyle2 =
-    " p-2 border border-indigo-500 text-white text-md sm:text-md leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
   useEffect(() => {
     getApplicationDetail();
@@ -127,66 +118,6 @@ const ViewPreProcurementById = () => {
         console.log("==2 details by id error...", error);
         toast.error(error?.response?.data?.message);
         seterroState(true);
-      })
-      .finally(() => {
-        setisLoading(false);
-      });
-  };
-
-  const postReject = () => {
-    setisLoading(true);
-
-    AxiosInterceptors.post(
-      `${api_rejectByLevelone}`,
-      { preProcurement: [id], remark: remark },
-      ApiHeader()
-    )
-      .then(function (response) {
-        if (response?.data?.status == true) {
-          toast.success(response?.data?.message, "success");
-          setTimeout(() => {
-            navigate("/da-inventory-proposal");
-          }, 1000);
-        } else {
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        toast.error(error?.response?.data?.message);
-        console.log("errorrr.... ", error);
-      })
-      .finally(() => {
-        setisLoading(false);
-      });
-  };
-
-  const postBackToSR = () => {
-    setisLoading(true);
-
-    AxiosInterceptors.post(
-      `${api_postBackToSR}`,
-      { preProcurement: [id], remark: remark },
-      ApiHeader()
-    )
-      .then(function (response) {
-        console.log("Forwarded to DA", response?.data);
-        console.log(response?.data?.st, "upper Status");
-        if (response?.data?.status == true) {
-          toast.success(response?.data?.message, "success");
-          setTimeout(() => {
-            navigate("/da-inventory-proposal");
-          }, 1000);
-        } else {
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        toast.error(error?.response?.data?.message);
-        console.log("errorrr.... ", error);
       })
       .finally(() => {
         setisLoading(false);
@@ -399,7 +330,7 @@ const ViewPreProcurementById = () => {
     AxiosInterceptors.post(`${api_backByLevel1toIA}`, data, ApiHeader())
       .then(function (response) {
         if (response?.data?.status == true) {
-          toast.success("Successfully Rejected");
+          toast.success("Successfully Returned to Inventory Admin");
           setTimeout(() => {
             navigate("/levelone");
           }, 500);
@@ -428,7 +359,7 @@ const ViewPreProcurementById = () => {
     AxiosInterceptors.post(`${api_backByLevel2toLevel1}`, data, ApiHeader())
       .then(function (response) {
         if (response?.data?.status == true) {
-          toast.success("Successfully Rejected");
+          toast.success("Successfully Returned to Level 1");
           setTimeout(() => {
             navigate("/leveltwo");
           }, 500);
@@ -490,18 +421,6 @@ const ViewPreProcurementById = () => {
     setisModalOpenlBackToIA(false);
     setisModalOpenlBackToLevel1(false);
   };
-
-  // if (isModalOpen3) {
-  //   return (
-  //     <>
-  //       <DaRejectModal
-  //         postRejectTender={postRejectTender}
-  //         setRemark={setRemark}
-  //         setIsModalOpen3={setIsModalOpen3}
-  //       />
-  //     </>
-  //   );
-  // }
 
   if (isModalOpen) {
     return (
@@ -630,7 +549,7 @@ const ViewPreProcurementById = () => {
 
       {/* //timeline  */}
       <div className={`${isLoading ? "blur-[2px]" : ""} mt-10`}>
-        <TimeLine status={applicationFullData?.status?.status} />
+        <TimeLine status={applicationFullData?.status} />
       </div>
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
