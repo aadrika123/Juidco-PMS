@@ -102,6 +102,8 @@ const BiddingComparisionTabs = () => {
     getApplicationDetail(ref);
   }, []);
 
+  console.log(tabDetails)
+
   return (
     <>
       <div className="">

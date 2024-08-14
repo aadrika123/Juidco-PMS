@@ -276,7 +276,7 @@ const BiddingViewById = () => {
                 <div className='md:w-auto w-[50%] font-semibold '>
                   Tendering Type{" "}
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-800 '>
+                <div className='md:w-auto w-[50%] text-gray-800'>
                   {applicationFullData?.tendering_type}
                 </div>
               </div>

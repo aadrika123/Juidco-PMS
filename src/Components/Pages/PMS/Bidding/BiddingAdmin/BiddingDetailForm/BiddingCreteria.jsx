@@ -64,6 +64,8 @@ const BiddingCreteria = (props) => {
     // }
   };
 
+  console.log(creteriaType)
+
   //------------------- Apis ------------------------
 
   const addCreteria = () => {
@@ -74,7 +76,7 @@ const BiddingCreteria = (props) => {
       {
         reference_no: props?.bidderData?.reference_no,
         criteria: formValues?.criteria,
-        criteria_type: tabDetails.value,
+        criteria_type: creteriaType,
       },
       ApiHeader()
     )

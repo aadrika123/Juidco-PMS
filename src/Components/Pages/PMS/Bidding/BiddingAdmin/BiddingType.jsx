@@ -26,61 +26,61 @@ const BiddingType = () => {
 
   const { state } = useLocation();
 
-  const numberOfBidders = [
-    {
-      bidderHeading: `B1`,
-      compName: `Raju Pvt Ltd.`,
-      doc: "Uploaded Document",
-    },
-    {
-      bidderHeading: `B2`,
-      compName: `Farhan Pvt Ltd.`,
-      doc: "Uploaded Document",
-    },
-    {
-      bidderHeading: `B3`,
-      compName: `Milimeter Pvt Ltd.`,
-      doc: "Uploaded Document",
-    },
-    {
-      bidderHeading: `B4`,
-      compName: `Rancho Pvt Ltd.`,
-      doc: "Uploaded Document",
-    },
-    // {
-    //   bidderHeading: `B4`,
-    //   compName: `Rancho Pvt Ltd.`,
-    //   doc: "Uploaded Document",
-    // },
-    // {
-    //   bidderHeading: `B4`,
-    //   compName: `Rancho Pvt Ltd.`,
-    //   doc: "Uploaded Document",
-    // },
-    // {
-    //   bidderHeading: `B4`,
-    //   compName: `Rancho Pvt Ltd.`,
-    //   doc: "Uploaded Document",
-    // },
-  ];
+  // const numberOfBidders = [
+  //   {
+  //     bidderHeading: `B1`,
+  //     compName: `Raju Pvt Ltd.`,
+  //     doc: "Uploaded Document",
+  //   },
+  //   {
+  //     bidderHeading: `B2`,
+  //     compName: `Farhan Pvt Ltd.`,
+  //     doc: "Uploaded Document",
+  //   },
+  //   {
+  //     bidderHeading: `B3`,
+  //     compName: `Milimeter Pvt Ltd.`,
+  //     doc: "Uploaded Document",
+  //   },
+  //   {
+  //     bidderHeading: `B4`,
+  //     compName: `Rancho Pvt Ltd.`,
+  //     doc: "Uploaded Document",
+  //   },
+  //   // {
+  //   //   bidderHeading: `B4`,
+  //   //   compName: `Rancho Pvt Ltd.`,
+  //   //   doc: "Uploaded Document",
+  //   // },
+  //   // {
+  //   //   bidderHeading: `B4`,
+  //   //   compName: `Rancho Pvt Ltd.`,
+  //   //   doc: "Uploaded Document",
+  //   // },
+  //   // {
+  //   //   bidderHeading: `B4`,
+  //   //   compName: `Rancho Pvt Ltd.`,
+  //   //   doc: "Uploaded Document",
+  //   // },
+  // ];
 
-  const creteria = [
-    {
-      creteria: "creteria 01",
-      desc: "Description For creteria 1",
-      input: `creteria01`,
-    },
-    {
-      creteria: "creteria 02",
-      desc: "Description For creteria 2",
-      input: `creteria02`,
-    },
-    {
-      creteria: "creteria 03",
-      desc: "Description For creteria 3",
-      input: `creteria03`,
-    },
-  ];
+  // const creteria = [
+  //   {
+  //     creteria: "creteria 01",
+  //     desc: "Description For creteria 1",
+  //     input: `creteria01`,
+  //   },
+  //   {
+  //     creteria: "creteria 02",
+  //     desc: "Description For creteria 2",
+  //     input: `creteria02`,
+  //   },
+  //   {
+  //     creteria: "creteria 03",
+  //     desc: "Description For creteria 3",
+  //     input: `creteria03`,
+  //   },
+  // ];
 
   const getApplicationDetail = () => {
     setIsLoading(true);
@@ -108,8 +108,10 @@ const BiddingType = () => {
       ? "finCriteria"
       : criteriaData?.bid_type === "technical"
       ? "techCriteria"
-      : criteriaData?.bid_type === "fintech"
+      : criteriaData?.bid_type === "fintech" && criteriaData?.creationStatus == 3
       ? "techCriteria"
+      : criteriaData?.bid_type === "fintech" && criteriaData?.creationStatus == 41
+      ? "finCriteria"
       : [];
 
   const initialValues = {};
