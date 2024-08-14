@@ -41,10 +41,6 @@ const BiddingViewById = () => {
     content: () => componentRef.current,
   });
 
-  const forwardSRModal = () => {
-    setConfModal(true);
-  };
-
   const confirmationHandler = () => {
     forwardToSR();
     setConfModal(false);
@@ -141,6 +137,8 @@ const BiddingViewById = () => {
         return "Bidder Addition";
       case 3:
         return "Bidding Comparison";
+      case 4:
+        return "Finalize Comparison";
       default:
         return "Continue";
     }
@@ -165,6 +163,8 @@ const BiddingViewById = () => {
         navigate(`/bidding-type`, {
           state: biddingData?.reference_no,
         });
+      case 4:
+        navigate(`/bidding-type-byId/${biddingData?.reference_no}`);
         break;
       default:
         break;
@@ -661,33 +661,6 @@ const BiddingViewById = () => {
                     ))} */}
               </div>
             </div>
-
-            {/* {applicationFullData?.status == 0 && (
-              <div className="space-x-3 flex items-end justify-center">
-                {page == "inbox" && (
-                  <button
-                    className=" p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]"
-                    onClick={forwardSRModal}
-                  >
-                    Forward to Stock Receiver
-                  </button>
-                )}
-
-                {page == "inbox" && (
-                  <div className="bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700">
-                    <FileButton
-                      bg={"[#359F6E]"}
-                      hoverBg={"bg-green-700"}
-                      btnLabel={"Upload References"}
-                      imgRef={notesheetRef}
-                      setImageDoc={setImageDoc}
-                      setPreview={setPreview}
-                      textColor={"white"}
-                    />
-                  </div>
-                )}
-              </div>
-            )} */}
           </div>
         </div>
       </div>

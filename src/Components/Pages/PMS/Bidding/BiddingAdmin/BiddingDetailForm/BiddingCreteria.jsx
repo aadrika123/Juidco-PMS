@@ -14,8 +14,6 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import toast from "react-hot-toast";
 
 const BiddingCreteria = (props) => {
-  const { titleBarVisibility, setReferenceNo } = useContext(contextVar);
-
   const location = useLocation();
 
   // console.log(location?.search)
@@ -42,8 +40,9 @@ const BiddingCreteria = (props) => {
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
       setFormValues((prev) => ({ criteria: [...prev["criteria"], values] }));
+      resetForm();
       // console.log("okijuhygtfcvgbhyunimnubyv")
     },
     // validationSchema,
@@ -76,7 +75,7 @@ const BiddingCreteria = (props) => {
       {
         reference_no: props?.bidderData?.reference_no,
         criteria: formValues?.criteria,
-        criteria_type: creteriaType,
+        criteria_type: props?.tabValue,
       },
       ApiHeader()
     )
@@ -128,17 +127,6 @@ const BiddingCreteria = (props) => {
         // setIsLoading(false);
       });
   };
-
-  // -----------------------------------------------------
-
-  useEffect(() => {
-    if (location?.search == "?tabNo=1") {
-      setCreteriaType("technical");
-    }
-    if (location?.search == "?tabNo=2") {
-      setCreteriaType("financial");
-    }
-  });
 
   // -----------------------------------------------------
 
@@ -267,7 +255,7 @@ const BiddingCreteria = (props) => {
                       className=' border border-[#4338ca] bg-white hover:bg-[#4338ca] hover:text-white px-3 py-2 rounded ml-5'
                       onClick={() => setShowFields(false)}
                     >
-                      close
+                      Close
                     </button>
                     <button className=' border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded ml-5'>
                       Add

@@ -178,7 +178,7 @@ const CriticalDateForm = () => {
         if (new Date(value) < new Date(publishingDate)) {
           return createError({
             message:
-              "seek clarification start date should be greater then seek clarification start date",
+              "seek clarification start date should be greater then document sale start date",
           });
         }
         return true;

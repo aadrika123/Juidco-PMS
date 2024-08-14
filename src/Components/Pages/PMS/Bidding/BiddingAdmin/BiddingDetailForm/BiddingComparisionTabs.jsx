@@ -106,16 +106,16 @@ const BiddingComparisionTabs = () => {
 
   return (
     <>
-      <div className="">
+      <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Bidding Comparision"}
         />
       </div>
 
-      <div className="">
-        <div className="flex justify-between items-center">
-          <div className="flex mt-2">
+      <div className=''>
+        <div className='flex justify-between items-center'>
+          <div className='flex mt-2'>
             {tabDetails?.map((item, index) => (
               <button
                 key={index}
@@ -127,16 +127,16 @@ const BiddingComparisionTabs = () => {
                 } focus:outline-none flex shadow-xl border border-gray-300 rounded justify-center items-center space-x-4`}
                 onClick={() => handleTabClick(item.tab)}
               >
-                <HiArrowPathRoundedSquare className="m-1 text-[1.2rem]" />
+                <HiArrowPathRoundedSquare className='m-1 text-[1.2rem]' />
 
                 {item.label}
               </button>
             ))}
           </div>
-          <div className="mt-6"></div>
+          <div className='mt-6'></div>
         </div>
       </div>
-      <div className="container mx-auto rounded  mt-6">
+      <div className='container mx-auto rounded  mt-6'>
         {tabDetails?.map((tabs) => (
           <div
             className={`${tabNo >= 1 ? "stockReq" : "disabled:bg-red-300"} ${
@@ -148,6 +148,7 @@ const BiddingComparisionTabs = () => {
               page={"stockReq"}
               tabNo={tabs?.tab}
               bidderData={bidderData}
+              tabValue={tabs?.value}
               tabDetails={tabDetails}
             />
           </div>
