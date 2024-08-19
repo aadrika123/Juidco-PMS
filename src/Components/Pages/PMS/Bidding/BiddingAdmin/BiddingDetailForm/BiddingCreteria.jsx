@@ -21,7 +21,6 @@ const BiddingCreteria = (props) => {
     criteria: [],
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [creteriaType, setCreteriaType] = useState();
   const [bidderNo, setBidderNo] = useState();
 
   // console.log(bidderNo);
@@ -62,7 +61,11 @@ const BiddingCreteria = (props) => {
 
   const addCreteria = () => {
     // setIsLoading(true);
-
+    if (formValues?.criteria.length < 3) {
+      return toast.error(
+        "Please add minimum three criteria with description. "
+      );
+    }
     AxiosInterceptors.post(
       `${api_addCreteria}`,
       {
@@ -125,14 +128,14 @@ const BiddingCreteria = (props) => {
 
   const handleDelete = (heading, desc) => {
     const newCriteria = formValues?.criteria?.filter(
-        (data) => !(data?.heading === heading && data?.description === desc)
+      (data) => !(data?.heading === heading && data?.description === desc)
     );
 
     setFormValues({
-        ...formValues,
-        criteria: newCriteria
+      ...formValues,
+      criteria: newCriteria,
     });
-};
+  };
 
   const confirmationHandler = () => {
     console.log(formValues);

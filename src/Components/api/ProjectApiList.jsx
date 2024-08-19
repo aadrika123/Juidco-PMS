@@ -117,12 +117,17 @@ export default function ProjectApiList() {
     api_fetchBoqListOutbox: `${baseUrl}/api/pms/acc/pre-procurement/boq/outbox`, //accountant
     api_fetchDaBoqListInbox: `${baseUrl}/api/pms/da/pre-procurement/boq`, //da
     api_fetchDaBoqListOutbox: `${baseUrl}/api/pms/da/pre-procurement/boq/outbox`, //da
+    api_fetchFinanceBoqListInbox: `${baseUrl}/api/pms/finance/boq`, //finance
+    api_fetchFinanceBoqListOutbox: `${baseUrl}/api/pms/finance/boq/outbox`, //finance
     api_fetchAllBoqDetailsbyId: `${baseUrl}/api/pms/boq/by-ref`,
+    api_fetchAllBoqDetailsbyIdFin: `${baseUrl}/api/pms/finance/boq`, // boq by id for finannce
     api_fetchBoqInboxList: `${baseUrl}/api/pms/acc/pre-procurement/boq`,
     api_postUpdatedBoq: `${baseUrl}/api/pms/boq`, //update boq
     api_postBacktoAcc: `${baseUrl}/api/pms/da/pre-procurement/boq/return-boq`, //boq back to acc
     api_postForwardBoq: `${baseUrl}/api/pms/da/pre-procurement/boq/approve`, //approve boq
+    api_approveBoq: `${baseUrl}/api/pms/finance/boq/approve`, //approve new boq by fin
     api_postRejectBoq: `${baseUrl}/api/pms/da/pre-procurement/boq/reject`, //reject boq
+    api_rejectFinBoq: `${baseUrl}/api/pms/finance/boq/reject`, //reject boq fin
     api_forwardBoqToFinance: `${baseUrl}/api/pms/da/pre-procurement/boq/to-finance`,
     api_forwardBoqToTA: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/to-ta`,
 

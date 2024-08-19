@@ -63,7 +63,7 @@ export default function BoqTimeLine({ status }) {
           )}
         </div>
 
-        {/* //DA */}
+        {/* //Finance */}
         <div className='flex flex-col items-center gap-1 relative'>
           <div className='flex justify-center items-center bg-[#4338ca] rounded-full w-10 h-10'>
             {status === 40 && (

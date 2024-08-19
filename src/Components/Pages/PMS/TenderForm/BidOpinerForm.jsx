@@ -396,7 +396,9 @@ const BidOpinerForm = () => {
                             }`}
                           >
                             {obj.label_name}
-                            <span className='text-red-500'>*</span>
+                            {index <= 1 && (
+                              <span className='text-red-500'>*</span>
+                            )}
                           </label>
                           <input
                             // {console.log(values[])}
@@ -427,7 +429,9 @@ const BidOpinerForm = () => {
                             }`}
                           >
                             {obj.label_email}
-                            <span className='text-red-500'>*</span>
+                            {index <= 1 && (
+                              <span className='text-red-500'>*</span>
+                            )}
                           </label>
                           <input
                             type='email'
@@ -506,7 +510,9 @@ const BidOpinerForm = () => {
                           }`}
                         >
                           {obj.label_desc}
-                          <span className='text-red-500'>*</span>
+                          {index <= 1 && (
+                            <span className='text-red-500'>*</span>
+                          )}
                         </label>
 
                         <div className=' relative'>
