@@ -22,7 +22,6 @@ const TenderFormViewDetails = () => {
   const { page } = useParams();
   const {
     api_postForwardtoDA,
-    api_getPreviewDetails,
     api_postFinalSubit,
     api_postReleaseForTender,
     api_postPreTenderBackToAcc,
@@ -305,12 +304,11 @@ const TenderFormViewDetails = () => {
   // console.log(previewData);
   return (
     <>
-
-{loading && (
+      {loading && (
         <div className='fixed inset-0 flex items-center justify-center z-50'>
-        <LoaderApi />
+          <LoaderApi />
         </div>
-      )} 
+      )}
 
       {page == "preview" && (
         <div className=''>
@@ -522,7 +520,7 @@ const TenderFormViewDetails = () => {
                 <span className={descText}>XYZ Values</span>
               </h1> */}
               <h1>
-                <span className={descTitle}>Work Discription : </span>
+                <span className={descTitle}>Work Description : </span>
                 <span className={descText}>
                   {previewData?.work_details?.workDiscription}
                 </span>
@@ -1059,14 +1057,16 @@ const TenderFormViewDetails = () => {
                   )} */}
                 </>
               )}
-              {page != "inbox" && page != "outbox" && (
-                <button
-                  className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
-                  onClick={() => postFinalSubmission()}
-                >
-                  Submit
-                </button>
-              )}
+              {page != "inbox" &&
+                page != "outbox" &&
+                previewData?.status !== 0 && (
+                  <button
+                    className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
+                    onClick={() => postFinalSubmission()}
+                  >
+                    Submit
+                  </button>
+                )}
             </div>
           </div>
         </div>

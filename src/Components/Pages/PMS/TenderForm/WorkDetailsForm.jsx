@@ -80,10 +80,9 @@ const WorkDetailsForm = () => {
     bid_validity: Yup.string().required(),
     completionPeriod: Yup.string().required(),
     location: Yup.string().required(),
-    pinCode: Yup.number("Must be number")
-      .min(6, "must be 6 digits")
-
-      .required("Invalid Pincode"),
+    pinCode: Yup.string()
+      .matches(/^\d{6}$/, "Must be exactly 6 digits")
+      .required("Pin code is required"),
     pre_bid: Yup.string().required(),
     bidOpeningPlace: Yup.string().required(),
     tenderer_class: Yup.array().min(1).required(),
