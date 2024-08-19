@@ -49,7 +49,6 @@ const ViewPreProcurementById = () => {
   const [isModalOpenlBackToIA, setisModalOpenlBackToIA] = useState(false);
   const [isModalOpenlBackToLevel1, setisModalOpenlBackToLevel1] =
     useState(false);
-  const [remark, setRemark] = useState("");
   const [imageDoc, setImageDoc] = useState();
   const [preview, setPreview] = useState();
   const [procNo, setProcNo] = useState();
@@ -594,6 +593,17 @@ const ViewPreProcurementById = () => {
                   </span>
                 </h1>
               </div>
+              {applicationFullData?.remark && (
+                <div className='text-[1rem] text-black flex justify-end w-full'>
+                  <h1 className='text-red-400'>
+                    Remark <span className='text-black'>:</span>
+                    <span className='font-bold'>
+                      {" "}
+                      {nullToNA(applicationFullData?.remark)}
+                    </span>
+                  </h1>
+                </div>
+              )}
             </div>
 
             {applicationFullData?.procurement_stocks?.map((procData, index) => (
@@ -687,7 +697,7 @@ const ViewPreProcurementById = () => {
             </button>
           )}
 
-          {page == "inbox" && (
+          {page == "inbox" && applicationFullData?.status < 10 && (
             <button
               className={buttonStyle}
               onClick={() => {

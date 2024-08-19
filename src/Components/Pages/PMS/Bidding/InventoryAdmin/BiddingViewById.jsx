@@ -270,9 +270,11 @@ const BiddingViewById = () => {
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>EMD Amount </div>
                 <div className='md:w-auto w-[50%] text-gray-800 '>
-                  {applicationFullData?.emd_type === "percentage" ? `${applicationFullData?.emd_value} %` : ` ${indianAmount(applicationFullData?.emd_value)} 
+                  {applicationFullData?.emd_type === "percentage"
+                    ? `${applicationFullData?.emd_value} %`
+                    : ` ${indianAmount(applicationFullData?.emd_value)} 
                   (${
-                    applicationFullData?.emd_type === "fixed" ? "Fixed" : ""
+                    applicationFullData?.emd_type === "fixed" ? " (Fixed)" : ""
                   })`}
                 </div>
               </div>
@@ -289,7 +291,7 @@ const BiddingViewById = () => {
                   </span>
                   {applicationFullData?.pbg_type == "percentage"
                     ? "%"
-                    : "Fixed"}{" "}
+                    : " (Fixed)"}{" "}
                 </div>
               </div>
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
@@ -628,67 +630,72 @@ const BiddingViewById = () => {
             </>
           )}
 
-{/* Bidding Type Details */}
-{biddingData?.bidder_master.length > 0 && (
-          <>
+          {/* Bidding Type Details */}
+          {(biddingData?.techComparison || biddingData?.finComparison) &&
+            biddingData?.bidder_master.length > 0 && (
+              <>
+                <div className=''>
+                  <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10'>
+                    Bidding Type Info{" "}
+                  </h2>
+                </div>
+                <div
+                  className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 overflow-auto h-[30rem]'
+                  ref={componentRef}
+                >
+                  <div className='mt-5'>
+                    {biddingData?.bidder_master.length > 0 && (
+                      <>
+                        {biddingData?.comparison.map((comp) =>
+                          comp?.comparison_criteria.map((data, index) => (
+                            <>
+                              <div className='grid md:grid-rows-4-4 gap-6 mb-5 bg-slate-100 rounded-xl'>
+                                <h1 className='p-3 bg-slate-300 rounded '>
+                                  {comp?.bidder_master?.name} Bidding Type
+                                  Info..
+                                </h1>
+                                <div className='flex justify-between mb-2 px-4 pb-0'>
+                                  <div className='w-[20%]'>
+                                    <div className=' text-gray-800 pb-1 flex flex-col '>
+                                      <span className='text-sm'>
+                                        Heading :{" "}
+                                      </span>
+                                      <span className='font-bold '>
+                                        {data?.criteria?.heading}
+                                      </span>
+                                    </div>
+                                  </div>
 
-            <div className=''>
-              <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10'>
-                Bidding Type Info{" "}
-              </h2>
-            </div>
-            <div
-              className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 overflow-auto h-[30rem]'
-              ref={componentRef}
-            >
-              <div className='mt-5'>
-                {biddingData?.bidder_master.length > 0 && (
-                  <>
-                    {biddingData?.comparison.map((comp) =>
-                      comp?.comparison_criteria.map((data, index) => (
-                        <>
-                          <div className='grid md:grid-rows-4-4 gap-6 mb-5 bg-slate-100 rounded-xl'>
-                            <h1 className='p-3 bg-slate-300 rounded '>
-                              {comp?.bidder_master?.name} Bidding Type Info..
-                            </h1>
-                            <div className='flex justify-between mb-2 px-4 pb-0'>
-                              <div className='w-[20%]'>
-                                <div className=' text-gray-800 pb-1 flex flex-col '>
-                                  <span className='text-sm'>Heading : </span>
-                                  <span className='font-bold '>
-                                    {data?.criteria?.heading}
-                                  </span>
+                                  <div className='w-[40%]'>
+                                    <div className=' text-gray-800 pb-1  flex flex-col '>
+                                      <span className='text-sm'>
+                                        Description:{" "}
+                                      </span>
+                                      <span className='font-bold'>
+                                        {data?.criteria?.description}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div className='w-[20%]'>
+                                    <div className=' text-gray-800 pb-1  flex flex-col '>
+                                      <span className='text-sm'>Value: </span>
+                                      <span className='font-bold'>
+                                        {data?.value}
+                                      </span>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
-
-                              <div className='w-[40%]'>
-                                <div className=' text-gray-800 pb-1  flex flex-col '>
-                                  <span className='text-sm'>Description: </span>
-                                  <span className='font-bold'>
-                                    {data?.criteria?.description}
-                                  </span>
-                                </div>
-                              </div>
-
-                              <div className='w-[20%]'>
-                                <div className=' text-gray-800 pb-1  flex flex-col '>
-                                  <span className='text-sm'>Value: </span>
-                                  <span className='font-bold'>
-                                    {data?.value}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      ))
+                            </>
+                          ))
+                        )}
+                      </>
                     )}
-                  </>
-                )}
-              </div>
-            </div>
-          </>
-          )}
+                  </div>
+                </div>
+              </>
+            )}
 
           {/* Buttons */}
 

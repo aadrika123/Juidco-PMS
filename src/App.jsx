@@ -41,6 +41,7 @@ import BoqSearch from "./Components/Pages/PMS/BOQ/BoqSearch";
 import CreateNewBoq from "./Components/Pages/PMS/BOQ/CreateNewBoq";
 import PreviewBoqSummary from "./Components/Pages/PMS/BOQ/PreviewBoqSummary";
 import BoqDetailsById from "./Components/Pages/PMS/BOQ/BoqDetailsById";
+import BoqDetailsByIdFin from "./Components/Pages/PMS/BOQ/Finance/BoqDetailsById";
 import BoqListTabs from "./Components/Pages/PMS/BOQ/BoqListTabs";
 import BoqListTabsDa from "./Components/Pages/PMS/BOQ/DA/BoqListTabsDa";
 import TenderFormViewDetails from "./Components/Pages/PMS/TenderForm/TenderFormViewDetails";
@@ -83,6 +84,7 @@ import BiddingComparisionTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/
 import BiddingComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingComparision";
 import TenderingAdminTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/TenderingAdminTabs";
 import BiddingTypeResultView from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingTypeResultView";
+import BoqListTabsFin from "./Components/Pages/PMS/BOQ/Finance/BoqListTabsFin";
 
 const queryClient = new QueryClient();
 
@@ -221,9 +223,20 @@ function App() {
       path: "/inventoryAdmin-boq",
       element: <BoqListTabsDa />,
     },
+
     {
       path: "/boq-details-byId/:refNo/:page",
       element: <BoqDetailsById />,
+    },
+
+    //-------------finance
+    {
+      path: "/finance",
+      element: <BoqListTabsFin />,
+    },
+    {
+      path: "/boqDetails/:refNo/:page",
+      element: <BoqDetailsByIdFin />,
     },
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////

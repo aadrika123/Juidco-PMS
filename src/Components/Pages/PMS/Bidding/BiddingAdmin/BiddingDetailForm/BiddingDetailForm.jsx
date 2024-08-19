@@ -1,12 +1,11 @@
+import * as Yup from "yup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
 import React, { useRef, useState } from "react";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import icon from "@/Components/assets/FeaturedIcon.svg";
-import { Description } from "@mui/icons-material";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useNavigate } from "react-router-dom";
+import { Formik, Form } from "formik";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -18,7 +17,11 @@ import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 const BiddingDetailForm = (props) => {
   const { api_addBidder } = ProjectApiList();
 
-  const navigate = useNavigate();
+  //regex --
+  const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+  const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+  const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+  const onlyNumbersRegex = /^[0-9]+$/;
 
   const inputFileRef = useRef();
   const inputFileTechRef = useRef();
@@ -32,8 +35,6 @@ const BiddingDetailForm = (props) => {
   const [techImageDoc, setTechImageDoc] = useState();
   const [fincImageDoc, setFincImageDoc] = useState();
   const [isLoading, setisLoading] = useState(false);
-
-  console.log(props?.bidderData);
 
   const emdConfirmation = [
     { label: "Yes", value: "yes" },
@@ -49,6 +50,28 @@ const BiddingDetailForm = (props) => {
     { label: "Cash", value: "cash" },
     { label: "DD", value: "dd" },
   ];
+
+  const validationSchema = Yup.object({
+    // reference_no: Yup.string().required(),
+    name: Yup.string().required("Bidder Name is mandatory"),
+    address: Yup.string().required("Address is required"),
+    pan_no: Yup.string().required("Pan Number is required"),
+    gst_no: Yup.string().required("Gst number is required"),
+    bank: Yup.string().required("Bank Name is required"),
+    ifsc: Yup.string().required("IFSC Name is required"),
+    account_no: Yup.string().required("Account number is required"),
+    dd_no: Yup.string().when(["emd", "payment_mode", "offline_mode"], {
+      is: (emd, payment_mode, offline_mode) =>
+        emd === "yes" && payment_mode === "offline" && offline_mode === "dd",
+      then: (schema) => schema.required("DD number is required"),
+      otherwise: (schema) => schema.optional("Required field"),
+    }),
+    transaction_no: Yup.string().when(["emd", "payment_mode"], {
+      is: (emd, payment_mode) => emd === "yes" && payment_mode === "online",
+      then: (schema) => schema.required("Transaction Number is required"),
+      otherwise: (schema) => schema.optional(),
+    }),
+  });
 
   const initialValues = {
     // reference_no:"",
@@ -69,6 +92,34 @@ const BiddingDetailForm = (props) => {
   };
 
   const submitBiddigData = (data) => {
+    //validations---->>
+    if (!data?.pan_no || !panRegex.test(data?.pan_no)) {
+      return toast.error("Invalid Pan Number");
+    }
+    if (!data?.gst_no || !gstRegex.test(data?.gst_no)) {
+      return toast.error("Invalid Gst Number");
+    }
+    if (!data?.ifsc || !ifscRegex.test(data?.ifsc)) {
+      return toast.error("Invalid IFSC code");
+    }
+    if (!data?.bidding_amount || !onlyNumbersRegex.test(data?.bidding_amount)) {
+      return toast.error("Bidding Amount should be number");
+    }
+    if (!imageDoc) {
+      return toast.error("Please upload valid EMD document");
+    }
+    if (props?.bidderData?.bid_type == "technical" && !techImageDoc) {
+      return toast.error("Please upload valid Technical document");
+    } else if (props?.bidderData?.bid_type == "financial" && !fincImageDoc) {
+      return toast.error("Please upload valid Financial document");
+    } else if (
+      props?.bidderData?.bid_type == "fintech" &&
+      !techImageDoc &&
+      !fincImageDoc
+    ) {
+      return toast.error("Please upload documents for Financial and Technical");
+    }
+
     setisLoading(true);
     // setConfirmationModal(false);
     data = { ...data, reference_no: props?.bidderData?.reference_no };
@@ -85,7 +136,7 @@ const BiddingDetailForm = (props) => {
           toast.success(response?.data?.message, "success");
           props?.getApplicationDetail(props?.bidderData?.reference_no);
         } else {
-          toast(response?.data?.message, "error");
+          toast(response, "error");
         }
       })
       .catch(function (error) {
@@ -107,37 +158,13 @@ const BiddingDetailForm = (props) => {
 
       <Formik
         initialValues={initialValues}
-        // validationSchema={validationSchema}
+        validationSchema={validationSchema}
         enableReinitialize={true}
-        onSubmit={(values, { resetForm }) => {
+        onSubmit={(values) => {
           submitBiddigData(values);
-
-          // props?.bidderData?.bidder_master?.length <=
-          // props?.bidderData?.no_of_bidders
-          //   ? submitBiddigData(values)
-          //   : navigate(`/bidding-type?tabNo=1`);
-
-          console.log(
-            "bidder",
-            values,
-            ",emd_doc:",
-            imageDoc?.name,
-            ",tech_doc:",
-            techImageDoc?.name,
-            ",fin_doc:",
-            fincImageDoc?.name
-          );
-          // navigate(`/bidding-details?tabNo=${2}`);
         }}
       >
-        {({
-          values,
-          handleChange,
-          errors,
-          touched,
-          resetForm,
-          setFieldValue,
-        }) => (
+        {({ values, handleChange, errors, touched, setFieldValue }) => (
           <Form>
             <>
               <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-2'>
@@ -157,6 +184,9 @@ const BiddingDetailForm = (props) => {
                     onChange={handleChange}
                     value={values.name}
                   />
+                  {errors.name && touched.name ? (
+                    <p className='text-red-400 text-xs'>{errors.name}</p>
+                  ) : null}
                 </div>
 
                 <div className=''>
@@ -175,6 +205,9 @@ const BiddingDetailForm = (props) => {
                     onChange={handleChange}
                     value={values.pan_no}
                   />
+                  {errors.pan_no && touched.pan_no ? (
+                    <p className='text-red-400 text-xs'>{errors.pan_no}</p>
+                  ) : null}
                 </div>
 
                 <div className=''>
@@ -211,6 +244,9 @@ const BiddingDetailForm = (props) => {
                     onChange={handleChange}
                     value={values.address}
                   />
+                  {errors.address && touched.address ? (
+                    <p className='text-red-400 text-xs'>{errors.address}</p>
+                  ) : null}
                 </div>
 
                 <div className=''>
@@ -229,6 +265,9 @@ const BiddingDetailForm = (props) => {
                     onChange={handleChange}
                     value={values.bank}
                   />
+                  {errors.bank && touched.bank ? (
+                    <p className='text-red-400 text-xs'>{errors.bank}</p>
+                  ) : null}
                 </div>
 
                 <div className=''>
@@ -247,6 +286,9 @@ const BiddingDetailForm = (props) => {
                     onChange={handleChange}
                     value={values.account_no}
                   />
+                  {errors.account_no && touched.account_no ? (
+                    <p className='text-red-400 text-xs'>{errors.account_no}</p>
+                  ) : null}
                 </div>
 
                 <div className=''>
@@ -265,6 +307,9 @@ const BiddingDetailForm = (props) => {
                     onChange={handleChange}
                     value={values.ifsc}
                   />
+                  {errors.ifsc && touched.ifsc ? (
+                    <p className='text-red-400 text-xs'>{errors.ifsc}</p>
+                  ) : null}
                 </div>
 
                 <div className=''>
@@ -283,6 +328,11 @@ const BiddingDetailForm = (props) => {
                     onChange={handleChange}
                     value={values.bidding_amount}
                   />
+                  {errors.bidding_amount && touched.bidding_amount ? (
+                    <p className='text-red-400 text-xs'>
+                      {errors.bidding_amount}
+                    </p>
+                  ) : null}
                 </div>
               </div>
 
@@ -347,6 +397,11 @@ const BiddingDetailForm = (props) => {
                               onChange={handleChange}
                               value={values.dd_no}
                             />
+                            {errors.dd_no && touched.dd_no ? (
+                              <p className='text-red-400 text-xs'>
+                                {errors.dd_no}
+                              </p>
+                            ) : null}
                           </div>
                         )}
                       </>
@@ -367,6 +422,11 @@ const BiddingDetailForm = (props) => {
                           onChange={handleChange}
                           value={values.transaction_no}
                         />
+                        {errors.transaction_no && touched.transaction_no ? (
+                          <p className='text-red-400 text-xs'>
+                            {errors.transaction_no}
+                          </p>
+                        ) : null}
                       </div>
                     )}
                   </>
@@ -403,7 +463,7 @@ const BiddingDetailForm = (props) => {
                     <FileButton
                       bg={"[#4338CA]"}
                       hoverBg={"bg-indigo-300"}
-                      btnLabel={"Upload Referance Document"}
+                      btnLabel={"Upload Reference Document"}
                       imgRef={inputFileRef}
                       setImageDoc={setImageDoc}
                       setPreview={setPreview}
