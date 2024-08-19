@@ -217,10 +217,12 @@ const BiddingViewById = () => {
     );
   }
 
+  // console.log(applicationFullData?.tendering_type)
+
   if (showModal) {
     return (
       <>
-        <BiddingViewModal closeModal={closeModal} refNo={id} />
+        <BiddingViewModal closeModal={closeModal} refNo={id} tenderingType={applicationFullData?.tendering_type} />
       </>
     );
   }

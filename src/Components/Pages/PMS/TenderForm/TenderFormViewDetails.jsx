@@ -661,6 +661,8 @@ const TenderFormViewDetails = () => {
             </div>
           </div>
 
+
+
           {/* Tender Fee Details */}
 
           <div className='bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5'>
@@ -715,6 +717,9 @@ const TenderFormViewDetails = () => {
               </div>
             </div>
           </div>
+
+          <div style={{ pageBreakAfter: 'always' }}></div>
+
 
           {/* EMD  Fee Details */}
 

@@ -44,7 +44,7 @@ const InventoryProposalListTabs = () => {
             {activeTab === "inbox" && (
               <button
                 className='bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right '
-                onClick={() => navigate(`/create-pre-procurement`)}
+                onClick={() => navigate(`/create-pre-procurement/create`)}
               >
                 <GoPlus className='m-1 text-[1rem]' />
                 Request Inventory
