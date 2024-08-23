@@ -310,7 +310,7 @@ export default function BoqDetailsById(props) {
           <div className='p-2 bg-[#4338CA] text-white pl-5 mt-6 rounded-md flex justify-between'>
             <h2 className='text-xl '>BOQ Details</h2>
           </div>
-          <div className='bg-white rounded font-sans mb-10 border border-[#4338ca] shadow-lg px-4 mt-1'>
+          <div className='bg-white rounded font-sans mb-10 border border-[#4338ca] shadow-lg px-4 mt-4'>
             <div className='mb-4 p-4 flex justify-between'>
               <div className=''>
                 <p className='text-lg font-bold mb-2'>

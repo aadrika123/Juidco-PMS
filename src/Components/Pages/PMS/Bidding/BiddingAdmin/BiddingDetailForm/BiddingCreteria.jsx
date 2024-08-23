@@ -198,7 +198,7 @@ const BiddingCreteria = (props) => {
                 <div className='p-3 w-[70%]  '>
                   <div className='flex space-x-[6.2rem]'>
                     <div className=''>
-                      <h1 className='text-gray-500 text-sm'>heading </h1>
+                      <h1 className='text-gray-500 text-sm'>Heading </h1>
                     </div>
                     <div className=''>: {data.heading}</div>
                   </div>

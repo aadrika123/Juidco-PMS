@@ -112,7 +112,7 @@ const ViewReceivedInvtByIdDa = (props) => {
   useEffect(() => {
     var ulbIds = localStorage.getItem("ulbId");
     setUlbId(ulbIds);
-    getApplicationDetail();
+    // getApplicationDetail();
 
     // dateFunc()
   }, []);
@@ -764,21 +764,30 @@ const ViewReceivedInvtByIdDa = (props) => {
             )}
 
           {/* {page == "outbox" && ( */}
-          <div className="space-x-5 flex justify-end mt-[1rem]">
+          <div className="space-x-5 flex justify-between mt-[1rem]">
+            
+            <div className="">
+              <button
+                className={buttonStyle2}
+                onClick={() => {
+                  navigate(-1);
+                }}
+              >
+                Back
+              </button>
+            </div>
+            <div className="">
             {page == "outbox" && (
               <button onClick={handlePrint} className={`${buttonStyle}`}>
                 Print
               </button>
             )}
-
-            <button
-              className={buttonStyle2}
-              onClick={() => {
-                navigate(-1);
-              }}
-            >
-              Back
-            </button>
+            {page == "inbox" && (
+              <button className={`${buttonStyle}`}>
+                Submit
+              </button>
+            )}
+            </div>
           </div>
           {/* )} */}
         </div>

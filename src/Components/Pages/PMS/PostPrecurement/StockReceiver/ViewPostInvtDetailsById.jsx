@@ -135,7 +135,7 @@ const ViewPostInvtDetailsById = () => {
             <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
               <div className='md:w-auto w-[50%] font-bold '>Item Category</div>
               <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                {nullToNA(applicationFullData?.category.name)}
+                {/* {nullToNA(applicationFullData?.category.name)} */}
               </div>
             </div>
 

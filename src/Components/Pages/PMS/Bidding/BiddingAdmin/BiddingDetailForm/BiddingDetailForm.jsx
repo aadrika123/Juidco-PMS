@@ -66,6 +66,12 @@ const BiddingDetailForm = (props) => {
       then: (schema) => schema.required("DD number is required"),
       otherwise: (schema) => schema.optional("Required field"),
     }),
+    cash_transcNo: Yup.string().when(["emd", "payment_mode", "offline_mode"], {
+      is: (emd, payment_mode, offline_mode) =>
+        emd === "yes" && payment_mode === "offline" && offline_mode === "cash",
+      then: (schema) => schema.required("Transaction number is required"),
+      otherwise: (schema) => schema.optional("Required field"),
+    }),
     transaction_no: Yup.string().when(["emd", "payment_mode"], {
       is: (emd, payment_mode) => emd === "yes" && payment_mode === "online",
       then: (schema) => schema.required("Transaction Number is required"),
@@ -89,6 +95,7 @@ const BiddingDetailForm = (props) => {
     dd_no: "",
     offline_mode: "cash",
     transaction_no: "",
+    cash_transcNo: "",
   };
 
   const submitBiddigData = (data) => {
@@ -392,7 +399,7 @@ const BiddingDetailForm = (props) => {
                             <input
                               type='text'
                               className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 '
-                              placeholder='DD Nuber'
+                              placeholder='DD Number'
                               name='dd_no'
                               onChange={handleChange}
                               value={values.dd_no}
@@ -400,6 +407,30 @@ const BiddingDetailForm = (props) => {
                             {errors.dd_no && touched.dd_no ? (
                               <p className='text-red-400 text-xs'>
                                 {errors.dd_no}
+                              </p>
+                            ) : null}
+                          </div>
+                        )}
+                        {values?.offline_mode == "cash" && (
+                          <div className='border-r-2 ml-10'>
+                            <label
+                              for='default-input'
+                              className={`block mb-2 text-sm font-medium text-gray-900`}
+                            >
+                              Transaction Number
+                              <span className='text-red-500'>*</span>
+                            </label>
+                            <input
+                              type='text'
+                              className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 '
+                              placeholder='Transaction Number'
+                              name='cash_transcNo'
+                              onChange={handleChange}
+                              value={values.cash_transcNo}
+                            />
+                            {errors.cash_transcNo && touched.cash_transcNo ? (
+                              <p className='text-red-400 text-xs'>
+                                {errors.cash_transcNo}
                               </p>
                             ) : null}
                           </div>

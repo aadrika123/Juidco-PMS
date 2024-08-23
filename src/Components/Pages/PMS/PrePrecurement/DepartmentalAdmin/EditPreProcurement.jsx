@@ -151,7 +151,7 @@ function EditPreProcurement() {
     const ulbId = localStorage.getItem("ulbId");
     setulbId(ulbId);
 
-    getApplicationDetail();
+    // getApplicationDetail();
     fetchCategory();
   }, [ulbData]);
 
