@@ -9,7 +9,6 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaChartPie } from "react-icons/fa";
 import { contextVar } from "@/Components/context/contextVar";
@@ -22,7 +21,6 @@ const TenderingAdminTabs = () => {
 
   const { titleBarVisibility } = useContext(contextVar);
 
-  const navigate = useNavigate();
   const { api_fetchTAOutbox, api_fetchTAInbox } = ProjectApiList();
 
   return (
