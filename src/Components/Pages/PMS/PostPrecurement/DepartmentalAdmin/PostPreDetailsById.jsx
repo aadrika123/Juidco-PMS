@@ -42,9 +42,6 @@ const PostPreDetailsById = (props) => {
   const [tableData, setTableData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
-  const [isModalOpen3, setIsModalOpen3] = useState(false);
-  const [payload, setPayload] = useState({});
-  const [remark, setRemark] = useState("");
   const [isGstAdded, setIsGstAdded] = useState(false);
 
   const [procItem, setProcItem] = useState();
@@ -53,11 +50,10 @@ const PostPreDetailsById = (props) => {
 
   const {
     api_fetchPostProcurementDetailById,
-    api_postPostProcurementDaAdditionalDetails,
     api_fetchPostProcurementDAListOutbox,
   } = ProjectApiList();
 
-  const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
+  const { inputStyle, labelStyle, formStyle } = ThemeStyle();
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -308,7 +304,7 @@ const PostPreDetailsById = (props) => {
     <div>
       {isLoading && <LoaderApi />}
 
-      <div className="">
+      <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Inventory Proposal Details"}
@@ -322,26 +318,26 @@ const PostPreDetailsById = (props) => {
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         {/* Basic Details */}
-        <div className="mt-6" id="printable-content">
-          <div className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
-            <div className="">
-              <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
+        <div className='mt-6' id='printable-content'>
+          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
+            <div className=''>
+              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
                 View Pre Procurement Details{" "}
               </h2>
             </div>
 
-            <div className="flex justify-between">
-              <div className="pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full">
-                <h1 className="">
-                  Procurement No <span className="text-black">:</span>
-                  <span className="font-bold">
+            <div className='flex justify-between'>
+              <div className='pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full'>
+                <h1 className=''>
+                  Procurement No <span className='text-black'>:</span>
+                  <span className='font-bold'>
                     {" "}
                     {nullToNA(applicationFullData?.procurement_no)}
                   </span>
                 </h1>
-                <h1 className="text-black">
-                  Procurement Total <span className="text-black">:</span>
-                  <span className="font-bold">
+                <h1 className='text-black'>
+                  Procurement Total <span className='text-black'>:</span>
+                  <span className='font-bold'>
                     {" "}
                     {indianAmount(nullToNA(applicationFullData?.total_rate))}
                   </span>
@@ -349,11 +345,11 @@ const PostPreDetailsById = (props) => {
               </div>
             </div>
 
-            <div className="flex justify-between">
-              <div className="pl-8 text-[1rem] text-black flex justify-between w-full">
-                <h1 className="">
-                  Category <span className="text-black">:</span>
-                  <span className="font-bold">
+            <div className='flex justify-between'>
+              <div className='pl-8 text-[1rem] text-black flex justify-between w-full'>
+                <h1 className=''>
+                  Category <span className='text-black'>:</span>
+                  <span className='font-bold'>
                     {" "}
                     {nullToNA(applicationFullData?.category?.name)}
                   </span>
@@ -364,62 +360,62 @@ const PostPreDetailsById = (props) => {
             {applicationFullData?.procurement_stocks?.map((procData, index) => (
               <>
                 <div>
-                  <p className="text-xs pl-5">Procurement Item: {index + 1}</p>
+                  <p className='text-xs pl-5'>Procurement Item: {index + 1}</p>
                 </div>
-                <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow">
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow'>
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       Subcategory
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {procData?.subCategory?.name}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">Unit</div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Unit</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {nullToNA(procData?.unit?.name)}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">Brand</div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Brand</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {nullToNA(procData?.brand?.name)}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {nullToNA(procData?.quantity)}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       Per Unit Rate
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {indianAmount(nullToNA(procData?.rate))}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       Total Rate
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {indianAmount(nullToNA(procData?.total_rate))}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       Description
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {nullToNA(procData?.description)}
                     </div>
                   </div>
@@ -427,7 +423,7 @@ const PostPreDetailsById = (props) => {
               </>
             ))}
 
-            <div className="h-[30px]"></div>
+            <div className='h-[30px]'></div>
           </div>
 
           {/* Inventory Details form */}
@@ -437,28 +433,29 @@ const PostPreDetailsById = (props) => {
               {" "}
               <div className={`${formStyle} mt-8 border border-blue-500`}>
                 <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-                  <div className="">
-                    <div className=" grid md:grid-cols-1 lg:grid-cols-12 container mx-auto capitalize">
-                      <div className="col-span-12  w-full mb-8">
-                        <div className="bg-[#4338ca] text-white px-4 py-2 w-full flex justify-between items-center rounded-t-md">
+                  <div className=''>
+                    <div className=' grid md:grid-cols-1 lg:grid-cols-12 container mx-auto capitalize'>
+                      <div className='col-span-12  w-full mb-8'>
+                        <div className='bg-[#4338ca] text-white px-4 py-2 w-full flex justify-between items-center rounded-t-md'>
                           <div>
-                            <h2 className="text-xl font-bold">Add Supplier</h2>
+                            <h2 className='text-xl font-bold'>Add Supplier</h2>
                           </div>
                           <div>
-                            <button className="mr-3 bg-white text-black hover:bg-indigo-100 rounded p-2 flex">
-                              Add Suppliers <IoMdAddCircleOutline className=" text-blue-700 ml-2 text-2xl"/>
+                            <button className='mr-3 bg-white text-black hover:bg-indigo-100 rounded p-2 flex'>
+                              Add Suppliers{" "}
+                              <IoMdAddCircleOutline className=' text-blue-700 ml-2 text-2xl' />
                             </button>
                           </div>
                         </div>
 
-                        <div className="p-6 valid-form flex flex-wrap md:flex-row">
-                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2">
-                            <div class="px-4 w-full mb-4">
+                        <div className='p-6 valid-form flex flex-wrap md:flex-row'>
+                          <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2'>
+                            <div class='px-4 w-full mb-4'>
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
                                 Supplier Name{" "}
-                                <span className="text-red-500">*</span>
+                                <span className='text-red-500'>*</span>
                               </label>
 
                               <select
@@ -487,69 +484,69 @@ const PostPreDetailsById = (props) => {
                             </div>
                           </div>
 
-                          <div className="md:w-full">
+                          <div className='md:w-full'>
                             <>
                               {/* <div className='mb-3'>
                                 <p className='text-xs pl-5'>
                                   Procurement Item:
                                 </p>
                               </div> */}
-                              <div className="grid md:grid-cols-4 gap-4 ml-8 bg-white p-5 rounded shadow">
-                                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                  <div className="font-semibold md:w-auto w-[50%] text-sm ">
+                              <div className='grid md:grid-cols-4 gap-4 ml-8 bg-white p-5 rounded shadow'>
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='font-semibold md:w-auto w-[50%] text-sm '>
                                     Bidder Name
                                   </div>
-                                  <div className="md:w-auto w-[50%] text-gray-500 text-md">
+                                  <div className='md:w-auto w-[50%] text-gray-500 text-md'>
                                     Abc
                                     {/* {procData?.subCategory?.name} */}
                                   </div>
                                 </div>
 
-                                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                  <div className="font-semibold md:w-auto w-[50%] text-sm ">
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='font-semibold md:w-auto w-[50%] text-sm '>
                                     PAN No
                                   </div>
-                                  <div className="md:w-auto w-[50%] text-gray-500 text-md">
+                                  <div className='md:w-auto w-[50%] text-gray-500 text-md'>
                                     Abc
                                     {/* {nullToNA(procData?.unit?.name)} */}
                                   </div>
                                 </div>
 
-                                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                  <div className="font-semibold md:w-auto w-[50%] text-sm ">
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='font-semibold md:w-auto w-[50%] text-sm '>
                                     GST No.
                                   </div>
-                                  <div className="md:w-auto w-[50%] text-gray-500 text-md">
+                                  <div className='md:w-auto w-[50%] text-gray-500 text-md'>
                                     Abc
                                     {/* {nullToNA(procData?.brand?.name)} */}
                                   </div>
                                 </div>
 
-                                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                  <div className="font-semibold md:w-auto w-[50%] text-sm ">
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='font-semibold md:w-auto w-[50%] text-sm '>
                                     Address
                                   </div>
-                                  <div className="md:w-auto w-[50%] text-gray-500 text-md">
+                                  <div className='md:w-auto w-[50%] text-gray-500 text-md'>
                                     Abc
                                     {/* {nullToNA(procData?.quantity)} */}
                                   </div>
                                 </div>
 
-                                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                  <div className="font-semibold md:w-auto w-[50%] text-sm ">
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='font-semibold md:w-auto w-[50%] text-sm '>
                                     Bank Name
                                   </div>
-                                  <div className="md:w-auto w-[50%] text-gray-500 text-md">
+                                  <div className='md:w-auto w-[50%] text-gray-500 text-md'>
                                     Abc
                                     {/* {indianAmount(nullToNA(procData?.rate))} */}
                                   </div>
                                 </div>
 
-                                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                  <div className="font-semibold md:w-auto w-[50%] text-sm ">
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='font-semibold md:w-auto w-[50%] text-sm '>
                                     Bank Account No
                                   </div>
-                                  <div className="md:w-auto w-[50%] text-gray-500 text-md">
+                                  <div className='md:w-auto w-[50%] text-gray-500 text-md'>
                                     Abc
                                     {/* {indianAmount(
                                       nullToNA(procData?.total_rate)
@@ -557,21 +554,21 @@ const PostPreDetailsById = (props) => {
                                   </div>
                                 </div>
 
-                                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                  <div className="font-semibold md:w-auto w-[50%] text-sm ">
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='font-semibold md:w-auto w-[50%] text-sm '>
                                     IFSC Code
                                   </div>
-                                  <div className="md:w-auto w-[50%] text-gray-500 text-md">
+                                  <div className='md:w-auto w-[50%] text-gray-500 text-md'>
                                     Abc
                                     {/* {nullToNA(procData?.description)} */}
                                   </div>
                                 </div>
 
-                                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                  <div className="font-semibold md:w-auto w-[50%] text-sm ">
+                                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                  <div className='font-semibold md:w-auto w-[50%] text-sm '>
                                     Bidding Amount
                                   </div>
-                                  <div className="md:w-auto w-[50%] text-gray-500 text-md">
+                                  <div className='md:w-auto w-[50%] text-gray-500 text-md'>
                                     Abc
                                     {/* {nullToNA(procData?.description)} */}
                                   </div>
@@ -580,218 +577,219 @@ const PostPreDetailsById = (props) => {
                             </>
                           </div>
 
-                          
-                            <>
-                          <div className="px-5 mt-4 md:w-1/2">
-                            <div className="form-group flex-shrink max-w-full px-4 mb-4">
-                              <label
-                                className={`${labelStyle} inline-block mb-2`}
-                              >
-                                Choose Procurement Item
-                                <span className="text-xl text-red-500 pl-1">
-                                  *
-                                </span>{" "}
-                              </label>
-                              <select
-                                // {...formik.getFieldProps("itemcategory")}
-                                className={`${inputStyle} inline-block w-full relative`}
-                                onChange={(e) => {
-                                  setProcItem(e.target.value);
-                                }}
-                              >
-                                <option defaultValue={"select"}>select</option>
-                                {procItemDetails?.map((data)=>(
-                                <option>{data?.procItem}</option>
-                              ))}
-                              </select>
-                              <p className="text-red-500 text-xs ">
-                                {/* {formik.touched.itemcategory &&
+                          <>
+                            <div className='px-5 mt-4 md:w-1/2'>
+                              <div className='form-group flex-shrink max-w-full px-4 mb-4'>
+                                <label
+                                  className={`${labelStyle} inline-block mb-2`}
+                                >
+                                  Choose Procurement Item
+                                  <span className='text-xl text-red-500 pl-1'>
+                                    *
+                                  </span>{" "}
+                                </label>
+                                <select
+                                  // {...formik.getFieldProps("itemcategory")}
+                                  className={`${inputStyle} inline-block w-full relative`}
+                                  onChange={(e) => {
+                                    setProcItem(e.target.value);
+                                  }}
+                                >
+                                  <option defaultValue={"select"}>
+                                    select
+                                  </option>
+                                  {procItemDetails?.map((data) => (
+                                    <option>{data?.procItem}</option>
+                                  ))}
+                                </select>
+                                <p className='text-red-500 text-xs '>
+                                  {/* {formik.touched.itemcategory &&
                                 formik.errors.itemcategory
                                   ? formik.errors.itemcategory
                                   : null} */}
-                              </p>
+                                </p>
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="p-2 py-3 md:w-full  ml-8 rounded-md">
-                            <div className="flex items-center">
-                              {/* <h2 className="md:w-1/2 text-xl font-semibold">
+                            <div className='p-2 py-3 md:w-full  ml-8 rounded-md'>
+                              <div className='flex items-center'>
+                                {/* <h2 className="md:w-1/2 text-xl font-semibold">
                               Add Procurement Item for Supplier
                             </h2> */}
-                            </div>
-                            <div className="md:w-full">
-                              <>
-                                <div className="mb-3">
-                                  <p className="text-xs pl-1">
-                                    {/* Procurement Item: {index + 1} */}
-                                    Procurement Item:
-                                  </p>
-                                </div>
-                                <div className="bg-gray-100 rounded-xl">
-                                  <div className="grid md:grid-cols-4 gap-4 pl-8 pt-3">
-                                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                      <div className="md:w-auto w-[50%] font-bold ">
-                                        Subcategory
+                              </div>
+                              <div className='md:w-full'>
+                                <>
+                                  <div className='mb-3'>
+                                    <p className='text-xs pl-1'>
+                                      {/* Procurement Item: {index + 1} */}
+                                      Procurement Item:
+                                    </p>
+                                  </div>
+                                  <div className='bg-gray-100 rounded-xl'>
+                                    <div className='grid md:grid-cols-4 gap-4 pl-8 pt-3'>
+                                      <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                        <div className='md:w-auto w-[50%] font-bold '>
+                                          Subcategory
+                                        </div>
+                                        <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                          Abc
+                                          {/* {procData?.subCategory?.name} */}
+                                        </div>
                                       </div>
-                                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                                        Abc
-                                        {/* {procData?.subCategory?.name} */}
-                                      </div>
-                                    </div>
 
-                                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                      <div className="md:w-auto w-[50%] font-bold ">
-                                        Unit
+                                      <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                        <div className='md:w-auto w-[50%] font-bold '>
+                                          Unit
+                                        </div>
+                                        <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                          Abc
+                                          {/* {nullToNA(procData?.unit?.name)} */}
+                                        </div>
                                       </div>
-                                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                                        Abc
-                                        {/* {nullToNA(procData?.unit?.name)} */}
-                                      </div>
-                                    </div>
 
-                                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                      <div className="md:w-auto w-[50%] font-bold ">
-                                        Brand
+                                      <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                        <div className='md:w-auto w-[50%] font-bold '>
+                                          Brand
+                                        </div>
+                                        <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                          Abc
+                                          {/* {nullToNA(procData?.brand?.name)} */}
+                                        </div>
                                       </div>
-                                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                                        Abc
-                                        {/* {nullToNA(procData?.brand?.name)} */}
-                                      </div>
-                                    </div>
 
-                                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                      <div className="md:w-auto w-[50%] font-bold ">
-                                        Quantity
+                                      <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                        <div className='md:w-auto w-[50%] font-bold '>
+                                          Quantity
+                                        </div>
+                                        <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                          Abc
+                                          {/* {nullToNA(procData?.quantity)} */}
+                                        </div>
                                       </div>
-                                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                                        Abc
-                                        {/* {nullToNA(procData?.quantity)} */}
-                                      </div>
-                                    </div>
 
-                                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                      <div className="md:w-auto w-[50%] font-bold ">
-                                        Per Unit Rate
+                                      <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                        <div className='md:w-auto w-[50%] font-bold '>
+                                          Per Unit Rate
+                                        </div>
+                                        <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                          Abc
+                                          {/* {indianAmount(nullToNA(procData?.rate))} */}
+                                        </div>
                                       </div>
-                                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                                        Abc
-                                        {/* {indianAmount(nullToNA(procData?.rate))} */}
-                                      </div>
-                                    </div>
 
-                                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                      <div className="md:w-auto w-[50%] font-bold ">
-                                        Total Rate
-                                      </div>
-                                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                                        Abc
-                                        {/* {indianAmount(
+                                      <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                        <div className='md:w-auto w-[50%] font-bold '>
+                                          Total Rate
+                                        </div>
+                                        <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                          Abc
+                                          {/* {indianAmount(
                                       nullToNA(procData?.total_rate)
                                     )} */}
+                                        </div>
+                                      </div>
+
+                                      <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                                        <div className='md:w-auto w-[50%] font-bold '>
+                                          Description
+                                        </div>
+                                        <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                                          Abc
+                                          {/* {nullToNA(procData?.description)} */}
+                                        </div>
                                       </div>
                                     </div>
 
-                                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                                      <div className="md:w-auto w-[50%] font-bold ">
-                                        Description
-                                      </div>
-                                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                                        Abc
-                                        {/* {nullToNA(procData?.description)} */}
-                                      </div>
-                                    </div>
-                                  </div>
+                                    <div className='px-4 p-2 w-full mt-3 '>
+                                      <h1
+                                        className={`text-lg text-left font-semibold px-4 mb-2`}
+                                      >
+                                        Calculation
+                                      </h1>
 
-                                  <div className="px-4 p-2 w-full mt-3 ">
-                                    <h1
-                                      className={`text-lg text-left font-semibold px-4 mb-2`}
-                                    >
-                                      Calculation
-                                    </h1>
+                                      <div class='form-group flex-shrink max-w-full px-4 w-full md:w-2/3 mb-4'>
+                                        <div className='flex items-center space-x-5'>
+                                          <div className='space-y-2'>
+                                            <label>Total price</label>
+                                            <input
+                                              type='number'
+                                              name='total_price'
+                                              className={`${inputStyle} inline-block w-full relative`}
+                                              // onChange={(e) => {
+                                              //   formik.handleChange(e);
+                                              //   calculateTotalRate();
+                                              // }}
 
-                                    <div class="form-group flex-shrink max-w-full px-4 w-full md:w-2/3 mb-4">
-                                      <div className="flex items-center space-x-5">
-                                        <div className="space-y-2">
-                                          <label>Total price</label>
-                                          <input
-                                            type="number"
-                                            name="total_price"
-                                            className={`${inputStyle} inline-block w-full relative`}
-                                            // onChange={(e) => {
-                                            //   formik.handleChange(e);
-                                            //   calculateTotalRate();
-                                            // }}
+                                              value={formik.values.total_price}
+                                              placeholder='Total Price'
+                                            />
+                                          </div>
+                                          <FaDivide className='text-[2.5rem]  pt-5 mt-3' />
+                                          <div className='space-y-2'>
+                                            <label>Total Quantity</label>
+                                            <input
+                                              type='number'
+                                              name='total_quantity'
+                                              className={`${inputStyle} inline-block w-full relative`}
+                                              // onChange={(e) => {
+                                              //   formik.handleChange(e);
+                                              //   calculateTotalRate();
+                                              // }}
 
-                                            value={formik.values.total_price}
-                                            placeholder="Total Price"
-                                          />
+                                              value={
+                                                formik.values.total_quantity
+                                              }
+                                              placeholder='Total Quantity'
+                                            />
+                                          </div>
+
+                                          <p className='text-[2rem] pt-5 mt-3'>
+                                            =
+                                          </p>
+                                          <div className='space-y-2'>
+                                            <label>Unit Price</label>
+                                            <input
+                                              type='number'
+                                              name='unit_price'
+                                              className={`${inputStyle} inline-block w-full relative`}
+                                              // onChange={formik.handleChange}
+                                              value={formik.values.unit_price}
+                                              placeholder='Per Price'
+                                            />
+                                          </div>
                                         </div>
-                                        <FaDivide className="text-[2.5rem]  pt-5 mt-3" />
-                                        <div className="space-y-2">
-                                          <label>Total Quantity</label>
-                                          <input
-                                            type="number"
-                                            name="total_quantity"
-                                            className={`${inputStyle} inline-block w-full relative`}
-                                            // onChange={(e) => {
-                                            //   formik.handleChange(e);
-                                            //   calculateTotalRate();
-                                            // }}
-
-                                            value={formik.values.total_quantity}
-                                            placeholder="Total Quantity"
-                                          />
-                                        </div>
-
-                                        <p className="text-[2rem] pt-5 mt-3">
-                                          =
+                                        <p className='text-red-500 text-xs '>
+                                          {formik.touched.total_quantity &&
+                                          formik.errors.total_quantity
+                                            ? formik.errors.total_quantity
+                                            : null}
                                         </p>
-                                        <div className="space-y-2">
-                                          <label>Unit Price</label>
-                                          <input
-                                            type="number"
-                                            name="unit_price"
-                                            className={`${inputStyle} inline-block w-full relative`}
-                                            // onChange={formik.handleChange}
-                                            value={formik.values.unit_price}
-                                            placeholder="Per Price"
-                                          />
-                                        </div>
                                       </div>
-                                      <p className="text-red-500 text-xs ">
-                                        {formik.touched.total_quantity &&
-                                        formik.errors.total_quantity
-                                          ? formik.errors.total_quantity
-                                          : null}
-                                      </p>
                                     </div>
                                   </div>
-                                </div>
-                              </>
+                                </>
+                              </div>
                             </div>
-                          </div>
-                          <div className="w-full space-x-5 flex justify-end mr-[1.5rem]">
-                            <button
-                              className={buttonStyle}
-                              onClick={openCancelModal}
-                            >
-                              Cancel
-                            </button>
+                            <div className='w-full space-x-5 flex justify-end mr-[1.5rem]'>
+                              <button
+                                className={buttonStyle}
+                                onClick={openCancelModal}
+                              >
+                                Cancel
+                              </button>
 
-                            <button className={buttonStyle2}>
-                              Add Procurement Item
-                            </button>
-                          </div>
+                              <button className={buttonStyle2}>
+                                Add Procurement Item
+                              </button>
+                            </div>
                           </>
-                      
                         </div>
-
                       </div>
                     </div>
                   </div>
                 </form>
               </div>
-              <div className="space-x-5 flex justify-end  mt-3">
+              <div className='space-x-5 flex justify-end  mt-3'>
                 <button className={buttonStyle} onClick={openCancelModal}>
                   Cancel
                 </button>
@@ -801,99 +799,101 @@ const PostPreDetailsById = (props) => {
             </>
           )}
 
+          {page == "inbox" && <div>Add</div>}
+
           {page == "outbox" && (
-            <div className="py-6 mt-8 bg-white rounded-lg shadow-xl px-6 border border-blue-500">
-              <div className="">
-                <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
+            <div className='py-6 mt-8 bg-white rounded-lg shadow-xl px-6 border border-blue-500'>
+              <div className=''>
+                <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
                   {/* <MdTag className=' text-[2rem] text-sky-700' />  */}
                   Supplier Details{" "}
                 </h2>
               </div>
-              <div className="md:flex md:justify-between md:items-center py-4 px-8">
-                <div className="flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex md:justify-between md:items-center py-4 px-8'>
+                <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(
                       applicationFullData?.post_procurement?.supplier_name
                     )}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                     Supplier Name
                   </div>
                 </div>
 
-                <div className="flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(applicationFullData?.post_procurement?.gst_no)}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                     GST Number
                   </div>
                 </div>
 
-                <div className="flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(
                       applicationFullData?.post_procurement?.is_gst_added
                     )}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                     GST included
                   </div>
                 </div>
 
                 {applicationFullData?.is_gst_added && (
-                  <div className="flex-1 md:block flex flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       {nullToNA(applicationFullData?.post_procurement?.gst)}
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       GST
                     </div>
                   </div>
                 )}
               </div>
 
-              <div className="md:flex md:justify-between items-center py-4 px-8">
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex md:justify-between items-center py-4 px-8'>
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(
                       applicationFullData?.post_procurement?.final_rate
                     )}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                     Final Rate
                   </div>
                 </div>
 
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(
                       applicationFullData?.post_procurement?.total_quantity
                     )}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                     Total Quantity
                   </div>
                 </div>
 
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(
                       applicationFullData?.post_procurement?.total_price
                     )}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                     Total Price
                   </div>
                 </div>
 
-                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
                     {nullToNA(
                       applicationFullData?.post_procurement?.unit_price
                     )}
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                     Price per Item
                   </div>
                 </div>
@@ -901,8 +901,9 @@ const PostPreDetailsById = (props) => {
             </div>
           )}
         </div>
+
         {page == "outbox" && (
-          <div className="flex justify-end mt-3">
+          <div className='flex justify-end mt-3'>
             <button onClick={handlePrint} className={buttonStyle}>
               Print
             </button>

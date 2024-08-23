@@ -13,17 +13,15 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useReactToPrint } from "react-to-print";
 
 function ImageModal(props) {
-  console.log(props?.imageDoc, "img type===============");
   const handleCancilClick = () => {
     props?.setImageModal(false);
   };
 
-   //Print
-   const componentRef = useRef();
-   const handlePrint = useReactToPrint({
-     content: () => componentRef.current,
-   });
- 
+  //Print
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   return (
     <>
@@ -38,9 +36,9 @@ function ImageModal(props) {
           }`}
           ref={componentRef}
         >
-        <AiOutlineCloseCircle
+          <AiOutlineCloseCircle
             onClick={handleCancilClick}
-            className="relative bottom-[2rem] float-right text-3xl text-white cursor-pointer hover:text-black"
+            className='relative bottom-[2rem] float-right text-3xl text-white cursor-pointer hover:text-black'
           />
           {/* <button
             className='absolute top-1 right-1 text-white bg-transparent border border-white hover:bg-indigo-600 pl-2 pr-2 rounded-lg'
@@ -79,12 +77,22 @@ function ImageModal(props) {
           )} */}
         </div>
         <div className='flex'>
-          <button
-            onClick={handlePrint}
-            className={`w-96 border mt-4 bg-indigo-700 text-white border-blue-950 pl-5 pr-5 pt-1 pb-1 rounded hover:bg-indigo-500 `}
-          >
-            Print
-          </button>
+          {!(
+            props?.imageDoc?.type === "application/pdf" ||
+            props?.imageDoc?.type === "text/csv" ||
+            props?.imageDoc?.type ===
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+            props?.imageUrl?.includes(".pdf") ||
+            props?.imageUrl?.includes(".xlsx") ||
+            props?.imageUrl?.includes(".csv")
+          ) && (
+            <button
+              onClick={handlePrint}
+              className={`w-96 border mt-4 bg-indigo-700 text-white border-blue-950 pl-5 pr-5 pt-1 pb-1 rounded hover:bg-indigo-500 `}
+            >
+              Print
+            </button>
+          )}
         </div>
       </div>
     </>

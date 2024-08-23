@@ -85,6 +85,9 @@ import BiddingComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/Bidd
 import TenderingAdminTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/TenderingAdminTabs";
 import BiddingTypeResultView from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingTypeResultView";
 import BoqListTabsFin from "./Components/Pages/PMS/BOQ/Finance/BoqListTabsFin";
+import DdServiceReqTabs from "./Components/Pages/PMS/ServiceRequest/DD/DdServiceReqTabs";
+import DaServiceReqTabs from "./Components/Pages/PMS/ServiceRequest/DA/DaServiceReqTabs";
+import IaServiceReqTabs from "./Components/Pages/PMS/ServiceRequest/IA/IaServiceReqTabs";
 
 const queryClient = new QueryClient();
 
@@ -397,17 +400,21 @@ function App() {
 
     /////////////////////////{*** Service Request ***}//////////////////////////////////////
     {
-      path: "/service-request",
-      element: <BiddingType />,
+      path: "/dd-service-request",
+      element: <DdServiceReqTabs />,
     },
     {
-      path: "/bidding-type-byId/:id",
-      element: <BiddingTypeViewById />,
+      path: "/da-service-request",
+      element: <DaServiceReqTabs />,
     },
     {
-      path: "/bidding-type-result/:id",
-      element: <BiddingTypeResultView />,
+      path: "/ia-service-request",
+      element: <IaServiceReqTabs />,
     },
+    // {
+    //   path: "/viewServiceReq",
+    //   element: <IaServiceReqTabs />,
+    // },
   ];
 
   return (

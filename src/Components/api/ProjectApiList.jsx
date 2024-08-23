@@ -235,6 +235,14 @@ export default function ProjectApiList() {
     api_submitBidder: `${baseUrl}/api/pms/ta/submit-bidder`,
     api_postWinner: `${baseUrl}/api/pms/ta/select-winner`,
     api_finalizeWinner: `${baseUrl}/api/pms/ta/comparison-finalize`,
+
+    //service request
+    api_getDistServiceInbox: `${baseUrl}/api/pms/dist/service-request`,
+    api_getDistServiceOutbox: `${baseUrl}/api/pms/dist/service-request/outbox`,
+    api_getDaServiceInbox: `${baseUrl}/api/pms/da/service-request`,
+    api_getDaServiceOutbox: `${baseUrl}/api/pms/da/service-request/outbox`,
+    api_getIaServiceInbox: `${baseUrl}/api/pms/ia/service-request`,
+    api_getIaServiceOutbox: `${baseUrl}/api/pms/ia/service-request/outbox`,
   };
 
   return apiList;
