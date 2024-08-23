@@ -4,27 +4,19 @@
 //    Date - 23/05/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - InventoryProposalList
-//    DESCRIPTION - InventoryProposalList
+//    Component  - PostPrecurementListTabsDa
+//    DESCRIPTION - PostPrecurementListTabsDa
 /////////////////////////////////////////////////////////////////////////////
 
-import { useFormik } from "formik";
 import React, { useState } from "react";
-import * as yup from "yup";
-import moment from "moment";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useNavigate, useParams } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
-function InventoryProposalList(props) {
+function PostPrecurementList(props) {
   const navigate = useNavigate();
 
-  // console.log(props.page, "page========>");
-
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
-
-  const [changeData, setchangeData] = useState(0);
   const [requestBody, setRequestBody] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
@@ -59,9 +51,9 @@ function InventoryProposalList(props) {
     // {
     //   Header: "Brand",
     //   accessor: "brand",
-    //   Cell: ({ cell }) => (
-    //     <div className="pr-2">{cell.row.values.brand.name || "N/A"}</div>
-    //   ),
+    //   Cell: (
+    //     { cell } // console.log(cell.row.values,"===================celllllll")
+    //   ) => <div className="pr-2">{cell.row.values.brand.name || "N/A"}</div>,
     // },
 
     // {
@@ -69,11 +61,6 @@ function InventoryProposalList(props) {
     //   accessor: "status",
     //   Cell: ({ cell }) => (
     //     <div className="pr-2">
-    //       {cell.row.values.status.status == 4 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           Incomplete stocks received
-    //         </p>
-    //       )}
     //       {cell.row.values.status.status == -1 && (
     //         <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
     //           Back to SR
@@ -102,6 +89,11 @@ function InventoryProposalList(props) {
     //       {cell.row.values.status.status == 3 && (
     //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
     //           Supplier assigned
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == 4 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           Incomplete stocks received
     //         </p>
     //       )}
     //       {cell.row.values.status.status == 5 && (
@@ -144,16 +136,15 @@ function InventoryProposalList(props) {
     //           Tender is ready
     //         </p>
     //       )}
-
-          
-        // </div>
-      // ),
+    //     </div>
+    //   ),
     // },
+
     // {
     //   Header: "Remark",
     //   accessor: "remark",
     //   Cell: ({ cell }) => (
-    //     <div className='pr-2 text-green-800 truncate'>
+    //     <div className='pr-2 text-green-800 truncate w-14'>
     //       {cell.row.values.remark || "N/A"}
     //     </div>
     //   ),
@@ -167,7 +158,7 @@ function InventoryProposalList(props) {
             className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
             onClick={() =>
               navigate(
-                `/sr-post-InvtDetailsById/${cell.row.values.id}/${props.page}`
+                `/bidding-supplierbyid/${cell.row.values.id}/${props.page}`
               )
             }
           >
@@ -178,18 +169,12 @@ function InventoryProposalList(props) {
     },
   ];
 
-  const fetchResouceList = (data) => {
-    console.log(data, "payload data for searchin water");
-    setRequestBody(data);
-    setchangeData((prev) => prev + 1);
-  };
-
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {
     return (
       <>
         <BarLoader />
-        <div className="min-h-screen"></div>
+        <div className='min-h-screen'></div>
       </>
     );
   }
@@ -197,28 +182,30 @@ function InventoryProposalList(props) {
   const tableSelector = (page) => {
     switch (page) {
       case "inbox":
-        return "POSTSRIN";
+        return "POSTDAIN";
       case "outbox":
-        return "POSTSROUT";
+        return "POSTDAOUT";
       default:
-        return "POSTSRIN";
+        return "POSTDAIN";
     }
   };
 
   return (
     <>
       {loader && <BarLoader />}
-      <div className="container mx-auto p-4">
-        <div className="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 ">
-          <div className="col-span-12">
+      <div className='container mx-auto p-4'>
+        <div className=''>
+          <div className='flex justify-between'></div>
+        </div>
+
+        <div className='grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 '>
+          <div className='col-span-12'>
             <>
               <ListTableParent
                 table={tableSelector(props?.page)}
                 api={props.api}
                 columns={COLUMNS}
                 requestBody={requestBody} // sending body
-                changeData={changeData} // send action for new payload
-                showDiv={true}
               />
             </>
           </div>
@@ -228,4 +215,4 @@ function InventoryProposalList(props) {
   );
 }
 
-export default InventoryProposalList;
+export default PostPrecurementList;

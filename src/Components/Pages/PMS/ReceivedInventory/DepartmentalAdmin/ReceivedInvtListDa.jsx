@@ -16,6 +16,7 @@ import BarLoader from "@/Components/Common/Loaders/BarLoader";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useNavigate, useParams } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
+import { nullToNA } from "@/Components/Common/PowerupFunctions";
 
 function ReceivedInvtList(props) {
   const navigate = useNavigate();
@@ -46,108 +47,116 @@ function ReceivedInvtList(props) {
       Header: "Category",
       accessor: "category",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.category.name} </div>
+        <div className="pr-2">{nullToNA(cell.row.values.category?.name)} </div>
       ),
     },
     {
-      Header: "Sub Category",
-      accessor: "subcategory",
+      Header: "Total Rate",
+      accessor: "total_rate",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.subcategory.name} </div>
+        <div className="pr-2">{nullToNA(cell.row.values.total_rate)} </div>
       ),
     },
     {
-      Header: "Brand",
-      accessor: "brand",
-      Cell: (
-        { cell } // console.log(cell.row.values,"===================celllllll")
-      ) => <div className="pr-2">{cell.row.values.brand.name || "N/A"}</div>,
+      Header: "Remark",
+      accessor: "remark",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{nullToNA(cell.row.values.remark)} </div>
+      ),
     },
-
     {
       Header: "status",
       accessor: "status",
       Cell: ({ cell }) => (
         <div className="pr-2">
-          {cell.row.values.status.status == -1 && (
-            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
-              Back to SR
-            </p>
-          )}
-          {cell.row.values.status.status == -2 && (
+          {cell.row.values.status == -2 && (
             <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
               Rejected
             </p>
           )}
-          {cell.row.values.status.status == 0 && (
+          {cell.row.values.status == 1 && (
             <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Pending
             </p>
           )}
-          {cell.row.values.status.status == 1 && (
+          {cell.row.values.status == 10 && (
             <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              DA's Inbox
+              Level 1
             </p>
           )}
-          {cell.row.values.status.status == 2 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              Release for Tender
+          {cell.row.values.status == 11 && (
+            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+              Level 1 Returned
             </p>
           )}
-          {cell.row.values.status.status == 3 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              Supplier assigned
+          {cell.row.values.status == 12 && (
+            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+              Level 1 Rejected
             </p>
           )}
-          {cell.row.values.status.status == 4 && (
+          {cell.row.values.status == 13 && (
             <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              Incomplete stocks received
+              Level 1 Revised
             </p>
           )}
-          {cell.row.values.status.status == 5 && (
+          {cell.row.values.status == 14 && (
             <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              Stocks received
+              Level 1 Approved
             </p>
           )}
-          {cell.row.values.status.status == 69 && (
+          {cell.row.values.status == 20 && (
             <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              Revised
+              Level 2
             </p>
           )}
-          {cell.row.values.status.status == 71 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              BOQ already created
+          {cell.row.values.status == 21 && (
+            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+              Level 2 Returned
             </p>
           )}
-          {cell.row.values.status.status == 70 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              Ready for BOQ
+          {cell.row.values.status == 22 && (
+            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+              Level 2 Rejected
             </p>
           )}
-          {cell.row.values.status.status == -70 && (
+          {cell.row.values.status == 23 && (
             <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              BOQ returned from DA
+              Level 2 Revised
             </p>
           )}
-          {cell.row.values.status.status == 72 && (
+          {cell.row.values.status == 24 && (
             <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              Ready for tendering
+              Level 2 Approved
             </p>
           )}
-          {cell.row.values.status.status == -72 && (
+          {cell.row.values.status == 3 && (
             <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              Tender back from DA
+              Added Received Inventory
             </p>
           )}
-          {cell.row.values.status.status == 73 && (
+          {cell.row.values.status == 4 && (
             <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              Tender is ready
+              Stock Partially Recieved
+            </p>
+          )}
+          {cell.row.values.status == 5 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Stock Recieved
+            </p>
+          )}
+          {cell.row.values.status == 6 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Partially Added
+            </p>
+          )}
+          {cell.row.values.status == 7 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            Added
             </p>
           )}
         </div>
       ),
     },
-
     {
       Header: "Action",
       accessor: "id",
@@ -157,7 +166,7 @@ function ReceivedInvtList(props) {
             className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
             onClick={() =>
               navigate(
-                `/da-received-InvtDetailsById/${cell.row.values.id}/${props.page}`
+                `/ia-received-InvtDetailsById/${cell.row.values.procurement_no}/${props.page}`
               )
             }
           >

@@ -85,6 +85,8 @@ import BiddingComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/Bidd
 import TenderingAdminTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/TenderingAdminTabs";
 import BiddingTypeResultView from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingTypeResultView";
 import BoqListTabsFin from "./Components/Pages/PMS/BOQ/Finance/BoqListTabsFin";
+import BiddingSupplierTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingSupplier/BiddingSupplierTabs";
+import BiddingSupplierById from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingSupplier/BiddingSupplierById";
 
 const queryClient = new QueryClient();
 
@@ -255,9 +257,9 @@ function App() {
     /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
 
     //-------------- DA ----------------
-    { path: "/da-post-precurement", element: <PostPrecurementListTabsDa /> },
+    { path: "/ia-post-precurement", element: <PostPrecurementListTabsDa /> },
     {
-      path: "/da-post-precurementbyid/:id/:page",
+      path: "/ia-post-precurementbyid/:id/:page",
       element: <PostPreDetailsById />,
     },
 
@@ -271,9 +273,9 @@ function App() {
     /////////////////////////{*** Received-Inventory ***}//////////////////////////////////////
 
     //------- DA ------
-    { path: "/da-received-inventory", element: <ReceivedInvtHomeDa /> },
+    { path: "/ia-received-inventory", element: <ReceivedInvtHomeDa /> },
     {
-      path: "/da-received-InvtDetailsById/:id/:page",
+      path: "/ia-received-InvtDetailsById/:id/:page",
       element: <ViewReceivedInvtByIdDa />,
     },
 
@@ -393,6 +395,14 @@ function App() {
     {
       path: "/bidding-type",
       element: <BiddingType />,
+    },
+    {
+      path: "/bidding-supplier",
+      element: <BiddingSupplierTabs />,
+    },
+    {
+      path: "/bidding-supplierbyid/:id/:page",
+      element: <BiddingSupplierById />,
     },
 
     /////////////////////////{*** Service Request ***}//////////////////////////////////////
