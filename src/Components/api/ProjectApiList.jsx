@@ -241,6 +241,13 @@ export default function ProjectApiList() {
     api_fetchSupplierbyId: `${baseUrl}/api/pms/master/supplier/by-procurement`,
     api_addToReceivedInvt: `${baseUrl}/api/pms/da/post-procurement/save-additional-details`,
 
+    //service request
+    api_getDistServiceInbox: `${baseUrl}/api/pms/dist/service-request`,
+    api_getDistServiceOutbox: `${baseUrl}/api/pms/dist/service-request/outbox`,
+    api_getDaServiceInbox: `${baseUrl}/api/pms/da/service-request`,
+    api_getDaServiceOutbox: `${baseUrl}/api/pms/da/service-request/outbox`,
+    api_getIaServiceInbox: `${baseUrl}/api/pms/ia/service-request`,
+    api_getIaServiceOutbox: `${baseUrl}/api/pms/ia/service-request/outbox`,
   };
 
   return apiList;

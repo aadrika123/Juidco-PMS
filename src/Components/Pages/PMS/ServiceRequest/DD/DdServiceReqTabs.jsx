@@ -9,16 +9,16 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
-import InventoryProposalList from "./InventoryProposalList";
+import ServiceProposalList from "./ServiceProposalList";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaChartPie } from "react-icons/fa";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 
-const BoqListTabsDa = () => {
+const DdServiceReqTabs = () => {
   const [activeTab, setActiveTab] = useState("inbox");
-  const { api_fetchDaBoqListInbox, api_fetchDaBoqListOutbox } =
+  const { api_getDistServiceInbox, api_getDistServiceOutbox } =
     ProjectApiList();
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -69,17 +69,14 @@ const BoqListTabsDa = () => {
         <div className='mt-4'>
           {activeTab === "inbox" && (
             <div>
-              <InventoryProposalList
-                page='inbox'
-                api={api_fetchDaBoqListInbox}
-              />
+              <ServiceProposalList page='inbox' api={api_getDistServiceInbox} />
             </div>
           )}
           {activeTab === "outbox" && (
             <div>
-              <InventoryProposalList
+              <ServiceProposalList
                 page='outbox'
-                api={api_fetchDaBoqListOutbox}
+                api={api_getDistServiceOutbox}
               />
             </div>
           )}
@@ -89,4 +86,4 @@ const BoqListTabsDa = () => {
   );
 };
 
-export default BoqListTabsDa;
+export default DdServiceReqTabs;

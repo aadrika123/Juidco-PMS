@@ -205,7 +205,7 @@ const PostPreDetailsById = (props) => {
       .then(function (response) {
         if (response?.data?.status) {
           toast.success("Added To Received Inventory");
-          navigate(`/ia-post-precurement`)
+          navigate(`/ia-post-precurement`);
         } else {
           toast.error("Error in Adding. Please try Again");
         }
@@ -263,7 +263,10 @@ const PostPreDetailsById = (props) => {
     setisLoading(true);
     seterroState(false);
 
-    AxiosInterceptors.get(`${api_fetchPostProcurementDetailSupplierbyId}/${id}`, ApiHeader())
+    AxiosInterceptors.get(
+      `${api_fetchPostProcurementDetailSupplierbyId}/${id}`,
+      ApiHeader()
+    )
       .then(function (response) {
         // console.log("view post da details by id...", response?.data?.data);
         if (response?.data?.status) {
@@ -403,7 +406,7 @@ const PostPreDetailsById = (props) => {
     setIsModalOpenInvt(false);
   };
   const confirmationHandler = () => {
-    addToRecevivedInvt()
+    addToRecevivedInvt();
   };
 
   //displaying confirmation message
@@ -429,7 +432,7 @@ const PostPreDetailsById = (props) => {
     <div>
       {isLoading && <LoaderApi />}
 
-      <div className="">
+      <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Inventory Proposal Details"}
@@ -443,26 +446,26 @@ const PostPreDetailsById = (props) => {
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         {/* Basic Details */}
-        <div className="mt-6" id="printable-content">
-          <div className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
-            <div className="">
-              <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
+        <div className='mt-6' id='printable-content'>
+          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
+            <div className=''>
+              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
                 View Pre Procurement Details{" "}
               </h2>
             </div>
 
-            <div className="flex justify-between">
-              <div className="pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full">
-                <h1 className="">
-                  Procurement No <span className="text-black">:</span>
-                  <span className="font-bold">
+            <div className='flex justify-between'>
+              <div className='pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full'>
+                <h1 className=''>
+                  Procurement No <span className='text-black'>:</span>
+                  <span className='font-bold'>
                     {" "}
                     {nullToNA(applicationFullData?.procurement_no)}
                   </span>
                 </h1>
-                <h1 className="text-black">
-                  Procurement Total <span className="text-black">:</span>
-                  <span className="font-bold">
+                <h1 className='text-black'>
+                  Procurement Total <span className='text-black'>:</span>
+                  <span className='font-bold'>
                     {" "}
                     {indianAmount(nullToNA(applicationFullData?.total_rate))}
                   </span>
@@ -470,11 +473,11 @@ const PostPreDetailsById = (props) => {
               </div>
             </div>
 
-            <div className="flex justify-between">
-              <div className="pl-8 text-[1rem] text-black flex justify-between w-full">
-                <h1 className="">
-                  Category <span className="text-black">:</span>
-                  <span className="font-bold">
+            <div className='flex justify-between'>
+              <div className='pl-8 text-[1rem] text-black flex justify-between w-full'>
+                <h1 className=''>
+                  Category <span className='text-black'>:</span>
+                  <span className='font-bold'>
                     {" "}
                     {nullToNA(applicationFullData?.category?.name)}
                   </span>
@@ -485,62 +488,62 @@ const PostPreDetailsById = (props) => {
             {applicationFullData?.procurement_stocks?.map((procData, index) => (
               <>
                 <div>
-                  <p className="text-xs pl-5">Procurement Item: {index + 1}</p>
+                  <p className='text-xs pl-5'>Procurement Item: {index + 1}</p>
                 </div>
-                <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow">
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow'>
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       Subcategory
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {procData?.subCategory?.name}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">Unit</div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Unit</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {nullToNA(procData?.unit?.name)}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">Brand</div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Brand</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {nullToNA(procData?.brand?.name)}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {nullToNA(procData?.quantity)}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       Per Unit Rate
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {indianAmount(nullToNA(procData?.rate))}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       Total Rate
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {indianAmount(nullToNA(procData?.total_rate))}
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       Description
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                       {nullToNA(procData?.description)}
                     </div>
                   </div>
@@ -548,7 +551,7 @@ const PostPreDetailsById = (props) => {
               </>
             ))}
 
-            <div className="h-[30px]"></div>
+            <div className='h-[30px]'></div>
           </div>
 
           {/* {page == "inbox" && (
@@ -1036,86 +1039,86 @@ const PostPreDetailsById = (props) => {
           {/* Supplier Details */}
 
           {/* {console.log(supplierData)} */}
-          <div className="py-6 mt-8 bg-white rounded-lg shadow-xl px-6 border border-blue-500">
-            <div className="">
-              <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
+          <div className='py-6 mt-8 bg-white rounded-lg shadow-xl px-6 border border-blue-500'>
+            <div className=''>
+              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
                 Supplier Details{" "}
               </h2>
             </div>
 
             {applicationFullData?.supplier_master?.map((supplierInfo) => (
               <>
-                <div className="md:flex md:justify-between md:items-center py-4 px-8">
-                  <div className="flex-1 md:block flex flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold capitalize ">
+                <div className='md:flex md:justify-between md:items-center py-4 px-8'>
+                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold capitalize '>
                       {nullToNA(supplierInfo?.name)}
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-sm">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
                       Supplier Name
                     </div>
                   </div>
 
-                  <div className="flex-1 md:block flex flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       {nullToNA(supplierInfo?.reference_no)}
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-sm">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
                       Reference Number
                     </div>
                   </div>
 
-                  <div className="flex-1 md:block flex flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       {nullToNA(supplierInfo?.gst_no)}
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-sm">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
                       GST No
                     </div>
                   </div>
 
-                  <div className="flex-1 md:block flex flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       {nullToNA(supplierInfo?.pan_no)}
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-sm">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
                       PAN No
                     </div>
                   </div>
                 </div>
 
-                <div className="md:flex md:justify-between items-center py-4 px-8">
-                  <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                <div className='md:flex md:justify-between items-center py-4 px-8'>
+                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       {nullToNA(supplierInfo?.address)}
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-sm">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
                       Address
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       {nullToNA(supplierInfo?.bank_name)}
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-sm">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
                       Bank Name
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       {nullToNA(supplierInfo?.account_no)}
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-sm">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
                       Account No.
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
-                    <div className="md:w-auto w-[50%] font-bold ">
+                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
                       {nullToNA(supplierInfo?.ifsc)}
                     </div>
-                    <div className="md:w-auto w-[50%] text-gray-800 text-sm">
+                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
                       IFSC Code
                     </div>
                   </div>
@@ -1125,7 +1128,7 @@ const PostPreDetailsById = (props) => {
           </div>
         </div>
         <>
-          <div className="space-x-5 flex justify-between  mt-3">
+          <div className='space-x-5 flex justify-between  mt-3'>
             <button onClick={handlePrint} className={buttonStyle}>
               Print
             </button>
@@ -1133,14 +1136,14 @@ const PostPreDetailsById = (props) => {
               Cancel
             </button> */}
 
-              {page == "inbox" && 
-            <button
-              className={buttonStyle2}
-              onClick={() => setIsModalOpenInvt(true)}
-            >
-              Add to Received Inventory
-            </button>
-}
+            {page == "inbox" && (
+              <button
+                className={buttonStyle2}
+                onClick={() => setIsModalOpenInvt(true)}
+              >
+                Add to Received Inventory
+              </button>
+            )}
           </div>
         </>
       </div>
