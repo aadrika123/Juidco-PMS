@@ -236,6 +236,11 @@ export default function ProjectApiList() {
     api_postWinner: `${baseUrl}/api/pms/ta/select-winner`,
     api_finalizeWinner: `${baseUrl}/api/pms/ta/comparison-finalize`,
 
+    // Post Procurement
+    api_fetchPostProcurementDetailSupplierbyId: `${baseUrl}/api/pms/procurement`,
+    api_fetchSupplierbyId: `${baseUrl}/api/pms/master/supplier/by-procurement`,
+    api_addToReceivedInvt: `${baseUrl}/api/pms/da/post-procurement/save-additional-details`,
+
     //service request
     api_getDistServiceInbox: `${baseUrl}/api/pms/dist/service-request`,
     api_getDistServiceOutbox: `${baseUrl}/api/pms/dist/service-request/outbox`,

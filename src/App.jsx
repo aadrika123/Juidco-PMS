@@ -85,6 +85,8 @@ import BiddingComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/Bidd
 import TenderingAdminTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/TenderingAdminTabs";
 import BiddingTypeResultView from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingTypeResultView";
 import BoqListTabsFin from "./Components/Pages/PMS/BOQ/Finance/BoqListTabsFin";
+import BiddingSupplierTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingSupplier/BiddingSupplierTabs";
+import BiddingSupplierById from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingSupplier/BiddingSupplierById";
 import DdServiceReqTabs from "./Components/Pages/PMS/ServiceRequest/DD/DdServiceReqTabs";
 import DaServiceReqTabs from "./Components/Pages/PMS/ServiceRequest/DA/DaServiceReqTabs";
 import IaServiceReqTabs from "./Components/Pages/PMS/ServiceRequest/IA/IaServiceReqTabs";
@@ -250,7 +252,7 @@ function App() {
     { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
     { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
 
-    { path: "/create-pre-procurement", element: <AddPreProcurement /> },
+    { path: "/create-pre-procurement/:page", element: <AddPreProcurement /> },
     { path: "/sr-edit-pre-procurement/:id", element: <SrEditPreProcurement /> },
     { path: "/sr-rejectedlist", element: <RejectedListTabs /> },
     { path: "/sr-releasedlist", element: <ReleasedListTabs /> },
@@ -258,9 +260,9 @@ function App() {
     /////////////////////////{*** Post-Procurement ***}//////////////////////////////////////
 
     //-------------- DA ----------------
-    { path: "/da-post-precurement", element: <PostPrecurementListTabsDa /> },
+    { path: "/ia-post-precurement", element: <PostPrecurementListTabsDa /> },
     {
-      path: "/da-post-precurementbyid/:id/:page",
+      path: "/ia-post-precurementbyid/:id/:page",
       element: <PostPreDetailsById />,
     },
 
@@ -274,9 +276,9 @@ function App() {
     /////////////////////////{*** Received-Inventory ***}//////////////////////////////////////
 
     //------- DA ------
-    { path: "/da-received-inventory", element: <ReceivedInvtHomeDa /> },
+    { path: "/ia-received-inventory", element: <ReceivedInvtHomeDa /> },
     {
-      path: "/da-received-InvtDetailsById/:id/:page",
+      path: "/ia-received-InvtDetailsById/:id/:page",
       element: <ViewReceivedInvtByIdDa />,
     },
 
@@ -396,6 +398,14 @@ function App() {
     {
       path: "/bidding-type",
       element: <BiddingType />,
+    },
+    {
+      path: "/bidding-supplier",
+      element: <BiddingSupplierTabs />,
+    },
+    {
+      path: "/bidding-supplierbyid/:id/:page",
+      element: <BiddingSupplierById />,
     },
 
     /////////////////////////{*** Service Request ***}//////////////////////////////////////

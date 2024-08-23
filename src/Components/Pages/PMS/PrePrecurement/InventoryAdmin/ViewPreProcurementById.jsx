@@ -69,7 +69,7 @@ const ViewPreProcurementById = () => {
 
   const { titleBarVisibility } = useContext(contextVar);
 
-  // console.log(applicationFullData?.status)
+  // console.log(applicationFullData)
 
   //Print
   const componentRef = useRef();
@@ -701,7 +701,7 @@ const ViewPreProcurementById = () => {
             <button
               className={buttonStyle}
               onClick={() => {
-                navigate(`/da-edit-pre-procurement/${id}`);
+                navigate(`/create-pre-procurement/edit`,{state:id});
               }}
             >
               Edit
