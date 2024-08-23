@@ -79,10 +79,10 @@ import InventoryAdminTabs from "./Components/Pages/PMS/StockRequest/InventoryAdm
 import BiddingType from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingType";
 import ViewPreProcurementById from "./Components/Pages/PMS/PrePrecurement/InventoryAdmin/ViewPreProcurementById";
 import BoqLeveltwoTab from "./Components/Pages/PMS/BOQ/level2/BoqLeveltwoTab";
-import BiddingTypeViewById from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingTypeViewById";
 import BiddingComparisionTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingDetailForm/BiddingComparisionTabs";
 import BiddingComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingComparision";
 import TenderingAdminTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/TenderingAdminTabs";
+import BiddingTypeViewById from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingTypeViewById";
 import BiddingTypeResultView from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingTypeResultView";
 import BoqListTabsFin from "./Components/Pages/PMS/BOQ/Finance/BoqListTabsFin";
 import BiddingSupplierTabs from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingSupplier/BiddingSupplierTabs";
@@ -406,6 +406,14 @@ function App() {
     {
       path: "/bidding-supplierbyid/:id/:page",
       element: <BiddingSupplierById />,
+    },
+    {
+      path: "/bidding-type-result/:id",
+      element: <BiddingTypeResultView />,
+    },
+    {
+      path: "/bidding-type-byId/:id",
+      element: <BiddingTypeViewById />,
     },
 
     /////////////////////////{*** Service Request ***}//////////////////////////////////////
