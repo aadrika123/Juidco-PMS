@@ -71,7 +71,7 @@ function TenderListings(props) {
       ),
     },
     {
-      Header: "Status",
+      Header: <p className='text-center'>Status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2'>

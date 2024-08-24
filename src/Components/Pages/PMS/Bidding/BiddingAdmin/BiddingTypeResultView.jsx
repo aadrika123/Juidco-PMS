@@ -28,7 +28,6 @@ const BiddingTypeResultView = () => {
   const [biddingData, setBiddingData] = useState();
   const { titleBarVisibility } = useContext(contextVar);
 
-  const [selectedBidder, setSelectedBidder] = useState([]);
   let temp = [];
 
   const getApplicationDetail = () => {
@@ -178,8 +177,8 @@ const BiddingTypeResultView = () => {
         titleText={"Bidding Type Details"}
       />
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
-        <div className="">
-          <h2 className=" text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
+        <div className=''>
+          <h2 className=' text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
             On the Basis of{" "}
             {applicationData?.bid_type == "technical"
               ? "Technical"
@@ -191,22 +190,22 @@ const BiddingTypeResultView = () => {
         </div>
 
         {/* Bidder details */}
-        <div className="">
-          <div className="bg-white p-2 mt-5 rounded-md ">
+        <div className=''>
+          <div className='bg-white p-2 mt-5 rounded-md '>
             {/* 1st Info */}
-            <div className="relative overflow-x-auto">
-              <table className="w-full text-sm text-left rtl:text-right border-b  text-gray-500">
-                <thead className=" text-gray-500  bg-gray-200 ">
+            <div className='relative overflow-x-auto'>
+              <table className='w-full text-sm text-left rtl:text-right border-b  text-gray-500'>
+                <thead className=' text-gray-500  bg-gray-200 '>
                   <tr>
                     <th
-                      scope="col"
-                      className=" text-center border-r border-l border-gray-300"
+                      scope='col'
+                      className=' text-center border-r border-l border-gray-300'
                     >
                       S no.
                     </th>
                     <th
-                      scope="col"
-                      className="px-6 py-5 text-center border-r border-l border-gray-300"
+                      scope='col'
+                      className='px-6 py-5 text-center border-r border-l border-gray-300'
                     >
                       Bidder name
                     </th>
@@ -217,13 +216,13 @@ const BiddingTypeResultView = () => {
                           temp.push(criteData?.criteria?.id);
                           return (
                             <th
-                              scope="col"
-                              className="px-6 py-5 text-center border-r border-gray-300 "
+                              scope='col'
+                              className='px-6 py-5 text-center border-r border-gray-300 '
                             >
-                              <p className="text-base">
+                              <p className='text-base'>
                                 {criteData?.criteria?.heading}
                               </p>
-                              <p className="text-sm truncate w-[15rem]">
+                              <p className='text-sm truncate w-[15rem]'>
                                 {criteData?.criteria?.description}
                               </p>
                             </th>
@@ -233,14 +232,14 @@ const BiddingTypeResultView = () => {
                     )}
 
                     <th
-                      scope="col"
-                      className="px-6 py-5 text-center border-r border-l border-gray-300 bg-[#4338ca] text-white"
+                      scope='col'
+                      className='px-6 py-5 text-center border-r border-l border-gray-300 bg-[#4338ca] text-white'
                     >
                       Total
                     </th>
                     <th
-                      scope="col"
-                      className="px-6 py-5 text-center border-r border-l border-gray-300"
+                      scope='col'
+                      className='px-6 py-5 text-center border-r border-l border-gray-300'
                     >
                       Rank
                     </th>
@@ -248,35 +247,35 @@ const BiddingTypeResultView = () => {
                 </thead>
                 <tbody>
                   {applicationData?.comparison?.map((data, index) => (
-                    <tr className="bg-white ">
+                    <tr className='bg-white '>
                       <th
-                        scope="row"
-                        className="px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
+                        scope='row'
+                        className='px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap'
                       >
                         {index + 1}
                       </th>
                       <th
-                        scope="row"
-                        className="px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
+                        scope='row'
+                        className='px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap'
                       >
                         {data?.bidder_master?.name}
                       </th>
                       {data?.comparison_criteria?.map((criteData) => (
                         <>
-                          <td className="px-6 py-5 text-center border-r  border-gray-300">
+                          <td className='px-6 py-5 text-center border-r  border-gray-300'>
                             {criteData?.value}
                           </td>
                         </>
                       ))}
                       <th
-                        scope="row"
-                        className="px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
+                        scope='row'
+                        className='px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap'
                       >
                         {data?.total_score}
                       </th>
                       <th
-                        scope="row"
-                        className="px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
+                        scope='row'
+                        className='px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap'
                       >
                         L{index + 1}
                       </th>
@@ -287,39 +286,39 @@ const BiddingTypeResultView = () => {
             </div>
 
             {/* 2nd Info */}
-            <div className="mt-14">
-              <div className="relative overflow-x-auto">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-b">
-                  <thead className="  bg-[#4338ca] text-white ">
+            <div className='mt-14'>
+              <div className='relative overflow-x-auto'>
+                <table className='w-full text-sm text-left rtl:text-right text-gray-500 border-b'>
+                  <thead className='  bg-[#4338ca] text-white '>
                     <tr>
                       <th
-                        scope="col"
-                        className="px-6 py-5 text-center border-r border-gray-300"
+                        scope='col'
+                        className='px-6 py-5 text-center border-r border-gray-300'
                       >
                         S No.
                       </th>
                       <th
-                        scope="col"
-                        className="px-6 py-5 text-center border-r border-gray-300"
+                        scope='col'
+                        className='px-6 py-5 text-center border-r border-gray-300'
                       >
                         Tender Reference No
                       </th>
                       <th
-                        scope="col"
-                        className="px-6 py-5 text-center border-r border-gray-300"
+                        scope='col'
+                        className='px-6 py-5 text-center border-r border-gray-300'
                       >
                         Bidder Name
                       </th>
                       <th
-                        scope="col"
-                        className="px-6 py-5 text-center border-r border-gray-300"
+                        scope='col'
+                        className='px-6 py-5 text-center border-r border-gray-300'
                       >
                         Bidding Price
                       </th>
 
                       <th
-                        scope="col"
-                        className="px-6 py-5 text-center border-r border-gray-300"
+                        scope='col'
+                        className='px-6 py-5 text-center border-r border-gray-300'
                       >
                         Uploaded Document
                       </th>
@@ -328,25 +327,25 @@ const BiddingTypeResultView = () => {
                   <tbody>
                     {/* {console.log(biddingData?.bidder_master)} */}
                     {biddingData?.bidder_master?.map((data, index) => (
-                      <tr className="bg-white ">
+                      <tr className='bg-white '>
                         <th
-                          scope="row"
-                          className="px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap"
+                          scope='row'
+                          className='px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap'
                         >
                           {index + 1}
                         </th>
-                        <td className="px-6 py-5 text-center border-r border-gray-300">
+                        <td className='px-6 py-5 text-center border-r border-gray-300'>
                           {biddingData?.reference_no}
                         </td>
-                        <td className="px-6 py-5 text-center border-r border-gray-300">
+                        <td className='px-6 py-5 text-center border-r border-gray-300'>
                           {data?.name}
                         </td>
-                        <td className="px-6 py-5 text-center border-r border-gray-300">
+                        <td className='px-6 py-5 text-center border-r border-gray-300'>
                           {indianAmount(data?.bidding_amount)}
                         </td>
 
                         <td
-                          className="px-6 py-5 text-center border-r border-gray-300 cursor-pointer text-blue-800 hover:underline"
+                          className='px-6 py-5 text-center border-r border-gray-300 cursor-pointer text-blue-800 hover:underline'
                           onClick={() => {
                             setImageFunc(data?.id);
                             setImageModal(true);
@@ -362,9 +361,12 @@ const BiddingTypeResultView = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-end space-x-5 mt-8">
-          <button className=" bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-10 py-2 rounded flex"
-          onClick={()=>navigate(`/biddingViewById/${biddingData?.reference_no}/inbox`)}
+        <div className='flex justify-end space-x-5 mt-8'>
+          <button
+            className=' bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-10 py-2 rounded flex'
+            onClick={() =>
+              navigate(`/biddingViewById/${biddingData?.reference_no}/inbox`)
+            }
           >
             Back to Bidding Page
           </button>
