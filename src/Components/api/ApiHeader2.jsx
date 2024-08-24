@@ -9,6 +9,7 @@
 export default function ApiHeader2() {
   let token2 = window.localStorage.getItem("token");
   let roleId = window.localStorage.getItem("roleId");
+  console.log(roleId,"roleId")
 
   const header = {
     headers: {
