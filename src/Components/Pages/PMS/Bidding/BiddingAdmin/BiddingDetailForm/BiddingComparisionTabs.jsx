@@ -29,6 +29,7 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import toast from "react-hot-toast";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const BiddingComparisionTabs = () => {
   let [searchParams, setSearchParams] = useSearchParams();
@@ -102,10 +103,9 @@ const BiddingComparisionTabs = () => {
     getApplicationDetail(ref);
   }, []);
 
-  console.log(tabDetails)
-
   return (
     <>
+      {isLoading && <LoaderApi />}
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
@@ -153,7 +153,6 @@ const BiddingComparisionTabs = () => {
             />
           </div>
         ))}
-        
       </div>
     </>
   );

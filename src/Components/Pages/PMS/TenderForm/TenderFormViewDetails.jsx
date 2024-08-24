@@ -659,8 +659,6 @@ const TenderFormViewDetails = () => {
             </div>
           </div>
 
-
-
           {/* Tender Fee Details */}
 
           <div className='bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5'>
@@ -716,8 +714,7 @@ const TenderFormViewDetails = () => {
             </div>
           </div>
 
-          <div style={{ pageBreakAfter: 'always' }}></div>
-
+          <div style={{ pageBreakAfter: "always" }}></div>
 
           {/* EMD  Fee Details */}
 
@@ -1062,16 +1059,14 @@ const TenderFormViewDetails = () => {
                   )} */}
                 </>
               )}
-              {page != "inbox" &&
-                page != "outbox" &&
-                previewData?.status !== 0 && (
-                  <button
-                    className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
-                    onClick={() => postFinalSubmission()}
-                  >
-                    Submit
-                  </button>
-                )}
+              {page != "inbox" && page != "outbox" && (
+                <button
+                  className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
+                  onClick={() => postFinalSubmission()}
+                >
+                  Submit
+                </button>
+              )}
             </div>
           </div>
         </div>

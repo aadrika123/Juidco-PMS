@@ -222,7 +222,11 @@ const BiddingViewById = () => {
   if (showModal) {
     return (
       <>
-        <BiddingViewModal closeModal={closeModal} refNo={id} tenderingType={applicationFullData?.tendering_type} />
+        <BiddingViewModal
+          closeModal={closeModal}
+          refNo={id}
+          tenderingType={applicationFullData?.tendering_type}
+        />
       </>
     );
   }
@@ -482,11 +486,17 @@ const BiddingViewById = () => {
                         <>
                           <div className='grid md:grid-rows-4-4 gap-6 mb-5 bg-slate-100 rounded-xl'>
                             <h1 className='p-3 bg-slate-300 rounded '>
-                              Bidder {index + 1}
+                              Bidder {index + 1}{" "}
+                              {biddingData?.bidder_master.length === 1 && (
+                                <span className='text-gray-600 font-semibold'>
+                                  (Selected Winner)
+                                </span>
+                              )}
                             </h1>
                             <div className='w-full flex justify-end items-end px-3 py-2'>
                               <p>Bidding Amount - </p>
                               <p className='text-lg font-semibold'>
+                                {""}
                                 {indianAmount(data?.bidding_amount)}
                               </p>
                             </div>
@@ -629,9 +639,40 @@ const BiddingViewById = () => {
               </div>
             </>
           )}
+          {/* 
+          <table className='min-w-full bg-white border-collapse border border-gray-200'>
+            <thead>
+              <th className='border border-gray-200 px-4 py-2'>Heading</th>
+              <th className='border border-gray-200 px-4 py-2'>Description</th>
+              <th className='border border-gray-200 px-4 py-2'>Value</th>
+            </thead>
+           <tbody>
+              {data?.length > 0 &&
+                data.map((row, index) => (
+                  <tr key={row?.procurement_no}>
+                    <td className='border border-gray-200 px-4 py-2'>
+                      {index + 1}
+                    </td>
+                    <td className='border border-gray-200 px-4 py-2'>
+                      {row?.procurement_no}
+                    </td>
+                    <td className='border border-gray-200 px-4 py-2'>
+                      {row?.category?.name}
+                    </td>
+                    <td className='border border-gray-200 px-4 py-2'>
+                      {row?.subcategory?.name}
+                    </td>
+                    <td className='border border-gray-200 px-4 py-2'>
+                      {row?.brand?.name}
+                    </td>
+                  </tr>
+                ))}
+            </tbody> 
+          </table>
+          */}
 
           {/* Bidding Type Details */}
-          {(biddingData?.techComparison || biddingData?.finComparison) &&
+          {/* {(biddingData?.techComparison || biddingData?.finComparison) &&
             biddingData?.bidder_master.length > 0 && (
               <>
                 <div className=''>
@@ -695,7 +736,7 @@ const BiddingViewById = () => {
                   </div>
                 </div>
               </>
-            )}
+            )} */}
 
           {/* Buttons */}
 

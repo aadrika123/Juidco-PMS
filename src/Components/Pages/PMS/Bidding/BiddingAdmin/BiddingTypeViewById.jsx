@@ -30,6 +30,18 @@ const BiddingTypeViewById = () => {
   const [selectedBidder, setSelectedBidder] = useState([]);
   let temp = [];
 
+  const selectBidderData = (bidderId) => {
+    if (!selectedBidder.includes(bidderId)) {
+      setSelectedBidder((prev) => [...prev, bidderId]);
+    } else {
+      selectedBidder.filter((bidder) => bidder === bidderId);
+      setSelectedBidder((prev) => {
+        const filtered = prev.filter((data) => data !== bidderId);
+        return filtered;
+      });
+    }
+  };
+
   const getApplicationDetail = () => {
     setIsLoading(true);
     AxiosInterceptors.get(`${api_getCompareBidder}/${id}`, ApiHeader())
@@ -73,9 +85,9 @@ const BiddingTypeViewById = () => {
       });
   };
 
-  const selectWinnerPost = async () => {
+  const decideWinnerApi = (bidderData) => {
     setIsLoading(true);
-    let payload = { reference_no: id, winners: selectedBidder };
+    let payload = { reference_no: id, winners: bidderData };
 
     AxiosInterceptors.post(api_postWinner, payload, ApiHeader())
       .then(function (response) {
@@ -102,6 +114,33 @@ const BiddingTypeViewById = () => {
       .finally(() => {
         setIsLoading(false);
       });
+  };
+
+  const selectWinnerPost = async () => {
+    if (
+      (biddingData?.bid_type === "financial" && biddingData?.finComparison) ||
+      (biddingData?.bid_type === "technical" && biddingData?.techComparison) ||
+      (biddingData?.bid_type === "fintech" &&
+        biddingData?.finComparison &&
+        biddingData?.techComparison)
+    ) {
+      if (
+        biddingData?.boq?.pre_tendering_details?.tendering_type === "qcbs" ||
+        biddingData?.boq?.pre_tendering_details?.tendering_type === "least_cost"
+      ) {
+        if (selectedBidder.length > 1) {
+          return toast.error(
+            "Only one Bidder is allowed for Least Cost and Quality & Cost Based Selection type"
+          );
+        } else {
+          decideWinnerApi(selectedBidder);
+        }
+      } else {
+        decideWinnerApi(selectedBidder);
+      }
+    } else {
+      decideWinnerApi(selectedBidder);
+    }
   };
 
   const finalizeWinner = async () => {
@@ -237,10 +276,7 @@ const BiddingTypeViewById = () => {
                         <input
                           type='checkbox'
                           onClick={() =>
-                            setSelectedBidder([
-                              ...selectedBidder,
-                              data?.bidder_master?.id,
-                            ])
+                            selectBidderData(data?.bidder_master?.id)
                           }
                         />
                       </th>

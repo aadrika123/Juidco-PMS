@@ -28,6 +28,7 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const BiddingDetails = () => {
   const { api_getBidType, api_submitBidder } = ProjectApiList();
@@ -145,6 +146,7 @@ const BiddingDetails = () => {
 
   return (
     <>
+      {isLoading && <LoaderApi />}
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
