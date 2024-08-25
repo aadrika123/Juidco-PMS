@@ -250,7 +250,7 @@ function App() {
 
     //------- Stock Receiver -------
     { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
-    { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
+    // { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
 
     { path: "/create-pre-procurement/:page", element: <AddPreProcurement /> },
     { path: "/sr-edit-pre-procurement/:id", element: <SrEditPreProcurement /> },
@@ -449,7 +449,7 @@ function App() {
             <Route index element={<Login />} />
 
             <Route element={<ProtectedRoutes />}>
-              {allRoutes?.map((elem,index) => (
+              {allRoutes?.map((elem, index) => (
                 <Route path={elem?.path} element={elem?.element} />
               ))}
             </Route>
