@@ -15,9 +15,6 @@ import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
 function ReceivedInvtList(props) {
   const navigate = useNavigate();
-
-  console.log(props.page, "page========>");
-
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
   const [changeData, setchangeData] = useState(0);
@@ -29,22 +26,24 @@ function ReceivedInvtList(props) {
   const COLUMNS = [
     {
       Header: "#",
-      Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
       Header: "Procurement No",
       accessor: "procurement_no",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.procurement_no}</div>
+        <div className='pr-2'>{cell.row.values.procurement_no}</div>
       ),
     },
-    // {
-    //   Header: "Category",
-    //   accessor: "category",
-    //   Cell: ({ cell }) => (
-    //     <div className="pr-2">{cell.row.values.category.name} </div>
-    //   ),
-    // },
+    {
+      Header: "Supplier Name",
+      accessor: "post_procurement.supplier_name",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.post_procurement?.supplier_name}{" "}
+        </div>
+      ),
+    },
     // {
     //   Header: "Sub Category",
     //   accessor: "subcategory",
@@ -159,10 +158,10 @@ function ReceivedInvtList(props) {
       Cell: ({ cell }) => (
         <>
           <button
-            className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
+            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
               navigate(
-                `/sr-received-InvtDetailsById/${cell.row.values.id}/${props.page}`
+                `/sr-received-InvtDetailsById/${cell.row.values.procurement_no}/${props.page}`
               )
             }
           >

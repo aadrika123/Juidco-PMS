@@ -739,11 +739,18 @@ const BiddingViewById = () => {
             )} */}
 
           {/* Buttons */}
+          {console.log(
+            biddingData?.creationStatus,
+            "biddingData?.creationStatus"
+          )}
 
           <div className='space-x-5 flex justify-between mt-[2rem]'>
             <div className='flex flex-1 justify-between'>
               <div className='space-x-3 flex items-end justify-center'>
-                <button className={buttonStyle} onClick={() => navigate(`/tendering-admin`)}>
+                <button
+                  className={buttonStyle}
+                  onClick={() => navigate(`/tendering-admin`)}
+                >
                   Back
                 </button>
 
