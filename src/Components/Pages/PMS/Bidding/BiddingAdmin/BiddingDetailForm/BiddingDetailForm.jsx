@@ -121,41 +121,39 @@ const BiddingDetailForm = (props) => {
       return toast.error("Please upload valid Financial document");
     } else if (
       props?.bidderData?.bid_type == "fintech" &&
-      !techImageDoc &&
-      !fincImageDoc
+      !(techImageDoc && fincImageDoc)
     ) {
       return toast.error("Please upload documents for Financial and Technical");
     }
 
-    setisLoading(true);
-    // setConfirmationModal(false);
-    data = { ...data, reference_no: props?.bidderData?.reference_no };
+      setisLoading(true);
+      data = { ...data, reference_no: props?.bidderData?.reference_no };
 
-    let formData = new FormData();
-    formData.append("emd_doc", imageDoc);
-    formData.append("tech_doc", techImageDoc);
-    formData.append("fin_doc", fincImageDoc);
-    formData.append("bidder", JSON.stringify(data));
+      let formData = new FormData();
+      formData.append("emd_doc", imageDoc);
+      formData.append("tech_doc", techImageDoc);
+      formData.append("fin_doc", fincImageDoc);
+      formData.append("bidder", JSON.stringify(data));
 
-    AxiosInterceptors.post(`${api_addBidder}`, formData, ApiHeader2())
-      .then(function (response) {
-        if (response?.data?.status == true) {
-          toast.success(response?.data?.message, "success");
-          props?.getApplicationDetail(props?.bidderData?.reference_no);
-        } else {
-          toast(response, "error");
-        }
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-        toast.error(
-          error?.response?.data?.error ||
-            "Error in submitting form. Please try again"
-        );
-      })
-      .finally(() => {
-        setisLoading(false);
-      });
+      AxiosInterceptors.post(`${api_addBidder}`, formData, ApiHeader2())
+        .then(function (response) {
+          if (response?.data?.status == true) {
+            toast.success(response?.data?.message, "success");
+            props?.getApplicationDetail(props?.bidderData?.reference_no);
+          } else {
+            toast(response, "error");
+          }
+        })
+        .catch(function (error) {
+          console.log("errorrr.... ", error);
+          toast.error(
+            error?.response?.data?.error ||
+              "Error in submitting form. Please try again"
+          );
+        })
+        .finally(() => {
+          setisLoading(false);
+        });
   };
 
   // console.log(props?.tabNo)
@@ -174,177 +172,177 @@ const BiddingDetailForm = (props) => {
         {({ values, handleChange, errors, touched, setFieldValue }) => (
           <Form>
             <>
-              <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-2'>
-                <div className=''>
+              <div className="p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-2">
+                <div className="">
                   <label
-                    for='default-input'
+                    for="default-input"
                     className={`block mb-2 text-sm font-medium text-gray-900`}
                   >
                     Bidder Name
-                    <span className='text-red-500'>*</span>
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type='text'
-                    className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 '
-                    placeholder='Bidder Name'
-                    name='name'
+                    type="text"
+                    className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 "
+                    placeholder="Bidder Name"
+                    name="name"
                     onChange={handleChange}
                     value={values.name}
                   />
                   {errors.name && touched.name ? (
-                    <p className='text-red-400 text-xs'>{errors.name}</p>
+                    <p className="text-red-400 text-xs">{errors.name}</p>
                   ) : null}
                 </div>
 
-                <div className=''>
+                <div className="">
                   <label
-                    for='default-input'
+                    for="default-input"
                     className={`block mb-2 text-sm font-medium text-gray-900 `}
                   >
                     PAN No
-                    <span className='text-red-500'>*</span>
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type='text'
-                    className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
-                    placeholder='PAN No'
-                    name='pan_no'
+                    type="text"
+                    className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
+                    placeholder="PAN No"
+                    name="pan_no"
                     onChange={handleChange}
                     value={values.pan_no}
                   />
                   {errors.pan_no && touched.pan_no ? (
-                    <p className='text-red-400 text-xs'>{errors.pan_no}</p>
+                    <p className="text-red-400 text-xs">{errors.pan_no}</p>
                   ) : null}
                 </div>
 
-                <div className=''>
+                <div className="">
                   <label
-                    for='default-input'
+                    for="default-input"
                     className={`block mb-2 text-sm font-medium text-gray-900 mt-5 `}
                   >
                     GST No
-                    <span className='text-red-500'>*</span>
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type='text'
-                    className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
-                    placeholder='GST No'
-                    name='gst_no'
+                    type="text"
+                    className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
+                    placeholder="GST No"
+                    name="gst_no"
                     onChange={handleChange}
                     value={values.gst_no}
                   />
                 </div>
 
-                <div className=''>
+                <div className="">
                   <label
-                    for='default-input'
+                    for="default-input"
                     className={`block mb-2 text-sm font-medium text-gray-900 mt-5 `}
                   >
                     address
-                    <span className='text-red-500'>*</span>
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type='text'
-                    className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
-                    placeholder='address'
-                    name='address'
+                    type="text"
+                    className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
+                    placeholder="address"
+                    name="address"
                     onChange={handleChange}
                     value={values.address}
                   />
                   {errors.address && touched.address ? (
-                    <p className='text-red-400 text-xs'>{errors.address}</p>
+                    <p className="text-red-400 text-xs">{errors.address}</p>
                   ) : null}
                 </div>
 
-                <div className=''>
+                <div className="">
                   <label
-                    for='default-input'
+                    for="default-input"
                     className={`block mb-2 text-sm font-medium text-gray-900 mt-5 `}
                   >
                     Bank Name
-                    <span className='text-red-500'>*</span>
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type='text'
-                    className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
-                    placeholder='Bank Name'
-                    name='bank'
+                    type="text"
+                    className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
+                    placeholder="Bank Name"
+                    name="bank"
                     onChange={handleChange}
                     value={values.bank}
                   />
                   {errors.bank && touched.bank ? (
-                    <p className='text-red-400 text-xs'>{errors.bank}</p>
+                    <p className="text-red-400 text-xs">{errors.bank}</p>
                   ) : null}
                 </div>
 
-                <div className=''>
+                <div className="">
                   <label
-                    for='default-input'
+                    for="default-input"
                     className={`block mb-2 text-sm font-medium text-gray-900 mt-5`}
                   >
                     Bank Account No
-                    <span className='text-red-500'>*</span>
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type='number'
-                    className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
-                    placeholder='Bank Account No'
-                    name='account_no'
+                    type="number"
+                    className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
+                    placeholder="Bank Account No"
+                    name="account_no"
                     onChange={handleChange}
                     value={values.account_no}
                   />
                   {errors.account_no && touched.account_no ? (
-                    <p className='text-red-400 text-xs'>{errors.account_no}</p>
+                    <p className="text-red-400 text-xs">{errors.account_no}</p>
                   ) : null}
                 </div>
 
-                <div className=''>
+                <div className="">
                   <label
-                    for='default-input'
+                    for="default-input"
                     className={`block mb-2 text-sm font-medium text-gray-900 mt-5`}
                   >
                     IFSC Code
-                    <span className='text-red-500'>*</span>
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type='text'
-                    className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
-                    placeholder='IFSC Code'
-                    name='ifsc'
+                    type="text"
+                    className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
+                    placeholder="IFSC Code"
+                    name="ifsc"
                     onChange={handleChange}
                     value={values.ifsc}
                   />
                   {errors.ifsc && touched.ifsc ? (
-                    <p className='text-red-400 text-xs'>{errors.ifsc}</p>
+                    <p className="text-red-400 text-xs">{errors.ifsc}</p>
                   ) : null}
                 </div>
 
-                <div className=''>
+                <div className="">
                   <label
-                    for='default-input'
+                    for="default-input"
                     className={`block mb-2 text-sm font-medium text-gray-900 mt-5`}
                   >
                     Bidding Amount
-                    <span className='text-red-500'>*</span>
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type='text'
-                    className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
-                    placeholder='Bidding Amount'
-                    name='bidding_amount'
+                    type="text"
+                    className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5"
+                    placeholder="Bidding Amount"
+                    name="bidding_amount"
                     onChange={handleChange}
                     value={values.bidding_amount}
                   />
                   {errors.bidding_amount && touched.bidding_amount ? (
-                    <p className='text-red-400 text-xs'>
+                    <p className="text-red-400 text-xs">
                       {errors.bidding_amount}
                     </p>
                   ) : null}
                 </div>
               </div>
 
-              <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex '>
-                <div className='border-r-2'>
+              <div className="p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md flex ">
+                <div className="border-r-2">
                   <RadioButtonsGroup
                     fields={emdConfirmation}
                     title={"EMD"}
@@ -359,7 +357,7 @@ const BiddingDetailForm = (props) => {
 
                 {values?.emd == "yes" && (
                   <>
-                    <div className='border-r-2 ml-10'>
+                    <div className="border-r-2 ml-10">
                       <RadioButtonsGroup
                         fields={transc}
                         title={"Transaction Mode"}
@@ -374,7 +372,7 @@ const BiddingDetailForm = (props) => {
 
                     {values?.payment_mode == "offline" ? (
                       <>
-                        <div className='border-r-2 ml-10'>
+                        <div className="border-r-2 ml-10">
                           <RadioButtonsGroup
                             fields={transcMode}
                             title={"Transaction"}
@@ -388,48 +386,48 @@ const BiddingDetailForm = (props) => {
                         </div>
 
                         {values?.offline_mode == "dd" && (
-                          <div className='border-r-2 ml-10'>
+                          <div className="border-r-2 ml-10">
                             <label
-                              for='default-input'
+                              for="default-input"
                               className={`block mb-2 text-sm font-medium text-gray-900`}
                             >
                               DD Number
-                              <span className='text-red-500'>*</span>
+                              <span className="text-red-500">*</span>
                             </label>
                             <input
-                              type='text'
-                              className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 '
-                              placeholder='DD Number'
-                              name='dd_no'
+                              type="text"
+                              className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 "
+                              placeholder="DD Number"
+                              name="dd_no"
                               onChange={handleChange}
                               value={values.dd_no}
                             />
                             {errors.dd_no && touched.dd_no ? (
-                              <p className='text-red-400 text-xs'>
+                              <p className="text-red-400 text-xs">
                                 {errors.dd_no}
                               </p>
                             ) : null}
                           </div>
                         )}
                         {values?.offline_mode == "cash" && (
-                          <div className='border-r-2 ml-10'>
+                          <div className="border-r-2 ml-10">
                             <label
-                              for='default-input'
+                              for="default-input"
                               className={`block mb-2 text-sm font-medium text-gray-900`}
                             >
                               Transaction Number
-                              <span className='text-red-500'>*</span>
+                              <span className="text-red-500">*</span>
                             </label>
                             <input
-                              type='text'
-                              className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 '
-                              placeholder='Transaction Number'
-                              name='cash_transcNo'
+                              type="text"
+                              className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 "
+                              placeholder="Transaction Number"
+                              name="cash_transcNo"
                               onChange={handleChange}
                               value={values.cash_transcNo}
                             />
                             {errors.cash_transcNo && touched.cash_transcNo ? (
-                              <p className='text-red-400 text-xs'>
+                              <p className="text-red-400 text-xs">
                                 {errors.cash_transcNo}
                               </p>
                             ) : null}
@@ -437,24 +435,24 @@ const BiddingDetailForm = (props) => {
                         )}
                       </>
                     ) : (
-                      <div className='border-r-2 ml-10'>
+                      <div className="border-r-2 ml-10">
                         <label
-                          for='default-input'
+                          for="default-input"
                           className={`block mb-2 text-sm font-medium text-gray-900`}
                         >
                           Transaction Number
-                          <span className='text-red-500'>*</span>
+                          <span className="text-red-500">*</span>
                         </label>
                         <input
-                          type='text'
-                          className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 '
-                          placeholder='Transaction Number'
-                          name='transaction_no'
+                          type="text"
+                          className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5 "
+                          placeholder="Transaction Number"
+                          name="transaction_no"
                           onChange={handleChange}
                           value={values.transaction_no}
                         />
                         {errors.transaction_no && touched.transaction_no ? (
-                          <p className='text-red-400 text-xs'>
+                          <p className="text-red-400 text-xs">
                             {errors.transaction_no}
                           </p>
                         ) : null}
@@ -478,8 +476,8 @@ const BiddingDetailForm = (props) => {
                   </div>
                 </div> */}
 
-                <div className='flex justify-end gap-3 '>
-                  <div className='w-[40%] ml-10'>
+                <div className="flex justify-end gap-3 ">
+                  <div className="w-[40%] ml-10">
                     <ImageDisplay
                       url={basicDetailData?.doc[0]?.docUrl}
                       preview={preview}
@@ -490,7 +488,7 @@ const BiddingDetailForm = (props) => {
                     />
                   </div>
 
-                  <div className=''>
+                  <div className="">
                     <FileButton
                       bg={"[#4338CA]"}
                       hoverBg={"bg-indigo-300"}
@@ -504,7 +502,7 @@ const BiddingDetailForm = (props) => {
                 </div>
               </div>
 
-              <div className='mt-8 '>
+              <div className="mt-8 ">
                 {/* technical creteria */}
                 {props?.bidderData?.techCriteria?.length > 0 && (
                   <Accordion defaultExpanded>
@@ -514,30 +512,30 @@ const BiddingDetailForm = (props) => {
                         color: "white",
                         borderRadius: "5px",
                       }}
-                      expandIcon={<ExpandMoreIcon className='text-white' />}
-                      aria-controls='panel1-content'
-                      id='panel1-header'
+                      expandIcon={<ExpandMoreIcon className="text-white" />}
+                      aria-controls="panel1-content"
+                      id="panel1-header"
                     >
                       Technical Comparison
                     </AccordionSummary>
                     <AccordionDetails>
-                      <div className='relative overflow-x-auto'>
+                      <div className="relative overflow-x-auto">
                         {props?.bidderData?.techCriteria.map((data) => (
-                          <div className='border border-gray-300 rounded-xl flex m-5'>
-                            <div className='w-[7%] flex items-center'>
+                          <div className="border border-gray-300 rounded-xl flex m-5">
+                            <div className="w-[7%] flex items-center">
                               <img
                                 src={icon}
-                                alt=''
-                                className='max-w-none h-10 ml-5'
+                                alt=""
+                                className="max-w-none h-10 ml-5"
                               />
                             </div>
 
-                            <div className='p-3 w-[75%]'>
-                              <div className='flex space-x-[6.2rem]'>
-                                <h1 className=' text-base'>{data.heading} </h1>
+                            <div className="p-3 w-[75%]">
+                              <div className="flex space-x-[6.2rem]">
+                                <h1 className=" text-base">{data.heading} </h1>
                               </div>
-                              <div className='flex space-x-[5rem]'>
-                                <h1 className=' text-sm'>
+                              <div className="flex space-x-[5rem]">
+                                <h1 className=" text-sm">
                                   {data.description}{" "}
                                 </h1>
                               </div>
@@ -546,8 +544,8 @@ const BiddingDetailForm = (props) => {
                         ))}
                       </div>
 
-                      <div className='flex justify-end gap-3 '>
-                        <div className='w-[40%] ml-10'>
+                      <div className="flex justify-end gap-3 ">
+                        <div className="w-[40%] ml-10">
                           <ImageDisplay
                             url={basicDetailData?.doc[0]?.docUrl}
                             preview={techPreview}
@@ -558,7 +556,7 @@ const BiddingDetailForm = (props) => {
                           />
                         </div>
 
-                        <div className=''>
+                        <div className="">
                           <FileButton
                             bg={"[#4338CA]"}
                             hoverBg={"bg-indigo-300"}
@@ -583,30 +581,30 @@ const BiddingDetailForm = (props) => {
                         color: "white",
                         borderRadius: "5px",
                       }}
-                      expandIcon={<ExpandMoreIcon className='text-white' />}
-                      aria-controls='panel1-content'
-                      id='panel1-header'
+                      expandIcon={<ExpandMoreIcon className="text-white" />}
+                      aria-controls="panel1-content"
+                      id="panel1-header"
                     >
                       Financial Comparison
                     </AccordionSummary>
                     <AccordionDetails>
-                      <div className='relative overflow-x-auto'>
+                      <div className="relative overflow-x-auto">
                         {props?.bidderData?.finCriteria.map((data) => (
-                          <div className='border border-gray-300 rounded-xl flex m-5'>
-                            <div className='w-[7%] flex items-center'>
+                          <div className="border border-gray-300 rounded-xl flex m-5">
+                            <div className="w-[7%] flex items-center">
                               <img
                                 src={icon}
-                                alt=''
-                                className='max-w-none h-10 ml-5'
+                                alt=""
+                                className="max-w-none h-10 ml-5"
                               />
                             </div>
 
-                            <div className='p-3 w-[75%]'>
-                              <div className='flex space-x-[6.2rem]'>
-                                <h1 className=' text-base'>{data.heading} </h1>
+                            <div className="p-3 w-[75%]">
+                              <div className="flex space-x-[6.2rem]">
+                                <h1 className=" text-base">{data.heading} </h1>
                               </div>
-                              <div className='flex space-x-[5rem]'>
-                                <h1 className=' text-sm'>
+                              <div className="flex space-x-[5rem]">
+                                <h1 className=" text-sm">
                                   {data.description}{" "}
                                 </h1>
                               </div>
@@ -615,8 +613,8 @@ const BiddingDetailForm = (props) => {
                         ))}
                       </div>
 
-                      <div className='flex justify-end gap-3 '>
-                        <div className='w-[40%] ml-10'>
+                      <div className="flex justify-end gap-3 ">
+                        <div className="w-[40%] ml-10">
                           <ImageDisplay
                             url={basicDetailData?.doc[0]?.docUrl}
                             preview={fincPreview}
@@ -627,7 +625,7 @@ const BiddingDetailForm = (props) => {
                           />
                         </div>
 
-                        <div className=''>
+                        <div className="">
                           <FileButton
                             bg={"[#4338CA]"}
                             hoverBg={"bg-indigo-300"}

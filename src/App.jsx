@@ -448,7 +448,7 @@ function App() {
             <Route index element={<Login />} />
 
             <Route element={<ProtectedRoutes />}>
-              {allRoutes?.map((elem) => (
+              {allRoutes?.map((elem,index) => (
                 <Route path={elem?.path} element={elem?.element} />
               ))}
             </Route>
