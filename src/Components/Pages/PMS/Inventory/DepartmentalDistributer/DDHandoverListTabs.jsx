@@ -70,7 +70,7 @@ const DDHandoverListTabs = () => {
         <div className='mt-4'>
           {activeTab === "inbox" && (
             <div>
-              <DdHandoverList page='inbox' api={"api_getDDSRInbox"} />
+              <DdHandoverList page='inbox' api={api_getDDSRInbox} />
             </div>
           )}
           {activeTab === "outbox" && (
