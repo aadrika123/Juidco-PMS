@@ -10,8 +10,6 @@
 
 // src/components/ReceivedInvtHomeDa.js
 import React, { useState } from "react";
-import { GoPlus } from "react-icons/go";
-import { useNavigate } from "react-router-dom";
 // import InventoryProposalList from "./InventoryProposalList";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaChartPie } from "react-icons/fa";
@@ -24,8 +22,6 @@ const ReceivedInvtHomeDa = () => {
     api_fetchDaReceivedInvtListOutbox,
   } = ProjectApiList();
 
-
-  
   return (
     <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
       <div>
