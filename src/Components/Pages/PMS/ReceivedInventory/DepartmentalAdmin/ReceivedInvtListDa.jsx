@@ -8,20 +8,15 @@
 //    DESCRIPTION - ReceivedInvtList
 //////////////////////////////////////////////////////////////////////////////////////
 
-import { useFormik } from "formik";
 import React, { useState } from "react";
-import * as yup from "yup";
 
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useNavigate, useParams } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
-import { nullToNA } from "@/Components/Common/PowerupFunctions";
+import { indianAmount, nullToNA } from "@/Components/Common/PowerupFunctions";
 
 function ReceivedInvtList(props) {
   const navigate = useNavigate();
-
-  console.log(props.page, "page========>");
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
@@ -34,124 +29,124 @@ function ReceivedInvtList(props) {
   const COLUMNS = [
     {
       Header: "#",
-      Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
       Header: "Procurement No",
       accessor: "procurement_no",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.procurement_no}</div>
+        <div className='pr-2'>{cell.row.values.procurement_no}</div>
       ),
     },
     {
       Header: "Category",
       accessor: "category",
       Cell: ({ cell }) => (
-        <div className="pr-2">{nullToNA(cell.row.values.category?.name)} </div>
+        <div className='pr-2'>{nullToNA(cell.row.values.category?.name)} </div>
       ),
     },
     {
       Header: "Total Rate",
       accessor: "total_rate",
       Cell: ({ cell }) => (
-        <div className="pr-2">{nullToNA(cell.row.values.total_rate)} </div>
+        <div className='pr-2'>{indianAmount(cell.row.values.total_rate)} </div>
       ),
     },
     {
       Header: "Remark",
       accessor: "remark",
       Cell: ({ cell }) => (
-        <div className="pr-2">{nullToNA(cell.row.values.remark)} </div>
+        <div className='pr-2'>{nullToNA(cell.row.values.remark)} </div>
       ),
     },
     {
-      Header: "status",
+      Header: <p className='text-center'>Status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
-        <div className="pr-2">
+        <div className='pr-2'>
           {cell.row.values.status == -2 && (
-            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Rejected
             </p>
           )}
           {cell.row.values.status == 1 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Pending
             </p>
           )}
           {cell.row.values.status == 10 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 1
             </p>
           )}
           {cell.row.values.status == 11 && (
-            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Level 1 Returned
             </p>
           )}
           {cell.row.values.status == 12 && (
-            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Level 1 Rejected
             </p>
           )}
           {cell.row.values.status == 13 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 1 Revised
             </p>
           )}
           {cell.row.values.status == 14 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 1 Approved
             </p>
           )}
           {cell.row.values.status == 20 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 2
             </p>
           )}
           {cell.row.values.status == 21 && (
-            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Level 2 Returned
             </p>
           )}
           {cell.row.values.status == 22 && (
-            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Level 2 Rejected
             </p>
           )}
           {cell.row.values.status == 23 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 2 Revised
             </p>
           )}
           {cell.row.values.status == 24 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 2 Approved
             </p>
           )}
           {cell.row.values.status == 3 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Added Received Inventory
             </p>
           )}
           {cell.row.values.status == 4 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Stock Partially Recieved
             </p>
           )}
           {cell.row.values.status == 5 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              Stock Recieved
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Stocks Recieved
             </p>
           )}
           {cell.row.values.status == 6 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Partially Added
             </p>
           )}
           {cell.row.values.status == 7 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-            Added
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Added
             </p>
           )}
         </div>
@@ -163,7 +158,7 @@ function ReceivedInvtList(props) {
       Cell: ({ cell }) => (
         <>
           <button
-            className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
+            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
               navigate(
                 `/ia-received-InvtDetailsById/${cell.row.values.procurement_no}/${props.page}`
