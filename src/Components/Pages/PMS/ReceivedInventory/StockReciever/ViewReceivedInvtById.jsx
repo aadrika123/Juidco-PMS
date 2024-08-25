@@ -812,6 +812,7 @@ const ViewReceivedInvtById = () => {
                 <div className=''>
                   <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
                     <div className='col-span-12  w-full mb-20'>
+                      
                       <div className='p-4'>
                         <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
                           Add products

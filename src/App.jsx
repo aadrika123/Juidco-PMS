@@ -282,11 +282,12 @@ function App() {
       element: <ViewReceivedInvtByIdDa />,
     },
 
+    
     //-------Stock Receiver -----
 
-    { path: "/sr-received-inventory", element: <ReceivedInvtHome /> },
+    { path: "ia-pre-inventory", element: <ReceivedInvtHome /> },
     {
-      path: "/sr-received-InvtDetailsById/:id/:page",
+      path: "/ia-pre-InvtDetailsById/:id/:page",
       element: <ViewReceivedInvtById />,
     },
 
