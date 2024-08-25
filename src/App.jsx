@@ -282,6 +282,7 @@ function App() {
       element: <ViewReceivedInvtByIdDa />,
     },
 
+    
     //-------Stock Receiver -----
 
     { path: "/sr-received-inventory", element: <ReceivedInvtHome /> },
