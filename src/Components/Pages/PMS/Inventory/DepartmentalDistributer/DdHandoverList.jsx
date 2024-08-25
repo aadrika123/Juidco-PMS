@@ -71,27 +71,27 @@ function DdHandoverList(props) {
         <div className="pr-2">{cell.row.values.stock_handover_no}</div>
       ),
     },
-    {
-      Header: "Category",
-      accessor: "category",
-      Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.category.name} </div>
-      ),
-    },
-    {
-      Header: "Sub Category",
-      accessor: "subcategory",
-      Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.subcategory.name} </div>
-      ),
-    },
-    {
-      Header: "Brand",
-      accessor: "brand",
-      Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.brand.name || "N/A"}</div>
-      ),
-    },
+    // {
+    //   Header: "Category",
+    //   accessor: "category",
+    //   Cell: ({ cell }) => (
+    //     <div className="pr-2">{cell.row.values.category.name} </div>
+    //   ),
+    // },
+    // {
+    //   Header: "Sub Category",
+    //   accessor: "subcategory",
+    //   Cell: ({ cell }) => (
+    //     <div className="pr-2">{cell.row.values.subcategory.name} </div>
+    //   ),
+    // },
+    // {
+    //   Header: "Brand",
+    //   accessor: "brand",
+    //   Cell: ({ cell }) => (
+    //     <div className="pr-2">{cell.row.values.brand.name || "N/A"}</div>
+    //   ),
+    // },
 
     {
       Header: "status",
@@ -173,52 +173,6 @@ function DdHandoverList(props) {
               Tender is ready
             </p>
           )}
-          {/* .... */}
-          {/* <p className="font-bold text-yellow-800">
-            {cell.row.values.status == -1 && "Back to SR"}
-          </p>
-          <p className="font-bold text-red-500">
-            {cell.row.values.status == -2 && "Rejected"}
-          </p>
-          <p className="font-bold text-blue-800">
-            {cell.row.values.status == 0 && "Pending"}
-          </p>
-          <p className="font-bold text-blue-800">
-            {cell.row.values.status == 1 && "DA's Inbox"}
-          </p>
-          <p className="font-bold text-green-800">
-            {cell.row.values.status == 2 && "Release for Tender"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == 3 && "Supplier assigned"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == 4 && "Incomplete stocks received"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == 5 && "Stocks received"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == 69 && "Revised"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == 71 && "BOQ already created"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == 70 && "Ready for BOQ"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == -70 && "BOQ returned from DA"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == 72 && "Ready for tendering"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == -72 && "Tender back from DA"}
-          </p>
-          <p className="font-bold text-green-500">
-            {cell.row.values.status == 73 && "Tender is ready"}
-          </p> */}
         </div>
       ),
     },
