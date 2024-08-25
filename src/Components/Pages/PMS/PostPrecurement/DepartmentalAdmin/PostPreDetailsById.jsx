@@ -16,13 +16,11 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
-import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
 import * as yup from "yup";
 // import PreProcurementCancelScreen from "./PostProcurementCancelScreen";
 // import PreProcurementSubmittedScreen from "./PreProcurementSubmittedScreen";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
-import { FaDivide } from "react-icons/fa";
 import {
   allowCharacterInput,
   allowNumberInput,
@@ -30,7 +28,6 @@ import {
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
-import { IoMdAddCircleOutline } from "react-icons/io";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 
 const PostPreDetailsById = (props) => {
@@ -56,14 +53,8 @@ const PostPreDetailsById = (props) => {
 
   // console.log(supplierData)
 
-  const {
-    api_fetchPostProcurementDetailSupplierbyId,
-    api_addToReceivedInvt,
-    api_postPostProcurementDaAdditionalDetails,
-    api_fetchPostProcurementDAListOutbox,
-  } = ProjectApiList();
-
-  const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
+  const { api_fetchPostProcurementDetailSupplierbyId, api_addToReceivedInvt } =
+    ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -440,9 +431,9 @@ const PostPreDetailsById = (props) => {
       </div>
 
       {/* //timeline  */}
-      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
+      {/* <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         <TimeLine status={applicationFullData?.status?.status} />
-      </div>
+      </div> */}
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         {/* Basic Details */}
