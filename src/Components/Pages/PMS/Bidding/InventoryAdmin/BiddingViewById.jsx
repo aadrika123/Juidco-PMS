@@ -329,12 +329,12 @@ const BiddingViewById = () => {
                 </div>
               )}
 
-              {applicationFullData?.tendering_type === "rateContract" && (
+              {applicationFullData?.tendering_type === "rate_contract" && (
                 <div className='grid md:grid-cols-3 gap-4'>
                   <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                     <div className='md:w-auto w-[50%] font-bold '>Tenure </div>
                     <div className='md:w-auto w-[50%] text-gray-800 '>
-                      {applicationFullData?.tenure}
+                      {applicationFullData?.tenure || 0} Years
                     </div>
                   </div>
 
@@ -343,7 +343,7 @@ const BiddingViewById = () => {
                       Minimum Supplier{" "}
                     </div>
                     <div className='md:w-auto w-[50%] text-gray-800 '>
-                      {applicationFullData?.min_supplier}
+                      {applicationFullData?.min_supplier || 0}
                     </div>
                   </div>
 
@@ -351,8 +351,8 @@ const BiddingViewById = () => {
                     <div className='md:w-auto w-[50%] font-bold'>
                       Maximum Supplier{" "}
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 '>
-                      {applicationFullData?.max_supplier}
+                    <div className='md:w-auto w-[50%] text-gray-800'>
+                      {applicationFullData?.max_supplier || 0}
                     </div>
                   </div>
                 </div>
@@ -743,7 +743,7 @@ const BiddingViewById = () => {
           <div className='space-x-5 flex justify-between mt-[2rem]'>
             <div className='flex flex-1 justify-between'>
               <div className='space-x-3 flex items-end justify-center'>
-                <button className={buttonStyle} onClick={() => navigate(-1)}>
+                <button className={buttonStyle} onClick={() => navigate(`/tendering-admin`)}>
                   Back
                 </button>
 

@@ -47,7 +47,7 @@ function DaPostProcurementCancelScreen(props) {
           <div class=' flex-1'>
             <div class=''>
               <h3 class='text-xl  text-center  text-black font-openSans'>
-                Are you Sure you want to Cancel
+                Are you Sure you want to Cancel ?
               </h3>
               {/* <h3 class="text-xl  text-center mb-3 text-gray-400 font-openSans font-semibold ">
               Booking no. - {props?.responseScreenData?.data?.bookingNo}
@@ -76,10 +76,10 @@ function DaPostProcurementCancelScreen(props) {
             </div>
 
             <div>
-              <h1 className='text-center pt-5'>
+              {/* <h1 className='text-center pt-5'>
                 <span className='text-red-600 text-xl'>*</span> By Clicking
                 Continue your data will be Processed
-              </h1>
+              </h1> */}
             </div>
           </div>
         </div>

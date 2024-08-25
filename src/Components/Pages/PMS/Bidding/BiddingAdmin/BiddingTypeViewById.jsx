@@ -195,14 +195,16 @@ const BiddingTypeViewById = () => {
         <div className=''>
           <h2 className=' text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
             On the Basis of{" "}
-            {applicationData?.bid_type == "technical"
+            {biddingData?.bid_type == "technical"
               ? "Technical"
-              : applicationData?.bid_type == "financial"
+              : biddingData?.bid_type == "financial"
               ? "Financial"
-              : applicationData?.bid_type == "finTech" &&
-                !applicationData?.techComparison
+              : biddingData?.bid_type == "fintech" &&
+                biddingData?.techComparison
               ? "Technical"
-              : "Financial"}{" "}
+              : biddingData?.bid_type == "fintech" &&
+                biddingData?.finComparison
+              ? "Financial":""}{" "}
             Qualification the Analysis are :-
           </h2>
         </div>
