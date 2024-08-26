@@ -14,9 +14,9 @@ import React, { useContext, useRef, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import ServiceRequestModal from "./ServiceRequestModal";
+// import ServiceRequestModal from "./ServiceRequestModal";
 
-const DDViewHandoverbyId = () => {
+const DAServiceRequestById = () => {
   const [isLoading, setisLoading] = useState(false);
   const [confModal, setConfModal] = useState(false);
   const [forwardModal, setForwardDA] = useState(false);
@@ -25,23 +25,20 @@ const DDViewHandoverbyId = () => {
   const [successModal, setSuccessModal] = useState(false);
   const [warrantyClaimModal, setwarrantyClaimModal] = useState(false);
   const [serviceRequestModal, setServiceRequestModal] = useState(false);
-  const [service, setService] = useState('');
+  const [service, setService] = useState("");
   const [imageDoc, setImageDoc] = useState(false);
   const [preview, setPreview] = useState();
   const [applicationFullData, setapplicationFullData] = useState([]);
   const {
     api_postHandoverReq,
-    api_postReturnReq,
-    api_postDeadStockReq,
-    api_getStockRequetById,
-    api_postWarrantyClaim,
-    api_postStockReqForwardtoDA
+    api_getServiceRequestId,
+    api_approveServiceRequestDA,
   } = ProjectApiList();
 
-  const { id,page } = useParams();
+  const { refNo, page } = useParams();
+  const nevigate = useNavigate()
 
-  console.log(applicationFullData?.stock_handover_no)
-
+  // console.log(refNo)
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -197,7 +194,7 @@ const DDViewHandoverbyId = () => {
   //get application details
   const getApplicationDetail = () => {
     setisLoading(true);
-    AxiosInterceptors.get(`${api_getStockRequetById}/${id}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getServiceRequestId}/${refNo}`, ApiHeader())
       .then(async function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
@@ -216,7 +213,7 @@ const DDViewHandoverbyId = () => {
 
   const confirmationHandler2 = () => {
     setSuccessModal(false);
-    navigate(`/dd-handover`)
+    navigate(`/dd-handover`);
   };
 
   const handleCancel = () => {
@@ -224,26 +221,27 @@ const DDViewHandoverbyId = () => {
     setRetModal(false);
     setConfModal(false);
     setwarrantyClaimModal(false);
-    setForwardDA(false)
+    setForwardDA(false);
   };
 
   // Forward to DA
 
   const confirmationHandler = () => {
-    forwardToDA();
-    setConfModal(false);
+    approveServiceRequest();
+    setForwardDA(false);
   };
 
-  const forwardToDA = () => {
+  const approveServiceRequest = () => {
     setisLoading(true);
     AxiosInterceptors.post(
-      `${api_postStockReqForwardtoDA}`,
-      { stock_handover_no: [`${id}`] },
+      `${api_approveServiceRequestDA}`,
+      { service_no: refNo },
       ApiHeader()
     )
       .then(function (response) {
         if (response?.data?.status) {
-          setSuccessModal(true);
+          toast.success("Forwarded to IA Successfully");
+          nevigate(`/da-service-request`)
           setisLoading(false);
         } else {
           console.log("error in forwarding to da...", error);
@@ -258,59 +256,43 @@ const DDViewHandoverbyId = () => {
     getApplicationDetail();
   }, []);
 
-  if (serviceRequestModal) {
-    return (
-      <>
-        <ServiceRequestModal
-        stockReqData={applicationFullData?.stock_req_product}
-        stockHandNo={applicationFullData?.stock_handover_no}
-        setServiceRequestModal={setServiceRequestModal}
-        service={service}
-          // confirmationHandler={warrantyClaimHandler}
-          // handleCancel={handleCancel}
-          // message={'Are you sure you want to "Claim Warranty" ?'}
-          //   sideMessage={'By clicking your data will proceed'}
-        />
-      </>
-    );
-  }
-  if (warrantyClaimModal) {
-    return (
-      <>
-        <ConfirmationModal
-          confirmationHandler={warrantyClaimHandler}
-          handleCancel={handleCancel}
-          message={'Are you sure you want to "Claim Warranty" ?'}
-          //   sideMessage={'By clicking your data will proceed'}
-        />
-      </>
-    );
-  }
+  // if (warrantyClaimModal) {
+  //   return (
+  //     <>
+  //       <ConfirmationModal
+  //         confirmationHandler={warrantyClaimHandler}
+  //         handleCancel={handleCancel}
+  //         message={'Are you sure you want to "Claim Warranty" ?'}
+  //         //   sideMessage={'By clicking your data will proceed'}
+  //       />
+  //     </>
+  //   );
+  // }
 
-  if (deadStockModal) {
-    return (
-      <>
-        <ConfirmationModal
-          confirmationHandler={deadConfirmationHandler}
-          handleCancel={handleCancel}
-          message={'Return to "Dead Stock" ?'}
-          //   sideMessage={'By clicking your data will proceed'}
-        />
-      </>
-    );
-  }
-  if (confModal) {
-    return (
-      <>
-        <ConfirmationModal
-          confirmationHandler={handoverHandler}
-          handleCancel={handleCancel}
-          message={'Are you sure you want to "Handover" ?'}
-          //   sideMessage={'By clicking your data will proceed'}
-        />
-      </>
-    );
-  }
+  // if (deadStockModal) {
+  //   return (
+  //     <>
+  //       <ConfirmationModal
+  //         confirmationHandler={deadConfirmationHandler}
+  //         handleCancel={handleCancel}
+  //         message={'Return to "Dead Stock" ?'}
+  //         //   sideMessage={'By clicking your data will proceed'}
+  //       />
+  //     </>
+  //   );
+  // }
+  // if (confModal) {
+  //   return (
+  //     <>
+  //       <ConfirmationModal
+  //         confirmationHandler={handoverHandler}
+  //         handleCancel={handleCancel}
+  //         message={'Are you sure you want to "Handover" ?'}
+  //         //   sideMessage={'By clicking your data will proceed'}
+  //       />
+  //     </>
+  //   );
+  // }
 
   if (forwardModal) {
     return (
@@ -318,37 +300,37 @@ const DDViewHandoverbyId = () => {
         <ConfirmationModal
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
-          message={"Are you sure you want to Forward to Departmental Admin?"}
+          message={"Are you sure you want to Approve?"}
         />
       </>
     );
   }
 
-  if (retModal) {
-    return (
-      <>
-        <ConfirmationModal
-          confirmationHandler={retConfirmationHandler}
-          handleCancel={handleCancel}
-          message={'Are you sure you want to "Return" ?'}
-          //   sideMessage={'By clicking your data will proceed'}
-        />
-      </>
-    );
-  }
+  // if (retModal) {
+  //   return (
+  //     <>
+  //       <ConfirmationModal
+  //         confirmationHandler={retConfirmationHandler}
+  //         handleCancel={handleCancel}
+  //         message={'Are you sure you want to "Return" ?'}
+  //         //   sideMessage={'By clicking your data will proceed'}
+  //       />
+  //     </>
+  //   );
+  // }
 
-  if (successModal) {
-    return (
-      <>
-        <SuccessModal
-          confirmationHandler={confirmationHandler2}
-          message={"Your Request has been Handover Successfully"}
-          requestNoMsg={"Reference No:-"}
-          refNo={"123654789"}
-        />
-      </>
-    );
-  }
+  // if (successModal) {
+  //   return (
+  //     <>
+  //       <SuccessModal
+  //         confirmationHandler={confirmationHandler2}
+  //         message={"Your Request has been Handover Successfully"}
+  //         requestNoMsg={"Reference No:-"}
+  //         refNo={"123654789"}
+  //       />
+  //     </>
+  //   );
+  // }
   return (
     <>
       {isLoading && <LoaderApi />}
@@ -386,21 +368,29 @@ const DDViewHandoverbyId = () => {
                   </span>
                 </h1>
               </div>
-            </div>
-            <div className="grid md:grid-cols-4 gap-4 ml-8">
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold">Employee Id</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.emp_id)}
-                </div>
+              <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
+                <h1 className="font-bold">
+                  Service No <span className="text-black">:</span>
+                  <span className="font-light">
+                    {" "}
+                    {nullToNA(applicationFullData?.service_no)}
+                  </span>
+                </h1>
               </div>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-4 ml-8">
+              {/* <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold">Description</div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.inventory?.description)}
+                </div>
+              </div> */}
 
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
-                  Employee Name
-                </div>
+                <div className="md:w-auto w-[50%] font-bold ">Category</div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.emp_name)}
+                  {nullToNA(applicationFullData?.inventory?.category?.name)}
                 </div>
               </div>
 
@@ -416,25 +406,29 @@ const DDViewHandoverbyId = () => {
                   Sub Categories
                 </div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.subcategory?.name)}
+                  {nullToNA(applicationFullData?.inventory?.subcategory?.name)}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
-                  Quantity Allotted{" "}
-                </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.allotted_quantity)}
-                </div>
-              </div>
+              {applicationFullData?.service_req_product?.map((data) => (
+                <>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
+                      Service Request Product
+                    </div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(data?.serial_no)}
+                    </div>
+                  </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Date</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.createdAt?.split("T")[0])}
-                </div>
-              </div>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(data?.quantity)}
+                    </div>
+                  </div>
+                </>
+              ))}
             </div>
             <div className="p-5 pl-8">
               <h1 className="font-bold ">Description</h1>
@@ -472,18 +466,26 @@ const DDViewHandoverbyId = () => {
             </div>
 
             <div className="space-x-3 flex items-end justify-center">
-              {page == 'inbox' && 
-        <>
-            {applicationFullData?.status === 0 && (
-                  <button
-                    className=' p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]'
-                    onClick={forwardDAModal}
-                  >
-                    Forward to Departmental Admin
-                  </button>)}
+              {page == "inbox" && (
+                <>
+                  {applicationFullData?.status === 10 && (
+                    <button
+                      className=" mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                      onClick={forwardDAModal}
+                    >
+                      Approve
+                    </button>
+                  )}
+                  {applicationFullData?.status === 10 && (
+                    <button
+                      className="mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                      onClick={forwardDAModal}
+                    >
+                      Reject
+                    </button>
+                  )}
 
-
-              {applicationFullData?.status >= 3 && (
+                  {/* {applicationFullData?.status >= 3 && (
                 <>
                   <div className="bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700">
                     <FileButton
@@ -524,10 +526,9 @@ const DDViewHandoverbyId = () => {
                     Warranty claims
                   </button>
                 </>
+              )} */}
+                </>
               )}
-
-            </>
-            }
             </div>
           </div>
         </div>
@@ -536,4 +537,4 @@ const DDViewHandoverbyId = () => {
   );
 };
 
-export default DDViewHandoverbyId;
+export default DAServiceRequestById;

@@ -90,6 +90,8 @@ import BiddingSupplierById from "./Components/Pages/PMS/Bidding/BiddingAdmin/Bid
 import DdServiceReqTabs from "./Components/Pages/PMS/ServiceRequest/DD/DdServiceReqTabs";
 import DaServiceReqTabs from "./Components/Pages/PMS/ServiceRequest/DA/DaServiceReqTabs";
 import IaServiceReqTabs from "./Components/Pages/PMS/ServiceRequest/IA/IaServiceReqTabs";
+import DAServiceRequestById from "./Components/Pages/PMS/ServiceRequest/DA/DAServiceRequestById";
+import IAServiceRequestById from "./Components/Pages/PMS/ServiceRequest/IA/IAServiceRequestById";
 
 const queryClient = new QueryClient();
 
@@ -197,7 +199,7 @@ function App() {
       element: <DDHandoverListTabs />,
     },
     {
-      path: "/dd-viewHandoverById/:id",
+      path: "/dd-viewHandoverById/:id/:page",
       element: <DDViewHandoverbyId />,
     },
 
@@ -427,8 +429,16 @@ function App() {
       element: <DaServiceReqTabs />,
     },
     {
+      path: "/da-service-request-byid/:refNo/:page",
+      element: <DAServiceRequestById />,
+    },
+    {
       path: "/ia-service-request",
       element: <IaServiceReqTabs />,
+    },
+    {
+      path: "/ia-service-request-byid/:refNo/:page",
+      element: <IAServiceRequestById />,
     },
     // {
     //   path: "/viewServiceReq",

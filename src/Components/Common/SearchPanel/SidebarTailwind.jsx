@@ -24,13 +24,15 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   const { api_itemCategory, api_itemSubCategoryAll, api_itemBrand } =
     ProjectApiList();
 
+
+    console.log(categoryList)
   const fetchCategory = async () => {
     AxiosInterceptors.get(
       `${api_itemCategory}`.split(" ").join(""),
       ApiHeader()
     )
       .then((data) => {
-        setCategoryList(data?.data?.data?.data);
+        setCategoryList(data?.data?.data);
         // console.log(data?.data?.data);
       })
       .catch((err) => {
@@ -44,7 +46,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
       ApiHeader()
     )
       .then((data) => {
-        setSubCategoryList(data?.data?.data?.data);
+        setSubCategoryList(data?.data?.data);
         // console.log(data?.data?.data);
       })
       .catch((err) => {
