@@ -362,19 +362,27 @@ const BiddingTypeResultView = () => {
           </div>
         </div>
         <div className='flex justify-end space-x-5 mt-8'>
-          <button
+                
+          {biddingData?.boq?.pre_tendering_details?.tendering_type == 'rate_contract' ? <button
+            className=' bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-10 py-2 rounded flex'
+            onClick={() =>
+              // navigate(`/biddingViewById/${biddingData?.reference_no}/inbox`)
+              navigate(`/addUnitPrice/${biddingData?.reference_no}`)
+            }
+          >
+            Add Unit Price
+          </button> :  <button
             className=' bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-10 py-2 rounded flex'
             onClick={() =>
               navigate(`/biddingViewById/${biddingData?.reference_no}/inbox`)
             }
           >
             Back to Bidding Page
-          </button>
-          {/* <button className="bg-white  hover:bg-[#4338CA] hover:text-white border border-blue-700 px-10 py-2 rounded flex"
-          onClick={()=>navigate(-1)}
-          >
-            Back
-          </button> */}
+          </button>}
+         
+          
+          
+         
         </div>
       </div>
     </>

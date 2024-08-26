@@ -4,8 +4,8 @@
 //    Date - 25/05/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - PostPreDetailsById
-//    DESCRIPTION - PostPreDetailsById
+//    Component  - AddUnnitPrice
+//    DESCRIPTION - AddUnnitPrice
 /////////////////////////////////////////////////////////////////////////////
 
 import { useState, useEffect, useContext } from "react";
@@ -31,7 +31,7 @@ import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 
-const PostPreDetailsById = (props) => {
+const AddUnitPrice = (props) => {
   const navigate = useNavigate();
   const { id, page } = useParams();
 
@@ -54,7 +54,7 @@ const PostPreDetailsById = (props) => {
 
   // console.log(supplierData)
   const { inputStyle, labelStyle } = ThemeStyle();
-  const { api_fetchPostProcurementDetailSupplierbyId, api_addToReceivedInvt } =
+  const { api_fetchPostProcurementDetailSupplierbyId, api_addUnitPrice } =
     ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
@@ -184,13 +184,13 @@ const PostPreDetailsById = (props) => {
     }
   };
 
-  const addToRecevivedInvt = () => {
+  const addUnitPrice = () => {
     setisLoading(true);
 
     AxiosInterceptors.post(
-      `${api_addToReceivedInvt}`,
+      `${api_addUnitPrice}`,
       {
-        procurement_no: id,
+        // procurement_no: id,
       },
       ApiHeader()
     )
@@ -376,8 +376,7 @@ const PostPreDetailsById = (props) => {
   // }, [isGstAdded, formik.values.final_rate, formik.values.gst]);
 
   useEffect(() => {
-    getApplicationDetail();
-    // getSupplierDetail();
+    // getApplicationDetail();
   }, []);
 
   // -------------------- Calculate Total Quantity -------------------------------
@@ -398,7 +397,7 @@ const PostPreDetailsById = (props) => {
     setIsModalOpenInvt(false);
   };
   const confirmationHandler = () => {
-    addToRecevivedInvt();
+    addUnitPrice();
   };
 
   //displaying confirmation message
@@ -408,7 +407,7 @@ const PostPreDetailsById = (props) => {
         <ConfirmationModal
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
-          message={'Add to " Received Inventory " ?'}
+          message={'Sure to submit Unit Price ?'}
         />
       </>
     );
@@ -439,7 +438,8 @@ const PostPreDetailsById = (props) => {
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         {/* Basic Details */}
         <div className='mt-6' id='printable-content'>
-          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
+          
+          {/* <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
                 View Pre Procurement Details{" "}
@@ -544,21 +544,18 @@ const PostPreDetailsById = (props) => {
             ))}
 
             <div className='h-[30px]'></div>
-          </div>
+          </div> */}
 
-          {page == "inbox" && (
-            <>
-              {" "}
+
               <div className={` mt-8 border border-blue-500`}>
                 <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
                   <div className=''>
                     <div className=' grid md:grid-cols-1 lg:grid-cols-12 container mx-auto capitalize'>
                       <div className='col-span-12  w-full mb-8'>
-                        <div className='bg-[#4338ca] text-white px-4 py-2 w-full flex justify-between items-center rounded-t-md'>
+                        <div className='bg-[#4338ca] text-white px-4 py-2 w-full  rounded-md'>
                           <div>
                             <h2 className='text-xl font-bold'>Add Supplier</h2>
                           </div>
-                          <div></div>
                         </div>
 
                         <div className='p-6 valid-form flex flex-wrap md:flex-row'>
@@ -701,8 +698,6 @@ const PostPreDetailsById = (props) => {
                   </div>
                 </form>
               </div>
-            </>
-          )}
 
           {/* Inventory Details form */}
 
@@ -1037,7 +1032,7 @@ const PostPreDetailsById = (props) => {
           {/* Supplier Details */}
 
           {/* {console.log(supplierData)} */}
-          <div className='py-6 mt-8 bg-white rounded-lg shadow-xl px-6 border border-blue-500'>
+          {/* <div className='py-6 mt-8 bg-white rounded-lg shadow-xl px-6 border border-blue-500'>
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
                 Supplier Details{" "}
@@ -1129,7 +1124,7 @@ const PostPreDetailsById = (props) => {
                 </>
               )
             )}
-          </div>
+          </div> */}
         </div>
         <>
           <div className='space-x-5 flex justify-between  mt-3'>
@@ -1140,14 +1135,12 @@ const PostPreDetailsById = (props) => {
               Cancel
             </button> */}
 
-            {page == "inbox" && (
               <button
                 className={buttonStyle2}
                 onClick={() => setIsModalOpenInvt(true)}
               >
-                Add to Received Inventory
+                Sumbit Unit Price 
               </button>
-            )}
           </div>
         </>
       </div>
@@ -1155,4 +1148,4 @@ const PostPreDetailsById = (props) => {
   );
 };
 
-export default PostPreDetailsById;
+export default AddUnitPrice;
