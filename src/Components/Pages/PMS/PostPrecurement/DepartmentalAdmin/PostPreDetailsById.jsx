@@ -29,6 +29,7 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import ThemeStyle from "@/Components/Common/ThemeStyle";
 
 const PostPreDetailsById = (props) => {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const PostPreDetailsById = (props) => {
   const [procItem, setProcItem] = useState();
 
   // console.log(supplierData)
-
+  const { inputStyle, labelStyle } = ThemeStyle();
   const { api_fetchPostProcurementDetailSupplierbyId, api_addToReceivedInvt } =
     ProjectApiList();
 
@@ -545,33 +546,33 @@ const PostPreDetailsById = (props) => {
             <div className='h-[30px]'></div>
           </div>
 
-          {/* {page == "inbox" && (
+          {page == "inbox" && (
             <>
               {" "}
-              <div className={`${formStyle} mt-8 border border-blue-500`}>
+              <div className={` mt-8 border border-blue-500`}>
                 <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-                  <div className="">
-                    <div className=" grid md:grid-cols-1 lg:grid-cols-12 container mx-auto capitalize">
-                      <div className="col-span-12  w-full mb-8">
-                        <div className="bg-[#4338ca] text-white px-4 py-2 w-full flex justify-between items-center rounded-t-md">
+                  <div className=''>
+                    <div className=' grid md:grid-cols-1 lg:grid-cols-12 container mx-auto capitalize'>
+                      <div className='col-span-12  w-full mb-8'>
+                        <div className='bg-[#4338ca] text-white px-4 py-2 w-full flex justify-between items-center rounded-t-md'>
                           <div>
-                            <h2 className="text-xl font-bold">Add Supplier</h2>
+                            <h2 className='text-xl font-bold'>Add Supplier</h2>
                           </div>
                           <div></div>
                         </div>
 
-                        <div className="p-6 valid-form flex flex-wrap md:flex-row">
-                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/4 mb-2">
-                            <div class="px-4 w-full mb-4">
+                        <div className='p-6 valid-form flex flex-wrap md:flex-row'>
+                          <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/4 mb-2'>
+                            <div class='px-4 w-full mb-4'>
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
                                 Supplier Name{" "}
-                                <span className="text-red-500">*</span>
+                                <span className='text-red-500'>*</span>
                               </label>
 
                               <select
-                                name="supplier_name"
+                                name='supplier_name'
                                 className={`${inputStyle} inline-block w-full relative`}
                               >
                                 <option defaultValue={"select"}>select</option>
@@ -583,18 +584,18 @@ const PostPreDetailsById = (props) => {
                             </div>
                           </div>
 
-                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/4 mb-2">
-                            <div className="form-group flex-shrink max-w-full px-4 mb-4">
+                          <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/4 mb-2'>
+                            <div className='form-group flex-shrink max-w-full px-4 mb-4'>
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
                                 Choose Procurement Item
-                                <span className="text-xl text-red-500 pl-1">
+                                <span className='text-xl text-red-500 pl-1'>
                                   *
                                 </span>{" "}
                               </label>
                               <select
-                                name="proc_item"
+                                name='proc_item'
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
                               >
@@ -605,84 +606,86 @@ const PostPreDetailsById = (props) => {
                                   </option>
                                 ))}
                               </select>
-                              <p className="text-red-500 text-xs "></p>
+                              <p className='text-red-500 text-xs '></p>
                             </div>
                           </div>
 
-                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/4 mb-2">
-                            <div className="form-group flex-shrink max-w-full px-4 mb-4">
+                          <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/4 mb-2'>
+                            <div className='form-group flex-shrink max-w-full px-4 mb-4'>
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
                                 Unit Price
-                                <span className="text-xl text-red-500 pl-1">
+                                <span className='text-xl text-red-500 pl-1'>
                                   *
                                 </span>{" "}
                               </label>
 
                               <input
-                                type="text"
-                                name="unit_price"
+                                type='text'
+                                name='unit_price'
                                 className={`${inputStyle} inline-block w-full relative`}
-                                placeholder="Search..."
+                                placeholder='Search...'
                               />
 
-                              <p className="text-red-500 text-xs "></p>
+                              <p className='text-red-500 text-xs '></p>
                             </div>
                           </div>
 
-                          <div className="flex justify-end items-center max-w-full px-4 w-full md:w-1/4 mt-4">
+                          <div className='flex justify-end items-center max-w-full px-4 w-full md:w-1/4 mt-4'>
                             <button className={`${buttonStyle2} pl-14 pr-14`}>
                               Add Suppliers
                             </button>
                           </div>
                         </div>
 
-                        {supplierDetails?.length > 0 && 
-                        <div className=" flex ml-14 mr-10 bg-[#4338ca] text-white mb-4 rounded p-2 ">
-                          <div className="w-[15%] flex justify-start items-center">
-                            <div className="flex justify-center items-center">
-                              <p className="pl-5">S no.</p>
+                        {supplierDetails?.length > 0 && (
+                          <div className=' flex ml-14 mr-10 bg-[#4338ca] text-white mb-4 rounded p-2 '>
+                            <div className='w-[15%] flex justify-start items-center'>
+                              <div className='flex justify-center items-center'>
+                                <p className='pl-5'>S no.</p>
+                              </div>
+                            </div>
+                            <div className='w-[25%] flex justify-start items-center'>
+                              <div className='flex justify-center items-center'>
+                                <p className=''>Supplier Name</p>
+                              </div>
+                            </div>
+                            <div className='w-[40%] '>
+                              <p className=''>Procurement Items</p>
+                            </div>
+                            <div className=''>
+                              <p className=''>Unit Price</p>
                             </div>
                           </div>
-                          <div className="w-[25%] flex justify-start items-center">
-                            <div className="flex justify-center items-center">
-                              <p className="">Supplier Name</p>
-                            </div>
-                          </div>
-                          <div className="w-[40%] ">
-                            <p className="">Procurement Items</p>
-                          </div>
-                          <div className="">
-                            <p className="">Unit Price</p>
-                          </div>
-                        </div>
-}
+                        )}
                         {supplierDetails.map((data, index) => (
                           <>
-                            <div className=" flex ml-14 mr-10 border-b-[1px]  border-gray-200 p-2 cursor-pointer hover:bg-slate-100">
-                              <div className="w-[15%] flex justify-start items-center">
-                                <div className="flex justify-center items-center">
-                                  <p className="pl-5">{index + 1}</p>
+                            <div className=' flex ml-14 mr-10 border-b-[1px]  border-gray-200 p-2 cursor-pointer hover:bg-slate-100'>
+                              <div className='w-[15%] flex justify-start items-center'>
+                                <div className='flex justify-center items-center'>
+                                  <p className='pl-5'>{index + 1}</p>
                                 </div>
                               </div>
-                              <div className="w-[25%] flex justify-start items-center">
-                                <div className="flex justify-center items-center">
-                                  <p className="">{data?.supplier_name}</p>
+                              <div className='w-[25%] flex justify-start items-center'>
+                                <div className='flex justify-center items-center'>
+                                  <p className=''>{data?.supplier_name}</p>
                                 </div>
                               </div>
-                              <div className="w-[40%] ">
-                              {data?.procurement_details?.map(
-                                (procData, index) => (
-                                    <p className="">{procData?.proc_item}</p>
+                              <div className='w-[40%] '>
+                                {data?.procurement_details?.map(
+                                  (procData, index) => (
+                                    <p className=''>{procData?.proc_item}</p>
                                   )
                                 )}
-                                </div>
+                              </div>
 
-                              <div className="">
-                              {data?.procurement_details?.map(
-                                (procData, index) => (
-                                    <p className="">{indianAmount(procData?.unit_price)}</p>
+                              <div className=''>
+                                {data?.procurement_details?.map(
+                                  (procData, index) => (
+                                    <p className=''>
+                                      {indianAmount(procData?.unit_price)}
+                                    </p>
                                   )
                                 )}
                               </div>
@@ -695,7 +698,7 @@ const PostPreDetailsById = (props) => {
                 </form>
               </div>
             </>
-          )} */}
+          )}
 
           {/* Inventory Details form */}
 
@@ -1037,89 +1040,91 @@ const PostPreDetailsById = (props) => {
               </h2>
             </div>
 
-            {applicationFullData?.supplier_master?.map((supplierInfo, index) => (
-              <>
-                  <h1 className="text-xs pt-4">Supplier {index+1}</h1>
-                
-                <div className="bg-slate-50 p-5 rounded shadow">
-                <div className='md:flex md:justify-between md:items-center p-4'>
-                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold capitalize '>
-                      {nullToNA(supplierInfo?.name)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      Supplier Name
-                    </div>
-                  </div>
+            {applicationFullData?.supplier_master?.map(
+              (supplierInfo, index) => (
+                <>
+                  <h1 className='text-xs pt-4'>Supplier {index + 1}</h1>
 
-                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.reference_no)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      Reference Number
-                    </div>
-                  </div>
+                  <div className='bg-slate-50 p-5 rounded shadow'>
+                    <div className='md:flex md:justify-between md:items-center p-4'>
+                      <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                        <div className='md:w-auto w-[50%] font-bold capitalize '>
+                          {nullToNA(supplierInfo?.name)}
+                        </div>
+                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          Supplier Name
+                        </div>
+                      </div>
 
-                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.gst_no)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      GST No
-                    </div>
-                  </div>
+                      <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                        <div className='md:w-auto w-[50%] font-bold '>
+                          {nullToNA(supplierInfo?.reference_no)}
+                        </div>
+                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          Reference Number
+                        </div>
+                      </div>
 
-                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.pan_no)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      PAN No
-                    </div>
-                  </div>
-                </div>
+                      <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                        <div className='md:w-auto w-[50%] font-bold '>
+                          {nullToNA(supplierInfo?.gst_no)}
+                        </div>
+                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          GST No
+                        </div>
+                      </div>
 
-                <div className='md:flex md:justify-between items-center p-4'>
-                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.address)}
+                      <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                        <div className='md:w-auto w-[50%] font-bold '>
+                          {nullToNA(supplierInfo?.pan_no)}
+                        </div>
+                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          PAN No
+                        </div>
+                      </div>
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      Address
-                    </div>
-                  </div>
 
-                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.bank_name)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      Bank Name
-                    </div>
-                  </div>
+                    <div className='md:flex md:justify-between items-center p-4'>
+                      <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                        <div className='md:w-auto w-[50%] font-bold '>
+                          {nullToNA(supplierInfo?.address)}
+                        </div>
+                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          Address
+                        </div>
+                      </div>
 
-                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.account_no)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      Account No.
-                    </div>
-                  </div>
+                      <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                        <div className='md:w-auto w-[50%] font-bold '>
+                          {nullToNA(supplierInfo?.bank_name)}
+                        </div>
+                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          Bank Name
+                        </div>
+                      </div>
 
-                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.ifsc)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      IFSC Code
+                      <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                        <div className='md:w-auto w-[50%] font-bold '>
+                          {nullToNA(supplierInfo?.account_no)}
+                        </div>
+                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          Account No.
+                        </div>
+                      </div>
+
+                      <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                        <div className='md:w-auto w-[50%] font-bold '>
+                          {nullToNA(supplierInfo?.ifsc)}
+                        </div>
+                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          IFSC Code
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                </div>
-              </>
-            ))}
+                </>
+              )
+            )}
           </div>
         </div>
         <>

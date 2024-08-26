@@ -337,7 +337,6 @@ const BiddingType = () => {
   };
 
   useEffect(() => {
-    console.log("entered bidding type page ");
     getApplicationDetail();
   }, []);
 

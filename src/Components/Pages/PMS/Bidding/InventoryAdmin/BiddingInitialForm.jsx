@@ -14,7 +14,6 @@ import { contextVar } from "@/Components/context/contextVar";
 const BiddingInitialForm = () => {
   const navigate = useNavigate();
   const context = useContext(contextVar);
-  console.log(context, "===context");
   const [selectedOption, setSelectedOption] = useState("");
   const [emdPercentageValue, setEmdPercentageValue] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -36,8 +35,8 @@ const BiddingInitialForm = () => {
     // tendering_type:"",
     pbg_value: "",
     tenure: "",
-    minSupplier: "",
-    maxSupplier: "",
+    min_supplier: "",
+    max_supplier: "",
   };
 
   const validationSchema = Yup.object({
@@ -485,20 +484,21 @@ const BiddingInitialForm = () => {
                   <div>
                     {" "}
                     <input
-                      id='minSupplier'
+                      id='min_supplier'
                       type='text'
-                      name='minSupplier'
+                      name='min_supplier'
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.minSupplier}
+                      value={formik.values.min_supplier}
                       placeholder='Input Box 1'
                       className='border flex-col rounded-md p-2'
                     />
                   </div>
                   <div>
-                    {formik.touched.minSupplier && formik.errors.minSupplier ? (
+                    {formik.touched.min_supplier &&
+                    formik.errors.min_supplier ? (
                       <div className='text-red-500 text-sm flex-col'>
-                        {formik.errors.minSupplier}
+                        {formik.errors.min_supplier}
                       </div>
                     ) : null}
                   </div>
@@ -516,20 +516,21 @@ const BiddingInitialForm = () => {
                   <div>
                     {" "}
                     <input
-                      id='maxSupplier'
+                      id='max_supplier'
                       type='text'
-                      name='maxSupplier'
+                      name='max_supplier'
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.maxSupplier}
+                      value={formik.values.max_supplier}
                       placeholder='Input Box 1'
                       className='border flex-col rounded-md p-2'
                     />
                   </div>
                   <div>
-                    {formik.touched.maxSupplier && formik.errors.maxSupplier ? (
+                    {formik.touched.max_supplier &&
+                    formik.errors.max_supplier ? (
                       <div className='text-red-500 text-sm flex-col'>
-                        {formik.errors.maxSupplier}
+                        {formik.errors.max_supplier}
                       </div>
                     ) : null}
                   </div>

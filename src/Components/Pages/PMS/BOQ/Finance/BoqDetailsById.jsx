@@ -58,6 +58,9 @@ export default function BoqDetailsByIdFin(props) {
       header: "Unit",
     },
     {
+      header: "Gst",
+    },
+    {
       header: "Rate",
     },
     {
@@ -192,6 +195,7 @@ export default function BoqDetailsByIdFin(props) {
         handleCancel={() => setRejectModal(false)}
         message={"Are you sure you want to reject BOQ ? "}
         setData={setData}
+        loadingState={isLoading}
       />
     );
   }
@@ -202,6 +206,7 @@ export default function BoqDetailsByIdFin(props) {
         confirmationHandler={confirmationApproveHandler}
         handleCancel={() => setApproveModal(false)}
         message={"Are you sure you want to Approve BOQ ?"}
+        loadingState={isLoading}
         // setData={setData}
       />
     );
@@ -338,6 +343,9 @@ export default function BoqDetailsByIdFin(props) {
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {row?.unit?.name}
+                        </td>
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                          {`${row?.gst}%` || 0}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {indianAmount(row?.rate)}

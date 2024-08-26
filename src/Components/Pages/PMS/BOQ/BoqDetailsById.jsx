@@ -59,6 +59,9 @@ export default function BoqDetailsById(props) {
       header: "Unit",
     },
     {
+      header: "Gst",
+    },
+    {
       header: "Rate",
     },
     {
@@ -396,12 +399,17 @@ export default function BoqDetailsById(props) {
                           {row?.unit?.name}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
+                          {`${row?.gst}%` || ""}
+                        </td>
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {indianAmount(row?.rate)}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
-                          {indianAmount(row?.total_rate ||
-                            row?.amount ||
-                            Number(row?.quantity) * Number(row?.rate))}
+                          {indianAmount(
+                            row?.total_rate ||
+                              row?.amount ||
+                              Number(row?.quantity) * Number(row?.rate)
+                          )}
                         </td>
 
                         <td className='border border-gray-200 px-4 py-2 text-sm'>

@@ -110,7 +110,6 @@ const BiddingViewById = () => {
     )
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data?.data);
           setisLoading(false);
         } else {
           toast.error("Error while fetching data");
@@ -167,6 +166,7 @@ const BiddingViewById = () => {
         navigate(`/bidding-type`, {
           state: biddingData?.reference_no,
         });
+        break;
       case 41:
         navigate(`/bidding-type-byId/${biddingData?.reference_no}`);
         break;
@@ -188,6 +188,7 @@ const BiddingViewById = () => {
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
           message={"Are you sure you want to Forward ?"}
+          loadingState={isLoading}
         />
       </>
     );
@@ -212,6 +213,7 @@ const BiddingViewById = () => {
           message={"Your Request has been Submitted Successfully"}
           requestNoMsg={"Handover No:-"}
           refNo={handNo}
+          loadingState={isLoading}
         />
       </>
     );
@@ -739,10 +741,6 @@ const BiddingViewById = () => {
             )} */}
 
           {/* Buttons */}
-          {console.log(
-            biddingData?.creationStatus,
-            "biddingData?.creationStatus"
-          )}
 
           <div className='space-x-5 flex justify-between mt-[2rem]'>
             <div className='flex flex-1 justify-between'>
