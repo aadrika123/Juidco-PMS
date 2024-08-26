@@ -188,6 +188,7 @@ const BiddingViewById = () => {
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
           message={"Are you sure you want to Forward ?"}
+          loadingState={isLoading}
         />
       </>
     );
@@ -212,6 +213,7 @@ const BiddingViewById = () => {
           message={"Your Request has been Submitted Successfully"}
           requestNoMsg={"Handover No:-"}
           refNo={handNo}
+          loadingState={isLoading}
         />
       </>
     );

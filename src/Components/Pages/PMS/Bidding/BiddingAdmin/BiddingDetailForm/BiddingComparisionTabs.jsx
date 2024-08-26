@@ -10,20 +10,12 @@
 
 // src/components/BiddingComparisionTabs.js
 import React, { useEffect, useState } from "react";
-import { GoPlus } from "react-icons/go";
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
-import { FaChartPie } from "react-icons/fa";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import BiddingCreteria from "./BiddingCreteria";
 // import TabsMenu from "./TabsMenu";
-import techIcon from "@/Components/assets/TechIcon.svg";
 import { HiArrowPathRoundedSquare } from "react-icons/hi2";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";

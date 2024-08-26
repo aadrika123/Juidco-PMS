@@ -9,13 +9,16 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import cancel from "@/Components/assets/cancel.svg";
+import ThemeStyle from "../ThemeStyle";
 
 function RejectionModalRemark({
   confirmationHandler,
   handleCancel,
   message,
   setData,
+  loadingState,
 }) {
+  const { loading } = ThemeStyle();
   return (
     <>
       <div></div>
@@ -55,7 +58,11 @@ function RejectionModalRemark({
                   className={`bg-white border-blue-900 border text-blue-950 text-sm px-8 py-2 hover:bg-[#4338CA] hover:text-white  rounded leading-5 shadow-lg`}
                   onClick={handleCancel}
                 >
-                  Cancel
+                  {loadingState ? (
+                    <div className={`${loading}`}></div>
+                  ) : (
+                    "Cancel"
+                  )}
                 </button>
               </div>
 
@@ -64,7 +71,11 @@ function RejectionModalRemark({
                   className={`bg-[#4338CA] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
                   onClick={confirmationHandler}
                 >
-                  Continue
+                  {loadingState ? (
+                    <div className={`${loading}`}></div>
+                  ) : (
+                    "Continue"
+                  )}
                 </button>
               </div>
             </div>

@@ -8,15 +8,17 @@
 //    DESCRIPTION - ConfirmationModal
 //////////////////////////////////////////////////////////////////////////////////////
 
-import { useNavigate } from "react-router-dom";
 import cancel from "@/Components/assets/cancel.svg";
+import ThemeStyle from "../ThemeStyle";
 
 function ConfirmationModal({
   confirmationHandler,
   handleCancel,
   message,
   sideMessage,
+  loadingState,
 }) {
+  const { loading } = ThemeStyle();
   return (
     <>
       <div></div>
@@ -57,7 +59,11 @@ function ConfirmationModal({
                   className={`bg-[rgb(67,56,202)] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
                   onClick={confirmationHandler}
                 >
-                  Continue
+                  {loadingState ? (
+                    <div className={`${loading}`}></div>
+                  ) : (
+                    "Continue"
+                  )}
                 </button>
               </div>
             </div>

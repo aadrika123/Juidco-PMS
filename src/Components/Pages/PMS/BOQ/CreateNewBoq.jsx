@@ -42,7 +42,6 @@ export default function CreateNewBoq() {
   const { titleBarVisibility } = useContext(contextVar);
   // let isCreatePage = state?.proNos?.length > 0 ? "create" : "edit/view";
   let isCreatePage = state ? "create" : "edit/view";
-console.log(state,"state boq")
   const {
     api_fetchAllBoqDetailsbyId,
     api_fetchProcurementById,
@@ -277,18 +276,16 @@ console.log(state,"state boq")
   //adding gst for each procurement stocks
   const addGstForEachProc = (e, procId) => {
     // const updatedProcurement = applicationData?.procurement_stocks?.map(
-      const updatedProcurement = payload?.procurement?.map(
-      (data) => {
-        const gstVal = Number(e.target.value);
-        if (data.id === procId) {
-          return {
-            ...data,
-            gst: gstVal,
-          };
-        }
-        return data;
+    const updatedProcurement = payload?.procurement?.map((data) => {
+      const gstVal = Number(e.target.value);
+      if (data.id === procId) {
+        return {
+          ...data,
+          gst: gstVal,
+        };
       }
-    );
+      return data;
+    });
     setApplicationData((prev) => ({
       ...prev,
       procurement_stocks: updatedProcurement,
@@ -381,10 +378,10 @@ console.log(state,"state boq")
         procurement: updatedGstValue,
       }));
 
-      // setApplicationData((prev) => ({
-      //   ...prev,
-      //   procurement_stocks: updatedGstValue,
-      // }));
+      setApplicationData((prev) => ({
+        ...prev,
+        procurement_stocks: updatedGstValue,
+      }));
 
       estimatedAmountCalc(updatedGstValue);
     } else {
@@ -435,6 +432,7 @@ console.log(state,"state boq")
           confirmationHandler={confirmationHandlertoDa}
           handleCancel={handleCancelDA}
           message={"Are you sure you want to Forward to DA"}
+          loadingState={isLoading}
         />
       </>
     );

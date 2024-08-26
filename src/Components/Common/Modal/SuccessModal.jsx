@@ -13,8 +13,16 @@
 import React, { useState } from "react";
 import check from "@/Components/assets/check.svg";
 import { useNavigate } from "react-router-dom";
+import ThemeStyle from "../ThemeStyle";
 
-function SuccessModal({ confirmationHandler, message,requestNoMsg,refNo }) {
+function SuccessModal({
+  confirmationHandler,
+  message,
+  requestNoMsg,
+  refNo,
+  loadingState,
+}) {
+  const { loading } = ThemeStyle();
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -38,12 +46,10 @@ function SuccessModal({ confirmationHandler, message,requestNoMsg,refNo }) {
           <div class=' flex-1'>
             <div class=''>
               <h3 class='text-xl  text-center  text-green-600 font-openSans'>
-              {message}
+                {message}
               </h3>
               <h3 class='text-xl  text-center mb-3 text-gray-500 font-openSans font-semibold '>
-                <span className='text-base text-gray-400 '>
-                  {requestNoMsg}
-                </span>{" "}
+                <span className='text-base text-gray-400 '>{requestNoMsg}</span>{" "}
                 {refNo}
               </h3>
             </div>
@@ -55,7 +61,11 @@ function SuccessModal({ confirmationHandler, message,requestNoMsg,refNo }) {
                   className={`bg-[#4338CA] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
                   onClick={confirmationHandler}
                 >
-                  Continue
+                  {loadingState ? (
+                    <div className={`${loading}`}></div>
+                  ) : (
+                    "Continue"
+                  )}
                 </button>
               </div>
             </div>

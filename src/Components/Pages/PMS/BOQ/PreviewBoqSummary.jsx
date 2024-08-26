@@ -24,7 +24,6 @@ export default function PreviewBoqSummary() {
 
   // const { payload } = state;
   const summaryData = state;
-console.log(summaryData,"===sum")
   const { api_postForwardAndCreateBoq, api_postUpdatedBoq } = ProjectApiList();
 
   //Print
