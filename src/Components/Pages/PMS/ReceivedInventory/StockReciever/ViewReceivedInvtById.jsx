@@ -56,6 +56,7 @@ const ViewReceivedInvtById = () => {
   const [product, setProduct] = useState([{}]);
   const [procurement_stock_id, setProcurement_stock_id] = useState("");
   const [brand, setBrandName] = useState("");
+  const [warrantyClaim, setWarrantyClaim] = useState(false);
 
   const [inventory, setInventory] = useState("");
 
@@ -166,6 +167,7 @@ const ViewReceivedInvtById = () => {
       procurement_stock_id,
       procurement_no: applicationFullData?.procurement_no,
       img: imageDoc,
+      warranty: warrantyClaim
     };
     if (inventory != "") {
       body = { ...body, inventory };
@@ -1220,7 +1222,7 @@ const ViewReceivedInvtById = () => {
                         </div>
 
                         <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
-                          <input className="ml-4" type="checkbox" />
+                          <input className="ml-4" type="checkbox" onChange={()=>setWarrantyClaim((prev)=> !prev)}/>
                           <label className={`${labelStyle} inline-block pl-3`}>
                             Warranty claim
                           </label>

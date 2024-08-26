@@ -129,10 +129,8 @@ const ViewInventoryDetailsById = (props) => {
       .then(function (response) {
         if (response?.data?.status == true) {
           setisLoading(false);
-          toast.success(response?.data?.message, "success");
-          setTimeout(() => {
-            navigate("/inventory-stockRequest");
-          }, 500);
+          toast.success("Stock Assigned to Departmental Distributor");
+            navigate("/inventory-stockRequest?tabNo=1");
         } else {
           setisLoading(false);
           // toast(response?.data?.message, "error");

@@ -1037,9 +1037,12 @@ const PostPreDetailsById = (props) => {
               </h2>
             </div>
 
-            {applicationFullData?.supplier_master?.map((supplierInfo) => (
+            {applicationFullData?.supplier_master?.map((supplierInfo, index) => (
               <>
-                <div className='md:flex md:justify-between md:items-center py-4 px-8'>
+                  <h1 className="text-xs pt-4">Supplier {index+1}</h1>
+                
+                <div className="bg-slate-50 p-5 rounded shadow">
+                <div className='md:flex md:justify-between md:items-center p-4'>
                   <div className='flex-1 md:block flex flex-row-reverse justify-between'>
                     <div className='md:w-auto w-[50%] font-bold capitalize '>
                       {nullToNA(supplierInfo?.name)}
@@ -1077,7 +1080,7 @@ const PostPreDetailsById = (props) => {
                   </div>
                 </div>
 
-                <div className='md:flex md:justify-between items-center py-4 px-8'>
+                <div className='md:flex md:justify-between items-center p-4'>
                   <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
                     <div className='md:w-auto w-[50%] font-bold '>
                       {nullToNA(supplierInfo?.address)}
@@ -1113,6 +1116,7 @@ const PostPreDetailsById = (props) => {
                       IFSC Code
                     </div>
                   </div>
+                </div>
                 </div>
               </>
             ))}

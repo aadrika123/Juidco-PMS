@@ -48,6 +48,7 @@ const ViewReceivedInvtByIdDa = (props) => {
   const [imageDoc, setImageDoc] = useState();
   const [imageUrl, setImageUrl] = useState("");
   const [procurementItemId, setProcurementItemId] = useState("");
+  const [procItemData, setProcItemData] = useState();
 
   const {
     api_fetchPostProcurementDetailSupplierbyId,
@@ -257,6 +258,7 @@ const ViewReceivedInvtByIdDa = (props) => {
 
     // console.log(procItem);
     formik.setFieldValue("total_quantity", procItem?.quantity);
+    setProcItemData(procItem)
   };
 
   if (isModalOpen) {
@@ -428,84 +430,88 @@ const ViewReceivedInvtByIdDa = (props) => {
               </h2>
             </div>
 
-            {applicationFullData?.supplier_master?.map((supplierInfo) => (
+            {applicationFullData?.supplier_master?.map((supplierInfo,index) => (
               <>
-                <div className='md:flex md:justify-between md:items-center py-4 px-8'>
-                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold capitalize '>
-                      {nullToNA(supplierInfo?.name)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      Supplier Name
-                    </div>
-                  </div>
-
-                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.reference_no)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      Reference Number
-                    </div>
-                  </div>
-
-                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.gst_no)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      GST No
-                    </div>
-                  </div>
-
-                  <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.pan_no)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      PAN No
-                    </div>
-                  </div>
+              <h1 className="text-xs pt-4">Supplier {index+1}</h1>
+            
+            <div className="bg-slate-50 p-5 rounded shadow">
+            <div className='md:flex md:justify-between md:items-center p-4'>
+              <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold capitalize '>
+                  {nullToNA(supplierInfo?.name)}
                 </div>
-
-                <div className='md:flex md:justify-between items-center py-4 px-8'>
-                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.address)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      Address
-                    </div>
-                  </div>
-
-                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.bank_name)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      Bank Name
-                    </div>
-                  </div>
-
-                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.account_no)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      Account No.
-                    </div>
-                  </div>
-
-                  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
-                      {nullToNA(supplierInfo?.ifsc)}
-                    </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                      IFSC Code
-                    </div>
-                  </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                  Supplier Name
                 </div>
-              </>
+              </div>
+
+              <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(supplierInfo?.reference_no)}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                  Reference Number
+                </div>
+              </div>
+
+              <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(supplierInfo?.gst_no)}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                  GST No
+                </div>
+              </div>
+
+              <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(supplierInfo?.pan_no)}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                  PAN No
+                </div>
+              </div>
+            </div>
+
+            <div className='md:flex md:justify-between items-center p-4'>
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(supplierInfo?.address)}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                  Address
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(supplierInfo?.bank_name)}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                  Bank Name
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(supplierInfo?.account_no)}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                  Account No.
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  {nullToNA(supplierInfo?.ifsc)}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                  IFSC Code
+                </div>
+              </div>
+            </div>
+            </div>
+          </>
             ))}
           </div>
           {/* Receiving No */}
@@ -693,7 +699,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                           Received Inventory
                         </h1>
                       </div>
-                      <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-2 ml-4'>
+                      <div className='form-group flex-shrink max-w-full px-4 w-full  mb-2 ml-4 flex justify-between items-center'>
                         <div className='form-group flex-shrink max-w-full px-4 mb-4'>
                           <label className={`${labelStyle} inline-block mb-2`}>
                             Choose Procurement Item
@@ -729,6 +735,11 @@ const ViewReceivedInvtByIdDa = (props) => {
                           </select>
                           <p className='text-red-500 text-xs '></p>
                         </div>
+                        <div className="w-1/2 flex gap-10">
+                          <div className="text-sm">Sub Category: <span className="font-semibold text-base text-blue-950">{procItemData?.subCategory?.name || "Select Procurement Item"}</span></div>
+                          <div className="text-sm">Description: <span className="font-semibold text-base text-blue-950">{procItemData?.description || "Select Procurement Item"}</span></div>
+                        </div>
+                       
                       </div>
                       <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-8'>
                         <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
