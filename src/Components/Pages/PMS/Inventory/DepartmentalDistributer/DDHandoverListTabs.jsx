@@ -75,7 +75,7 @@ const DDHandoverListTabs = () => {
           )}
           {activeTab === "outbox" && (
             <div>
-              <DdHandoverList page='outbox' api={"api_getDDSROutbox"} />
+              <DdHandoverList page='outbox' api={api_getDDSROutbox} />
             </div>
           )}
         </div>
