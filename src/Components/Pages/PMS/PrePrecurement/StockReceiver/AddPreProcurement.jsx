@@ -53,6 +53,7 @@ function AddPreProcurement() {
     api_itemBrand,
     api_getAllunit,
     api_fetchProcurementById,
+    api_getProcItemRateContract,
   } = ProjectApiList();
 
   const [isLoading, setisLoading] = useState(false);
@@ -70,9 +71,11 @@ function AddPreProcurement() {
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [rateContract, setRateContract] = useState(false);
+  const [procItem, setProcItem] = useState([]);
   const [formData, setFormData] = useState([]);
   const [categorySelected, setCategorySelected] = useState();
   const [editProcurementData, setEditProcurementData] = useState();
+  const [selectedSupplier, setSelectedSupplier] = useState();
 
   const [procurement_no, setProcurement_no] = useState();
 
@@ -88,6 +91,26 @@ function AddPreProcurement() {
     setEditProcurementData(data);
     // console.log(data?.category?.id)
     fetchSubCategory(data?.category?.id);
+  };
+
+  const getSupplierName = (index) => {
+    const data = procItem?.[index];
+    setSelectedSupplier(data);
+  };
+
+  //if rate contract selected then,to chose items
+  const getProcItemRateContract = () => {
+    AxiosInterceptors.get(
+      `${api_getProcItemRateContract}/${itemCategory}`,
+      ApiHeader()
+    )
+      .then(function (response) {
+        // console.log(response?.data?.data, "res subcT");
+        setProcItem(response?.data?.data);
+      })
+      .catch(function (error) {
+        toast.error("Something went wrong");
+      });
   };
 
   const applicationFullDataLength = applicationFullData
@@ -107,13 +130,22 @@ function AddPreProcurement() {
     quantity: yup.number().required("Quantity is required"),
   });
 
+  console.log(selectedSupplier, "selecctedsup");
   // intitial value
   const initialValues = {
-    itemCategory: editProcurementData?.category?.id || categorySelected || "",
-    subcategory: editProcurementData?.subCategory?.id || "",
-    brand: editProcurementData?.brand?.id || "",
-    unit: editProcurementData?.unit?.id || "",
-    description: editProcurementData?.description || "",
+    itemCategory:
+      selectedSupplier?.category?.id ||
+      editProcurementData?.category?.id ||
+      categorySelected ||
+      "",
+    subcategory:
+      selectedSupplier?.subcategory?.id ||
+      editProcurementData?.subCategory?.id ||
+      "",
+    brand: selectedSupplier?.brand?.id || editProcurementData?.brand?.id || "",
+    unit: selectedSupplier?.unit?.id || editProcurementData?.unit?.id || "",
+    description:
+      selectedSupplier?.description || editProcurementData?.description || "",
     quantity: editProcurementData?.quantity || "",
     rate: editProcurementData?.rate || "",
     subcategorytxt: editProcurementData?.subcategorytxt || "",
@@ -291,9 +323,17 @@ function AddPreProcurement() {
     return name;
   };
 
+  const setSupplierDetails = (value) => {
+    const supplierUnitPrice = selectedSupplier?.rate_contract_supplier?.find(
+      (supplier) => supplier?.supplier_master?.id === value
+    ).unit_price;
+    formik.setFieldValue("rate", supplierUnitPrice);
+  };
+
   const handleOnChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
+    console.log(value);
 
     {
       name == "itemCategory" && value != "others" && fetchSubCategory(value);
@@ -322,6 +362,12 @@ function AddPreProcurement() {
           "total_rate",
           allowNumberInput(value, formik.values.total_rate, 100)
         );
+    }
+    {
+      name == "proc_item" && getSupplierName(value);
+    }
+    {
+      name == "supplier" && setSupplierDetails(value);
     }
   };
 
@@ -427,7 +473,10 @@ function AddPreProcurement() {
                       <input
                         type='checkbox'
                         className='w-6 h-6 cursor-pointer'
-                        onChange={() => setRateContract((prev) => !prev)}
+                        onChange={() => {
+                          setRateContract((prev) => !prev);
+                          getProcItemRateContract();
+                        }}
                       />
                       <p className='font-semibold whitespace-nowrap'>
                         Applied by Rate Contract
@@ -446,32 +495,32 @@ function AddPreProcurement() {
                         </span>{" "}
                       </label>
                       <select
-                        {...formik.getFieldProps("itemCategory")}
+                        {...formik.getFieldProps("proc_item")}
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
-                        disabled={formData?.length > 0 || page == "edit"}
+                        // disabled={formData?.length > 0 || page == "edit"}
                         // defaultValue={categorySelected || "select"}
                       >
                         <option value='select'>select</option>
 
-                        {category?.length &&
-                          category?.map((items, index) => (
+                        {procItem?.length &&
+                          procItem?.map((items, index) => (
                             <option
                               key={index}
-                              value={items?.id}
-                              defaultValue={categorySelected || "select"}
+                              value={index}
+                              defaultValue={"select"}
                             >
-                              {items?.name}
+                              {items?.subcategory?.name} ({items?.description})
                             </option>
                           ))}
                         <option>others</option>
                       </select>
-                      <p className='text-red-500 text-xs '>
+                      {/* <p className='text-red-500 text-xs '>
                         {formik.touched.itemCategory &&
                         formik.errors.itemCategory
                           ? formik.errors.itemCategory
                           : null}
-                      </p>
+                      </p> */}
                     </div>
 
                     <div className='form-group flex-shrink max-w-full w-1/2 px-4'>
@@ -482,32 +531,34 @@ function AddPreProcurement() {
                         </span>{" "}
                       </label>
                       <select
-                        {...formik.getFieldProps("itemCategory")}
+                        {...formik.getFieldProps("supplier")}
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
-                        disabled={formData?.length > 0 || page == "edit"}
+                        // disabled={formData?.length > 0 || page == "edit"}
                         // defaultValue={categorySelected || "select"}
                       >
                         <option value='select'>select</option>
 
-                        {category?.length &&
-                          category?.map((items, index) => (
-                            <option
-                              key={index}
-                              value={items?.id}
-                              defaultValue={categorySelected || "select"}
-                            >
-                              {items?.name}
-                            </option>
-                          ))}
+                        {selectedSupplier?.rate_contract_supplier?.length &&
+                          selectedSupplier?.rate_contract_supplier?.map(
+                            (items, index) => (
+                              <option
+                                key={index}
+                                value={items?.supplier_master?.id}
+                                // defaultValue={categorySelected || "select"}
+                              >
+                                {items?.supplier_master?.name}
+                              </option>
+                            )
+                          )}
                         <option>others</option>
                       </select>
-                      <p className='text-red-500 text-xs '>
+                      {/* <p className='text-red-500 text-xs '>
                         {formik.touched.itemCategory &&
                         formik.errors.itemCategory
                           ? formik.errors.itemCategory
                           : null}
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                 )}
