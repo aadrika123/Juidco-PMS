@@ -222,8 +222,6 @@ const BidOpinerForm = () => {
 
   //name-designation and email form handler
   const onChangeHandler = (name, value, setFieldValue) => {
-    console.log(name, "name", value, "value");
-
     setCoverDetails((prev) => ({
       ...prev,
       preTender: { ...prev.preTender, [name]: value },
@@ -319,7 +317,6 @@ const BidOpinerForm = () => {
     AxiosInterceptors.get(`${api_getBidOpenerDetails}/${refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data?.data, "bidopener details");
           setBidOpenerDetails(response?.data?.data);
           // setImageDoc(response?.data?.data?.doc[0]?.docUrl);
         } else {
@@ -574,7 +571,7 @@ const BidOpinerForm = () => {
                               />
                             )} */}
 
-                            <ImageDisplay
+                            {/* <ImageDisplay
                               url={
                                 bidOpenerDetails?.bid_openers_docs?.find(
                                   (data) => data?.type == `B0${index + 1}`
@@ -582,7 +579,13 @@ const BidOpinerForm = () => {
                               }
                               preview={preview || ""}
                               imageDoc={values?.[`B0${index + 1}`][0]}
-                            />
+                            /> */}
+                            <div className='mb-4 text-center'>
+                              <p className='text-red-500 text-xs '>
+                                {values?.[`B0${index + 1}`][0]?.name}
+                              </p>
+                            </div>
+
                             {/* <img
                               src={values?.[`B0${index + 1}`][0]}
                               alt='Selected'

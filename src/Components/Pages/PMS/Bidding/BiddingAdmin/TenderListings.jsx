@@ -39,10 +39,6 @@ function TenderListings(props) {
       accessor: "boq.procurement.category.name",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {console.log(
-            cell.row.original?.boq?.procurement?.category?.name,
-            "name cte"
-          )}
           {cell.row.original?.boq?.procurement?.category?.name}{" "}
         </div>
       ),
@@ -52,7 +48,6 @@ function TenderListings(props) {
       accessor: "boq.estimated_cost",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {console.log(cell.row.original.estimated_cost, "name cte")}
           {indianAmount(cell.row.original.boq?.estimated_cost)}
         </div>
       ),
@@ -62,10 +57,6 @@ function TenderListings(props) {
       accessor: "boq.pre_tendering_details.tendering_type",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {console.log(
-            cell.row.original.boq?.pre_tendering_details?.tendering_type,
-            "name cte"
-          )}
           {cell.row.original.boq?.pre_tendering_details?.tendering_type}{" "}
         </div>
       ),

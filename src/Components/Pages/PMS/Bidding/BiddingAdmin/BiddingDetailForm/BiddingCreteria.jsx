@@ -4,13 +4,16 @@ import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import toast from "react-hot-toast";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
 
 const BiddingCreteria = (props) => {
+  const { loading } = ThemeStyleTanker;
   // console.log(location?.search)
 
   const navigate = useNavigate();
@@ -21,6 +24,7 @@ const BiddingCreteria = (props) => {
     criteria: [],
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [bidderNo, setBidderNo] = useState();
 
   // console.log(bidderNo);
@@ -60,7 +64,7 @@ const BiddingCreteria = (props) => {
   //------------------- Apis ------------------------
 
   const addCreteria = () => {
-    // setIsLoading(true);
+    setIsLoading(true);
     if (formValues?.criteria.length < 3) {
       return toast.error(
         "Please add minimum three criteria with description. "
@@ -77,7 +81,7 @@ const BiddingCreteria = (props) => {
     )
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("Creteria Added Succefully");
+          toast.success("Criteria Added Succefully");
           navigate(`/bidding-commparision-tabs?tabNo=${props.tabNo + 1}`, {
             state: props?.bidderData?.reference_no,
           });
@@ -90,12 +94,12 @@ const BiddingCreteria = (props) => {
         toast.error(error?.response?.data?.error);
       })
       .finally(() => {
-        // setIsLoading(false);
+        setIsLoading(false);
       });
   };
 
   const submitCreteria = () => {
-    // setIsLoading(true);
+    setIsLoading(true);
 
     AxiosInterceptors.post(
       `${api_submitCreteria}`,
@@ -120,7 +124,7 @@ const BiddingCreteria = (props) => {
         toast.error(error?.response?.data?.error);
       })
       .finally(() => {
-        // setIsLoading(false);
+        setIsLoading(false);
       });
   };
 
@@ -153,6 +157,7 @@ const BiddingCreteria = (props) => {
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
           message={'Are you sure you want to "Save" ?'}
+          loadingState={isLoading}
         />
       </>
     );
@@ -160,7 +165,12 @@ const BiddingCreteria = (props) => {
 
   return (
     <>
-      <div className='bg-white border border-blue-500 rounded-lg shadow-xl space-y-5 '>
+      {isLoading && <LoaderApi />}
+      <div
+        className={` ${
+          isLoading ? "blur-[2px]" : ""
+        }bg-white border border-blue-500 rounded-lg shadow-xl space-y-5 `}
+      >
         {props.heading !== "Bidder Details" && (
           <>
             <div className='p-7'>
@@ -333,7 +343,8 @@ const BiddingCreteria = (props) => {
               //   )
               // }
             >
-              Save & Next
+              {isLoading ? <div className={`${loading}`}></div> : "Save & Next"}
+              {/* Save & Next */}
             </button>
           )}
         </div>

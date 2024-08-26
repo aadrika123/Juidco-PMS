@@ -234,9 +234,10 @@ const ViewReceivedInvtByIdDa = (props) => {
           setIsModalOpen(false);
           setisLoading(false);
           toast.success("Successfully Stocks Received", "success");
-          navigate(
-            `/ia-received-InvtDetailsById/${applicationFullData?.procurement_no}/inbox`
-          );
+          window.location.reload();
+          // navigate(
+          //   `/ia-received-InvtDetailsById/${applicationFullData?.procurement_no}/inbox`
+          // );
         } else {
           setisLoading(false);
           toast(response?.data?.message, "error");
@@ -544,9 +545,9 @@ const ViewReceivedInvtByIdDa = (props) => {
                             <th scope='col' className='px-6 py-3'>
                               Receiving no
                             </th>
-                            <th scope='col' className='px-6 py-3'>
+                            {/* <th scope='col' className='px-6 py-3'>
                               Total Quantity
-                            </th>
+                            </th> */}
                             <th scope='col' className='px-6 py-3'>
                               Received Quantity
                             </th>
@@ -580,12 +581,12 @@ const ViewReceivedInvtByIdDa = (props) => {
                               <td className='px-6 py-4'>
                                 {data?.receiving_no}
                               </td>
-                              <td className='px-6 py-4'>
+                              {/* <td className='px-6 py-4'>
                                 {
                                   applicationFullData?.post_procurement
                                     ?.quantity
                                 }
-                              </td>
+                              </td> */}
                               <td className='px-6 py-4'>
                                 {data?.received_quantity}
                               </td>

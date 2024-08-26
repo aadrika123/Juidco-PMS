@@ -136,9 +136,7 @@ const ViewPreProcurementById = () => {
       .then(function (response) {
         if (response?.data?.status == true) {
           toast.success("Successfully forwarded to Level 1");
-          setTimeout(() => {
-            navigate("/inventory-stockRequest?tabNo=2");
-          }, 500);
+          navigate("/inventory-stockRequest?tabNo=2");
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
           // navigate("/da-inventory-proposal");
@@ -169,9 +167,7 @@ const ViewPreProcurementById = () => {
       .then(function (response) {
         if (response?.data?.status == true) {
           toast.success("Successfully forwarded to Level 2");
-          setTimeout(() => {
-            navigate("/levelone");
-          }, 500);
+          navigate("/levelone");
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
           // navigate("/da-inventory-proposal");
@@ -202,9 +198,7 @@ const ViewPreProcurementById = () => {
       .then(function (response) {
         if (response?.data?.status == true) {
           toast.success("Successfully Approved");
-          setTimeout(() => {
-            navigate("/leveltwo");
-          }, 100);
+          navigate("/leveltwo");
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
           // navigate("/da-inventory-proposal");
@@ -235,9 +229,7 @@ const ViewPreProcurementById = () => {
       .then(function (response) {
         if (response?.data?.status == true) {
           toast.success("Successfully Approved");
-          setTimeout(() => {
-            navigate("/levelone");
-          }, 100);
+          navigate("/levelone");
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
           // navigate("/da-inventory-proposal");
@@ -268,9 +260,7 @@ const ViewPreProcurementById = () => {
       .then(function (response) {
         if (response?.data?.status == true) {
           toast.success("Successfully Rejected");
-          setTimeout(() => {
-            navigate("/levelone");
-          }, 500);
+          navigate("/levelone");
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
           // navigate("/da-inventory-proposal");
@@ -301,9 +291,7 @@ const ViewPreProcurementById = () => {
       .then(function (response) {
         if (response?.data?.status == true) {
           toast.success("Successfully Rejected");
-          setTimeout(() => {
-            navigate("/leveltwo");
-          }, 500);
+          navigate("/leveltwo");
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
           // navigate("/da-inventory-proposal");
@@ -330,9 +318,7 @@ const ViewPreProcurementById = () => {
       .then(function (response) {
         if (response?.data?.status == true) {
           toast.success("Successfully Returned to Inventory Admin");
-          setTimeout(() => {
-            navigate("/levelone");
-          }, 500);
+          navigate("/levelone");
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
           // navigate("/da-inventory-proposal");
@@ -359,9 +345,7 @@ const ViewPreProcurementById = () => {
       .then(function (response) {
         if (response?.data?.status == true) {
           toast.success("Successfully Returned to Level 1");
-          setTimeout(() => {
-            navigate("/leveltwo");
-          }, 500);
+          navigate("/leveltwo");
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
           // navigate("/da-inventory-proposal");
@@ -428,6 +412,7 @@ const ViewPreProcurementById = () => {
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
           message={'Sure to Forward to "Level 1" ?'}
+          loadingState={isLoading}
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
@@ -441,6 +426,7 @@ const ViewPreProcurementById = () => {
           confirmationHandler={confirmationHandler2}
           handleCancel={handleCancel}
           message={'Sure to Forward to "Level 2" ?'}
+          loadingState={isLoading}
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
@@ -455,6 +441,8 @@ const ViewPreProcurementById = () => {
           confirmationHandler={confirmationHandler3}
           handleCancel={handleCancel}
           message={'Are you sure want to" Approve" ?'}
+          loadingState={isLoading}
+
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
@@ -469,6 +457,8 @@ const ViewPreProcurementById = () => {
           confirmationHandler={confirmationHandlerlevelOne}
           handleCancel={handleCancel}
           message={'Are you sure want to" Approve" ?'}
+          loadingState={isLoading}
+
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
@@ -483,6 +473,8 @@ const ViewPreProcurementById = () => {
           confirmationHandler={confirmationHandlerRejectlevelOne}
           handleCancel={handleCancel}
           message={'Are you sure want to " Reject " ?'}
+          loadingState={isLoading}
+
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
@@ -497,6 +489,8 @@ const ViewPreProcurementById = () => {
           confirmationHandler={confirmationHandlerRejectleveltwo}
           handleCancel={handleCancel}
           message={'Are you sure want to " Reject " ?'}
+          loadingState={isLoading}
+
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
@@ -512,6 +506,7 @@ const ViewPreProcurementById = () => {
           handleCancel={handleCancel}
           message={"Are you sure, want to send back to IA? "}
           setData={setData}
+          loadingState={isLoading}
         />
       </>
     );
@@ -526,6 +521,7 @@ const ViewPreProcurementById = () => {
           handleCancel={handleCancel}
           message={"Are you sure, want to send back to Level 1? "}
           setData={setData}
+          loadingState={isLoading}
         />
       </>
     );
@@ -701,7 +697,7 @@ const ViewPreProcurementById = () => {
             <button
               className={buttonStyle}
               onClick={() => {
-                navigate(`/create-pre-procurement/edit`,{state:id});
+                navigate(`/create-pre-procurement/edit`, { state: id });
               }}
             >
               Edit
