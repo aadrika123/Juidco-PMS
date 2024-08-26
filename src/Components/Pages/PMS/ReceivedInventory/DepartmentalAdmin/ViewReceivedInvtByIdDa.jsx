@@ -233,9 +233,10 @@ const ViewReceivedInvtByIdDa = (props) => {
           setIsModalOpen(false);
           setisLoading(false);
           toast.success("Successfully Stocks Received", "success");
-          navigate(
-            `/ia-received-InvtDetailsById/${applicationFullData?.procurement_no}/inbox`
-          );
+          window.location.reload();
+          // navigate(
+          //   `/ia-received-InvtDetailsById/${applicationFullData?.procurement_no}/inbox`
+          // );
         } else {
           setisLoading(false);
           toast(response?.data?.message, "error");

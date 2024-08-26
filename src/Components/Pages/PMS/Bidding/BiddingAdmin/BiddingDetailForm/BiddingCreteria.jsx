@@ -77,7 +77,7 @@ const BiddingCreteria = (props) => {
     )
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("Creteria Added Succefully");
+          toast.success("Criteria Added Succefully");
           navigate(`/bidding-commparision-tabs?tabNo=${props.tabNo + 1}`, {
             state: props?.bidderData?.reference_no,
           });
