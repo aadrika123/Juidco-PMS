@@ -240,10 +240,12 @@ export default function ProjectApiList() {
     api_fetchPostProcurementDetailSupplierbyId: `${baseUrl}/api/pms/procurement`,
     api_fetchSupplierbyId: `${baseUrl}/api/pms/master/supplier/by-procurement`,
     api_addToReceivedInvt: `${baseUrl}/api/pms/da/post-procurement/save-additional-details`,
+    api_addUnitPrice: `${baseUrl}/api/pms/ta/add-unit-price`,
 
     //service request
     api_getServiceRequestId: `${baseUrl}/api/pms/service-request`,
     api_approveServiceRequestDA: `${baseUrl}/api/pms/da/service-request/to-ia`,
+    api_approveServiceRequestDD: `${baseUrl}/api/pms/dist/service-request`,
     api_approveServiceRequestIA: `${baseUrl}/api/pms/ia/service-request/approve`,
     api_getDistServiceInbox: `${baseUrl}/api/pms/dist/service-request`,
     api_getDistServiceOutbox: `${baseUrl}/api/pms/dist/service-request/outbox`,

@@ -130,7 +130,7 @@ function ServiceProposalList(props) {
             onClick={
               () =>
                 navigate(
-                  `/boq-details-byId/${cell.row.values.reference_no}/${props?.page}`
+                  `/dd-service-request-byid/${cell.row.values.service_no}/${props?.page}`
                 )
               // navigate(`/create-boq`, {
               //   state: cell.row.values.reference_no,

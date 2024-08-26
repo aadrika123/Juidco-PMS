@@ -92,6 +92,8 @@ import DaServiceReqTabs from "./Components/Pages/PMS/ServiceRequest/DA/DaService
 import IaServiceReqTabs from "./Components/Pages/PMS/ServiceRequest/IA/IaServiceReqTabs";
 import DAServiceRequestById from "./Components/Pages/PMS/ServiceRequest/DA/DAServiceRequestById";
 import IAServiceRequestById from "./Components/Pages/PMS/ServiceRequest/IA/IAServiceRequestById";
+import DDServiceRequestById from "./Components/Pages/PMS/ServiceRequest/DD/DDServiceRequestById";
+import AddUnitPrice from "./Components/Pages/PMS/Bidding/BiddingAdmin/AddUnitPrice";
 
 const queryClient = new QueryClient();
 
@@ -418,11 +420,19 @@ function App() {
       path: "/bidding-type-byId/:id",
       element: <BiddingTypeViewById />,
     },
+    {
+      path: "/addUnitPrice/:refNo",
+      element: <AddUnitPrice />,
+    },
 
     /////////////////////////{*** Service Request ***}//////////////////////////////////////
     {
       path: "/dd-service-request",
       element: <DdServiceReqTabs />,
+    },
+    {
+      path: "/dd-service-request-byid/:refNo/:page",
+      element: <DDServiceRequestById />,
     },
     {
       path: "/da-service-request",
