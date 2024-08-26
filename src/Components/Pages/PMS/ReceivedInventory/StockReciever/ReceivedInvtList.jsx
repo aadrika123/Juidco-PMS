@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
 import { useNavigate } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
+import { indianAmount } from "@/Components/Common/PowerupFunctions";
 
 function ReceivedInvtList(props) {
   const navigate = useNavigate();
@@ -36,21 +37,21 @@ function ReceivedInvtList(props) {
       ),
     },
     {
-      Header: "Supplier Name",
-      accessor: "post_procurement.supplier_name",
+      Header: "Category",
+      accessor: "category.name",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {cell.row.original.post_procurement?.supplier_name}{" "}
+          {cell.row.original?.category?.name}{" "}
         </div>
       ),
     },
-    // {
-    //   Header: "Sub Category",
-    //   accessor: "subcategory",
-    //   Cell: ({ cell }) => (
-    //     <div className="pr-2">{cell.row.values.subcategory.name} </div>
-    //   ),
-    // },
+    {
+      Header: "Total Rate",
+      accessor: "total_rate",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{indianAmount(cell.row.values.total_rate)} </div>
+      ),
+    },
     // {
     //   Header: "Brand",
     //   accessor: "brand",
@@ -59,89 +60,89 @@ function ReceivedInvtList(props) {
     //   ) => <div className="pr-2">{cell.row.values.brand.name || "N/A"}</div>,
     // },
 
-    // {
-    //   Header: "status",
-    //   accessor: "status",
-    //   Cell: ({ cell }) => (
-    //     <div className="pr-2">
-    //       {cell.row.values.status.status == -1 && (
-    //         <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
-    //           Back to SR
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == -2 && (
-    //         <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
-    //           Rejected
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == 0 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           Pending
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == 1 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           DA's Inbox
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == 2 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           Release for Tender
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == 3 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           Supplier assigned
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == 4 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           Incomplete stocks received
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == 5 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           Stocks received
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == 69 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           Revised
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == 71 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           BOQ already created
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == 70 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           Ready for BOQ
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == -70 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           BOQ returned from DA
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == 72 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           Ready for tendering
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == -72 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           Tender back from DA
-    //         </p>
-    //       )}
-    //       {cell.row.values.status.status == 73 && (
-    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-    //           Tender is ready
-    //         </p>
-    //       )}
-    //     </div>
-    //   ),
-    // },
+    {
+      Header: "status",
+      accessor: "status",
+      Cell: ({ cell }) => (
+        <div className="pr-2">
+          {cell.row.values.status == -1 && (
+            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+              Back to SR
+            </p>
+          )}
+          {cell.row.values.status == -2 && (
+            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+              Rejected
+            </p>
+          )}
+          {cell.row.values.status == 0 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Pending
+            </p>
+          )}
+          {cell.row.values.status == 1 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              DA's Inbox
+            </p>
+          )}
+          {cell.row.values.status == 2 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Release for Tender
+            </p>
+          )}
+          {cell.row.values.status == 3 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Supplier assigned
+            </p>
+          )}
+          {cell.row.values.status == 4 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Incomplete stocks received
+            </p>
+          )}
+          {cell.row.values.status == 5 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Stocks received
+            </p>
+          )}
+          {cell.row.values.status == 69 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Revised
+            </p>
+          )}
+          {cell.row.values.status == 71 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              BOQ already created
+            </p>
+          )}
+          {cell.row.values.status == 70 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Ready for BOQ
+            </p>
+          )}
+          {cell.row.values.status == -70 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              BOQ returned from DA
+            </p>
+          )}
+          {cell.row.values.status == 72 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Ready for tendering
+            </p>
+          )}
+          {cell.row.values.status == -72 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Tender back from DA
+            </p>
+          )}
+          {cell.row.values.status == 73 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Tender is ready
+            </p>
+          )}
+        </div>
+      ),
+    },
 
     // {
     //   Header: "Remark",
