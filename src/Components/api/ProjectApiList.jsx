@@ -44,16 +44,16 @@ export default function ProjectApiList() {
     api_editProcurement: `${baseUrl}/api/pms/da/pre-procurement/edit`,
     api_editSrProcurement: `${baseUrl}/api/pms/sr/pre-procurement/edit`,
 
-    api_itemCategory: `${baseUrl}/api/pms/master/category`,
+    api_itemCategory: `${baseUrl}/api/pms/master/category/active`,
     api_itemCategoryUpdate: `${baseUrl}/api/pms/master/category/update`,
     api_categoryStatusUpdate: `${baseUrl}/api/pms/master/category/switch`,
     api_subcategoryStatusUpdate: `${baseUrl}/api/pms/master/sub-category/switch`,
     api_unitStatusUpdate: `${baseUrl}/api/pms/master/unit/switch`,
     api_brandStatusUpdate: `${baseUrl}/api/pms/master/brand/switch`,
     api_itemSubCategory: `${baseUrl}/api/pms/master/sub-category/by-category`,
-    api_itemSubCategoryAll: `${baseUrl}/api/pms/master/sub-category`,
+    api_itemSubCategoryAll: `${baseUrl}/api/pms/master/sub-category/active`,
     api_itemSubCategoryUpdate: `${baseUrl}/api/pms/master/sub-category/update`,
-    api_itemBrand: `${baseUrl}/api/pms/master/by-subcategory`,
+    api_itemBrand: `${baseUrl}/api/pms/master/brand/active`,
     api_getAllunit: `${baseUrl}/api/pms/master/unit`,
     api_getAllSupplier: `${baseUrl}/api/pms/master/supplier`,
     api_updateUnit: `${baseUrl}/api/pms/master/unit/update`,
@@ -182,7 +182,7 @@ export default function ProjectApiList() {
     api_postHandoverReq: `${baseUrl}/api/pms/dist/stock-request/handover`,
     api_postReturnReq: `${baseUrl}/api/pms/dist/stock-request/return-inv`,
     api_postDeadStockReq: `${baseUrl}/api/pms/dist/stock-request/add-dead-stock`,
-    api_postWarrantyClaim: `${baseUrl}/api/pms/dist/stock-request/warranty-claim-req`,
+    api_postWarrantyClaim: `${baseUrl}/api/pms/dist/service-request/`,
 
     api_getSRStockReqInbox: `${baseUrl}/api/pms/sr/stock-request`,
     api_getSRStockReqOutbox: `${baseUrl}/api/pms/sr/stock-request/outbox`,
@@ -242,6 +242,9 @@ export default function ProjectApiList() {
     api_addToReceivedInvt: `${baseUrl}/api/pms/da/post-procurement/save-additional-details`,
 
     //service request
+    api_getServiceRequestId: `${baseUrl}/api/pms/service-request`,
+    api_approveServiceRequestDA: `${baseUrl}/api/pms/da/service-request/to-ia`,
+    api_approveServiceRequestIA: `${baseUrl}/api/pms/ia/service-request/approve`,
     api_getDistServiceInbox: `${baseUrl}/api/pms/dist/service-request`,
     api_getDistServiceOutbox: `${baseUrl}/api/pms/dist/service-request/outbox`,
     api_getDaServiceInbox: `${baseUrl}/api/pms/da/service-request`,

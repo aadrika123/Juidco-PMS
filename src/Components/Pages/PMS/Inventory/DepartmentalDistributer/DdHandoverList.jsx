@@ -10,7 +10,7 @@
 
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
+// import Modal from "react-modal";
 import * as yup from "yup";
 import moment from "moment";
 
@@ -25,7 +25,7 @@ function DdHandoverList(props) {
   const navigate = useNavigate();
   const { module } = useParams();
 
-  // console.log(props.page, "page========>");
+  console.log(props.page, "page========>");
   // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
 
   const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
@@ -226,7 +226,7 @@ function DdHandoverList(props) {
             className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
             onClick={() =>
               navigate(
-                `/dd-viewHandoverById/${cell.row.values.stock_handover_no}`
+                `/dd-viewHandoverById/${cell.row.values.stock_handover_no}/${props.page}`
               )
             }
           >

@@ -71,7 +71,7 @@ function InventoryProposalList(props) {
       ),
     },
     {
-      Header: <p className='text-left'>status</p>,
+      Header: <p className=''>status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2 w-[12rem]'>
