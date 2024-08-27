@@ -528,6 +528,18 @@ export default function BoqDetailsById(props) {
               </button>
             )} */}
 
+          {/* {page == "inbox" && dataList?.status == 0 && (
+            <div className='flex justify-end items-center'>
+              <button
+                className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
+                onClick={forwardBoqFinanceHandler}
+              >
+                Proceed for Post Procurement
+                <MdArrowRightAlt className='text-2xl ml-2' />
+              </button>
+            </div>
+          )} */}
+
           {page == "inbox" && dataList?.status == 0 && (
             <div className='flex justify-end items-center'>
               <button
