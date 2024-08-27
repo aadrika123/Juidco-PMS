@@ -130,6 +130,7 @@ export default function ProjectApiList() {
     api_rejectFinBoq: `${baseUrl}/api/pms/finance/boq/reject`, //reject boq fin
     api_forwardBoqToFinance: `${baseUrl}/api/pms/da/pre-procurement/boq/to-finance`,
     api_forwardBoqToTA: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/to-ta`,
+    api_forwardRateToPostProc: `${baseUrl}/api/pms/da/pre-procurement/boq/for-post`,
 
     //tendring form
     api_postPreTenderDetails: `${baseUrl}/api/pms/pre-tender/details`,

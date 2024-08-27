@@ -53,6 +53,8 @@ const PostPreDetailsById = (props) => {
 
   const { titleBarVisibility } = useContext(contextVar);
 
+  // console.log(applicationFullData?.is_rate_contract, "applicationFullData");
+
   let buttonStyle =
     "  pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-md leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
@@ -1037,101 +1039,101 @@ const PostPreDetailsById = (props) => {
           )} */}
 
           {/* Supplier Details */}
+          {applicationFullData?.is_rate_contract != true && (
+            <div className='py-6 mt-8 bg-white rounded-lg shadow-xl px-6 border border-blue-500'>
+              <div className=''>
+                <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+                  Supplier Details{" "}
+                </h2>
+              </div>
 
-          {/* {console.log(supplierData)} */}
-          <div className='py-6 mt-8 bg-white rounded-lg shadow-xl px-6 border border-blue-500'>
-            <div className=''>
-              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
-                Supplier Details{" "}
-              </h2>
+              {applicationFullData?.supplier_master?.map(
+                (supplierInfo, index) => (
+                  <>
+                    <h1 className='text-xs pt-4'>Supplier {index + 1}</h1>
+
+                    <div className='bg-slate-50 p-5 rounded shadow'>
+                      <div className='md:flex md:justify-between md:items-center p-4'>
+                        <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                          <div className='md:w-auto w-[50%] font-bold capitalize '>
+                            {nullToNA(supplierInfo?.name)}
+                          </div>
+                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                            Supplier Name
+                          </div>
+                        </div>
+
+                        <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                          <div className='md:w-auto w-[50%] font-bold '>
+                            {nullToNA(supplierInfo?.reference_no)}
+                          </div>
+                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                            Reference Number
+                          </div>
+                        </div>
+
+                        <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                          <div className='md:w-auto w-[50%] font-bold '>
+                            {nullToNA(supplierInfo?.gst_no)}
+                          </div>
+                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                            GST No
+                          </div>
+                        </div>
+
+                        <div className='flex-1 md:block flex flex-row-reverse justify-between'>
+                          <div className='md:w-auto w-[50%] font-bold '>
+                            {nullToNA(supplierInfo?.pan_no)}
+                          </div>
+                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                            PAN No
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className='md:flex md:justify-between items-center p-4'>
+                        <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                          <div className='md:w-auto w-[50%] font-bold '>
+                            {nullToNA(supplierInfo?.address)}
+                          </div>
+                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                            Address
+                          </div>
+                        </div>
+
+                        <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                          <div className='md:w-auto w-[50%] font-bold '>
+                            {nullToNA(supplierInfo?.bank_name)}
+                          </div>
+                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                            Bank Name
+                          </div>
+                        </div>
+
+                        <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                          <div className='md:w-auto w-[50%] font-bold '>
+                            {nullToNA(supplierInfo?.account_no)}
+                          </div>
+                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                            Account No.
+                          </div>
+                        </div>
+
+                        <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
+                          <div className='md:w-auto w-[50%] font-bold '>
+                            {nullToNA(supplierInfo?.ifsc)}
+                          </div>
+                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                            IFSC Code
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )
+              )}
             </div>
-
-            {applicationFullData?.supplier_master?.map(
-              (supplierInfo, index) => (
-                <>
-                  <h1 className='text-xs pt-4'>Supplier {index + 1}</h1>
-
-                  <div className='bg-slate-50 p-5 rounded shadow'>
-                    <div className='md:flex md:justify-between md:items-center p-4'>
-                      <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                        <div className='md:w-auto w-[50%] font-bold capitalize '>
-                          {nullToNA(supplierInfo?.name)}
-                        </div>
-                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                          Supplier Name
-                        </div>
-                      </div>
-
-                      <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                        <div className='md:w-auto w-[50%] font-bold '>
-                          {nullToNA(supplierInfo?.reference_no)}
-                        </div>
-                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                          Reference Number
-                        </div>
-                      </div>
-
-                      <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                        <div className='md:w-auto w-[50%] font-bold '>
-                          {nullToNA(supplierInfo?.gst_no)}
-                        </div>
-                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                          GST No
-                        </div>
-                      </div>
-
-                      <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                        <div className='md:w-auto w-[50%] font-bold '>
-                          {nullToNA(supplierInfo?.pan_no)}
-                        </div>
-                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                          PAN No
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className='md:flex md:justify-between items-center p-4'>
-                      <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                        <div className='md:w-auto w-[50%] font-bold '>
-                          {nullToNA(supplierInfo?.address)}
-                        </div>
-                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                          Address
-                        </div>
-                      </div>
-
-                      <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                        <div className='md:w-auto w-[50%] font-bold '>
-                          {nullToNA(supplierInfo?.bank_name)}
-                        </div>
-                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                          Bank Name
-                        </div>
-                      </div>
-
-                      <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                        <div className='md:w-auto w-[50%] font-bold '>
-                          {nullToNA(supplierInfo?.account_no)}
-                        </div>
-                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                          Account No.
-                        </div>
-                      </div>
-
-                      <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                        <div className='md:w-auto w-[50%] font-bold '>
-                          {nullToNA(supplierInfo?.ifsc)}
-                        </div>
-                        <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
-                          IFSC Code
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )
-            )}
-          </div>
+          )}
         </div>
         <>
           <div className='space-x-5 flex justify-between  mt-3'>

@@ -70,12 +70,13 @@ function AddPreProcurement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
-  const [rateContract, setRateContract] = useState(false);
+  const [is_rate_contract, setRateContract] = useState(false);
   const [procItem, setProcItem] = useState([]);
   const [formData, setFormData] = useState([]);
   const [categorySelected, setCategorySelected] = useState();
   const [editProcurementData, setEditProcurementData] = useState();
   const [selectedSupplier, setSelectedSupplier] = useState();
+  const [supplierDetailsProc, setSupplierDetailsProc] = useState();
 
   const [procurement_no, setProcurement_no] = useState();
 
@@ -130,7 +131,15 @@ function AddPreProcurement() {
     quantity: yup.number().required("Quantity is required"),
   });
 
-  console.log(selectedSupplier, "selecctedsup");
+  const setSupplierDetails = (value) => {
+    const supplierUnitPrice = selectedSupplier?.rate_contract_supplier?.find(
+      (supplier) => supplier?.supplier_master?.id === value
+    );
+    console.log(supplierUnitPrice);
+    setSupplierDetailsProc(supplierUnitPrice);
+    // formik.setFieldValue("rate", supplierUnitPrice);
+  };
+
   // intitial value
   const initialValues = {
     itemCategory:
@@ -147,7 +156,7 @@ function AddPreProcurement() {
     description:
       selectedSupplier?.description || editProcurementData?.description || "",
     quantity: editProcurementData?.quantity || "",
-    rate: editProcurementData?.rate || "",
+    rate: supplierDetailsProc?.unit_price || editProcurementData?.rate || "",
     subcategorytxt: editProcurementData?.subcategorytxt || "",
     brandtxt: editProcurementData?.brandtxt || "",
   };
@@ -260,7 +269,9 @@ function AddPreProcurement() {
     setisLoading(true);
     let requestBody = {
       category: itemCategory,
+      supplier: supplierDetailsProc?.id,
       procurement: formData,
+      is_rate_contract,
     };
     // console.log(requestBody, "requestBody");
     let url;
@@ -321,13 +332,6 @@ function AddPreProcurement() {
   const getBrandName = (id) => {
     const name = brand?.find((obj) => obj.id === id)?.name;
     return name;
-  };
-
-  const setSupplierDetails = (value) => {
-    const supplierUnitPrice = selectedSupplier?.rate_contract_supplier?.find(
-      (supplier) => supplier?.supplier_master?.id === value
-    ).unit_price;
-    formik.setFieldValue("rate", supplierUnitPrice);
   };
 
   const handleOnChange = (e) => {
@@ -443,7 +447,9 @@ function AddPreProcurement() {
                       className={`${inputStyle} inline-block w-full relative`}
                       onChange={formik.handleChange}
                       disabled={
-                        formData?.length > 0 || page == "edit" || rateContract
+                        formData?.length > 0 ||
+                        page == "edit" ||
+                        is_rate_contract
                       }
                       // defaultValue={categorySelected || "select"}
                     >
@@ -485,7 +491,7 @@ function AddPreProcurement() {
                   </div>
                 </div>
 
-                {rateContract && (
+                {is_rate_contract && (
                   <div className='flex gap-2 items-center px-8 mt-4'>
                     <div className='form-group flex-shrink max-w-full w-1/2 px-4 '>
                       <label className={`${labelStyle} inline-block mb-2`}>
@@ -534,7 +540,9 @@ function AddPreProcurement() {
                         {...formik.getFieldProps("supplier")}
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
-                        // disabled={formData?.length > 0 || page == "edit"}
+                        disabled={
+                          formik.values.quantity || formData?.length > 0
+                        }
                         // defaultValue={categorySelected || "select"}
                       >
                         <option value='select'>select</option>
@@ -865,6 +873,7 @@ function AddPreProcurement() {
                             }}
                             value={formik.values.rate}
                             placeholder='Rate'
+                            disabled={formik.values.supplier}
                           />
                           <p className='text-red-500 text-xs '>
                             {formik.touched.rate && formik.errors.rate
