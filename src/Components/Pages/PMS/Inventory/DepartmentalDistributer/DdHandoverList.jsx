@@ -24,8 +24,6 @@ import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 function DdHandoverList(props) {
   const navigate = useNavigate();
   const { module } = useParams();
-
-  console.log(props.page, "page========>");
   // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
 
   const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
@@ -96,7 +94,7 @@ function DdHandoverList(props) {
     
 
     {
-      Header: "status",
+      Header: <p className="text-center">Status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
         <div className="pr-2">
@@ -123,6 +121,11 @@ function DdHandoverList(props) {
           {cell.row.values.status == 2 && (
             <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               DA's Inbox
+            </p>
+          )}
+          {cell.row.values.status == 3 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Approved from Inventory Admin
             </p>
           )}
           {cell.row.values.status == 80 && (
