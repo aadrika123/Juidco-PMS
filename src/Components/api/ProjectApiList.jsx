@@ -108,6 +108,7 @@ export default function ProjectApiList() {
     api_postSrAddInvt: `${baseUrl}/api/pms/sr/rec-inv/add-to-inv`,
     api_postSrAddProduct: `${baseUrl}/api/pms/sr/rec-inv/add-product`,
     api_fetchSrInvtDetailsList: `${baseUrl}/api/pms/inventory/by-filter`,
+    api_invtAddDetails: `${baseUrl}/api/pms/procurement/addition-validity`,
 
     //BOQ
     api_fetchBoqList: `${baseUrl}/api/pms/acc/pre-procurement/list-for-boq`, //accountant

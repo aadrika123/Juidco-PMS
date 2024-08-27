@@ -286,7 +286,6 @@ function App() {
       element: <ViewReceivedInvtByIdDa />,
     },
 
-    
     //-------Stock Receiver -----
 
     { path: "ia-pre-inventory", element: <ReceivedInvtHome /> },
