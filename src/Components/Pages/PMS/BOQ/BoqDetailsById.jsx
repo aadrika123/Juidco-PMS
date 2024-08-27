@@ -31,6 +31,7 @@ export default function BoqDetailsById(props) {
     api_postRejectBoq,
     api_forwardBoqToFinance,
     api_forwardBoqToTA,
+    api_forwardRateToPostProc,
   } = ProjectApiList();
 
   const { refNo, page } = useParams();
@@ -151,6 +152,33 @@ export default function BoqDetailsById(props) {
       });
   };
 
+  //rate Contract to Post Procurement
+  const forwardforPostProcurement = () => {
+    console.log(api_forwardRateToPostProc, "api_forwardRateToPostProc");
+    setIsLoading(true);
+
+    AxiosInterceptors.post(
+      `${api_forwardRateToPostProc}`,
+      { reference_no: refNo },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Forwarded for Post Procurement Successfully!!");
+          navigate("/inventoryAdmin-boq");
+        } else {
+          toast.error("Error in Forwarding Boq. Please try Again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   //forward to finance
   const forwardBoqFinanceHandler = () => {
     setIsLoading(true);
@@ -176,6 +204,7 @@ export default function BoqDetailsById(props) {
         setIsLoading(false);
       });
   };
+
   //forward to finance
   const forwardBoqTAHandler = () => {
     setIsLoading(true);
@@ -328,12 +357,6 @@ export default function BoqDetailsById(props) {
                     {dataList?.procurement_stocks[0]?.category?.name}
                   </span>
                 </p>
-                {/* <p className='text-lg font-bold'>
-                  SubCategory:{" "}
-                  <span className='font-semibold text-gray-500'>
-                    {dataList?.procurement_stocks[0]?.subcategory?.name}
-                  </span>
-                </p> */}
               </div>
 
               <div className=''>
@@ -448,6 +471,13 @@ export default function BoqDetailsById(props) {
                 <p className='text-gray-400'>No file uploaded</p>
               )}
             </div>
+
+            {dataList?.procurement?.is_rate_contract && (
+              <p className='flex justify-end font-semibold text-green-600 mb-5'>
+                {dataList?.procurement?.is_rate_contract &&
+                  "* Applied Through Rate Contract"}{" "}
+              </p>
+            )}
           </div>
         </div>
 
@@ -494,16 +524,28 @@ export default function BoqDetailsById(props) {
               </>
             )} */}
 
-          {page == "inbox" && dataList?.status == 42 && (
-            <button
-              className={colouredBtnStyle}
-              onClick={() =>
-                navigate(`/bidding-input-form/${dataList?.reference_no}`)
-              }
-            >
-              Fill Pre Tender Basic Info
-            </button>
-          )}
+          {page == "inbox" &&
+            dataList?.procurement?.is_rate_contract == true && (
+              <button
+                className={colouredBtnStyle}
+                onClick={forwardforPostProcurement}
+              >
+                Proceed for Post Procurement
+              </button>
+            )}
+
+          {page == "inbox" &&
+            dataList?.status == 42 &&
+            dataList?.procurement?.is_rate_contract != true && (
+              <button
+                className={colouredBtnStyle}
+                onClick={() =>
+                  navigate(`/bidding-input-form/${dataList?.reference_no}`)
+                }
+              >
+                Fill Pre Tender Basic Info
+              </button>
+            )}
 
           {page == "inbox" && dataList?.status == 50 && (
             <button

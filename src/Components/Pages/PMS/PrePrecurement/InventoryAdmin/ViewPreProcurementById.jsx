@@ -589,6 +589,17 @@ const ViewPreProcurementById = () => {
                   </span>
                 </h1>
               </div>
+              {applicationFullData?.is_rate_contract && (
+                <div className='text-[1rem] text-black flex justify-end w-full'>
+                  <h1 className='text-green-600'>
+                    <span className='font-bold'>
+                      {" "}
+                      {applicationFullData?.is_rate_contract &&
+                        "Applied through Rate Contract"}
+                    </span>
+                  </h1>
+                </div>
+              )}
               {applicationFullData?.remark && (
                 <div className='text-[1rem] text-black flex justify-end w-full'>
                   <h1 className='text-red-400'>

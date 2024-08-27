@@ -130,6 +130,7 @@ export default function ProjectApiList() {
     api_rejectFinBoq: `${baseUrl}/api/pms/finance/boq/reject`, //reject boq fin
     api_forwardBoqToFinance: `${baseUrl}/api/pms/da/pre-procurement/boq/to-finance`,
     api_forwardBoqToTA: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/to-ta`,
+    api_forwardRateToPostProc: `${baseUrl}/api/pms/da/pre-procurement/boq/for-post`,
 
     //tendring form
     api_postPreTenderDetails: `${baseUrl}/api/pms/pre-tender/details`,
@@ -241,6 +242,8 @@ export default function ProjectApiList() {
     api_fetchSupplierbyId: `${baseUrl}/api/pms/master/supplier/by-procurement`,
     api_addToReceivedInvt: `${baseUrl}/api/pms/da/post-procurement/save-additional-details`,
     api_addUnitPrice: `${baseUrl}/api/pms/ta/add-unit-price`,
+    api_getUnitPrice: `${baseUrl}/api/pms/bidding/procurement-details`,
+    api_getProcItemRateContract: `${baseUrl}/api/pms/bidding/rate-contract-details`,
 
     //service request
     api_getServiceRequestId: `${baseUrl}/api/pms/service-request`,
