@@ -55,7 +55,7 @@ export default function CategoryMaster() {
         api_itemCategory,
         ApiHeader()
       );
-      console.log(response,"res")
+      console.log(response, "res");
       // setCategoryData(response?.data?.data?.data);
       setCategoryData(response?.data?.data);
     } catch (error) {
@@ -158,18 +158,18 @@ export default function CategoryMaster() {
     {
       Header: "Category Id",
       accessor: "id",
-      Cell: ({ cell }) => <div className="pr-2">{cell.row.values.id}</div>,
+      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.id}</div>,
     },
     {
       Header: "Category",
       accessor: "name",
-      Cell: ({ cell }) => <div className="pr-2">{cell.row.values.name} </div>,
+      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.name} </div>,
     },
     {
       Header: "Sub Category",
       Cell: ({ cell }) => (
         <div
-          className="pr-2 text-indigo-700 font-medium underline cursor-pointer hover:text-indigo-400"
+          className='pr-2 text-indigo-700 font-medium underline cursor-pointer hover:text-indigo-400'
           onClick={() =>
             navigate(`/subCategoryMaster/${cell.row.values.id}`, {
               state: cell.row.values.name,
@@ -189,7 +189,7 @@ export default function CategoryMaster() {
             <Switch
               sx={{ transitionDelay: "250ms" }}
               checked={cell.row.values.status}
-              name=""
+              name=''
               onChange={() =>
                 updateStatusHandler(cell.row.values.id, cell.row.values.name)
               }
@@ -198,11 +198,11 @@ export default function CategoryMaster() {
           }
           label={
             cell.row.values.status === true ? (
-              <p className="text-green-500 text-center py-1 text-sm delay-500">
+              <p className='text-green-500 text-center py-1 text-sm delay-500'>
                 Active
               </p>
             ) : (
-              <p className="text-red-500 text-center py-1 text-sm delay-500">
+              <p className='text-red-500 text-center py-1 text-sm delay-500'>
                 Inactive
               </p>
             )
@@ -215,7 +215,7 @@ export default function CategoryMaster() {
       Cell: ({ cell }) => (
         <>
           <button
-            className=""
+            className=''
             onClick={() => {
               setModalAction("edit");
               setOpenCreateModal(true);
@@ -237,18 +237,18 @@ export default function CategoryMaster() {
     <>
       <TitleBar titleBarVisibility={true} titleText={"Category Master"} />
 
-      <h1 className="  pl-4 flex">
-        <span className="font-semibold text-indigo-900">Category Master</span>{" "}
-        <MdOutlineKeyboardDoubleArrowRight className="m-1 text-[1rem] text-gray-400" />
-        <span className=" text-gray-400">Sub Category Master</span>{" "}
-        <MdOutlineKeyboardDoubleArrowRight className="m-1 text-[1rem] text-gray-400" />{" "}
-        <span className=" text-gray-400">Brand Master</span>
+      <h1 className='  pl-4 flex'>
+        <span className='font-semibold text-indigo-900'>Category Master</span>{" "}
+        <MdOutlineKeyboardDoubleArrowRight className='m-1 text-[1rem] text-gray-400' />
+        <span className=' text-gray-400'>Sub Category Master</span>{" "}
+        <MdOutlineKeyboardDoubleArrowRight className='m-1 text-[1rem] text-gray-400' />{" "}
+        <span className=' text-gray-400'>Brand Master</span>
       </h1>
 
       {/* master table */}
-      <div className="bg-white p-8 rounded-md m-4 border border-blue-500">
-        <div className="flex justify-between m-4">
-          <h1 className="text-xl font-semibold text-indigo-900 ">
+      <div className='bg-white p-8 rounded-md m-4 border border-blue-500'>
+        <div className='flex justify-between m-4'>
+          <h1 className='text-xl font-semibold text-indigo-900 '>
             Category Master List
           </h1>
           <button
@@ -258,7 +258,7 @@ export default function CategoryMaster() {
               setOpenCreateModal(true);
             }}
           >
-            <IoMdAdd className="m-1 text-[1rem]" />
+            <IoMdAdd className='m-1 text-[1rem]' />
             Create Category
           </button>
         </div>
