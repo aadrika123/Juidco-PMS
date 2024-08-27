@@ -490,7 +490,7 @@ const BiddingInitialForm = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.min_supplier}
-                      placeholder='Input Box 1'
+                      placeholder=''
                       className='border flex-col rounded-md p-2'
                     />
                   </div>
@@ -522,7 +522,7 @@ const BiddingInitialForm = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.max_supplier}
-                      placeholder='Input Box 1'
+                      placeholder=''
                       className='border flex-col rounded-md p-2'
                     />
                   </div>

@@ -55,6 +55,8 @@ export default function CategoryMaster() {
         api_itemCategory,
         ApiHeader()
       );
+      console.log(response, "res");
+      // setCategoryData(response?.data?.data?.data);
       setCategoryData(response?.data?.data);
     } catch (error) {
       console.log("error in category master", error);
