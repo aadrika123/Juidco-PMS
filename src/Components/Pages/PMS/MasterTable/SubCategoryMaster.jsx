@@ -157,7 +157,7 @@ export default function CategoryMaster() {
   //creating new sub category function
   const createNewSubCategoryHandler = async () => {
     if (newSubCategory?.name === "") {
-      toast.error("Category field is required");
+      toast.error("Sub Category field is required");
       return;
     }
     setOpenCreateModal(false);

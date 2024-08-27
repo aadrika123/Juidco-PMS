@@ -93,7 +93,7 @@ function PostPrecurementList(props) {
           )}
           {cell.row.values.status == 14 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Level 1 Approved
+              Add to Inventory Pending
             </p>
           )}
           {cell.row.values.status == 20 && (
