@@ -91,6 +91,11 @@ function TenderListings(props) {
               Bidders Details Added
             </p>
           )}
+          {cell.row.original.boq?.bid_details?.creationStatus == 5 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Unit Prices Added
+            </p>
+          )}
           {cell.row.original.boq?.bid_details?.creationStatus == 41 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Technical Winner Selected
