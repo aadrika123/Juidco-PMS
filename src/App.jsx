@@ -96,6 +96,8 @@ import DAServiceRequestById from "./Components/Pages/PMS/ServiceRequest/DA/DASer
 import IAServiceRequestById from "./Components/Pages/PMS/ServiceRequest/IA/IAServiceRequestById";
 import DDServiceRequestById from "./Components/Pages/PMS/ServiceRequest/DD/DDServiceRequestById";
 import AddUnitPrice from "./Components/Pages/PMS/Bidding/BiddingAdmin/AddUnitPrice";
+import EmployeeListTabs from "./Components/Pages/PMS/Employee/EmployeeListTabs";
+import EmployeeDetailById from "./Components/Pages/PMS/Employee/EmployeeDetailById";
 
 const queryClient = new QueryClient();
 
@@ -207,6 +209,7 @@ function App() {
       path: "/dd-viewHandoverById/:id/:page",
       element: <DDViewHandoverbyId />,
     },
+    
 
     // ----------level 1 and level 2 ------------------------------------
 
@@ -456,6 +459,17 @@ function App() {
     //   path: "/viewServiceReq",
     //   element: <IaServiceReqTabs />,
     // },
+
+
+    /////////////////////////{*** Employee List ***}//////////////////////////////////////
+    {
+      path: "/employee",
+      element: <EmployeeListTabs />,
+    },
+    {
+      path: "/viewEmployeeById/:id/:page",
+      element: <EmployeeDetailById />,
+    },
   ];
 
   return (
