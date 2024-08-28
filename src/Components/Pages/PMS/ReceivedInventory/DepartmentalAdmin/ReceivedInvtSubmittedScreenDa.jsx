@@ -12,9 +12,11 @@ import React, { useState, useRef } from "react";
 import { LuCloudy } from "react-icons/lu";
 import { allowCharacterNumberInput } from "@/Components/Common/PowerupFunctions";
 import toast from "react-hot-toast";
+import ThemeStyle from "@/Components/Common/ThemeStyle";
 
 function StockReceiverModal(props) {
   const inputFileRef = useRef();
+  const {loading} = ThemeStyle()
   const [preview, setPreview] = useState();
 
   const handleClick = () => {
@@ -67,9 +69,7 @@ function StockReceiverModal(props) {
     }
 
     if (file) {
-      console.log(file.size, "=========file size");
       props?.setImageDoc(file);
-      console.log(file, "==========file");
       setPreview(URL.createObjectURL(file));
     }
   };
@@ -188,7 +188,11 @@ function StockReceiverModal(props) {
                 onClick={handleClick}
                 disabled={props?.formData.remark == ""}
               >
-                Save
+                {props?.loadingState ? (
+                    <div className={`${loading}`}></div>
+                  ) : (
+                    "Save"
+                  )}
               </button>
             </div>
 

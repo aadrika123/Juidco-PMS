@@ -140,10 +140,10 @@ const ViewReceivedInvtById = () => {
         if (response?.data?.status) {
           console.log(response?.data);
           setInventoryAddData(response?.data?.data);
-          setTotSum(
-            response?.data?.data?.receiving?._sum?.received_quantity -
-              response?.data?.data?.product[0]?.total_quantity
-          );
+          const sum =
+            (response?.data?.data?.receiving?._sum?.received_quantity || 0) -
+            (response?.data?.data?.product[0]?.total_quantity || 0);
+          setTotSum(sum);
           setisLoading(false);
         } else {
           toast.error("Error while getting details...");
@@ -947,7 +947,7 @@ const ViewReceivedInvtById = () => {
               <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
                 <div className="">
                   <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
-                    <div className="col-span-12  w-full mb-20">
+                    <div className="col-span-12  w-full mb-10">
                       <div className="p-4">
                         <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
                           Add products
@@ -985,7 +985,10 @@ const ViewReceivedInvtById = () => {
                               )
                             )}
                           </select>
-                          <p className="text-red-500 text-xs "></p>
+                          {/* <p className="text-red-500 text-xs "></p> */}
+                          <p className="text-sm px-1 text-green-700 mt-1">
+                              {totSum == 0 ? "No Quantity to Add" : `Quantity to add - ${totSum}`}
+                            </p>
                         </div>
 
                         <div className=" form-group flex-shrink max-w-full px-4 w-[20rem] ">
@@ -1006,27 +1009,19 @@ const ViewReceivedInvtById = () => {
                           </div>
                         </div>
 
-                        <div className=" form-group flex-shrink max-w-full px-4 w-[20rem] ">
+                        {/* <div className=" form-group flex-shrink max-w-full px-4 w-[20rem] ">
                           <div className="px-4 w-full">
                             <label
-                              className={`${labelStyle} inline-block mb-2 text-center`}
+                              className={`${labelStyle} inline-block text-center`}
                             >
                               Total Quantity to Add
                             </label>
 
-                            <p className="text-base py-2 px-1 text-green-700">
+                            <p className="text-base px-1 text-green-700">
                               {totSum == 0 ? "No Quantity to Add" : totSum}
                             </p>
-
-                            {/* <input
-                              className={`${inputStyle} inline-block w-full relative`}
-                              onChange={(e) => {
-                                setBrandName(e.target.value);
-                              }}
-                              // value={item?.brand}
-                            /> */}
                           </div>
-                        </div>
+                        </div> */}
 
                         {product.map((item, index) => (
                           <div className="flex gap-2 items-end" key={index}>
@@ -1090,7 +1085,7 @@ const ViewReceivedInvtById = () => {
                         ))}
                       </div>
 
-                      <div className="space-x-5 flex justify-end mr-[3rem]">
+                      <div className="space-x-5 flex justify-end mr-3 mt-14">
                         <button
                           className={buttonStyle}
                           onClick={() => {
@@ -1115,11 +1110,6 @@ const ViewReceivedInvtById = () => {
             </div>
           )}
 
-          {/* { } */}
-          {console.log(
-            inventoryAddData?.receiving?._sum?.received_quantity,
-            "yoyo"
-          )}
           {page == "inbox" &&
             inventoryAddData?.is_valid_for_addition == true &&
             inventoryAddData?.receiving?._sum?.received_quantity != null && (

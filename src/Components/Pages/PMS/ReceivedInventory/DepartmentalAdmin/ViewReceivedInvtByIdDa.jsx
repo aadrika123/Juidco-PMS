@@ -273,6 +273,7 @@ const ViewReceivedInvtByIdDa = (props) => {
           imageDoc={imageDoc}
           setIsModalOpen={setIsModalOpen}
           remark={formik.values.remark}
+          loadingState={isLoading}
         />
       </>
     );
@@ -741,14 +742,14 @@ const ViewReceivedInvtByIdDa = (props) => {
                         </div>
                         <div className='w-1/2 flex gap-10'>
                           <div className='text-sm'>
-                            Sub Category:{" "}
+                            <h1>Sub Category:</h1> 
                             <span className='font-semibold text-base text-blue-950'>
                               {procItemData?.subCategory?.name ||
                                 "Select Procurement Item"}
                             </span>
                           </div>
                           <div className='text-sm'>
-                            Description:{" "}
+                            <h1>Description:</h1>
                             <span className='font-semibold text-base text-blue-950'>
                               {procItemData?.description ||
                                 "Select Procurement Item"}
