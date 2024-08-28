@@ -3,6 +3,7 @@ import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import ServiceRequestModal from "@/Components/Common/Modal/ServiceRequestModal";
 import SuccessModal from "@/Components/Common/Modal/SuccessModal";
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
@@ -14,9 +15,8 @@ import React, { useContext, useRef, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import ServiceRequestModal from "../../../../Common/Modal/ServiceRequestModal";
 
-const DDViewHandoverbyId = () => {
+const EmployeeDetailById = () => {
   const [isLoading, setisLoading] = useState(false);
   const [confModal, setConfModal] = useState(false);
   const [forwardModal, setForwardDA] = useState(false);
@@ -40,7 +40,7 @@ const DDViewHandoverbyId = () => {
 
   const { id,page } = useParams();
 
-  console.log(applicationFullData?.stock_handover_no)
+  // console.log(applicationFullData?.stock_handover_no)
 
 
   const { titleBarVisibility } = useContext(contextVar);
@@ -53,6 +53,9 @@ const DDViewHandoverbyId = () => {
 
   let buttonStyle2 =
     "p-2 pl-4 pr-4 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]";
+
+    let buttonStyle3 =
+    "p-2 pl-4 pr-4 border border-green-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-green-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-green-600";
 
   //Print
   const componentRef = useRef();
@@ -110,29 +113,29 @@ const DDViewHandoverbyId = () => {
     setDeadStockModal(false);
     let body = { stock_handover_no: id };
 
-    AxiosInterceptors.post(`${api_postDeadStockReq}`, body, ApiHeader())
-      .then(function (response) {
-        if (response?.data?.status == true) {
-          toast.success(
-            "Stock Request added to Dead Stock successfully",
-            "success"
-          );
-          setSuccessModal(true);
-          setTimeout(() => {
-            navigate("/dd-handover");
-          }, 2000);
-        } else {
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-        toast.error(error?.response?.data?.error);
-        // setdeclarationStatus(false);
-      })
-      .finally(() => {
-        setisLoading(false);
-      });
+    // AxiosInterceptors.post(`${api_postDeadStockReq}`, body, ApiHeader())
+    //   .then(function (response) {
+    //     if (response?.data?.status == true) {
+    //       toast.success(
+    //         "Stock Request added to Dead Stock successfully",
+    //         "success"
+    //       );
+    //       setSuccessModal(true);
+    //       setTimeout(() => {
+    //         navigate("/dd-handover");
+    //       }, 2000);
+    //     } else {
+    //       toast(response?.data?.message, "error");
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.log("errorrr.... ", error);
+    //     toast.error(error?.response?.data?.error);
+    //     // setdeclarationStatus(false);
+    //   })
+    //   .finally(() => {
+    //     setisLoading(false);
+    //   });
   };
 
   //returning request ------
@@ -141,58 +144,58 @@ const DDViewHandoverbyId = () => {
     setRetModal(false);
     let body = { stock_handover_no: id };
 
-    AxiosInterceptors.post(`${api_postReturnReq}`, body, ApiHeader())
-      .then(function (response) {
-        if (response?.data?.status == true) {
-          toast.success("Stock Request has return successfully", "success");
-          setSuccessModal(true);
-          setTimeout(() => {
-            navigate("/dd-handover");
-          }, 2000);
-        } else {
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-        toast.error(error?.response?.data?.error);
-        // setdeclarationStatus(false);
-      })
-      .finally(() => {
-        setisLoading(false);
-      });
+    // AxiosInterceptors.post(`${api_postReturnReq}`, body, ApiHeader())
+    //   .then(function (response) {
+    //     if (response?.data?.status == true) {
+    //       toast.success("Stock Request has return successfully", "success");
+    //       setSuccessModal(true);
+    //       setTimeout(() => {
+    //         navigate("/dd-handover");
+    //       }, 2000);
+    //     } else {
+    //       toast(response?.data?.message, "error");
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.log("errorrr.... ", error);
+    //     toast.error(error?.response?.data?.error);
+    //     // setdeclarationStatus(false);
+    //   })
+    //   .finally(() => {
+    //     setisLoading(false);
+    //   });
   };
 
   // hadover the request-------
-  const handoverHandler = () => {
-    setisLoading(true);
-    setConfModal(false);
-    let body = { stock_handover_no: id };
+  // const handoverHandler = () => {
+  //   setisLoading(true);
+  //   setConfModal(false);
+  //   let body = { stock_handover_no: id };
 
-    AxiosInterceptors.post(`${api_postHandoverReq}`, body, ApiHeader())
-      .then(function (response) {
-        if (response?.data?.status == true) {
-          toast.success(
-            "Stock Request has been successfully handover",
-            "success"
-          );
-          setSuccessModal(true);
-          setTimeout(() => {
-            navigate("/dd-handover");
-          }, 2000);
-        } else {
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-        toast.error(error?.response?.data?.error);
-        // setdeclarationStatus(false);
-      })
-      .finally(() => {
-        setisLoading(false);
-      });
-  };
+  //   AxiosInterceptors.post(`${api_postHandoverReq}`, body, ApiHeader())
+  //     .then(function (response) {
+  //       if (response?.data?.status == true) {
+  //         toast.success(
+  //           "Stock Request has been successfully handover",
+  //           "success"
+  //         );
+  //         setSuccessModal(true);
+  //         setTimeout(() => {
+  //           navigate("/dd-handover");
+  //         }, 2000);
+  //       } else {
+  //         toast(response?.data?.message, "error");
+  //       }
+  //     })
+  //     .catch(function (error) {
+  //       console.log("errorrr.... ", error);
+  //       toast.error(error?.response?.data?.error);
+  //       // setdeclarationStatus(false);
+  //     })
+  //     .finally(() => {
+  //       setisLoading(false);
+  //     });
+  // };
 
   //get application details
   const getApplicationDetail = () => {
@@ -236,22 +239,22 @@ const DDViewHandoverbyId = () => {
 
   const forwardToDA = () => {
     setisLoading(true);
-    AxiosInterceptors.post(
-      `${api_postStockReqForwardtoDA}`,
-      { stock_handover_no: [`${id}`] },
-      ApiHeader()
-    )
-      .then(function (response) {
-        if (response?.data?.status) {
-          setSuccessModal(true);
-          setisLoading(false);
-        } else {
-          console.log("error in forwarding to da...", error);
-        }
-      })
-      .catch(function (err) {
-        toast.error(err?.response?.data?.message);
-      });
+    // AxiosInterceptors.post(
+    //   `${api_postStockReqForwardtoDA}`,
+    //   { stock_handover_no: [`${id}`] },
+    //   ApiHeader()
+    // )
+    //   .then(function (response) {
+    //     if (response?.data?.status) {
+    //       setSuccessModal(true);
+    //       setisLoading(false);
+    //     } else {
+    //       console.log("error in forwarding to da...", error);
+    //     }
+    //   })
+    //   .catch(function (err) {
+    //     toast.error(err?.response?.data?.message);
+    //   });
   };
 
   useEffect(() => {
@@ -485,7 +488,7 @@ const DDViewHandoverbyId = () => {
 
               {applicationFullData?.status >= 3 && (
                 <>
-                  <div className="bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700">
+                  {/* <div className="bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700">
                     <FileButton
                       bg={"[#359F6E]"}
                       hoverBg={"bg-green-700"}
@@ -495,14 +498,10 @@ const DDViewHandoverbyId = () => {
                       setPreview={setPreview}
                       textColor={"white"}
                     />
-                  </div>
+                  </div> */}
 
-                  <button className={buttonStyle2} onClick={()=>{
-                    
-                    setServiceRequestModal(true)
-                    setService("dead")
-                    }}>
-                    Dead Stock
+                  <button className={`${buttonStyle3}`} onClick={handoverModal}>
+                    Acknowledge
                   </button>
 
                   <button className={buttonStyle2}onClick={()=>{
@@ -513,9 +512,19 @@ const DDViewHandoverbyId = () => {
                     Return
                   </button>
 
-                  <button className={buttonStyle2} onClick={handoverModal}>
-                    Handover
+                  <button className={buttonStyle2} onClick={()=>{
+                    
+                    setServiceRequestModal(true)
+                    setService("dead")
+                    }}>
+                    Dead Stock
                   </button>
+
+                  
+
+                  {/* <button className={buttonStyle2} onClick={handoverModal}>
+                    Handover
+                  </button> */}
                   <button className={buttonStyle2} onClick={()=>{
                     
                     setServiceRequestModal(true)
@@ -536,4 +545,4 @@ const DDViewHandoverbyId = () => {
   );
 };
 
-export default DDViewHandoverbyId;
+export default EmployeeDetailById;
