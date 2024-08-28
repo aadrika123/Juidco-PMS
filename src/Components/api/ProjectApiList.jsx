@@ -45,6 +45,7 @@ export default function ProjectApiList() {
     api_editSrProcurement: `${baseUrl}/api/pms/sr/pre-procurement/edit`,
 
     api_itemCategory: `${baseUrl}/api/pms/master/category/active`,
+    api_postItemCategory: `${baseUrl}/api/pms/master/category`,
     api_itemCategoryUpdate: `${baseUrl}/api/pms/master/category/update`,
     api_categoryStatusUpdate: `${baseUrl}/api/pms/master/category/switch`,
     api_subcategoryStatusUpdate: `${baseUrl}/api/pms/master/sub-category/switch`,
@@ -52,6 +53,7 @@ export default function ProjectApiList() {
     api_brandStatusUpdate: `${baseUrl}/api/pms/master/brand/switch`,
     api_itemSubCategory: `${baseUrl}/api/pms/master/sub-category/by-category`,
     api_itemSubCategoryAll: `${baseUrl}/api/pms/master/sub-category/active`,
+    api_postSubCategory: `${baseUrl}/api/pms/master/sub-category`,
     api_itemSubCategoryUpdate: `${baseUrl}/api/pms/master/sub-category/update`,
     api_itemBrand: `${baseUrl}/api/pms/master/brand/active`,
     api_getAllunit: `${baseUrl}/api/pms/master/unit`,
@@ -257,6 +259,9 @@ export default function ProjectApiList() {
     api_getDaServiceOutbox: `${baseUrl}/api/pms/da/service-request/outbox`,
     api_getIaServiceInbox: `${baseUrl}/api/pms/ia/service-request`,
     api_getIaServiceOutbox: `${baseUrl}/api/pms/ia/service-request/outbox`,
+
+    //master
+    api_getBank: `${baseUrl}/api/pms/master/bank`,
   };
 
   return apiList;

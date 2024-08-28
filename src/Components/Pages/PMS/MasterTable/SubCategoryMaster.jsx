@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import MasterTable from "@/Components/Common/ListTable2/MasterTable";
-import ThemeStyleTanker from "@/Components/Common/ThemeStyleTanker";
 import { IoMdAdd } from "react-icons/io";
 import CreateModal from "./components/CreateModal";
 import ProjectApiList from "@/Components/api/ProjectApiList";
@@ -19,8 +18,8 @@ export default function CategoryMaster() {
     api_subcategoryStatusUpdate,
     api_itemSubCategoryAll,
     api_itemSubCategoryUpdate,
+    api_postSubCategory,
   } = ProjectApiList();
-  const { addButtonColor } = ThemeStyleTanker();
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -30,12 +29,13 @@ export default function CategoryMaster() {
   const [newSubCategory, setNewSubCategory] = useState({ name: "" });
   const [subCategoryData, setSubCategoryData] = useState([]);
   const [subCategoryId, setSubCategoryId] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [modalAction, setModalAction] = useState("");
+  const [apiLoading, setApiLoading] = useState(false);
 
   const tableRowHandler = (id) => {
     // navigate(`/subCategory/${id}`);
-    navigate(`/brandMaster/${id}`);
+    // navigate(`/brandMaster/${id}`);
   };
 
   //cancel button Handler
@@ -47,23 +47,23 @@ export default function CategoryMaster() {
     {
       Header: "Sub Category Id",
       // accessor: "id",
-      Cell: ({ cell }) => <div className="pr-2">{cell.row.values.id}</div>,
+      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.id}</div>,
     },
     {
       Header: "Sub Category",
       accessor: "name",
-      Cell: ({ cell }) => <div className="pr-2">{cell.row.values.name} </div>,
+      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.name} </div>,
     },
     {
       Header: "Brands",
       Cell: ({ cell }) => (
         <div
-          className="pr-2 text-indigo-700 font-medium underline cursor-pointer hover:text-indigo-400"
-          onClick={() =>
-            navigate(`/brandMaster/${cell.row.values.id}`, {
-              state: cell.row.values.name,
-            })
-          }
+          className='pr-2 text-indigo-700 font-medium underline cursor-pointer hover:text-indigo-400'
+          // onClick={() =>
+          //   navigate(`/brandMaster/${cell.row.values.id}`, {
+          //     state: cell.row.values.name,
+          //   })
+          // }
         >
           View Brands
         </div>
@@ -78,7 +78,7 @@ export default function CategoryMaster() {
             <Switch
               sx={{ transitionDelay: "250ms" }}
               checked={cell.row.values.status}
-              name=""
+              name=''
               onChange={() =>
                 updateStatusHandler(cell.row.values.id, cell.row.values.name)
               }
@@ -87,11 +87,11 @@ export default function CategoryMaster() {
           }
           label={
             cell.row.values.status === true ? (
-              <p className="text-green-500 text-center py-1 text-sm delay-500">
+              <p className='text-green-500 text-center py-1 text-sm delay-500'>
                 Active
               </p>
             ) : (
-              <p className="text-red-500 text-center py-1 text-sm delay-500">
+              <p className='text-red-500 text-center py-1 text-sm delay-500'>
                 Inactive
               </p>
             )
@@ -105,7 +105,7 @@ export default function CategoryMaster() {
       Cell: ({ cell }) => (
         <>
           <button
-            className=""
+            className=''
             onClick={() => {
               setModalAction("edit");
               setOpenCreateModal(true);
@@ -121,7 +121,7 @@ export default function CategoryMaster() {
 
   //fetching all subcategory by category id
   const fetchAllSubCategory = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const response = await AxiosInterceptors.get(
         `${api_itemSubCategory}/${id}`,
@@ -132,7 +132,7 @@ export default function CategoryMaster() {
       console.log("error in subcategory master", error);
       toast.error(error?.response?.data?.message);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -156,20 +156,22 @@ export default function CategoryMaster() {
 
   //creating new sub category function
   const createNewSubCategoryHandler = async () => {
+    setApiLoading(true);
+
     if (newSubCategory?.name === "") {
       toast.error("Sub Category field is required");
       return;
     }
-    setOpenCreateModal(false);
 
     //api call with id receiving from category table
     try {
       const response = await AxiosInterceptors.post(
-        api_itemSubCategoryAll,
+        api_postSubCategory,
         { ...newSubCategory, category_masterId: id },
         ApiHeader()
       );
       if (response?.data?.status) {
+        setOpenCreateModal(false);
         toast.success("New Subcategory is created successfully");
         fetchAllSubCategory();
         setNewSubCategory({ name: "" });
@@ -179,6 +181,8 @@ export default function CategoryMaster() {
       toast.error(
         error?.response?.data?.message || "Error in creating new Subcategory"
       );
+    } finally {
+      setApiLoading(false);
     }
   };
 
@@ -203,7 +207,8 @@ export default function CategoryMaster() {
 
   //updating name of subcategory
   const updateSubCategoryHandler = async () => {
-    setOpenCreateModal(false);
+    setApiLoading(true);
+
     try {
       const response = await AxiosInterceptors.post(
         api_itemSubCategoryUpdate,
@@ -211,6 +216,7 @@ export default function CategoryMaster() {
         ApiHeader()
       );
       if (response?.data?.status) {
+        setOpenCreateModal(false);
         toast.success(`SubCategory updated successfully`);
         fetchAllSubCategory();
       }
@@ -219,6 +225,8 @@ export default function CategoryMaster() {
       toast.error(
         error?.response?.data?.message || "Error in updating subcategory"
       );
+    } finally {
+      setApiLoading(false);
     }
   };
 
@@ -235,23 +243,23 @@ export default function CategoryMaster() {
   return (
     <>
       <TitleBar titleBarVisibility={true} titleText={"SubCategory Master"} />
-      <h1 className=" text-indigo-900 pl-4 flex">
+      <h1 className=' text-indigo-900 pl-4 flex'>
         <span
-          className="cursor-pointer hover:underline"
+          className='cursor-pointer hover:underline'
           onClick={() => navigate(-1)}
         >
           Category Master
         </span>{" "}
-        <MdOutlineKeyboardDoubleArrowRight className="m-1 text-[1rem]" />{" "}
-        <span className="font-semibold">Sub Category Master</span>
-        <MdOutlineKeyboardDoubleArrowRight className="m-1 text-[1rem] text-gray-400" />{" "}
-        <span className=" text-gray-400">Brand Master</span>
+        <MdOutlineKeyboardDoubleArrowRight className='m-1 text-[1rem]' />{" "}
+        <span className='font-semibold'>Sub Category Master</span>
+        <MdOutlineKeyboardDoubleArrowRight className='m-1 text-[1rem] text-gray-400' />{" "}
+        <span className=' text-gray-400'>Brand Master</span>
       </h1>
 
       {/* master table */}
-      <div className="bg-white p-8 rounded-md m-4 border border-blue-500">
-        <div className="flex justify-between m-4">
-          <h1 className="text-xl font-semibold text-indigo-900">
+      <div className='bg-white p-8 rounded-md m-4 border border-blue-500'>
+        <div className='flex justify-between m-4'>
+          <h1 className='text-xl font-semibold text-indigo-900'>
             {state || "Sub Category"} Master
           </h1>
           <button
@@ -261,20 +269,21 @@ export default function CategoryMaster() {
               setOpenCreateModal(true);
             }}
           >
-            <IoMdAdd className="m-1 text-[1rem]" />
+            <IoMdAdd className='m-1 text-[1rem]' />
             Create SubCategory
           </button>
         </div>
 
         <MasterTable
           tableRowHandler={tableRowHandler}
-          loading={loading}
+          isLoading={isLoading}
           tableViewLabel={"View Brands"}
           handleOpen={() => setOpenCreateModal(true)}
           open={openCreateModal}
           data={subCategoryData}
           columns={columns}
           fetchedData={subCategoryData}
+          updateLoader={apiLoading}
         />
       </div>
 
@@ -293,6 +302,7 @@ export default function CategoryMaster() {
         onClose={cancelHandler}
         page={modalAction}
         updateHandler={updateSubCategoryHandler}
+        loadingState={apiLoading}
       />
     </>
   );
