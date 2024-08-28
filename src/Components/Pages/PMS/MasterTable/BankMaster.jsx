@@ -3,34 +3,27 @@ import { useNavigate } from "react-router-dom";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import MasterTable from "@/Components/Common/ListTable2/MasterTable";
 import { IoMdAdd } from "react-icons/io";
-import CreateModal from "./components/CreateModal";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
 import { FaEdit } from "react-icons/fa";
 import { FormControlLabel, Switch } from "@mui/material";
-import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import CreateModalCommon from "./components/CreateModalCommon";
 
 export default function BankMaster() {
-  const {
-    api_itemCategory,
-    api_categoryStatusUpdate,
-    api_itemCategoryUpdate,
-    api_postItemCategory,
-    api_getBank,
-  } = ProjectApiList();
+  const { api_updateBankStatus, api_updateBank, api_getBank } =
+    ProjectApiList();
   const navigate = useNavigate();
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
-  const [newCategory, setNewCategory] = useState({
+  const [newBankData, setNewBankData] = useState({
     name: "",
     branch: "",
     address: "",
     ifsc: "",
   });
-  const [categoryId, setCategoryId] = useState();
+  const [bankId, setBankId] = useState();
   const [newCategoryUpdate, setNewCategoryUpdate] = useState({});
   const [banksData, setBanksData] = useState([]);
   const [activeStatus, setActiveStatus] = useState([]);
@@ -38,18 +31,17 @@ export default function BankMaster() {
   const [apiLoading, setApiLoading] = useState(false);
   const [modalAction, setModalAction] = useState("");
 
-  // console.log(categoryId)
+  // console.log(bankId)
 
   //input onChange
   const changeHandler = (e) => {
     const { name, value } = e.target;
-    setNewCategory((prev) => ({ ...prev, [name]: value }));
+    setNewBankData((prev) => ({ ...prev, [name]: value }));
   };
 
   //tab row click function
   const tableRowHandler = (id) => {
-    // navigate(`/subCategory/${id}`);
-    navigate(`/subcategoryMaster`);
+    // navigate(`/subcategoryMaster`);
   };
 
   //modal cancel button Handler
@@ -63,7 +55,7 @@ export default function BankMaster() {
     try {
       const response = await AxiosInterceptors.get(api_getBank, ApiHeader());
       // setBanksData(response?.data?.data?.data);
-      setBanksData(response?.data?.data);
+      setBanksData(response?.data?.data?.data);
     } catch (error) {
       console.log("error in category master", error);
       toast.error(error.response.data.message);
@@ -73,53 +65,67 @@ export default function BankMaster() {
   };
 
   //creating new category function
-  const createNewCategoryHandler = async () => {
+  const createNewBankHandler = async () => {
     setApiLoading(true);
-    if (newCategory?.name === "") {
-      toast.error("Category field is required");
+    if (newBankData?.name.trim().length < 0) {
+      toast.error("Bank name is required");
+      return;
+    }
+    if (newBankData?.branch.trim().length < 0) {
+      toast.error("Branch is required");
+      return;
+    }
+    if (newBankData?.address.trim().length < 0) {
+      toast.error("Address is required");
+      return;
+    }
+    if (newBankData?.ifsc.trim().length < 0) {
+      toast.error("IFSC is required");
       return;
     }
 
     //api call with id receiving from category table
     try {
       const response = await AxiosInterceptors.post(
-        api_postItemCategory,
-        newCategory,
+        api_getBank,
+        newBankData,
         ApiHeader()
       );
       if (response?.data?.status) {
         setOpenCreateModal(false);
-        toast.success("New Category is created successfully");
+        toast.success("New Bank Added successfully");
         fetchAllBank();
-        setNewCategory({ name: "" });
+        setNewBankData({ name: "" });
       }
     } catch (error) {
-      console.log(error, "error in creating new category");
-      toast.error(
-        error?.response?.data?.message || "Error in creating new Category"
-      );
+      console.log(error, "error in adding new bank");
+      toast.error(error?.response?.data?.message || "Error in adding new bank");
     } finally {
       setApiLoading(false);
     }
   };
 
   //getting category data to update
-  const getCategoryByIdHandler = async (id) => {
+  const getBankByIdHandler = async (id) => {
     setApiLoading(true);
-    let url = api_itemCategory;
+    let url = api_getBank;
     //api call with id receiving from category table
     console.log(url + "/" + id);
     try {
       const response = await AxiosInterceptors.get(`${url}/${id}`, ApiHeader());
       if (response?.data?.status) {
-        console.log(response?.data?.data, "res");
-        setNewCategory({ name: response?.data?.data?.name });
-        setCategoryId(response?.data?.data?.id);
+        setNewBankData({
+          name: response?.data?.data?.name,
+          branch: response?.data?.data?.branch,
+          ifsc: response?.data?.data?.ifsc,
+          address: response?.data?.data?.address,
+        });
+        setBankId(response?.data?.data?.id);
       }
     } catch (error) {
-      console.log(error, "error in getting category");
+      console.log(error, "error in getting bank info");
       toast.error(
-        error?.response?.data?.message || "Error in getting Category"
+        error?.response?.data?.message || "Error in getting Bank Info"
       );
     } finally {
       setApiLoading(false);
@@ -127,42 +133,42 @@ export default function BankMaster() {
   };
 
   //updating status of category
-  const updateStatusHandler = async (id, catName) => {
+  const updateStatusHandler = async (id, bankName) => {
     //api call with id to update status
     try {
       const response = await AxiosInterceptors.post(
-        api_categoryStatusUpdate,
+        api_updateBankStatus,
         { id },
         ApiHeader()
       );
       if (response?.data?.status) {
-        toast.success(`${catName} Category Status updated successfully`);
+        toast.success(`${bankName} Status updated successfully`);
         fetchAllBank();
       }
     } catch (error) {
-      console.log(error, "error in creating new category");
+      console.log(error, "error in updating bank status");
       toast.error(error?.response?.data?.message || "Error in updating status");
     }
   };
 
   //updating name of category
-  const updateCategoryHandler = async () => {
+  const updateBankHandler = async () => {
     setApiLoading(true);
     try {
       const response = await AxiosInterceptors.post(
-        api_itemCategoryUpdate,
-        { ...newCategory, id: categoryId },
+        api_updateBank,
+        { ...newBankData, id: bankId },
         ApiHeader()
       );
       if (response?.data?.status) {
         setOpenCreateModal(false);
-        toast.success(`Category updated successfully`);
+        toast.success(`Bank Information updated successfully`);
         fetchAllBank();
       }
     } catch (error) {
-      console.log(error, "error in updating category");
+      console.log(error, "error in updating bank details");
       toast.error(
-        error?.response?.data?.message || "Error in updating category"
+        error?.response?.data?.message || "Error in updating bank details"
       );
     } finally {
       setApiLoading(false);
@@ -171,7 +177,7 @@ export default function BankMaster() {
 
   const columns = [
     {
-      Header: "Category Id",
+      Header: "Bank Id",
       accessor: "id",
       Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.id}</div>,
     },
@@ -182,8 +188,8 @@ export default function BankMaster() {
     },
     {
       Header: "Branch",
-      accessor: "name1",
-      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.name} </div>,
+      accessor: "branch",
+      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.branch} </div>,
     },
     {
       Header: "Status",
@@ -224,7 +230,7 @@ export default function BankMaster() {
             onClick={() => {
               setModalAction("edit");
               setOpenCreateModal(true);
-              getCategoryByIdHandler(cell.row.values.id);
+              getBankByIdHandler(cell.row.values.id);
             }}
           >
             <FaEdit color={"#4338CA"} fontSize={18} />
@@ -235,7 +241,30 @@ export default function BankMaster() {
   ];
 
   const modalData = [
-    // {label: "Create Bank Name", value:}
+    {
+      label: "Bank Name",
+      name: "name",
+      value: newBankData.name,
+      defaultVal: newBankData.name,
+    },
+    {
+      label: "IFSC Code",
+      name: "ifsc",
+      value: newBankData.ifsc,
+      defaultVal: newBankData.ifsc,
+    },
+    {
+      label: "Branch",
+      name: "branch",
+      value: newBankData.branch,
+      defaultVal: newBankData.branch,
+    },
+    {
+      label: "Address",
+      name: "address",
+      value: newBankData.address,
+      defaultVal: newBankData.address,
+    },
   ];
 
   useEffect(() => {
@@ -274,7 +303,7 @@ export default function BankMaster() {
           isLoading={isLoading}
           handleOpen={() => setOpenCreateModal(true)}
           open={openCreateModal}
-          tableViewLabel={"View Sub Categories"}
+          //   tableViewLabel={"View Bank "}
           data={banksData}
           columns={columns}
           fetchedData={banksData}
@@ -284,40 +313,20 @@ export default function BankMaster() {
         />
       </div>
 
-      {/* create Bank modal
-      <CreateModal
-        handleClose={() => setOpenCreateModal(false)}
-        label={"Bank"}
-        heading={"Add new Bank"}
-        name={"name"}
-        nameStatus={"status"}
-        onChange={changeHandler}
-        open={openCreateModal}
-        placeholder={""}
-        value={newCategory.name}
-        createNewHandler={createNewCategoryHandler}
-        onClose={cancelHandler}
-        page={modalAction}
-        updateHandler={updateCategoryHandler}
-        loadingState={apiLoading}
-      /> */}
-
       {/* create Bank modal */}
       <CreateModalCommon
         handleClose={() => setOpenCreateModal(false)}
         label={"Bank"}
         heading={"Add new Bank"}
-        name={"name"}
         nameStatus={"status"}
         onChange={changeHandler}
         open={openCreateModal}
-        placeholder={""}
-        value={newCategory.name}
-        createNewHandler={createNewCategoryHandler}
+        createNewHandler={createNewBankHandler}
         onClose={cancelHandler}
         page={modalAction}
-        updateHandler={updateCategoryHandler}
+        updateHandler={updateBankHandler}
         loadingState={apiLoading}
+        fields={modalData}
       />
     </>
   );

@@ -6,15 +6,16 @@ export default function CreateModalCommon({
   heading,
   open,
   label,
-  name,
-  value,
+  // name,
+  // value,
   onChange,
-  placeholder,
+  // placeholder,
   createNewHandler,
   updateHandler,
   page,
   onClose,
   loadingState,
+  fields,
 }) {
   const { inputStyle, labelStyle, addButtonColor, cancelButtonColor, loading } =
     ThemeStyle();
@@ -40,26 +41,36 @@ export default function CreateModalCommon({
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
-          <Typography id='modal-modal-title' variant='h6' component='h2'>
+          <Typography
+            id='modal-modal-title'
+            variant='h6'
+            component='h2'
+            className='mb-5'
+          >
             {heading}
           </Typography>
-          <hr className='w-full h-2 mb-4' />
-          <div className='px-2 space-y-4 mb-10'>
-            <div className=''>
-              <label className={`${labelStyle} font-semibold font-sans`}>
-                {label}
-              </label>
-              <input
-                type='text'
-                name={name}
-                className={`${inputStyle} inline-block w-full relative mt-2`}
-                value={value}
-                required
-                placeholder={placeholder}
-                onChange={onChange}
-              />
+          {fields?.map((data, index) => (
+            <div className='' key={index}>
+              <div className='px-2 space-y-4'>
+                <div className='mb-4'>
+                  <label
+                    className={`${labelStyle} font-semibold font-sans mb-1`}
+                  >
+                    {data.label}
+                  </label>
+                  <input
+                    type='text'
+                    name={data.name}
+                    className={`${inputStyle} inline-block w-full relative`}
+                    value={data.value}
+                    required
+                    placeholder={data.placeholder || ""}
+                    onChange={onChange}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
 
           <div className='flex justify-between gap-2 mt-6 px-2'>
             <button className={`${cancelButtonColor}`} onClick={onClose}>

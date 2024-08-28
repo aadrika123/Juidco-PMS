@@ -18,7 +18,8 @@ import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 const BasicDetailsForm = () => {
   const inputFileRef = useRef();
   const { state } = useLocation();
-  const { api_postBasicDetails, api_getBasicDetails } = ProjectApiList();
+  const { api_postBasicDetails, api_getBasicDetails, api_getActiveBank } =
+    ProjectApiList();
 
   const [preview, setPreview] = useState();
   const [imageDoc, setImageDoc] = useState();
@@ -26,6 +27,7 @@ const BasicDetailsForm = () => {
   const [basicDetailData, setBasicDetailData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [referenceNo, setReferenceNo] = useState();
+  const [bankData, setBankData] = useState([]);
   const navigate = useNavigate();
 
   const tenderType = [
@@ -158,10 +160,30 @@ const BasicDetailsForm = () => {
       });
   };
 
+  //get all bank details
+  const getAllBank = () => {
+    setIsLoading(true);
+    AxiosInterceptors.get(`${api_getActiveBank}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setBankData(response?.data?.data);
+        } else {
+          // toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
     setReferenceNo(refNo);
     getApplicationDetail(refNo);
+    getAllBank();
   }, []);
 
   return (
@@ -430,9 +452,11 @@ const BasicDetailsForm = () => {
                               value={values.onlinePyment_mode}
                             >
                               <option selected>Choose a Bank</option>
-                              <option value='US'>Bank Of India</option>
-                              <option value='CA'>State Bank Of India</option>
-                              <option value='FR'>Canara Bank</option>
+                              {bankData?.map((data, index) => (
+                                <option key={index} value={data.id}>
+                                  {data.name}
+                                </option>
+                              ))}
                             </select>
                             {errors.onlinePyment_mode &&
                             touched.onlinePyment_mode ? (
