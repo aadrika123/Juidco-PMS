@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {  useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 import toast from "react-hot-toast";
 import { FaEdit } from "react-icons/fa";
@@ -13,16 +13,18 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FormControlLabel, Switch } from "@mui/material";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 
-
 export default function CategoryMaster() {
-  const { addButtonColor } = ThemeStyleTanker();
-  const { api_itemBrand, api_itemBrandNew, api_brandStatusUpdate,api_itemBrandUpdate } =
-    ProjectApiList();
+  const {
+    api_itemBrand,
+    api_itemBrandNew,
+    api_brandStatusUpdate,
+    api_itemBrandUpdate,
+  } = ProjectApiList();
 
   const { id } = useParams();
   const { state } = useLocation();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // console.log(id)
 
@@ -30,8 +32,9 @@ export default function CategoryMaster() {
   const [newBrand, setNewBrand] = useState({ name: "" });
   const [brandData, setBrandData] = useState([]);
   const [brandId, setBrandId] = useState();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [modalAction, setModalAction] = useState("");
+  const [apiLoading, setApiLoading] = useState(false);
 
   //cancel button Handler
   const cancelHandler = () => {
@@ -42,12 +45,12 @@ export default function CategoryMaster() {
     {
       Header: "Brand Id",
       // accessor: "id",
-      Cell: ({ cell }) => <div className="pr-2">{cell.row.values.id}</div>,
+      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.id}</div>,
     },
     {
       Header: "Brand",
       accessor: "name",
-      Cell: ({ cell }) => <div className="pr-2">{cell.row.values.name} </div>,
+      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.name} </div>,
     },
     {
       Header: "Status",
@@ -58,7 +61,7 @@ export default function CategoryMaster() {
             <Switch
               sx={{ transitionDelay: "250ms" }}
               checked={cell.row.values.status}
-              name=""
+              name=''
               onChange={() =>
                 updateStatusHandler(cell.row.values.id, cell.row.values.name)
               }
@@ -67,11 +70,11 @@ export default function CategoryMaster() {
           }
           label={
             cell.row.values.status === true ? (
-              <p className="text-green-500 text-center py-1 text-sm delay-500">
+              <p className='text-green-500 text-center py-1 text-sm delay-500'>
                 Active
               </p>
             ) : (
-              <p className="text-red-500 text-center py-1 text-sm delay-500">
+              <p className='text-red-500 text-center py-1 text-sm delay-500'>
                 Inactive
               </p>
             )
@@ -85,7 +88,7 @@ export default function CategoryMaster() {
       Cell: ({ cell }) => (
         <>
           <button
-            className=""
+            className=''
             onClick={() => {
               setModalAction("edit");
               setOpenCreateModal(true);
@@ -117,11 +120,9 @@ export default function CategoryMaster() {
     }
   };
 
-  
-
   //fetching all subcategory by category id
   const fetchAllBrandsBySubCategory = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const response = await AxiosInterceptors.get(
         `${api_itemBrand}/${id}`,
@@ -132,19 +133,18 @@ export default function CategoryMaster() {
       console.log("error in brands master", error);
       toast.error(error?.response?.data?.message);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-
-
   //creating new brand function
   const createNewBrandHandler = async () => {
+    setApiLoading(true);
+
     if (newBrand?.name === "") {
       toast.error("Brand name is required");
       return;
     }
-    setOpenCreateModal(false);
 
     //api call with id receiving from category table
     try {
@@ -154,6 +154,7 @@ export default function CategoryMaster() {
         ApiHeader()
       );
       if (response?.data?.status) {
+        setOpenCreateModal(false);
         toast.success("Brand Name created successfully");
         fetchAllBrandsBySubCategory();
         setNewBrand({ name: "" });
@@ -161,6 +162,8 @@ export default function CategoryMaster() {
     } catch (error) {
       console.log(error, "error in creating brand");
       toast.error(error?.response?.data?.message || "Error in creating brand");
+    } finally {
+      setApiLoading(false);
     }
   };
 
@@ -176,7 +179,7 @@ export default function CategoryMaster() {
     try {
       const response = await AxiosInterceptors.post(
         api_brandStatusUpdate,
-        {  id },
+        { id },
         ApiHeader()
       );
       if (response?.data?.status) {
@@ -191,20 +194,24 @@ export default function CategoryMaster() {
 
   //updating name of category
   const updateBrandHandler = async () => {
-    setOpenCreateModal(false);
+    setApiLoading(true);
+
     try {
       const response = await AxiosInterceptors.post(
         api_itemBrandUpdate,
-        { ...newBrand, id:brandId, subcategory: id },
+        { ...newBrand, id: brandId, subcategory: id },
         ApiHeader()
       );
       if (response?.data?.status) {
+        setOpenCreateModal(false);
         toast.success(`Brand updated successfully`);
         fetchAllBrandsBySubCategory();
       }
     } catch (error) {
       console.log(error, "error in updating brand");
       toast.error(error?.response?.data?.message || "Error in updating Brand");
+    } finally {
+      setApiLoading(false);
     }
   };
 
@@ -215,36 +222,45 @@ export default function CategoryMaster() {
   return (
     <>
       <TitleBar titleBarVisibility={true} titleText={"Brand Master"} />
-      <h1 className=" text-indigo-900 pl-4 flex">
-        Category Master <MdOutlineKeyboardDoubleArrowRight className='m-1 text-[1rem]' /> <span className="cursor-pointer hover:underline" onClick={()=>navigate(-1)}>Sub Category Master</span> <MdOutlineKeyboardDoubleArrowRight className='m-1 text-[1rem]' />  <span className="font-semibold">Brand Master</span> 
+      <h1 className=' text-indigo-900 pl-4 flex'>
+        Category Master{" "}
+        <MdOutlineKeyboardDoubleArrowRight className='m-1 text-[1rem]' />{" "}
+        <span
+          className='cursor-pointer hover:underline'
+          onClick={() => navigate(-1)}
+        >
+          Sub Category Master
+        </span>{" "}
+        <MdOutlineKeyboardDoubleArrowRight className='m-1 text-[1rem]' />{" "}
+        <span className='font-semibold'>Brand Master</span>
       </h1>
 
       {/* master table */}
-      <div className="bg-white p-8 rounded-md m-4 border border-blue-500">
-
-        <div className="flex justify-between m-4">
-        <h1 className="text-xl font-semibold text-indigo-900">
-          {state || "Brand"} Master
-        </h1>
-        <button
-          className={`bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right`}
-          onClick={() => {
-            setModalAction("add");
-            setOpenCreateModal(true);
-          }}
-        >
-          <IoMdAdd className='m-1 text-[1rem]' />
-          Create Brand
-        </button>
-      </div>
+      <div className='bg-white p-8 rounded-md m-4 border border-blue-500'>
+        <div className='flex justify-between m-4'>
+          <h1 className='text-xl font-semibold text-indigo-900'>
+            {state || "Brand"} Master
+          </h1>
+          <button
+            className={`bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right`}
+            onClick={() => {
+              setModalAction("add");
+              setOpenCreateModal(true);
+            }}
+          >
+            <IoMdAdd className='m-1 text-[1rem]' />
+            Create Brand
+          </button>
+        </div>
         <MasterTable
-          loading={loading}
+          isLoading={isLoading}
           // tableViewLabel={"View Brands"}
           handleOpen={() => setOpenCreateModal(true)}
           open={openCreateModal}
           data={brandData}
           columns={columns}
           fetchedData={brandData}
+          updateLoader={apiLoading}
         />
       </div>
 
@@ -263,6 +279,7 @@ export default function CategoryMaster() {
         onClose={cancelHandler}
         page={modalAction}
         updateHandler={updateBrandHandler}
+        loadingState={apiLoading}
       />
     </>
   );

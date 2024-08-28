@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from "react";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import { useFormik } from "formik";
 import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
-import img from "@/Components/assets/page.pdf";
 import { useLocation, useNavigate } from "react-router-dom";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -456,7 +455,7 @@ const BiddingType = () => {
                     Docement Uploaded by Bidder{" "}
                   </p>
                 </div>
-                <div className='p-[22px] border border-gray-00'>
+                <div className='p-[18px] border border-gray-00'>
                   <h1>Criteria Details </h1>
                   <p className='text-sm text-gray-400'>
                     Criteria For{" "}
@@ -512,7 +511,7 @@ const BiddingType = () => {
                   <div className='bg-white w-full'>
                     <div className='p-7 border-t border-gray-100 text-center'>
                       <h1
-                        className='border border-[#4338ca] rounded-full text-xs hover:bg-[#4338ca] cursor-pointer hover:text-white py-2'
+                        className='border whitespace-nowrap border-[#4338ca] rounded-full text-xs hover:bg-[#4338ca] cursor-pointer hover:text-white py-2'
                         onClick={() => {
                           imageHandler(bidder?.id);
                           // setImageModal(true);
@@ -523,7 +522,7 @@ const BiddingType = () => {
                     </div>
 
                     <div className='p-7 border-t border-gray-100 text-center'>
-                      <h1 className='text-2xl font-bold text-center capitalize'>
+                      <h1 className=' font-semibold text-center capitalize whitespace-nowrap'>
                         {bidder?.name}{" "}
                       </h1>
                     </div>

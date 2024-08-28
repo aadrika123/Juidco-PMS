@@ -407,6 +407,7 @@ const ViewReceivedInvtById = () => {
           setBrandName("");
           setProcurement_stock_id("");
           setProduct([{}]);
+          window.location.reload();
         } else {
           toast.error("Error while Adding the products");
           seterroState(true);
