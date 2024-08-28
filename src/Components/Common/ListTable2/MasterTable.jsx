@@ -186,6 +186,23 @@ export default function MasterTable({
         onClose={() => setOpenCreateModal(false)}
         page={"edit"}
       />
+
+      {/* create Bank modal */}
+      {/* <CreateModalCommon
+        handleClose={() => setOpenCreateModal(false)}
+        label={"Bank"}
+        heading={"Edit Bank Details"}
+        nameStatus={"status"}
+        onChange={changeHandler}
+        open={openCreateModal}
+        placeholder={"Edit "}
+        createNewHandler={createNewBankHandler}
+        onClose={() => setOpenCreateModal(false)}
+        page={"edit"}
+        updateHandler={updateBankHandler}
+        loadingState={apiLoading}
+        fields={modalData}
+      /> */}
     </>
   );
 }

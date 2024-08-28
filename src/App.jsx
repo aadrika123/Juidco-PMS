@@ -153,7 +153,7 @@ function App() {
     { path: "/brandMaster/:id", element: <BrandMaster /> },
     { path: "/unitMaster", element: <UnitMaster /> },
     { path: "/supplierMaster", element: <SupplierMaster /> },
-    // { path: "/bankMaster", element: <BankMaster /> },
+    { path: "/bankMaster", element: <BankMaster /> },
 
     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 
