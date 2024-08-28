@@ -22,6 +22,7 @@ export default function PreviewBoqSummary() {
   const navigate = useNavigate();
   const { titleBarVisibility, setReferenceNo } = useContext(contextVar);
 
+  console.log(state, "statet");
   // const { payload } = state;
   const summaryData = state;
   const { api_postForwardAndCreateBoq, api_postUpdatedBoq } = ProjectApiList();

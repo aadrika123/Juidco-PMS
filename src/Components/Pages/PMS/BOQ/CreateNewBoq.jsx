@@ -215,9 +215,10 @@ export default function CreateNewBoq() {
         ...data,
         remark: data?.id === procId ? e.target.value : data?.remark,
       }));
+
       return {
         ...prev,
-        procurement: updatedProcurement,
+        procurement_stocks: updatedProcurement,
         img: imageDoc,
       };
     });
@@ -372,6 +373,7 @@ export default function CreateNewBoq() {
           };
         }
       );
+      console.log(updatedGstValue, "updatedGstValue");
 
       setPayload((prev) => ({
         ...prev,

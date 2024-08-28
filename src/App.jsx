@@ -65,6 +65,8 @@ import SubCategoryMaster from "./Components/Pages/PMS/MasterTable/SubCategoryMas
 import BrandMaster from "./Components/Pages/PMS/MasterTable/BrandMaster";
 import UnitMaster from "./Components/Pages/PMS/MasterTable/UnitMaster";
 import SupplierMaster from "./Components/Pages/PMS/MasterTable/SupplierMaster";
+import BankMaster from "./Components/Pages/PMS/MasterTable/BankMaster";
+
 import ViewLevel1Details from "./Components/Pages/PMS/BOQ/level1/ViewLevel1Details";
 import BoqLeveloneTab from "./Components/Pages/PMS/BOQ/level1/BoqLeveloneTab";
 import ViewLevel2BoqDetails from "./Components/Pages/PMS/BOQ/level2/ViewLevel2BoqDetails";
@@ -151,6 +153,7 @@ function App() {
     { path: "/brandMaster/:id", element: <BrandMaster /> },
     { path: "/unitMaster", element: <UnitMaster /> },
     { path: "/supplierMaster", element: <SupplierMaster /> },
+    // { path: "/bankMaster", element: <BankMaster /> },
 
     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 

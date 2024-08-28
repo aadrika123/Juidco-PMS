@@ -465,7 +465,7 @@ function AddPreProcurement() {
                             {items?.name}
                           </option>
                         ))}
-                      <option>others</option>
+                      {/* <option>others</option> */}
                     </select>
                     <p className='text-red-500 text-xs '>
                       {formik.touched.itemCategory && formik.errors.itemCategory
@@ -519,7 +519,7 @@ function AddPreProcurement() {
                               {items?.subcategory?.name} ({items?.description})
                             </option>
                           ))}
-                        <option>others</option>
+                        {/* <option>others</option> */}
                       </select>
                       {/* <p className='text-red-500 text-xs '>
                         {formik.touched.itemCategory &&
@@ -559,7 +559,7 @@ function AddPreProcurement() {
                               </option>
                             )
                           )}
-                        <option>others</option>
+                        {/* <option>others</option> */}
                       </select>
                       {/* <p className='text-red-500 text-xs '>
                         {formik.touched.itemCategory &&

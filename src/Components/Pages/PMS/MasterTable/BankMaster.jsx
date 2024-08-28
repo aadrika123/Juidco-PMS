@@ -11,21 +11,28 @@ import toast from "react-hot-toast";
 import { FaEdit } from "react-icons/fa";
 import { FormControlLabel, Switch } from "@mui/material";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
+import CreateModalCommon from "./components/CreateModalCommon";
 
-export default function CategoryMaster() {
+export default function BankMaster() {
   const {
     api_itemCategory,
     api_categoryStatusUpdate,
     api_itemCategoryUpdate,
     api_postItemCategory,
+    api_getBank,
   } = ProjectApiList();
   const navigate = useNavigate();
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
-  const [newCategory, setNewCategory] = useState({ name: "" });
+  const [newCategory, setNewCategory] = useState({
+    name: "",
+    branch: "",
+    address: "",
+    ifsc: "",
+  });
   const [categoryId, setCategoryId] = useState();
   const [newCategoryUpdate, setNewCategoryUpdate] = useState({});
-  const [categoryData, setCategoryData] = useState([]);
+  const [banksData, setBanksData] = useState([]);
   const [activeStatus, setActiveStatus] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apiLoading, setApiLoading] = useState(false);
@@ -51,15 +58,12 @@ export default function CategoryMaster() {
   };
 
   //getting all categories (active and inactive)
-  const fetchAllCategory = async () => {
+  const fetchAllBank = async () => {
     setIsLoading(true);
     try {
-      const response = await AxiosInterceptors.get(
-        api_itemCategory,
-        ApiHeader()
-      );
-      // setCategoryData(response?.data?.data?.data);
-      setCategoryData(response?.data?.data);
+      const response = await AxiosInterceptors.get(api_getBank, ApiHeader());
+      // setBanksData(response?.data?.data?.data);
+      setBanksData(response?.data?.data);
     } catch (error) {
       console.log("error in category master", error);
       toast.error(error.response.data.message);
@@ -86,7 +90,7 @@ export default function CategoryMaster() {
       if (response?.data?.status) {
         setOpenCreateModal(false);
         toast.success("New Category is created successfully");
-        fetchAllCategory();
+        fetchAllBank();
         setNewCategory({ name: "" });
       }
     } catch (error) {
@@ -133,7 +137,7 @@ export default function CategoryMaster() {
       );
       if (response?.data?.status) {
         toast.success(`${catName} Category Status updated successfully`);
-        fetchAllCategory();
+        fetchAllBank();
       }
     } catch (error) {
       console.log(error, "error in creating new category");
@@ -153,7 +157,7 @@ export default function CategoryMaster() {
       if (response?.data?.status) {
         setOpenCreateModal(false);
         toast.success(`Category updated successfully`);
-        fetchAllCategory();
+        fetchAllBank();
       }
     } catch (error) {
       console.log(error, "error in updating category");
@@ -172,24 +176,14 @@ export default function CategoryMaster() {
       Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.id}</div>,
     },
     {
-      Header: "Category",
+      Header: "Bank Name",
       accessor: "name",
       Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.name} </div>,
     },
     {
-      Header: "Sub Category",
-      Cell: ({ cell }) => (
-        <div
-          className='pr-2 text-indigo-700 font-medium underline cursor-pointer hover:text-indigo-400'
-          onClick={() =>
-            navigate(`/subCategoryMaster/${cell.row.values.id}`, {
-              state: cell.row.values.name,
-            })
-          }
-        >
-          View Sub Categories
-        </div>
-      ),
+      Header: "Branch",
+      accessor: "name1",
+      Cell: ({ cell }) => <div className='pr-2'>{cell.row.values.name} </div>,
     },
     {
       Header: "Status",
@@ -240,27 +234,28 @@ export default function CategoryMaster() {
     },
   ];
 
+  const modalData = [
+    // {label: "Create Bank Name", value:}
+  ];
+
   useEffect(() => {
-    fetchAllCategory();
+    fetchAllBank();
   }, []);
 
   return (
     <>
-      <TitleBar titleBarVisibility={true} titleText={"Category Master"} />
+      <TitleBar titleBarVisibility={true} titleText={"Bank Master"} />
 
-      <h1 className='  pl-4 flex'>
-        <span className='font-semibold text-indigo-900'>Category Master</span>{" "}
-        <MdOutlineKeyboardDoubleArrowRight className='m-1 text-[1rem] text-gray-400' />
-        <span className=' text-gray-400'>Sub Category Master</span>{" "}
-        <MdOutlineKeyboardDoubleArrowRight className='m-1 text-[1rem] text-gray-400' />{" "}
-        <span className=' text-gray-400'>Brand Master</span>
-      </h1>
+      {/* <h1 className='  pl-4 flex'>
+        <span className='font-semibold text-indigo-900'>Bank Master</span>{" "}
+        
+      </h1> */}
 
       {/* master table */}
       <div className='bg-white p-8 rounded-md m-4 border border-blue-500'>
         <div className='flex justify-between m-4'>
           <h1 className='text-xl font-semibold text-indigo-900 '>
-            Category Master List
+            Bank Master List
           </h1>
           <button
             className={`bg-[#4338CA] mb-3 mr-5 py-2.5 px-4 text-white rounded hover:bg-white hover:text-[#4338ca] border hover:border-[#4338ca] flex float-right `}
@@ -270,7 +265,7 @@ export default function CategoryMaster() {
             }}
           >
             <IoMdAdd className='m-1 text-[1rem]' />
-            Create Category
+            Add New Bank
           </button>
         </div>
 
@@ -280,25 +275,43 @@ export default function CategoryMaster() {
           handleOpen={() => setOpenCreateModal(true)}
           open={openCreateModal}
           tableViewLabel={"View Sub Categories"}
-          data={categoryData}
+          data={banksData}
           columns={columns}
-          fetchedData={categoryData}
+          fetchedData={banksData}
           updatedState={setNewCategoryUpdate}
           activeStatus={setActiveStatus}
           updateLoader={apiLoading}
         />
       </div>
 
-      {/* create category modal */}
+      {/* create Bank modal
       <CreateModal
         handleClose={() => setOpenCreateModal(false)}
-        label={"Category"}
-        heading={"Create Category"}
+        label={"Bank"}
+        heading={"Add new Bank"}
         name={"name"}
         nameStatus={"status"}
         onChange={changeHandler}
         open={openCreateModal}
-        placeholder={"Create category"}
+        placeholder={""}
+        value={newCategory.name}
+        createNewHandler={createNewCategoryHandler}
+        onClose={cancelHandler}
+        page={modalAction}
+        updateHandler={updateCategoryHandler}
+        loadingState={apiLoading}
+      /> */}
+
+      {/* create Bank modal */}
+      <CreateModalCommon
+        handleClose={() => setOpenCreateModal(false)}
+        label={"Bank"}
+        heading={"Add new Bank"}
+        name={"name"}
+        nameStatus={"status"}
+        onChange={changeHandler}
+        open={openCreateModal}
+        placeholder={""}
         value={newCategory.name}
         createNewHandler={createNewCategoryHandler}
         onClose={cancelHandler}
