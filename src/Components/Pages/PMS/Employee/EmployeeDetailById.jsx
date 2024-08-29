@@ -269,10 +269,8 @@ const EmployeeDetailById = () => {
         stockHandNo={applicationFullData?.stock_handover_no}
         setServiceRequestModal={setServiceRequestModal}
         service={service}
-          // confirmationHandler={warrantyClaimHandler}
-          // handleCancel={handleCancel}
-          // message={'Are you sure you want to "Claim Warranty" ?'}
-          //   sideMessage={'By clicking your data will proceed'}
+        onSumbit={""}
+
         />
       </>
     );
@@ -376,13 +374,13 @@ const EmployeeDetailById = () => {
           >
             <div className="">
               <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
-                View Inventory Request{" "}
+                View Stock Request{" "}
               </h2>
             </div>
             <div className="flex justify-between">
               <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
                 <h1 className="font-bold">
-                  Inventory Request No <span className="text-black">:</span>
+                  Stock Handover No <span className="text-black">:</span>
                   <span className="font-light">
                     {" "}
                     {nullToNA(applicationFullData?.stock_handover_no)}
@@ -390,7 +388,7 @@ const EmployeeDetailById = () => {
                 </h1>
               </div>
             </div>
-            <div className="grid md:grid-cols-4 gap-4 ml-8">
+            <div className="grid md:grid-cols-4 gap-4 ml-8 pb-5">
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold">Employee Id</div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
@@ -404,22 +402,6 @@ const EmployeeDetailById = () => {
                 </div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
                   {nullToNA(applicationFullData?.emp_name)}
-                </div>
-              </div>
-
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Brand</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.brand?.name)}
-                </div>
-              </div>
-
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-semibold ">
-                  Sub Categories
-                </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.inventory?.subcategory?.name)}
                 </div>
               </div>
 
@@ -439,6 +421,68 @@ const EmployeeDetailById = () => {
                 </div>
               </div>
             </div>
+              
+
+            {applicationFullData?.stock_req_product?.length > 0 ? 
+              <h1 className="pl-8 font-semibold underline text-blue-950">Products:</h1>
+            :
+            <>
+            <div className="grid md:grid-cols-4 gap-4 ml-8">
+            <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">Category</div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.inventory?.category?.name)}
+                </div>
+              </div>
+
+              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-semibold ">
+                  Sub Categories
+                </div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.inventory?.subcategory?.name)}
+                </div>
+              </div>
+            </div>
+            </>}
+              {applicationFullData?.stock_req_product?.map((data,index)=>(
+            <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-4 rounded">
+              
+              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">Serial No</div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(data?.serial_no)}
+                </div>
+              </div>
+             
+              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">Category</div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.inventory?.category?.name)}
+                </div>
+              </div>
+
+              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-semibold ">
+                  Sub Categories
+                </div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.inventory?.subcategory?.name)}
+                </div>
+              </div>
+
+              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(data?.quantity)}
+                </div>
+              </div>
+
+            </div>
+            ))}
+
+
+
             <div className="p-5 pl-8">
               <h1 className="font-bold ">Description</h1>
               <p className=" pt-2">
