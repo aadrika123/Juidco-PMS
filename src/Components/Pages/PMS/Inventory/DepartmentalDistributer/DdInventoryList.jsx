@@ -10,7 +10,7 @@
 import React, { useState } from "react";
 
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
 function InventoryProposalList(props) {
@@ -71,18 +71,18 @@ function InventoryProposalList(props) {
       ),
     },
     {
-      Header: <p className=''>status</p>,
+      Header: <p className='text-center'>Status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2 w-[12rem]'>
           {cell.row.values.status == -1 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Returned
+              Returned from Department Admin
             </p>
           )}
           {cell.row.values.status == -2 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Rejected
+              Rejected from Department Admin
             </p>
           )}
           {cell.row.values.status == 0 && (

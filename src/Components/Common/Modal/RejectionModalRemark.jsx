@@ -57,12 +57,9 @@ function RejectionModalRemark({
                 <button
                   className={`bg-white border-blue-900 border text-blue-950 text-sm px-8 py-2 hover:bg-[#4338CA] hover:text-white  rounded leading-5 shadow-lg`}
                   onClick={handleCancel}
+                  disabled={loadingState}
                 >
-                  {loadingState ? (
-                    <div className={`${loading}`}></div>
-                  ) : (
-                    "Cancel"
-                  )}
+                  Cancel
                 </button>
               </div>
 

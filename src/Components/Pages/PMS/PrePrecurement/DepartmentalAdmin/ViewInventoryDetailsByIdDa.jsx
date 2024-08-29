@@ -25,32 +25,31 @@ import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
-import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import { useReactToPrint } from "react-to-print";
 import StockRequestTimeline from "@/Components/Common/Timeline/StockRequestTimeline";
+import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
   const notesheetRef = useRef();
 
   const { id, page } = useParams();
-
-  const [erroState, seterroState] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [applicationFullData, setapplicationFullData] = useState();
-  const [tableData, setTableData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
-  const [remark, setRemark] = useState("");
+  const [returnModal, setReturnModal] = useState(false);
+  const [remark, setRemark] = useState({ remark: "" });
   const [imageDoc, setImageDoc] = useState();
   const [preview, setPreview] = useState();
 
   const {
     api_getStockRequetById,
-    api_postBackToSR,
+    api_postBackToDd,
     api_postForwardtoAcc,
     api_postRejectTender,
+    api_postRejectStockReq,
     api_forwardStockReqToI,
   } = ProjectApiList();
 
@@ -74,7 +73,6 @@ const ViewInventoryDetailsById = (props) => {
     setisLoading(true);
 
     let url;
-    seterroState(false);
 
     if (page == "inbox") {
       url = api_getStockRequetById;
@@ -87,49 +85,35 @@ const ViewInventoryDetailsById = (props) => {
       .then(function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
-          setTableData(response?.data?.data?.tran_dtls);
         } else {
           // toast.error("Error while getting details...");
-          // seterroState(true);
         }
       })
       .catch(function (error) {
         console.log("==2 details by id error...", error);
         toast.error(error?.response?.data?.message);
-        seterroState(true);
       })
       .finally(() => {
         setisLoading(false);
       });
   };
-
-  const postBackToSRModal = () => {
-    setIsModalOpen(true);
-  };
-  const postReleaseTenderModal = () => {
-    setIsModalOpen2(true);
-  };
   const postRejectTenderModal = () => {
     setIsModalOpen3(true);
   };
 
-  const postRejectTender = () => {
+  const rejectStockReqHandler = () => {
     setisLoading(true);
 
     AxiosInterceptors.post(
-      `${api_postRejectTender}`,
-      { preProcurement: [id], remark: remark },
+      `${api_postRejectStockReq}`,
+      { stock_handover_no: [id], remark: remark.remark },
       ApiHeader()
     )
       .then(function (response) {
         if (response?.data?.status == true) {
-          toast.success(response?.data?.message, "success");
-          setTimeout(() => {
-            navigate("/da-inventory-proposal");
-          }, 1000);
+          toast.success(response?.data?.message);
+          navigate("/da-inventory-proposal");
         } else {
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
           toast(response?.data?.message, "error");
         }
       })
@@ -139,27 +123,23 @@ const ViewInventoryDetailsById = (props) => {
       })
       .finally(() => {
         setisLoading(false);
+        setIsModalOpen3(false);
       });
   };
-  const postBackToSR = () => {
+
+  const backToDdHandler = () => {
     setisLoading(true);
 
     AxiosInterceptors.post(
-      `${api_postBackToSR}`,
-      { preProcurement: [id], remark: remark },
+      `${api_postBackToDd}`,
+      { stock_handover_no: [id], remark: remark.remark },
       ApiHeader()
     )
       .then(function (response) {
-        console.log("Forwarded to DA", response?.data);
-        console.log(response?.data?.st, "upper Status");
         if (response?.data?.status == true) {
-          toast.success(response?.data?.message, "success");
-          setTimeout(() => {
-            navigate("/da-inventory-proposal");
-          }, 1000);
+          toast.success(response?.data?.message);
+          navigate("/da-inventory-proposal");
         } else {
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
           toast(response?.data?.message, "error");
         }
       })
@@ -178,8 +158,6 @@ const ViewInventoryDetailsById = (props) => {
     let formData = new FormData();
     formData.append("img", imageDoc);
     formData.append("preProcurement", JSON.stringify([id]));
-
-    // seterroState(false);
 
     AxiosInterceptors.post(`${api_postForwardtoAcc}`, formData, ApiHeader2())
       .then(function (response) {
@@ -208,8 +186,6 @@ const ViewInventoryDetailsById = (props) => {
   const forwardToIa = () => {
     setisLoading(true);
 
-    // seterroState(false);
-
     AxiosInterceptors.post(
       `${api_forwardStockReqToI}`,
       { stock_handover_no: [id] },
@@ -218,9 +194,7 @@ const ViewInventoryDetailsById = (props) => {
       .then(function (response) {
         if (response?.data?.status == true) {
           toast.success("Successfully forwarded to Inventory Admin");
-          setTimeout(() => {
-            navigate("/da-inventory-proposal");
-          }, 200);
+          navigate("/da-inventory-proposal");
         } else {
           // toast.error(response?.data?.mmessage || "something went wrong");
           // navigate("/da-inventory-proposal");
@@ -241,10 +215,12 @@ const ViewInventoryDetailsById = (props) => {
   if (isModalOpen3) {
     return (
       <>
-        <DaRejectModal
-          postRejectTender={postRejectTender}
-          setRemark={setRemark}
-          setIsModalOpen3={setIsModalOpen3}
+        <RejectionModalRemark
+          confirmationHandler={rejectStockReqHandler}
+          handleCancel={() => setIsModalOpen3(true)}
+          loadingState={isLoading}
+          message={"Are you sure you want to Reject this Stock Request ?"}
+          setData={setRemark}
         />
       </>
     );
@@ -253,7 +229,7 @@ const ViewInventoryDetailsById = (props) => {
     return (
       <>
         <StockReceiverModal
-          postBackToSR={postBackToSR}
+          // postBackToSR={postBackToSR}
           forwardToIa={forwardToIa}
           setIsModalOpen={setIsModalOpen}
         />
@@ -267,6 +243,22 @@ const ViewInventoryDetailsById = (props) => {
         <ReleaseTenderModal
           postReleaseTender={postReleaseTender}
           setIsModalOpen2={setIsModalOpen2}
+        />
+      </>
+    );
+  }
+
+  if (returnModal) {
+    return (
+      <>
+        <RejectionModalRemark
+          confirmationHandler={backToDdHandler}
+          handleCancel={() => setReturnModal(true)}
+          loadingState={isLoading}
+          message={
+            "Are you sure you want to return this Stock Request to Departmental Distributor ?"
+          }
+          setData={setRemark}
         />
       </>
     );
@@ -449,58 +441,48 @@ const ViewInventoryDetailsById = (props) => {
             </button>
           )}
 
-          {page == "inbox" && (
-            <button
-              className={buttonStyle}
-              onClick={() => {
-                navigate(`/da-edit-pre-procurement/${id}`);
-              }}
-            >
-              Edit
-            </button>
-          )}
+          {page == "inbox" &&
+            (applicationFullData?.status === 2 ||
+              applicationFullData?.status === 1 ||
+              applicationFullData?.status === 81) && (
+              <button
+                className={buttonStyle}
+                onClick={() => {
+                  navigate(`/da-edit-pre-procurement/${id}`);
+                }}
+              >
+                Edit
+              </button>
+            )}
 
-          <button
-            className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
-            onClick={postRejectTenderModal}
-          >
-            Reject
-          </button>
+          {page == "inbox" &&
+            (applicationFullData?.status === 2 ||
+              applicationFullData?.status === 1 ||
+              applicationFullData?.status === 81) && (
+              <button
+                className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
+                onClick={postRejectTenderModal}
+              >
+                Reject
+              </button>
+            )}
+
+          {page == "inbox" &&
+            (applicationFullData?.status === 2 ||
+              applicationFullData?.status === 1 ||
+              applicationFullData?.status === 81) && (
+              <button
+                className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                onClick={() => setReturnModal(true)}
+              >
+                Back to Departmental Distributor
+              </button>
+            )}
 
           {page == "inbox" && (
             <>
-              {/* <button className={buttonStyle2}>Forward to Level II</button> */}
-
-              {/* <button
-                className={`px-3 p-2 text-white bg-[#0F921C]  hover:bg-green-800 rounded-md text-sm`}
-                onClick={postReleaseTenderModal}
-              >
-                Approve
-              </button> */}
-
-              {/* <button className={buttonStyle2} onClick={postReleaseTenderModal}>
-                Forward to Level II
-              </button> */}
-
               {page == "inbox" && applicationFullData?.status?.status < 70 && (
                 <>
-                  {/* <button className={buttonStyle2} onClick={postBackToSRModal}>
-                    Back To Stock Receiver
-                  </button> */}
-
-                  {/* <button
-                    className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex items-center'
-                    onClick={() =>
-                      navigate(`/create-boq`, {
-                        state: {
-                          procurement_no: [applicationFullData?.procurement_no],
-                        },
-                      })
-                    }
-                  >
-                    Prepare BOQ <MdArrowRightAlt className='text-2xl ml-2' />
-                  </button> */}
-
                   <div className='bg-[#0F921C] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-800'>
                     <FileButton
                       bg={"[#0F921C]"}
@@ -516,24 +498,17 @@ const ViewInventoryDetailsById = (props) => {
                 </>
               )}
 
-              {/* {page === "inbox" &&
-                applicationFullData?.status?.status == 70 && (
+              {page === "inbox" &&
+                (applicationFullData?.status === 2 ||
+                  applicationFullData?.status === 1 ||
+                  applicationFullData?.status === 81) && (
                   <button
-                    className={`bg-[#4478b7] hover:bg-blue-700 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                    className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                    onClick={() => setIsModalOpen(true)}
                   >
-                    Proceed to Pre-Tender
+                    Forward to Inventory Admin
                   </button>
-                )} */}
-
-              {page === "inbox" && (
-                <button
-                  className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                  // onClick={forwardToIa}
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  Forward to Inventory Admin
-                </button>
-              )}
+                )}
             </>
           )}
         </div>

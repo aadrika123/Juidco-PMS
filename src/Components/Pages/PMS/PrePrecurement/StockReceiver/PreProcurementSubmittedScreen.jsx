@@ -8,16 +8,13 @@
 //    DESCRIPTION - PreProcurementSubmittedScreen
 //////////////////////////////////////////////////////////////////////////////////////
 
-import React, { useState } from "react";
 import check from "@/Components/assets/check.svg";
-import { useNavigate } from "react-router-dom";
+import ThemeStyle from "@/Components/Common/ThemeStyle";
 
 function PreProcurementSubmittedScreen(props) {
-  const navigate = useNavigate();
-
+  const { loading } = ThemeStyle();
   const handleClick = () => {
     props?.submitForm();
-    props?.setIsModalOpen(false);
     // navigate(-1)
     // navigate(`/sr-viewInventoryDetailsById/${props.id}/${"inbox"}`, {
     //   replace: true,
@@ -43,7 +40,7 @@ function PreProcurementSubmittedScreen(props) {
           <div class=' flex-1'>
             <div class=''>
               <h3 class='text-xl  text-center  text-black font-openSans'>
-                Are you Sure you want to Save ?
+                Are you Sure you want to Create Procurement ?
               </h3>
             </div>
           </div>
@@ -62,18 +59,23 @@ function PreProcurementSubmittedScreen(props) {
                 <button
                   className={`bg-[#4338CA] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
                   onClick={handleClick}
+                  disabled={props?.loading}
                 >
-                  Continue
+                  {props?.loading ? (
+                    <div className={`${loading}`}></div>
+                  ) : (
+                    "Continue"
+                  )}
                 </button>
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <h1 className='text-center pt-5'>
                 <span className='text-red-600 text-xl'>*</span> By Clicking
                 Continue your data will be Processed
               </h1>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

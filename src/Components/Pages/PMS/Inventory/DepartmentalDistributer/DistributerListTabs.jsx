@@ -24,8 +24,7 @@ const DistributerListTabs = () => {
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { api_getDDSRInbox, api_getDDSROutbox, api_fetchStockList } =
-    ProjectApiList();
+  const { api_getDDSRInbox, api_getDDSROutbox } = ProjectApiList();
 
   return (
     <>

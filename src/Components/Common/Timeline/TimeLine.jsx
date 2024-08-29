@@ -35,7 +35,8 @@ export default function TimeLine({ status }) {
             status === 13 ||
             status === 20 ||
             status === 14 ||
-            status === 24) && (
+            status === 24 ||
+            status === 12) && (
             <MdKeyboardArrowRight
               color='black'
               size={26}
@@ -57,7 +58,9 @@ export default function TimeLine({ status }) {
             {(status === 1 ||
               status === 10 ||
               status === 13 ||
-              status === 21) && (
+              status === 21 ||
+              status === 24 ||
+              status === 12) && (
               <img
                 src={locationMan}
                 alt='locationTag'
@@ -115,24 +118,32 @@ export default function TimeLine({ status }) {
 
         {/* //completed or rejected bubble */}
         {/* //divider */}
-        {(status === 7 || status === -2 || status === 14 || status === 24) && (
+        {(status === 7 ||
+          status === -2 ||
+          status === 14 ||
+          status === 24 ||
+          status === 12) && (
           <div
             className={`h-[2px] ${
               status === 14 || status === 24
                 ? "bg-green-500"
-                : status === -2
+                : status === -2 || status === 12
                 ? "bg-red-500"
                 : ""
             }  w-[20%] relative flex justify-center items-center`}
           />
         )}
 
-        {(status === 7 || status === -2 || status === 14 || status === 24) && (
+        {(status === 7 ||
+          status === -2 ||
+          status === 14 ||
+          status === 24 ||
+          status === 12) && (
           <div
             className={`flex justify-center items-center ${
               status === 14 || status === 24
                 ? "bg-green-500"
-                : status === -2
+                : status === -2 || status === 12
                 ? "bg-red-500"
                 : ""
             } rounded-full w-10 h-10`}
@@ -140,7 +151,9 @@ export default function TimeLine({ status }) {
             {(status === 14 || status === 24) && (
               <FaCheck color='white' size={16} />
             )}
-            {status === -2 && <TiCancel color='white' size={16} />}
+            {(status === -2 || status === 12) && (
+              <TiCancel color='white' size={16} />
+            )}
           </div>
         )}
 
@@ -148,7 +161,7 @@ export default function TimeLine({ status }) {
           <p className='absolute -bottom-[48px] w-[100px] text-sm'>
             {status === 14 || status === 24
               ? "Approved"
-              : status === -2
+              : status === -2 || status === 12
               ? "Rejected"
               : ""}
           </p>

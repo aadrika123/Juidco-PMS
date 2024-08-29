@@ -5,7 +5,6 @@ import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import SuccessModal from "@/Components/Common/Modal/SuccessModal";
 import { nullToNA } from "@/Components/Common/PowerupFunctions";
-import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
@@ -49,7 +48,6 @@ const DDViewDetailbyId = () => {
 
   const confirmationHandler = () => {
     forwardToDA();
-    setConfModal(false);
   };
   const successHandler = () => {
     setSuccessModal(false);
@@ -102,6 +100,9 @@ const DDViewDetailbyId = () => {
       })
       .catch(function (err) {
         toast.error(err?.response?.data?.message);
+      })
+      .finally(() => {
+        setConfModal(false);
       });
   };
 
@@ -116,6 +117,7 @@ const DDViewDetailbyId = () => {
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
           message={"Are you sure you want to Forward to Departmental Admin?"}
+          loadingState={isLoading}
         />
       </>
     );
@@ -177,6 +179,18 @@ const DDViewDetailbyId = () => {
                   </span>
                 </h1>
               </div>
+
+              {applicationFullData?.remark && (
+                <div className='pr-4 pb-5 text-[1.2rem] text-[#4338CA]'>
+                  <h1 className='font-bold'>
+                    Remark <span className='text-black'>:</span>
+                    <span span className='text-md pt-2 font-light text-red-600'>
+                      {" "}
+                      {applicationFullData?.remark}
+                    </span>
+                  </h1>
+                </div>
+              )}
             </div>
 
 
@@ -309,7 +323,8 @@ const DDViewDetailbyId = () => {
               </button>
             </div>
 
-            {applicationFullData?.status == 0 && (
+            {(applicationFullData?.status == 0 ||
+              applicationFullData?.status == -1) && (
               <div className='space-x-3 flex items-end justify-center'>
                 {page == "inbox" && (
                   <button
