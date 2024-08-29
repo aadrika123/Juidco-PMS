@@ -1071,12 +1071,15 @@ const ViewReceivedInvtById = () => {
                                 >
                                   Add
                                 </button>
+                                {console.log(product)}
+
+                                {product?.length > 1 && 
                                 <button
                                   className={`${buttonStyle}`}
                                   onClick={removeField}
                                 >
                                   Remove
-                                </button>
+                                </button>}
 
                                 {/* </div> */}
                               </div>
