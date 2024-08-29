@@ -262,6 +262,9 @@ export default function ProjectApiList() {
 
     //master
     api_getBank: `${baseUrl}/api/pms/master/bank`,
+    api_getActiveBank: `${baseUrl}/api/pms/master/bank/active`,
+    api_updateBankStatus: `${baseUrl}/api/pms/master/bank/switch`,
+    api_updateBank: `${baseUrl}/api/pms/master/bank/update`,
   };
 
   return apiList;
