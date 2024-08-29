@@ -380,10 +380,10 @@ export default function CreateNewBoq() {
         procurement: updatedGstValue,
       }));
 
-      setApplicationData((prev) => ({
-        ...prev,
-        procurement_stocks: updatedGstValue,
-      }));
+      // setApplicationData((prev) => ({
+      //   ...prev,
+      //   procurement_stocks: updatedGstValue,
+      // }));
 
       estimatedAmountCalc(updatedGstValue);
     } else {
