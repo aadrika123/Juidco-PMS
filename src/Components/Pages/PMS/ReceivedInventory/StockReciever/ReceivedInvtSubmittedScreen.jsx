@@ -65,12 +65,12 @@ function ReceivedInvtSubmittedScreen(props) {
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <h1 className='text-center pt-5'>
                 <span className='text-red-600 text-xl'>*</span> By Clicking
                 Continue your data will be Processed
               </h1>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -83,7 +83,7 @@ export default function ImageDisplay({
         )}
       </div>
       <div className='mb-4 text-center'>
-        <p className='text-red-500 text-xs '>{imageDoc?.name}</p>
+        <p className='text-red-500 text-xs truncate'>{imageDoc?.name}</p>
       </div>
     </div>
   );

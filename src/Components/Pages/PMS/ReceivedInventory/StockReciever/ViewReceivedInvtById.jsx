@@ -34,6 +34,8 @@ import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
+import { IoMdAddCircleOutline } from "react-icons/io";
+
 
 const ViewReceivedInvtById = () => {
   const navigate = useNavigate();
@@ -99,7 +101,7 @@ const ViewReceivedInvtById = () => {
       url = api_fetchPostProcurementDetailSupplierbyId;
     }
     if (page == "outbox") {
-      url = api_fetchSrReceivedInvtListOutbox;
+      url = api_fetchPostProcurementDetailSupplierbyId;
     }
 
     AxiosInterceptors.get(`${url}/${id}`, ApiHeader())
@@ -142,7 +144,7 @@ const ViewReceivedInvtById = () => {
           setInventoryAddData(response?.data?.data);
           const sum =
             (response?.data?.data?.receiving?._sum?.received_quantity || 0) -
-            (response?.data?.data?.product[0]?.total_quantity || 0);
+            (response?.data?.data?.product?.total_quantity || 0);
           setTotSum(sum);
           setisLoading(false);
         } else {
@@ -407,7 +409,7 @@ const ViewReceivedInvtById = () => {
           setBrandName("");
           setProcurement_stock_id("");
           setProduct([{}]);
-          window.location.reload();
+          getApplicationDetail();
         } else {
           toast.error("Error while Adding the products");
           seterroState(true);
@@ -1066,19 +1068,19 @@ const ViewReceivedInvtById = () => {
                                 {/* <div className="px-4 w-full"> */}
 
                                 <button
-                                  className={`${buttonStyle2}`}
+                                  className={`${buttonStyle2} flex gap-2`}
                                   onClick={addField}
                                 >
-                                  Add
+                                  <IoMdAddCircleOutline className="text-xl" /> rows
+
                                 </button>
-                                {console.log(product)}
 
                                 {product?.length > 1 && 
                                 <button
                                   className={`${buttonStyle}`}
                                   onClick={removeField}
                                 >
-                                  Remove
+                                  remove
                                 </button>}
 
                                 {/* </div> */}
@@ -1316,7 +1318,7 @@ const ViewReceivedInvtById = () => {
 
                           <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
                             {/* <div className=''> */}
-                            <div className="w-20 mt-5">
+                            {/* <div className="w-20 mt-5">
                               <ImageDisplay
                                 preview={preview}
                                 imageDoc={imageDoc}
@@ -1325,11 +1327,13 @@ const ViewReceivedInvtById = () => {
                                 // disabled
                                 width={["80px"]}
                               />
-                            </div>
+                            </div> */}
                             {/* </div> */}
                           </div>
 
-                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                          <div className="form-group flex justify-between flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                          <div>
+
                             <input
                               className="ml-4"
                               type="checkbox"
@@ -1340,6 +1344,19 @@ const ViewReceivedInvtById = () => {
                             >
                               Warranty claim
                             </label>
+                          </div>
+                          <div className="">
+                          <div className="w-20 mr-5 ">
+                              <ImageDisplay
+                                preview={preview}
+                                imageDoc={imageDoc}
+                                alt={"Dead Stock Image"}
+                                showPreview={"hidden"}
+                                // disabled
+                                width={["80px"]}
+                              />
+                            </div>
+                          </div>
                           </div>
 
                           <div className="form-group flex-shrink max-w-full px-8 w-full md:w-full mb-4">
