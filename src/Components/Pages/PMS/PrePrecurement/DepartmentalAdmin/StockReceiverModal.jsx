@@ -8,13 +8,9 @@
 //    DESCRIPTION - StockReceiverModal
 //////////////////////////////////////////////////////////////////////////////////////
 
-import React, { useState } from "react";
 import cancel from "@/Components/assets/cancel.svg";
-import { useNavigate } from "react-router-dom";
 
 function StockReceiverModal(props) {
-  const navigate = useNavigate();
-
   const handleClick = () => {
     props?.forwardToIa();
     // navigate(`/sr-inventory-proposal`);

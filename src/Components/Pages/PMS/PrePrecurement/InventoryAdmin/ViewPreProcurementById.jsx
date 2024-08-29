@@ -36,10 +36,8 @@ const ViewPreProcurementById = () => {
 
   const { id, page } = useParams();
 
-  const [erroState, seterroState] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [applicationFullData, setapplicationFullData] = useState();
-  const [tableData, setTableData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenlvl2, setIsModalOpenlvl2] = useState(false);
   const [isModalOpenlAprvl1, setisModalOpenlAprvl1] = useState(false);
@@ -89,7 +87,6 @@ const ViewPreProcurementById = () => {
     setisLoading(true);
 
     let url;
-    seterroState(false);
 
     if (page == "inbox") {
       url = api_getStockRequetById;
@@ -102,7 +99,6 @@ const ViewPreProcurementById = () => {
       .then(function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
-          setTableData(response?.data?.data?.tran_dtls);
           setProcNo(response?.data?.data?.procurement_no);
           setData((prev) => ({
             ...prev,
@@ -490,7 +486,6 @@ const ViewPreProcurementById = () => {
           handleCancel={handleCancel}
           message={'Are you sure want to " Reject " ?'}
           loadingState={isLoading}
-
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
@@ -504,7 +499,7 @@ const ViewPreProcurementById = () => {
         <RejectionModalRemark
           confirmationHandler={confirmationHandlerBacktoIA}
           handleCancel={handleCancel}
-          message={"Are you sure, want to send back to IA? "}
+          message={"Are you sure you want to send back to Inventory Admin? "}
           setData={setData}
           loadingState={isLoading}
         />

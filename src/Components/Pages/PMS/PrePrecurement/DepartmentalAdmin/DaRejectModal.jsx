@@ -42,7 +42,7 @@ function DaRejectModal(props) {
           <div class=' flex-1'>
             <div class=''>
               <h3 class='text-xl  text-center  text-black font-openSans'>
-                Sure to "Reject the Tender"
+                {props?.heading || "Sure to Reject the Tender"}
               </h3>
             </div>
           </div>
@@ -78,12 +78,12 @@ function DaRejectModal(props) {
               </div>
             </div>
 
-            <div>
+            {/* <div>
               <h1 className='text-center pt-5'>
                 <span className='text-red-600 text-xl'>*</span> By Clicking
                 Continue your data will be Processed
               </h1>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -299,6 +299,7 @@ function AddPreProcurement() {
       })
       .finally(() => {
         setisLoading(false);
+        setIsModalOpen(false);
       });
   };
 
@@ -308,11 +309,6 @@ function AddPreProcurement() {
   };
 
   useEffect(() => {
-    const ulbId = localStorage.getItem("ulbId");
-    setulbId(ulbId);
-    fetchCategory();
-    fetchUnits();
-
     calculateTotalRate();
   }, [ulbData, formik.values.quantity, formik.values.rate]);
 
@@ -320,14 +316,12 @@ function AddPreProcurement() {
     page == "edit" && getApplicationDetail();
   }, []);
 
-  if (isLoading) {
-    return (
-      <>
-        <BarLoader />
-        <div className='min-h-screen'></div>
-      </>
-    );
-  }
+  useEffect(() => {
+    const ulbId = localStorage.getItem("ulbId");
+    setulbId(ulbId);
+    fetchCategory();
+    fetchUnits();
+  }, []);
 
   const getBrandName = (id) => {
     const name = brand?.find((obj) => obj.id === id)?.name;
@@ -382,6 +376,7 @@ function AddPreProcurement() {
           submitForm={submitForm}
           responseScreenData={formData}
           setIsModalOpen={setIsModalOpen}
+          loading={isLoading}
         />
       </>
     );

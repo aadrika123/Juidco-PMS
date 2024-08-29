@@ -83,10 +83,12 @@ export default function ProjectApiList() {
     api_fetchProcurementDADetailByIdinbox: `${baseUrl}/api/pms/da/pre-procurement`,
     api_fetchProcurementDADetailByIdOutbox: `${baseUrl}/api/pms/da/pre-procurement/outbox`,
     api_postBackToSR: `${baseUrl}/api/pms/da/pre-procurement/to-sr`,
+    api_postBackToDd: `${baseUrl}/api/pms/da/stock-request/return`,
     // api_postReleaseTender: `${baseUrl}/api/pms/da/pre-procurement/release-tender`,
     api_postForwardtoAcc: `${baseUrl}/api/pms/da/pre-procurement/to-acc-boq`,
 
     api_postRejectTender: `${baseUrl}/api/pms/da/pre-procurement/reject`,
+    api_postRejectStockReq: `${baseUrl}/api/pms/da/stock-request/reject`,
     api_postDaEditTender: `${baseUrl}/api/pms/da/pre-procurement/edit`,
 
     api_exportcsv: `${baseUrl}/api/pms/download`,
