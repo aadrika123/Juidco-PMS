@@ -29,12 +29,17 @@ const DDViewHandoverbyId = () => {
   const [imageDoc, setImageDoc] = useState(false);
   const [preview, setPreview] = useState();
   const [applicationFullData, setapplicationFullData] = useState([]);
+  const [serialNo, setserialNo] = useState([]);
+  const [productData, setProductData] = useState();
+  const [invtId, setInvtId] = useState();
+
+
   const {
     api_postHandoverReq,
     api_postReturnReq,
     api_postDeadStockReq,
     api_getStockRequetById,
-    api_postWarrantyClaim,
+    api_postSrerviceRequest,
     api_postStockReqForwardtoDA,
   } = ProjectApiList();
 
@@ -67,6 +72,8 @@ const DDViewHandoverbyId = () => {
     setConfModal(true);
   };
 
+  // console.log(id)
+
   // hadover the request-------
   const handoverHandler = () => {
     setisLoading(true);
@@ -76,14 +83,8 @@ const DDViewHandoverbyId = () => {
     AxiosInterceptors.post(`${api_postHandoverReq}`, body, ApiHeader())
       .then(function (response) {
         if (response?.data?.status == true) {
-          toast.success(
-            "Stock Request has been successfully handover",
-            "success"
-          );
+          toast.success("Stock handover successfully");
           setSuccessModal(true);
-          setTimeout(() => {
-            navigate("/dd-handover");
-          }, 2000);
         } else {
           toast(response?.data?.message, "error");
         }
@@ -98,6 +99,41 @@ const DDViewHandoverbyId = () => {
       });
   };
 
+  // console.log(serialNo)
+  // console.log(service)
+  // console.log(id)
+  // console.log(applicationFullData?.stock_req_product[0]?.inventoryId)
+
+  const serviceRequestHandler = () => {
+    let body = {
+      products: serialNo,
+      service: service,
+      stock_handover_no: id,
+      inventoryId: applicationFullData?.stock_req_product[0]?.inventoryId,
+    };
+
+    AxiosInterceptors.post(`${api_postSrerviceRequest}`, body, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success(
+            `Request created successfully : ${props?.service}`,
+            "success"
+          );
+          setServiceRequestModal(false);
+        } else {
+          toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        console.log("errorrr.... ", error);
+        toast.error(error?.response?.data?.error);
+        // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        // setisLoading(false);
+      });
+  };
+
   //get application details
   const getApplicationDetail = () => {
     setisLoading(true);
@@ -105,6 +141,7 @@ const DDViewHandoverbyId = () => {
       .then(async function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
+          setProductData(response?.data?.data?.stock_req_product);
         } else {
           // toast.error(response?.data?.message);
         }
@@ -136,14 +173,20 @@ const DDViewHandoverbyId = () => {
     getApplicationDetail();
   }, []);
 
+  // console.log(serialNo)
+  // console.log(productData)
+
   if (serviceRequestModal) {
     return (
       <>
         <ServiceRequestModal
-          stockReqData={applicationFullData?.stock_req_product}
-          stockHandNo={applicationFullData?.stock_handover_no}
+          submit={serviceRequestHandler}
+          setserialNo={setserialNo}
+          serialNo={serialNo}
+          productData={productData}
           setServiceRequestModal={setServiceRequestModal}
           service={service}
+          setInvtId={setInvtId}
         />
       </>
     );
@@ -220,8 +263,8 @@ const DDViewHandoverbyId = () => {
         <SuccessModal
           confirmationHandler={confirmationHandler2}
           message={"Your Request has been Handover Successfully"}
-          requestNoMsg={"Reference No:-"}
-          refNo={"123654789"}
+          requestNoMsg={"Handover No:-"}
+          refNo={id}
         />
       </>
     );
@@ -316,7 +359,7 @@ const DDViewHandoverbyId = () => {
             </div>
               
 
-              <h1 className="pl-8 font-semibold underline text-blue-950">Products:</h1>
+              <h1 className="pl-8 font-semibold underline text-blue-950">Assigned Products:</h1>
 
               {applicationFullData?.stock_req_product?.map((data,index)=>(
             <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-4 rounded">
@@ -416,7 +459,7 @@ const DDViewHandoverbyId = () => {
                       </div>
 
                       <button
-                        className={buttonStyle2}
+                        className={buttonStyle}
                         onClick={() => {
                           setServiceRequestModal(true);
                           setService("dead");
@@ -426,7 +469,7 @@ const DDViewHandoverbyId = () => {
                       </button>
 
                       <button
-                        className={buttonStyle2}
+                        className={buttonStyle}
                         onClick={() => {
                           setServiceRequestModal(true);
                           setService("return");
@@ -435,17 +478,18 @@ const DDViewHandoverbyId = () => {
                         Return
                       </button>
 
-                      <button className={buttonStyle2} onClick={handoverModal}>
-                        Handover
-                      </button>
+                   
                       <button
-                        className={buttonStyle2}
+                        className={buttonStyle}
                         onClick={() => {
                           setServiceRequestModal(true);
                           setService("warranty");
                         }}
                       >
                         Warranty claims
+                      </button>
+                      <button className={buttonStyle2} onClick={handoverModal}>
+                        Handover
                       </button>
                     </>
                   )}

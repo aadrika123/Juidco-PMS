@@ -359,6 +359,22 @@ const IAServiceRequestById = () => {
               </h2>
             </div>
             <div className="flex justify-between">
+            <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
+                <h1 className="font-bold">
+                  Service No <span className="text-black">:</span>
+                  <span className="font-light">
+                    {" "}
+                    {nullToNA(applicationFullData?.service_no)}
+                  </span>
+                </h1>
+                <h1 className="font-bold text-base text-blue-950">
+                  Service Type <span className="text-black">:</span>
+                  <span className="font-light text-green-600">
+                    {" "}
+                    {nullToNA(applicationFullData?.service)}
+                  </span>
+                </h1>
+              </div>
               <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
                 <h1 className="font-bold">
                   Inventory Request No <span className="text-black">:</span>
@@ -367,16 +383,17 @@ const IAServiceRequestById = () => {
                     {nullToNA(applicationFullData?.stock_handover_no)}
                   </span>
                 </h1>
-              </div>
-              <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
-                <h1 className="font-bold">
-                  Service No <span className="text-black">:</span>
-                  <span className="font-light">
+                {applicationFullData?.status == "23" &&
+                <h1 className="font-bold text-base text-blue-950">
+                  Status <span className="text-black">:</span>
+                  <span className="font-light text-green-600">
                     {" "}
-                    {nullToNA(applicationFullData?.service_no)}
+                    {nullToNA(applicationFullData?.status == "23" && "Approved")}
                   </span>
                 </h1>
+}
               </div>
+             
             </div>
 
             <div className="grid md:grid-cols-4 gap-4 ml-8">
