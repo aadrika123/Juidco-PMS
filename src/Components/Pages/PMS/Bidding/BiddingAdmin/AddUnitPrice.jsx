@@ -16,42 +16,25 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
 import { useFormik } from "formik";
-import * as yup from "yup";
 // import PreProcurementCancelScreen from "./PostProcurementCancelScreen";
 // import PreProcurementSubmittedScreen from "./PreProcurementSubmittedScreen";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
-import {
-  allowCharacterInput,
-  allowNumberInput,
-} from "@/Components/Common/PowerUps/PowerupFunctions";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
-import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 
-const AddUnitPrice = (props) => {
-  const navigate = useNavigate();
-  const { refNo, page } = useParams();
+const AddUnitPrice = () => {
+  const { refNo } = useParams();
 
-  const [erroState, seterroState] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [applicationFullData, setapplicationFullData] = useState();
-  const [tableData, setTableData] = useState([]);
   const [isModalOpenInvt, setIsModalOpenInvt] = useState(false);
-  const [isModalOpen2, setIsModalOpen2] = useState(false);
-  const [isGstAdded, setIsGstAdded] = useState(false);
   const [supplierDetails, setSupplierDetails] = useState([]);
-
-  const [procItem, setProcItem] = useState();
 
   // console.log(supplierData)
   const { inputStyle, labelStyle } = ThemeStyle();
-  const {
-    api_fetchPostProcurementDetailSupplierbyId,
-    api_addUnitPrice,
-    api_getUnitPrice,
-  } = ProjectApiList();
+  const { api_getUnitPrice } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -63,61 +46,6 @@ const AddUnitPrice = (props) => {
 
   let gstValidation =
     /^([0][1-9]|[1-2][0-9]|[3][0-8])[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}/;
-
-  const procItemDetails = [
-    {
-      procItem: "proc item 1",
-      subCategory: "Laptop",
-      unit: "25",
-      brand: "Lenovo",
-      quantity: "100",
-      perUnitRate: "25000",
-      totRate: "2500000",
-      desc: "red color blue color",
-    },
-    {
-      procItem: "proc item 33",
-      subCategory: "Mouse",
-      unit: "55",
-      brand: "dell",
-      quantity: "500",
-      perUnitRate: "50",
-      totRate: "25000",
-      desc: "black blue color",
-    },
-    {
-      procItem: "proc item 22",
-      subCategory: "Mouse3",
-      unit: "55",
-      brand: "dell",
-      quantity: "500",
-      perUnitRate: "50",
-      totRate: "25000",
-      desc: "black blue color",
-    },
-  ];
-
-  // formik
-  const validationSchema = yup.object({
-    suppliers: yup.string().required("Supplier name is required"),
-    gst_no: yup.string().required("Gst number is required").max(15),
-    final_rate: yup.string().required("final rate is required"),
-    // rate: yup.number().required("Rate is required"),
-    total_quantity: yup.number().required("Total Quantity is required"),
-    // total_price: yup.number().required("Total Price is required"),
-    unit_price: yup.number().required("Unit Price is required"),
-  });
-
-  // const initialValues = {
-  //   suppliers: "",
-  //   gst_no: "",
-  //   final_rate: "",
-  //   gst: "",
-  //   total_quantity: applicationFullData?.quantity,
-  //   unit_price: "",
-  //   is_gst_added: false,
-  //   total_price: "",
-  // };
 
   const initialValues = {
     suppliers: "",
@@ -136,117 +64,59 @@ const AddUnitPrice = (props) => {
     // validationSchema,
   });
 
-  // intitial value
-
-  // const handleOnChange = (e) => {
-  //   let name = e.target.name;
-  //   let value = e.target.value;
-
-  //   // console.log(value,"value",name,"name")
-
-  //   {
-  //     name == "is_gst_added" && gstcheckboxHandler();
-  //   }
-  //   {
-  //     name == "final_rate" && calculateTotalRate(value);
-  //   }
-  //   {
-  //     name == "final_rate" &&
-  //       formik.setFieldValue(
-  //         "final_rate",
-  //         allowNumberInput(value, formik.values.final_rate, 100)
-  //       );
-  //   }
-  //   {
-  //     name == "suppliers" &&
-  //       formik.setFieldValue(
-  //         "suppliers",
-  //         allowCharacterInput(value, formik.values.suppliers, 30)
-  //       );
-  //   }
-  //   {
-  //     name == "unit_price" &&
-  //       formik.setFieldValue(
-  //         "unit_price",
-  //         allowNumberInput(value, formik.values.unit_price, 30)
-  //       );
-  //   }
-  //   {
-  //     name == "gst" &&
-  //       formik.setFieldValue(
-  //         "gst",
-  //         allowNumberInput(value, formik.values.gst, 15)
-  //       );
-  //   }
-  // };
-
   const addUnitPrice = () => {
-    setisLoading(true);
+    console.log(supplierDetails, "supplierDetails");
+    console.log(applicationFullData?.supplier, "supplierDetails");
+    if (
+      supplierDetails?.length !== applicationFullData?.procurement_stock?.length
+    ) {
+      setIsModalOpenInvt(false);
+      console.log("enter");
+      toast.error("Add Unit Price for all Procurement Item");
+      return;
+    }
 
-    AxiosInterceptors.post(
-      `${api_addUnitPrice}`,
-      {
-        reference_no: refNo,
-        procurement_no: applicationFullData?.procurement_no,
-        items: supplierDetails,
-        // procurement_no: id,
-      },
-      ApiHeader()
-    )
-      .then(function (response) {
-        if (response?.data?.status) {
-          toast.success("Unit Prices added for each Supplier");
-          navigate(`/tendering-admin`);
-        } else {
-          toast.error("Error in Adding. Please try Again");
-        }
-      })
-      .catch(function (error) {
-        console.log(error, "err res");
-        toast.error(error?.response?.data?.error);
-      })
-      .finally(() => {
-        setisLoading(false);
-      });
+    if (
+      supplierDetails?.suppliers?.length !==
+      applicationFullData?.supplier?.length
+    ) {
+      setIsModalOpenInvt(false);
+      console.log("enter==");
+      toast.error("Add Unit Price for all Suppliers");
+      return;
+    }
+    console.log("exit");
+    // setisLoading(true);
+
+    // AxiosInterceptors.post(
+    //   `${api_addUnitPrice}`,
+    //   {
+    //     reference_no: refNo,
+    //     procurement_no: applicationFullData?.procurement_no,
+    //     items: supplierDetails,
+    //     // procurement_no: id,
+    //   },
+    //   ApiHeader()
+    // )
+    //   .then(function (response) {
+    //     if (response?.data?.status) {
+    //       toast.success("Unit Prices added for each Supplier");
+    //       navigate(`/tendering-admin`);
+    //     } else {
+    //       toast.error("Error in Adding. Please try Again");
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error, "err res");
+    //     toast.error(error?.response?.data?.error);
+    //   })
+    //   .finally(() => {
+    //     setisLoading(false);
+    //   });
   };
 
   const supplierDetail = (val) => {
     const newData = val;
-
-    // setSupplierDetails((prev) => {
-    //   const existingSupplier = prev?.findIndex(
-    //     (supplier) => supplier.suppliers === newData.suppliers
-    //   );
-
-    //   if (existingSupplier !== -1) {
-    //     const supplierData = prev[existingSupplier];
-
-    //     const updatedSupplier = prev.map((suppData, index) => {
-    //       if (suppData.suppliers === supplierData.suppliers) {
-    //         return {
-    //           ...suppData,
-    //           procurement_details: [
-    //             ...suppData.procurement_details,
-    //             { items: val.items, unit_price: val.unit_price },
-    //           ],
-    //         };
-    //       }
-    //       return suppData;
-    //     });
-
-    //     return updatedSupplier;
-    //   } else {
-    //     return [
-    //       ...prev,
-    //       {
-    //         suppliers: val.suppliers,
-    //         procurement_details: [
-    //           { items: val.items, unit_price: val.unit_price },
-    //         ],
-    //       },
-    //     ];
-    //   }
-    // });
 
     setSupplierDetails((prev) => {
       const existingProcItem = prev?.findIndex(
@@ -257,7 +127,17 @@ const AddUnitPrice = (props) => {
         const supplierData = prev[existingProcItem];
 
         const updatedSupplier = prev.map((suppData, index) => {
-          if (suppData.items === supplierData.items) {
+          // if (supplierData.suppliers.find((data => {
+          //   if(data.id === suppData?.some(details => details.id))
+          // })))
+          {
+            // console.log(
+            //   suppData,
+            //   "suppData.items",
+            //   supplierData,
+            //   "supplierData.items"
+            // );
+
             return {
               ...suppData,
               suppliers: [
@@ -285,7 +165,6 @@ const AddUnitPrice = (props) => {
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
     setisLoading(true);
-    seterroState(false);
 
     AxiosInterceptors.get(`${api_getUnitPrice}/${refNo}`, ApiHeader())
       .then(function (response) {
@@ -297,32 +176,18 @@ const AddUnitPrice = (props) => {
         } else {
           setisLoading(false);
           toast.error("Error while getting details...");
-          seterroState(true);
         }
       })
       .catch(function (error) {
         console.log("==2 details by id error...", error);
         setisLoading(false);
         toast.error("Error while getting details...");
-        seterroState(true);
       });
   };
 
   useEffect(() => {
     getApplicationDetail();
   }, []);
-
-  // -------------------- Calculate Total Quantity -------------------------------
-
-  // ------------cancel modal-----------------------------
-
-  const openCancelModal = () => {
-    setIsModalOpen2(true);
-  };
-
-  const gstcheckboxHandler = () => {
-    setIsGstAdded((prev) => !prev);
-  };
 
   // new Modals-----------------------------------
 
@@ -376,9 +241,9 @@ const AddUnitPrice = (props) => {
               <div className=''>
                 <div className=' grid md:grid-cols-1 lg:grid-cols-12 container mx-auto capitalize'>
                   <div className='col-span-12  w-full mb-8'>
-                    <div className='bg-[#4338ca] text-white px-4 py-2 w-full  rounded-md'>
+                    <div className='bg-[#4338ca] text-white px-4 py-2 w-full  rounded-b-md'>
                       <div>
-                        <h2 className='text-xl font-bold'>Add Supplier</h2>
+                        <h2 className='text-xl font-bold'>Add Unit Price</h2>
                       </div>
                     </div>
 
@@ -459,19 +324,19 @@ const AddUnitPrice = (props) => {
                     </div>
 
                     {supplierDetails?.length > 0 && (
-                      <div className=' flex ml-14 mr-10 bg-[#4338ca] text-white mb-4 rounded p-2 '>
-                        <div className='w-[15%] flex justify-start items-center'>
+                      <div className=' flex mx-12 bg-[#4338ca] text-white rounded p-2 '>
+                        <div className='w-[10%] flex justify-start items-center'>
                           <div className='flex justify-center items-center'>
                             <p className='pl-5'>S no.</p>
                           </div>
                         </div>
-                        <div className='w-[25%] flex justify-start items-center'>
+                        <div className='w-[40%] flex justify-start items-center'>
                           <div className='flex justify-center items-center'>
-                            <p className=''>Supplier Name</p>
+                            <p className=''> Procurement Items</p>
                           </div>
                         </div>
-                        <div className='w-[40%] '>
-                          <p className=''>Procurement Items</p>
+                        <div className='w-[25%] '>
+                          <p className=''>Supplier Name</p>
                         </div>
                         <div className=''>
                           <p className=''>Unit Price</p>
@@ -480,13 +345,13 @@ const AddUnitPrice = (props) => {
                     )}
                     {supplierDetails.map((data, index) => (
                       <>
-                        <div className=' flex ml-14 mr-10 border-b-[1px]  border-gray-200 p-2 cursor-pointer hover:bg-slate-100'>
-                          <div className='w-[15%] flex justify-start items-center'>
+                        <div className=' flex items-center mx-12 border-b-[1px]  border-gray-200 p-2 cursor-pointer hover:bg-slate-100 bg-white'>
+                          <div className='w-[10%] flex justify-start items-center'>
                             <div className='flex justify-center items-center'>
                               <p className='pl-5'>{index + 1}</p>
                             </div>
                           </div>
-                          <div className='w-[25%] flex justify-start items-center'>
+                          <div className='w-[40%] flex justify-start items-center'>
                             <div className='flex justify-center items-center'>
                               <p className=''>
                                 {
@@ -497,7 +362,7 @@ const AddUnitPrice = (props) => {
                               </p>
                             </div>
                           </div>
-                          <div className='w-[40%] '>
+                          <div className='w-[25%] '>
                             {/* <p>
                               {
                                 applicationFullData?.supplier?.find(
@@ -516,7 +381,7 @@ const AddUnitPrice = (props) => {
                                   )?.name;
 
                                 return (
-                                  <li key={index}>
+                                  <li key={index} className='mb-4'>
                                     {supplierName || "Supplier name not found"}
                                   </li>
                                 );
@@ -526,7 +391,7 @@ const AddUnitPrice = (props) => {
 
                           <div className=''>
                             {data?.suppliers?.map((procData, index) => (
-                              <p className=''>
+                              <p className='mb-4'>
                                 {indianAmount(procData?.unit_price)}
                               </p>
                             ))}
