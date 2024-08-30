@@ -59,7 +59,6 @@ export default function TimeLine({ status }) {
               status === 10 ||
               status === 13 ||
               status === 21 ||
-              status === 24 ||
               status === 12) && (
               <img
                 src={locationMan}

@@ -116,7 +116,7 @@ const WorkDetailsForm = () => {
     pinCode: Number(workDetailData?.pinCode) || null,
     pre_bid: workDetailData?.pre_bid ? "no" : "yes",
     preBidMeeting: workDetailData?.preBidMeeting || "",
-    preBidMeetingAdd: workDetailData?.preBidMeetingAdd || "yes",
+    preBidMeetingAdd: workDetailData?.preBidMeetingAdd || "",
     bidOpeningPlace: workDetailData?.bidOpeningPlace || "",
     tenderer_class: workDetailData?.tenderer_class || [],
     invstOffName: workDetailData?.invstOffName || "",
@@ -198,7 +198,6 @@ const WorkDetailsForm = () => {
           validationSchema={validationSchema}
           enableReinitialize={true}
           onSubmit={(values) => {
-            console.log("Form values", values);
             submitForm(values);
           }}
         >
@@ -596,7 +595,7 @@ const WorkDetailsForm = () => {
                     <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md w-1/2'>
                       <CustomCheckboxGroup
                         fields={tendererClass}
-                        title={"Tenderer className"}
+                        title={"Tenderer class Name"}
                         name={"tenderer_class"}
                         values={values.tenderer_class}
                         handleChange={handleChange}

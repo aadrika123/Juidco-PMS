@@ -57,7 +57,13 @@ function TenderListings(props) {
       accessor: "boq.pre_tendering_details.tendering_type",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {cell.row.original.boq?.pre_tendering_details?.tendering_type}{" "}
+          {cell.row.original.boq?.pre_tendering_details?.tendering_type ===
+          "least_cost"
+            ? "Least Cost"
+            : cell.row.original.boq?.pre_tendering_details?.tendering_type ===
+              "qcbs"
+            ? "QCBS"
+            : "Rate Contract"}{" "}
         </div>
       ),
     },

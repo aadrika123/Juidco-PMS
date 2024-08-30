@@ -14,8 +14,10 @@ import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import PreTenderingTimeline from "@/Components/Common/Timeline/PreTenderingTimeline";
 import { useReactToPrint } from "react-to-print";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
+import ThemeStyle from "@/Components/Common/ThemeStyle";
 
 const TenderFormViewDetails = () => {
+  const { loading } = ThemeStyle();
   const { state } = useLocation();
   const navigate = useNavigate();
 
@@ -36,7 +38,7 @@ const TenderFormViewDetails = () => {
   const [previewData, setPreviewData] = useState();
   const [imageUrlModal, setImageUrlModal] = useState();
   const [backtoAccModal, setBacktoAccModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({ reference_no: "", remark: "" });
 
   const descTitle = "font-bold text-[#4D4B4B]";
@@ -57,7 +59,7 @@ const TenderFormViewDetails = () => {
   };
 
   const getApplicationDetail = (refNo) => {
-    setLoading(true);
+    setIsLoading(true);
     AxiosInterceptors.get(
       `${api_getDAPreviewDetails}/${state ? state : refNo}`,
       ApiHeader()
@@ -74,13 +76,13 @@ const TenderFormViewDetails = () => {
         toast.error(error?.response?.data?.message);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
   //submitting the form
   const postFinalSubmission = () => {
-    setLoading(false);
+    setIsLoading(true);
     AxiosInterceptors.post(
       `${api_postFinalSubit}`,
       { reference_no: referenceNo },
@@ -97,13 +99,13 @@ const TenderFormViewDetails = () => {
         toast.error(error?.response?.data?.error);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
   //forward to DA
   const forwardBoqToDa = () => {
-    setLoading(true);
+    setIsLoading(true);
 
     AxiosInterceptors.post(
       `${api_postForwardtoDA}`,
@@ -114,7 +116,6 @@ const TenderFormViewDetails = () => {
         if (response?.data?.status) {
           toast.success("Forwarded to DA Successfully");
           navigate("/acc-pre-tendring");
-          console.log(response?.data?.data);
           // setIsSuccessModal(true);
         } else {
           // toast.error(response?.data?.message);
@@ -124,13 +125,13 @@ const TenderFormViewDetails = () => {
         toast.error(error?.response?.data?.error);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
   //Release for tender
   const releaseForTender = () => {
-    setLoading(true);
+    setIsLoading(true);
 
     AxiosInterceptors.post(
       `${api_postReleaseForTender}`,
@@ -141,7 +142,6 @@ const TenderFormViewDetails = () => {
         if (response?.data?.status) {
           toast.success("Successfully Released for Tender");
           navigate("/da-pre-tendring");
-          console.log(response?.data?.data);
           // setIsSuccessModal(true);
         } else {
           // toast.error(response?.data?.message);
@@ -151,13 +151,13 @@ const TenderFormViewDetails = () => {
         toast.error(error?.response?.data?.error);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
   //Pre tender back to acc
   const preTenderBacktoAcc = () => {
-    setLoading(true);
+    setIsLoading(true);
 
     AxiosInterceptors.post(
       `${api_postPreTenderBackToAcc}`,
@@ -177,7 +177,7 @@ const TenderFormViewDetails = () => {
         toast.error(error?.response?.data?.error);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
@@ -225,7 +225,7 @@ const TenderFormViewDetails = () => {
 
   //Reject pre tender
   const rejectTender = () => {
-    setBacktoAccModal(false);
+    setIsLoading(true);
     AxiosInterceptors.post(
       `${api_postRejectPreTender}`,
       { reference_no: referenceNo },
@@ -235,7 +235,6 @@ const TenderFormViewDetails = () => {
         if (response?.data?.status) {
           toast.success("Rejected Successfully");
           navigate("/da-pre-tendring");
-          console.log(response?.data?.data);
           // setIsSuccessModal(true);
         } else {
           toast.error(response?.data?.message);
@@ -243,6 +242,10 @@ const TenderFormViewDetails = () => {
       })
       .catch(function (error) {
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setBacktoAccModal(false);
       });
   };
 
@@ -252,16 +255,10 @@ const TenderFormViewDetails = () => {
 
   useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
-    console.log(refNo);
     setData((prev) => ({ ...prev, reference_no: refNo }));
     setReferenceNo(refNo);
     getApplicationDetail(refNo);
   }, []);
-
-  const ImageDetailFunc = (imgUrl) => {
-    setImageUrlModal(imgUrl);
-    setImageModal(true);
-  };
 
   if (backtoAccModal) {
     return (
@@ -284,6 +281,7 @@ const TenderFormViewDetails = () => {
           message={"Your Form has been submitted Successfully"}
           requestNoMsg={"With Reference No -"}
           refNo={referenceNo}
+          loadingState={isLoading}
         />
       </>
     );
@@ -304,7 +302,7 @@ const TenderFormViewDetails = () => {
   // console.log(previewData);
   return (
     <>
-      {loading && (
+      {isLoading && (
         <div className='fixed inset-0 flex items-center justify-center z-50'>
           <LoaderApi />
         </div>
@@ -322,12 +320,12 @@ const TenderFormViewDetails = () => {
       {/* //timeline  */}
 
       {page == "preview" && (
-        <div className={`${loading ? "blur-[2px]" : ""}`}>
+        <div className={`${isLoading ? "blur-[2px]" : ""}`}>
           <PreTenderingTimeline status={previewData?.status} />
         </div>
       )}
 
-      <div className={`${loading ? "blur-[2px]" : ""}`} ref={componentRef}>
+      <div className={`${isLoading ? "blur-[2px]" : ""}`} ref={componentRef}>
         <div className=''>
           {/* Basic Details */}
 
@@ -435,9 +433,7 @@ const TenderFormViewDetails = () => {
           {/* Cover Details */}
 
           <div className='bg-[#4338ca] border-b  p-2 pl-5 rounded mt-5'>
-            <p className='text-xl text-white'>
-              Cover Details, No of Covers - 4
-            </p>
+            <p className='text-xl text-white'>Cover Details</p>
           </div>
 
           <div className='flex flex-col bg-white border shadow-xl mt-2 rounded'>
@@ -1064,7 +1060,7 @@ const TenderFormViewDetails = () => {
                   className='p-2 pl-4 pr-4 border border-indigo-500 text-white text-base leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA] animate-pulse'
                   onClick={() => postFinalSubmission()}
                 >
-                  Submit
+                  {isLoading ? <div className={loading}></div> : "Submit"}
                 </button>
               )}
             </div>

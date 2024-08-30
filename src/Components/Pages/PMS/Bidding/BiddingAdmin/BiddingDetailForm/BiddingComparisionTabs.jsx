@@ -105,7 +105,7 @@ const BiddingComparisionTabs = () => {
         />
       </div>
 
-      <div className=''>
+      <div className={`${isLoading ? "blur-[2px] pointer-events-none" : ""}`}>
         <div className='flex justify-between items-center'>
           <div className='flex mt-2'>
             {tabDetails?.map((item, index) => (
@@ -128,8 +128,12 @@ const BiddingComparisionTabs = () => {
           <div className='mt-6'></div>
         </div>
       </div>
-      <div className='container mx-auto rounded  mt-6'>
-        {tabDetails?.map((tabs,index) => (
+      <div
+        className={`container mx-auto rounded mt-6 ${
+          isLoading ? "blur-[2px] pointer-events-none" : ""
+        }`}
+      >
+        {tabDetails?.map((tabs) => (
           <div
             className={`${tabNo >= 1 ? "stockReq" : "disabled:bg-red-300"} ${
               tabs.tab !== tabNo ? "hidden" : ""

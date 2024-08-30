@@ -22,7 +22,6 @@ export default function PreviewBoqSummary() {
   const navigate = useNavigate();
   const { titleBarVisibility, setReferenceNo } = useContext(contextVar);
 
-  console.log(state, "statet");
   // const { payload } = state;
   const summaryData = state;
   const { api_postForwardAndCreateBoq, api_postUpdatedBoq } = ProjectApiList();
@@ -66,7 +65,6 @@ export default function PreviewBoqSummary() {
 
   //only to create boq
   const createAndForwardBoq = async () => {
-    setConfirmationModal(false);
     setIsLoading(true);
     if (!summaryData?.gstChecked) {
       summaryData.procurement = summaryData.procurement.map((data) => ({
@@ -102,11 +100,13 @@ export default function PreviewBoqSummary() {
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         setIsLoading(false);
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setConfirmationModal(false);
       });
   };
 
   const updateBoqChanges = async () => {
-    setConfirmationModal(false);
     setIsLoading(true);
     let body = {
       ...summaryData,
@@ -135,6 +135,9 @@ export default function PreviewBoqSummary() {
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         setIsLoading(false);
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setConfirmationModal(false);
       });
   };
 
@@ -159,6 +162,7 @@ export default function PreviewBoqSummary() {
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
           message={"Are you sure you want to create BOQ ?"}
+          loadingState={isLoading}
         />
       </>
     );
@@ -172,6 +176,7 @@ export default function PreviewBoqSummary() {
           handleCancel={() => setShowMessaegModal(false)}
           message={"Successfully Saved"}
           sideMessage={`Your Reference No - ${refID}`}
+          loadingState={isLoading}
         />
       </>
     );

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { LuCloudy } from "react-icons/lu";
 import { useRef } from "react";
 import pdfIcon from "@/assets/Images/pdfIcon.png";
@@ -16,14 +15,10 @@ export default function UploadDoc({
   errors,
   touched,
   formikTabs,
-  formikContentVal,
   setFieldValue,
   contentDefVal,
   docs,
 }) {
-  {
-    console.log(docs, "docs====>", tabData, "tabdata====>");
-  }
   const inputFileRef = useRef();
 
   const handleUploadDoc = () => {
