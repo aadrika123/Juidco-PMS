@@ -27,7 +27,7 @@ const BiddingViewById = () => {
   const navigate = useNavigate();
   const { id, page } = useParams();
 
-  // console.log(biddingData?.creationStatus)
+  // console.log(page)
 
   const { api_postForwardtoSR, api_fetchProcurementDetById, api_getBidType } =
     ProjectApiList();
@@ -748,7 +748,10 @@ const BiddingViewById = () => {
               <div className='space-x-3 flex items-end justify-center'>
                 <button
                   className={buttonStyle}
-                  onClick={() => navigate(`/tendering-admin`)}
+                  onClick={() => 
+                    page == 'view'?
+                    navigate(-1) : navigate(`/tendering-admin`)
+                  }
                 >
                   Back
                 </button>

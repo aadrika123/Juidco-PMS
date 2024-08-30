@@ -24,7 +24,7 @@ const EmployeeListTabs = () => {
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { api_getDDSRInbox, api_getDDSROutbox } = ProjectApiList();
+  const { api_employeeInbox, api_employeeOutbox } = ProjectApiList();
 
   return (
     <>
@@ -70,12 +70,12 @@ const EmployeeListTabs = () => {
         <div className='mt-4'>
           {activeTab === "inbox" && (
             <div>
-              <EmployeeList page='inbox' api={api_getDDSRInbox} />
+              <EmployeeList page='inbox' api={api_employeeInbox} />
             </div>
           )}
           {activeTab === "outbox" && (
             <div>
-              <EmployeeList page='outbox' api={api_getDDSROutbox} />
+              <EmployeeList page='outbox' api={api_employeeOutbox} />
             </div>
           )}
         </div>

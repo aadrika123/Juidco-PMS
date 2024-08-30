@@ -47,6 +47,22 @@ const AddUnitPrice = () => {
   let gstValidation =
     /^([0][1-9]|[1-2][0-9]|[3][0-8])[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}/;
 
+ 
+  
+
+  // formik
+  const validationSchema = yup.object({
+    suppliers: yup.string().required("Supplier name is required"),
+    gst_no: yup.string().required("Gst number is required").max(15),
+    final_rate: yup.string().required("final rate is required"),
+    // rate: yup.number().required("Rate is required"),
+    total_quantity: yup.number().required("Total Quantity is required"),
+    // total_price: yup.number().required("Total Price is required"),
+    unit_price: yup.number().required("Unit Price is required"),
+  });
+
+ 
+
   const initialValues = {
     suppliers: "",
     unit_price: "",

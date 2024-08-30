@@ -225,7 +225,7 @@ const BiddingInitialForm = () => {
                     htmlFor='estimated_amount'
                     className='block font-semibold text-gray-700 mb-2'
                   >
-                    EMD Type
+                    EMD Amount
                   </label>
                 </div>
                 <div>

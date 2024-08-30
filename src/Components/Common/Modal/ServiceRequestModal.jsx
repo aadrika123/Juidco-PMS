@@ -40,61 +40,28 @@ const MenuProps = {
 };
 
 function ServiceRequestModal(props) {
-  const [invtId, setInvtId] = useState();
+  const [inventoryId, setInvetoryId] = React.useState();
 
-  const [serialNo, setserialNo] = React.useState([]);
+  // console.log(inventoryId)
 
- 
+  
 
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
+
+
   let buttonStyle2 =
     " mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
-  const { api_postWarrantyClaim } = ProjectApiList();
+  // const { api_postWarrantyClaim } = ProjectApiList();
 
-  const serviceRequestHandler = () => {
-    let body = {
-      products: [{ serial_no: serialNo }],
-      service: props?.service,
-      stock_handover_no: props?.stockHandNo,
-      inventoryId: invtId,
-    };
-
-    AxiosInterceptors.post(`${api_postWarrantyClaim}`, body, ApiHeader())
-      .then(function (response) {
-        if (response?.data?.status == true) {
-          toast.success(
-            `Request created successfully : ${props?.service}`,
-            "success"
-          );
-          toast.success(`Forwarded to DA`, "success");
-          props?.setServiceRequestModal(false);
-        } else {
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-        toast.error(error?.response?.data?.error);
-        // setdeclarationStatus(false);
-      })
-      .finally(() => {
-        // setisLoading(false);
-      });
-  };
-
+  
+  // console.log(props?.productData)
 
   const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setserialNo(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    const {target: { value }, } = event;
+    props?.setserialNo( typeof value === "string" ? value.split(",") : value );
   };
 
-  // console.log(serialNo);
 
   return (
     <>
@@ -106,7 +73,7 @@ function ServiceRequestModal(props) {
             Create {props?.service == "dead" ? "dead stock" : props?.service}{" "}
             request
           </h1>
-          <div className="form-group flex-shrink max-w-full px-4 mb-4">
+          <div className="form-group flex-shrink max-w-full px-4 mb-4 text-center">
             <label
               className={`${labelStyle} inline-block mb-1 text-center capitalize`}
             >
@@ -114,24 +81,29 @@ function ServiceRequestModal(props) {
               {props?.service == "dead" ? "dead stock" : props?.service} request
             </label>
 
-            <FormControl sx={{ m: 1, width: "100%" }}>
+            <FormControl sx={{ marginTop: 2, width: "100%" }}>
+              <InputLabel id="demo-multiple-checkbox" >Choose Product</InputLabel>
               <Select
                 labelId="demo-multiple-checkbox-label"
                 id="demo-multiple-checkbox"
                 multiple
-                value={serialNo}
+                value={props?.serialNo}
                 onChange={handleChange}
-                input={<OutlinedInput label="" />}
+                // input={<OutlinedInput label="" />}
                 renderValue={(selected) => selected.join(", ")}
                 MenuProps={MenuProps}
+                label="Choose Product"
+
               >
-                {props?.stockReqData?.length > 0 ? (
-                  props?.stockReqData?.map((data) => (
-                    <MenuItem key={data?.serial_no} value={data?.serial_no}>
+
+                {props?.productData?.length > 0 ? (
+                  props?.productData?.map((data) => (    
+                    // console.log(data?.inventoryId)               
+                    <MenuItem key={data?.serial_no} value={data?.serial_no} setInvetoryId={data?.inventoryId}>
                       <Checkbox
-                        checked={serialNo.indexOf(data?.serial_no) > -1}
+                        checked={props?.serialNo.indexOf(data?.serial_no) > -1}
                       />
-                      <ListItemText primary={data?.serial_no} />
+                      <ListItemText primary={data?.serial_no} props />
                     </MenuItem>
                   ))
                 ) : (
@@ -153,7 +125,7 @@ function ServiceRequestModal(props) {
             </button>
             <button
               className={`${buttonStyle2} pl-14 pr-14`}
-              onClick={() => serviceRequestHandler()}
+              onClick={() => props?.submit()}
             >
               Proceed
             </button>

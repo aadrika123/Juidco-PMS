@@ -99,6 +99,13 @@ const BiddingCreteria = (props) => {
   };
 
   const submitCreteria = () => {
+
+    if(Number(bidderNo) < 3){
+      setBidderNo(0)
+      toast.error("Minimum 3 Bidders Required");
+      return
+    }
+
     setIsLoading(true);
 
     AxiosInterceptors.post(
@@ -322,11 +329,7 @@ const BiddingCreteria = (props) => {
             <button
               className='border border-[rgb(67,56,202)] bg-[rgb(67,56,202)] hover:bg-[#342b96] text-white px-6 py-2 rounded'
               onClick={() => submitCreteria()}
-              // onClick={() =>
-              //   navigate(`/bidding-details?tabNo=1`, {
-              //     state: props?.bidderData?.reference_no,
-              //   })
-              // }
+              
             >
               Submit
             </button>
