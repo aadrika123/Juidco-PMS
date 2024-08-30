@@ -129,7 +129,7 @@ const BiddingComparisionTabs = () => {
         </div>
       </div>
       <div className='container mx-auto rounded  mt-6'>
-        {tabDetails?.map((tabs) => (
+        {tabDetails?.map((tabs,index) => (
           <div
             className={`${tabNo >= 1 ? "stockReq" : "disabled:bg-red-300"} ${
               tabs.tab !== tabNo ? "hidden" : ""

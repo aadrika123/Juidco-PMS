@@ -16,10 +16,11 @@ const FeeDetailsForm = () => {
   // const { state } = useLocation();
   // console.log(state)
 
-  const { api_postFeeDetails, api_getFeeDetails } = ProjectApiList();
+  const { api_postFeeDetails, api_getFeeDetails,api_fetchProcurementDetById } = ProjectApiList();
   const [isLoading, setIsLoading] = useState(true);
   const [feeDetailData, setFeeDetailData] = useState();
   const [referenceNo, setReferenceNo] = useState();
+  const [biddingData, setBiddingData] = useState();
 
   const emdFee = [
     { label: "Fixed", value: "fixed" },
@@ -65,7 +66,7 @@ const FeeDetailsForm = () => {
     }),
   });
 
-  // console.log(referenceNo)
+  // console.log(biddingData?.emd_value)
 
   const initialValues = {
     reference_no: referenceNo,
@@ -75,8 +76,8 @@ const FeeDetailsForm = () => {
     tenderFeePayableAt: feeDetailData?.tenderFeePayableAt || "",
     surcharges: feeDetailData?.surcharges || "",
     otherCharges: feeDetailData?.otherCharges || "",
-    emdAmount: feeDetailData?.emdAmount || "",
-    emdPercentage: feeDetailData?.emdPercentage || "",
+    emdAmount: feeDetailData?.emdAmount || biddingData?.estimated_amount,
+    emdPercentage: feeDetailData?.emdPercentage || biddingData?.emd_value,
     emd_exemption: feeDetailData?.emd_exemption ? "yes" : "no",
     emd_fee: feeDetailData?.emd_fee || "fixed",
     emdFeePayableAt: feeDetailData?.emdFeePayableAt || "",
@@ -126,10 +127,33 @@ const FeeDetailsForm = () => {
       });
   };
 
+  const getBiddingDetail = (refNo) => {
+    setIsLoading(true);
+    AxiosInterceptors.get(`${api_fetchProcurementDetById}/${refNo}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setBiddingData(response?.data?.data);
+
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        console.log("details by id error...", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
     setReferenceNo(refNo);
     getApplicationDetail(refNo);
+    getBiddingDetail(refNo);
   }, []);
 
   return (
@@ -360,7 +384,7 @@ const FeeDetailsForm = () => {
                           name='emdAmount'
                           onChange={handleChange}
                           value={values.emdAmount}
-                          disabled={values.emd_exemption == "yes"}
+                          disabled
                         />
                       </div>
                     ) : (
@@ -384,7 +408,7 @@ const FeeDetailsForm = () => {
                           onChange={handleChange}
                           value={values.emdPercentage}
                           disabled={values.emd_exemption == "yes"}
-                        />
+                        /> %
                       </div>
                     )}
                   </div>

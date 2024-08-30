@@ -106,7 +106,7 @@ function ServiceRequestModal(props) {
             Create {props?.service == "dead" ? "dead stock" : props?.service}{" "}
             request
           </h1>
-          <div className="form-group flex-shrink max-w-full px-4 mb-4">
+          <div className="form-group flex-shrink max-w-full px-4 mb-4 text-center">
             <label
               className={`${labelStyle} inline-block mb-1 text-center capitalize`}
             >
@@ -114,7 +114,7 @@ function ServiceRequestModal(props) {
               {props?.service == "dead" ? "dead stock" : props?.service} request
             </label>
 
-            <FormControl sx={{ m: 1, width: "100%" }}>
+            <FormControl sx={{ marginTop: 2, width: "100%" }}>
               <Select
                 labelId="demo-multiple-checkbox-label"
                 id="demo-multiple-checkbox"

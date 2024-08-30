@@ -61,41 +61,8 @@ const AddUnitPrice = (props) => {
   let buttonStyle2 =
     " mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
-  let gstValidation =
-    /^([0][1-9]|[1-2][0-9]|[3][0-8])[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}/;
-
-  const procItemDetails = [
-    {
-      procItem: "proc item 1",
-      subCategory: "Laptop",
-      unit: "25",
-      brand: "Lenovo",
-      quantity: "100",
-      perUnitRate: "25000",
-      totRate: "2500000",
-      desc: "red color blue color",
-    },
-    {
-      procItem: "proc item 33",
-      subCategory: "Mouse",
-      unit: "55",
-      brand: "dell",
-      quantity: "500",
-      perUnitRate: "50",
-      totRate: "25000",
-      desc: "black blue color",
-    },
-    {
-      procItem: "proc item 22",
-      subCategory: "Mouse3",
-      unit: "55",
-      brand: "dell",
-      quantity: "500",
-      perUnitRate: "50",
-      totRate: "25000",
-      desc: "black blue color",
-    },
-  ];
+ 
+  
 
   // formik
   const validationSchema = yup.object({
@@ -108,16 +75,7 @@ const AddUnitPrice = (props) => {
     unit_price: yup.number().required("Unit Price is required"),
   });
 
-  // const initialValues = {
-  //   suppliers: "",
-  //   gst_no: "",
-  //   final_rate: "",
-  //   gst: "",
-  //   total_quantity: applicationFullData?.quantity,
-  //   unit_price: "",
-  //   is_gst_added: false,
-  //   total_price: "",
-  // };
+ 
 
   const initialValues = {
     suppliers: "",
@@ -480,7 +438,7 @@ const AddUnitPrice = (props) => {
                     )}
                     {supplierDetails.map((data, index) => (
                       <>
-                        <div className=' flex ml-14 mr-10 border-b-[1px]  border-gray-200 p-2 cursor-pointer hover:bg-slate-100'>
+                        <div className=' flex ml-14 mr-10 border-b-[1px] bg-white  border-gray-200 p-2 cursor-pointer hover:bg-slate-100'>
                           <div className='w-[15%] flex justify-start items-center'>
                             <div className='flex justify-center items-center'>
                               <p className='pl-5'>{index + 1}</p>
