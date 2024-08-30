@@ -75,7 +75,7 @@ const CoverDetailsForm = () => {
 
   //api to upload doc before submitting the form
   const uploadDoc = async (tabData) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     const uploadedDocs = {};
 
     for (const data of tabData) {
@@ -104,7 +104,7 @@ const CoverDetailsForm = () => {
           toast.error(err);
           console.log(`Error uploading document for ${tabName}:`, err);
         } finally {
-          setIsLoading(false);
+          // setIsLoading(false);
         }
       }
     }

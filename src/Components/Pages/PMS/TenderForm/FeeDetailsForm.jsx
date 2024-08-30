@@ -152,7 +152,6 @@ const FeeDetailsForm = () => {
           validationSchema={validationSchema}
           enableReinitialize={true}
           onSubmit={(values) => {
-            console.log("Form values", values);
             submitForm(values);
           }}
         >

@@ -143,7 +143,7 @@ const BiddingViewById = () => {
       case 4:
         return "View Finalize Winner";
       default:
-        return "Continue";
+        return "Completed";
     }
   };
 
@@ -228,6 +228,7 @@ const BiddingViewById = () => {
           closeModal={closeModal}
           refNo={id}
           tenderingType={applicationFullData?.tendering_type}
+          loadingState={isLoading}
         />
       </>
     );

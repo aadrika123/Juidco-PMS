@@ -92,7 +92,7 @@ export default function BoqTimeLine({ status }) {
 
         {/* //divider */}
         <div className='h-[2px] bg-black w-[20%] relative flex justify-center items-center'>
-          {(status === 1 || status === 40 || status === 70) && (
+          {(status === 1 || status === 70) && (
             <MdKeyboardArrowRight
               color='black'
               size={26}
