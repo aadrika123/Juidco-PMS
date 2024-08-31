@@ -103,7 +103,7 @@ function ServiceRequestModal(props) {
                       <Checkbox
                         checked={props?.serialNo.indexOf(data?.serial_no) > -1}
                       />
-                      <ListItemText primary={data?.serial_no} props />
+                      <ListItemText primary={data?.serial_no} secondary={`total quantity: ${data?.quantity}`} />
                     </MenuItem>
                   ))
                 ) : (

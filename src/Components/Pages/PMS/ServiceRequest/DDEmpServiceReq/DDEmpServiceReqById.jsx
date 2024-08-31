@@ -16,15 +16,14 @@ import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 
-const EmployeeDetailById = () => {
+const DDEmpServiceReqById = () => {
   const [isLoading, setisLoading] = useState(false);
   const [confModal, setConfModal] = useState(false);
-  const [forwardModal, setForwardDA] = useState(false);
+  const [rejectModal, setRejectModal] = useState(false);
   const [retModal, setRetModal] = useState(false);
   const [deadStockModal, setDeadStockModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [warrantyClaimModal, setwarrantyClaimModal] = useState(false);
-  const [serviceRequestModal, setServiceRequestModal] = useState(false);
   const [service, setService] = useState("");
   const [imageDoc, setImageDoc] = useState(false);
   const [preview, setPreview] = useState();
@@ -32,36 +31,27 @@ const EmployeeDetailById = () => {
   const [serialNo, setserialNo] = useState([]);
   const [productData, setProductData] = useState();
 
-
   const {
-    api_postHandoverReq,
-    api_postReturnReq,
-    api_postDeadStockReq,
-    api_getStockRequetById,
-    api_postWarrantyClaim,
-    api_postStockReqForwardtoDA,
-    api_employeeAcknowledge,
-    api_employeeServiceRequest,
-    api_employeeDetailsById
+
+    api_getEmpServiceById,
   } = ProjectApiList();
 
   const { id, page } = useParams();
 
-  // console.log(applicationFullData?.stock_handover_no)
+  // console.log(id);
 
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const notesheetRef = useRef();
 
   let buttonStyle =
     "mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
   let buttonStyle2 =
-    "p-2 pl-4 pr-4 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]";
+    "mr-1 pb-2 pl-6 pr-6 pt-2 border border-red-500 text-red-500 text-base leading-tight  rounded  hover:bg-red-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
   let buttonStyle3 =
-    "p-2 pl-4 pr-4 border border-green-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-green-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-green-600";
+    "mr-1 pb-2 pl-6 pr-6 pt-2 border border-green-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-green-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-green-600";
 
   //Print
   const componentRef = useRef();
@@ -69,91 +59,50 @@ const EmployeeDetailById = () => {
     content: () => componentRef.current,
   });
 
-  // const forwardDAModal = () => {
-  //   setForwardDA(true);
-  // };
-
- 
-  const acknowledgeModal = () => {
+  const approveModal = () => {
     setConfModal(true);
   };
-
+  
+  const rejectModalfunc = () => {
+    setRejectModal(true);
+  };
 
   //dead stock request
-  const acknowledgeHandler = () => {
+  const approveHandler = () => {
     setisLoading(true);
     setDeadStockModal(false);
     let body = { stock_handover_no: id };
 
-    AxiosInterceptors.post(`${api_employeeAcknowledge}`, body, ApiHeader())
-      .then(function (response) {
-        if (response?.data?.status == true) {
-          toast.success(
-            "Acknowledge successfully",
-            "success"
-          );
-          setSuccessModal(true);
-          setTimeout(() => {
-            navigate("/employee");
-          }, 2000);
-        } else {
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-        toast.error(error?.response?.data?.error);
-        // setdeclarationStatus(false);
-      })
-      .finally(() => {
-        setisLoading(false);
-      });
-  };
-
-
-  //Service request
-  const serviceRequestHandler = () => {
-    let body = {
-      products: serialNo,
-      service: service,
-      stock_handover_no: id,
-      inventoryId: applicationFullData?.stock_req_product[0]?.inventoryId,
-    };
-
-    // console.log(body)
-
-    AxiosInterceptors.post(`${api_employeeServiceRequest}`, body, ApiHeader())
-      .then(function (response) {
-        if (response?.data?.status == true) {
-          toast.success(
-            `Request created successfully : ${props?.service}`,
-            "success"
-          );
-          navigate(`/employee`)
-          setServiceRequestModal(false);
-        } else {
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-        toast.error(error?.response?.data?.error);
-        // setdeclarationStatus(false);
-      })
-      .finally(() => {
-        // setisLoading(false);
-      });
+    // AxiosInterceptors.post(`${api_employeeAcknowledge}`, body, ApiHeader())
+    //   .then(function (response) {
+    //     if (response?.data?.status == true) {
+    //       toast.success("Acknowledge successfully", "success");
+    //       setSuccessModal(true);
+    //       setTimeout(() => {
+    //         navigate("/employee");
+    //       }, 2000);
+    //     } else {
+    //       toast(response?.data?.message, "error");
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.log("errorrr.... ", error);
+    //     toast.error(error?.response?.data?.error);
+    //     // setdeclarationStatus(false);
+    //   })
+    //   .finally(() => {
+    //     setisLoading(false);
+    //   });
   };
 
   //get application details
   const getApplicationDetail = () => {
     setisLoading(true);
-    AxiosInterceptors.get(`${api_getStockRequetById}/${id}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getEmpServiceById}/${id}`, ApiHeader())
       .then(async function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
           setProductData(response?.data?.data?.stock_req_product);
-
         } else {
           // toast.error(response?.data?.message);
         }
@@ -177,73 +126,41 @@ const EmployeeDetailById = () => {
     setRetModal(false);
     setConfModal(false);
     setwarrantyClaimModal(false);
-    setForwardDA(false);
+    setRejectModal(false);
   };
 
   // Forward to DA
 
-  const confirmationHandler = () => {
+  const rejectHandler = () => {
     setConfModal(false);
   };
-
- 
 
   useEffect(() => {
     getApplicationDetail();
   }, []);
 
-  // console.log(service)
-
-  if (serviceRequestModal) {
-    return (
-      <>
-        <ServiceRequestModal
-          submit={serviceRequestHandler}
-          setserialNo={setserialNo}
-          serialNo={serialNo}
-          productData={productData}
-          setServiceRequestModal={setServiceRequestModal}
-          service={service}
-          // setInvtId={setInvtId}
-        />
-      </>
-    );
-  }
  
-
-  if (deadStockModal) {
-    return (
-      <>
-        <ConfirmationModal
-          confirmationHandler={deadConfirmationHandler}
-          handleCancel={handleCancel}
-          message={'Return to "Dead Stock" ?'}
-          //   sideMessage={'By clicking your data will proceed'}
-        />
-      </>
-    );
-  }
 
   if (confModal) {
     return (
       <>
         <ConfirmationModal
-          confirmationHandler={acknowledgeHandler}
+          confirmationHandler={approveHandler}
           handleCancel={handleCancel}
-          message={'Sure to "Acknowledge" ?'}
+          message={'Are you sure want to "Approve" ?'}
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
     );
   }
 
-  if (forwardModal) {
+  if (rejectModal) {
     return (
       <>
         <ConfirmationModal
-          confirmationHandler={confirmationHandler}
+          confirmationHandler={rejectHandler}
           handleCancel={handleCancel}
-          message={"Are you sure you want to Forward to Departmental Admin?"}
+          message={'Are you sure want to "Reject" ?'}
         />
       </>
     );
@@ -267,7 +184,7 @@ const EmployeeDetailById = () => {
 
       <TitleBar
         titleBarVisibility={titleBarVisibility}
-        titleText={"Stock Request Details"}
+        titleText={"Employee Service Detail"}
       />
 
       {/* //timeline  */}
@@ -285,10 +202,26 @@ const EmployeeDetailById = () => {
           >
             <div className="">
               <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
-                View Stock Request{" "}
+                Employee Service Request{" "}
               </h2>
             </div>
             <div className="flex justify-between">
+              <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
+                <h1 className="font-bold">
+                  Service No <span className="text-black">:</span>
+                  <span className="font-light">
+                    {" "}
+                    {nullToNA(applicationFullData?.service_no)}
+                  </span>
+                </h1>
+                <h1 className="font-bold text-base text-green-500">
+                  Service Type <span className="text-black">:</span>
+                  <span className="font-light capitalize">
+                    {" "}
+                    {nullToNA(applicationFullData?.service)}
+                  </span>
+                </h1>
+              </div>
               <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
                 <h1 className="font-bold">
                   Stock Handover No <span className="text-black">:</span>
@@ -299,14 +232,15 @@ const EmployeeDetailById = () => {
                 </h1>
               </div>
             </div>
+
             <div className="grid md:grid-cols-4 gap-4 ml-8 pb-5">
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+              {/* <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold">Employee Id</div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
                   {nullToNA(applicationFullData?.emp_id)}
                 </div>
-              </div>
-
+              </div> */}
+              {/* 
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">
                   Employee Name
@@ -314,26 +248,34 @@ const EmployeeDetailById = () => {
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
                   {nullToNA(applicationFullData?.emp_name)}
                 </div>
-              </div>
+              </div> */}
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+              {/* <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">
                   Quantity Allotted{" "}
                 </div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
                   {nullToNA(applicationFullData?.allotted_quantity)}
                 </div>
-              </div>
+              </div> */}
 
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Date</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.createdAt?.split("T")[0])}
+                <div className="md:w-auto w-[50%] font-bold ">
+                  Date :{" "}
+                  <span className="font-normal">
+                    {nullToNA(applicationFullData?.createdAt?.split("T")[0])
+                      .split("-")
+                      .reverse()
+                      .join("-")}
+                  </span>
                 </div>
+                {/* <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.createdAt?.split("T")[0])}
+                </div> */}
               </div>
             </div>
 
-            {applicationFullData?.stock_req_product?.length > 0 ? (
+            {applicationFullData?.emp_service_req_product?.length > 0 ? (
               <h1 className="pl-8 font-semibold underline text-blue-950">
                 Products:
               </h1>
@@ -360,41 +302,45 @@ const EmployeeDetailById = () => {
                 </div>
               </>
             )}
-            {applicationFullData?.stock_req_product?.map((data, index) => (
-              <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-4 rounded">
-                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">Serial No</div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                    {nullToNA(data?.serial_no)}
+            {applicationFullData?.emp_service_req_product?.map(
+              (data, index) => (
+                <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-4 rounded">
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
+                      Serial No
+                    </div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(data?.serial_no)}
+                    </div>
                   </div>
-                </div>
 
-                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">Category</div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                    {nullToNA(applicationFullData?.inventory?.category?.name)}
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Category</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(applicationFullData?.inventory?.category?.name)}
+                    </div>
                   </div>
-                </div>
 
-                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-semibold ">
-                    Sub Categories
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-semibold ">
+                      Sub Categories
+                    </div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(
+                        applicationFullData?.inventory?.subcategory?.name
+                      )}
+                    </div>
                   </div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                    {nullToNA(
-                      applicationFullData?.inventory?.subcategory?.name
-                    )}
-                  </div>
-                </div>
 
-                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                  <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
-                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                    {nullToNA(data?.quantity)}
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(data?.quantity)}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            )}
 
             <div className="p-5 pl-8">
               <h1 className="font-bold ">Description</h1>
@@ -434,57 +380,22 @@ const EmployeeDetailById = () => {
             <div className="space-x-3 flex items-end justify-center">
               {page == "inbox" && (
                 <>
-                  {/* {applicationFullData?.status === 0 && (
+                 
                     <button
-                      className=" p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]"
-                      onClick={forwardDAModal}
+                      className={`${buttonStyle2}`}
+                      onClick={rejectModalfunc}
                     >
-                      Forward to Departmental Admin
+                      Reject
                     </button>
-                  )} */}
 
-                  {applicationFullData?.status == 4 && (
                     <button
                       className={`${buttonStyle3}`}
-                      onClick={acknowledgeModal}
+                      onClick={approveModal}
                     >
-                      Acknowledge
+                      Approve
                     </button>
-                  )}
 
-                  {applicationFullData?.status == 41 && (
-                    <>
-                      <button
-                        className={buttonStyle2}
-                        onClick={() => {
-                          setServiceRequestModal(true);
-                          setService("return");
-                        }}
-                      >
-                        Return
-                      </button>
-
-                      <button
-                        className={buttonStyle2}
-                        onClick={() => {
-                          setServiceRequestModal(true);
-                          setService("dead");
-                        }}
-                      >
-                        Dead Stock
-                      </button>
-
-                      <button
-                        className={buttonStyle2}
-                        onClick={() => {
-                          setServiceRequestModal(true);
-                          setService("warranty");
-                        }}
-                      >
-                        Warranty claims
-                      </button>
-                    </>
-                  )}
+                  
                 </>
               )}
             </div>
@@ -495,4 +406,4 @@ const EmployeeDetailById = () => {
   );
 };
 
-export default EmployeeDetailById;
+export default DDEmpServiceReqById;

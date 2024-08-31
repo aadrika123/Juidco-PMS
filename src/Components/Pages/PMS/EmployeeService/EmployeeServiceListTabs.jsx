@@ -4,27 +4,27 @@
 //    Date - 25/06/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - EmployeeListTabs
-//    DESCRIPTION - EmployeeListTabs
+//    Component  - EmployeeServiceListTabs
+//    DESCRIPTION - EmployeeServiceListTabs
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
-import EmployeeList from "./EmployeeList";
+import EmployeeList from "./EmployeeServiceList";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaChartPie } from "react-icons/fa";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 
-const EmployeeListTabs = () => {
+const EmployeeServiceListTabs = () => {
   const [activeTab, setActiveTab] = useState("inbox");
 
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { api_employeeInbox, api_employeeOutbox, api_employeeHandover } =
+  const { api_employeeServiceInbox, api_employeeServiceOutbox, api_employeeHandover } =
     ProjectApiList();
 
   return (
@@ -32,7 +32,7 @@ const EmployeeListTabs = () => {
       <div className="">
         <TitleBar
           titleBarVisibility={titleBarVisibility}
-          titleText={"Handover List"}
+          titleText={"Employee service List"}
         />
       </div>
 
@@ -51,8 +51,8 @@ const EmployeeListTabs = () => {
             >
               <FaChartPie className="m-1 text-[1rem]" />
               Inbox
-            </button> */}
-            {/* <button
+            </button>  */}
+           {/* <button
               className={`ml-4 py-2 px-4 ${
                 activeTab === "outbox"
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
@@ -71,12 +71,12 @@ const EmployeeListTabs = () => {
         <div className="mt-4">
           {activeTab === "inbox" && (
             <div>
-              <EmployeeList page="inbox" api={api_employeeHandover} />
+              <EmployeeList page="inbox" api={api_employeeServiceOutbox} />
             </div>
           )}
           {/* {activeTab === "outbox" && (
             <div>
-              <EmployeeList page='outbox' api={api_employeeOutbox} />
+              <EmployeeList page='outbox' api={api_employeeServiceOutbox} />
             </div>
           )} */}
         </div>
@@ -85,4 +85,4 @@ const EmployeeListTabs = () => {
   );
 };
 
-export default EmployeeListTabs;
+export default EmployeeServiceListTabs;
