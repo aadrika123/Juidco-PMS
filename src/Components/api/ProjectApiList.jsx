@@ -271,8 +271,22 @@ export default function ProjectApiList() {
     api_updateBank: `${baseUrl}/api/pms/master/bank/update`,
     
     // employee request
+    api_employeeDetailsById:`${baseUrl}/api/pms/emp-service`,
+    api_employeeHandover:`${baseUrl}/api/pms/stock-handover/`,
+    api_employeeAcknowledge:`${baseUrl}/api/pms/stock-handover/acknowledge`,
+    api_employeeServiceRequest:`${baseUrl}/api/pms/stock-handover/emp-service`,
     api_employeeInbox: `${baseUrl}/api/pms/stock-handover/emp-service/`,
     api_employeeOutbox: `${baseUrl}/api/pms/stock-handover/emp-service/outbox`,
+    
+    // employee service
+    api_employeeServiceInbox: `${baseUrl}/api/pms/stock-handover/emp-service/`,
+    api_employeeServiceOutbox: `${baseUrl}/api/pms/stock-handover/emp-service/outbox`,
+    api_getEmpServiceById: `${baseUrl}/api/pms/emp-service`,
+    
+    // dd employee service 
+    api_ddemployeeServiceInbox: `${baseUrl}/api/pms/dist/service-request/emp`,
+    api_ddemployeeServiceOutbox: `${baseUrl}/api/pms/dist/service-request/emp/outbox`,
+    
   };
 
   return apiList;

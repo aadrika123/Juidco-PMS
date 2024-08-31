@@ -98,6 +98,10 @@ import DDServiceRequestById from "./Components/Pages/PMS/ServiceRequest/DD/DDSer
 import AddUnitPrice from "./Components/Pages/PMS/Bidding/BiddingAdmin/AddUnitPrice";
 import EmployeeListTabs from "./Components/Pages/PMS/Employee/EmployeeListTabs";
 import EmployeeDetailById from "./Components/Pages/PMS/Employee/EmployeeDetailById";
+import EmployeeServiceListTabs from "./Components/Pages/PMS/EmployeeService/EmployeeServiceListTabs";
+import EmployeeServiceById from "./Components/Pages/PMS/EmployeeService/EmployeeServiceById";
+import DDEmpServiceReqListTabs from "./Components/Pages/PMS/ServiceRequest/DDEmpServiceReq/DDEmpServiceReqListTabs";
+import DDEmpServiceReqById from "./Components/Pages/PMS/ServiceRequest/DDEmpServiceReq/DDEmpServiceReqById";
 
 const queryClient = new QueryClient();
 
@@ -174,6 +178,7 @@ function App() {
     },
 
     //------------ DA ----------
+
     { path: "/da-inventory-dashboard", element: <InventoryDashboardDa2 /> },
     {
       path: "/da-inventory-proposal",
@@ -461,7 +466,7 @@ function App() {
     // },
 
 
-    /////////////////////////{*** Employee List ***}//////////////////////////////////////
+    /////////////////////////{*** Employee Section ***}//////////////////////////////////////
     {
       path: "/employee",
       element: <EmployeeListTabs />,
@@ -469,6 +474,22 @@ function App() {
     {
       path: "/viewEmployeeById/:id/:page",
       element: <EmployeeDetailById />,
+    },
+    {
+      path: "/employee-service",
+      element: <EmployeeServiceListTabs />,
+    },
+    {
+      path: "/employeeServiceById/:id/:page",
+      element: <EmployeeServiceById />,
+    },
+    {
+      path: "/dd-emp-service",
+      element: <DDEmpServiceReqListTabs />,
+    },
+    {
+      path: "/dd-empServiceById/:id/:page",
+      element: <DDEmpServiceReqById />,
     },
   ];
 

@@ -4,8 +4,8 @@
 //    Date - 22/07/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - EmployeeList
-//    DESCRIPTION - EmployeeList
+//    Component  - EmployeeServiceList
+//    DESCRIPTION - EmployeeServiceList
 //////////////////////////////////////////////////////////////////////////////////////
 
 import { useFormik } from "formik";
@@ -21,7 +21,7 @@ import { RotatingLines } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
-function EmployeeList(props) {
+function EmployeeServiceList(props) {
   const navigate = useNavigate();
   const { module } = useParams();
   // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
@@ -70,27 +70,27 @@ function EmployeeList(props) {
       ),
     },
     {
+      Header: "Service No",
+      accessor: "service_no",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.service_no}</div>
+      ),
+    },
+    {
+      Header: "Service",
+      accessor: "service",
+      Cell: ({ cell }) => (
+        <div className="pr-2 capitalize">{cell.row.values.service}</div>
+      ),
+    },
+    {
       Header: "Category",
       accessor: "inventory",
       Cell: ({ cell }) => (
         <div className="pr-2">{cell.row.values.inventory?.category?.name} </div>
       ),
     },
-    {
-      Header: "Employee Name",
-      accessor: "emp_name",
-      Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.emp_name} </div>
-      ),
-    },
     
-    {
-      Header: "Required Quantity",
-      accessor: "allotted_quantity",
-      Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.allotted_quantity} </div>
-      ),
-    },
     
 
     {
@@ -104,9 +104,9 @@ function EmployeeList(props) {
               Rejected
             </p>
           )}
-          {cell.row.values.status == 4 && (
+          {cell.row.values.status == 10 && (
             <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              Ready to Acknowledge
+              Forwarded To DD
             </p>
           )}
           {cell.row.values.status == 41 && (
@@ -136,7 +136,7 @@ function EmployeeList(props) {
             className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
             onClick={() =>
               navigate(
-                `/viewEmployeeById/${cell.row.values.stock_handover_no}/${props.page}`
+                `/employeeServiceById/${cell.row.values.service_no}/${props.page}`
               )
             }
           >
@@ -197,4 +197,4 @@ function EmployeeList(props) {
   );
 }
 
-export default EmployeeList;
+export default EmployeeServiceList;
