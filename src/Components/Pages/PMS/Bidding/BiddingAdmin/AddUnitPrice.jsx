@@ -9,7 +9,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 import { useState, useEffect, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
@@ -65,8 +65,6 @@ const AddUnitPrice = () => {
   });
 
   const addUnitPrice = () => {
-    console.log(supplierDetails, "supplierDetails");
-    console.log(applicationFullData?.supplier, "supplierDetails");
     if (
       supplierDetails?.length !== applicationFullData?.procurement_stock?.length
     ) {
@@ -85,7 +83,6 @@ const AddUnitPrice = () => {
       toast.error("Add Unit Price for all Suppliers");
       return;
     }
-    console.log("exit");
     // setisLoading(true);
 
     // AxiosInterceptors.post(
@@ -117,49 +114,123 @@ const AddUnitPrice = () => {
 
   const supplierDetail = (val) => {
     const newData = val;
-
     setSupplierDetails((prev) => {
-      const existingProcItem = prev?.findIndex(
-        (supplier) => supplier.items === newData.items
+      const isExistingProcurement = prev?.findIndex(
+        (proc) => proc.items === newData.items
       );
 
-      if (existingProcItem !== -1) {
-        const supplierData = prev[existingProcItem];
+      const exisitingProc = prev[isExistingProcurement];
 
-        const updatedSupplier = prev.map((suppData, index) => {
-          // if (supplierData.suppliers.find((data => {
-          //   if(data.id === suppData?.some(details => details.id))
-          // })))
-          {
-            // console.log(
-            //   suppData,
-            //   "suppData.items",
-            //   supplierData,
-            //   "supplierData.items"
-            // );
+      if (isExistingProcurement !== -1) {
+        const isExistingSupplier = exisitingProc?.suppliers?.findIndex(
+          (data) => data?.id === newData?.suppliers
+        );
+
+        if (isExistingSupplier !== -1) {
+          const existingSupplierDetail = prev.map((data) => {
+            const updatedSuppliers = data.suppliers.map((details) => {
+              if (
+                details.id ===
+                  exisitingProc.suppliers[isExistingSupplier]?.id &&
+                data?.items === newData?.items
+              ) {
+                // Overwrite the unit_price with the new value
+                return {
+                  ...details,
+                  unit_price: newData.unit_price,
+                };
+              }
+              return details;
+            });
 
             return {
-              ...suppData,
-              suppliers: [
-                ...suppData.suppliers,
-                { id: val.suppliers, unit_price: val.unit_price },
-              ],
+              ...data,
+              suppliers: updatedSuppliers,
             };
-          }
-          return suppData;
-        });
+          });
+          return existingSupplierDetail;
+        } else {
+          const updatedSupplier = prev.map((suppData, index) => {
+            if (suppData.items === exisitingProc.items) {
+              return {
+                ...suppData,
+                suppliers: [
+                  ...suppData.suppliers,
+                  { id: newData.suppliers, unit_price: newData.unit_price },
+                ],
+              };
+            }
+            return suppData;
+          });
 
-        return updatedSupplier;
+          return updatedSupplier;
+        }
       } else {
         return [
           ...prev,
           {
-            items: val.items,
-            suppliers: [{ id: val.suppliers, unit_price: val.unit_price }],
+            items: newData.items,
+            suppliers: [
+              { id: newData.suppliers, unit_price: newData.unit_price },
+            ],
           },
         ];
       }
     });
+
+    // setSupplierDetails((prev) => {
+    //   //checking if procurement id is present in data
+    //   const existingProcItem = prev?.findIndex(
+    //     (supplier) => supplier.items === newData.items
+    //   );
+
+    //   if (existingProcItem !== -1) {
+    //     const supplierData = prev[existingProcItem];
+
+    //     const allSupplierIds = prev
+    //       .map((details) => details?.suppliers?.map((data) => data?.id))
+    //       .flat();
+
+    //     const isExistingSupplier = supplierData?.suppliers?.find((data) =>
+    //       allSupplierIds.includes(data?.id)
+    //     );
+
+    //     console.log(isExistingSupplier, "isexistingsupplier");
+    //     console.log(supplierData, "supplierdara");
+
+    //     // const updatedSupplier = prev.find((suppData, index) => suppData.suppliers === supplierData?.map((data) => data/));
+    //     if (isExistingSupplier) {
+    //       const updatingSupplierData = supplierData?.suppliers?.find(
+    //         (data) => data?.id === isExistingSupplier?.id
+    //       );
+    //       console.log(updatingSupplierData, "updating=====");
+    //       console.log(isExistingSupplier, "isexistingsupplier inside if");
+    //     } else {
+    //       const updatedSupplier = prev.map((suppData, index) => {
+    //         if (suppData.items === supplierData.items) {
+    //           return {
+    //             ...suppData,
+    //             suppliers: [
+    //               ...suppData.suppliers,
+    //               { id: val.suppliers, unit_price: val.unit_price },
+    //             ],
+    //           };
+    //         }
+    //         return suppData;
+    //       });
+
+    //       return updatedSupplier;
+    //     }
+    //   } else {
+    // return [
+    //   ...prev,
+    //   {
+    //     items: val.items,
+    //     suppliers: [{ id: val.suppliers, unit_price: val.unit_price }],
+    //   },
+    // ];
+    //   }
+    // });
   };
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
@@ -343,7 +414,7 @@ const AddUnitPrice = () => {
                         </div>
                       </div>
                     )}
-                    {supplierDetails.map((data, index) => (
+                    {supplierDetails?.map((data, index) => (
                       <>
                         <div className=' flex items-center mx-12 border-b-[1px]  border-gray-200 p-2 cursor-pointer hover:bg-slate-100 bg-white'>
                           <div className='w-[10%] flex justify-start items-center'>
@@ -353,7 +424,7 @@ const AddUnitPrice = () => {
                           </div>
                           <div className='w-[40%] flex justify-start items-center'>
                             <div className='flex justify-center items-center'>
-                              <p className=''>
+                              <p className='text-justify'>
                                 {
                                   applicationFullData?.procurement_stock?.find(
                                     (stocks) => stocks.id === data?.items
