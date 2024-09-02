@@ -23,6 +23,9 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
+import * as yup from 'yup'
+
+
 
 const AddUnitPrice = () => {
   const { refNo } = useParams();
@@ -93,8 +96,8 @@ const AddUnitPrice = () => {
     }
 
     if (
-      supplierDetails?.suppliers?.length !==
-      applicationFullData?.supplier?.length
+      supplierDetails?.map(data => data.suppliers?.length !==
+        applicationFullData?.supplier?.length)
     ) {
       setIsModalOpenInvt(false);
       console.log("enter==");
@@ -143,9 +146,11 @@ const AddUnitPrice = () => {
         const supplierData = prev[existingProcItem];
 
         const updatedSupplier = prev.map((suppData, index) => {
-          // if (supplierData.suppliers.find((data => {
-          //   if(data.id === suppData?.some(details => details.id))
-          // })))
+          if (supplierData.suppliers.find((data => {
+            if(data.id === suppData?.some(details => details.id)){
+              
+            }
+          })))
           {
             // console.log(
             //   suppData,
@@ -291,7 +296,7 @@ const AddUnitPrice = () => {
                       </div>
 
                       <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/4 mb-2'>
-                        <div class='px-4 w-full mb-4'>
+                        <div className='px-4 w-full mb-4'>
                           <label className={`${labelStyle} inline-block mb-2`}>
                             Supplier Name{" "}
                             <span className='text-red-500'>*</span>
@@ -304,7 +309,7 @@ const AddUnitPrice = () => {
                           >
                             <option defaultValue={"select"}>select</option>
                             {applicationFullData?.supplier?.map((data) => (
-                              <option value={data?.id} key={data?.id}>
+                              <option value={data?.id} key={data?.id} className="capitalize">
                                 {data?.name}
                               </option>
                             ))}

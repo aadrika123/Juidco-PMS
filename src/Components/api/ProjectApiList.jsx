@@ -284,6 +284,8 @@ export default function ProjectApiList() {
     api_getEmpServiceById: `${baseUrl}/api/pms/emp-service`,
     
     // dd employee service 
+    api_ddemployeeServiceApprove: `${baseUrl}/api/pms/dist/service-request/emp/approve`,
+    api_ddemployeeServiceReject: `${baseUrl}/api/pms/dist/service-request/emp/reject`,
     api_ddemployeeServiceInbox: `${baseUrl}/api/pms/dist/service-request/emp`,
     api_ddemployeeServiceOutbox: `${baseUrl}/api/pms/dist/service-request/emp/outbox`,
     
