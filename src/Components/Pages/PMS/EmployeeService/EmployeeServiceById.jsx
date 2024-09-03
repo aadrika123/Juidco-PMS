@@ -3,6 +3,7 @@ import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import ServiceRequestModal from "@/Components/Common/Modal/ServiceRequestModal";
 import SuccessModal from "@/Components/Common/Modal/SuccessModal";
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
@@ -14,9 +15,8 @@ import React, { useContext, useRef, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-// import ServiceRequestModal from "./ServiceRequestModal";
 
-const DAServiceRequestById = () => {
+const EmployeeServiceById = () => {
   const [isLoading, setisLoading] = useState(false);
   const [confModal, setConfModal] = useState(false);
   const [forwardModal, setForwardDA] = useState(false);
@@ -29,16 +29,25 @@ const DAServiceRequestById = () => {
   const [imageDoc, setImageDoc] = useState(false);
   const [preview, setPreview] = useState();
   const [applicationFullData, setapplicationFullData] = useState([]);
+  const [serialNo, setserialNo] = useState([]);
+  const [productData, setProductData] = useState();
+
   const {
     api_postHandoverReq,
-    api_getServiceRequestId,
-    api_approveServiceRequestDA,
+    api_postReturnReq,
+    api_postDeadStockReq,
+    api_getStockRequetById,
+    api_postWarrantyClaim,
+    api_postStockReqForwardtoDA,
+    api_employeeAcknowledge,
+    api_employeeServiceRequest,
+    api_employeeDetailsById,
+    api_getEmpServiceById,
   } = ProjectApiList();
 
-  const { refNo, page } = useParams();
-  const nevigate = useNavigate()
+  const { id, page } = useParams();
 
-  // console.log(refNo)
+  // console.log(id);
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -51,72 +60,36 @@ const DAServiceRequestById = () => {
   let buttonStyle2 =
     "p-2 pl-4 pr-4 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]";
 
+  let buttonStyle3 =
+    "p-2 pl-4 pr-4 border border-green-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-green-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-green-600";
+
   //Print
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
-  const forwardDAModal = () => {
-    setForwardDA(true);
-  };
+  // const forwardDAModal = () => {
+  //   setForwardDA(true);
+  // };
 
-  const warrantyModal = () => {
-    setwarrantyClaimModal(true);
-  };
-  const handoverModal = () => {
+  const acknowledgeModal = () => {
     setConfModal(true);
   };
-  const returnModal = () => {
-    setRetModal(true);
-  };
-  const deadStockModalfunc = () => {
-    setDeadStockModal(true);
-  };
 
-  // warranty claim request
-  // const warrantyClaimHandler = () => {
-  //   setisLoading(true);
-  //   setDeadStockModal(false);
-  //   let body = { stock_handover_no: id };
-
-  //   AxiosInterceptors.post(`${api_postWarrantyClaim}`, body, ApiHeader())
-  //     .then(function (response) {
-  //       if (response?.data?.status == true) {
-  //         toast.success("Warranty Claimed successfully", "success");
-  //         setSuccessModal(true);
-  //         setTimeout(() => {
-  //           navigate("/dd-handover");
-  //         }, 2000);
-  //       } else {
-  //         toast(response?.data?.message, "error");
-  //       }
-  //     })
-  //     .catch(function (error) {
-  //       console.log("errorrr.... ", error);
-  //       toast.error(error?.response?.data?.error);
-  //       // setdeclarationStatus(false);
-  //     })
-  //     .finally(() => {
-  //       setisLoading(false);
-  //     });
-  // };
   //dead stock request
-  const deadConfirmationHandler = () => {
+  const acknowledgeHandler = () => {
     setisLoading(true);
     setDeadStockModal(false);
     let body = { stock_handover_no: id };
 
-    AxiosInterceptors.post(`${api_postDeadStockReq}`, body, ApiHeader())
+    AxiosInterceptors.post(`${api_employeeAcknowledge}`, body, ApiHeader())
       .then(function (response) {
         if (response?.data?.status == true) {
-          toast.success(
-            "Stock Request added to Dead Stock successfully",
-            "success"
-          );
+          toast.success("Acknowledge successfully", "success");
           setSuccessModal(true);
           setTimeout(() => {
-            navigate("/dd-handover");
+            navigate("/employee");
           }, 2000);
         } else {
           toast(response?.data?.message, "error");
@@ -132,51 +105,26 @@ const DAServiceRequestById = () => {
       });
   };
 
-  //returning request ------
-  const retConfirmationHandler = () => {
-    setisLoading(true);
-    setRetModal(false);
-    let body = { stock_handover_no: id };
+  //Service request
+  const serviceRequestHandler = () => {
+    let body = {
+      products: serialNo,
+      service: service,
+      stock_handover_no: id,
+      inventoryId: applicationFullData?.stock_req_product[0]?.inventoryId,
+    };
 
-    AxiosInterceptors.post(`${api_postReturnReq}`, body, ApiHeader())
-      .then(function (response) {
-        if (response?.data?.status == true) {
-          toast.success("Stock Request has return successfully", "success");
-          setSuccessModal(true);
-          setTimeout(() => {
-            navigate("/dd-handover");
-          }, 2000);
-        } else {
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-        toast.error(error?.response?.data?.error);
-        // setdeclarationStatus(false);
-      })
-      .finally(() => {
-        setisLoading(false);
-      });
-  };
+    // console.log(body)
 
-  // hadover the request-------
-  const handoverHandler = () => {
-    setisLoading(true);
-    setConfModal(false);
-    let body = { stock_handover_no: id };
-
-    AxiosInterceptors.post(`${api_postHandoverReq}`, body, ApiHeader())
+    AxiosInterceptors.post(`${api_employeeServiceRequest}`, body, ApiHeader())
       .then(function (response) {
         if (response?.data?.status == true) {
           toast.success(
-            "Stock Request has been successfully handover",
+            `Request created successfully : ${props?.service}`,
             "success"
           );
-          setSuccessModal(true);
-          setTimeout(() => {
-            navigate("/dd-handover");
-          }, 2000);
+          navigate(`/employee`);
+          setServiceRequestModal(false);
         } else {
           toast(response?.data?.message, "error");
         }
@@ -187,17 +135,18 @@ const DAServiceRequestById = () => {
         // setdeclarationStatus(false);
       })
       .finally(() => {
-        setisLoading(false);
+        // setisLoading(false);
       });
   };
 
   //get application details
   const getApplicationDetail = () => {
     setisLoading(true);
-    AxiosInterceptors.get(`${api_getServiceRequestId}/${refNo}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getEmpServiceById}/${id}`, ApiHeader())
       .then(async function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
+          setProductData(response?.data?.data?.stock_req_product);
         } else {
           // toast.error(response?.data?.message);
         }
@@ -227,74 +176,56 @@ const DAServiceRequestById = () => {
   // Forward to DA
 
   const confirmationHandler = () => {
-    approveServiceRequest();
-    setForwardDA(false);
-  };
-  
-  // console.log(refNo)
-
-  const approveServiceRequest = () => {
-    setisLoading(true);
-    AxiosInterceptors.post(
-      `${api_approveServiceRequestDA}`,
-      { service_no: refNo },
-      ApiHeader()
-    )
-      .then(function (response) {
-        if (response?.data?.status) {
-          toast.success("Forwarded to IA Successfully");
-          nevigate(`/da-service-request`)
-          setisLoading(false);
-        } else {
-          console.log("error in forwarding to da...", error);
-        }
-      })
-      .catch(function (err) {
-        toast.error(err?.response?.data?.message);
-      });
+    setConfModal(false);
   };
 
   useEffect(() => {
     getApplicationDetail();
   }, []);
 
-  // if (warrantyClaimModal) {
-  //   return (
-  //     <>
-  //       <ConfirmationModal
-  //         confirmationHandler={warrantyClaimHandler}
-  //         handleCancel={handleCancel}
-  //         message={'Are you sure you want to "Claim Warranty" ?'}
-  //         //   sideMessage={'By clicking your data will proceed'}
-  //       />
-  //     </>
-  //   );
-  // }
+  // console.log(service)
 
-  // if (deadStockModal) {
-  //   return (
-  //     <>
-  //       <ConfirmationModal
-  //         confirmationHandler={deadConfirmationHandler}
-  //         handleCancel={handleCancel}
-  //         message={'Return to "Dead Stock" ?'}
-  //         //   sideMessage={'By clicking your data will proceed'}
-  //       />
-  //     </>
-  //   );
-  // }
-  // if (confModal) {
-  //   return (
-  //     <>
-  //       <ConfirmationModal
-  //         confirmationHandler={handoverHandler}
-  //         handleCancel={handleCancel}
-  //         message={'Are you sure you want to "Handover" ?'}
-  //         //   sideMessage={'By clicking your data will proceed'}
-  //       />
-  //     </>
-  //   );
-  // }
+  if (serviceRequestModal) {
+    return (
+      <>
+        <ServiceRequestModal
+          submit={serviceRequestHandler}
+          setserialNo={setserialNo}
+          serialNo={serialNo}
+          productData={productData}
+          setServiceRequestModal={setServiceRequestModal}
+          service={service}
+          // setInvtId={setInvtId}
+        />
+      </>
+    );
+  }
+
+  if (deadStockModal) {
+    return (
+      <>
+        <ConfirmationModal
+          confirmationHandler={deadConfirmationHandler}
+          handleCancel={handleCancel}
+          message={'Return to "Dead Stock" ?'}
+          //   sideMessage={'By clicking your data will proceed'}
+        />
+      </>
+    );
+  }
+
+  if (confModal) {
+    return (
+      <>
+        <ConfirmationModal
+          confirmationHandler={acknowledgeHandler}
+          handleCancel={handleCancel}
+          message={'Sure to "Acknowledge" ?'}
+          //   sideMessage={'By clicking your data will proceed'}
+        />
+      </>
+    );
+  }
 
   if (forwardModal) {
     return (
@@ -302,44 +233,31 @@ const DAServiceRequestById = () => {
         <ConfirmationModal
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
-          message={"Are you sure you want to Approve?"}
+          message={"Are you sure you want to Forward to Departmental Admin?"}
         />
       </>
     );
   }
 
-  // if (retModal) {
-  //   return (
-  //     <>
-  //       <ConfirmationModal
-  //         confirmationHandler={retConfirmationHandler}
-  //         handleCancel={handleCancel}
-  //         message={'Are you sure you want to "Return" ?'}
-  //         //   sideMessage={'By clicking your data will proceed'}
-  //       />
-  //     </>
-  //   );
-  // }
-
-  // if (successModal) {
-  //   return (
-  //     <>
-  //       <SuccessModal
-  //         confirmationHandler={confirmationHandler2}
-  //         message={"Your Request has been Handover Successfully"}
-  //         requestNoMsg={"Reference No:-"}
-  //         refNo={"123654789"}
-  //       />
-  //     </>
-  //   );
-  // }
+  if (successModal) {
+    return (
+      <>
+        <SuccessModal
+          confirmationHandler={confirmationHandler2}
+          message={"Your Request has been Handover Successfully"}
+          requestNoMsg={"Reference No:-"}
+          refNo={"123654789"}
+        />
+      </>
+    );
+  }
   return (
     <>
       {isLoading && <LoaderApi />}
 
       <TitleBar
         titleBarVisibility={titleBarVisibility}
-        titleText={"Inventory Proposal Details"}
+        titleText={"Employee Service Detail"}
       />
 
       {/* //timeline  */}
@@ -357,11 +275,11 @@ const DAServiceRequestById = () => {
           >
             <div className="">
               <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
-                View Inventory Request{" "}
+                Employee Service Request{" "}
               </h2>
             </div>
             <div className="flex justify-between">
-            <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
+              <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
                 <h1 className="font-bold">
                   Service No <span className="text-black">:</span>
                   <span className="font-light">
@@ -369,9 +287,9 @@ const DAServiceRequestById = () => {
                     {nullToNA(applicationFullData?.service_no)}
                   </span>
                 </h1>
-                <h1 className="font-bold text-base text-blue-950">
+                <h1 className="font-bold text-base text-green-500">
                   Service Type <span className="text-black">:</span>
-                  <span className="font-light text-green-600">
+                  <span className="font-light capitalize">
                     {" "}
                     {nullToNA(applicationFullData?.service)}
                   </span>
@@ -379,55 +297,111 @@ const DAServiceRequestById = () => {
               </div>
               <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
                 <h1 className="font-bold">
-                  Inventory Request No <span className="text-black">:</span>
+                  Stock Handover No <span className="text-black">:</span>
                   <span className="font-light">
                     {" "}
                     {nullToNA(applicationFullData?.stock_handover_no)}
                   </span>
                 </h1>
               </div>
-             
             </div>
 
-            <div className="grid md:grid-cols-4 gap-4 ml-8">
+            <div className="grid md:grid-cols-4 gap-4 ml-8 pb-5">
               {/* <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold">Description</div>
+                <div className="md:w-auto w-[50%] font-bold">Employee Id</div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.inventory?.description)}
+                  {nullToNA(applicationFullData?.emp_id)}
+                </div>
+              </div> */}
+              {/* 
+              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">
+                  Employee Name
+                </div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.emp_name)}
+                </div>
+              </div> */}
+
+              {/* <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">
+                  Quantity Allotted{" "}
+                </div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.allotted_quantity)}
                 </div>
               </div> */}
 
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Category</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.inventory?.category?.name)}
+                <div className="md:w-auto w-[50%] font-bold ">
+                  Date :{" "}
+                  <span className="font-normal">
+                    {nullToNA(applicationFullData?.createdAt?.split("T")[0])
+                      .split("-")
+                      .reverse()
+                      .join("-")}
+                  </span>
                 </div>
+                {/* <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(applicationFullData?.createdAt?.split("T")[0])}
+                </div> */}
               </div>
+            </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Brand</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.brand?.name)}
-                </div>
-              </div>
+            {applicationFullData?.emp_service_req_product?.length > 0 ? (
+              <h1 className="pl-8 font-semibold underline text-blue-950">
+                Products:
+              </h1>
+            ) : (
+              <>
+                <div className="grid md:grid-cols-4 gap-4 ml-8">
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Category</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(applicationFullData?.inventory?.category?.name)}
+                    </div>
+                  </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-semibold ">
-                  Sub Categories
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-semibold ">
+                      Sub Categories
+                    </div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(
+                        applicationFullData?.inventory?.subcategory?.name
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.inventory?.subcategory?.name)}
-                </div>
-              </div>
-
-              {applicationFullData?.service_req_product?.map((data) => (
-                <>
+              </>
+            )}
+            {applicationFullData?.emp_service_req_product?.map(
+              (data, index) => (
+                <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-4 rounded">
                   <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                     <div className="md:w-auto w-[50%] font-bold ">
-                      Service Request Product
+                      Serial No
                     </div>
                     <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {nullToNA(data?.serial_no)}
+                    </div>
+                  </div>
+
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Category</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(applicationFullData?.inventory?.category?.name)}
+                    </div>
+                  </div>
+
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-semibold ">
+                      Sub Categories
+                    </div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(
+                        applicationFullData?.inventory?.subcategory?.name
+                      )}
                     </div>
                   </div>
 
@@ -437,9 +411,10 @@ const DAServiceRequestById = () => {
                       {nullToNA(data?.quantity)}
                     </div>
                   </div>
-                </>
-              ))}
-            </div>
+                </div>
+              )
+            )}
+
             <div className="p-5 pl-8">
               <h1 className="font-bold ">Description</h1>
               <p className=" pt-2">
@@ -478,65 +453,57 @@ const DAServiceRequestById = () => {
             <div className="space-x-3 flex items-end justify-center">
               {page == "inbox" && (
                 <>
-                  {applicationFullData?.status === 10 && (
+                  {/* {applicationFullData?.status === 0 && (
                     <button
-                      className=" mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
+                      className=" p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]"
                       onClick={forwardDAModal}
                     >
-                      Approve
+                      Forward to Departmental Admin
                     </button>
-                  )}
-                  {applicationFullData?.status === 10 && (
+                  )} */}
+
+                  {applicationFullData?.status == 4 && (
                     <button
-                      className="mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
-                      onClick={forwardDAModal}
+                      className={`${buttonStyle3}`}
+                      onClick={acknowledgeModal}
                     >
-                      Reject
+                      Acknowledge
                     </button>
                   )}
 
-                  {/* {applicationFullData?.status >= 3 && (
-                <>
-                  <div className="bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700">
-                    <FileButton
-                      bg={"[#359F6E]"}
-                      hoverBg={"bg-green-700"}
-                      btnLabel={"Upload References"}
-                      imgRef={notesheetRef}
-                      setImageDoc={setImageDoc}
-                      setPreview={setPreview}
-                      textColor={"white"}
-                    />
-                  </div>
+                  {/* {applicationFullData?.status == 41 && (
+                    <>
+                      <button
+                        className={buttonStyle2}
+                        onClick={() => {
+                          setServiceRequestModal(true);
+                          setService("return");
+                        }}
+                      >
+                        Return
+                      </button>
 
-                  <button className={buttonStyle2} onClick={()=>{
-                    
-                    setServiceRequestModal(true)
-                    setService("dead")
-                    }}>
-                    Dead Stock
-                  </button>
+                      <button
+                        className={buttonStyle2}
+                        onClick={() => {
+                          setServiceRequestModal(true);
+                          setService("dead");
+                        }}
+                      >
+                        Dead Stock
+                      </button>
 
-                  <button className={buttonStyle2}onClick={()=>{
-                    
-                    setServiceRequestModal(true)
-                    setService("return")
-                    }}>
-                    Return
-                  </button>
-
-                  <button className={buttonStyle2} onClick={handoverModal}>
-                    Handover
-                  </button>
-                  <button className={buttonStyle2} onClick={()=>{
-                    
-                    setServiceRequestModal(true)
-                    setService("warranty")
-                    }}>
-                    Warranty claims
-                  </button>
-                </>
-              )} */}
+                      <button
+                        className={buttonStyle2}
+                        onClick={() => {
+                          setServiceRequestModal(true);
+                          setService("warranty");
+                        }}
+                      >
+                        Warranty claims
+                      </button>
+                    </>
+                  )} */}
                 </>
               )}
             </div>
@@ -547,4 +514,4 @@ const DAServiceRequestById = () => {
   );
 };
 
-export default DAServiceRequestById;
+export default EmployeeServiceById;

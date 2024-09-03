@@ -256,7 +256,7 @@ export default function PreviewBoqSummary() {
                         <td className='border border-gray-200 px-4 py-2'>
                           {index + 1}
                         </td>
-                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                        <td className='border border-gray-200 px-4 py-2 text-sm text-justify'>
                           {row?.description}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>

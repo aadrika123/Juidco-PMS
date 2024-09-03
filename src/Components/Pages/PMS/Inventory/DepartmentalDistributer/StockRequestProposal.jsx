@@ -13,7 +13,7 @@ import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
-import { testingData } from "./testinggData";
+// import { testingData } from "./testinggData";
 
 const StockRequestProposal = (props) => {
   const { inputStyle, labelStyle, headingStyle, formStyle } = ThemeStyle();
@@ -67,23 +67,24 @@ const StockRequestProposal = (props) => {
   };
 
   const getEmpdetails = () => {
-    // AxiosInterceptors.get(`${api_getEmpDetails}`, ApiHeader())
-    //   .then(function (response) {
-    //     if (response?.data?.status === true) {
-    //       setEmpdetails(response?.data?.data?.data);
-    //       console.log(response?.data?.data?.data)
-    //       formatEmp(response?.data?.data?.data);
-    //       // notify(response?.data?.message, "success");
-    //     } else {
-    //       // notify(response?.data?.message, "error");
-    //     }
-    //   })
-    //   .catch(function (res) {
-    //     notify("Something went wrong!");
-    //   });
+    AxiosInterceptors.get(`${api_getEmpDetails}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status === true) {
+          setEmpdetails(response?.data?.data?.data);
+          console.log(response?.data?.data?.data)
+          formatEmp(response?.data?.data?.data);
+          // notify(response?.data?.message, "success");
+        } else {
+          // notify(response?.data?.message, "error");
+        }
+      })
+      .catch(function (res) {
+        notify("Something went wrong!");
+      });
+    console.log(empDetails)
     // console.log(testingData)
-    setEmpdetails(testingData);
-    formatEmp(testingData);
+    // setEmpdetails(testingData);
+    // formatEmp(testingData);
   };
   const getCategory = () => {
     AxiosInterceptors.get(`${api_getActiveCategory}`, ApiHeader())
@@ -542,7 +543,7 @@ const StockRequestProposal = (props) => {
 
                         {descrip?.length &&
                           descrip?.map((items) => (
-                            <option key={items?.id} value={items?.id}>
+                            <option key={items?.id} value={items?.id}  className="w-10" >
                               {items?.description}
                             </option>
                           ))}

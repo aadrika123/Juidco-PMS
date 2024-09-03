@@ -188,7 +188,7 @@ export default function ProjectApiList() {
     api_postHandoverReq: `${baseUrl}/api/pms/dist/stock-request/handover`,
     api_postReturnReq: `${baseUrl}/api/pms/dist/stock-request/return-inv`,
     api_postDeadStockReq: `${baseUrl}/api/pms/dist/stock-request/add-dead-stock`,
-    api_postWarrantyClaim: `${baseUrl}/api/pms/dist/service-request/`,
+    api_postSrerviceRequest: `${baseUrl}/api/pms/dist/service-request`,
 
     api_getSRStockReqInbox: `${baseUrl}/api/pms/sr/stock-request`,
     api_getSRStockReqOutbox: `${baseUrl}/api/pms/sr/stock-request/outbox`,
@@ -201,6 +201,7 @@ export default function ProjectApiList() {
     api_iaStockReqInbox: `${baseUrl}/api/pms/ia/stock-request/`,
     api_iaStockReqOubox: `${baseUrl}/api/pms/ia/stock-request/outbox`,
     api_iaStockReqApprove: `${baseUrl}/api/pms/ia/stock-request/approve`,
+    api_iaGetProducts: `${baseUrl}/api/pms/ia/stock-request/product`,
 
     api_forwardLevelone: `${baseUrl}/api/pms/ia/pre-procurement/to-level1`,
     api_forwardLeveltwo: `${baseUrl}/api/pms/level1/to-level2`,
@@ -267,6 +268,27 @@ export default function ProjectApiList() {
     api_getActiveBank: `${baseUrl}/api/pms/master/bank/active`,
     api_updateBankStatus: `${baseUrl}/api/pms/master/bank/switch`,
     api_updateBank: `${baseUrl}/api/pms/master/bank/update`,
+    api_updateBank: `${baseUrl}/api/pms/master/bank/update`,
+    
+    // employee request
+    api_employeeDetailsById:`${baseUrl}/api/pms/emp-service`,
+    api_employeeHandover:`${baseUrl}/api/pms/stock-handover/`,
+    api_employeeAcknowledge:`${baseUrl}/api/pms/stock-handover/acknowledge`,
+    api_employeeServiceRequest:`${baseUrl}/api/pms/stock-handover/emp-service`,
+    api_employeeInbox: `${baseUrl}/api/pms/stock-handover/emp-service/`,
+    api_employeeOutbox: `${baseUrl}/api/pms/stock-handover/emp-service/outbox`,
+    
+    // employee service
+    api_employeeServiceInbox: `${baseUrl}/api/pms/stock-handover/emp-service/`,
+    api_employeeServiceOutbox: `${baseUrl}/api/pms/stock-handover/emp-service/outbox`,
+    api_getEmpServiceById: `${baseUrl}/api/pms/emp-service`,
+    
+    // dd employee service 
+    api_ddemployeeServiceApprove: `${baseUrl}/api/pms/dist/service-request/emp/approve`,
+    api_ddemployeeServiceReject: `${baseUrl}/api/pms/dist/service-request/emp/reject`,
+    api_ddemployeeServiceInbox: `${baseUrl}/api/pms/dist/service-request/emp`,
+    api_ddemployeeServiceOutbox: `${baseUrl}/api/pms/dist/service-request/emp/outbox`,
+    
   };
 
   return apiList;

@@ -11,6 +11,7 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import { useNavigate, useParams } from "react-router-dom";
 import { CleanHands } from "@mui/icons-material";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
+import { MdArrowRightAlt } from "react-icons/md";
 
 const BiddingTypeResultView = () => {
   const { id } = useParams();
@@ -256,7 +257,7 @@ const BiddingTypeResultView = () => {
                       </th>
                       <th
                         scope='row'
-                        className='px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap'
+                        className='px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap capitalize'
                       >
                         {data?.bidder_master?.name}
                       </th>
@@ -362,15 +363,18 @@ const BiddingTypeResultView = () => {
           </div>
         </div>
         <div className='flex justify-end space-x-5 mt-8'>
+          {/* {console.log(biddingData?.creationStatus)} */}
                 
-          {biddingData?.boq?.pre_tendering_details?.tendering_type == 'rate_contract' ? <button
-            className=' bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-10 py-2 rounded flex'
+          {(biddingData?.boq?.pre_tendering_details?.tendering_type == 'rate_contract' && !biddingData?.creationStatus == 5) ? <button
+            className=' bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-7 py-2 rounded flex gap-2' 
             onClick={() =>
               // navigate(`/biddingViewById/${biddingData?.reference_no}/inbox`)
               navigate(`/addUnitPrice/${biddingData?.reference_no}`)
             }
           >
             Add Unit Price
+            <MdArrowRightAlt className='text-2xl ' />
+
           </button> :  <button
             className=' bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-10 py-2 rounded flex'
             onClick={() =>

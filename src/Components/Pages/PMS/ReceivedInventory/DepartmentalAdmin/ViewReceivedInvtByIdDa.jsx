@@ -107,9 +107,6 @@ const ViewReceivedInvtByIdDa = (props) => {
     {
       name == "received_quantity" && remainingQuanityCalc(value);
     }
-    // {
-    //   name == "procurement_stock_id" && remainingQuanityCalc(value);
-    // }
     {
       name == "procurement_stock_id" && selectProcItem(value);
     }
@@ -409,7 +406,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                  <div className='md:flex-1 col-span-4 mt-4 md:block flex md:flex-row-reverse justify-between'>
                     <div className='md:w-auto w-[50%] font-bold '>
                       Description
                     </div>
@@ -740,20 +737,20 @@ const ViewReceivedInvtByIdDa = (props) => {
                           </select>
                           <p className='text-red-500 text-xs '></p>
                         </div>
-                        <div className='w-1/2 flex gap-10'>
+                        <div className='w-1/2 flex flex-col gap-2'>
                           <div className='text-sm'>
-                            <h1>Sub Category:</h1> 
-                            <span className='font-semibold text-base text-blue-950'>
+                            <h1>Sub Category:
+                            <span className='font-semibold text-base text-blue-950 pl-2'>
                               {procItemData?.subCategory?.name ||
                                 "Select Procurement Item"}
-                            </span>
+                            </span></h1>
                           </div>
-                          <div className='text-sm'>
-                            <h1>Description:</h1>
-                            <span className='font-semibold text-base text-blue-950'>
+                          <div className='text-sm pr-4'>
+                            <h1>Description:
+                            <span className='font-semibold text-base text-blue-950 pl-2 text-justify'>
                               {procItemData?.description ||
                                 "Select Procurement Item"}
-                            </span>
+                            </span></h1>
                           </div>
                         </div>
                       </div>
