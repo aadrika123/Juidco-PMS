@@ -12,6 +12,8 @@ import { useReactToPrint } from "react-to-print";
 import BiddingViewModal from "./BiddingViewModal";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
+import { MdArrowRightAlt } from "react-icons/md";
+
 
 const BiddingViewById = () => {
   const [isLoading, setisLoading] = useState(false);
@@ -142,6 +144,8 @@ const BiddingViewById = () => {
         return "Finalize Comparison";
       case 4:
         return "View Finalize Winner";
+      case 5:
+        return "View Finalize Winner";
       default:
         return "Completed";
     }
@@ -174,6 +178,9 @@ const BiddingViewById = () => {
         navigate(`/bidding-type-byId/${biddingData?.reference_no}`);
         break;
       case 4:
+        navigate(`/bidding-type-result/${biddingData?.reference_no}`);
+        break;
+      case 5:
         navigate(`/bidding-type-result/${biddingData?.reference_no}`);
         break;
       default:
@@ -767,9 +774,11 @@ const BiddingViewById = () => {
                 {page === "inbox" && (
                   <button
                     onClick={() => btnNavigate(biddingData?.creationStatus)}
-                    className='mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl '
+                    className='mr-1 pb-2 pl-7 pr-7 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl flex gap-2 justify-center items-center '
                   >
                     {btnLabel(biddingData?.creationStatus)}
+                    <MdArrowRightAlt className='text-2xl ' />
+
                   </button>
                 )}
               </div>

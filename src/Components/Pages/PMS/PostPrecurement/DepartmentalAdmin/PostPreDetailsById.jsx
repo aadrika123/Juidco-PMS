@@ -533,7 +533,7 @@ const PostPreDetailsById = (props) => {
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                  <div className='md:flex-1 mt-4 col-span-4 md:block flex md:flex-row-reverse justify-between'>
                     <div className='md:w-auto w-[50%] font-bold '>
                       Description
                     </div>

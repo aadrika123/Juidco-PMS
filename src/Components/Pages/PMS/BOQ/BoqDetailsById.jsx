@@ -409,7 +409,7 @@ export default function BoqDetailsById(props) {
                         <td className='border border-gray-200 px-4 py-2'>
                           {index + 1}
                         </td>
-                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                        <td className='border border-gray-200 px-4 py-2 text-sm text-justify'>
                           {row?.description}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
@@ -538,25 +538,29 @@ export default function BoqDetailsById(props) {
             dataList?.status == 42 &&
             dataList?.procurement?.is_rate_contract != true && (
               <button
-                className={colouredBtnStyle}
+                className={`${colouredBtnStyle} flex gap-2 justify-center items-center`}
                 onClick={() =>
                   navigate(`/bidding-input-form/${dataList?.reference_no}`)
                 }
               >
                 Fill Pre Tender Basic Info
+                <MdArrowRightAlt className='text-2xl ' />
+
               </button>
             )}
 
           {page == "inbox" && dataList?.status == 50 && (
             <button
-              className={colouredBtnStyle}
-              onClick={() =>
+            className={`${colouredBtnStyle} flex gap-2 justify-center items-center`}
+            onClick={() =>
                 navigate(`/tendering?tabNo=1`, {
                   state: dataList?.reference_no,
                 })
               }
             >
               Proceed to Pre-Tender
+              <MdArrowRightAlt className='text-2xl ml-2' />
+
             </button>
           )}
 

@@ -614,6 +614,7 @@ const ViewPreProcurementById = () => {
                   <p className='text-xs pl-5'>Procurement Item: {index + 1}</p>
                 </div>
                 <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow'>
+                  
                   <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                     <div className='md:w-auto w-[50%] font-bold '>
                       Subcategory
@@ -662,14 +663,15 @@ const ViewPreProcurementById = () => {
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
+                  <div className='md:flex-1 md:col-span-4 md:block flex md:flex-row-reverse justify-between mt-5'>
+                    <div className='md:w-auto w-[100%] font-bold '>
                       Description
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    <div className='md:w-auto w-[100%] text-gray-800 text-md'>
                       {nullToNA(procData?.description)}
                     </div>
                   </div>
+                  
                 </div>
               </>
             ))}
@@ -724,7 +726,7 @@ const ViewPreProcurementById = () => {
                 }
               >
                 Prepare BOQ
-                <MdArrowRightAlt />
+                <MdArrowRightAlt className="text-2xl "/>
               </button>
             )}
 

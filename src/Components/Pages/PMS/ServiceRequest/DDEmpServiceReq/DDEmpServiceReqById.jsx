@@ -3,6 +3,7 @@ import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
 import ServiceRequestModal from "@/Components/Common/Modal/ServiceRequestModal";
 import SuccessModal from "@/Components/Common/Modal/SuccessModal";
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
@@ -30,15 +31,18 @@ const DDEmpServiceReqById = () => {
   const [applicationFullData, setapplicationFullData] = useState([]);
   const [serialNo, setserialNo] = useState([]);
   const [productData, setProductData] = useState();
+  const [data, setData] = useState({ service_no: "", remark: "" });
+
+  // console.log(data)
 
   const {
 
     api_getEmpServiceById,
+    api_ddemployeeServiceApprove,
+    api_ddemployeeServiceReject
   } = ProjectApiList();
 
   const { id, page } = useParams();
-
-  // console.log(id);
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -67,32 +71,61 @@ const DDEmpServiceReqById = () => {
     setRejectModal(true);
   };
 
-  //dead stock request
+  // console.log()
+
+  //Approve Handler
   const approveHandler = () => {
     setisLoading(true);
     setDeadStockModal(false);
-    let body = { stock_handover_no: id };
+    let body = { service_no: applicationFullData?.service_no };
 
-    // AxiosInterceptors.post(`${api_employeeAcknowledge}`, body, ApiHeader())
-    //   .then(function (response) {
-    //     if (response?.data?.status == true) {
-    //       toast.success("Acknowledge successfully", "success");
-    //       setSuccessModal(true);
-    //       setTimeout(() => {
-    //         navigate("/employee");
-    //       }, 2000);
-    //     } else {
-    //       toast(response?.data?.message, "error");
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     console.log("errorrr.... ", error);
-    //     toast.error(error?.response?.data?.error);
-    //     // setdeclarationStatus(false);
-    //   })
-    //   .finally(() => {
-    //     setisLoading(false);
-    //   });
+    AxiosInterceptors.post(`${api_ddemployeeServiceApprove}`, body, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success("Approved successfully", "success");
+          setSuccessModal(true);
+          setTimeout(() => {
+            navigate("/dd-emp-service");
+          }, 2000);
+        } else {
+          toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        console.log("errorrr.... ", error);
+        toast.error(error?.response?.data?.error);
+        // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
+  //Reject Handler
+  const rejectHandler = () => {
+    setisLoading(true);
+    setDeadStockModal(false);
+
+    AxiosInterceptors.post(`${api_ddemployeeServiceReject}`, data, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success("Rejected successfully", "success");
+          setSuccessModal(true);
+          setTimeout(() => {
+            navigate("/dd-emp-service");
+          }, 2000);
+        } else {
+          toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        console.log("errorrr.... ", error);
+        toast.error(error?.response?.data?.error);
+        // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
   };
 
   //get application details
@@ -130,13 +163,14 @@ const DDEmpServiceReqById = () => {
   };
 
   // Forward to DA
-
-  const rejectHandler = () => {
-    setConfModal(false);
-  };
+  // const rejectHandlerModal = () => {
+  //   setConfModal(false);
+  // };
 
   useEffect(() => {
     getApplicationDetail();
+    setData((prev) => ({ ...prev, service_no: id }));
+
   }, []);
 
  
@@ -157,10 +191,11 @@ const DDEmpServiceReqById = () => {
   if (rejectModal) {
     return (
       <>
-        <ConfirmationModal
+        <RejectionModalRemark
           confirmationHandler={rejectHandler}
           handleCancel={handleCancel}
           message={'Are you sure want to "Reject" ?'}
+          setData={setData}
         />
       </>
     );

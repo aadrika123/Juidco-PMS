@@ -544,8 +544,8 @@ const BiddingDetailForm = (props) => {
                         ))}
                       </div>
 
-                      <div className="flex justify-end gap-3 ">
-                        <div className="w-[40%] ml-10">
+                      <div className="flex justify-start gap-3 ">
+                        <div className="w-[100%] ml-10">
                           <ImageDisplay
                             url={basicDetailData?.doc[0]?.docUrl}
                             preview={techPreview}
@@ -614,7 +614,7 @@ const BiddingDetailForm = (props) => {
                       </div>
 
                       <div className="flex justify-end gap-3 ">
-                        <div className="w-[40%] ml-10">
+                        <div className="w-[100%] ml-10">
                           <ImageDisplay
                             url={basicDetailData?.doc[0]?.docUrl}
                             preview={fincPreview}

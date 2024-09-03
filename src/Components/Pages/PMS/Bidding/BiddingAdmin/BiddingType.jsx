@@ -485,7 +485,7 @@ const BiddingType = () => {
 
                 {criteriaData?.[bidType]?.map((data) => (
                   <div className="pl-8 pt-5 pb-4 border border-gray-00">
-                    <h1>{data?.heading} </h1>
+                    <h1 className="truncate">{data?.heading} </h1>
                     <p className="text-sm text-gray-400 truncate">
                       {data?.description}
                     </p>
@@ -531,7 +531,7 @@ const BiddingType = () => {
                     </div>
 
                     <div className="p-7 border-t border-gray-100 text-center">
-                      <h1 className=" font-semibold text-center capitalize whitespace-nowrap">
+                      <h1 className=" font-semibold text-center capitalize whitespace-nowrap truncate">
                         {bidder?.name}{" "}
                       </h1>
                     </div>
