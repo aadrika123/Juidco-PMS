@@ -144,6 +144,8 @@ const BiddingViewById = () => {
         return "Finalize Comparison";
       case 4:
         return "View Finalize Winner";
+      case 5:
+        return "View Finalize Winner";
       default:
         return "Completed";
     }
@@ -176,6 +178,9 @@ const BiddingViewById = () => {
         navigate(`/bidding-type-byId/${biddingData?.reference_no}`);
         break;
       case 4:
+        navigate(`/bidding-type-result/${biddingData?.reference_no}`);
+        break;
+      case 5:
         navigate(`/bidding-type-result/${biddingData?.reference_no}`);
         break;
       default:

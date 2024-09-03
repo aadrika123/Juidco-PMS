@@ -35,6 +35,7 @@ import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
 import { IoMdAddCircleOutline } from "react-icons/io";
+import { data } from "autoprefixer";
 
 
 const ViewReceivedInvtById = () => {
@@ -64,7 +65,6 @@ const ViewReceivedInvtById = () => {
 
   const [inventory, setInventory] = useState("");
 
-  // console.log(applicationFullData?.supplier_master)
 
   const inventoryHisHandler = (event) => {
     setInventory(event.target.value);
@@ -108,14 +108,7 @@ const ViewReceivedInvtById = () => {
       .then(function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
-          // setCategoryId(applicationFullData?.category?.id)
-          // setSubCategoryId(applicationFullData?.subcategory?.id)
-          // setBrandId(applicationFullData?.brand?.id)
-          // getInventoryDetail(
-          //   response?.data?.data?.category?.id,
-          //   response?.data?.data?.subcategory?.id,
-          //   response?.data?.data?.brand?.id
-          // );
+  
           setTableData(response?.data?.data?.tran_dtls);
           setisLoading(false);
         } else {
@@ -168,7 +161,6 @@ const ViewReceivedInvtById = () => {
 
     AxiosInterceptors.get(
       `${url}?category=${category}&scategory=${subcategory}`,
-      // {category: categoryId, scategory: subCategoryId, brand: brandId},
       ApiHeader()
     )
       .then(function (response) {
@@ -229,7 +221,6 @@ const ViewReceivedInvtById = () => {
         } else {
           setisLoading(false);
           const errorMsg = Object.keys(response?.data?.data);
-          // setErrRes(errorMsg);
           toast(response?.data?.message, "error");
         }
       })
@@ -241,11 +232,10 @@ const ViewReceivedInvtById = () => {
   };
 
   const validationSchema = yup.object({
-    totalStock: yup.number().required("Total Stock is required"),
-    receivedStock: yup.number(),
-    remarks: yup.string().required("Remarks is required"),
-    remStock: yup.number().required("Remaining Stock is required"),
-    dead_stock: yup.number(),
+    // procurement_stock_id: yup.string().required("Procurement Item is required"),
+    // brand: yup.string().required("Brand Item is required"),
+    // quantity: yup.number().required("Quantity Item is required"),
+    // serial_no: yup.string().required("Serial No Item is required"),
   });
 
   // intitial value
@@ -673,7 +663,7 @@ const ViewReceivedInvtById = () => {
                     </div>
                   </div>
 
-                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                  <div className="md:flex-1 md:block col-span-4 mt-4 flex md:flex-row-reverse justify-between">
                     <div className="md:w-auto w-[50%] font-bold ">
                       Description
                     </div>
@@ -886,7 +876,7 @@ const ViewReceivedInvtById = () => {
                               <td className="px-6 py-4">
                                 {data?.procurement_stock?.subCategory?.name}
                               </td>
-                              <td className="px-6 py-4">
+                              <td className="px-6 py-4 text-justify">
                                 {data?.procurement_stock?.description}
                               </td>
 
@@ -970,18 +960,14 @@ const ViewReceivedInvtById = () => {
                             onChange={(e) => {
                               setProcurement_stock_id(e.target.value);
                               getInventoryAddDetail(e.target.value);
-                              // sumOfInvt(inventoryAddData)
-                              // setTotSum(inventoryAddData?.receiving?._sum?.received_quantity - inventoryAddData?.product[0]?.total_quantity)
+                              
                             }}
-                            // onClick={() => }
                           >
                             <option defaultValue={"select"}>select</option>
-                            {/* {console.log(applicationFullData)} */}
                             {applicationFullData?.procurement_stocks?.map(
                               (data, index) => (
                                 <option value={data?.id}>
-                                  {/* {console.log(data?.id)} */}
-                                  {/* {data?.id} */}
+                                  
                                   Procurement Item: {index + 1}
                                 </option>
                               )
@@ -1002,6 +988,7 @@ const ViewReceivedInvtById = () => {
                             </label>
 
                             <input
+                            name="brand"
                               className={`${inputStyle} inline-block w-full relative`}
                               onChange={(e) => {
                                 setBrandName(e.target.value);
@@ -1011,19 +998,7 @@ const ViewReceivedInvtById = () => {
                           </div>
                         </div>
 
-                        {/* <div className=" form-group flex-shrink max-w-full px-4 w-[20rem] ">
-                          <div className="px-4 w-full">
-                            <label
-                              className={`${labelStyle} inline-block text-center`}
-                            >
-                              Total Quantity to Add
-                            </label>
-
-                            <p className="text-base px-1 text-green-700">
-                              {totSum == 0 ? "No Quantity to Add" : totSum}
-                            </p>
-                          </div>
-                        </div> */}
+                      
 
                         {product.map((item, index) => (
                           <div className="flex gap-2 items-end" key={index}>
@@ -1036,6 +1011,7 @@ const ViewReceivedInvtById = () => {
                                 </label>
 
                                 <input
+                                name="quantity"
                                   className={`${inputStyle} inline-block w-full relative`}
                                   onChange={(e) => {
                                     onchangeField(e, index, "quantity");
@@ -1054,6 +1030,7 @@ const ViewReceivedInvtById = () => {
                                 </label>
 
                                 <input
+                                name="serial_no"
                                   className={`${inputStyle} inline-block w-full relative`}
                                   onChange={(e) => {
                                     onchangeField(e, index, "serial_no");

@@ -543,7 +543,7 @@ const StockRequestProposal = (props) => {
 
                         {descrip?.length &&
                           descrip?.map((items) => (
-                            <option key={items?.id} value={items?.id}>
+                            <option key={items?.id} value={items?.id}  className="w-10" >
                               {items?.description}
                             </option>
                           ))}
