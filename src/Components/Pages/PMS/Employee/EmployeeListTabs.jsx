@@ -8,7 +8,7 @@
 //    DESCRIPTION - EmployeeListTabs
 //////////////////////////////////////////////////////////////////////////////////////
 
-import React, { useState } from "react";
+import { useState } from "react";
 import EmployeeList from "./EmployeeList";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { contextVar } from "@/Components/context/contextVar";
@@ -23,26 +23,26 @@ const EmployeeListTabs = () => {
 
   return (
     <>
-      <div className=''>
+      <div className="">
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Handover List"}
         />
       </div>
 
-      <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
-        <div className='mt-14'>
+      <div className="container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl">
+        <div className="mt-14">
           <div></div>
 
-          <div className='flex ml-5'></div>
+          <div className="flex ml-5"></div>
         </div>
 
-        <hr className='w-[76rem]' />
+        <hr className="w-[76rem]" />
 
-        <div className='mt-4'>
+        <div className="mt-4">
           {activeTab === "inbox" && (
             <div>
-              <EmployeeList page='inbox' api={api_employeeHandover} />
+              <EmployeeList page="inbox" api={api_employeeHandover} />
             </div>
           )}
           {/* {activeTab === "outbox" && (

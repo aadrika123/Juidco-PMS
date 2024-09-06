@@ -28,27 +28,27 @@ function EmployeeList(props) {
   const COLUMNS = [
     {
       Header: "#",
-      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+      Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
     },
     {
       Header: "Handover No",
       accessor: "stock_handover_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.stock_handover_no}</div>
+        <div className="pr-2">{cell.row.values.stock_handover_no}</div>
       ),
     },
     {
       Header: "Category",
       accessor: "inventory",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.inventory?.category?.name} </div>
+        <div className="pr-2">{cell.row.values.inventory?.category?.name} </div>
       ),
     },
     {
       Header: "Employee Name",
       accessor: "emp_name",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.emp_name} </div>
+        <div className="pr-2">{cell.row.values.emp_name} </div>
       ),
     },
 
@@ -56,28 +56,33 @@ function EmployeeList(props) {
       Header: "Required Quantity",
       accessor: "allotted_quantity",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.allotted_quantity} </div>
+        <div className="pr-2">{cell.row.values.allotted_quantity} </div>
       ),
     },
 
     {
-      Header: <p className='text-center'>Status</p>,
+      Header: <p className="text-center">Status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
-        <div className='pr-2'>
+        <div className="pr-2">
           {cell.row.values.status == -2 && (
-            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
+            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
               Rejected
             </p>
           )}
           {cell.row.values.status == 4 && (
-            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Ready to Acknowledge
             </p>
           )}
           {cell.row.values.status == 41 && (
-            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
               Acknowledged
+            </p>
+          )}
+          {cell.row.values.status == 3 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Waiting to be acknowledged
             </p>
           )}
         </div>
@@ -98,7 +103,7 @@ function EmployeeList(props) {
       Cell: ({ cell }) => (
         <>
           <button
-            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+            className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
             onClick={() =>
               navigate(
                 `/viewEmployeeById/${cell.row.values.stock_handover_no}/${props.page}`
@@ -117,7 +122,7 @@ function EmployeeList(props) {
     return (
       <>
         <BarLoader />
-        <div className='min-h-screen'></div>
+        <div className="min-h-screen"></div>
       </>
     );
   }
@@ -136,9 +141,9 @@ function EmployeeList(props) {
   return (
     <>
       {loader && <BarLoader />}
-      <div className='container mx-auto p-4'>
-        <div className='grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 '>
-          <div className='col-span-12'>
+      <div className="container mx-auto p-4">
+        <div className="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 ">
+          <div className="col-span-12">
             <>
               <ListTableParent
                 table={tableSelector(props?.page)}

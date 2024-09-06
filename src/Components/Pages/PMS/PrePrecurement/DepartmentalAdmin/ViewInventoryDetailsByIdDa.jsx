@@ -15,11 +15,9 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
-import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 import { contextVar } from "@/Components/context/contextVar";
 import StockReceiverModal from "./StockReceiverModal";
 import ReleaseTenderModal from "./ReleaseTenderModal";
-import DaRejectModal from "./DaRejectModal";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
@@ -48,7 +46,6 @@ const ViewInventoryDetailsById = (props) => {
     api_getStockRequetById,
     api_postBackToDd,
     api_postForwardtoAcc,
-    api_postRejectTender,
     api_postRejectStockReq,
     api_forwardStockReqToI,
   } = ProjectApiList();
@@ -269,12 +266,12 @@ const ViewInventoryDetailsById = (props) => {
   return (
     <div>
       {isLoading && (
-        <div className='fixed inset-0 flex items-center justify-center z-50'>
+        <div className="fixed inset-0 flex items-center justify-center z-50">
           <LoaderApi />
         </div>
       )}
 
-      <div className=''>
+      <div className="">
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Stock Request Proposal Details"}
@@ -282,7 +279,7 @@ const ViewInventoryDetailsById = (props) => {
       </div>
 
       <>
-        <div className='flex gap-10 m-4 bg-white p-4'></div>
+        <div className="flex gap-10 m-4 bg-white p-4"></div>
       </>
 
       {/* //timeline  */}
@@ -292,29 +289,28 @@ const ViewInventoryDetailsById = (props) => {
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         {/* Basic Details */}
-        <div className='mt-6'>
+        <div className="mt-6">
           <div
-            className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'
+            className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500"
             ref={componentRef}
           >
-            <div className=''>
-              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+            <div className="">
+              <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
                 View Stock Handover Request{" "}
               </h2>
             </div>
 
-            <div className='flex justify-between'>
-              <div className='pl-8 pb-5 text-[1.2rem] text-[#4338CA]'>
-                <h1 className='font-bold'>
-                  Stock Handover No <span className='text-black'>:</span>
-                  <span className='font-light'>
+            <div className="flex justify-between">
+              <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
+                <h1 className="font-bold">
+                  Stock Handover No <span className="text-black">:</span>
+                  <span className="font-light">
                     {" "}
                     {nullToNA(applicationFullData?.stock_handover_no)}
                   </span>
                 </h1>
               </div>
             </div>
-
 
             <div className="grid md:grid-cols-4 gap-4 ml-8 pb-5">
               <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
@@ -349,74 +345,81 @@ const ViewInventoryDetailsById = (props) => {
                 </div>
               </div>
             </div>
-              
 
-            {applicationFullData?.stock_req_product?.length > 0 ? 
-              <h1 className="pl-8 font-semibold underline text-blue-950">Products:</h1>
-            :
-            <>
-            <div className="grid md:grid-cols-4 gap-4 ml-8">
-            <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Category</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.inventory?.category?.name)}
-                </div>
-              </div>
+            {applicationFullData?.stock_req_product?.length > 0 ? (
+              <h1 className="pl-8 font-semibold underline text-blue-950">
+                Products:
+              </h1>
+            ) : (
+              <>
+                <div className="grid md:grid-cols-4 gap-4 ml-8">
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Category</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(applicationFullData?.inventory?.category?.name)}
+                    </div>
+                  </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-semibold ">
-                  Sub Categories
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-semibold ">
+                      Sub Categories
+                    </div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(
+                        applicationFullData?.inventory?.subcategory?.name
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.inventory?.subcategory?.name)}
+              </>
+            )}
+            {applicationFullData?.stock_req_product?.map((data, index) => (
+              <div
+                key={index}
+                className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-4 rounded"
+              >
+                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                  <div className="md:w-auto w-[50%] font-bold ">Serial No</div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    {nullToNA(data?.serial_no)}
+                  </div>
                 </div>
-              </div>
-            </div>
-            </>}
-              {applicationFullData?.stock_req_product?.map((data,index)=>(
-            <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-4 rounded">
-              
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Serial No</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(data?.serial_no)}
-                </div>
-              </div>
-             
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Category</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.inventory?.category?.name)}
-                </div>
-              </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-semibold ">
-                  Sub Categories
+                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                  <div className="md:w-auto w-[50%] font-bold ">Category</div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    {nullToNA(applicationFullData?.inventory?.category?.name)}
+                  </div>
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.inventory?.subcategory?.name)}
-                </div>
-              </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                  <div className="md:w-auto w-[50%] font-semibold ">
+                    Sub Categories
+                  </div>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                    {nullToNA(
+                      applicationFullData?.inventory?.subcategory?.name
+                    )}
+                  </div>
+                </div>
+
+                {/* <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
                 <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
                 <div className="md:w-auto w-[50%] text-gray-800 text-md">
                   {nullToNA(data?.quantity)}
                 </div>
+              </div> */}
               </div>
-
-            </div>
             ))}
 
-            <div className='p-5 pl-8'>
-              <h1 className='font-bold '>Description</h1>
-              <p className=' pt-2'>
+            <div className="p-5 pl-8">
+              <h1 className="font-bold ">Description</h1>
+              <p className=" pt-2">
                 {nullToNA(applicationFullData?.inventory?.description)}
               </p>
             </div>
 
-            <div className='flex justify-end mb-4'>
+            <div className="flex justify-end mb-4">
               <ImageDisplay
                 preview={preview}
                 imageDoc={imageDoc}
@@ -430,7 +433,7 @@ const ViewInventoryDetailsById = (props) => {
           </div>
         </div>
 
-        <div className='space-x-5 flex justify-end mt-[2rem]'>
+        <div className="space-x-5 flex justify-end mt-[2rem]">
           <button onClick={handlePrint} className={buttonStyle}>
             Print
           </button>
@@ -483,7 +486,7 @@ const ViewInventoryDetailsById = (props) => {
             <>
               {page == "inbox" && applicationFullData?.status?.status < 70 && (
                 <>
-                  <div className='bg-[#0F921C] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-800'>
+                  <div className="bg-[#0F921C] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-800">
                     <FileButton
                       bg={"[#0F921C]"}
                       hoverBg={"bg-green-800"}

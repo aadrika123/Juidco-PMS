@@ -15,7 +15,6 @@ import InventoryDashboard from "./Components/Pages/PMS/PrePrecurement/StockRecei
 import { QueryClient, QueryClientProvider } from "react-query";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ViewInventoryDetailsById from "./Components/Pages/PMS/PrePrecurement/StockReceiver/ViewInventoryDetailsById";
-import InventoryProposalListTabs from "./Components/Pages/PMS/PrePrecurement/StockReceiver/InventoryProposalListTabs";
 import InventoryProposalListTabsDa from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/InventoryProposalListTabsDa";
 import ViewInventoryDetailsByIdDa from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/ViewInventoryDetailsByIdDa";
 import EditPreProcurement from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/EditPreProcurement";
@@ -55,7 +54,6 @@ import StockRecListTabs from "./Components/Pages/PMS/Inventory/StockReceiver/Sto
 import SrViewDetailbyId from "./Components/Pages/PMS/Inventory/StockReceiver/SrViewDetailbyId";
 import SRWarrantyClaim from "./Components/Pages/PMS/Inventory/StockReceiver/SRWarrantyClaim";
 import SrViewWarrantybyId from "./Components/Pages/PMS/Inventory/StockReceiver/SrViewWarrantybyId";
-import DdHandoverList from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DdHandoverList";
 import DDHandoverListTabs from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDHandoverListTabs";
 import DDViewHandoverbyId from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDViewHandoverbyId";
 
@@ -75,7 +73,6 @@ import InventoryReports from "./Components/Pages/PMS/Reports/InventoryReports";
 import ProductHistoryReports from "./Components/Pages/PMS/Reports/ProductHistoryReports/ProductHistoryReports";
 import BiddingInitialForm from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingInitialForm";
 import BiddingViewById from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingViewById";
-import TechnicalComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingComparision";
 import BiddingDetails from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingDetailForm/BiddingDetailTabs";
 import InventoryAdminTabs from "./Components/Pages/PMS/StockRequest/InventoryAdminTabs/InventoryAdminTabs";
 import BiddingType from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingType";
@@ -117,7 +114,6 @@ function App() {
   const [refresh, setrefresh] = useState(0);
   const [titleBarVisibility, settitleBarVisibility] = useState(true);
   const [heartBeatCounter, setheartBeatCounter] = useState(1); // to check authentication
-  const [biddersCount, setBiddersCount] = useState();
   const [reference_no, setReferenceNo] = useState();
   const [toggleBar, settoggleBar] = useState(
     window.innerWidth <= 763 ? false : true
@@ -214,7 +210,6 @@ function App() {
       path: "/dd-viewHandoverById/:id/:page",
       element: <DDViewHandoverbyId />,
     },
-    
 
     // ----------level 1 and level 2 ------------------------------------
 
@@ -465,7 +460,6 @@ function App() {
     //   element: <IaServiceReqTabs />,
     // },
 
-
     /////////////////////////{*** Employee Section ***}//////////////////////////////////////
     {
       path: "/employee",
@@ -507,11 +501,11 @@ function App() {
 
             <Route element={<ProtectedRoutes />}>
               {allRoutes?.map((elem, index) => (
-                <Route path={elem?.path} element={elem?.element} />
+                <Route key={index} path={elem?.path} element={elem?.element} />
               ))}
             </Route>
 
-            <Route path='*' element={<ErrorPage />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </contextVar.Provider>
       </>
