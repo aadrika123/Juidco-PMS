@@ -1,132 +1,158 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Report from "@/assets/Images/reports.svg";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 import ProjectApiList from "@/Components/api/ProjectApiList";
+import toast from "react-hot-toast";
+import "../Styles/muiStyles.css";
+import { format, parseISO } from "date-fns";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader from "@/Components/api/ApiHeader";
+import { indianAmount } from "@/Components/Common/PowerupFunctions";
 
 export default function Reports() {
-  const [formData, setFormData] = useState();
+  // const [formData, setFormData] = useState().;
   const { inputStyle, labelStyle } = ThemeStyle();
+  const [category, setCategory] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
 
-  const { api_fetchProcurementList, api_fetchProcurementDAList } =
-    ProjectApiList();
+  const [pageTrigger, setPageTrigger] = useState(0);
 
-  const   COLUMNS = [
-    {
-      Header: "#",
-      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
-    },
-    {
-      Header: "Order No",
-      accessor: "procurement_no",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.procurement_no}</div>
-      ),
-    },
-    {
-      Header: "Category",
-      accessor: "category",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.category.name} </div>
-      ),
-    },
-    {
-      Header: "Sub Category",
-      accessor: "subcategory",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.subcategory.name} </div>
-      ),
-    },
-    {
-      Header: "Brand",
-      accessor: "brand",
-      Cell: (
-        { cell } // console.log(cell.row.values,"===================celllllll")
-      ) => <div className='pr-2'>{cell.row.values.brand.name || "N/A"}</div>,
-    },
+  const {
+    api_getActiveCategory,
+    api_getActiveSubCategory,
+    api_getInventoryTotalReport,
+    api_getInventoryTotalDeadReport,
+    api_getInventoryTotalMovementReport,
+    api_getInventoryPreProcReport,
+    api_getInventoryLevelReport,
+  } = ProjectApiList();
 
-    {
-      Header: "status",
-      accessor: "status",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>
-          <p className='font-bold text-yellow-800'>
-            {cell.row.values.status.status == -1 && "Back to SR"}
-          </p>
-          <p className='font-bold text-red-500'>
-            {cell.row.values.status.status == -2 && "Rejected"}
-          </p>
-          <p className='font-bold text-blue-800'>
-            {cell.row.values.status.status == 0 && "Pending"}
-          </p>
-          <p className='font-bold text-blue-800'>
-            {cell.row.values.status.status == 1 && "DA's Inbox"}
-          </p>
-          <p className='font-bold text-green-800'>
-            {cell.row.values.status.status == 2 && "Release for Tender"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 3 && "Supplier assigned"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 4 && "Incomplete stocks received"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 5 && "Stocks received"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 69 && "Revised"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 71 && "BOQ already created"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 70 && "Ready for BOQ"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == -70 && "BOQ returned from DA"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 72 && "Ready for tendering"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == -72 && "Tender back from DA"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 73 && "Tender is ready"}
-          </p>
-        </div>
-      ),
-    },
-    {
-      Header: "Action",
-      accessor: "id",
-      Cell: ({ cell }) => (
-        <>
-          <button
-            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
-            onClick={() =>
-              navigate(
-                `/da-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`
-              )
-            }
-          >
-            View
-          </button>
-        </>
-      ),
-    },
+  const [urlReport, setUrlReport] = useState(api_getInventoryTotalReport);
+
+  const reportType = [
+    { id: 1, label: "Total Stock ", value: "total_stock" },
+    { id: 2, label: "Stock Movement", value: "stock_movement" },
+    { id: 3, label: "Dead Stock", value: "dead_stock" },
+    { id: 4, label: "Received Stock", value: "received_stock" },
+    { id: 4, label: "Remaining Stock", value: "remaining_stock" },
+    { id: 5, label: "Level wise Pending Applications", value: "level_wise" },
+    { id: 6, label: "Tendering Type", value: "tender_type" },
+    { id: 7, label: "Pre-Procurement Stock", value: "pre_procurement" },
+    { id: 8, label: "Post-Procurement Stock", value: "post_procurement" },
   ];
+
+  const preProcurement = [
+    { id: 1, label: "Pending Application", value: "pending" },
+    { id: 2, label: "Requested Application", value: "requested" },
+    { id: 3, label: "Approved Application", value: "approved" },
+    { id: 4, label: "Rejected Application", value: "rejected" },
+  ];
+
+  const levels = [
+    { id: 1, label: "Inventory Admin", value: "ia" },
+    { id: 2, label: "Departmental Distributor", value: "dd" },
+    { id: 3, label: "Departmental Admin", value: "da" },
+    { id: 4, label: "Tendering Admin", value: "ta" },
+    { id: 5, label: "Finance", value: "finance" },
+    { id: 6, label: "Level 1", value: "level1" },
+    { id: 6, label: "Level 2", value: "level2" },
+  ];
+
+  const levelwiseModuleDd = [
+    { id: 1, label: "Stock Request", value: "stock-request" },
+    { id: 2, label: "Service Request", value: "service-request" },
+  ];
+
+  const levelwiseModule = [
+    { id: 1, label: "Procurement", value: "procurement" },
+  ];
+
+  const tenderType = [
+    { id: 1, label: "Least Cost", value: "least_cost" },
+    { id: 2, label: "Quality and Cost Based (qcbs)", value: "qcbs" },
+    { id: 3, label: "Rate contract", value: "rate_contract" },
+  ];
+
+  const levelwiseModuleIa = [
+    { id: 1, label: "Stock Request", value: "stock-request" },
+    { id: 2, label: "Service Request", value: "service-request" },
+    { id: 3, label: "Procurement", value: "procurement" },
+    { id: 4, label: "BOQ", value: "boq" },
+    { id: 5, label: "Tender", value: "tender" },
+  ];
+
+  const levelwiseModuleFin = [{ id: 4, label: "BOQ", value: "boq" }];
+
+  const levelwiseModuleTa = [{ id: 5, label: "Tender", value: "tender" }];
+
+  const postProcurement = [
+    { id: 1, label: "Dead Stock ", value: "total_stock" },
+    { id: 2, label: "Received Stock", value: "stock_movement" },
+    { id: 3, label: "Remaining Stock", value: "dead_stock" },
+  ];
+
+  const getUrl = (report_type) => {
+    switch (report_type) {
+      case "total_stock":
+        return api_getInventoryTotalReport;
+      case "remaining_stock":
+        return api_getInventoryTotalReport;
+      case "dead_stock":
+        return api_getInventoryTotalDeadReport;
+      case "stock_movement":
+        return api_getInventoryTotalMovementReport;
+      case "pre_procurement":
+        return api_getInventoryPreProcReport;
+      default:
+        return api_getInventoryTotalReport;
+    }
+  };
+
+  //get all active category
+  const getCategory = () => {
+    AxiosInterceptors.get(`${api_getActiveCategory}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status === true) {
+          setCategory(response?.data?.data);
+          // notify(response?.data?.message, "success");
+        } else {
+          toast.error(response?.data?.message, "error");
+        }
+      })
+      .catch(function (res) {
+        toast.error("Error in fetching Ctaegories");
+      });
+  };
+
+  //get all active subcategory
+  const getSubCategory = (id) => {
+    AxiosInterceptors.get(`${api_getActiveSubCategory}/${id}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status === true) {
+          setSubCategory(response?.data?.data);
+          // notify(response?.data?.message, "success");
+        } else {
+          notify(response?.data?.message, "error");
+        }
+      })
+      .catch(function (res) {
+        notify("Error in fetching sub category");
+      });
+  };
 
   // intitial value
   const initialValues = {
-    reportType: "",
-    fromDate: "",
-    toDate: "",
+    reportType: "total_stock",
+    from_date: "",
+    to_date: "",
     category: "",
-    subcategory: "",
-    rate: "",
+    subCategory: "",
+    preProcurement: "",
+    postProcurement: "",
+    levels: "",
+    module_type: "",
   };
 
   const tableSelector = (page) => {
@@ -144,10 +170,401 @@ export default function Reports() {
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values) => {
-      setFormData(values);
+      // setFormData(values);
+      const reportUrl = getUrl(values.reportType);
+      setUrlReport(reportUrl);
+      setPageTrigger((prev) => prev + 1);
     },
     // validationSchema,
   });
+
+  //columns ----
+  const COLUMNS = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.category?.name} </div>
+      ),
+    },
+    {
+      Header: "Sub Category",
+      accessor: "subcategory",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.subcategory?.name} </div>
+      ),
+    },
+    {
+      Header: "Unit",
+      accessor: "unit",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values?.unit?.name}</div>
+      ),
+    },
+    {
+      Header: "Description",
+      accessor: "description",
+      Cell: (
+        { cell } // console.log(cell.row.values,"===================celllllll")
+      ) => (
+        <div className='pr-2 w-[14rem] truncate'>
+          {cell.row.values.description || "N/A"}
+        </div>
+      ),
+    },
+    {
+      Header: "Warranty Claim",
+      accessor: "warranty",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.values.warranty
+            ? "Warranty Eligible"
+            : "warranty ineligible"}
+        </div>
+      ),
+    },
+    {
+      Header:
+        formik.values.reportType === "total_stock"
+          ? "Total"
+          : "Total remaining",
+      accessor:
+        formik.values.reportType === "total_stock"
+          ? "total_quantity"
+          : "quantity",
+      Cell: (
+        { cell } // console.log(cell.row.values,"===================celllllll")
+      ) => (
+        <div className='pr-2'>
+          {formik.values.reportType === "total_stock"
+            ? cell.row.values.total_quantity
+            : cell.row.values.quantity}
+        </div>
+      ),
+    },
+
+    // {
+    //   Header: "Action",
+    //   accessor: "id",
+    //   Cell: ({ cell }) => (
+    //     <>
+    //       <button
+    //         className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+    //         onClick={() =>
+    //           navigate(
+    //             `/da-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`
+    //           )
+    //         }
+    //       >
+    //         View
+    //       </button>
+    //     </>
+    //   ),
+    // },
+  ];
+
+  const COLUMNS_SM = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+    },
+    {
+      Header: "Stock Handover No",
+      accessor: "stock_handover_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.stock_handover_no} </div>
+      ),
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.inventory?.category?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Sub Category",
+      accessor: "subcategory",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.inventory?.subcategory?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Unit",
+      accessor: "unit",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original.inventory?.unit?.name}</div>
+      ),
+    },
+    {
+      Header: "Description",
+      accessor: "description",
+      Cell: (
+        { cell } // console.log(cell.row.values,"===================celllllll")
+      ) => (
+        <div className='pr-2 w-[14rem] truncate'>
+          {cell.row.original.inventory?.description || "N/A"}
+        </div>
+      ),
+    },
+    {
+      Header: "Serial No",
+      accessor: "serial_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.serial_no}</div>
+      ),
+    },
+    {
+      Header: "Quantity",
+      accessor: "quantity",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.quantity}</div>
+      ),
+    },
+
+    // {
+    //   Header: "Action",
+    //   accessor: "id",
+    //   Cell: ({ cell }) => (
+    //     <>
+    //       <button
+    //         className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+    //         onClick={() =>
+    //           navigate(
+    //             `/da-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`
+    //           )
+    //         }
+    //       >
+    //         View
+    //       </button>
+    //     </>
+    //   ),
+    // },
+  ];
+
+  const COLUMNS_PRO = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+    },
+    {
+      Header: "Procurement No",
+      accessor: "procurement_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.procurement_no} </div>
+      ),
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original.category?.name} </div>
+      ),
+    },
+    {
+      Header: "Total Procurement Items",
+      accessor: "quantity",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.procurement_stocks?.length}
+        </div>
+      ),
+    },
+    {
+      Header: "Total Rate",
+      accessor: "total_rate",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {indianAmount(cell.row.original.total_rate)}{" "}
+        </div>
+      ),
+    },
+
+    // {
+    //   Header: "Action",
+    //   accessor: "id",
+    //   Cell: ({ cell }) => (
+    //     <>
+    //       <button
+    //         className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+    //         onClick={() =>
+    //           navigate(
+    //             `/da-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`
+    //           )
+    //         }
+    //       >
+    //         View
+    //       </button>
+    //     </>
+    //   ),
+    // },
+  ];
+
+  const COLUMNS_lEVEL = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+    },
+    {
+      Header: "Stock Handover No",
+      accessor: "stock_handover_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.stock_handover_no} </div>
+      ),
+    },
+    {
+      Header: "Employee Id",
+      accessor: "emp_id",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original.stock_request?.emp_id}</div>
+      ),
+    },
+    {
+      Header: "Employee Name",
+      accessor: "emp_name",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original.stock_request?.emp_name} </div>
+      ),
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.stock_request?.inventory?.category?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Sub Category",
+      accessor: "subcategory",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.stock_request?.inventory?.subcategory?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Unit",
+      accessor: "unit",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.stock_request?.inventory?.unit?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Description",
+      accessor: "description",
+      Cell: ({ cell }) => (
+        <div className='pr-2 w-[15rem] truncate'>
+          {cell.row.original.stock_request?.inventory?.description}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Quantity",
+      accessor: "quantity",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.stock_request?.inventory?.quantity}{" "}
+        </div>
+      ),
+    },
+  ];
+
+  const COLUMNS_lEVEL_SERVICE = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+    },
+    {
+      Header: "Stock Handover No",
+      accessor: "stock_handover_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.service_req?.stock_handover_no}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Service No",
+      accessor: "service_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.service_no} </div>
+      ),
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.service_req?.inventory?.category?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Sub Category",
+      accessor: "subcategory",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.service_req?.inventory?.subcategory?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Unit",
+      accessor: "unit",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.service_req?.inventory?.unit?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Description",
+      accessor: "description",
+      Cell: ({ cell }) => (
+        <div className='pr-2 w-[12rem] truncate'>
+          {cell.row.original.service_req?.inventory?.description}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Quantity",
+      accessor: "quantity",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.service_req?.inventory?.quantity}{" "}
+        </div>
+      ),
+    },
+  ];
+
+  //setting application type on basis of selected levels---
+
+  const applicationType =
+    formik.values.levels === "da" || formik.values.levels === "dd"
+      ? levelwiseModuleDd
+      : formik.values.levels === "finance"
+      ? levelwiseModuleFin
+      : formik.values.levels === "level1" || formik.values.levels === "level2"
+      ? levelwiseModule
+      : formik.values.levels === "ta"
+      ? levelwiseModuleTa
+      : levelwiseModuleIa;
+
+  useEffect(() => {
+    getCategory();
+  }, []);
 
   return (
     <div>
@@ -163,7 +580,7 @@ export default function Reports() {
           onSubmit={formik.handleSubmit}
           className=' valid-form flex flex-wrap flex-row py-6 '
         >
-          <div className='w-full flex flex-wrap'>
+          <div className='w-full flex items-center flex-wrap'>
             <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
               <label className={`${labelStyle} inline-block mb-2 text-sm`}>
                 Reports Type
@@ -175,16 +592,13 @@ export default function Reports() {
                 onChange={(e) => {
                   formik.handleChange(e);
                 }}
+                defaultValue={"total_stock"}
               >
-                <option defaultValue={"select"}>select</option>
-
-                {/* {category?.length &&
-                category?.map((items, index) => (
-                  <option key={index} value={items?.id}>
-                    {items?.name}
+                {reportType?.map((items, index) => (
+                  <option key={index} value={items?.value}>
+                    {items?.label}
                   </option>
-                ))} */}
-                <option>others</option>
+                ))}
               </select>
               <p className='text-red-500 text-xs '>
                 {formik.touched.category && formik.errors.category
@@ -196,28 +610,22 @@ export default function Reports() {
             <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
               <label className={`${labelStyle} inline-block mb-2 text-sm`}>
                 From Date
-                <span className='text-xl text-red-500 pl-1'>*</span>{" "}
               </label>
-              <select
-                {...formik.getFieldProps("reportType")}
+              <input
+                type='date'
+                name='from_date'
+                values={formik.values.from_date}
                 className={`${inputStyle} inline-block w-full relative`}
                 onChange={(e) => {
-                  formik.handleChange(e);
+                  const date = parseISO(e.target.value);
+                  const formattedDate = format(date, "yyyy-MM-dd");
+                  formik.setFieldValue("from_date", e.target.value);
                 }}
-              >
-                <option defaultValue={"select"}>select</option>
+              />
 
-                {/* {category?.length &&
-                category?.map((items, index) => (
-                  <option key={index} value={items?.id}>
-                    {items?.name}
-                  </option>
-                ))} */}
-                <option>others</option>
-              </select>
               <p className='text-red-500 text-xs '>
-                {formik.touched.category && formik.errors.category
-                  ? formik.errors.category
+                {formik.touched.from_date && formik.errors.from_date
+                  ? formik.errors.from_date
                   : null}
               </p>
             </div>
@@ -225,28 +633,22 @@ export default function Reports() {
             <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
               <label className={`${labelStyle} inline-block mb-2 text-sm`}>
                 To Date
-                <span className='text-xl text-red-500 pl-1'>*</span>{" "}
               </label>
-              <select
-                {...formik.getFieldProps("reportType")}
+              <input
+                type='date'
+                name='to_date'
+                value={formik.values.to_date}
                 className={`${inputStyle} inline-block w-full relative`}
                 onChange={(e) => {
-                  formik.handleChange(e);
+                  const date = parseISO(e.target.value);
+                  const formattedDate = format(date, "yyyy-MM-dd");
+                  formik.setFieldValue("to_date", formattedDate);
                 }}
-              >
-                <option defaultValue={"select"}>select</option>
+              />
 
-                {/* {category?.length &&
-                category?.map((items, index) => (
-                  <option key={index} value={items?.id}>
-                    {items?.name}
-                  </option>
-                ))} */}
-                <option>others</option>
-              </select>
               <p className='text-red-500 text-xs '>
-                {formik.touched.fromDate && formik.errors.fromDate
-                  ? formik.errors.fromDate
+                {formik.touched.to_date && formik.errors.to_date
+                  ? formik.errors.to_date
                   : null}
               </p>
             </div>
@@ -256,23 +658,22 @@ export default function Reports() {
             <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
               <label className={`${labelStyle} inline-block mb-2 text-sm`}>
                 Category
-                <span className='text-xl text-red-500 pl-1'>*</span>{" "}
               </label>
               <select
-                {...formik.getFieldProps("reportType")}
+                {...formik.getFieldProps("category")}
                 className={`${inputStyle} inline-block w-full relative`}
                 onChange={(e) => {
                   formik.handleChange(e);
+                  getSubCategory(e.target.value);
                 }}
               >
-                <option defaultValue={"select"}>select</option>
-
-                {/* {category?.length &&
-                category?.map((items, index) => (
-                  <option key={index} value={items?.id}>
-                    {items?.name}
-                  </option>
-                ))} */}
+                <option value={""}>select</option>
+                {category?.length &&
+                  category?.map((items, index) => (
+                    <option key={index} value={items?.id}>
+                      {items?.name}
+                    </option>
+                  ))}
               </select>
               <p className='text-red-500 text-xs '>
                 {formik.touched.category && formik.errors.category
@@ -284,91 +685,188 @@ export default function Reports() {
             <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
               <label className={`${labelStyle} inline-block mb-2 text-sm`}>
                 Sub Category
-                <span className='text-xl text-red-500 pl-1'>*</span>{" "}
               </label>
               <select
-                {...formik.getFieldProps("reportType")}
+                {...formik.getFieldProps("subCategory")}
                 className={`${inputStyle} inline-block w-full relative`}
                 onChange={(e) => {
                   formik.handleChange(e);
                 }}
               >
-                <option defaultValue={"select"}>select</option>
+                <option value={""}>select</option>
 
-                {/* {category?.length &&
-                category?.map((items, index) => (
-                  <option key={index} value={items?.id}>
-                    {items?.name}
-                  </option>
-                ))} */}
+                {subCategory?.length &&
+                  subCategory?.map((items, index) => (
+                    <option key={index} value={items?.id}>
+                      {items?.name}
+                    </option>
+                  ))}
               </select>
               <p className='text-red-500 text-xs '>
-                {formik.touched.category && formik.errors.category
-                  ? formik.errors.category
+                {formik.touched.subCategory && formik.errors.subCategory
+                  ? formik.errors.subCategory
                   : null}
               </p>
             </div>
           </div>
 
           <div className='w-full flex flex-wrap'>
-            <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
-              <label className={`${labelStyle} inline-block mb-2 text-sm`}>
-                Pre-Procurement Status
-                <span className='text-xl text-red-500 pl-1'>*</span>{" "}
-              </label>
-              <select
-                {...formik.getFieldProps("reportType")}
-                className={`${inputStyle} inline-block w-full relative`}
-                onChange={(e) => {
-                  formik.handleChange(e);
-                }}
-              >
-                <option defaultValue={"select"}>select</option>
+            {formik.values.reportType === "pre_procurement" && (
+              <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
+                <label className={`${labelStyle} inline-block mb-2 text-sm`}>
+                  Pre-Procurement Status
+                </label>
+                <select
+                  {...formik.getFieldProps("preProcurement")}
+                  className={`${inputStyle} inline-block w-full relative`}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                >
+                  <option value={""}>select</option>
+                  {preProcurement.map((items) => (
+                    <option key={items.id} value={items?.value}>
+                      {items?.label}
+                    </option>
+                  ))}
+                </select>
+                <p className='text-red-500 text-xs '>
+                  {formik.touched.preProcurement && formik.errors.preProcurement
+                    ? formik.errors.preProcurement
+                    : null}
+                </p>
+              </div>
+            )}
 
-                {/* {category?.length &&
-                category?.map((items, index) => (
-                  <option key={index} value={items?.id}>
-                    {items?.name}
-                  </option>
-                ))} */}
-              </select>
-              <p className='text-red-500 text-xs '>
-                {formik.touched.category && formik.errors.category
-                  ? formik.errors.category
-                  : null}
-              </p>
-            </div>
+            {formik.values.reportType === "post_procurement" && (
+              <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
+                <label className={`${labelStyle} inline-block mb-2 text-sm`}>
+                  Post-Procurement Status
+                  <span className='text-xl text-red-500 pl-1'>*</span>{" "}
+                </label>
+                <select
+                  {...formik.getFieldProps("postProcurement")}
+                  className={`${inputStyle} inline-block w-full relative`}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                >
+                  <option value={""}>select</option>
 
-            <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
-              <label className={`${labelStyle} inline-block mb-2 text-sm`}>
-                Post-Procurement Status
-                <span className='text-xl text-red-500 pl-1'>*</span>{" "}
-              </label>
-              <select
-                {...formik.getFieldProps("reportType")}
-                className={`${inputStyle} inline-block w-full relative`}
-                onChange={(e) => {
-                  formik.handleChange(e);
-                }}
-              >
-                <option defaultValue={"select"}>select</option>
+                  {postProcurement.map((items) => (
+                    <option key={items.id} value={items?.value}>
+                      {items?.label}
+                    </option>
+                  ))}
+                </select>
+                <p className='text-red-500 text-xs '>
+                  {formik.touched.postProcurement &&
+                  formik.errors.postProcurement
+                    ? formik.errors.postProcurement
+                    : null}
+                </p>
+              </div>
+            )}
 
-                {/* {category?.length &&
-                category?.map((items, index) => (
-                  <option key={index} value={items?.id}>
-                    {items?.name}
-                  </option>
-                ))} */}
-              </select>
-              <p className='text-red-500 text-xs '>
-                {formik.touched.category && formik.errors.category
-                  ? formik.errors.category
-                  : null}
-              </p>
-            </div>
+            {formik.values.reportType === "level_wise" && (
+              <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
+                <label className={`${labelStyle} inline-block mb-2 text-sm`}>
+                  Levels
+                  <span className='text-xl text-red-500 pl-1'>*</span>{" "}
+                </label>
+                <select
+                  {...formik.getFieldProps("levels")}
+                  className={`${inputStyle} inline-block w-full relative`}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                >
+                  <option value={""}>select</option>
+
+                  {levels.map((items) => (
+                    <option key={items.id} value={items?.value}>
+                      {items?.label}
+                    </option>
+                  ))}
+                </select>
+                {/* <p className='text-red-500 text-xs '>
+                  {formik.touched.postProcurement &&
+                  formik.errors.postProcurement
+                    ? formik.errors.postProcurement
+                    : null}
+                </p> */}
+              </div>
+            )}
+
+            {formik.values.reportType === "level_wise" && (
+              <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
+                <label className={`${labelStyle} inline-block mb-2 text-sm`}>
+                  Application Type
+                  <span className='text-xl text-red-500 pl-1'>*</span>{" "}
+                </label>
+                <select
+                  {...formik.getFieldProps("module_type")}
+                  className={`${inputStyle} inline-block w-full relative`}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                  defaultValue={
+                    applicationType?.length === 0 && applicationType[0].value
+                  }
+                >
+                  <option value={""}>select</option>
+
+                  {applicationType.map((items) => (
+                    <option key={items.id} value={items?.value}>
+                      {items?.label}
+                    </option>
+                  ))}
+                </select>
+                {/* <p className='text-red-500 text-xs '>
+                  {formik.touched.postProcurement &&
+                  formik.errors.postProcurement
+                    ? formik.errors.postProcurement
+                    : null}
+                </p> */}
+              </div>
+            )}
+
+            {formik.values.reportType === "tender_type" && (
+              <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
+                <label className={`${labelStyle} inline-block mb-2 text-sm`}>
+                  Tender type
+                </label>
+                <select
+                  {...formik.getFieldProps("preProcurement")}
+                  className={`${inputStyle} inline-block w-full relative`}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                >
+                  <option value={""}>select</option>
+                  {tenderType.map((items) => (
+                    <option key={items.id} value={items?.value}>
+                      {items?.label}
+                    </option>
+                  ))}
+                </select>
+                <p className='text-red-500 text-xs '>
+                  {formik.touched.preProcurement && formik.errors.preProcurement
+                    ? formik.errors.preProcurement
+                    : null}
+                </p>
+              </div>
+            )}
           </div>
 
-          <div className='form-group flex-shrink w-full px-4 flex justify-end'>
+          <div className='form-group flex-shrink w-full px-4 flex gap-4 justify-end'>
+            <button
+              type='reset'
+              className={`mt-4 border border-[#4478b7] text-[#4478b7] hover:bg-[#4478b7]  px-7 py-2 hover:text-white font-semibold rounded leading-5 shadow-lg float-right`}
+            >
+              Reset
+            </button>
+
             <button
               type='submit'
               className={`mt-4 hover:bg-[#4478b7] bg-blue-700 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right`}
@@ -385,10 +883,30 @@ export default function Reports() {
         <div className='p-2'>
           <ListTableParent
             // table={tableSelector(props?.page)}
-            // api={}
-            columns={COLUMNS}
-            // requestBody={requestBody} // sending body
-            // changeData={changeData} // send action for new payload
+            api={
+              formik.values.reportType === "level_wise"
+                ? `${api_getInventoryLevelReport}/${formik.values.levels}/${formik.values.module_type}`
+                : urlReport
+            }
+            columns={
+              formik.values.reportType === "stock_movement"
+                ? COLUMNS_SM
+                : formik.values.reportType === "pre_procurement"
+                ? COLUMNS_PRO
+                : formik.values.reportType === "level_wise" &&
+                  formik.values.module_type !== "service-request"
+                ? COLUMNS_lEVEL
+                : formik.values.reportType === "level_wise" &&
+                  formik.values.module_type === "service-request"
+                ? COLUMNS_lEVEL_SERVICE
+                : COLUMNS
+            }
+            from={formik.values.from_date}
+            to={formik.values.to_date}
+            category={formik.values.category}
+            subcategory={formik.values.subCategory}
+            pageTrigger={pageTrigger}
+            status={formik.values.preProcurement}
           />
         </div>
       </div>

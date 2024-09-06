@@ -269,26 +269,32 @@ export default function ProjectApiList() {
     api_updateBankStatus: `${baseUrl}/api/pms/master/bank/switch`,
     api_updateBank: `${baseUrl}/api/pms/master/bank/update`,
     api_updateBank: `${baseUrl}/api/pms/master/bank/update`,
-    
+
     // employee request
-    api_employeeDetailsById:`${baseUrl}/api/pms/emp-service`,
-    api_employeeHandover:`${baseUrl}/api/pms/stock-handover/`,
-    api_employeeAcknowledge:`${baseUrl}/api/pms/stock-handover/acknowledge`,
-    api_employeeServiceRequest:`${baseUrl}/api/pms/stock-handover/emp-service`,
+    api_employeeDetailsById: `${baseUrl}/api/pms/emp-service`,
+    api_employeeHandover: `${baseUrl}/api/pms/stock-handover/`,
+    api_employeeAcknowledge: `${baseUrl}/api/pms/stock-handover/acknowledge`,
+    api_employeeServiceRequest: `${baseUrl}/api/pms/stock-handover/emp-service`,
     api_employeeInbox: `${baseUrl}/api/pms/stock-handover/emp-service/`,
     api_employeeOutbox: `${baseUrl}/api/pms/stock-handover/emp-service/outbox`,
-    
+
     // employee service
     api_employeeServiceInbox: `${baseUrl}/api/pms/stock-handover/emp-service/`,
     api_employeeServiceOutbox: `${baseUrl}/api/pms/stock-handover/emp-service/outbox`,
     api_getEmpServiceById: `${baseUrl}/api/pms/emp-service`,
-    
-    // dd employee service 
+
+    // dd employee service
     api_ddemployeeServiceApprove: `${baseUrl}/api/pms/dist/service-request/emp/approve`,
     api_ddemployeeServiceReject: `${baseUrl}/api/pms/dist/service-request/emp/reject`,
     api_ddemployeeServiceInbox: `${baseUrl}/api/pms/dist/service-request/emp`,
     api_ddemployeeServiceOutbox: `${baseUrl}/api/pms/dist/service-request/emp/outbox`,
-    
+
+    //reports
+    api_getInventoryTotalReport: `${baseUrl}/api/pms/report/inventory/total`,
+    api_getInventoryTotalDeadReport: `${baseUrl}/api/pms/report/inventory/dead`,
+    api_getInventoryTotalMovementReport: `${baseUrl}/api/pms/report/inventory/movement`,
+    api_getInventoryPreProcReport: `${baseUrl}/api/pms/report/pre-procurement`,
+    api_getInventoryLevelReport: `${baseUrl}/api/pms/report/level-wise`,
   };
 
   return apiList;

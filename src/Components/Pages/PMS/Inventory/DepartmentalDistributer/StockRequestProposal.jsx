@@ -67,11 +67,22 @@ const StockRequestProposal = (props) => {
   };
 
   const getEmpdetails = () => {
-    AxiosInterceptors.get(`${api_getEmpDetails}`, ApiHeader())
+    AxiosInterceptors.get(
+      `https://aadrikainfomedia.com/auth/api/hrms/v1/employee/get?limit=100000000000&page=1`,
+      {
+        timeout: 60000,
+        headers: {
+          Authorization: `Bearer 42286|6vJQxgIoLp5kYRO8XAlUH77s3n39X66Vqsl6WHcYce286b1a`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "API-KEY": "eff41ef6-d430-4887-aa55-9fcf46c72c99",
+        },
+      }
+    )
       .then(function (response) {
         if (response?.data?.status === true) {
           setEmpdetails(response?.data?.data?.data);
-          console.log(response?.data?.data?.data)
+          console.log(response?.data?.data?.data);
           formatEmp(response?.data?.data?.data);
           // notify(response?.data?.message, "success");
         } else {
@@ -81,7 +92,7 @@ const StockRequestProposal = (props) => {
       .catch(function (res) {
         notify("Something went wrong!");
       });
-    console.log(empDetails)
+    console.log(empDetails);
     // console.log(testingData)
     // setEmpdetails(testingData);
     // formatEmp(testingData);
@@ -543,7 +554,11 @@ const StockRequestProposal = (props) => {
 
                         {descrip?.length &&
                           descrip?.map((items) => (
-                            <option key={items?.id} value={items?.id}  className="w-10" >
+                            <option
+                              key={items?.id}
+                              value={items?.id}
+                              className='w-10'
+                            >
                               {items?.description}
                             </option>
                           ))}

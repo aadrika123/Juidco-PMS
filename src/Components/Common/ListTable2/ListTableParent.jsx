@@ -84,6 +84,11 @@ const ListTableParent = (props) => {
       `${props?.api}?
       take=${perPageData}&page=${currentPage}
       &search=${searchFilter}
+      &${props?.from ? `from=${props?.from}` : ""}
+      &${props?.to ? `to=${props?.to}` : ""}
+      &${props?.subcategory ? `scategory=${props?.subcategory}` : ""}
+      &${props?.status ? `status=${props?.status}` : ""}
+      &${props?.category ? `category=${props?.category}` : ""}
       &${returnCategoryFilter("category", filter?.category || [])}
       &${returnCategoryFilter("scategory", filter?.subcategory || [])}
       &${returnCategoryFilter("brand", filter?.brand || [])}
@@ -259,7 +264,7 @@ const ListTableParent = (props) => {
       searchOldFun();
     }, 500);
     return () => clearTimeout(getData);
-  }, [pageCount, perPageCount, searchFilter]);
+  }, [pageCount, perPageCount, searchFilter, props?.pageTrigger]);
 
   const useFilter = () => {
     searchOldFun();
@@ -386,7 +391,7 @@ const ListTableParent = (props) => {
             </div>
           )}
           {/* table */}
-          <div className='flex w-full'>
+          <div className='flex w-full overflow-auto'>
             {/* 👉 Loader 👈 */}
             {loader && <ShimmerEffectInline />}
 
