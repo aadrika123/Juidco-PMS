@@ -39,11 +39,11 @@ const StockRequestProposal = (props) => {
   const page = useParams();
 
   const [confModal, setConfModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState("");
   const [category, setCategory] = useState("");
   const [empDetails, setEmpdetails] = useState("");
   const [formattedEmp, setFormattedEmp] = useState([]);
-  const [selectName, setSelectedName] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [brand, setBarnd] = useState("");
   const [descrip, setDescrip] = useState("");
@@ -296,6 +296,7 @@ const StockRequestProposal = (props) => {
   };
 
   const submitForm = () => {
+    setIsLoading(true);
     let api;
 
     page?.page == "edit"
@@ -328,6 +329,10 @@ const StockRequestProposal = (props) => {
       })
       .catch(function (res) {
         notify("Something went wrong!");
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setConfModal(false);
       });
   };
 
@@ -343,6 +348,7 @@ const StockRequestProposal = (props) => {
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
           message={"Are you sure you want to Proceed ?"}
+          loadingState={isLoading}
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>

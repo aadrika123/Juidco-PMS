@@ -113,6 +113,7 @@ const ViewInventoryDetailsById = (props) => {
   // console.log(id);
 
   const assignToDDHandler = () => {
+    setisLoading(true);
     let body = {
       stock_handover_no: [id],
       serial_nos: serialNo,
@@ -134,7 +135,8 @@ const ViewInventoryDetailsById = (props) => {
         // setdeclarationStatus(false);
       })
       .finally(() => {
-        // setisLoading(false);
+        setisLoading(false);
+        setServiceRequestModal(false);
       });
   };
 
@@ -236,6 +238,8 @@ const ViewInventoryDetailsById = (props) => {
           productData={productData}
           setServiceRequestModal={setServiceRequestModal}
           service={service}
+          quantity={applicationFullData?.allotted_quantity}
+          loader={isLoading}
         />
       </>
     );

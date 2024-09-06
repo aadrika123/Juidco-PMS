@@ -207,21 +207,22 @@ const ViewReceivedInvtById = () => {
     )
       .then(function (response) {
         if (response?.data?.status == true) {
-          setisLoading(false);
           toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/ia-pre-inventory");
           }, 100);
         } else {
-          setisLoading(false);
           const errorMsg = Object.keys(response?.data?.data);
           toast(response?.data?.message, "error");
         }
       })
       .catch(function (error) {
-        setisLoading(false);
-        toast.error("Something went wrong", "error");
+        toast.error("Something went wrong");
         console.log("errorrr.... ", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+        setIsModalOpen(false);
       });
   };
 
@@ -372,6 +373,11 @@ const ViewReceivedInvtById = () => {
   };
 
   const addProduct = () => {
+    if (product.length > totSum) {
+      return toast.error(
+        "Number of Added Product can not exceed the number of received quantity."
+      );
+    }
     let url = api_postSrAddProduct;
 
     seterroState(false);
@@ -391,9 +397,10 @@ const ViewReceivedInvtById = () => {
         if (response?.data?.status) {
           toast.success("Added Successfully");
           setBrandName("");
-          setProcurement_stock_id("");
-          setProduct([{}]);
+          // setProcurement_stock_id("");
+          setProduct([{ item: "", serial_no: "" }]);
           getApplicationDetail();
+          getInventoryAddDetail(procurement_stock_id);
         } else {
           toast.error("Error while Adding the products");
           seterroState(true);
@@ -401,7 +408,7 @@ const ViewReceivedInvtById = () => {
         setisLoading(false);
       })
       .catch(function (error) {
-        console.log("==2 details by id error...", error);
+        console.log("err in adding products...", error);
         toast.error(
           error?.response?.data?.message || "Error in adding details"
         );
@@ -409,12 +416,6 @@ const ViewReceivedInvtById = () => {
         setisLoading(false);
       });
   };
-
-  // const sumOfInvt=(data)=>{
-  //   let total= inventoryAddData?.receiving?._sum?.received_quantity - inventoryAddData?.product[0]?.total_quantity
-  //   console.log(total)
-  //   setTotSum(total)
-  // }
 
   useEffect(() => {
     getApplicationDetail();
@@ -428,6 +429,7 @@ const ViewReceivedInvtById = () => {
         <ReceivedInvtSubmittedScreen
           postAddtoInventory={postAddtoInventory}
           setIsModalOpen={setIsModalOpen}
+          loader={isLoading}
         />
       </>
     );
@@ -956,7 +958,7 @@ const ViewReceivedInvtById = () => {
                               getInventoryAddDetail(e.target.value);
                             }}
                           >
-                            <option defaultValue={"select"}>select</option>
+                            <option value={""}>select</option>
                             {applicationFullData?.procurement_stocks?.map(
                               (data, index) => (
                                 <option value={data?.id}>
@@ -1116,9 +1118,11 @@ const ViewReceivedInvtById = () => {
                                 onChange={(e) => {
                                   setProcurement_stock_id(e.target.value);
                                 }}
+                                value={procurement_stock_id}
+                                disabled
                                 // onClick={() => }
                               >
-                                <option defaultValue={"select"}>select</option>
+                                <option value={""}>select</option>
                                 {/* {console.log(applicationFullData)} */}
                                 {applicationFullData?.procurement_stocks?.map(
                                   (data, index) => (

@@ -8,25 +8,14 @@
 //    DESCRIPTION - EmployeeList
 //////////////////////////////////////////////////////////////////////////////////////
 
-import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-// import Modal from "react-modal";
-import * as yup from "yup";
-import moment from "moment";
+import React, { useState } from "react";
 
-import ProjectApiList from "@/Components/api/ProjectApiList";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
-import ThemeStyle from "@/Components/Common/ThemeStyle";
-import { RotatingLines } from "react-loader-spinner";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 
 function EmployeeList(props) {
   const navigate = useNavigate();
-  const { module } = useParams();
-  // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
-
-  const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
@@ -35,86 +24,62 @@ function EmployeeList(props) {
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
 
-  const validationSchema = yup.object({
-    // fromDate: yup.string().required("Field Required"),
-    // uptoDate: yup.string().required("Field Required"),
-    // key: yup.string().required("Field Required"),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      // fromDate: moment(new Date()).format("yy-MM-DD"),
-      // uptoDate: moment(new Date()).format("yy-MM-DD"),
-      // key: "",
-    },
-    onSubmit: (values) => {
-      console.log("values =>  ", values);
-      fetchResouceList(values);
-
-      // setchangeData((prev) => prev + 1);
-    },
-    validationSchema,
-  });
-
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
     {
       Header: "#",
-      Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
       Header: "Handover No",
       accessor: "stock_handover_no",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.stock_handover_no}</div>
+        <div className='pr-2'>{cell.row.values.stock_handover_no}</div>
       ),
     },
     {
       Header: "Category",
       accessor: "inventory",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.inventory?.category?.name} </div>
+        <div className='pr-2'>{cell.row.values.inventory?.category?.name} </div>
       ),
     },
     {
       Header: "Employee Name",
       accessor: "emp_name",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.emp_name} </div>
+        <div className='pr-2'>{cell.row.values.emp_name} </div>
       ),
     },
-    
+
     {
       Header: "Required Quantity",
       accessor: "allotted_quantity",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.allotted_quantity} </div>
+        <div className='pr-2'>{cell.row.values.allotted_quantity} </div>
       ),
     },
-    
 
     {
-      Header: <p className="text-center">Status</p>,
+      Header: <p className='text-center'>Status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
-        <div className="pr-2">
-          
+        <div className='pr-2'>
           {cell.row.values.status == -2 && (
-            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
               Rejected
             </p>
           )}
           {cell.row.values.status == 4 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Ready to Acknowledge
             </p>
           )}
           {cell.row.values.status == 41 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Acknowledged
             </p>
           )}
-          
         </div>
       ),
     },
@@ -133,7 +98,7 @@ function EmployeeList(props) {
       Cell: ({ cell }) => (
         <>
           <button
-            className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
+            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
               navigate(
                 `/viewEmployeeById/${cell.row.values.stock_handover_no}/${props.page}`
@@ -146,12 +111,6 @@ function EmployeeList(props) {
       ),
     },
   ];
-
-  const fetchResouceList = (data) => {
-    console.log(data, "payload data for searchin water");
-    setRequestBody(data);
-    setchangeData((prev) => prev + 1);
-  };
 
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {

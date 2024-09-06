@@ -204,6 +204,7 @@ const PostPreDetailsById = (props) => {
       })
       .finally(() => {
         setisLoading(false);
+        setIsModalOpenInvt(false);
       });
   };
 
@@ -411,6 +412,7 @@ const PostPreDetailsById = (props) => {
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
           message={'Add to " Received Inventory " ?'}
+          loadingState={isLoading}
         />
       </>
     );

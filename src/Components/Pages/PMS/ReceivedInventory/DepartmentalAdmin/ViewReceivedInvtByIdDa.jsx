@@ -547,9 +547,9 @@ const ViewReceivedInvtByIdDa = (props) => {
                             <th scope='col' className='px-6 py-3'>
                               Receiving no
                             </th>
-                            {/* <th scope='col' className='px-6 py-3'>
-                              Total Quantity
-                            </th> */}
+                            <th scope='col' className='px-6 py-3'>
+                              Description
+                            </th>
                             <th scope='col' className='px-6 py-3'>
                               Received Quantity
                             </th>
@@ -583,12 +583,9 @@ const ViewReceivedInvtByIdDa = (props) => {
                               <td className='px-6 py-4'>
                                 {data?.receiving_no}
                               </td>
-                              {/* <td className='px-6 py-4'>
-                                {
-                                  applicationFullData?.post_procurement
-                                    ?.quantity
-                                }
-                              </td> */}
+                              <td className='px-6 py-4 truncate'>
+                                {data?.procurement_stock?.description}
+                              </td>
                               <td className='px-6 py-4'>
                                 {data?.received_quantity}
                               </td>
@@ -739,18 +736,22 @@ const ViewReceivedInvtByIdDa = (props) => {
                         </div>
                         <div className='w-1/2 flex flex-col gap-2'>
                           <div className='text-sm'>
-                            <h1>Sub Category:
-                            <span className='font-semibold text-base text-blue-950 pl-2'>
-                              {procItemData?.subCategory?.name ||
-                                "Select Procurement Item"}
-                            </span></h1>
+                            <h1>
+                              Sub Category:
+                              <span className='font-semibold text-base text-blue-950 pl-2'>
+                                {procItemData?.subCategory?.name ||
+                                  "Select Procurement Item"}
+                              </span>
+                            </h1>
                           </div>
                           <div className='text-sm pr-4'>
-                            <h1>Description:
-                            <span className='font-semibold text-base text-blue-950 pl-2 text-justify'>
-                              {procItemData?.description ||
-                                "Select Procurement Item"}
-                            </span></h1>
+                            <h1>
+                              Description:
+                              <span className='font-semibold text-base text-blue-950 pl-2 text-justify'>
+                                {procItemData?.description ||
+                                  "Select Procurement Item"}
+                              </span>
+                            </h1>
                           </div>
                         </div>
                       </div>
