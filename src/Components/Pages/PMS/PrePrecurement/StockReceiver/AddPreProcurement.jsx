@@ -847,10 +847,10 @@ function AddPreProcurement() {
                         <div className='flex gap-0 relative'>
                           <textarea
                             type='text'
-                            name='descriptiontxt'
+                            name='description'
                             className={`${inputStyle} inline-block w-full relative h-24`}
                             onChange={formik.handleChange}
-                            value={formik.values.descriptiontxt}
+                            value={formik.values.description}
                           />
                           <div
                             onClick={() =>
