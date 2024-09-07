@@ -35,7 +35,7 @@ function ServiceRequestModal(props) {
   const { labelStyle, loading } = ThemeStyle();
 
   let buttonStyle2 =
-    " mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
+    " mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
   // const { api_postWarrantyClaim } = ProjectApiList();
 
@@ -47,6 +47,10 @@ function ServiceRequestModal(props) {
     } = event;
     props?.setserialNo(typeof value === "string" ? value.split(",") : value);
   };
+
+  const filtered = props?.productData?.filter(
+    (data) => data?.is_available === true
+  );
 
   return (
     <>
@@ -81,8 +85,8 @@ function ServiceRequestModal(props) {
                 MenuProps={MenuProps}
                 label='Choose Product'
               >
-                {props?.productData?.length > 0 ? (
-                  props?.productData?.map((data) => (
+                {filtered.length > 0 ? (
+                  filtered?.map((data) => (
                     // console.log(data?.inventoryId)
                     <MenuItem
                       key={data?.serial_no}

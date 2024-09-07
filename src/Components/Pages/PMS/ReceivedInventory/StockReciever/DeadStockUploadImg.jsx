@@ -11,9 +11,11 @@
 import React, { useState, useRef } from "react";
 import { LuCloudy } from "react-icons/lu";
 import toast from "react-hot-toast";
+import ThemeStyle from "@/Components/Common/ThemeStyle";
 
-function  DeadStockUploadImg(props) {
+function DeadStockUploadImg(props) {
   const inputFileRef = useRef();
+  const { loading } = ThemeStyle();
 
   const [preview, setPreview] = useState();
 
@@ -23,7 +25,7 @@ function  DeadStockUploadImg(props) {
 
   const handleCancelClick = () => {
     props.setDeadStockImg(false);
-    window.location.reload()
+    window.location.reload();
   };
   const handleUploadDoc = () => {
     inputFileRef.current.click();
@@ -62,10 +64,9 @@ function  DeadStockUploadImg(props) {
     }
 
     if (file) {
-      console.log(file.size, "=========file size");
       props?.setImageDoc(file);
-      console.log(file, "==========file");
       setPreview(URL.createObjectURL(file));
+      props?.setPreview(URL.createObjectURL(file));
     }
   };
 
@@ -106,7 +107,7 @@ function  DeadStockUploadImg(props) {
                 src={preview}
                 alt='Image Preview'
                 // style={{ width: "200px", height: "auto", marginTop: "20px" }}
-                className="w-[200px] h-auto mt-[20px] border border-indigo-400 rounded"
+                className='w-[200px] h-auto mt-[20px] border border-indigo-400 rounded'
               />
             )}
 
@@ -131,13 +132,13 @@ function  DeadStockUploadImg(props) {
                 {props?.imageDoc?.name}
               </p>
 
-              <div className="flex justify-center">
-              <button
-                className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
-                onClick={handleUploadDoc}
-              >
-                Browse File
-              </button>
+              <div className='flex justify-center'>
+                <button
+                  className={`bg-white border-gray-300 border text-gray-150 text-sm px-14 py-1 mt-2 hover:bg-gray-200 hover:text-gray-500  rounded leading-5 shadow-lg`}
+                  onClick={handleUploadDoc}
+                >
+                  Browse File
+                </button>
               </div>
             </div>
           </div>
@@ -147,6 +148,7 @@ function  DeadStockUploadImg(props) {
               <button
                 className={`bg-white border-blue-900 border text-blue-950 text-sm px-6 py-2 hover:bg-[#1A4D8C] hover:text-white  rounded leading-5 shadow-lg`}
                 onClick={handleCancelClick}
+                disabled={props?.loader}
               >
                 Cancel
               </button>
@@ -154,8 +156,9 @@ function  DeadStockUploadImg(props) {
               <button
                 className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
                 onClick={handleClick}
+                disabled={props?.loader}
               >
-                Save
+                {props?.loader ? <div className={`${loading}`}></div> : "Save"}
               </button>
             </div>
 

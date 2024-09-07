@@ -253,9 +253,11 @@ export default function ProjectApiList() {
 
     //service request
     api_getServiceRequestId: `${baseUrl}/api/pms/service-request`,
+    api_getempServiceRequestId: `${baseUrl}/api/pms/emp-service`,
     api_approveServiceRequestDA: `${baseUrl}/api/pms/da/service-request/to-ia`,
     api_approveServiceRequestDD: `${baseUrl}/api/pms/dist/service-request`,
     api_approveServiceRequestIA: `${baseUrl}/api/pms/ia/service-request/approve`,
+    api_rejectServiceRequestIA: `${baseUrl}/api/pms/ia/service-request/reject`,
     api_getDistServiceInbox: `${baseUrl}/api/pms/dist/service-request/emp`,
     api_getDistServiceOutbox: `${baseUrl}/api/pms/dist/service-request/emp/outbox`,
     api_getDaServiceInbox: `${baseUrl}/api/pms/da/service-request`,

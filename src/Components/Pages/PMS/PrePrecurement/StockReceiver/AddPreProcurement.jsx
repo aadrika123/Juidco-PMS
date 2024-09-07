@@ -135,7 +135,6 @@ function AddPreProcurement() {
     const supplierUnitPrice = selectedSupplier?.rate_contract_supplier?.find(
       (supplier) => supplier?.supplier_master?.id === value
     );
-    console.log(supplierUnitPrice);
     setSupplierDetailsProc(supplierUnitPrice);
     // formik.setFieldValue("rate", supplierUnitPrice);
   };
@@ -331,7 +330,6 @@ function AddPreProcurement() {
   const handleOnChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log(value);
 
     {
       name == "itemCategory" && value != "others" && fetchSubCategory(value);

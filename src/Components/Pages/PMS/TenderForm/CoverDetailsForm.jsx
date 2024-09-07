@@ -148,6 +148,9 @@ const CoverDetailsForm = () => {
         setIsLoading(false);
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 

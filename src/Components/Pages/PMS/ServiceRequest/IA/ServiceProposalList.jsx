@@ -41,18 +41,14 @@ function ServiceProposalList(props) {
       Header: "Service No",
       accessor: "service_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>
-          {cell.row.original.service_no}
-        </div>
+        <div className='pr-2'>{cell.row.original.service_no}</div>
       ),
     },
     {
       Header: "Service",
       accessor: "service",
       Cell: ({ cell }) => (
-        <div className='pr-2'>
-          {cell.row.original.service}
-        </div>
+        <div className='pr-2'>{cell.row.original.service}</div>
       ),
     },
     {
@@ -77,7 +73,7 @@ function ServiceProposalList(props) {
           )}
           {cell.row.values.status == 12 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Rejected from Departmental Admin
+              Rejected from Inventory Admin
             </p>
           )}
           {cell.row.values.status == 10 && (
@@ -91,8 +87,8 @@ function ServiceProposalList(props) {
             </p>
           )}
           {cell.row.values.status == 20 && (
-            <p className='text-yellow-400 text-center bg-yellow-50 border-yellow-400 border-[1px] px-1 py-1  rounded-md'>
-               Forwarded to Inventory Admin
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Waiting to be Approved
             </p>
           )}
           {cell.row.values.status == 21 && (
@@ -110,8 +106,6 @@ function ServiceProposalList(props) {
               Approved
             </p>
           )}
-          
-         
         </div>
       ),
     },
