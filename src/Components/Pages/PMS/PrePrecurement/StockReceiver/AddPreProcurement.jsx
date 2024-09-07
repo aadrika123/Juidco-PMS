@@ -15,7 +15,6 @@ import { useFormik } from "formik";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import { toast } from "react-toastify";
-import BarLoader from "@/Components/Common/Loaders/BarLoader";
 import PreProcurementSubmittedScreen from "./PreProcurementSubmittedScreen";
 import * as yup from "yup";
 import { allowNumberInput } from "@/Components/Common/PowerUps/PowerupFunctions";
@@ -30,6 +29,7 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import { MdOutlineDelete } from "react-icons/md";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
 import { FiEdit } from "react-icons/fi";
+import { ImCancelCircle } from "react-icons/im";
 
 function AddPreProcurement() {
   const { inputStyle, labelStyle, headingStyle, formStyle, loading } =
@@ -54,13 +54,12 @@ function AddPreProcurement() {
     api_getAllunit,
     api_fetchProcurementById,
     api_getProcItemRateContract,
+    api_getActiveDesc,
   } = ProjectApiList();
 
   const [isLoading, setisLoading] = useState(false);
   const [itemCategory, setItemCategory] = useState();
   const [applicationFullData, setapplicationFullData] = useState();
-  const [ulbData, setulbData] = useState();
-  const [ulbId, setulbId] = useState();
 
   const [category, setCategory] = useState();
   const [subcategory, setSubCategory] = useState();
@@ -77,6 +76,7 @@ function AddPreProcurement() {
   const [editProcurementData, setEditProcurementData] = useState();
   const [selectedSupplier, setSelectedSupplier] = useState();
   const [supplierDetailsProc, setSupplierDetailsProc] = useState();
+  const [descrip, setDescrip] = useState("");
 
   const [procurement_no, setProcurement_no] = useState();
 
@@ -158,6 +158,7 @@ function AddPreProcurement() {
     rate: supplierDetailsProc?.unit_price || editProcurementData?.rate || "",
     subcategorytxt: editProcurementData?.subcategorytxt || "",
     brandtxt: editProcurementData?.brandtxt || "",
+    descriptiontxt: editProcurementData?.descriptiontxt || "",
   };
 
   // console.log(editProcurementData?.itemCategory,"cat=")
@@ -205,8 +206,6 @@ function AddPreProcurement() {
       });
   };
 
-  // console.log(applicationFullData)
-
   // ══════════════════════════════║🔰calculate the total rate🔰║═══════════════════════════════════
   const calculateTotalRate = () => {
     const rate = Number(formik.values.rate) || 0;
@@ -214,8 +213,6 @@ function AddPreProcurement() {
     const total_rate = rate * quantity;
     formik.setFieldValue("total_rate", total_rate);
   };
-
-  // ══════════════════════════════║🔰 function to get ward list  🔰║═══════════════════════════════════
 
   const fetchCategory = () => {
     AxiosInterceptors.get(`${api_getActiveCategory}`, ApiHeader())
@@ -243,12 +240,31 @@ function AddPreProcurement() {
   };
 
   const fetchBrand = (value) => {
+    getDesc(value);
     AxiosInterceptors.get(`${api_itemBrand}/${value}`, ApiHeader())
       .then(function (response) {
         setBrand(response.data.data);
       })
       .catch(function (error) {
         toast.error("Error in fetching Brands");
+      });
+  };
+
+  const getDesc = (subCat) => {
+    AxiosInterceptors.get(
+      `${api_getActiveDesc}?category=${itemCategory}&scategory=${subCat}`,
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status === true) {
+          setDescrip(response?.data?.data?.data);
+          // notify(response?.data?.message, "success");
+        } else {
+          notify(response?.data?.message, "error");
+        }
+      })
+      .catch(function (res) {
+        toast.error("Something went wrong!");
       });
   };
 
@@ -309,7 +325,7 @@ function AddPreProcurement() {
 
   useEffect(() => {
     calculateTotalRate();
-  }, [ulbData, formik.values.quantity, formik.values.rate]);
+  }, [formik.values.quantity, formik.values.rate]);
 
   useEffect(() => {
     page == "edit" && getApplicationDetail();
@@ -317,7 +333,6 @@ function AddPreProcurement() {
 
   useEffect(() => {
     const ulbId = localStorage.getItem("ulbId");
-    setulbId(ulbId);
     fetchCategory();
     fetchUnits();
   }, []);
@@ -715,7 +730,7 @@ function AddPreProcurement() {
                           className={`${inputStyle} inline-block w-full relative`}
                           onChange={formik.handleChange}
                         >
-                          <option defaultValue={"select"}>select</option>
+                          <option value={""}>select</option>
 
                           {subcategory?.length &&
                             subcategory?.map((items) => (
@@ -743,7 +758,7 @@ function AddPreProcurement() {
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={formik.handleChange}
                       >
-                        <option defaultValue={"select"}>select</option>
+                        <option value={""}>select</option>
 
                         {units?.length &&
                           units?.map((items) => (
@@ -780,7 +795,7 @@ function AddPreProcurement() {
                           className={`${inputStyle} inline-block w-full relative`}
                           onChange={formik.handleChange}
                         >
-                          <option defaultValue={"select"}>select</option>
+                          <option value={""}>select</option>
 
                           {brand?.length &&
                             brand?.map((items) => (
@@ -823,17 +838,53 @@ function AddPreProcurement() {
                       </div>
                     ))} */}
 
-                    <div className='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-2'>
+                    {console.log(formik.values.description, "desc")}
+                    <div className='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-5'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Description
                       </label>
-                      <textarea
-                        type='text'
-                        name='description'
-                        className={`${inputStyle} inline-block w-full relative h-24`}
-                        onChange={formik.handleChange}
-                        value={formik.values.description}
-                      />
+                      {formik.values.description == "others" ? (
+                        <div className='flex gap-0 relative'>
+                          <textarea
+                            type='text'
+                            name='descriptiontxt'
+                            className={`${inputStyle} inline-block w-full relative h-24`}
+                            onChange={formik.handleChange}
+                            value={formik.values.descriptiontxt}
+                          />
+                          <div
+                            onClick={() =>
+                              formik.setFieldValue("description", "")
+                            }
+                          >
+                            <ImCancelCircle
+                              fontSize={20}
+                              className='absolute right-0 top-[2px]'
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <select
+                          {...formik.getFieldProps("description")}
+                          className={`${inputStyle} inline-block w-full relative`}
+                          onChange={(e) => {
+                            formik.handleChange(e);
+                          }}
+                        >
+                          <option value={""}>select</option>
+                          {descrip?.length &&
+                            descrip?.map((items) => (
+                              <option
+                                key={items?.id}
+                                value={items?.id}
+                                className='w-10'
+                              >
+                                {items?.description}
+                              </option>
+                            ))}
+                          <option value={"others"}>Others</option>
+                        </select>
+                      )}
 
                       <p className='text-red-500 text-xs '>
                         {formik.touched.description && formik.errors.description

@@ -471,7 +471,7 @@ export default function CreateNewBoq() {
               }}
               className='w-4'
             />
-            <p className='text-md font-semibold'>is Gst included</p>
+            <p className='text-md font-semibold'>Add Gst</p>
           </div>
         </div>
 
