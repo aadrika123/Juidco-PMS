@@ -34,16 +34,18 @@ const ViewInventoryDetailsById = (props) => {
   const [isLoading, setisLoading] = useState(false);
   const [applicationFullData, setapplicationFullData] = useState();
   const [productData, setProductData] = useState();
-  const [tableData, setTableData] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [imageDoc, setImageDoc] = useState(false);
-  const [preview, setPreview] = useState();
+  // const [preview, setPreview] = useState();
   const [serviceRequestModal, setServiceRequestModal] = useState(false);
   const [service, setService] = useState("");
   const [serialNo, setserialNo] = useState([]);
+  const [remQuantity, setRemQuantity] = useState(0);
 
-  const { api_getStockRequetById, api_iaStockReqApprove, api_iaGetProducts } =
-    ProjectApiList();
+  const {
+    api_getStockRequetById,
+    api_iaStockReqApprove,
+    api_iaGetProducts,
+    api_iaStockReqNotify,
+  } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -60,7 +62,6 @@ const ViewInventoryDetailsById = (props) => {
   const getApplicationDetail = () => {
     setisLoading(true);
     let url;
-    seterroState(false);
 
     if (page == "inbox") {
       url = api_getStockRequetById;
@@ -73,15 +74,12 @@ const ViewInventoryDetailsById = (props) => {
       .then(function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
-          setTableData(response?.data?.data?.tran_dtls);
         } else {
           toast.error(response?.data?.message);
-          seterroState(true);
         }
       })
       .catch(function (error) {
         toast.error("Error while getting details...");
-        seterroState(true);
       })
       .finally(() => {
         setisLoading(false);
@@ -94,15 +92,17 @@ const ViewInventoryDetailsById = (props) => {
       .then(function (response) {
         if (response?.data?.status) {
           setProductData(response?.data?.data);
-          setTableData(response?.data?.data?.tran_dtls);
+          const totalRemQuantity = response?.data?.data?.reduce(
+            (acc, currentValue) => acc + Number(currentValue?.quantity),
+            0
+          );
+          setRemQuantity(totalRemQuantity);
         } else {
           toast.error(response?.data?.message);
-          seterroState(true);
         }
       })
       .catch(function (error) {
         toast.error("Error while getting details...");
-        seterroState(true);
       })
       .finally(() => {
         setisLoading(false);
@@ -140,93 +140,33 @@ const ViewInventoryDetailsById = (props) => {
       });
   };
 
-  // //forward to da procurement-------------
-  // const forwardToDA = () => {
-  //   setisLoading(true);
-  //   setIsModalOpen(false);
-  //   // seterroState(false);
-  //   // let preProcurement = [id];
-  //   let formData = new FormData();
-  //   formData.append("img", imageDoc);
-  //   formData.append("preProcurement", JSON.stringify([id]));
+  //notification to DA in case rem quantity is zero
+  const notifyDaStockReq = () => {
+    setisLoading(true);
 
-  //   AxiosInterceptors.post(`${api_postForwardToDA}`, formData, ApiHeader2())
-  //     .then(function (response) {
-  //       if (response?.data?.status == true) {
-  //         setisLoading(false);
-  //         toast.success(response?.data?.message, "success");
-  //         setTimeout(() => {
-  //           navigate("/sr-inventory-proposal");
-  //         }, 500);
-  //       } else {
-  //         setisLoading(false);
-  //         // toast(response?.data?.message, "error");
-  //       }
-  //     })
-  //     .catch(function (error) {
-  //       console.log("errorrr.... ", error);
-  //       toast.error(error?.response?.data?.message);
-  //       // setdeclarationStatus(false);
-  //     })
-  //     .finally(() => {
-  //       setisLoading(false);
-  //     });
-  // };
-
-  // const stockAssignedDD = () => {
-  //   setisLoading(true);
-  //   // setIsModalOpen(false);
-
-  //   AxiosInterceptors.post(
-  //     `${api_iaStockReqApprove}`,
-  //     { stock_handover_no: [id] },
-  //     ApiHeader2()
-  //   )
-  //     .then(function (response) {
-  //       if (response?.data?.status == true) {
-  //         setisLoading(false);
-  //         toast.success("Stock Assigned to Departmental Distributor");
-  //         navigate("/inventory-stockRequest?tabNo=1");
-  //       } else {
-  //         setisLoading(false);
-  //         // toast(response?.data?.message, "error");
-  //       }
-  //     })
-  //     .catch(function (error) {
-  //       console.log("errorrr.... ", error);
-  //       toast.error(error?.response?.data?.message);
-  //       // setdeclarationStatus(false);
-  //     })
-  //     .finally(() => {
-  //       setisLoading(false);
-  //     });
-  // };
-
-  const confirmationHandler = () => {
-    // forwardToDA();
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
+    AxiosInterceptors.get(`${api_iaStockReqNotify}/${id}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success(`Notification Sent to Departmental Admin Successfully`);
+          navigate("/inventory-stockRequest?tabNo=1");
+        } else {
+          toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        console.log("errorrr.... ", error);
+        toast.error(error?.response?.data?.error);
+        // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
   };
 
   useEffect(() => {
     getApplicationDetail();
     getProductDetail();
   }, []);
-
-  //displaying confirmation message
-  if (isModalOpen) {
-    return (
-      <>
-        <ConfirmationModal
-          confirmationHandler={confirmationHandler}
-          handleCancel={handleCancel}
-          message={"Are you sure you want to Forward to DA"}
-        />
-      </>
-    );
-  }
 
   if (serviceRequestModal) {
     return (
@@ -281,6 +221,12 @@ const ViewInventoryDetailsById = (props) => {
                     {nullToNA(applicationFullData?.stock_handover_no)}
                   </span>
                 </h1>
+              </div>
+              <div>
+                <h2 className='font-medium text-green-500'>
+                  Remaining Quantity in Inventory:
+                  <span className='font-semibold'> {remQuantity || 0}</span>
+                </h2>
               </div>
             </div>
 
@@ -390,8 +336,8 @@ const ViewInventoryDetailsById = (props) => {
             <div className='flex justify-end w-full mb-5'>
               <div className='w-[100px]'>
                 <ImageDisplay
-                  preview={preview}
-                  imageDoc={imageDoc}
+                  preview={""}
+                  imageDoc={false}
                   alt={"notesheet document"}
                   showPreview={"hidden"}
                   width={"[100px]"}
@@ -424,7 +370,7 @@ const ViewInventoryDetailsById = (props) => {
               Print
             </button>
 
-            {page == "inbox" && (
+            {page == "inbox" && remQuantity > 0 && (
               <>
                 <button
                   className='mr-1 pb-2 pl-6 pr-6 pt-2 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
@@ -438,6 +384,32 @@ const ViewInventoryDetailsById = (props) => {
                 </button>
               </>
             )}
+
+            {page == "inbox" &&
+              remQuantity === 0 &&
+              applicationFullData?.is_notified !== 1 && (
+                <>
+                  <button
+                    className='mr-1 pb-2 pl-6 pr-6 pt-2 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
+                    // onClick={stockAssignedDD}
+                    onClick={notifyDaStockReq}
+                  >
+                    Notify Departmental Admin
+                  </button>
+                </>
+              )}
+            {page == "inbox" &&
+              remQuantity === 0 &&
+              applicationFullData?.is_notified === 1 && (
+                <>
+                  <button
+                    className='mr-1 pb-2 pl-6 pr-6 pt-2 text-base leading-tight  rounded bg-green-600 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
+                    disabled
+                  >
+                    Departmental Admin Already Notified
+                  </button>
+                </>
+              )}
           </div>
         </div>
       </div>

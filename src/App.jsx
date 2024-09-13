@@ -99,6 +99,7 @@ import EmployeeServiceListTabs from "./Components/Pages/PMS/EmployeeService/Empl
 import EmployeeServiceById from "./Components/Pages/PMS/EmployeeService/EmployeeServiceById";
 import DDEmpServiceReqListTabs from "./Components/Pages/PMS/ServiceRequest/DDEmpServiceReq/DDEmpServiceReqListTabs";
 import DDEmpServiceReqById from "./Components/Pages/PMS/ServiceRequest/DDEmpServiceReq/DDEmpServiceReqById";
+import QcbsFinancialComparison from "./Components/Pages/PMS/Bidding/BiddingAdmin/QcbsFinancialComparison";
 
 const queryClient = new QueryClient();
 
@@ -115,6 +116,7 @@ function App() {
   const [titleBarVisibility, settitleBarVisibility] = useState(true);
   const [heartBeatCounter, setheartBeatCounter] = useState(1); // to check authentication
   const [reference_no, setReferenceNo] = useState();
+  const [estimatedAmount, setEstimatedAmount] = useState();
   const [toggleBar, settoggleBar] = useState(
     window.innerWidth <= 763 ? false : true
   ); // toggle state for Side Bar
@@ -144,6 +146,8 @@ function App() {
     setrefresh,
     reference_no,
     setReferenceNo,
+    setEstimatedAmount,
+    estimatedAmount,
   };
 
   // 👉 Routes Json 👈
@@ -429,6 +433,10 @@ function App() {
       path: "/addUnitPrice/:refNo",
       element: <AddUnitPrice />,
     },
+    {
+      path: "/finance-bidding",
+      element: <QcbsFinancialComparison />,
+    },
 
     /////////////////////////{*** Service Request ***}//////////////////////////////////////
     {
@@ -505,7 +513,7 @@ function App() {
               ))}
             </Route>
 
-            <Route path="*" element={<ErrorPage />} />
+            <Route path='*' element={<ErrorPage />} />
           </Routes>
         </contextVar.Provider>
       </>

@@ -456,7 +456,10 @@ const TenderFormViewDetails = () => {
               <div className='relative overflow-hidden flex space-x-5 w-1/2 justify-center items-center text-center'>
                 {previewData?.cover_details?.cover_details_docs?.map(
                   (data, index) => (
-                    <div className='w-[120px] flex flex-col items-center gap-2'>
+                    <div
+                      className='w-[120px] flex flex-col items-center gap-2'
+                      key={index}
+                    >
                       <ImageDisplay url={data?.docPath[0]} preview={""} />
                       {/* <img
                         src={data?.docPath[0]}
@@ -629,10 +632,6 @@ const TenderFormViewDetails = () => {
             </div>
             <div className='p-4 pt-9 text-sm space-y-4 w-1/2'>
               <h1>
-                <span className={descTitle}>Tender Class : </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
                 <span className={descTitle}>Inviting Officer Name : </span>{" "}
                 <span className={descText}>
                   {previewData?.work_details?.invstOffName}
@@ -743,24 +742,52 @@ const TenderFormViewDetails = () => {
                     {indianAmount(previewData?.fee_details?.emdAmount)}
                   </span>
                 </h1>
-                <h1>
-                  <span className={descTitle}>EMD Percentage :</span>{" "}
-                  <span className={descText}>
-                    {previewData?.fee_details?.emdPercentage}
-                  </span>
-                </h1>
+                {previewData?.fee_details?.emd_fee !== "fixed" && (
+                  <>
+                    <h1>
+                      <span className={descTitle}>EMD Percentage :</span>{" "}
+                      <span className={descText}>
+                        {previewData?.fee_details?.emdPercentage}
+                      </span>
+                    </h1>
+                    <h1>
+                      <span className={descTitle}>EMD Percentage Amount :</span>{" "}
+                      <span className={descText}>
+                        {indianAmount(
+                          (Number(previewData?.fee_details?.emdPercentage) /
+                            100) *
+                            Number(previewData?.fee_details?.emdAmount)
+                        )}
+                      </span>
+                    </h1>
+                  </>
+                )}
               </div>
               <div className='w-1/3  space-y-3'>
                 <h1>
                   <span className={descTitle}>EMD Fee Payable To :</span>{" "}
                   <span className={descText}>
-                    {previewData?.fee_details?.emdFeePayableTo}
+                    {previewData?.fee_details?.emdFeePayableAt}
                   </span>
                 </h1>
                 <h1>
                   <span className={descTitle}>EMD Fee Payable At :</span>{" "}
                   <span className={descText}>
-                    {previewData?.fee_details?.emdFeePayableAt}
+                    {previewData?.fee_details?.emdFeePayableTo}
+                  </span>
+                </h1>
+              </div>
+              <div className='w-1/3  space-y-3'>
+                <h1>
+                  <span className={descTitle}>Tender Fee Payable To :</span>{" "}
+                  <span className={descText}>
+                    {previewData?.fee_details?.tenderFeePayableTo}
+                  </span>
+                </h1>
+                <h1>
+                  <span className={descTitle}>Tender Fee Payable At :</span>{" "}
+                  <span className={descText}>
+                    {previewData?.fee_details?.tenderFeePayableAt}
                   </span>
                 </h1>
               </div>

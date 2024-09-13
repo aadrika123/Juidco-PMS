@@ -184,6 +184,7 @@ export default function UploadDoc({
                       <button
                         className='rounded-full p-3 hover:bg-blue-200'
                         onClick={() => deleteFileHandler(file?.name)}
+                        type='button'
                       >
                         <RiDeleteBinLine />
                       </button>

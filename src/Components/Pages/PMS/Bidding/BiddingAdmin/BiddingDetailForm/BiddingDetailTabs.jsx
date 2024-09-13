@@ -16,13 +16,7 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 import tender from "@/Components/assets/tender.png";
 import bd from "@/Components/assets/basicdetails.svg";
 
-import {
-  Navigate,
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import BiddingDetailForm from "./BiddingDetailForm";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -130,7 +124,6 @@ const BiddingDetails = () => {
       })
       .catch(function (error) {
         console.log(error, "err res");
-        g;
         toast.error(error?.response?.data?.error);
       })
       .finally(() => {

@@ -12,7 +12,7 @@ import { contextVar } from "@/Components/context/contextVar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import StockRequestTimeline from "@/Components/Common/Timeline/StockRequestTimeline";
 
 const DDViewDetailbyId = () => {
@@ -65,9 +65,7 @@ const DDViewDetailbyId = () => {
     AxiosInterceptors.get(`${api_getStockRequetById}/${handNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data?.data);
           setapplicationFullData(response?.data?.data);
-
           setisLoading(false);
         } else {
           setisLoading(false);
@@ -95,6 +93,7 @@ const DDViewDetailbyId = () => {
           setSuccessModal(true);
           setisLoading(false);
         } else {
+          toast.error("Error in forwarding.");
           console.log("error in forwarding to da...", error);
         }
       })
@@ -151,7 +150,7 @@ const DDViewDetailbyId = () => {
       {/* //timeline  */}
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         {/* <TimeLine /> */}
-        <StockRequestTimeline status={applicationFullData?.status} />
+        {/* <StockRequestTimeline status={applicationFullData?.status} /> */}
       </div>
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
@@ -167,7 +166,6 @@ const DDViewDetailbyId = () => {
                 View Stock Request{" "}
               </h2>
             </div>
-
 
             <div className='flex justify-between'>
               <div className='pl-8 pb-5 text-[1.2rem] text-[#4338CA]'>
@@ -193,100 +191,103 @@ const DDViewDetailbyId = () => {
               )}
             </div>
 
-
-            <div className="grid md:grid-cols-4 gap-4 ml-8 pb-5">
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold">Employee Id</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+            <div className='grid md:grid-cols-4 gap-4 ml-8 pb-5'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold'>Employee Id</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.emp_id)}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   Employee Name
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.emp_name)}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
                   Quantity Allotted{" "}
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.allotted_quantity)}
                 </div>
               </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Date</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>Date</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.createdAt?.split("T")[0])}
                 </div>
               </div>
             </div>
-              
-            {applicationFullData?.stock_req_product?.length > 0 ? 
-              <h1 className="pl-8 font-semibold underline text-blue-950">Products:</h1>
-            :
-            <>
-            <div className="grid md:grid-cols-4 gap-4 ml-8">
-            <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Category</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.inventory?.category?.name)}
-                </div>
-              </div>
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-semibold ">
-                  Sub Categories
-                </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.inventory?.subcategory?.name)}
-                </div>
-              </div>
-            </div>
-            </>}
+            {applicationFullData?.stock_req_product?.length > 0 ? (
+              <h1 className='pl-8 font-semibold underline text-blue-950'>
+                Products:
+              </h1>
+            ) : (
+              <>
+                <div className='grid md:grid-cols-4 gap-4 ml-8'>
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Category</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(applicationFullData?.inventory?.category?.name)}
+                    </div>
+                  </div>
 
-              {applicationFullData?.stock_req_product?.map((data,index)=>(
-            <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-4 rounded">
-              
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Serial No</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(data?.serial_no)}
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-semibold '>
+                      Sub Categories
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(
+                        applicationFullData?.inventory?.subcategory?.name
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-             
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Category</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.inventory?.category?.name)}
-                </div>
-              </div>
+              </>
+            )}
 
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-semibold ">
-                  Sub Categories
+            {applicationFullData?.stock_req_product?.map((data, index) => (
+              <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-4 rounded'>
+                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>Serial No</div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(data?.serial_no)}
+                  </div>
                 </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.inventory?.subcategory?.name)}
+
+                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>Category</div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.inventory?.category?.name)}
+                  </div>
+                </div>
+
+                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-semibold '>
+                    Sub Categories
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(
+                      applicationFullData?.inventory?.subcategory?.name
+                    )}
+                  </div>
+                </div>
+
+                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(data?.quantity)}
+                  </div>
                 </div>
               </div>
-
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(data?.quantity)}
-                </div>
-              </div>
-
-            </div>
             ))}
-
 
             <div className='p-5 pl-8'>
               <h1 className='font-bold'>Description</h1>

@@ -43,6 +43,7 @@ const tabsCover4 = [
 
 const CoverDetailsForm = () => {
   const [tabData, setTabData] = useState(tabsCover1);
+  const [applicationFullData, setapplicationFullData] = useState();
   const [imageDoc, setImageDoc] = useState([]);
   const [preview, setPreview] = useState();
   const [referenceNo, setReferenceNo] = useState();
@@ -50,8 +51,12 @@ const CoverDetailsForm = () => {
   const [activeTab, setActiveTab] = useState(tabsCover1[0]?.value);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { api_postCoverDetails, api_postDocumentUpload, api_getCoverDetails } =
-    ProjectApiList();
+  const {
+    api_postCoverDetails,
+    api_postDocumentUpload,
+    api_getCoverDetails,
+    api_fetchProcurementDetById,
+  } = ProjectApiList();
 
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -148,6 +153,9 @@ const CoverDetailsForm = () => {
         setIsLoading(false);
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -244,10 +252,37 @@ const CoverDetailsForm = () => {
       });
   };
 
+  const getBasicBiddingDetail = (refNo) => {
+    setIsLoading(true);
+    AxiosInterceptors.get(
+      `${api_fetchProcurementDetById}/${refNo}`,
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          console.log(response?.data?.data, "data===>>");
+          setapplicationFullData(response?.data?.data);
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        console.log("details by id error...", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   const initialValues = {
     noOfCovers: coverDetails?.noOfCovers
       ? String(coverDetails?.noOfCovers)
-      : "1",
+      : // : applicationFullData?.tendering_type === "qcbs"
+        // ? "2"
+        "1",
     tabs: [
       {
         name: "fee/ prequal/ technical",
@@ -262,6 +297,7 @@ const CoverDetailsForm = () => {
     let refNo = window.localStorage.getItem("reference_no");
     setReferenceNo(refNo);
     getApplicationDetail(refNo);
+    getBasicBiddingDetail(refNo);
   }, []);
 
   return (
@@ -284,14 +320,7 @@ const CoverDetailsForm = () => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({
-            values,
-            handleChange,
-            errors,
-            touched,
-            setFieldValue,
-            resetForm,
-          }) => (
+          {({ values, errors, touched, setFieldValue, resetForm }) => (
             <Form>
               <>
                 <div className='bg-white rounded-md w-full shadow-xl p-4 mt-5'>
@@ -313,6 +342,8 @@ const CoverDetailsForm = () => {
                     tabsCover2={tabsCover2}
                     tabsCover3={tabsCover3}
                     tabsCover4={tabsCover4}
+                    differentData={applicationFullData?.tendering_type}
+                    // disabled={applicationFullData?.tendering_type === "qcbs" &&  2}
                   />
                   {/* tabs */}
                   <div className='flex gap-8 px-4 w-full relative z-1'>

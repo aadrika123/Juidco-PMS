@@ -47,7 +47,7 @@ const StockRequestProposal = (props) => {
   const [subCategory, setSubCategory] = useState("");
   const [brand, setBarnd] = useState("");
   const [descrip, setDescrip] = useState("");
-  const [quantity, setQnty] = useState("");
+  // const [quantity, setQnty] = useState("");
 
   const [catID, setCatId] = useState("");
   const [subCatID, setSubCatId] = useState("");
@@ -82,7 +82,6 @@ const StockRequestProposal = (props) => {
       .then(function (response) {
         if (response?.data?.status === true) {
           setEmpdetails(response?.data?.data?.data);
-          console.log(response?.data?.data?.data);
           formatEmp(response?.data?.data?.data);
           // notify(response?.data?.message, "success");
         } else {
@@ -92,7 +91,6 @@ const StockRequestProposal = (props) => {
       .catch(function (res) {
         notify("Something went wrong!");
       });
-    console.log(empDetails);
     // console.log(testingData)
     // setEmpdetails(testingData);
     // formatEmp(testingData);
@@ -184,7 +182,7 @@ const StockRequestProposal = (props) => {
     AxiosInterceptors.get(`${api_getActiveQty}/${inviId}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status === true) {
-          setQnty(response?.data?.data?.totalAvailableQuantity);
+          // setQnty(response?.data?.data?.totalAvailableQuantity);
           // notify(response?.data?.message, "success");
         } else {
           notify(response?.data?.message, "error");

@@ -39,8 +39,8 @@ const BidOpinerForm = () => {
         docSize: "",
       },
     },
-    B01: [],
-    B02: [],
+    B0: [],
+    // B02: [],
   });
   const { state } = useLocation();
   const { api_postBidOpenerDetails, api_getBidOpenerDetails } =
@@ -132,6 +132,7 @@ const BidOpinerForm = () => {
       bidOpenerDetails?.bid_openers_docs?.find((data) => data?.type === "B02")
         ?.docUrl || "",
     ],
+    B0: [],
   };
 
   const bidOpiner = [
@@ -172,12 +173,12 @@ const BidOpinerForm = () => {
     },
   ];
 
-  const handleUploadDoc = (index) => {
-    inputFileRefs.current[index].click();
+  const handleUploadDoc = () => {
+    inputFileRefs.current.click();
   };
 
   //image validation with file type and size limit
-  const imageHandler = (e, index, setFieldValue) => {
+  const imageHandler = (e, setFieldValue) => {
     // console.log(index,"index mg")
 
     const validExtensions = [
@@ -231,22 +232,35 @@ const BidOpinerForm = () => {
   };
 
   //doc upload function
-  const docHandler = (name, event, setFieldValue) => {
+  const docHandler = (name, event, setFieldValue, fieldName) => {
     setCoverDetails((prev) => ({
       ...prev,
-      [name]: [event.target.files[0]],
+      ["B01"]: [event.target.files[0]],
+      ["B02"]: [event.target.files[0]],
       doc: {
         ...prev.doc,
-        [name]: {
-          ...prev.doc[name],
+        ["B01"]: {
+          ...prev.doc["B01"],
+          docSize: `${String(Number(event.target.files[0]?.size) / 1024)}kb`,
+        },
+        ["B02"]: {
+          ...prev.doc["B02"],
           docSize: `${String(Number(event.target.files[0]?.size) / 1024)}kb`,
         },
       },
     }));
 
-    setFieldValue([name], [event.target.files[0]]);
+    setFieldValue(["B01"], [event.target.files[0]]);
+    setFieldValue(["B02"], [event.target.files[0]]);
+    // setFieldValue([name], [event.target.files[0]]);
     setFieldValue(
-      `doc.${name}.docSize`,
+      `doc.${"B01"}.docSize`,
+      `${String(
+        (Math.round(Number(event.target.files[0]?.size) / 1024) * 100) / 100
+      )}kb`
+    );
+    setFieldValue(
+      `doc.${"B02"}.docSize`,
       `${String(
         (Math.round(Number(event.target.files[0]?.size) / 1024) * 100) / 100
       )}kb`
@@ -582,12 +596,12 @@ const BidOpinerForm = () => {
                             /> */}
                             <div className='mb-4 text-center'>
                               <p className='text-red-500 text-xs '>
-                                {values?.[`B0${index + 1}`][0]?.name}
+                                {values?.[`B01`][0]?.name}
                               </p>
                             </div>
 
                             {/* <img
-                              src={values?.[`B0${index + 1}`][0]}
+                              src={values?.[`B0`]}
                               alt='Selected'
                               style={{ width: "100px", height: "auto" }}
                             /> */}
@@ -596,16 +610,21 @@ const BidOpinerForm = () => {
                             <input
                               type='file'
                               className='hidden'
-                              ref={(el) => (inputFileRefs.current[index] = el)}
+                              ref={(el) => (inputFileRefs.current = el)}
                               onChange={(e) => {
-                                imageHandler(e, index, setFieldValue);
-                                docHandler(`B0${index + 1}`, e, setFieldValue);
+                                imageHandler(e, setFieldValue);
+                                docHandler(
+                                  `B0`,
+                                  e,
+                                  setFieldValue,
+                                  `B0${index + 1}`
+                                );
                               }}
                             />
                             <button
                               type='button'
                               className={`text-white end-6 bg-blue-500 hover:bg-blue-900 rounded text-[12px] px-5 py-[5px]`}
-                              onClick={() => handleUploadDoc(index)}
+                              onClick={handleUploadDoc}
                             >
                               Choose File
                             </button>

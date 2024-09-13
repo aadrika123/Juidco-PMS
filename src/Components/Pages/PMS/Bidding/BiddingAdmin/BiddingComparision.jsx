@@ -1,8 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import techIcon from "@/Components/assets/TechIcon.svg";
 import { IoAddSharp } from "react-icons/io5";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
-import { contextVar } from "@/Components/context/contextVar";
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { useFormik } from "formik";
@@ -10,11 +9,7 @@ import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
 
 const BiddingComparision = () => {
-  const { titleBarVisibility , setBiddersCount} = useContext(contextVar);
-
-  const navigate = useNavigate()
-
-  
+  const navigate = useNavigate();
 
   const [showFields, setShowFields] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -22,8 +17,6 @@ const BiddingComparision = () => {
     no_of_bidder: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // console.log(formValues);
 
   // intitial value
   const initialValues = {
@@ -41,12 +34,7 @@ const BiddingComparision = () => {
     // validationSchema,
   });
 
-  // console.log(formValues);
-
   const handleOnChange = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-
     // {
     //   name == "description" &&
     //     formik.setFieldValue(
@@ -64,7 +52,7 @@ const BiddingComparision = () => {
   const confirmationHandler = () => {
     console.log(formValues);
     setIsModalOpen(false);
-    navigate(`/bidding-details?tabNo=1`)
+    navigate(`/bidding-details?tabNo=1`);
   };
 
   const handleCancel = () => {
@@ -86,10 +74,7 @@ const BiddingComparision = () => {
 
   return (
     <>
-      <TitleBar
-        titleBarVisibility={true}
-        titleText={"Technical Comparison"}
-      />
+      <TitleBar titleBarVisibility={true} titleText={"Technical Comparison"} />
       <div className='bg-white rounded-lg shadow-xl space-y-5 border border-blue-500'>
         <div className='p-7'>
           <img
@@ -211,11 +196,9 @@ const BiddingComparision = () => {
                 ...prev,
                 no_of_bidder: e.target.value,
               }));
-              localStorage.setItem('biddersCount', e.target.value);
-              
+              localStorage.setItem("biddersCount", e.target.value);
             }}
           />
-
         </div>
 
         <div className='space-x-4 flex justify-end m-7'>

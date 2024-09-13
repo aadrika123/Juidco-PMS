@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import fd from "@/Components/assets/fd.svg";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -10,80 +10,20 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const CriticalDateForm = () => {
-  const inputFileRef = useRef();
-
   const { api_postCriticalDatesDetails, api_getCriticalDatesDetails } =
     ProjectApiList();
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedTab, setSelectedTab] = useState("online");
-  const [preview, setPreview] = useState();
-  const [imageDoc, setImageDoc] = useState();
   const [referenceNo, setReferenceNo] = useState();
   const [criticalDateData, setCriticalDateData] = useState();
 
   const navigate = useNavigate();
-
-  const handleTabChange = (event) => {
-    setSelectedTab(event.target.value);
-  };
-
-  const handleUploadDoc = () => {
-    inputFileRef.current.click();
-  };
-
-  //image validation with file type and size limit
-  const imageHandler = (e) => {
-    const validExtensions = [
-      "image/jpeg",
-      "image/jpg",
-      "image/png",
-      "application/pdf",
-    ];
-
-    const maxSizeInBytes = 2 * 1024 * 1024; // 2MB in bytes
-
-    const file = e.target.files[0];
-    if (!file) {
-      return toast.error("No File Selected");
-    }
-
-    // Check the file type
-    if (!validExtensions.includes(file.type)) {
-      toast.error(
-        "Invalid file type. Please select a JPG, JPEG, PNG or PDF file."
-      );
-      e.target.value = ""; // Clear the input
-      return;
-    }
-
-    // Check the file size
-    if (file.size > maxSizeInBytes) {
-      toast.error("File size exceeds 2MB. Please select a smaller file.");
-      e.target.value = ""; // Clear the input
-      return;
-    }
-
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-    }
-  };
-
-  const emdFee = [
-    { label: "Yes", value: "yes" },
-    { label: "No", value: "no" },
-  ];
-
-  const emdExemption = [
-    { label: "Yes", value: "yes" },
-    { label: "No", value: "no" },
-  ];
 
   const validationSchema = Yup.object({
     publishingDate: Yup.string()
@@ -115,22 +55,22 @@ const CriticalDateForm = () => {
         const bid_o_date = new Date(value);
         if (bid_o_date < new Date(publishingDate)) {
           return createError({
-            message: "bid opening date should be greater then publishing date",
+            message: "bid opening date should be greater than publishing date",
           });
         } else if (bid_o_date < bsed) {
           return createError({
             message:
-              "bid opening date should be 15 days greater then bid submission end date",
+              "bid opening date should be 15 days greater than bid submission end date",
           });
         } else if (bid_o_date < new Date(docSaleEndDate)) {
           return createError({
             message:
-              "bid opening date should be greater then document sale end date",
+              "bid opening date should be greater than document sale end date",
           });
         } else if (bid_o_date < new Date(seekClariEndDate)) {
           return createError({
             message:
-              "bid opening date should be greater then seek clarification end date",
+              "bid opening date should be greater than seek clarification end date",
           });
         }
         return true;
@@ -146,7 +86,7 @@ const CriticalDateForm = () => {
         if (new Date(value) < new Date(publishingDate)) {
           return createError({
             message:
-              "document sale start date should be greater then publishing date",
+              "document sale start date should be greater than publishing date",
           });
         }
         return true;
@@ -157,12 +97,19 @@ const CriticalDateForm = () => {
       .test("bidOpeningDate", (value, validationContex) => {
         const {
           createError,
-          parent: { docSaleStartDate },
+          parent: { docSaleStartDate, publishingDate },
         } = validationContex;
+        const pd = new Date(publishingDate);
+        pd.setDate(pd.getDate() + 15);
         if (new Date(value) < new Date(docSaleStartDate)) {
           return createError({
             message:
-              "document sale end date should be greater then document sale start date",
+              "document sale end date should be greater than document sale start date",
+          });
+        } else if (new Date(value) < pd) {
+          return createError({
+            message:
+              "document sale end date should be 15 days greater than publishing date",
           });
         }
         return true;
@@ -178,7 +125,7 @@ const CriticalDateForm = () => {
         if (new Date(value) < new Date(publishingDate)) {
           return createError({
             message:
-              "seek clarification start date should be greater then document sale start date",
+              "seek clarification start date should be greater than document sale start date",
           });
         }
         return true;
@@ -194,7 +141,7 @@ const CriticalDateForm = () => {
         if (new Date(value) < new Date(seekClariStrtDate)) {
           return createError({
             message:
-              "seek clarification end date should be greater then seek clarification start date",
+              "seek clarification end date should be greater than seek clarification start date",
           });
         }
         return true;
@@ -210,7 +157,7 @@ const CriticalDateForm = () => {
         if (new Date(value) < new Date(publishingDate)) {
           return createError({
             message:
-              "bid submission start date should be greater then publishing date",
+              "bid submission start date should be greater than publishing date",
           });
         }
         return true;
@@ -225,17 +172,17 @@ const CriticalDateForm = () => {
         } = validationContex;
         const pd = new Date(publishingDate);
         pd.setDate(pd.getDate() + 15);
-        if (new Date(value) < new Date(bidSubStrtDate)) {
-          return createError({
-            message:
-              "bid submission end date should be greater then bid submission start date",
-          });
-        } else if (new Date(value) < pd) {
-          return createError({
-            message:
-              "bid submission end date should be 15 days greater then publishing date",
-          });
-        }
+        // if (new Date(value) < new Date(bidSubStrtDate)) {
+        //   return createError({
+        //     message:
+        //       "bid submission end date should be greater than bid submission start date",
+        //   });
+        // } else if (new Date(value) < pd) {
+        //   return createError({
+        //     message:
+        //       "bid submission end date should be 15 days greater than publishing date",
+        //   });
+        // }
         return true;
       }),
 
@@ -249,12 +196,12 @@ const CriticalDateForm = () => {
         if (new Date(value) < new Date(publishingDate)) {
           return createError({
             message:
-              "pre bid meeting date should be greater then publishing date",
+              "pre bid meeting date should be greater than publishing date",
           });
         } else if (new Date(value) > new Date(bidOpeningDate)) {
           return createError({
             message:
-              "pre bid meeting date should be greater then bid opeining date",
+              "pre bid meeting date should be greater than bid opeining date",
           });
         }
         return true;
@@ -443,6 +390,7 @@ const CriticalDateForm = () => {
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("docSaleStartDate", dateTime);
+                              setFieldValue("seekClariStrtDate", dateTime);
                             }}
                             value={
                               values.docSaleStartDate
@@ -472,6 +420,7 @@ const CriticalDateForm = () => {
                             onChange={(value) => {
                               const dateTime = value.format();
                               setFieldValue("docSaleEndDate", dateTime);
+                              setFieldValue("bidSubEndDate", dateTime);
                             }}
                             value={
                               values.docSaleEndDate
@@ -508,7 +457,11 @@ const CriticalDateForm = () => {
                                 ? dayjs(values.seekClariStrtDate)
                                 : null
                             }
+                            disabled
                           />
+                          <p className='text-xs text-gray-900'>
+                            ** Same as Document Sale Start Date
+                          </p>
                           {errors.seekClariStrtDate &&
                             touched.seekClariStrtDate && (
                               <div className='text-red-500 text-sm mt-1'>
@@ -596,12 +549,16 @@ const CriticalDateForm = () => {
                                 ? dayjs(values.bidSubEndDate)
                                 : null
                             }
+                            disabled
                           />
                           {errors.bidSubEndDate && touched.bidSubEndDate && (
                             <div className='text-red-500 text-sm mt-1'>
                               {errors.bidSubEndDate}
                             </div>
                           )}
+                          <p className='text-xs text-gray-900'>
+                            ** Same as Document Sale End Date
+                          </p>
                         </div>
                       </div>
 

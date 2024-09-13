@@ -1,6 +1,5 @@
 import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
 import React, { useContext, useEffect, useState } from "react";
-import img from "@/Components/assets/banner1.jpg";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import { contextVar } from "@/Components/context/contextVar";
@@ -9,19 +8,13 @@ import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { useNavigate, useParams } from "react-router-dom";
-import { CleanHands } from "@mui/icons-material";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
 import { MdArrowRightAlt } from "react-icons/md";
 
 const BiddingTypeResultView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const {
-    api_getCompareBidder,
-    api_postWinner,
-    api_finalizeWinner,
-    api_getBidType,
-  } = ProjectApiList();
+  const { api_getCompareBidder, api_getBidType } = ProjectApiList();
   const [imageModal, setImageModal] = useState(false);
   const [imageData, setImageData] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -74,62 +67,6 @@ const BiddingTypeResultView = () => {
       });
   };
 
-  // console.log("---------->", applicationData?.finComparison);
-
-  // const selectWinnerPost = async () => {
-  //   setIsLoading(true);
-  //   let payload = { reference_no: id, winners: selectedBidder };
-
-  //   AxiosInterceptors.post(api_postWinner, payload, ApiHeader())
-  //     .then(function (response) {
-  //       if (response?.data?.status) {
-  //         toast.success("Winner Selected Succesfully");
-
-  //         if (
-  //           applicationData?.bid_type === "fintech" &&
-  //           applicationData?.finComparison == false
-  //         ) {
-  //           navigate("/bidding-type", { state: id });
-  //         } else {
-  //           finalizeWinner();
-  //         }
-
-  //       } else {
-  //         setIsLoading(false);
-  //         toast.error("Error in Creating form.");
-  //       }
-  //     })
-  //     .catch(function (error) {
-  //       setIsLoading(false);
-  //       toast.error(error?.response?.data?.error);
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // };
-
-  // const finalizeWinner = async () => {
-  //   setIsLoading(true);
-  //   let payload = { reference_no: id };
-
-  //   AxiosInterceptors.post(api_finalizeWinner, payload, ApiHeader())
-  //     .then(function (response) {
-  //       if (response?.data?.status) {
-  //         toast.success("Winner Finalize Succesfully");
-  //       } else {
-  //         setIsLoading(false);
-  //         toast.error("Error in Creating form.");
-  //       }
-  //     })
-  //     .catch(function (error) {
-  //       setIsLoading(false);
-  //       toast.error(error?.response?.data?.error);
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // };
-
   // console.log(biddingData?.bidder_master)
 
   const setImageFunc = (id) => {
@@ -166,8 +103,6 @@ const BiddingTypeResultView = () => {
       </>
     );
   }
-
-  // console.log("winner:", biddingData);
 
   return (
     <>
@@ -310,12 +245,17 @@ const BiddingTypeResultView = () => {
                       >
                         Bidder Name
                       </th>
-                      <th
-                        scope='col'
-                        className='px-6 py-5 text-center border-r border-gray-300'
-                      >
-                        Bidding Price
-                      </th>
+                      {!(
+                        applicationData?.bid_type === "abc" &&
+                        !applicationData?.finComparison
+                      ) && (
+                        <th
+                          scope='col'
+                          className='px-6 py-5 text-center border-r border-gray-300'
+                        >
+                          Bidding Price
+                        </th>
+                      )}
 
                       <th
                         scope='col'
@@ -341,9 +281,14 @@ const BiddingTypeResultView = () => {
                         <td className='px-6 py-5 text-center border-r border-gray-300'>
                           {data?.name}
                         </td>
-                        <td className='px-6 py-5 text-center border-r border-gray-300'>
-                          {indianAmount(data?.bidding_amount)}
-                        </td>
+                        {!(
+                          applicationData?.bid_type === "abc" &&
+                          !applicationData?.finComparison
+                        ) && (
+                          <td className='px-6 py-5 text-center border-r border-gray-300'>
+                            {indianAmount(data?.bidding_amount)}
+                          </td>
+                        )}
 
                         <td
                           className='px-6 py-5 text-center border-r border-gray-300 cursor-pointer text-blue-800 hover:underline'
@@ -364,29 +309,29 @@ const BiddingTypeResultView = () => {
         </div>
         <div className='flex justify-end space-x-5 mt-8'>
           {/* {console.log(biddingData?.creationStatus)} */}
-                
-          {(biddingData?.boq?.pre_tendering_details?.tendering_type == 'rate_contract' && !biddingData?.creationStatus == 5) ? <button
-            className=' bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-7 py-2 rounded flex gap-2' 
-            onClick={() =>
-              // navigate(`/biddingViewById/${biddingData?.reference_no}/inbox`)
-              navigate(`/addUnitPrice/${biddingData?.reference_no}`)
-            }
-          >
-            Add Unit Price
-            <MdArrowRightAlt className='text-2xl ' />
 
-          </button> :  <button
-            className=' bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-10 py-2 rounded flex'
-            onClick={() =>
-              navigate(`/biddingViewById/${biddingData?.reference_no}/inbox`)
-            }
-          >
-            Back to Bidding Page
-          </button>}
-         
-          
-          
-         
+          {biddingData?.boq?.pre_tendering_details?.tendering_type ==
+            "rate_contract" && !biddingData?.creationStatus == 5 ? (
+            <button
+              className=' bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-7 py-2 rounded flex gap-2'
+              onClick={() =>
+                // navigate(`/biddingViewById/${biddingData?.reference_no}/inbox`)
+                navigate(`/addUnitPrice/${biddingData?.reference_no}`)
+              }
+            >
+              Add Unit Price
+              <MdArrowRightAlt className='text-2xl ' />
+            </button>
+          ) : (
+            <button
+              className=' bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-10 py-2 rounded flex'
+              onClick={() =>
+                navigate(`/biddingViewById/${biddingData?.reference_no}/inbox`)
+              }
+            >
+              Back to Bidding Page
+            </button>
+          )}
         </div>
       </div>
     </>

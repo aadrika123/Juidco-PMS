@@ -28,7 +28,7 @@ export default function BoqDetailsByIdFin(props) {
   const {
     api_fetchAllBoqDetailsbyIdFin,
     api_approveBoq,
-    api_rejectFinBoq,
+    api_returnFinBoq,
     api_forwardBoqToFinance,
   } = ProjectApiList();
 
@@ -84,7 +84,6 @@ export default function BoqDetailsByIdFin(props) {
       ApiHeader()
     )
       .then(function (response) {
-        console.log(response?.data?.data, "res");
         setDatalist(response?.data?.data);
       })
       .catch(function (error) {
@@ -148,21 +147,21 @@ export default function BoqDetailsByIdFin(props) {
       });
   };
 
-  //reject boq ------------
-  const rejectBoqHandler = () => {
+  //return boq ------------
+  const returnBoqHandler = () => {
     setIsLoading(true);
 
     AxiosInterceptors.post(
-      `${api_rejectFinBoq}`,
+      `${api_returnFinBoq}`,
       { ...data, reference_no: refNo },
       ApiHeader()
     )
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("BOQ is Rejected.");
-          navigate("/inventoryAdmin-boq");
+          toast.success("BOQ is sent back to Inventory Admin.");
+          navigate("/finance");
         } else {
-          toast.error("Error in approving. Please try Again");
+          toast.error("Error occured while sending back the BOQ");
         }
       })
       .catch(function (error) {
@@ -175,7 +174,7 @@ export default function BoqDetailsByIdFin(props) {
   };
 
   const confirmationRejectHandler = () => {
-    rejectBoqHandler();
+    returnBoqHandler();
   };
 
   const confirmationApproveHandler = () => {
@@ -193,7 +192,9 @@ export default function BoqDetailsByIdFin(props) {
       <RejectionModalRemark
         confirmationHandler={confirmationRejectHandler}
         handleCancel={() => setRejectModal(false)}
-        message={"Are you sure you want to reject BOQ ? "}
+        message={
+          "Are you sure you want to return BOQ back to Inventory Admin ? "
+        }
         setData={setData}
         loadingState={isLoading}
       />
@@ -404,12 +405,22 @@ export default function BoqDetailsByIdFin(props) {
 
           <div className='flex gap-6'>
             {page == "inbox" && (
-              <button
-                onClick={() => setRejectModal(true)}
-                className='pb-2 pl-6 pr-6 pt-2 border border-red-400 text-base leading-tight  rounded bg-red-50 text-red-400 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
-              >
-                Reject
-              </button>
+              <>
+                {/* <button
+                  onClick={() => setRejectModal(true)}
+                  className='pb-2 pl-6 pr-6 pt-2 border border-red-400 hover:bg-red-400 hover:text-white text-base leading-tight  rounded bg-red-50 text-red-400 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
+                >
+                  Reject
+                </button> */}
+
+                <button
+                  type='button'
+                  className={`bg-[#4338CA]  hover:bg-[#4478b7] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                  onClick={() => setRejectModal(true)}
+                >
+                  Back to Inventory Admin
+                </button>
+              </>
             )}
 
             {page == "inbox" && (
