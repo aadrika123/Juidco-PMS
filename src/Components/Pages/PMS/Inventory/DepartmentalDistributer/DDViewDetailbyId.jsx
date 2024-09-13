@@ -12,7 +12,7 @@ import { contextVar } from "@/Components/context/contextVar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import StockRequestTimeline from "@/Components/Common/Timeline/StockRequestTimeline";
 
 const DDViewDetailbyId = () => {
@@ -65,9 +65,7 @@ const DDViewDetailbyId = () => {
     AxiosInterceptors.get(`${api_getStockRequetById}/${handNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data?.data);
           setapplicationFullData(response?.data?.data);
-
           setisLoading(false);
         } else {
           setisLoading(false);
@@ -95,6 +93,7 @@ const DDViewDetailbyId = () => {
           setSuccessModal(true);
           setisLoading(false);
         } else {
+          toast.error("Error in forwarding.");
           console.log("error in forwarding to da...", error);
         }
       })

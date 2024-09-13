@@ -28,9 +28,10 @@ const BiddingComparisionTabs = () => {
   const [bidderData, setBidderData] = useState();
   const [isLoading, setisLoading] = useState(false);
   const [tabDetails, setTabDetails] = useState([]);
+  const [previewData, setPreviewData] = useState([]);
 
   const { titleBarVisibility } = useContext(contextVar);
-  const { api_getBidType } = ProjectApiList();
+  const { api_getBidType, api_fetchProcurementDetById } = ProjectApiList();
 
   const { state } = useLocation();
   // console.log(state)
@@ -46,17 +47,17 @@ const BiddingComparisionTabs = () => {
 
   const finTech = [
     { label: "Technical Comparision", tab: 1, value: "technical" },
-    { label: "Financial Comparision", tab: 2, value: "financial" },
-    { label: "Bidder Details", tab: 3 },
+    { label: "Bidder Details", tab: 2 },
+  ];
+
+  const finTechAndTechDone = [
+    { label: "Financial Comparision", tab: 1, value: "financial" },
+    { label: "Bidder Amount Details", tab: 2 },
+    // { label: "Bidding Ratio", tab: 3 },
   ];
 
   const technical = [
     { label: "Technical Comparision", tab: 1, value: "technical" },
-    { label: "Bidder Details", tab: 2 },
-  ];
-
-  const financial = [
-    { label: "Financial Comparision", tab: 1, value: "financial" },
     { label: "Bidder Details", tab: 2 },
   ];
 
@@ -68,13 +69,42 @@ const BiddingComparisionTabs = () => {
           setBidderData(response?.data?.data);
           setisLoading(false);
           //setting tab buttons
-          if (response?.data?.data?.bid_type === "fintech") {
+          if (
+            response?.data?.data?.bid_type === "fintech" &&
+            !response?.data?.data?.comparison.length
+          ) {
             setTabDetails(finTech);
+          } else if (
+            response?.data?.data?.bid_type === "abc" &&
+            response?.data?.data?.comparison.length
+          ) {
+            setTabDetails(finTechAndTechDone);
           } else if (response?.data?.data?.bid_type === "technical") {
             setTabDetails(technical);
           } else {
-            setTabDetails(financial);
+            setTabDetails(technical);
           }
+        } else {
+          setisLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        console.log("details by id error...", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
+  const getBiddingDetails = (id) => {
+    setisLoading(true);
+    AxiosInterceptors.get(`${api_fetchProcurementDetById}/${id}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setPreviewData(response?.data?.data);
+          setisLoading(false);
         } else {
           setisLoading(false);
           toast.error(response?.data?.message);
@@ -93,6 +123,7 @@ const BiddingComparisionTabs = () => {
     state && localStorage.setItem("reference_no", state);
     const ref = localStorage.getItem("reference_no");
     getApplicationDetail(ref);
+    getBiddingDetails(ref);
   }, []);
 
   return (
@@ -146,6 +177,8 @@ const BiddingComparisionTabs = () => {
               bidderData={bidderData}
               tabValue={tabs?.value}
               tabDetails={tabDetails}
+              biddingDetails={previewData}
+              referenceNo={state}
             />
           </div>
         ))}

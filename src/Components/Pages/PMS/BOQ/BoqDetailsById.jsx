@@ -27,7 +27,6 @@ export default function BoqDetailsById(props) {
   const {
     api_fetchAllBoqDetailsbyId,
     api_postBacktoAcc,
-    api_postForwardBoq,
     api_postRejectBoq,
     api_forwardBoqToFinance,
     api_forwardBoqToTA,
@@ -63,6 +62,9 @@ export default function BoqDetailsById(props) {
       header: "Gst",
     },
     {
+      header: "HSN Code",
+    },
+    {
       header: "Rate",
     },
     {
@@ -86,6 +88,10 @@ export default function BoqDetailsById(props) {
     AxiosInterceptors.get(`${api_fetchAllBoqDetailsbyId}/${refNo}`, ApiHeader())
       .then(function (response) {
         setDatalist(response?.data?.data[0]);
+        console.log(
+          response?.data?.data[0]?.estimated_cost,
+          "response?.data?.estimated_cost"
+        );
       })
       .catch(function (error) {
         toast.error("Something went wrong");
@@ -126,35 +132,8 @@ export default function BoqDetailsById(props) {
       });
   };
 
-  //approve boq ------------
-  const approveBoq = () => {
-    setIsLoading(true);
-
-    AxiosInterceptors.post(
-      `${api_postForwardBoq}`,
-      { reference_no: refNo },
-      ApiHeader()
-    )
-      .then(function (response) {
-        if (response?.data?.status) {
-          toast.success("BOQ is Approved Successfully!!");
-          navigate("/inventoryAdmin-boq");
-        } else {
-          toast.error("Error in approving. Please try Again");
-        }
-      })
-      .catch(function (error) {
-        console.log(error, "err res");
-        toast.error(error?.response?.data?.error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
   //rate Contract to Post Procurement
   const forwardforPostProcurement = () => {
-    console.log(api_forwardRateToPostProc, "api_forwardRateToPostProc");
     setIsLoading(true);
 
     AxiosInterceptors.post(
@@ -371,19 +350,13 @@ export default function BoqDetailsById(props) {
                   <span className='font-semibold text-blue-500'>
                     {(dataList?.status == 0 && "Pending") ||
                       (dataList?.status == 41 && "Returned from Finance") ||
-                      (dataList?.status == 43 && "Rejected from Finance") ||
+                      (dataList?.status == 43 && "Returned from Finance") ||
                       (dataList?.status == 40 && "Finance Approval Pending") ||
                       (dataList?.status == 42 && "Approved by Finance") ||
                       (dataList?.status == 50 &&
                         "Basic Pre-tender Info completed") ||
                       (dataList?.status == 60 && "Pre Tender form Submitted") ||
                       (dataList?.status == 70 && "Tendering Admin Inbox")}
-                  </span>
-                </p>
-                <p className='text-lg font-bold '>
-                  HSN Code:{" "}
-                  <span className='font-semibold text-gray-500'>
-                    {dataList?.hsn_code}
                   </span>
                 </p>
               </div>
@@ -423,6 +396,9 @@ export default function BoqDetailsById(props) {
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {`${row?.gst}%` || ""}
+                        </td>
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                          {`${row?.hsn_code}` || ""}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {indianAmount(row?.rate)}
@@ -540,19 +516,20 @@ export default function BoqDetailsById(props) {
               <button
                 className={`${colouredBtnStyle} flex gap-2 justify-center items-center`}
                 onClick={() =>
-                  navigate(`/bidding-input-form/${dataList?.reference_no}`)
+                  navigate(`/bidding-input-form/${dataList?.reference_no}`, {
+                    state: dataList?.estimated_cost,
+                  })
                 }
               >
                 Fill Pre Tender Basic Info
                 <MdArrowRightAlt className='text-2xl ' />
-
               </button>
             )}
 
           {page == "inbox" && dataList?.status == 50 && (
             <button
-            className={`${colouredBtnStyle} flex gap-2 justify-center items-center`}
-            onClick={() =>
+              className={`${colouredBtnStyle} flex gap-2 justify-center items-center`}
+              onClick={() =>
                 navigate(`/tendering?tabNo=1`, {
                   state: dataList?.reference_no,
                 })
@@ -560,7 +537,6 @@ export default function BoqDetailsById(props) {
             >
               Proceed to Pre-Tender
               <MdArrowRightAlt className='text-2xl ml-2' />
-
             </button>
           )}
 
@@ -574,29 +550,18 @@ export default function BoqDetailsById(props) {
               </button>
             )} */}
 
-          {/* {page == "inbox" && dataList?.status == 0 && (
-            <div className='flex justify-end items-center'>
-              <button
-                className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
-                onClick={forwardBoqFinanceHandler}
-              >
-                Proceed for Post Procurement
-                <MdArrowRightAlt className='text-2xl ml-2' />
-              </button>
-            </div>
-          )} */}
-
-          {page == "inbox" && dataList?.status == 0 && (
-            <div className='flex justify-end items-center'>
-              <button
-                className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
-                onClick={forwardBoqFinanceHandler}
-              >
-                Forward to Finance
-                <MdArrowRightAlt className='text-2xl ml-2' />
-              </button>
-            </div>
-          )}
+          {page == "inbox" &&
+            (dataList?.status == 0 || dataList?.status == 41) && (
+              <div className='flex justify-end items-center'>
+                <button
+                  className='bg-green-600 hover:bg-green-700 text-white p-2 rounded flex'
+                  onClick={forwardBoqFinanceHandler}
+                >
+                  Forward to Finance
+                  <MdArrowRightAlt className='text-2xl ml-2' />
+                </button>
+              </div>
+            )}
 
           {page == "inbox" && dataList?.status == 60 && (
             <div className='flex justify-end items-center'>

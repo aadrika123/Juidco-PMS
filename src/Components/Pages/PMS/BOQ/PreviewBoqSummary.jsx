@@ -53,6 +53,9 @@ export default function PreviewBoqSummary() {
       header: "Gst %",
     },
     {
+      header: "HSN code",
+    },
+    {
       header: "Total Amount",
     },
     {
@@ -224,14 +227,14 @@ export default function PreviewBoqSummary() {
                         : "Gst not included"}
                     </span>
                   </p>
-                  <p className='text-lg font-bold mb-2'>
+                  {/* <p className='text-lg font-bold mb-2'>
                     HSN Code:{" "}
                     <span className='font-semibold text-gray-500'>
                       {summaryData?.hsn_code
                         ? `${summaryData?.hsn_code} `
                         : "Not added"}
                     </span>
-                  </p>
+                  </p> */}
                 </div>
               </div>
             </div>
@@ -272,6 +275,9 @@ export default function PreviewBoqSummary() {
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {summaryData?.gstChecked ? row?.gst : "-"}
+                        </td>
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                          {row?.hsn_code}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {indianAmount(row?.total_rate)}

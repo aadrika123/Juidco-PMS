@@ -132,13 +132,15 @@ export default function ProjectApiList() {
     api_postForwardBoq: `${baseUrl}/api/pms/da/pre-procurement/boq/approve`, //approve boq
     api_approveBoq: `${baseUrl}/api/pms/finance/boq/approve`, //approve new boq by fin
     api_postRejectBoq: `${baseUrl}/api/pms/da/pre-procurement/boq/reject`, //reject boq
-    api_rejectFinBoq: `${baseUrl}/api/pms/finance/boq/reject`, //reject boq fin
+    // api_rejectFinBoq: `${baseUrl}/api/pms/finance/boq/reject`, //reject boq fin
+    api_returnFinBoq: `${baseUrl}/api/pms/finance/boq/return`, //reject boq fin
     api_forwardBoqToFinance: `${baseUrl}/api/pms/da/pre-procurement/boq/to-finance`,
     api_forwardBoqToTA: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/to-ta`,
     api_forwardRateToPostProc: `${baseUrl}/api/pms/da/pre-procurement/boq/for-post`,
 
     //tendring form
     api_postPreTenderDetails: `${baseUrl}/api/pms/pre-tender/details`,
+    api_postPreTenderCoverDetails: `${baseUrl}/api/pms/pre-tender/add-covers`, // to add number of covers in case of ta view samll tender page
 
     api_postBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
     api_getBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
@@ -199,6 +201,7 @@ export default function ProjectApiList() {
 
     api_forwardStockReqToI: `${baseUrl}/api/pms/da/stock-request/to-ia`,
     api_iaStockReqInbox: `${baseUrl}/api/pms/ia/stock-request/`,
+    api_iaStockReqNotify: `${baseUrl}/api/pms/ia/stock-request/notify/`,
     api_iaStockReqOubox: `${baseUrl}/api/pms/ia/stock-request/outbox`,
     api_iaStockReqApprove: `${baseUrl}/api/pms/ia/stock-request/approve`,
     api_iaGetProducts: `${baseUrl}/api/pms/ia/stock-request/product`,
@@ -240,6 +243,7 @@ export default function ProjectApiList() {
     api_submitCreteria: `${baseUrl}/api/pms/ta/submit-criteria`,
     api_addBidder: `${baseUrl}/api/pms/ta/add-bidder`,
     api_submitBidder: `${baseUrl}/api/pms/ta/submit-bidder`,
+    api_submitBiddingAmt: `${baseUrl}/api/pms/ta/add-bidding-amount`,
     api_postWinner: `${baseUrl}/api/pms/ta/select-winner`,
     api_finalizeWinner: `${baseUrl}/api/pms/ta/comparison-finalize`,
 

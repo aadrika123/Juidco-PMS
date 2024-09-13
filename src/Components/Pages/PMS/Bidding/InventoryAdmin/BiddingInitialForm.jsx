@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGroup";
@@ -7,18 +7,18 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
-import { contextVar } from "@/Components/context/contextVar";
 
 const BiddingInitialForm = () => {
   const navigate = useNavigate();
-  const context = useContext(contextVar);
   const [selectedOption, setSelectedOption] = useState("");
   const [emdPercentageValue, setEmdPercentageValue] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [pbgPercentageValue, setPbgPercentageValue] = useState();
+  const [isRateContract, setIsRateContract] = useState(false);
   const { id } = useParams();
+  const { state } = useLocation();
 
   const { api_postPreTenderDetails } = ProjectApiList();
 
@@ -27,7 +27,7 @@ const BiddingInitialForm = () => {
     { label: "No", value: "no" },
   ];
   const initialValues = {
-    estimated_amount: "",
+    estimated_amount: state,
     emd: "",
     emd_type: "percentage",
     emd_value: "",
@@ -62,7 +62,12 @@ const BiddingInitialForm = () => {
   const createPreTenderInfo = async (data) => {
     setIsLoading(true);
     // setIsLoading(true);
-    data = { ...data, reference_no: id, tendering_type: selectedOption };
+    data = {
+      ...data,
+      reference_no: id,
+      tendering_type: selectedOption,
+      is_rate_contract: isRateContract,
+    };
 
     AxiosInterceptors.post(api_postPreTenderDetails, data, ApiHeader())
       .then(function (response) {
@@ -70,11 +75,7 @@ const BiddingInitialForm = () => {
           toast.success(
             "Created Basic Pre Tender Form successfully. Can proceed for Pre-tendering"
           );
-          // setShowMessaegModal(true);
-          setTimeout(() => {
-            // setIsLoading(false);
-            navigate(`/boq-details-byId/${id}/inbox`);
-          }, 2000);
+          navigate(`/boq-details-byId/${id}/inbox`);
         } else {
           // setIsLoading(false);
           toast.error("Error in Creating form.");
@@ -93,24 +94,15 @@ const BiddingInitialForm = () => {
     setSelectedOption(event.target.value);
   };
 
-  const handleOptionChange1 = (event) => {
-    setselectedOptionPercantageAmt(event.target.value);
-  };
-  const handleOptionChange2 = (event) => {
-    setselectedOptionPbgPercantageAmt(event.target.value);
-  };
-
   // calculating Tot Percentages
 
   const totPercentageEmd = () => {
-    const result =
-      (formik.values.emd_value / 100) * formik.values.estimated_amount;
+    const result = (formik.values.emd_value / 100) * state;
     setEmdPercentageValue(result);
   };
 
   const totPercentagePbg = () => {
-    const result =
-      (formik.values.pbg_value / 100) * formik.values.estimated_amount;
+    const result = (formik.values.pbg_value / 100) * state;
     setPbgPercentageValue(result);
   };
 
@@ -152,7 +144,7 @@ const BiddingInitialForm = () => {
                     htmlFor='emd-description'
                     className='block font-medium text-gray-700 mb-2'
                   >
-                    EMD Description
+                    EMD Excemption
                   </label>
                 </div>
               </div>
@@ -192,18 +184,22 @@ const BiddingInitialForm = () => {
                   </label>
                 </div>
               </div>
-              <div className='flex flex-col w-1/2 justify-end gap-4'>
+              <div className='flex flex-col w-1/2'>
                 <div>
-                  <input
+                  <p className='rounded-md w-full border-2 p-3 bg-slate-100'>
+                    {indianAmount(state)}
+                  </p>
+                  {/* <input
                     id='estimated_amount'
                     name='estimated_amount'
                     placeholder='Enter Tender Amount'
                     type='number'
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.estimated_amount}
+                    value={state}
+                    disabled
                     className='rounded-md h-[50px] w-full border-2 p-4'
-                  />
+                  /> */}
                 </div>
                 <div>
                   {formik.touched.estimated_amount &&
@@ -258,7 +254,7 @@ const BiddingInitialForm = () => {
                           id='emd_value'
                           name='emd_value'
                           type='number'
-                          placeholder='Enter Percantage %'
+                          placeholder='Enter percentage %'
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.emd_value}
@@ -351,7 +347,7 @@ const BiddingInitialForm = () => {
                           id='pbg_value'
                           name='pbg_value'
                           type='number'
-                          placeholder='Enter Percantage %'
+                          placeholder='Enter percentage %'
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.pbg_value}
@@ -421,7 +417,7 @@ const BiddingInitialForm = () => {
                   </label>
                 </div>
               </div>
-              <div className='w-1/2'>
+              <div className='flex gap-2 items-baseline w-1/2'>
                 <select
                   value={selectedOption}
                   onChange={handleOptionChange}
@@ -430,13 +426,29 @@ const BiddingInitialForm = () => {
                   <option value=''>---- select -----</option>
                   <option value='least_cost'>Least Cost</option>
                   <option value='qcbs'>QCBS</option>
-                  <option value='rate_contract'>Rate Contract</option>
                 </select>
+
+                <div className='flex justify-start items-center gap-2'>
+                  <input
+                    type='checkbox'
+                    className='h-4 w-4'
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setIsRateContract(true);
+                      } else {
+                        setIsRateContract(false);
+                      }
+                    }}
+                  />
+                  <label className='text-sm text-gray-800 whitespace-nowrap'>
+                    Is Rate Contract
+                  </label>
+                </div>
               </div>
             </div>
           </div>
 
-          {selectedOption === "rate_contract" && (
+          {isRateContract && (
             <div className='flex  gap-4 rounded-md border border-gray-200 bg-white  mt-5 p-8'>
               <div className='flex justify-between w-full px-6'>
                 <div className='flex flex-col'>

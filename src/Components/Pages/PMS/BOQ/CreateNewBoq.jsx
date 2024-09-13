@@ -23,6 +23,7 @@ import PreProcurementCancelScreen from "../PrePrecurement/StockReceiver/PreProcu
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import { Tooltip } from "@mui/material";
 
 export default function CreateNewBoq() {
   const [imageDoc, setImageDoc] = useState();
@@ -75,6 +76,10 @@ export default function CreateNewBoq() {
     },
     {
       header: "Gst %",
+      isEditable: false,
+    },
+    {
+      header: "HSN Code",
       isEditable: false,
     },
     {
@@ -298,6 +303,29 @@ export default function CreateNewBoq() {
     }));
   };
 
+  const addHsnCodeEach = (e, procId) => {
+    // const updatedProcurement = applicationData?.procurement_stocks?.map(
+    const updatedProcurement = payload?.procurement?.map((data) => {
+      const hsnVal = e.target.value;
+      if (data.id === procId) {
+        return {
+          ...data,
+          hsn_code: hsnVal,
+        };
+      }
+      return data;
+    });
+    setApplicationData((prev) => ({
+      ...prev,
+      procurement_stocks: updatedProcurement,
+    }));
+
+    setPayload((prev) => ({
+      ...prev,
+      procurement: updatedProcurement,
+    }));
+  };
+
   //adding rate and calculating amount
   const changeRateAmountHandler = (e, procId) => {
     const updatedProcurement = applicationData?.procurement_stocks?.map(
@@ -373,7 +401,6 @@ export default function CreateNewBoq() {
           };
         }
       );
-      console.log(updatedGstValue, "updatedGstValue");
 
       setPayload((prev) => ({
         ...prev,
@@ -489,12 +516,15 @@ export default function CreateNewBoq() {
                 COLUMNS?.map((heading, index) => (
                   <th
                     key={index}
-                    className='border border-gray-300 px-4 py-3 text-bold text-sm'
+                    className={`border border-gray-300 px-4 py-3 text-bold text-sm ${
+                      heading?.header === "description" ? "w-[7rem]" : "w-auto"
+                    }`}
                   >
                     {heading?.header}
                   </th>
                 ))}
             </thead>
+
             <tbody className='font-normal text-center '>
               {isCreatePage == "create" &&
                 applicationData?.procurement_stocks?.length > 0 &&
@@ -503,9 +533,11 @@ export default function CreateNewBoq() {
                     <td className='border border-gray-200 px-4 py-2'>
                       {row?.subCategory?.name}
                     </td>
-                    <td className='border border-gray-200 px-4 py-2 text-sm text-justify'>
-                      {row?.description}
-                    </td>
+                    <Tooltip title={row?.description}>
+                      <td className='border border-gray-200 px-4 py-2 text-sm text-justify'>
+                        {row?.description.slice(0, 40)}...
+                      </td>
+                    </Tooltip>
                     <td className='border border-gray-200 px-4 py-2 text-sm'>
                       {row?.quantity}
                     </td>
@@ -538,6 +570,28 @@ export default function CreateNewBoq() {
                           className='p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200'
                           onChange={(e) => addGstForEachProc(e, row?.id)}
                           defaultValue={row?.gst}
+                        />
+                      </div>
+                    </td>
+                    <td className='border border-gray-200 text-md w-[30px] px-1'>
+                      <div className='flex items-center gap-4 my-1'>
+                        {/* <input
+                          type='checkbox'
+                          onChange={(e) => {
+                            const isChecked = e.target.checked;
+                            setGstChecked(isChecked);
+                            estimatedAmountCalc(
+                              payload?.procurement,
+                              isChecked
+                            );
+                          }}
+                        /> */}
+                        {/* <p className='text-xs w-[4rem]'>GST %</p> */}
+                        <input
+                          placeholder='Add HSN Code'
+                          className='p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200'
+                          onChange={(e) => addHsnCodeEach(e, row?.id)}
+                          defaultValue={row?.hsn_code}
                         />
                       </div>
                     </td>
@@ -601,31 +655,7 @@ export default function CreateNewBoq() {
 
           <div className='flex justify-between p-2'>
             <div className='p-3'>
-              {/* <div className='flex items-center gap-4 my-1'>
-                <input
-                  type='checkbox'
-                  onChange={(e) => {
-                    const isChecked = e.target.checked;
-                    setGstChecked(isChecked);
-                    estimatedAmountCalc(payload?.procurement, isChecked);
-                  }}
-                />
-                <p className='text-xs w-[4rem]'>GST %</p>
-                <input
-                  placeholder='Add Gst'
-                  className='p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200'
-                  onChange={(e) => {
-                    setPayload((prev) => ({
-                      ...prev,
-                      gst: Number(e.target.value),
-                    }));
-                  }}
-                  defaultValue={
-                    applicationData[0]?.gst && applicationData[0]?.gst
-                  }
-                />
-              </div> */}
-              <div className='flex items-center gap-4'>
+              {/* <div className='flex items-center gap-4'>
                 <p className='text-xs w-[4rem] mr-7'>HSN Code</p>
                 <input
                   placeholder='Type here...'
@@ -640,7 +670,7 @@ export default function CreateNewBoq() {
                     applicationData?.hsn_code && applicationData?.hsn_code
                   }
                 />
-              </div>
+              </div> */}
             </div>
 
             <div className='w-[20%] p-3'>
@@ -752,10 +782,15 @@ export default function CreateNewBoq() {
             Forward to DA
           </button>
         )} */}
+
         <button
           className={`bg-[#4338CA] hover:bg-[#5a50d3] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
           onClick={() => {
-            if (!payload?.hsn_code?.trim().length) {
+            if (
+              payload?.procurement?.some(
+                (data) => !data?.hsn_code?.trim().length
+              )
+            ) {
               return toast.error("Please add HSN code");
             }
             navigate(

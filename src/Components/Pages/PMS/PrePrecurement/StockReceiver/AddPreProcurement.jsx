@@ -77,6 +77,7 @@ function AddPreProcurement() {
   const [selectedSupplier, setSelectedSupplier] = useState();
   const [supplierDetailsProc, setSupplierDetailsProc] = useState();
   const [descrip, setDescrip] = useState("");
+  const [isDescTextOpen, setIsDescTextOpen] = useState(false);
 
   const [procurement_no, setProcurement_no] = useState();
 
@@ -158,7 +159,7 @@ function AddPreProcurement() {
     rate: supplierDetailsProc?.unit_price || editProcurementData?.rate || "",
     subcategorytxt: editProcurementData?.subcategorytxt || "",
     brandtxt: editProcurementData?.brandtxt || "",
-    descriptiontxt: editProcurementData?.descriptiontxt || "",
+    // descriptiontxt: editProcurementData?.descriptiontxt || "",
   };
 
   // console.log(editProcurementData?.itemCategory,"cat=")
@@ -529,12 +530,6 @@ function AddPreProcurement() {
                           ))}
                         {/* <option>others</option> */}
                       </select>
-                      {/* <p className='text-red-500 text-xs '>
-                        {formik.touched.itemCategory &&
-                        formik.errors.itemCategory
-                          ? formik.errors.itemCategory
-                          : null}
-                      </p> */}
                     </div>
 
                     <div className='form-group flex-shrink max-w-full w-1/2 px-4'>
@@ -569,12 +564,6 @@ function AddPreProcurement() {
                           )}
                         {/* <option>others</option> */}
                       </select>
-                      {/* <p className='text-red-500 text-xs '>
-                        {formik.touched.itemCategory &&
-                        formik.errors.itemCategory
-                          ? formik.errors.itemCategory
-                          : null}
-                      </p> */}
                     </div>
                   </div>
                 )}
@@ -601,7 +590,7 @@ function AddPreProcurement() {
                             Description
                           </th>
                           <th scope='col' className='px-6 py-3'>
-                            Total Qunatity
+                            Total Quantity
                           </th>
                           <th scope='col' className='px-6 py-3'>
                             Rate
@@ -679,8 +668,16 @@ function AddPreProcurement() {
                                     ?.name
                                 }
                               </td>
+                              {console.log(
+                                descrip?.find((data) => data.id === form.id)
+                                  ?.description,
+                                "formData"
+                              )}
                               <td className='px-6 py-4 w-[10rem] whitespace-normal break-words'>
-                                {form.description}
+                                {isDescTextOpen
+                                  ? descrip?.find((data) => data.id === form.id)
+                                      ?.description
+                                  : form.description}
                               </td>
                               <td className='px-6 py-4 '>{form.quantity}</td>
                               <td className='px-6 py-4 '>
@@ -838,12 +835,13 @@ function AddPreProcurement() {
                       </div>
                     ))} */}
 
-                    {console.log(formik.values.description, "desc")}
+                    {console.log(descrip, "descrip====>")}
+
                     <div className='form-group flex-shrink max-w-full px-4 w-full md:w-full mb-5'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Description
                       </label>
-                      {formik.values.description == "others" ? (
+                      {isDescTextOpen ? (
                         <div className='flex gap-0 relative'>
                           <textarea
                             type='text'
@@ -852,11 +850,7 @@ function AddPreProcurement() {
                             onChange={formik.handleChange}
                             value={formik.values.description}
                           />
-                          <div
-                            onClick={() =>
-                              formik.setFieldValue("description", "")
-                            }
-                          >
+                          <div onClick={() => setIsDescTextOpen(false)}>
                             <ImCancelCircle
                               fontSize={20}
                               className='absolute right-0 top-[2px]'
@@ -868,7 +862,11 @@ function AddPreProcurement() {
                           {...formik.getFieldProps("description")}
                           className={`${inputStyle} inline-block w-full relative`}
                           onChange={(e) => {
-                            formik.handleChange(e);
+                            if (e.target.value === "others") {
+                              setIsDescTextOpen(true);
+                            } else {
+                              formik.handleChange(e);
+                            }
                           }}
                         >
                           <option value={""}>select</option>
@@ -885,7 +883,6 @@ function AddPreProcurement() {
                           <option value={"others"}>Others</option>
                         </select>
                       )}
-
                       <p className='text-red-500 text-xs '>
                         {formik.touched.description && formik.errors.description
                           ? formik.errors.description

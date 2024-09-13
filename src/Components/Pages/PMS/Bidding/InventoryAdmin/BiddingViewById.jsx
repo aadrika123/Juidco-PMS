@@ -13,7 +13,7 @@ import BiddingViewModal from "./BiddingViewModal";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
 import { MdArrowRightAlt } from "react-icons/md";
-
+import toast from "react-hot-toast";
 
 const BiddingViewById = () => {
   const [isLoading, setisLoading] = useState(false);
@@ -23,7 +23,9 @@ const BiddingViewById = () => {
   const [preview, setPreview] = useState();
   const [applicationFullData, setapplicationFullData] = useState();
   const [biddingData, setBiddingData] = useState();
+  const [previewData, setPreviewData] = useState();
   const [showModal, setShowModal] = useState(false);
+  const [proceedModal, setProceedModal] = useState(false);
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
@@ -31,8 +33,14 @@ const BiddingViewById = () => {
 
   // console.log(page)
 
-  const { api_postForwardtoSR, api_fetchProcurementDetById, api_getBidType } =
-    ProjectApiList();
+  const {
+    api_postForwardtoSR,
+    api_fetchProcurementDetById,
+    api_getBidType,
+    api_getDAPreviewDetails,
+    api_postPreTenderCoverDetails,
+    api_postBidType,
+  } = ProjectApiList();
 
   let buttonStyle =
     "mr-1 pb-2 pl-10 pr-10 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -65,7 +73,6 @@ const BiddingViewById = () => {
       .then(function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
-
           setisLoading(false);
         } else {
           setisLoading(false);
@@ -81,13 +88,31 @@ const BiddingViewById = () => {
       });
   };
 
+  const getTenderDetails = () => {
+    setisLoading(true);
+    AxiosInterceptors.get(`${api_getDAPreviewDetails}/${id}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          // console.log(response?.data?.data);
+          setPreviewData(response?.data?.data);
+        } else {
+          // toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.message);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
   const getBiddingDetail = () => {
     setisLoading(true);
     AxiosInterceptors.get(`${api_getBidType}/${id}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           setBiddingData(response?.data?.data);
-
           setisLoading(false);
         } else {
           setisLoading(false);
@@ -123,15 +148,10 @@ const BiddingViewById = () => {
       });
   };
 
-  useEffect(() => {
-    getApplicationDetail();
-    getBiddingDetail();
-  }, []);
-
   const btnLabel = (status) => {
     switch (status) {
       case 0 || null || undefined:
-        return "Proceed for Type Selection";
+        return "Proceed";
       case 1:
         return "Proceed for Criteria Addition";
       case 2:
@@ -139,7 +159,7 @@ const BiddingViewById = () => {
       case 3:
         return "Continue Bidding Comparison";
       case 41:
-        return "Finalize Comparison";
+        return "Continue Financial Comparison";
       case 42:
         return "Finalize Comparison";
       case 4:
@@ -154,7 +174,8 @@ const BiddingViewById = () => {
   const btnNavigate = (status) => {
     switch (status) {
       case 0 || null || undefined:
-        setShowModal(true);
+        setProceedModal(true);
+
         break;
       case 1:
         navigate(`/bidding-commparision-tabs?tabNo=1`, {
@@ -172,7 +193,9 @@ const BiddingViewById = () => {
         });
         break;
       case 41:
-        navigate(`/bidding-type-byId/${biddingData?.reference_no}`);
+        navigate(`/bidding-type`, {
+          state: biddingData?.reference_no,
+        });
         break;
       case 42:
         navigate(`/bidding-type-byId/${biddingData?.reference_no}`);
@@ -188,6 +211,82 @@ const BiddingViewById = () => {
     }
   };
 
+  //triggers when modal is submitted for proceed
+  const biddingNextStepsHandler = () => {
+    setisLoading(true);
+    AxiosInterceptors.post(
+      `${api_postPreTenderCoverDetails}`,
+      {
+        reference_no: id,
+        no_of_covers: previewData?.cover_details?.noOfCovers,
+      },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          submitHandler();
+          navigate("/bidding-commparision-tabs?tabNo=1", {
+            state: id,
+          });
+        } else {
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        console.log("details by id error...", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
+  const tenderType =
+    previewData?.cover_details?.noOfCovers == "1" &&
+    applicationFullData?.tendering_type === "least_cost"
+      ? "technical"
+      : previewData?.cover_details?.noOfCovers == "2" &&
+        applicationFullData?.tendering_type === "least_cost"
+      ? "fintech"
+      : previewData?.cover_details?.noOfCovers == "2" &&
+        applicationFullData?.tendering_type === "qcbs"
+      ? "abc"
+      : "technical";
+  ///
+  const submitHandler = () => {
+    // setIsLoading(true);
+    AxiosInterceptors.post(
+      `${api_postBidType}`,
+      {
+        reference_no: id,
+        bid_type: tenderType,
+      },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          toast.success("Bid Type saved Succefull");
+          navigate(`/bidding-commparision-tabs?tabNo=1`, { state: id });
+        } else {
+          toast.error("Error in approving. Please try Again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "err res");
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        // setIsLoading(false);
+      });
+  };
+  ///
+
+  useEffect(() => {
+    getApplicationDetail();
+    getBiddingDetail();
+    getTenderDetails();
+  }, []);
+
   if (confModal) {
     return (
       <>
@@ -195,6 +294,19 @@ const BiddingViewById = () => {
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
           message={"Are you sure you want to Forward ?"}
+          loadingState={isLoading}
+        />
+      </>
+    );
+  }
+
+  if (proceedModal) {
+    return (
+      <>
+        <ConfirmationModal
+          confirmationHandler={biddingNextStepsHandler}
+          handleCancel={() => setProceedModal(false)}
+          message={"Yow will be redirected to the next process of bidding ?"}
           loadingState={isLoading}
         />
       </>
@@ -285,14 +397,17 @@ const BiddingViewById = () => {
                 <div className='md:w-auto w-[50%] font-bold '>EMD Amount </div>
                 <div className='md:w-auto w-[50%] text-gray-800 '>
                   {applicationFullData?.emd_type === "percentage"
-                    ? `${applicationFullData?.emd_value} %`
+                    ? `${applicationFullData?.emd_value}%  (${indianAmount(
+                        (applicationFullData?.emd_value *
+                          Number(applicationFullData?.estimated_amount)) /
+                          100
+                      )})`
                     : ` ${indianAmount(applicationFullData?.emd_value)} 
                   (${
                     applicationFullData?.emd_type === "fixed" ? " (Fixed)" : ""
                   })`}
                 </div>
               </div>
-
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-semibold '>
                   PBG Amount{" "}
@@ -305,7 +420,7 @@ const BiddingViewById = () => {
                   </span>
                   {applicationFullData?.pbg_type == "percentage"
                     ? "%"
-                    : " (Fixed)"}{" "}
+                    : "(Fixed)"}{" "}
                 </div>
               </div>
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
@@ -321,6 +436,23 @@ const BiddingViewById = () => {
                     ? "Rate Contract"
                     : ""}
                 </div>
+              </div>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-semibold '>
+                  Cover Details{" "}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 '>
+                  {previewData?.cover_details?.noOfCovers || ""} Cover
+                </div>
+                {/* <div className='md:w-auto w-[50%] text-gray-800'>
+                  {applicationFullData?.tendering_type === "qcbs"
+                    ? "Quality And Cost Based Selection"
+                    : applicationFullData?.tendering_type === "least_cost"
+                    ? "Least Cost"
+                    : applicationFullData?.tendering_type === "rate_contract"
+                    ? "Rate Contract"
+                    : ""}
+                </div> */}
               </div>
               {biddingData?.bid_type && (
                 <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
@@ -339,7 +471,7 @@ const BiddingViewById = () => {
                 </div>
               )}
 
-              {applicationFullData?.tendering_type === "rate_contract" && (
+              {applicationFullData?.is_rate_contract && (
                 <div className='grid md:grid-cols-3 gap-4'>
                   <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                     <div className='md:w-auto w-[50%] font-bold '>Tenure </div>
@@ -755,9 +887,8 @@ const BiddingViewById = () => {
               <div className='space-x-3 flex items-end justify-center'>
                 <button
                   className={buttonStyle}
-                  onClick={() => 
-                    page == 'view'?
-                    navigate(-1) : navigate(`/tendering-admin`)
+                  onClick={() =>
+                    page == "view" ? navigate(-1) : navigate(`/tendering-admin`)
                   }
                 >
                   Back
@@ -778,7 +909,6 @@ const BiddingViewById = () => {
                   >
                     {btnLabel(biddingData?.creationStatus)}
                     <MdArrowRightAlt className='text-2xl ' />
-
                   </button>
                 )}
               </div>

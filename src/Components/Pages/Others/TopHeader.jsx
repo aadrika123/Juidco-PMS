@@ -43,7 +43,7 @@ const TopHeader = (props) => {
     localstorageRemoveEntire();
     navigate("/");
   };
-  
+
   const LogOutUser = () => {
     closeModal();
     logoutCallback();
@@ -103,7 +103,7 @@ const TopHeader = (props) => {
         </div>
       </div>
 
-      {/* ===========MODAL========= */}
+      {/* =========== MODAL========= */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
