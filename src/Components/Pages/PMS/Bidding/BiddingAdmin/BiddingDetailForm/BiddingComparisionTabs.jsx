@@ -53,7 +53,6 @@ const BiddingComparisionTabs = () => {
   const finTechAndTechDone = [
     { label: "Financial Comparision", tab: 1, value: "financial" },
     { label: "Bidder Amount Details", tab: 2 },
-    // { label: "Bidding Ratio", tab: 3 },
   ];
 
   const technical = [
@@ -129,7 +128,7 @@ const BiddingComparisionTabs = () => {
   return (
     <>
       {isLoading && <LoaderApi />}
-      <div className=''>
+      <div className="">
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Bidding Comparision"}
@@ -137,8 +136,8 @@ const BiddingComparisionTabs = () => {
       </div>
 
       <div className={`${isLoading ? "blur-[2px] pointer-events-none" : ""}`}>
-        <div className='flex justify-between items-center'>
-          <div className='flex mt-2'>
+        <div className="flex justify-between items-center">
+          <div className="flex mt-2">
             {tabDetails?.map((item, index) => (
               <button
                 key={index}
@@ -150,13 +149,13 @@ const BiddingComparisionTabs = () => {
                 } focus:outline-none flex shadow-xl border border-gray-300 rounded justify-center items-center space-x-4`}
                 onClick={() => handleTabClick(item.tab)}
               >
-                <HiArrowPathRoundedSquare className='m-1 text-[1.2rem]' />
+                <HiArrowPathRoundedSquare className="m-1 text-[1.2rem]" />
 
                 {item.label}
               </button>
             ))}
           </div>
-          <div className='mt-6'></div>
+          <div className="mt-6"></div>
         </div>
       </div>
       <div
@@ -164,8 +163,9 @@ const BiddingComparisionTabs = () => {
           isLoading ? "blur-[2px] pointer-events-none" : ""
         }`}
       >
-        {tabDetails?.map((tabs) => (
+        {tabDetails?.map((tabs, index) => (
           <div
+            key={index}
             className={`${tabNo >= 1 ? "stockReq" : "disabled:bg-red-300"} ${
               tabs.tab !== tabNo ? "hidden" : ""
             }`}

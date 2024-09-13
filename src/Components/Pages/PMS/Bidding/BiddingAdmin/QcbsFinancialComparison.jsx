@@ -1,9 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader from "@/Components/api/ApiHeader";
+import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function QcbsFinancialComparison() {
+  const { api_financialComp } = ProjectApiList();
+  const { refNo } = useParams();
+  console.log(refNo, "id");
   const [isLoading, setIsLoading] = useState();
+  const [applicationFullData, setapplicationFullData] = useState([]);
+
+  const getApplicationDetail = () => {
+    setIsLoading(true);
+    AxiosInterceptors.get(`${api_financialComp}/${refNo}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setapplicationFullData(response?.data?.data);
+          console.log(response?.data?.data, "==srer");
+        } else {
+          // toast.error("Error while getting details...");
+          // seterroState(true);
+        }
+      })
+      .catch(function (error) {
+        console.log("==2 details by id error...", error);
+        toast.error(error?.response?.data?.message);
+        // seterroState(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getApplicationDetail();
+  }, []);
+
   return (
     <>
       {isLoading && <LoaderApi />}
@@ -11,31 +47,31 @@ export default function QcbsFinancialComparison() {
       <TitleBar titleBarVisibility={true} titleText={"Financial Calculation"} />
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
-        <div className='bg-white p-3 rounded-md'>
-          <h3 className='text-lg text-gray-600 font-semibold mb-4'>
+        <div className="bg-white p-3 rounded-md">
+          <h3 className="text-lg text-gray-600 font-semibold mb-4">
             Calculation will be done on the basis of the below given formula-
           </h3>
 
-          <h2 className='text-md text-gray-600 mb-2'>
+          <h2 className="text-md text-gray-600 mb-2">
             - The weightage for Financial Proposal and Technical Proposal has
-            been given <span className='font-semibold'>20%</span> and{" "}
-            <span className='font-semibold'>80%</span> respectively.
+            been given <span className="font-semibold">20%</span> and{" "}
+            <span className="font-semibold">80%</span> respectively.
           </h2>
-          <h2 className='text-md text-gray-600 mb-1'>
+          <h2 className="text-md text-gray-600 mb-1">
             - The Financial Proposals shall be given scores as follows -
           </h2>
-          <div className='mb-3'>
-            <h2 className='text-md text-center '>
-              <span className='text-gray-500'>
+          <div className="mb-3">
+            <h2 className="text-md text-center ">
+              <span className="text-gray-500">
                 P<sub>f</sub> = 100
                 {""}&#10008;{""}F<sub>m</sub> {""}
-                <span className='text-x2l'>/</span>
+                <span className="text-x2l">/</span>
                 {""}F
               </span>
             </h2>
-            <div className='p-4 text-gray-500 text-md'>
-              <p className='text-sm'>where-</p>
-              <div className='px-3'>
+            <div className="p-4 text-gray-500 text-md">
+              <p className="text-sm">where-</p>
+              <div className="px-3">
                 <p>
                   P<sub>f</sub> is Financial score{" "}
                 </p>
@@ -47,23 +83,23 @@ export default function QcbsFinancialComparison() {
             </div>
           </div>
           <div>
-            <h2 className='text-md text-gray-600 mb-1'>
+            <h2 className="text-md text-gray-600 mb-1">
               - The Composite score from Technical Proposal and Financial
               Proposal shall be computed as follows:
             </h2>
-            <div className='py-3'>
-              <h2 className='text-md text-center text-gray-500 font-semibold'>
+            <div className="py-3">
+              <h2 className="text-md text-center text-gray-500 font-semibold">
                 Composite Score ={" "}
-                <span className='text-gray-500 font-normal'>
+                <span className="text-gray-500 font-normal">
                   P<sub>f</sub>
                   {""}
                   &#10008;{""}0.2 + P<sub>t</sub>
                   {""}&#10008;{""}0.8
                 </span>
               </h2>
-              <div className='p-4 text-gray-500 text-md'>
-                <p className='text-sm'>where-</p>
-                <div className='px-3'>
+              <div className="p-4 text-gray-500 text-md">
+                <p className="text-sm">where-</p>
+                <div className="px-3">
                   <p>
                     P<sub>t</sub> is the Technical score of the percentage
                     scored{" "}

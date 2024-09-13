@@ -244,8 +244,10 @@ export default function ProjectApiList() {
     api_addBidder: `${baseUrl}/api/pms/ta/add-bidder`,
     api_submitBidder: `${baseUrl}/api/pms/ta/submit-bidder`,
     api_submitBiddingAmt: `${baseUrl}/api/pms/ta/add-bidding-amount`,
+    api_submitBiddingRatio: `${baseUrl}/api/pms/ta/set-comparison-ratio`,
     api_postWinner: `${baseUrl}/api/pms/ta/select-winner`,
     api_finalizeWinner: `${baseUrl}/api/pms/ta/comparison-finalize`,
+    api_financialComp: `${baseUrl}/api/pms/ta/comparison-result/financial/`,
 
     // Post Procurement
     api_fetchPostProcurementDetailSupplierbyId: `${baseUrl}/api/pms/procurement`,

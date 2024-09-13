@@ -434,7 +434,7 @@ function App() {
       element: <AddUnitPrice />,
     },
     {
-      path: "/finance-bidding",
+      path: "/finance-bidding/:refNo",
       element: <QcbsFinancialComparison />,
     },
 
@@ -513,7 +513,7 @@ function App() {
               ))}
             </Route>
 
-            <Route path='*' element={<ErrorPage />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </contextVar.Provider>
       </>
