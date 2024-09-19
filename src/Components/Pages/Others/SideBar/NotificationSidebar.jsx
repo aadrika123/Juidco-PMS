@@ -10,9 +10,12 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaCircleDot } from "react-icons/fa6";
 import { FaCircle } from "react-icons/fa";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import { format, parseISO } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 
 export default function NotificationSidebar() {
-  const { api_fetchNotification, api_readNotification } = ProjectApiList();
+  const { api_fetchNotification, api_readNotification, api_replyNotification } =
+    ProjectApiList();
 
   const navigate = useNavigate();
   const [state, setState] = useState({
@@ -23,6 +26,7 @@ export default function NotificationSidebar() {
   });
   const [notificationData, setNotificationData] = useState();
   const [notificationCount, setNotificationCount] = useState();
+  const [notificationId, setNotificationId] = useState();
   const [notifiRefresh, setNotifiRefresh] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
@@ -124,11 +128,11 @@ export default function NotificationSidebar() {
       approve: 2,
     };
 
-    AxiosInterceptors.post(`${api_PostCompareBidder}`, body, ApiHeader())
+    AxiosInterceptors.post(`${api_replyNotification}`, body, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
+          readNotification(notificationId);
           toast.success("Successfully sent the response");
-          navigate(`/bidding-type-byId/${state}`);
         } else {
           setIsLoading(false);
           toast.error("Error in sending response to Inventory Admin.");
@@ -138,6 +142,10 @@ export default function NotificationSidebar() {
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         setIsLoading(false);
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setConfirmationModalOpen(false);
       });
   };
 
@@ -148,11 +156,11 @@ export default function NotificationSidebar() {
       approve: -2,
     };
 
-    AxiosInterceptors.post(`${api_PostCompareBidder}`, body, ApiHeader())
+    AxiosInterceptors.post(`${api_replyNotification}`, body, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
+          readNotification(notificationId);
           toast.success("Successfully sent the response");
-          navigate(`/bidding-type-byId/${state}`);
         } else {
           setIsLoading(false);
           toast.error("Error in sending response to Inventory Admin.");
@@ -162,8 +170,14 @@ export default function NotificationSidebar() {
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         setIsLoading(false);
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setConfirmationModalOpen(false);
       });
   };
+
+  const timeZone = "Asia/Kolkata";
 
   useEffect(() => {
     getNotification();
@@ -224,11 +238,12 @@ export default function NotificationSidebar() {
               }}
               className='p-3 cursor-pointer '
               onClick={() => {
-                if (data?.destination === 0) {
+                if (data?.destination === 0 && !data?.isSeen) {
                   const handover_no =
                     data?.description?.match(/[A-Z0-9]{14}/)[0];
                   setStockHandoverNo(handover_no);
                   setConfirmationModalOpen(true);
+                  setNotificationId(data?.id);
                 } else {
                   notifiNavigate(data?.destination, data?.id);
                 }
@@ -238,12 +253,20 @@ export default function NotificationSidebar() {
                 <div className='text-blue-700 flex space-x-1 pb-1'>
                   <div className='flex justify-between items-center'>
                     <FaCircleDot className='text-xs mt-[1.5px]' />
-                    <p className='text-xs pr-1'>Accountant</p>
+                    <p className='text-xs pr-1'>{data?.from || ""}</p>
                     <p className='text-xs'>
                       <FaCircle className='text-[5px] mt-[5px] text-black' />
                     </p>
-                    <p className='text-[10px] text-black pt-[1px] pl-1'>
-                      22 July 12:20 AM
+                    <p className='text-sm text-gray-600 pt-[1px] pl-1'>
+                      {/* {console.log(
+                        formatInTimeZone(
+                          parseISO(data?.createdAt),
+                          timeZone,
+                          "HH:mm:ss"
+                        )
+                      )} */}
+                      {/* {format(data?.createdAt, "yyyy-MM-dd")} */}
+                      {format(parseISO(data?.createdAt), "dd-MM-yyyy")}
                     </p>
                   </div>
                 </div>
@@ -251,7 +274,7 @@ export default function NotificationSidebar() {
                 <p className='text-xs pt-2 text-black mb-2 '>
                   {data?.description}
                 </p>
-                {data?.destination === 0 && (
+                {data?.destination === 0 && !data?.isSeen && (
                   <div className='rounded-md  bg-orange-400 text-white px-1 w-fit'>
                     <h1 className='text-[12px]'>
                       {data?.destination === 0 &&

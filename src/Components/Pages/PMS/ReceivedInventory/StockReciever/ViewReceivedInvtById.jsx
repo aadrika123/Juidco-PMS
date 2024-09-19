@@ -487,86 +487,6 @@ const ViewReceivedInvtById = () => {
       <div className='' id='printable-content'>
         {/* Basic Details */}
         <div className={`mt-6 ${isLoading ? "blur-[2px]" : ""}`}>
-          {/* <div className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
-            <div className="">
-              <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
-                View Procurement Request{" "}
-              </h2>
-            </div>
-
-            <div className="pl-8 pb-5 text-[1.2rem] text-[#4338CA]">
-              <h1 className="font-bold">
-                Procurement Request No <span className="text-black">:</span>
-                <span className="font-light">
-                  {" "}
-                  {nullToNA(applicationFullData?.procurement_no)}
-                </span>
-              </h1>
-            </div>
-
-            {!applicationFullData?.remark?.length == 0 && (
-              <div className="pb-5 pl-8">
-                <h1 className="font-bold text-base text-red-500">
-                  Remark <span className="text-black">:</span>
-                  <span className="text-md pt-2 font-light text-red-500">
-                    {" "}
-                    {nullToNA(applicationFullData?.remark)}
-                  </span>
-                </h1>
-              </div>
-            )}
-
-            <div className="grid md:grid-cols-4 gap-4 ml-8">
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
-                  Item Category
-                </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.category?.name)}
-                </div>
-              </div>
-
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">
-                  Item Sub Category
-                </div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.subcategory?.name)}
-                </div>
-              </div>
-
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Brand</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.brand?.name)}
-                </div>
-              </div>
-
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.quantity)}
-                </div>
-              </div>
-
-              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
-                <div className="md:w-auto w-[50%] font-bold ">Total Rate</div>
-                <div className="md:w-auto w-[50%] text-gray-800 text-md">
-                  {nullToNA(applicationFullData?.total_rate)}
-                </div>
-              </div>
-            </div>
-
-            <div className="p-5 pl-8">
-              <h1 className="font-bold ">Description</h1>
-              <p className=" pt-2">
-                {nullToNA(applicationFullData?.description)}
-              </p>
-            </div>
-
-            <div className="h-[30px]"></div>
-          </div> */}
-
           <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
             <div className=''>
               <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
@@ -593,7 +513,7 @@ const ViewReceivedInvtById = () => {
               </div>
             </div>
 
-            <div className='flex justify-between'>
+            <div className='flex justify-between w-full'>
               <div className='pl-8 text-[1rem] text-black flex justify-between w-full'>
                 <h1 className=''>
                   Category <span className='text-black'>:</span>
@@ -603,6 +523,18 @@ const ViewReceivedInvtById = () => {
                   </span>
                 </h1>
               </div>
+
+              {applicationFullData?.status == "5" && (
+                <div className='pl-8 text-[1rem] text-black flex w-full justify-end'>
+                  <h1 className='text-lg'>
+                    Status <span className='text-black'>:</span>
+                    <span className='font-bold'>
+                      {" "}
+                      {applicationFullData?.status == "5" && "All items added"}
+                    </span>
+                  </h1>
+                </div>
+              )}
             </div>
 
             {applicationFullData?.procurement_stocks?.map((procData, index) => (
@@ -670,7 +602,6 @@ const ViewReceivedInvtById = () => {
                 </div>
               </>
             ))}
-
             <div className='h-[30px]'></div>
           </div>
 
@@ -741,55 +672,6 @@ const ViewReceivedInvtById = () => {
                         {nullToNA(data?.ifsc)}
                       </div>
                     </div>
-
-                    {/* <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>GST %</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.post_procurement?.gst)}
-                  </div>
-                </div>
-
-                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Total Price
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {indianAmount(
-                      applicationFullData?.post_procurement?.total_price
-                    )}
-                  </div>
-                </div>
-
-                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Total Quantity
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(
-                      applicationFullData?.post_procurement?.total_quantity
-                    )}
-                  </div>
-                </div>
-
-                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>
-                    Total Received Items
-                  </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {applicationFullData?.total_receivings
-                      ? applicationFullData?.total_receivings
-                      : 0}
-                  </div>
-                </div>
-
-                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold '>Unit Price</div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {indianAmount(
-                      applicationFullData?.post_procurement?.unit_price
-                    )}
-                  </div>
-                </div> */}
                   </>
                 ))}
 
@@ -930,7 +812,7 @@ const ViewReceivedInvtById = () => {
 
           {/* Inventory Details form */}
 
-          {page == "inbox" && (
+          {page == "inbox" && applicationFullData?.status !== 5 && (
             <div className={`${formStyle} mt-8 border border-blue-500`}>
               <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
                 <div className=''>
@@ -961,7 +843,10 @@ const ViewReceivedInvtById = () => {
                             <option value={""}>select</option>
                             {applicationFullData?.procurement_stocks?.map(
                               (data, index) => (
-                                <option value={data?.id}>
+                                <option
+                                  value={data?.id}
+                                  disabled={!data?.is_partial}
+                                >
                                   Procurement Item: {index + 1}
                                 </option>
                               )

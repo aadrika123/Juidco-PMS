@@ -61,6 +61,9 @@ export default function BoqDetailsByIdFin(props) {
       header: "Gst",
     },
     {
+      header: "Hsn Code",
+    },
+    {
       header: "Rate",
     },
     {
@@ -110,32 +113,6 @@ export default function BoqDetailsByIdFin(props) {
           navigate("/finance");
         } else {
           toast.error("Error in approving. Please try Again");
-        }
-      })
-      .catch(function (error) {
-        console.log(error, "err res");
-        toast.error(error?.response?.data?.error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
-  //forward to finance
-  const forwardBoqFinanceHandler = () => {
-    setIsLoading(true);
-
-    AxiosInterceptors.post(
-      `${api_forwardBoqToFinance}`,
-      { reference_no: refNo },
-      ApiHeader()
-    )
-      .then(function (response) {
-        if (response?.data?.status) {
-          toast.success("BOQ sent to Finance Successfully!!");
-          navigate("/inventoryAdmin-boq");
-        } else {
-          toast.error("Error in Forwarding Boq. Please try Again");
         }
       })
       .catch(function (error) {
@@ -275,21 +252,9 @@ export default function BoqDetailsByIdFin(props) {
                     {dataList?.procurement_stocks[0]?.category?.name}
                   </span>
                 </p>
-                {/* <p className='text-lg font-bold'>
-                  SubCategory:{" "}
-                  <span className='font-semibold text-gray-500'>
-                    {dataList?.procurement_stocks[0]?.subcategory?.name}
-                  </span>
-                </p> */}
               </div>
 
               <div className=''>
-                {/* <p className='text-lg font-bold'>
-                  GST:{" "}
-                  <span className='font-semibold text-gray-500'>
-                    {dataList?.gst}%
-                  </span>
-                </p> */}
                 <p className='text-lg font-bold '>
                   Status:{" "}
                   <span className='font-semibold text-blue-500'>
@@ -302,12 +267,6 @@ export default function BoqDetailsByIdFin(props) {
                         "Basic Pre-tender Info completed") ||
                       (dataList?.status == 60 && "Pre Tender form Submitted") ||
                       (dataList?.status == 70 && "Tendering Admin Inbox")}
-                  </span>
-                </p>
-                <p className='text-lg font-bold '>
-                  HSN Code:{" "}
-                  <span className='font-semibold text-gray-500'>
-                    {dataList?.hsn_code}
                   </span>
                 </p>
               </div>
@@ -347,6 +306,9 @@ export default function BoqDetailsByIdFin(props) {
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {`${row?.gst}%` || 0}
+                        </td>
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                          {`${row?.hsn_code}` || ""}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {indianAmount(row?.rate)}

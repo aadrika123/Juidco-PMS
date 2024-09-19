@@ -100,6 +100,7 @@ import EmployeeServiceById from "./Components/Pages/PMS/EmployeeService/Employee
 import DDEmpServiceReqListTabs from "./Components/Pages/PMS/ServiceRequest/DDEmpServiceReq/DDEmpServiceReqListTabs";
 import DDEmpServiceReqById from "./Components/Pages/PMS/ServiceRequest/DDEmpServiceReq/DDEmpServiceReqById";
 import QcbsFinancialComparison from "./Components/Pages/PMS/Bidding/BiddingAdmin/QcbsFinancialComparison";
+import IaInventoryDashboard from "./Components/Pages/PMS/Dashboards/IaDashboard";
 
 const queryClient = new QueryClient();
 
@@ -262,7 +263,10 @@ function App() {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //------- Stock Receiver -------
+    //------- Dashboard -------
+    { path: "/ia-inventory-dashboard", element: <IaInventoryDashboard /> },
+    { path: "/dinventory-dashboard", element: <InventoryDashboard /> },
+    { path: "/dinventory-dashboard", element: <InventoryDashboard /> },
     { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
     // { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
 
@@ -344,11 +348,6 @@ function App() {
       path: "/boq-search", // need to check the status after getting the dataList
       element: <BoqSearch />,
     },
-
-    // {
-    //   path: "/notifi",
-    //   element: <NotificationSidebar />,
-    // },
 
     /////////////////////////{*** SR Inventory ***}//////////////////////////////////////
     {
@@ -513,7 +512,7 @@ function App() {
               ))}
             </Route>
 
-            <Route path="*" element={<ErrorPage />} />
+            <Route path='*' element={<ErrorPage />} />
           </Routes>
         </contextVar.Provider>
       </>

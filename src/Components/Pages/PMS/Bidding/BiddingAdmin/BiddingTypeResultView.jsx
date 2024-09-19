@@ -310,8 +310,8 @@ const BiddingTypeResultView = () => {
         <div className='flex justify-end space-x-5 mt-8'>
           {/* {console.log(biddingData?.creationStatus)} */}
 
-          {biddingData?.boq?.pre_tendering_details?.tendering_type ==
-            "rate_contract" && !biddingData?.creationStatus == 5 ? (
+          {biddingData?.boq?.pre_tendering_details?.is_rate_contract &&
+          biddingData?.creationStatus === 4 ? (
             <button
               className=' bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-7 py-2 rounded flex gap-2'
               onClick={() =>

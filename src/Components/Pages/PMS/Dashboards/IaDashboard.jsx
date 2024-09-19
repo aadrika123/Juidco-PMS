@@ -4,8 +4,8 @@
 //    Date - 21/05/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - InventoryDashboard
-//    DESCRIPTION - InventoryDashboard
+//    Component  - IaInventoryDashboard
+//    DESCRIPTION - IaInventoryDashboard
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useEffect, useState } from "react";
@@ -27,16 +27,35 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
-import { format, parse } from "date-fns";
+import { format, getDay, parse } from "date-fns";
 
-function InventoryDashboard() {
-  const { api_getddDashboard } = ProjectApiList();
+function IaInventoryDashboard() {
+  const weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  //   const dayName = weekdays[getDay()];
+
+  const { api_getiaDashboard } = ProjectApiList();
 
   const [isLoading, setisLoading] = useState(false);
   const [dashboardData, setDashboardData] = useState([]);
   const [activeTab, setActiveTab] = useState("weekly");
   const [monthName, setMonthName] = useState([]);
-  const [monthData, setMonthData] = useState([]);
+  const [returnMonthData, setReturnMonthData] = useState([]);
+  const [returnWeekData, setReturnWeekData] = useState([]);
+  const [returnYearData, setReturnYearData] = useState([]);
+  const [deadMonthData, setDeadMonthData] = useState([]);
+  const [deadWeekData, setDeadWeekData] = useState([]);
+  const [deadYearData, setDeadYearData] = useState([]);
+  const [assignMonthData, setAssignMonthData] = useState([]);
+  const [assignWeekData, setAssignWeekData] = useState([]);
+  const [assignYearData, setAssignYearData] = useState([]);
   const [weekName, setWeekName] = useState([]);
   const [yearName, setyearName] = useState([]);
 
@@ -44,13 +63,12 @@ function InventoryDashboard() {
 
   // get details by to update
 
-  const fetchDdInventoryData = () => {
+  const fetchIaInventoryData = () => {
     setisLoading(true);
 
-    AxiosInterceptors.get(`${api_getddDashboard}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getiaDashboard}`, ApiHeader())
       .then(function (response) {
-        setDashboardData(response.data?.data);
-        setDataAccToActiveTab();
+        setDashboardData(response.data?.data?.graph);
         setisLoading(false);
       })
       .catch(function (error) {
@@ -60,27 +78,117 @@ function InventoryDashboard() {
   };
 
   const setDataAccToActiveTab = () => {
-    console.log("first");
-
     if (activeTab === "monthly") {
       let monthData = [];
-      dashboardData[activeTab]?.map((info) => {
+      //setting return data
+      dashboardData?.returnData[activeTab]?.map((info) => {
+        const date = parse(info?.month, "yyyy-MM", new Date());
+        const monthName = format(date, "MMMM");
+        monthData.push(info?.count);
+        console.log(monthData, "monthdata");
+        setMonthName((prev) => {
+          if (!prev.includes(monthName)) {
+            return [...prev, monthName];
+          }
+          return prev;
+        });
+        setReturnMonthData(monthData);
+      });
+
+      //setting dead data
+      dashboardData?.deadData[activeTab]?.map((info) => {
+        monthData.push(info?.count);
+        setDeadMonthData(monthData);
+      });
+
+      //setting assigned Data
+      dashboardData?.assignedData[activeTab]?.map((info) => {
+        monthData.push(info?.count);
+        setAssignMonthData(monthData);
+      });
+    } else if (activeTab === "weekly") {
+      //setting return data
+      dashboardData?.returnData?.weekly?.map((info) => {
+        setReturnMonthData((prev) => {
+          if (prev?.length === dashboardData?.returnData?.weekly?.length) {
+            return prev;
+          } else {
+            return [...prev, info?.count];
+          }
+        });
+
+        const dayName = weekdays[getDay(info?.week)];
+        setWeekName((prev) => {
+          if (!prev.includes(dayName)) {
+            return [...prev, dayName];
+          }
+          return prev;
+        });
+      });
+
+      //setting dead data
+      dashboardData?.deadData?.weekly?.map((info) => {
+        setDeadMonthData((prev) => {
+          if (prev?.length === dashboardData?.deadData?.weekly?.length) {
+            return prev;
+          } else {
+            return [...prev, info?.count];
+          }
+        });
+      });
+
+      //setting assigned Data
+      dashboardData?.assignedData?.weekly?.map((info) => {
+        // setAssignMonthData(weekDays);
+        setAssignMonthData((prev) => {
+          if (prev?.length === dashboardData?.assignedData?.weekly?.length) {
+            return prev;
+          } else {
+            return [...prev, info?.count];
+          }
+        });
+      });
+    } else if (activeTab === "yearly") {
+      let monthData = [];
+      //setting return data
+      dashboardData?.returnData[activeTab]?.map((info) => {
         const date = parse(info?.month, "yyyy-MM", new Date());
         const monthName = format(date, "MMMM");
         monthData.push(info?.count);
         setMonthName((prev) => [...prev, monthName]);
-        setMonthData(monthData);
+        setReturnMonthData(monthData);
+      });
+
+      //setting dead data
+      dashboardData?.deadData[activeTab]?.map((info) => {
+        const date = parse(info?.month, "yyyy-MM", new Date());
+        const monthName = format(date, "MMMM");
+        monthData.push(info?.count);
+        setMonthName((prev) => [...prev, monthName]);
+        setDeadMonthData(monthData);
+      });
+
+      //setting assigned Data
+      dashboardData?.assignedData[activeTab]?.map((info) => {
+        const date = parse(info?.month, "yyyy-MM", new Date());
+        const monthName = format(date, "MMMM");
+        monthData.push(info?.count);
+        setMonthName((prev) => [...prev, monthName]);
+        setAssignMonthData(monthData);
       });
     }
   };
+  console.log(weekName, "weekname");
+  console.log(activeTab, "activeTab");
+  console.log(activeTab, "activeTab");
 
   useEffect(() => {
-    fetchDdInventoryData();
+    fetchIaInventoryData();
   }, []);
 
   useEffect(() => {
     setDataAccToActiveTab();
-  }, [activeTab]);
+  }, [activeTab, dashboardData]);
 
   if (isLoading) {
     return (
@@ -90,7 +198,7 @@ function InventoryDashboard() {
       </>
     );
   }
-
+  console.log(monthName, "monthName");
   // charts
   const options = {
     option: {
@@ -99,22 +207,27 @@ function InventoryDashboard() {
         toolbar: { show: false },
       },
       xaxis: {
-        categories: activeTab === "monthly" ? monthName : [],
+        categories:
+          activeTab === "monthly"
+            ? monthName
+            : activeTab === "weekly"
+            ? weekName
+            : [],
       },
     },
     series: [
       {
         name: "Monthly Assign stocks",
-        data: activeTab === "monthly" ? monthData : [],
+        data: assignMonthData || [],
       },
-      // {
-      //   name: "Return stocks",
-      //   data: [15, 70, 45, 55, 29, 65, 75, 91, 125],
-      // },
-      // {
-      //   name: "Dead stocks",
-      //   data: [5, 20, 25, 15, 19, 45, 15, 31, 15],
-      // },
+      {
+        name: "Return stocks",
+        data: returnMonthData || [],
+      },
+      {
+        name: "Dead stocks",
+        data: deadMonthData || [],
+      },
     ],
   };
 
@@ -257,7 +370,7 @@ function InventoryDashboard() {
               } focus:outline-none flex border border-gray-300 rounded`}
               onClick={() => setActiveTab("weekly")}
             >
-              Weekly
+              weekly
             </button>
 
             <button
@@ -399,4 +512,4 @@ function InventoryDashboard() {
   );
 }
 
-export default InventoryDashboard;
+export default IaInventoryDashboard;

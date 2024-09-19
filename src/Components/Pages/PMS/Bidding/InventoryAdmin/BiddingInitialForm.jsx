@@ -364,9 +364,9 @@ const BiddingInitialForm = () => {
                       </div>
                     </div>
 
-                    <div className='flex justify-center items-center'>
+                    {/* <div className='flex justify-center items-center'>
                       <p>{indianAmount(pbgPercentageValue)}</p>
-                    </div>
+                    </div> */}
                   </div>
                 )}
                 {formik.values.pbg_type === "fixed" && (

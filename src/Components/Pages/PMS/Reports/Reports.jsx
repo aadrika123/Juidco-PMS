@@ -549,6 +549,48 @@ export default function Reports() {
     },
   ];
 
+  const FINBOQ = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+    },
+    {
+      Header: "Procurement No",
+      accessor: "procurement_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original?.boq?.procurement_no} </div>
+      ),
+    },
+    {
+      Header: "Reference No",
+      accessor: "reference_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original?.reference_no} </div>
+      ),
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {
+            cell.row.original.boq?.procurement?.procurement_stocks[0]?.category
+              ?.name
+          }{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Estimated Cost",
+      accessor: "estimated_cost",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {indianAmount(cell.row.original.boq?.estimated_cost)}{" "}
+        </div>
+      ),
+    },
+  ];
+
   //setting application type on basis of selected levels---
 
   const applicationType =
@@ -894,11 +936,15 @@ export default function Reports() {
                 : formik.values.reportType === "pre_procurement"
                 ? COLUMNS_PRO
                 : formik.values.reportType === "level_wise" &&
-                  formik.values.module_type !== "service-request"
-                ? COLUMNS_lEVEL
-                : formik.values.reportType === "level_wise" &&
                   formik.values.module_type === "service-request"
                 ? COLUMNS_lEVEL_SERVICE
+                : formik.values.reportType === "level_wise" &&
+                  formik.values.module_type === "boq" &&
+                  formik.values.levels === "finance"
+                ? FINBOQ
+                : formik.values.reportType === "level_wise" &&
+                  formik.values.module_type !== "service-request"
+                ? COLUMNS_lEVEL
                 : COLUMNS
             }
             from={formik.values.from_date}

@@ -172,6 +172,7 @@ export default function ProjectApiList() {
     // notification
     api_fetchNotification: `${baseUrl}/api/pms/notification`,
     api_readNotification: `${baseUrl}/api/pms/notification`,
+    api_replyNotification: `${baseUrl}/api/pms/da/stock-request/procurement-approval`,
 
     //inventory
     api_getDDSRInbox: `${baseUrl}/api/pms/dist/stock-request`,
@@ -303,6 +304,10 @@ export default function ProjectApiList() {
     api_getInventoryTotalMovementReport: `${baseUrl}/api/pms/report/inventory/movement`,
     api_getInventoryPreProcReport: `${baseUrl}/api/pms/report/pre-procurement`,
     api_getInventoryLevelReport: `${baseUrl}/api/pms/report/level-wise`,
+
+    //dashboard
+    api_getddDashboard: `${baseUrl}/api/pms/dashboard/dd`,
+    api_getiaDashboard: `${baseUrl}/api/pms/dashboard/ia`,
   };
 
   return apiList;

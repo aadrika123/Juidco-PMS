@@ -247,7 +247,7 @@ export default function UploadDoc({
           <div className='w-full'>
             <div className=''>
               <h3 className='text-md text-gray-600 font-openSans mb-2'>
-                Content
+                Remark
               </h3>
             </div>
             <div className=' w-full mb-6'>
