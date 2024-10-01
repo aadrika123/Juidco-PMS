@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useFormik } from "formik";
-import { Autocomplete, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  MenuItem,
+  Select,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
@@ -29,7 +35,6 @@ const StockRequestProposal = (props) => {
     api_getActiveDesc,
     api_getSrStockRequetById,
     api_editStockRequest,
-    api_getEmpDetails,
   } = ProjectApiList();
 
   const navigate = useNavigate();
@@ -39,15 +44,15 @@ const StockRequestProposal = (props) => {
   const page = useParams();
 
   const [confModal, setConfModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formValues, setFormValues] = useState("");
   const [category, setCategory] = useState("");
   const [empDetails, setEmpdetails] = useState("");
   const [formattedEmp, setFormattedEmp] = useState([]);
-  const [selectName, setSelectedName] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [brand, setBarnd] = useState("");
   const [descrip, setDescrip] = useState("");
-  const [quantity, setQnty] = useState("");
+  // const [quantity, setQnty] = useState("");
 
   const [catID, setCatId] = useState("");
   const [subCatID, setSubCatId] = useState("");
@@ -82,7 +87,6 @@ const StockRequestProposal = (props) => {
       .then(function (response) {
         if (response?.data?.status === true) {
           setEmpdetails(response?.data?.data?.data);
-          console.log(response?.data?.data?.data);
           formatEmp(response?.data?.data?.data);
           // notify(response?.data?.message, "success");
         } else {
@@ -92,7 +96,6 @@ const StockRequestProposal = (props) => {
       .catch(function (res) {
         notify("Something went wrong!");
       });
-    console.log(empDetails);
     // console.log(testingData)
     // setEmpdetails(testingData);
     // formatEmp(testingData);
@@ -142,9 +145,11 @@ const StockRequestProposal = (props) => {
       });
   };
 
-  const getDesc = (subCat) => {
+  const getDesc = (cat, subCat) => {
     AxiosInterceptors.get(
-      `${api_getActiveDesc}?category=${catID}&scategory=${subCat || subCatID}`,
+      `${api_getActiveDesc}?category=${cat || catID}&scategory=${
+        subCat || subCatID
+      }`,
       ApiHeader()
     )
       .then(function (response) {
@@ -184,7 +189,7 @@ const StockRequestProposal = (props) => {
     AxiosInterceptors.get(`${api_getActiveQty}/${inviId}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status === true) {
-          setQnty(response?.data?.data?.totalAvailableQuantity);
+          // setQnty(response?.data?.data?.totalAvailableQuantity);
           // notify(response?.data?.message, "success");
         } else {
           notify(response?.data?.message, "error");
@@ -198,15 +203,13 @@ const StockRequestProposal = (props) => {
   const getApplicationDetail = () => {
     // setisLoading(true);
     AxiosInterceptors.get(
-      `${api_getSrStockRequetById}/${state?.state}`,
+      `${api_getSrStockRequetById}/${state.state}`,
       ApiHeader()
     )
       .then(async function (response) {
         if (response?.data?.status) {
           getAllMasters(response?.data?.data);
           setapplicationFullData(response?.data?.data);
-
-          // setisLoading(false);
         } else {
           // setisLoading(false);
           // toast.error(response?.data?.message);
@@ -222,10 +225,14 @@ const StockRequestProposal = (props) => {
   };
 
   const getAllMasters = (data) => {
-    // console.log('madarchod',data?.category?.id )
-    getSubCategory(data?.subcategory?.category_masterId);
-    getBrand(data?.brand?.subcategory_masterId);
-    getDescWithParams(data?.category?.id, data?.subcategory?.id);
+    setCatId(data?.inventory?.category?.id);
+    getSubCategory(data?.inventory?.category?.id);
+    getBrand(data?.inventory?.subcategory?.id);
+    // getDescWithParams(
+    //   data?.inventory?.category?.id,
+    //   data?.inventory?.subcategory?.id
+    // );
+    getDesc(data?.inventory?.category?.id, data?.inventory?.subcategory?.id);
     getQuantity(data?.inventory?.id);
   };
 
@@ -246,8 +253,9 @@ const StockRequestProposal = (props) => {
       );
     }
   };
+
   useEffect(() => {
-    if (page?.edit === "edit") {
+    if (page.page === "edit") {
       getApplicationDetail();
     }
 
@@ -255,22 +263,20 @@ const StockRequestProposal = (props) => {
     getEmpdetails();
   }, []);
 
-  // console.log(applicationFullData);
-  // intitial value
   const initialValues = {
     empId: applicationFullData?.emp_id || "",
     empName: applicationFullData?.emp_name || "",
-    category: applicationFullData?.category?.id || "",
-    subCategory: applicationFullData?.subcategory?.id || "",
-    brand: applicationFullData?.brand?.id || "",
+    category: applicationFullData?.inventory?.category?.id || "",
+    subCategory: applicationFullData?.inventory?.subcategory?.id || "",
+    brand: applicationFullData?.inventory?.brand?.id || "",
     quantAlot: applicationFullData?.allotted_quantity || "",
     totQuant: applicationFullData?.totQuant || "",
-    description: applicationFullData?.inventory?.id || "",
+    description: applicationFullData?.inventory?.description?.id || "",
   };
 
   const validationSchema = Yup.object({
     empId: Yup.string().required("Employee Id is required"),
-    empName: Yup.string().required("Employee Id is required"),
+    empName: Yup.string().required("Employee Name is required"),
     category: Yup.string().required("Category is required"),
     subCategory: Yup.string().required("Sub Category is required"),
     quantAlot: Yup.string(),
@@ -296,6 +302,7 @@ const StockRequestProposal = (props) => {
   };
 
   const submitForm = () => {
+    setIsLoading(true);
     let api;
 
     page?.page == "edit"
@@ -320,21 +327,22 @@ const StockRequestProposal = (props) => {
 
     AxiosInterceptors.post(`${api}`, requestBody, ApiHeader())
       .then(function (res) {
-        if (response?.data?.status === true) {
-          notify(response?.data?.message, "success");
+        if (res?.data?.status === true) {
+          toast.success(res?.data?.message, "success");
         } else {
-          notify(response?.data?.message, "error");
+          toast.error(res?.data?.message, "error");
         }
       })
       .catch(function (res) {
-        notify("Something went wrong!");
+        toast.error("Something went wrong!");
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setConfModal(false);
       });
   };
 
-  const handleOnChange = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-  };
+  const handleOnChange = (e) => {};
 
   if (confModal) {
     return (
@@ -343,6 +351,7 @@ const StockRequestProposal = (props) => {
           confirmationHandler={confirmationHandler}
           handleCancel={handleCancel}
           message={"Are you sure you want to Proceed ?"}
+          loadingState={isLoading}
           //   sideMessage={'By clicking your data will proceed'}
         />
       </>
@@ -381,21 +390,17 @@ const StockRequestProposal = (props) => {
                         Employee Id
                       </label>
 
-                      {/* <input
-                        name="empId"
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
-                        value={formik.values.empId}
-                      /> */}
-
                       <Autocomplete
+                        name={"empId"}
                         disablePortal
                         id='combo-box-demo'
                         options={formattedEmp}
                         sx={{ width: "100%" }}
                         size='small'
+                        value={formik.values.empId}
                         renderInput={(params) => (
                           <TextField
+                            name={"empId"}
                             {...params}
                             sx={{ borderColor: "#4b5563" }}
                             className={`${inputStyle} inline-block w-full relative mt-2`}
@@ -483,7 +488,7 @@ const StockRequestProposal = (props) => {
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={(e) => {
                           setSubCatId(e.target.value);
-                          getDesc(e.target.value);
+                          getDesc("", e.target.value);
                           getBrand(e.target.value);
                           formik.handleChange(e);
                         }}
@@ -542,7 +547,7 @@ const StockRequestProposal = (props) => {
                         description
                       </label>
 
-                      <select
+                      {/* <select
                         {...formik.getFieldProps("description")}
                         className={`${inputStyle} inline-block w-full relative`}
                         onChange={(e) => {
@@ -562,7 +567,47 @@ const StockRequestProposal = (props) => {
                               {items?.description}
                             </option>
                           ))}
-                      </select>
+                      </select> */}
+                      <Select
+                        {...formik.getFieldProps("description")}
+                        className={`${inputStyle} inline-block w-full relative`}
+                        onChange={(e) => {
+                          // getQuantity(e.target.value);
+                          formik.handleChange(e);
+                        }}
+                        name='description'
+                        value={formik?.values?.description}
+                      >
+                        <MenuItem value=''>select</MenuItem>
+                        {/* 
+                        {descrip?.length &&
+                          descrip?.map((items) => (
+                            <Tooltip title={items?.description}>
+                              <option
+                                key={items?.id}
+                                value={items?.id}
+                                className='w-10'
+                              >
+                                {items?.description}
+                              </option>
+                            </Tooltip>
+                          ))} */}
+
+                        {descrip?.length &&
+                          descrip?.map((items, index) => (
+                            <MenuItem
+                              id={items?.id}
+                              key={items?.id || index}
+                              value={items?.id || index}
+                              className='w-full'
+                            >
+                              <Tooltip title={items?.description}>
+                                {items?.subcategory?.name} (
+                                {items?.description.slice(0, 60)})
+                              </Tooltip>
+                            </MenuItem>
+                          ))}
+                      </Select>
 
                       <p className='text-red-500 text-xs '>
                         {formik.touched.description && formik.errors.description
@@ -599,8 +644,8 @@ const StockRequestProposal = (props) => {
 
                 <div className='float-right pt-10 mr-8 space-x-5'>
                   <button
-                    // type='submit'
-                    // onClick={openCancelModal}
+                    type='button'
+                    onClick={() => navigate(-1)}
                     className={`bg-white px-5 py-2 text-black rounded leading-5 shadow-lg  hover:bg-[#1A4D8C] hover:text-white border-blue-900 border`}
                   >
                     Cancel
@@ -608,12 +653,24 @@ const StockRequestProposal = (props) => {
                   {/* </div> */}
 
                   {/* <div className='pb-16 mr-8'> */}
-                  <button
-                    type='submit'
-                    className={`bg-[#4338CA] border-blue-900 border hover:bg-[#4478b7] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                  >
-                    Save
-                  </button>
+                  {page.page === "create" && (
+                    <button
+                      type='submit'
+                      className={`bg-[#4338CA] border-blue-900 border hover:bg-[#4478b7] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                    >
+                      Save
+                    </button>
+                  )}
+
+                  {page.page === "edit" && (
+                    <button
+                      type='submit'
+                      className={`bg-[#4338CA] border-blue-900 border hover:bg-[#4478b7] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                      // onClick={}
+                    >
+                      Save Changes
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

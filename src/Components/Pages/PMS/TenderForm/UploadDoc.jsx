@@ -5,6 +5,7 @@ import csvIcon from "@/assets/Images/csvIcon.png";
 import xlsxIcon from "@/assets/Images/xlsx.png";
 import toast from "react-hot-toast";
 import { RiDeleteBinLine } from "react-icons/ri";
+import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 
 export default function UploadDoc({
   tab,
@@ -14,10 +15,10 @@ export default function UploadDoc({
   setTabData,
   errors,
   touched,
-  formikTabs,
   setFieldValue,
   contentDefVal,
   docs,
+  formikTabs,
 }) {
   const inputFileRef = useRef();
 
@@ -81,15 +82,27 @@ export default function UploadDoc({
   };
 
   const deleteFileHandler = (fileName) => {
-    const spTab = tabData.map((det) => ({
-      ...det,
-      documents:
-        det.value == tab
-          ? det.documents.filter((file) => file.name != fileName)
-          : [...det.documents],
-    }));
-    setFieldValue("tabs", spTab);
-    setTabData(spTab);
+    if (fileName instanceof File) {
+      const spTab = tabData.map((det) => ({
+        ...det,
+        documents:
+          det.value == tab
+            ? det.documents.filter((file) => file.name != fileName)
+            : [...det.documents],
+      }));
+      setFieldValue("tabs", spTab);
+      setTabData(spTab);
+    } else {
+      const spTab = tabData.map((det) => ({
+        ...det,
+        documents:
+          det.value == tab
+            ? det.documents.filter((file) => file != fileName)
+            : [...det.documents],
+      }));
+      setFieldValue("tabs", spTab);
+      setTabData(spTab);
+    }
   };
 
   return (
@@ -123,7 +136,7 @@ export default function UploadDoc({
               <div className='mb-4'>
                 <input
                   type='file'
-                  accept='.jpg, .jpeg, .pdf .png'
+                  accept='.jpg, .jpeg, .pdf, .png'
                   className='hidden'
                   ref={inputFileRef}
                   onChange={(e) => imageHandler(e)}
@@ -140,8 +153,9 @@ export default function UploadDoc({
                 </div>
               </div>
             </div>
+
             <div className='mb-4'>
-              {docs
+              {/* {docs
                 ?.find((files) => files.type === tab)
                 ?.docPath?.map((file, index) => (
                   <div
@@ -174,22 +188,18 @@ export default function UploadDoc({
                             className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-md p-1'
                           />
                         )}
-                        <div className='text-gray-500 text-xs'>
-                          {/* <p className='text-black'>{file?.name}</p> */}
-                          <p>
-                            {/* {Math.round((file?.size / 1024) * 100) / 100} kb */}
-                          </p>
-                        </div>
                       </div>
                       <button
                         className='rounded-full p-3 hover:bg-blue-200'
                         onClick={() => deleteFileHandler(file?.name)}
+                        type='button'
                       >
                         <RiDeleteBinLine />
                       </button>
                     </div>
                   </div>
-                ))}
+                ))} */}
+
               {tabData
                 ?.find((files) => files.value === tab)
                 ?.documents?.map((file) => (
@@ -197,43 +207,75 @@ export default function UploadDoc({
                     className='mb-2 bg-[#EEF1F7] h-14 w-full rounded-md'
                     key={file.name}
                   >
-                    <div className='flex justify-between items-center px-6 py-2 '>
+                    <div className='flex justify-between items-center px-6 '>
                       <div className='flex items-center gap-4'>
                         {(file?.type === "application/pdf" ||
                           file?.type === "text/csv" ||
                           file?.type ===
-                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") && (
-                          <img
-                            src={
-                              file.type === "application/pdf"
-                                ? pdfIcon
-                                : file.type === "text/csv"
-                                ? csvIcon
-                                : xlsxIcon
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+                          (typeof file === "string" &&
+                            (file?.includes("pdf") ||
+                              file?.includes("csv") ||
+                              file?.includes("xlsx")))) && (
+                          // <img
+                          //   src={
+                          //     file?.type === "application/pdf" ||
+                          //     file?.includes("pdf")
+                          //       ? pdfIcon
+                          //       : file.type === "text/csv" ||
+                          //         file.includes("csv")
+                          //       ? csvIcon
+                          //       : xlsxIcon
+                          //   }
+                          //   alt='file'
+                          //   className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-full p-1'
+                          // />
+                          <ImageDisplay
+                            url={typeof file === "string" ? file : ""}
+                            preview={
+                              file instanceof File && URL.createObjectURL(file)
                             }
-                            alt='file'
-                            className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-full p-1'
+                            imageDoc={file}
+                            alt={"uploaded document"}
+                            showPreview={"hidden"}
+                            width={"[50px]"}
+                            hide={true}
                           />
                         )}
 
                         {file?.type?.match(/(jpg|jpeg|png)$/) && (
-                          <img
-                            src={URL.createObjectURL(file)}
-                            alt='Image Preview'
-                            // style={{ width: "200px", height: "auto", marginTop: "20px", border: "2px", borderColor: "blue" }}
-                            className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-md p-1'
+                          // <img
+                          //   src={URL.createObjectURL(file)}
+                          //   alt='Image Preview'
+                          //   className='w-[40px] h-auto cursor-pointer hover:bg-blue-200 rounded-md p-1'
+                          // />
+                          <ImageDisplay
+                            url={typeof file === "string" ? file : ""}
+                            preview={
+                              file instanceof File && URL.createObjectURL(file)
+                            }
+                            imageDoc={file}
+                            alt={"uploaded document"}
+                            showPreview={"hidden"}
+                            width={"[50px]"}
+                            hide={true}
                           />
                         )}
                         <div className='text-gray-500 text-xs'>
                           <p className='text-black'>{file?.name}</p>
                           <p>
-                            {Math.round((file?.size / 1024) * 100) / 100} kb
+                            {file?.size
+                              ? `${
+                                  Math.round((file?.size / 1024) * 100) / 100
+                                } kb`
+                              : ""}{" "}
                           </p>
                         </div>
                       </div>
                       <button
                         className='rounded-full p-3 hover:bg-blue-200'
-                        onClick={() => deleteFileHandler(file?.name)}
+                        onClick={() => deleteFileHandler(file)}
+                        type='button'
                       >
                         <RiDeleteBinLine />
                       </button>
@@ -246,7 +288,7 @@ export default function UploadDoc({
           <div className='w-full'>
             <div className=''>
               <h3 className='text-md text-gray-600 font-openSans mb-2'>
-                Content
+                Remark
               </h3>
             </div>
             <div className=' w-full mb-6'>

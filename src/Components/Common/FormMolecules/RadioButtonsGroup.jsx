@@ -25,7 +25,11 @@ export default function RadioButtonsGroup({
   tabsCover2,
   tabsCover3,
   tabsCover4,
+  differentData,
 }) {
+  console.log(values, "values props");
+  console.log(fields, "fields props");
+
   const handleCoversChange = (event) => {
     const { value } = event.target;
     setFieldValue("noOfCovers", value);
@@ -58,7 +62,6 @@ export default function RadioButtonsGroup({
     } else if (!data[name]) {
       data[name] = value;
     }
-
     setFieldValue(name, data[name]);
   };
 
@@ -87,10 +90,14 @@ export default function RadioButtonsGroup({
               key={opt.value}
               value={opt.value}
               name={`${name}`}
-              disabled={disabled || false}
+              disabled={
+                disabled ||
+                (differentData === "qcbs" && opt.value === "1") ||
+                false
+              }
               control={
                 <Radio
-                  checked={values.includes(opt.value)}
+                  checked={values.length && values?.includes(opt.value)}
                   onChange={(e) => onChangeHandler(e)}
                   // onChange={handleChange}
                   sx={{

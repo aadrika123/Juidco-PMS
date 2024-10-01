@@ -132,13 +132,15 @@ export default function ProjectApiList() {
     api_postForwardBoq: `${baseUrl}/api/pms/da/pre-procurement/boq/approve`, //approve boq
     api_approveBoq: `${baseUrl}/api/pms/finance/boq/approve`, //approve new boq by fin
     api_postRejectBoq: `${baseUrl}/api/pms/da/pre-procurement/boq/reject`, //reject boq
-    api_rejectFinBoq: `${baseUrl}/api/pms/finance/boq/reject`, //reject boq fin
+    // api_rejectFinBoq: `${baseUrl}/api/pms/finance/boq/reject`, //reject boq fin
+    api_returnFinBoq: `${baseUrl}/api/pms/finance/boq/return`, //reject boq fin
     api_forwardBoqToFinance: `${baseUrl}/api/pms/da/pre-procurement/boq/to-finance`,
     api_forwardBoqToTA: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/to-ta`,
     api_forwardRateToPostProc: `${baseUrl}/api/pms/da/pre-procurement/boq/for-post`,
 
     //tendring form
     api_postPreTenderDetails: `${baseUrl}/api/pms/pre-tender/details`,
+    api_postPreTenderCoverDetails: `${baseUrl}/api/pms/pre-tender/add-covers`, // to add number of covers in case of ta view samll tender page
 
     api_postBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
     api_getBasicDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/basic-details`,
@@ -170,6 +172,7 @@ export default function ProjectApiList() {
     // notification
     api_fetchNotification: `${baseUrl}/api/pms/notification`,
     api_readNotification: `${baseUrl}/api/pms/notification`,
+    api_replyNotification: `${baseUrl}/api/pms/da/stock-request/procurement-approval`,
 
     //inventory
     api_getDDSRInbox: `${baseUrl}/api/pms/dist/stock-request`,
@@ -199,8 +202,10 @@ export default function ProjectApiList() {
 
     api_forwardStockReqToI: `${baseUrl}/api/pms/da/stock-request/to-ia`,
     api_iaStockReqInbox: `${baseUrl}/api/pms/ia/stock-request/`,
+    api_iaStockReqNotify: `${baseUrl}/api/pms/ia/stock-request/notify/`,
     api_iaStockReqOubox: `${baseUrl}/api/pms/ia/stock-request/outbox`,
     api_iaStockReqApprove: `${baseUrl}/api/pms/ia/stock-request/approve`,
+    api_distStockReqReturn: `${baseUrl}/api/pms/ia/stock-request/return`,
     api_iaGetProducts: `${baseUrl}/api/pms/ia/stock-request/product`,
 
     api_forwardLevelone: `${baseUrl}/api/pms/ia/pre-procurement/to-level1`,
@@ -226,6 +231,7 @@ export default function ProjectApiList() {
 
     //pre-procure
     api_fetchProcurementById: `${baseUrl}/api/pms/procurement`,
+    api_editProcurementById: `${baseUrl}/api/pms/procurement/edit/stock`,
     api_fetchProcurementDetById: `${baseUrl}/api/pms/pre-tender/details`,
 
     //tendering admin
@@ -240,8 +246,11 @@ export default function ProjectApiList() {
     api_submitCreteria: `${baseUrl}/api/pms/ta/submit-criteria`,
     api_addBidder: `${baseUrl}/api/pms/ta/add-bidder`,
     api_submitBidder: `${baseUrl}/api/pms/ta/submit-bidder`,
+    api_submitBiddingAmt: `${baseUrl}/api/pms/ta/add-bidding-amount`,
+    api_submitBiddingRatio: `${baseUrl}/api/pms/ta/set-comparison-ratio`,
     api_postWinner: `${baseUrl}/api/pms/ta/select-winner`,
     api_finalizeWinner: `${baseUrl}/api/pms/ta/comparison-finalize`,
+    api_financialComp: `${baseUrl}/api/pms/ta/comparison-result/financial/`,
 
     // Post Procurement
     api_fetchPostProcurementDetailSupplierbyId: `${baseUrl}/api/pms/procurement`,
@@ -253,15 +262,18 @@ export default function ProjectApiList() {
 
     //service request
     api_getServiceRequestId: `${baseUrl}/api/pms/service-request`,
+    api_getempServiceRequestId: `${baseUrl}/api/pms/emp-service`,
     api_approveServiceRequestDA: `${baseUrl}/api/pms/da/service-request/to-ia`,
     api_approveServiceRequestDD: `${baseUrl}/api/pms/dist/service-request`,
     api_approveServiceRequestIA: `${baseUrl}/api/pms/ia/service-request/approve`,
+    api_rejectServiceRequestIA: `${baseUrl}/api/pms/ia/service-request/reject`,
     api_getDistServiceInbox: `${baseUrl}/api/pms/dist/service-request/emp`,
     api_getDistServiceOutbox: `${baseUrl}/api/pms/dist/service-request/emp/outbox`,
     api_getDaServiceInbox: `${baseUrl}/api/pms/da/service-request`,
     api_getDaServiceOutbox: `${baseUrl}/api/pms/da/service-request/outbox`,
     api_getIaServiceInbox: `${baseUrl}/api/pms/ia/service-request`,
     api_getIaServiceOutbox: `${baseUrl}/api/pms/ia/service-request/outbox`,
+    api_approveServiceRequestEmpDa: `${baseUrl}/api/pms/dist/service-request/emp/approve`,
 
     //master
     api_getBank: `${baseUrl}/api/pms/master/bank`,
@@ -295,6 +307,12 @@ export default function ProjectApiList() {
     api_getInventoryTotalMovementReport: `${baseUrl}/api/pms/report/inventory/movement`,
     api_getInventoryPreProcReport: `${baseUrl}/api/pms/report/pre-procurement`,
     api_getInventoryLevelReport: `${baseUrl}/api/pms/report/level-wise`,
+
+    //dashboard
+    api_getddDashboard: `${baseUrl}/api/pms/dashboard/dd`,
+    api_getiaDashboard: `${baseUrl}/api/pms/dashboard/ia`,
+    api_getTaDashboard: `${baseUrl}/api/pms/dashboard/tender`,
+    api_getLevelDashboard: `${baseUrl}/api/pms/dashboard/level`,
   };
 
   return apiList;

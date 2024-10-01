@@ -9,8 +9,10 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import cancel from "@/Components/assets/cancel.svg";
+import ThemeStyle from "@/Components/Common/ThemeStyle";
 
 function StockReceiverModal(props) {
+  const { loading } = ThemeStyle();
   const handleClick = () => {
     props?.forwardToIa();
     // navigate(`/sr-inventory-proposal`);
@@ -56,6 +58,7 @@ function StockReceiverModal(props) {
                 <button
                   className={`bg-white border-blue-900 border text-blue-950 text-sm px-8 py-2 hover:bg-[#1A4D8C] hover:text-white  rounded leading-5 shadow-lg`}
                   onClick={handleCancilClick}
+                  disabled={props?.loader}
                 >
                   Cancel
                 </button>
@@ -65,8 +68,13 @@ function StockReceiverModal(props) {
                 <button
                   className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg`}
                   onClick={handleClick}
+                  disabled={props?.loader}
                 >
-                  Continue
+                  {props?.loader ? (
+                    <div className={`${loading}`}></div>
+                  ) : (
+                    "Continue"
+                  )}
                 </button>
               </div>
             </div>

@@ -15,6 +15,8 @@ import PreTenderingTimeline from "@/Components/Common/Timeline/PreTenderingTimel
 import { useReactToPrint } from "react-to-print";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
+import { format, parseISO } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
 
 const TenderFormViewDetails = () => {
   const { loading } = ThemeStyle();
@@ -93,9 +95,11 @@ const TenderFormViewDetails = () => {
           setIsSuccessModal(true);
         } else {
           // toast.error(response?.data?.message);
+          console.log(response.data, "res");
         }
       })
       .catch(function (error) {
+        console.log(error, "error====");
         toast.error(error?.response?.data?.error);
       })
       .finally(() => {
@@ -456,7 +460,10 @@ const TenderFormViewDetails = () => {
               <div className='relative overflow-hidden flex space-x-5 w-1/2 justify-center items-center text-center'>
                 {previewData?.cover_details?.cover_details_docs?.map(
                   (data, index) => (
-                    <div className='w-[120px] flex flex-col items-center gap-2'>
+                    <div
+                      className='w-[120px] flex flex-col items-center gap-2'
+                      key={index}
+                    >
                       <ImageDisplay url={data?.docPath[0]} preview={""} />
                       {/* <img
                         src={data?.docPath[0]}
@@ -629,10 +636,6 @@ const TenderFormViewDetails = () => {
             </div>
             <div className='p-4 pt-9 text-sm space-y-4 w-1/2'>
               <h1>
-                <span className={descTitle}>Tender Class : </span>{" "}
-                <span className={descText}>XYZ Values</span>
-              </h1>
-              <h1>
                 <span className={descTitle}>Inviting Officer Name : </span>{" "}
                 <span className={descText}>
                   {previewData?.work_details?.invstOffName}
@@ -743,24 +746,52 @@ const TenderFormViewDetails = () => {
                     {indianAmount(previewData?.fee_details?.emdAmount)}
                   </span>
                 </h1>
-                <h1>
-                  <span className={descTitle}>EMD Percentage :</span>{" "}
-                  <span className={descText}>
-                    {previewData?.fee_details?.emdPercentage}
-                  </span>
-                </h1>
+                {previewData?.fee_details?.emd_fee !== "fixed" && (
+                  <>
+                    <h1>
+                      <span className={descTitle}>EMD Percentage :</span>{" "}
+                      <span className={descText}>
+                        {previewData?.fee_details?.emdPercentage}
+                      </span>
+                    </h1>
+                    <h1>
+                      <span className={descTitle}>EMD Percentage Amount :</span>{" "}
+                      <span className={descText}>
+                        {indianAmount(
+                          (Number(previewData?.fee_details?.emdPercentage) /
+                            100) *
+                            Number(previewData?.fee_details?.emdAmount)
+                        )}
+                      </span>
+                    </h1>
+                  </>
+                )}
               </div>
               <div className='w-1/3  space-y-3'>
                 <h1>
                   <span className={descTitle}>EMD Fee Payable To :</span>{" "}
                   <span className={descText}>
-                    {previewData?.fee_details?.emdFeePayableTo}
+                    {previewData?.fee_details?.emdFeePayableAt}
                   </span>
                 </h1>
                 <h1>
                   <span className={descTitle}>EMD Fee Payable At :</span>{" "}
                   <span className={descText}>
-                    {previewData?.fee_details?.emdFeePayableAt}
+                    {previewData?.fee_details?.emdFeePayableTo}
+                  </span>
+                </h1>
+              </div>
+              <div className='w-1/3  space-y-3'>
+                <h1>
+                  <span className={descTitle}>Tender Fee Payable To :</span>{" "}
+                  <span className={descText}>
+                    {previewData?.fee_details?.tenderFeePayableTo}
+                  </span>
+                </h1>
+                <h1>
+                  <span className={descTitle}>Tender Fee Payable At :</span>{" "}
+                  <span className={descText}>
+                    {previewData?.fee_details?.tenderFeePayableAt}
                   </span>
                 </h1>
               </div>
@@ -781,10 +812,17 @@ const TenderFormViewDetails = () => {
                     Publishing Date & Time : <br />
                   </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(
-                      previewData?.critical_dates?.publishingDate
-                    )}
-                    {/* {previewData?.critical_dates?.publishingDate} */}
+                    {previewData?.critical_dates?.publishingDate
+                      ? format(
+                          toZonedTime(
+                            parseISO(
+                              previewData?.critical_dates?.publishingDate
+                            ),
+                            "Asia/Kolkata"
+                          ),
+                          "dd-MM-yyyy HH:mm:ss"
+                        )
+                      : "N/A"}
                   </span>
                 </h1>
                 <h1>
@@ -792,9 +830,20 @@ const TenderFormViewDetails = () => {
                     Bid Opening Date & Time : <br />
                   </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(
+                    {/* {formateDateTime(
                       previewData?.critical_dates?.bidOpeningDate
-                    )}
+                    )} */}
+                    {previewData?.critical_dates?.bidOpeningDate
+                      ? format(
+                          toZonedTime(
+                            parseISO(
+                              previewData?.critical_dates?.bidOpeningDate
+                            ),
+                            "Asia/Kolkata"
+                          ),
+                          "dd-MM-yyyy HH:mm:ss"
+                        )
+                      : "N/A"}
                   </span>
                 </h1>
                 <h1>
@@ -802,9 +851,20 @@ const TenderFormViewDetails = () => {
                     Pre Bid Meeting Date & Time : <br />
                   </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(
+                    {/* {formateDateTime(
                       previewData?.critical_dates?.preBidMettingDate
-                    )}
+                    )} */}
+                    {previewData?.critical_dates?.preBidMettingDate
+                      ? format(
+                          toZonedTime(
+                            parseISO(
+                              previewData?.critical_dates?.preBidMettingDate
+                            ),
+                            "Asia/Kolkata"
+                          ),
+                          "dd-MM-yyyy HH:mm:ss"
+                        )
+                      : "N/A"}
                   </span>
                 </h1>
               </div>
@@ -815,9 +875,20 @@ const TenderFormViewDetails = () => {
                     Document Sale Start Date & Time : <br />
                   </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(
+                    {/* {formateDateTime(
                       previewData?.critical_dates?.docSaleStartDate
-                    )}
+                    )} */}
+                    {previewData?.critical_dates?.docSaleStartDate
+                      ? format(
+                          toZonedTime(
+                            parseISO(
+                              previewData?.critical_dates?.docSaleStartDate
+                            ),
+                            "Asia/Kolkata"
+                          ),
+                          "dd-MM-yyyy HH:mm:ss"
+                        )
+                      : "N/A"}
                   </span>
                 </h1>
                 <h1>
@@ -825,9 +896,20 @@ const TenderFormViewDetails = () => {
                     Document Sale End Date & Time : <br />
                   </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(
+                    {/* {formateDateTime(
                       previewData?.critical_dates?.docSaleEndDate
-                    )}
+                    )} */}
+                    {previewData?.critical_dates?.docSaleEndDate
+                      ? format(
+                          toZonedTime(
+                            parseISO(
+                              previewData?.critical_dates?.docSaleEndDate
+                            ),
+                            "Asia/Kolkata"
+                          ),
+                          "dd-MM-yyyy HH:mm:ss"
+                        )
+                      : "N/A"}
                   </span>
                 </h1>
                 <h1>
@@ -835,9 +917,20 @@ const TenderFormViewDetails = () => {
                     Seek Clarification Start Date & Time : <br />
                   </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(
+                    {/* {formateDateTime(
                       previewData?.critical_dates?.seekClariStrtDate
-                    )}
+                    )} */}
+                    {previewData?.critical_dates?.seekClariStrtDate
+                      ? format(
+                          toZonedTime(
+                            parseISO(
+                              previewData?.critical_dates?.seekClariStrtDate
+                            ),
+                            "Asia/Kolkata"
+                          ),
+                          "dd-MM-yyyy HH:mm:ss"
+                        )
+                      : "N/A"}
                   </span>
                 </h1>
               </div>
@@ -848,9 +941,20 @@ const TenderFormViewDetails = () => {
                     Seek Clarification End Date & Time : <br />
                   </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(
+                    {/* {formateDateTime(
                       previewData?.critical_dates?.seekClariEndDate
-                    )}
+                    )} */}
+                    {previewData?.critical_dates?.seekClariEndDate
+                      ? format(
+                          toZonedTime(
+                            parseISO(
+                              previewData?.critical_dates?.seekClariEndDate
+                            ),
+                            "Asia/Kolkata"
+                          ),
+                          "dd-MM-yyyy HH:mm:ss"
+                        )
+                      : "N/A"}
                   </span>
                 </h1>
                 <h1>
@@ -858,9 +962,20 @@ const TenderFormViewDetails = () => {
                     Bid Submission Start Date & Time : <br />
                   </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(
+                    {/* {formateDateTime(
                       previewData?.critical_dates?.bidSubStrtDate
-                    )}
+                    )} */}
+                    {previewData?.critical_dates?.bidSubStrtDate
+                      ? format(
+                          toZonedTime(
+                            parseISO(
+                              previewData?.critical_dates?.bidSubStrtDate
+                            ),
+                            "Asia/Kolkata"
+                          ),
+                          "dd-MM-yyyy HH:mm:ss"
+                        )
+                      : "N/A"}
                   </span>
                 </h1>
                 <h1>
@@ -868,9 +983,20 @@ const TenderFormViewDetails = () => {
                     Bid Submission End Date & Time : <br />
                   </span>{" "}
                   <span className={descText}>
-                    {formateDateTime(
+                    {/* {formateDateTime(
                       previewData?.critical_dates?.bidSubEndDate
-                    )}
+                    )} */}
+                    {previewData?.critical_dates?.bidSubEndDate
+                      ? format(
+                          toZonedTime(
+                            parseISO(
+                              previewData?.critical_dates?.bidSubEndDate
+                            ),
+                            "Asia/Kolkata"
+                          ),
+                          "dd-MM-yyyy HH:mm:ss"
+                        )
+                      : "N/A"}
                   </span>
                 </h1>
               </div>

@@ -27,26 +27,19 @@ import WorkDetailsForm from "./WorkDetailsForm";
 import FeeDetailsForm from "./FeeDetailsForm";
 import CriticalDateForm from "./CriticalDateForm";
 import BidOpinerForm from "./BidOpinerForm";
-import {
-  Navigate,
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TenderFormViewDetails from "./TenderFormViewDetails";
 
 const TenderForm = () => {
   let [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  
   const location = useLocation();
-  
+
   const { titleBarVisibility } = useContext(contextVar);
-  
+
   const tabNo = Number(searchParams.get("tabNo"));
-  
+
   const handleTabClick = (tabNo) => {
     navigate(`/${location.pathname}?tabNo=${tabNo}`);
   };

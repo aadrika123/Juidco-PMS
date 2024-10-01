@@ -5,13 +5,12 @@ import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGro
 import cdIcon from "@/Components/assets/cd.svg";
 import UploadDoc from "./UploadDoc";
 import toast from "react-hot-toast";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
-import { TailSpin } from "react-loader-spinner";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const tabsCover1 = [
@@ -19,6 +18,7 @@ const tabsCover1 = [
     name: "fee/ prequal/ technical/ financial",
     value: "fee/prequal/technical/financial",
     documents: [],
+    docs: [],
   },
 ];
 const tabsCover2 = [
@@ -26,23 +26,30 @@ const tabsCover2 = [
     name: "fee/ prequal/ technical",
     value: "fee/prequal/technical",
     documents: [],
+    docs: [],
   },
-  { name: "financial", value: "financial", documents: [] },
+  { name: "financial", value: "financial", documents: [], docs: [] },
 ];
 const tabsCover3 = [
-  { name: "fee", value: "fee", documents: [] },
-  { name: "prequal/ technical", value: "prequal/technical", documents: [] },
-  { name: "financial", value: "financial", documents: [] },
+  { name: "fee", value: "fee", documents: [], docs: [] },
+  {
+    name: "prequal/ technical",
+    value: "prequal/technical",
+    documents: [],
+    docs: [],
+  },
+  { name: "financial", value: "financial", documents: [], docs: [] },
 ];
 const tabsCover4 = [
-  { name: "fee", value: "fee", documents: [] },
-  { name: "prequal", value: "prequal", documents: [] },
-  { name: "technical", value: "technical", documents: [] },
-  { name: "financial", value: "financial", documents: [] },
+  { name: "fee", value: "fee", documents: [], docs: [] },
+  { name: "prequal", value: "prequal", documents: [], docs: [] },
+  { name: "technical", value: "technical", documents: [], docs: [] },
+  { name: "financial", value: "financial", documents: [], docs: [] },
 ];
 
 const CoverDetailsForm = () => {
   const [tabData, setTabData] = useState(tabsCover1);
+  const [applicationFullData, setapplicationFullData] = useState();
   const [imageDoc, setImageDoc] = useState([]);
   const [preview, setPreview] = useState();
   const [referenceNo, setReferenceNo] = useState();
@@ -50,8 +57,12 @@ const CoverDetailsForm = () => {
   const [activeTab, setActiveTab] = useState(tabsCover1[0]?.value);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { api_postCoverDetails, api_postDocumentUpload, api_getCoverDetails } =
-    ProjectApiList();
+  const {
+    api_postCoverDetails,
+    api_postDocumentUpload,
+    api_getCoverDetails,
+    api_fetchProcurementDetById,
+  } = ProjectApiList();
 
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -84,28 +95,51 @@ const CoverDetailsForm = () => {
 
       for (const file of data?.documents) {
         let formData = new FormData();
-        formData.append("doc", file);
+        if (file instanceof File) {
+          formData.append("doc", file);
 
-        try {
-          const res = await AxiosInterceptors.post(
-            api_postDocumentUpload,
-            formData,
-            ApiHeader2()
-          );
+          try {
+            const res = await AxiosInterceptors.post(
+              api_postDocumentUpload,
+              formData,
+              ApiHeader2()
+            );
 
-          if (res?.status == 200) {
-            const fileUrl = res?.data?.data; // Assuming the API response contains the uploaded file URL in 'url'
-            uploadedDocs[tabName].push(fileUrl);
-          } else {
-            toast.error(`Failed to upload document for ${tabName}`);
-            console.log(`Failed to upload document for ${tabName}`);
+            if (res?.status == 200) {
+              const fileUrl = res?.data?.data; // Assuming the API response contains the uploaded file URL in 'url'
+              uploadedDocs[tabName].push(fileUrl);
+            } else {
+              toast.error(`Failed to upload document for ${tabName}`);
+              console.log(`Failed to upload document for ${tabName}`);
+            }
+          } catch (err) {
+            toast.error(err);
+            console.log(`Error uploading document for ${tabName}:`, err);
           }
-        } catch (err) {
-          toast.error(err);
-          console.log(`Error uploading document for ${tabName}:`, err);
-        } finally {
-          // setIsLoading(false);
+        } else {
+          uploadedDocs[tabName].push(file);
         }
+
+        // try {
+        //   console.log("called===");
+        //   const res = await AxiosInterceptors.post(
+        //     api_postDocumentUpload,
+        //     formData,
+        //     ApiHeader2()
+        //   );
+
+        //   if (res?.status == 200) {
+        //     const fileUrl = res?.data?.data; // Assuming the API response contains the uploaded file URL in 'url'
+        //     uploadedDocs[tabName].push(fileUrl);
+        //   } else {
+        //     toast.error(`Failed to upload document for ${tabName}`);
+        //     console.log(`Failed to upload document for ${tabName}`);
+        //   }
+        // } catch (err) {
+        //   toast.error(err);
+        //   console.log(`Error uploading document for ${tabName}:`, err);
+        // } finally {
+        // }
       }
     }
 
@@ -148,17 +182,21 @@ const CoverDetailsForm = () => {
         setIsLoading(false);
         console.log(error, "errrrrrrrrrrrrrrrrrrr");
         toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const handleSubmit = (values) => {
+    console.log(values, "values");
     values.tabs.forEach((tab) => {
       if (tab?.documents?.length === 0) {
         toast.error(`Please upload valid documents for ${tab.name}`);
         return;
       }
+      submitForm(values);
     });
-    submitForm(values);
   };
 
   //to insert documents into initial values in tabscover data
@@ -184,7 +222,8 @@ const CoverDetailsForm = () => {
       )?.docPath;
       return {
         ...obj,
-        documents: docUrl ? [docUrl] : [],
+        documents: docUrl ? docUrl : null,
+        docs: docUrl ? docUrl : null,
       };
     });
   };
@@ -244,17 +283,49 @@ const CoverDetailsForm = () => {
       });
   };
 
+  const getBasicBiddingDetail = (refNo) => {
+    setIsLoading(true);
+    AxiosInterceptors.get(
+      `${api_fetchProcurementDetById}/${refNo}`,
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          setapplicationFullData(response?.data?.data);
+          if (response?.data?.data?.tendering_type === "qcbs") {
+            setTabData(tabsCover2);
+          }
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        console.log("details by id error...", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   const initialValues = {
     noOfCovers: coverDetails?.noOfCovers
       ? String(coverDetails?.noOfCovers)
+      : applicationFullData?.tendering_type === "qcbs"
+      ? "2"
       : "1",
     tabs: [
-      {
-        name: "fee/ prequal/ technical",
-        value: "fee/prequal/technical",
-        documents: [],
-      },
+      applicationFullData?.tendering_type !== "qcbs"
+        ? {
+            name: "fee/ prequal/ technical",
+            value: "fee/prequal/technical",
+            documents: [],
+          }
+        : tabsCover2,
     ],
+    // tabs: tabData,
     content: coverDetails?.content || "",
   };
 
@@ -262,6 +333,7 @@ const CoverDetailsForm = () => {
     let refNo = window.localStorage.getItem("reference_no");
     setReferenceNo(refNo);
     getApplicationDetail(refNo);
+    getBasicBiddingDetail(refNo);
   }, []);
 
   return (
@@ -284,14 +356,7 @@ const CoverDetailsForm = () => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({
-            values,
-            handleChange,
-            errors,
-            touched,
-            setFieldValue,
-            resetForm,
-          }) => (
+          {({ values, errors, touched, setFieldValue, resetForm }) => (
             <Form>
               <>
                 <div className='bg-white rounded-md w-full shadow-xl p-4 mt-5'>
@@ -305,7 +370,7 @@ const CoverDetailsForm = () => {
                     errors={errors.noOfCovers}
                     touched={touched.noOfCovers}
                     name={"noOfCovers"}
-                    defaultValue={String(coverDetails?.noOfCovers) || "1"}
+                    // defaultValue={String(coverDetails?.noOfCovers) || "1"}
                     setFieldValue={setFieldValue}
                     setTabData={setTabData}
                     autoSelectActiveTab={autoSelectActiveTab}
@@ -313,6 +378,8 @@ const CoverDetailsForm = () => {
                     tabsCover2={tabsCover2}
                     tabsCover3={tabsCover3}
                     tabsCover4={tabsCover4}
+                    differentData={applicationFullData?.tendering_type}
+                    // disabled={applicationFullData?.tendering_type === "qcbs" &&  2}
                   />
                   {/* tabs */}
                   <div className='flex gap-8 px-4 w-full relative z-1'>

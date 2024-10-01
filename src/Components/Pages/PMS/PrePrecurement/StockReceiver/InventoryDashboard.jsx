@@ -12,8 +12,6 @@ import React, { useEffect, useState } from "react";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
-import { useNavigate } from "react-router-dom";
-import BarLoader from "@/Components/Common/Loaders/BarLoader";
 //---------------------pms------------------------------
 import Chart from "react-apexcharts";
 import {
@@ -23,45 +21,69 @@ import {
   LowStockAnimation,
   ReorderAnimation,
   IncreaseAnimation,
-} from "@/Components/temp";
+} from "@/Components/Lotties/temp";
 import Lottie from "react-lottie";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import { format, parse } from "date-fns";
 
 function InventoryDashboard() {
-  const { api_UlbDashboard } = ProjectApiList();
+  const { api_getddDashboard } = ProjectApiList();
 
   const [isLoading, setisLoading] = useState(false);
-  const [ulbData, setulbData] = useState();
+  const [dashboardData, setDashboardData] = useState([]);
   const [activeTab, setActiveTab] = useState("weekly");
+  const [monthName, setMonthName] = useState([]);
+  const [monthData, setMonthData] = useState([]);
+  const [weekName, setWeekName] = useState([]);
+  const [yearName, setyearName] = useState([]);
 
   const { titleBarVisibility } = useContext(contextVar);
 
   // get details by to update
-  // useEffect(() => {
-  //   fetchUlbData();
-  // }, []);
-  // const fetchUlbData = () => {
-  //   setisLoading(true);
-  //   const requestBody = {
-  //     deviceId: "dashboard",
-  //   };
-  //   AxiosInterceptors.post(`${api_UlbDashboard}`, requestBody, ApiHeader())
-  //     .then(function (response) {
-  //       setulbData(response.data.data);
-  //       setisLoading(false);
-  //     })
-  //     .catch(function (error) {
-  //       console.log("errorrr.... ", error);
-  //       setisLoading(false);
-  //     });
-  // };
-  // loader
+
+  const fetchDdInventoryData = () => {
+    setisLoading(true);
+
+    AxiosInterceptors.get(`${api_getddDashboard}`, ApiHeader())
+      .then(function (response) {
+        setDashboardData(response.data?.data);
+        setDataAccToActiveTab();
+        setisLoading(false);
+      })
+      .catch(function (error) {
+        console.log("errorrr.... ", error);
+        setisLoading(false);
+      });
+  };
+
+  const setDataAccToActiveTab = () => {
+    if (activeTab === "monthly") {
+      let monthData = [];
+      dashboardData[activeTab]?.map((info) => {
+        const date = parse(info?.month, "yyyy-MM", new Date());
+        const monthName = format(date, "MMMM");
+        monthData.push(info?.count);
+        setMonthName((prev) => [...prev, monthName]);
+        setMonthData(monthData);
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchDdInventoryData();
+  }, []);
+
+  useEffect(() => {
+    setDataAccToActiveTab();
+  }, [activeTab]);
+
   if (isLoading) {
     return (
       <>
-        <BarLoader />
+        <LoaderApi />
         <div className='min-h-screen'></div>
       </>
     );
@@ -75,32 +97,22 @@ function InventoryDashboard() {
         toolbar: { show: false },
       },
       xaxis: {
-        categories: [
-          "April",
-          "May",
-          "June",
-          "July",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
+        categories: activeTab === "monthly" ? monthName : [],
       },
     },
     series: [
       {
         name: "Monthly Assign stocks",
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 155],
+        data: activeTab === "monthly" ? monthData : [],
       },
-      {
-        name: "Return stocks",
-        data: [15, 70, 45, 55, 29, 65, 75, 91, 125],
-      },
-      {
-        name: "Dead stocks",
-        data: [5, 20, 25, 15, 19, 45, 15, 31, 15],
-      },
+      // {
+      //   name: "Return stocks",
+      //   data: [15, 70, 45, 55, 29, 65, 75, 91, 125],
+      // },
+      // {
+      //   name: "Dead stocks",
+      //   data: [5, 20, 25, 15, 19, 45, 15, 31, 15],
+      // },
     ],
   };
 
@@ -308,13 +320,14 @@ function InventoryDashboard() {
 
           {activeTab == "monthly" && (
             <>
-              <div>
+              <div className=''>
                 <Chart
                   options={options.option}
                   series={options.series}
                   type='bar'
-                  style={{ width: "100%" }}
+                  // style={{ width: "100%" }}
                   height={320}
+                  width={500}
                 />
               </div>
 

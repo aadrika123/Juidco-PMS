@@ -28,7 +28,7 @@ export default function BoqDetailsByIdFin(props) {
   const {
     api_fetchAllBoqDetailsbyIdFin,
     api_approveBoq,
-    api_rejectFinBoq,
+    api_returnFinBoq,
     api_forwardBoqToFinance,
   } = ProjectApiList();
 
@@ -61,6 +61,9 @@ export default function BoqDetailsByIdFin(props) {
       header: "Gst",
     },
     {
+      header: "Hsn Code",
+    },
+    {
       header: "Rate",
     },
     {
@@ -84,7 +87,6 @@ export default function BoqDetailsByIdFin(props) {
       ApiHeader()
     )
       .then(function (response) {
-        console.log(response?.data?.data, "res");
         setDatalist(response?.data?.data);
       })
       .catch(function (error) {
@@ -122,47 +124,21 @@ export default function BoqDetailsByIdFin(props) {
       });
   };
 
-  //forward to finance
-  const forwardBoqFinanceHandler = () => {
+  //return boq ------------
+  const returnBoqHandler = () => {
     setIsLoading(true);
 
     AxiosInterceptors.post(
-      `${api_forwardBoqToFinance}`,
-      { reference_no: refNo },
-      ApiHeader()
-    )
-      .then(function (response) {
-        if (response?.data?.status) {
-          toast.success("BOQ sent to Finance Successfully!!");
-          navigate("/inventoryAdmin-boq");
-        } else {
-          toast.error("Error in Forwarding Boq. Please try Again");
-        }
-      })
-      .catch(function (error) {
-        console.log(error, "err res");
-        toast.error(error?.response?.data?.error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
-  //reject boq ------------
-  const rejectBoqHandler = () => {
-    setIsLoading(true);
-
-    AxiosInterceptors.post(
-      `${api_rejectFinBoq}`,
+      `${api_returnFinBoq}`,
       { ...data, reference_no: refNo },
       ApiHeader()
     )
       .then(function (response) {
         if (response?.data?.status) {
-          toast.success("BOQ is Rejected.");
-          navigate("/inventoryAdmin-boq");
+          toast.success("BOQ is sent back to Inventory Admin.");
+          navigate("/finance");
         } else {
-          toast.error("Error in approving. Please try Again");
+          toast.error("Error occured while sending back the BOQ");
         }
       })
       .catch(function (error) {
@@ -175,7 +151,7 @@ export default function BoqDetailsByIdFin(props) {
   };
 
   const confirmationRejectHandler = () => {
-    rejectBoqHandler();
+    returnBoqHandler();
   };
 
   const confirmationApproveHandler = () => {
@@ -193,7 +169,9 @@ export default function BoqDetailsByIdFin(props) {
       <RejectionModalRemark
         confirmationHandler={confirmationRejectHandler}
         handleCancel={() => setRejectModal(false)}
-        message={"Are you sure you want to reject BOQ ? "}
+        message={
+          "Are you sure you want to return BOQ back to Inventory Admin ? "
+        }
         setData={setData}
         loadingState={isLoading}
       />
@@ -274,21 +252,9 @@ export default function BoqDetailsByIdFin(props) {
                     {dataList?.procurement_stocks[0]?.category?.name}
                   </span>
                 </p>
-                {/* <p className='text-lg font-bold'>
-                  SubCategory:{" "}
-                  <span className='font-semibold text-gray-500'>
-                    {dataList?.procurement_stocks[0]?.subcategory?.name}
-                  </span>
-                </p> */}
               </div>
 
               <div className=''>
-                {/* <p className='text-lg font-bold'>
-                  GST:{" "}
-                  <span className='font-semibold text-gray-500'>
-                    {dataList?.gst}%
-                  </span>
-                </p> */}
                 <p className='text-lg font-bold '>
                   Status:{" "}
                   <span className='font-semibold text-blue-500'>
@@ -301,12 +267,6 @@ export default function BoqDetailsByIdFin(props) {
                         "Basic Pre-tender Info completed") ||
                       (dataList?.status == 60 && "Pre Tender form Submitted") ||
                       (dataList?.status == 70 && "Tendering Admin Inbox")}
-                  </span>
-                </p>
-                <p className='text-lg font-bold '>
-                  HSN Code:{" "}
-                  <span className='font-semibold text-gray-500'>
-                    {dataList?.hsn_code}
                   </span>
                 </p>
               </div>
@@ -346,6 +306,9 @@ export default function BoqDetailsByIdFin(props) {
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {`${row?.gst}%` || 0}
+                        </td>
+                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                          {`${row?.hsn_code}` || ""}
                         </td>
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {indianAmount(row?.rate)}
@@ -404,12 +367,22 @@ export default function BoqDetailsByIdFin(props) {
 
           <div className='flex gap-6'>
             {page == "inbox" && (
-              <button
-                onClick={() => setRejectModal(true)}
-                className='pb-2 pl-6 pr-6 pt-2 border border-red-400 text-base leading-tight  rounded bg-red-50 text-red-400 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
-              >
-                Reject
-              </button>
+              <>
+                {/* <button
+                  onClick={() => setRejectModal(true)}
+                  className='pb-2 pl-6 pr-6 pt-2 border border-red-400 hover:bg-red-400 hover:text-white text-base leading-tight  rounded bg-red-50 text-red-400 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
+                >
+                  Reject
+                </button> */}
+
+                <button
+                  type='button'
+                  className={`bg-[#4338CA]  hover:bg-[#4478b7] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                  onClick={() => setRejectModal(true)}
+                >
+                  Back to Inventory Admin
+                </button>
+              </>
             )}
 
             {page == "inbox" && (

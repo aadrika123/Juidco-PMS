@@ -16,11 +16,14 @@ const FeeDetailsForm = () => {
   // const { state } = useLocation();
   // console.log(state)
 
-  const { api_postFeeDetails, api_getFeeDetails,api_fetchProcurementDetById } = ProjectApiList();
+  const { api_postFeeDetails, api_getFeeDetails, api_fetchProcurementDetById } =
+    ProjectApiList();
   const [isLoading, setIsLoading] = useState(true);
   const [feeDetailData, setFeeDetailData] = useState();
   const [referenceNo, setReferenceNo] = useState();
   const [biddingData, setBiddingData] = useState();
+  const [sameEmdFeePayableTo, setSameEmdFeePayableTo] = useState(false);
+  const [sameEmdFeePayableAt, setSameEmdFeePayableAt] = useState(false);
 
   const emdFee = [
     { label: "Fixed", value: "fixed" },
@@ -77,13 +80,16 @@ const FeeDetailsForm = () => {
     surcharges: feeDetailData?.surcharges || "",
     otherCharges: feeDetailData?.otherCharges || "",
     emdAmount: feeDetailData?.emdAmount || biddingData?.estimated_amount,
-    emdPercentage: feeDetailData?.emdPercentage || biddingData?.emd_value,
-    emd_exemption: feeDetailData?.emd_exemption ? "yes" : "no",
-    emd_fee: feeDetailData?.emd_fee || "fixed",
+    emdPercentage:
+      biddingData?.emd_fee === "percentage"
+        ? feeDetailData?.emdPercentage
+        : "" || biddingData?.emd_value,
+    emd_exemption:
+      biddingData?.emd || feeDetailData?.emd_exemption === true ? "yes" : "no",
+    emd_fee: biddingData?.emd_type || feeDetailData?.emd_fee || "",
     emdFeePayableAt: feeDetailData?.emdFeePayableAt || "",
     emdFeePayableTo: feeDetailData?.emdFeePayableTo || "",
   };
-
   // submit form
   const submitForm = async (values) => {
     setIsLoading(true);
@@ -129,11 +135,13 @@ const FeeDetailsForm = () => {
 
   const getBiddingDetail = (refNo) => {
     setIsLoading(true);
-    AxiosInterceptors.get(`${api_fetchProcurementDetById}/${refNo}`, ApiHeader())
+    AxiosInterceptors.get(
+      `${api_fetchProcurementDetById}/${refNo}`,
+      ApiHeader()
+    )
       .then(function (response) {
         if (response?.data?.status) {
           setBiddingData(response?.data?.data);
-
           setIsLoading(false);
         } else {
           setIsLoading(false);
@@ -328,7 +336,6 @@ const FeeDetailsForm = () => {
                     {/* <img src={fd} className='pl-2' /> */}
                     <h1 className='pt-1 pl-2 text-xl'>EMD Fee Details</h1>
                   </div>
-
                   <div className='p-7 mb-6 bg-white shadow-xl border border-gray-200 rounded-md grid grid-cols-3 mt-3'>
                     <RadioButtonsGroup
                       fields={emdExemption}
@@ -357,7 +364,7 @@ const FeeDetailsForm = () => {
                         handleChange={handleChange}
                         errors={errors.emd_fee}
                         touched={touched.emd_fee}
-                        disabled={values.emd_exemption == "yes"}
+                        disabled={values.emd_exemption == "yes" || true}
                         defaultValue={"fixed"}
                         setFieldValue={setFieldValue}
                       />
@@ -406,8 +413,9 @@ const FeeDetailsForm = () => {
                           name='emdPercentage'
                           onChange={handleChange}
                           value={values.emdPercentage}
-                          disabled={values.emd_exemption == "yes"}
-                        /> %
+                          disabled={values.emd_exemption == "yes" || true}
+                        />{" "}
+                        %
                       </div>
                     )}
                   </div>
@@ -429,6 +437,31 @@ const FeeDetailsForm = () => {
                         EMD Fee Payable To
                         <span className='text-red-500'>*</span>
                       </label>
+
+                      <div className='flex gap-2 mb-3'>
+                        <input
+                          type='checkbox'
+                          onClick={(e) => {
+                            if (e.target.checked) {
+                              setFieldValue(
+                                "emdFeePayableAt",
+                                values.tenderFeePayableTo
+                              );
+                              setSameEmdFeePayableTo(true);
+                            } else {
+                              setFieldValue("emdFeePayableAt", "");
+                              setSameEmdFeePayableTo(false);
+                            }
+                          }}
+                          disabled={
+                            values.emd_exemption == "yes" || sameEmdFeePayableTo
+                          }
+                        />
+                        <label className='text-sm text-gray-500'>
+                          Same as Tender Fee Payable To
+                        </label>
+                      </div>
+
                       <input
                         type='text'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-4/5 p-2.5'
@@ -436,7 +469,9 @@ const FeeDetailsForm = () => {
                         name='emdFeePayableAt'
                         onChange={handleChange}
                         value={values.emdFeePayableAt}
-                        disabled={values.emd_exemption == "yes"}
+                        disabled={
+                          values.emd_exemption == "yes" || sameEmdFeePayableTo
+                        }
                       />
                     </div>
 
@@ -452,6 +487,31 @@ const FeeDetailsForm = () => {
                         EMD Fee Payable At
                         <span className='text-red-500'>*</span>
                       </label>
+
+                      <div className='flex gap-2 mb-3'>
+                        <input
+                          type='checkbox'
+                          onClick={(e) => {
+                            if (e.target.checked) {
+                              setFieldValue(
+                                "emdFeePayableTo",
+                                values.tenderFeePayableAt
+                              );
+                              setSameEmdFeePayableAt(true);
+                            } else {
+                              setFieldValue("emdFeePayableTo", "");
+                              setSameEmdFeePayableAt(false);
+                            }
+                          }}
+                          disabled={
+                            values.emd_exemption == "yes" || sameEmdFeePayableAt
+                          }
+                        />
+                        <label className='text-sm text-gray-500'>
+                          Same as Tender Fee Payable At
+                        </label>
+                      </div>
+
                       <input
                         type='text'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-4/5 p-2.5'
@@ -459,7 +519,9 @@ const FeeDetailsForm = () => {
                         name='emdFeePayableTo'
                         onChange={handleChange}
                         value={values.emdFeePayableTo}
-                        disabled={values.emd_exemption == "yes"}
+                        disabled={
+                          values.emd_exemption == "yes" || sameEmdFeePayableAt
+                        }
                       />
                     </div>
                   </div>

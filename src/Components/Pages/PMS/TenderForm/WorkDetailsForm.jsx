@@ -19,6 +19,8 @@ const WorkDetailsForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [workDetailData, setWorkDetailData] = useState();
   const [referenceNo, setReferenceNo] = useState();
+  const [sameBidAddressPlace, setSameBidAddressPlace] = useState(false);
+  const [sameBidOpeningPlace, setSameBidOpeningPlace] = useState(false);
 
   const { state } = useLocation();
 
@@ -453,7 +455,11 @@ const WorkDetailsForm = () => {
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
                         placeholder='Pin Code'
                         name='pinCode'
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          if (e.target.value.length <= 6) {
+                            handleChange(e);
+                          }
+                        }}
                         value={values.pinCode}
                       />
                       <p className='text-red-500 text-xs '>
@@ -527,6 +533,27 @@ const WorkDetailsForm = () => {
                           <span className='text-red-500'>*</span>
                         </label>
 
+                        <div className='flex gap-2 mb-3'>
+                          <input
+                            type='checkbox'
+                            onClick={(e) => {
+                              if (e.target.checked) {
+                                setFieldValue(
+                                  "preBidMeetingAdd",
+                                  values.preBidMeeting
+                                );
+                                setSameBidAddressPlace(true);
+                              } else {
+                                setFieldValue("preBidMeetingAdd", "");
+                                setSameBidAddressPlace(false);
+                              }
+                            }}
+                          />
+                          <label className='text-sm text-gray-500'>
+                            Same as Pre Bid Meeting Place
+                          </label>
+                        </div>
+
                         <div className='relative'>
                           <textarea
                             type='text'
@@ -534,7 +561,9 @@ const WorkDetailsForm = () => {
                             placeholder='Meeting Address'
                             name='preBidMeetingAdd'
                             value={values.preBidMeetingAdd}
-                            disabled={values.pre_bid == "no"}
+                            disabled={
+                              values.pre_bid == "no" || sameBidAddressPlace
+                            }
                             onChange={(e) => {
                               if (values.preBidMeeting.length < 300) {
                                 handleChange(e);
@@ -568,6 +597,27 @@ const WorkDetailsForm = () => {
                     </label>
 
                     <div className='relative'>
+                      <div className='flex gap-2 mb-3'>
+                        <input
+                          type='checkbox'
+                          onClick={(e) => {
+                            if (e.target.checked) {
+                              setFieldValue(
+                                "bidOpeningPlace",
+                                values.preBidMeeting
+                              );
+                              setSameBidOpeningPlace(true);
+                            } else {
+                              setFieldValue("bidOpeningPlace", "");
+                              setSameBidOpeningPlace(false);
+                            }
+                          }}
+                        />
+                        <label className='text-sm text-gray-500'>
+                          Same as Pre Bid Meeting Place
+                        </label>
+                      </div>
+
                       <textarea
                         type='text'
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5'
@@ -579,6 +629,7 @@ const WorkDetailsForm = () => {
                             handleChange(e);
                           }
                         }}
+                        disabled={sameBidOpeningPlace}
                       />
                       <span
                         className={`absolute bottom-2 right-3 text-xs bg-gray-50 ${

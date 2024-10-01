@@ -17,7 +17,7 @@ import {
 import ulb_data from "@/Components/Common/DynamicData";
 import { checkErrorMessage } from "@/Components/Common/PowerupFunctions";
 import { contextVar } from "@/Components/context/contextVar";
-import { Login1 } from "@/Components/temp";
+import { Login1 } from "@/Components/Lotties/temp";
 import Lottie from "react-lottie";
 
 const { api_login, api_getFreeMenuList } = ProjectApiList();
@@ -83,10 +83,30 @@ function Login() {
             "roleId",
             response?.data?.data?.userDetails?.roleId
           );
+          if (
+            response?.data?.data?.userDetails?.name ===
+              "Departmental Distributor" ||
+            response?.data?.data?.userDetails?.name === "Departmental Admin"
+          ) {
+            navigate("/dinventory-dashboard");
+          } else if (
+            response?.data?.data?.userDetails?.name === "Tendering Admin"
+          ) {
+            navigate("/ta-inventory-dashboard");
+          } else if (
+            response?.data?.data?.userDetails?.name === "Inventory Admin"
+          ) {
+            navigate("/ia-inventory-dashboard");
+          } else if (
+            response?.data?.data?.userDetails?.name === "Level 1" ||
+            response?.data?.data?.userDetails?.name === "Level 2"
+          ) {
+            navigate("/level-inventory-dashboard");
+          }
 
           fetchMenuList();
           setheartBeatCounter((prev) => prev + 1);
-          navigate("/sr-inventory-dashboard"); //navigate to home page after login
+          // navigate("/sr-inventory-dashboard"); //navigate to home page after login
 
           toast.success("Login Successfull");
         } else {
@@ -107,7 +127,6 @@ function Login() {
     let requestBody = {
       moduleId: 17,
     };
-    console.log("request body", requestBody);
 
     AxiosInterceptors.post(api_getFreeMenuList, requestBody, ApiHeader())
       .then(function (response) {

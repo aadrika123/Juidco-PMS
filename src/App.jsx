@@ -15,7 +15,6 @@ import InventoryDashboard from "./Components/Pages/PMS/PrePrecurement/StockRecei
 import { QueryClient, QueryClientProvider } from "react-query";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ViewInventoryDetailsById from "./Components/Pages/PMS/PrePrecurement/StockReceiver/ViewInventoryDetailsById";
-import InventoryProposalListTabs from "./Components/Pages/PMS/PrePrecurement/StockReceiver/InventoryProposalListTabs";
 import InventoryProposalListTabsDa from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/InventoryProposalListTabsDa";
 import ViewInventoryDetailsByIdDa from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/ViewInventoryDetailsByIdDa";
 import EditPreProcurement from "./Components/Pages/PMS/PrePrecurement/DepartmentalAdmin/EditPreProcurement";
@@ -55,7 +54,6 @@ import StockRecListTabs from "./Components/Pages/PMS/Inventory/StockReceiver/Sto
 import SrViewDetailbyId from "./Components/Pages/PMS/Inventory/StockReceiver/SrViewDetailbyId";
 import SRWarrantyClaim from "./Components/Pages/PMS/Inventory/StockReceiver/SRWarrantyClaim";
 import SrViewWarrantybyId from "./Components/Pages/PMS/Inventory/StockReceiver/SrViewWarrantybyId";
-import DdHandoverList from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DdHandoverList";
 import DDHandoverListTabs from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDHandoverListTabs";
 import DDViewHandoverbyId from "./Components/Pages/PMS/Inventory/DepartmentalDistributer/DDViewHandoverbyId";
 
@@ -75,7 +73,6 @@ import InventoryReports from "./Components/Pages/PMS/Reports/InventoryReports";
 import ProductHistoryReports from "./Components/Pages/PMS/Reports/ProductHistoryReports/ProductHistoryReports";
 import BiddingInitialForm from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingInitialForm";
 import BiddingViewById from "./Components/Pages/PMS/Bidding/InventoryAdmin/BiddingViewById";
-import TechnicalComparision from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingComparision";
 import BiddingDetails from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingDetailForm/BiddingDetailTabs";
 import InventoryAdminTabs from "./Components/Pages/PMS/StockRequest/InventoryAdminTabs/InventoryAdminTabs";
 import BiddingType from "./Components/Pages/PMS/Bidding/BiddingAdmin/BiddingType";
@@ -102,6 +99,12 @@ import EmployeeServiceListTabs from "./Components/Pages/PMS/EmployeeService/Empl
 import EmployeeServiceById from "./Components/Pages/PMS/EmployeeService/EmployeeServiceById";
 import DDEmpServiceReqListTabs from "./Components/Pages/PMS/ServiceRequest/DDEmpServiceReq/DDEmpServiceReqListTabs";
 import DDEmpServiceReqById from "./Components/Pages/PMS/ServiceRequest/DDEmpServiceReq/DDEmpServiceReqById";
+import QcbsFinancialComparison from "./Components/Pages/PMS/Bidding/BiddingAdmin/QcbsFinancialComparison";
+import IaInventoryDashboard from "./Components/Pages/PMS/Dashboards/IaInventoryDashboard";
+import DinventoryDashboard from "./Components/Pages/PMS/Dashboards/DinventoryDashboard";
+import TaInventoryDashboard from "./Components/Pages/PMS/Dashboards/TaInventoryDashboard";
+import LevelInventoryDashboard from "./Components/Pages/PMS/Dashboards/LevelInventoryDashboard";
+import EditPreProcurementIa from "./Components/Pages/PMS/PrePrecurement/StockReceiver/EditPreProcurement";
 
 const queryClient = new QueryClient();
 
@@ -117,8 +120,8 @@ function App() {
   const [refresh, setrefresh] = useState(0);
   const [titleBarVisibility, settitleBarVisibility] = useState(true);
   const [heartBeatCounter, setheartBeatCounter] = useState(1); // to check authentication
-  const [biddersCount, setBiddersCount] = useState();
   const [reference_no, setReferenceNo] = useState();
+  const [estimatedAmount, setEstimatedAmount] = useState();
   const [toggleBar, settoggleBar] = useState(
     window.innerWidth <= 763 ? false : true
   ); // toggle state for Side Bar
@@ -148,6 +151,8 @@ function App() {
     setrefresh,
     reference_no,
     setReferenceNo,
+    setEstimatedAmount,
+    estimatedAmount,
   };
 
   // 👉 Routes Json 👈
@@ -160,6 +165,17 @@ function App() {
     { path: "/unitMaster", element: <UnitMaster /> },
     { path: "/supplierMaster", element: <SupplierMaster /> },
     { path: "/bankMaster", element: <BankMaster /> },
+
+    /////////////////////////{*** Dashboards ***}//////////////////////////////////////
+
+    { path: "/ia-inventory-dashboard", element: <IaInventoryDashboard /> },
+    { path: "/dinventory-dashboard", element: <DinventoryDashboard /> },
+    { path: "/ta-inventory-dashboard", element: <TaInventoryDashboard /> },
+    {
+      path: "/level-inventory-dashboard",
+      element: <LevelInventoryDashboard />,
+    },
+    { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
 
     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 
@@ -178,8 +194,6 @@ function App() {
     },
 
     //------------ DA ----------
-
-    { path: "/da-inventory-dashboard", element: <InventoryDashboardDa2 /> },
     {
       path: "/da-inventory-proposal",
       element: <InventoryProposalListTabsDa />,
@@ -214,7 +228,6 @@ function App() {
       path: "/dd-viewHandoverById/:id/:page",
       element: <DDViewHandoverbyId />,
     },
-    
 
     // ----------level 1 and level 2 ------------------------------------
 
@@ -259,15 +272,8 @@ function App() {
       element: <BoqDetailsByIdFin />,
     },
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //------- Stock Receiver -------
-    { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
-    // { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
-
     { path: "/create-pre-procurement/:page", element: <AddPreProcurement /> },
+    { path: "/edit-pre-procurement", element: <EditPreProcurementIa /> },
     { path: "/sr-edit-pre-procurement/:id", element: <SrEditPreProcurement /> },
     { path: "/sr-rejectedlist", element: <RejectedListTabs /> },
     { path: "/sr-releasedlist", element: <ReleasedListTabs /> },
@@ -345,11 +351,6 @@ function App() {
       path: "/boq-search", // need to check the status after getting the dataList
       element: <BoqSearch />,
     },
-
-    // {
-    //   path: "/notifi",
-    //   element: <NotificationSidebar />,
-    // },
 
     /////////////////////////{*** SR Inventory ***}//////////////////////////////////////
     {
@@ -434,6 +435,10 @@ function App() {
       path: "/addUnitPrice/:refNo",
       element: <AddUnitPrice />,
     },
+    {
+      path: "/finance-bidding/:refNo",
+      element: <QcbsFinancialComparison />,
+    },
 
     /////////////////////////{*** Service Request ***}//////////////////////////////////////
     {
@@ -464,7 +469,6 @@ function App() {
     //   path: "/viewServiceReq",
     //   element: <IaServiceReqTabs />,
     // },
-
 
     /////////////////////////{*** Employee Section ***}//////////////////////////////////////
     {
@@ -507,7 +511,7 @@ function App() {
 
             <Route element={<ProtectedRoutes />}>
               {allRoutes?.map((elem, index) => (
-                <Route path={elem?.path} element={elem?.element} />
+                <Route key={index} path={elem?.path} element={elem?.element} />
               ))}
             </Route>
 

@@ -1,32 +1,36 @@
-import * as React from "react";
-// import Box from "@mui/material/Box";
+import { useState, useEffect, Fragment } from "react"; // import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import toast from "react-hot-toast";
 import { BsBell } from "react-icons/bs";
-import { Badge, Card, Grid, Stack } from "@mui/material";
+import { Badge, Card, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaCircleDot } from "react-icons/fa6";
 import { FaCircle } from "react-icons/fa";
-import { getLocalStorageItem } from "@/Components/Common/localstorage";
+import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
+import { format, parseISO } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 
 export default function NotificationSidebar() {
-  const { api_fetchNotification, api_readNotification } = ProjectApiList();
+  const { api_fetchNotification, api_readNotification, api_replyNotification } =
+    ProjectApiList();
 
   const navigate = useNavigate();
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
   });
-  const [notificationData, setNotificationData] = React.useState();
-  const [notificationCount, setNotificationCount] = React.useState();
-  const [notifiRefresh, setNotifiRefresh] = React.useState(false);
-
-  //Get notification data
+  const [notificationData, setNotificationData] = useState();
+  const [notificationCount, setNotificationCount] = useState();
+  const [notificationId, setNotificationId] = useState();
+  const [notifiRefresh, setNotifiRefresh] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const [stockHandoverNo, setStockHandoverNo] = useState(false);
 
   const getNotification = () => {
     AxiosInterceptors.get(`${api_fetchNotification}`, ApiHeader())
@@ -49,10 +53,6 @@ export default function NotificationSidebar() {
         // setIsLoading(false);
       });
   };
-
-  // console.log(notificationData);
-
-  //Read notification data
 
   const readNotification = (id) => {
     AxiosInterceptors.post(
@@ -106,7 +106,6 @@ export default function NotificationSidebar() {
     } else if (status == 24) {
       navigate("/da-received-inventory");
     } else {
-      navigate("/sr-inventory-dashboard");
     }
   };
 
@@ -121,9 +120,84 @@ export default function NotificationSidebar() {
     setState({ ...state, [anchor]: open });
   };
 
-  React.useEffect(() => {
+  const postNotificationAcceptChange = async () => {
+    setIsLoading(true);
+    let body = {
+      stock_handover_no: stockHandoverNo,
+      approve: 2,
+    };
+
+    AxiosInterceptors.post(`${api_replyNotification}`, body, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          readNotification(notificationId);
+          toast.success("Successfully sent the response");
+        } else {
+          setIsLoading(false);
+          toast.error("Error in sending response to Inventory Admin.");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        setIsLoading(false);
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setConfirmationModalOpen(false);
+      });
+  };
+
+  const postNotificationRejectChange = async () => {
+    setIsLoading(true);
+    let body = {
+      stock_handover_no: stockHandoverNo,
+      approve: -2,
+    };
+
+    AxiosInterceptors.post(`${api_replyNotification}`, body, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          readNotification(notificationId);
+          toast.success("Successfully sent the response");
+        } else {
+          setIsLoading(false);
+          toast.error("Error in sending response to Inventory Admin.");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        setIsLoading(false);
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setConfirmationModalOpen(false);
+      });
+  };
+
+  useEffect(() => {
     getNotification();
   }, [notifiRefresh]);
+
+  if (confirmationModalOpen) {
+    return (
+      <>
+        <ConfirmationModal
+          confirmationHandler={postNotificationAcceptChange}
+          handleCancel={postNotificationRejectChange}
+          cancelHandler={() => setConfirmationModalOpen(false)}
+          message={
+            "The requested stock item is not available in Inventory. Do you still want to proceed?"
+          }
+          sideMessage={"*On ignoring, the stock request will be canceled. "}
+          loadingState={isLoading}
+          saveBtnLabel={"Confirm"}
+          cancelBtnLabel={"Ignore"}
+        />
+      </>
+    );
+  }
 
   const list = (anchor) => (
     <>
@@ -160,21 +234,51 @@ export default function NotificationSidebar() {
                 },
               }}
               className='p-3 cursor-pointer '
-              onClick={() => notifiNavigate(data?.destination, data?.id)}
+              onClick={() => {
+                if (data?.destination === 0 && !data?.isSeen) {
+                  const handover_no =
+                    data?.description?.match(/[A-Z0-9]{14}/)[0];
+                  setStockHandoverNo(handover_no);
+                  setConfirmationModalOpen(true);
+                  setNotificationId(data?.id);
+                } else {
+                  notifiNavigate(data?.destination, data?.id);
+                }
+              }}
             >
               <div className=''>
                 <div className='text-blue-700 flex space-x-1 pb-1'>
-                  <FaCircleDot className='text-xs mt-[1.5px]' />
-                  <p className='text-xs pr-1'>Accountant</p>
-                  <p className='text-xs'>
-                    <FaCircle className='text-[5px] mt-[5px] text-black' />
-                  </p>
-                  <p className='text-[10px] text-black pt-[1px] pl-1'>
-                    22 July 12:20 AM
-                  </p>
+                  <div className='flex justify-between items-center'>
+                    <FaCircleDot className='text-xs mt-[1.5px]' />
+                    <p className='text-xs pr-1'>{data?.from || ""}</p>
+                    <p className='text-xs'>
+                      <FaCircle className='text-[5px] mt-[5px] text-black' />
+                    </p>
+                    <p className='text-sm text-gray-600 pt-[1px] pl-1'>
+                      {/* {console.log(
+                        formatInTimeZone(
+                          parseISO(data?.createdAt),
+                          timeZone,
+                          "HH:mm:ss"
+                        )
+                      )} */}
+                      {/* {format(data?.createdAt, "yyyy-MM-dd")} */}
+                      {format(parseISO(data?.createdAt), "dd-MM-yyyy")}
+                    </p>
+                  </div>
                 </div>
                 <h1 className=' text-black'>{data?.title}</h1>
-                <p className='text-xs pt-2 text-black '>{data?.description}</p>
+                <p className='text-xs pt-2 text-black mb-2 '>
+                  {data?.description}
+                </p>
+                {data?.destination === 0 && !data?.isSeen && (
+                  <div className='rounded-md  bg-orange-400 text-white px-1 w-fit'>
+                    <h1 className='text-[12px]'>
+                      {data?.destination === 0 &&
+                        "Need Confirmation. Click on Notification."}
+                    </h1>
+                  </div>
+                )}
                 {/* <hr className="" /> */}
               </div>
             </Card>
@@ -187,7 +291,7 @@ export default function NotificationSidebar() {
   return (
     <>
       {["right"].map((anchor) => (
-        <React.Fragment key={anchor}>
+        <Fragment key={anchor}>
           <Badge
             color='error'
             badgeContent={notificationCount?.unseenCount || 0}
@@ -208,7 +312,7 @@ export default function NotificationSidebar() {
           >
             {list(anchor)}
           </Drawer>
-        </React.Fragment>
+        </Fragment>
       ))}
     </>
   );
