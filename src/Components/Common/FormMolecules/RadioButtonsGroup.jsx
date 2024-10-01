@@ -27,6 +27,9 @@ export default function RadioButtonsGroup({
   tabsCover4,
   differentData,
 }) {
+  console.log(values, "values props");
+  console.log(fields, "fields props");
+
   const handleCoversChange = (event) => {
     const { value } = event.target;
     setFieldValue("noOfCovers", value);
@@ -59,7 +62,6 @@ export default function RadioButtonsGroup({
     } else if (!data[name]) {
       data[name] = value;
     }
-
     setFieldValue(name, data[name]);
   };
 

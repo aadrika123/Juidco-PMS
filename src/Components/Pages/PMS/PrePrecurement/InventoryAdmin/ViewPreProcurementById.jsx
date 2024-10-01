@@ -614,7 +614,6 @@ const ViewPreProcurementById = () => {
                   <p className='text-xs pl-5'>Procurement Item: {index + 1}</p>
                 </div>
                 <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow'>
-                  
                   <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                     <div className='md:w-auto w-[50%] font-bold '>
                       Subcategory
@@ -671,7 +670,6 @@ const ViewPreProcurementById = () => {
                       {nullToNA(procData?.description)}
                     </div>
                   </div>
-                  
                 </div>
               </>
             ))}
@@ -701,16 +699,18 @@ const ViewPreProcurementById = () => {
             </button>
           )}
 
-          {page == "inbox" && applicationFullData?.status < 10 && (
-            <button
-              className={buttonStyle}
-              onClick={() => {
-                navigate(`/create-pre-procurement/edit`, { state: id });
-              }}
-            >
-              Edit
-            </button>
-          )}
+          {page == "inbox" &&
+            (applicationFullData?.status < 10 ||
+              applicationFullData?.status === 11) && (
+              <button
+                className={buttonStyle}
+                onClick={() => {
+                  navigate(`/edit-pre-procurement`, { state: id });
+                }}
+              >
+                Edit
+              </button>
+            )}
 
           {page == "inbox" &&
             (applicationFullData?.status == 14 ||
@@ -726,7 +726,7 @@ const ViewPreProcurementById = () => {
                 }
               >
                 Prepare BOQ
-                <MdArrowRightAlt className="text-2xl "/>
+                <MdArrowRightAlt className='text-2xl ' />
               </button>
             )}
 

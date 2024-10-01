@@ -3,6 +3,7 @@ import { LuCloudy } from "react-icons/lu";
 import pdfIcon from "@/assets/Images/pdfIcon.png";
 import csvIcon from "@/assets/Images/csvIcon.png";
 import xlsxIcon from "@/assets/Images/xlsx.png";
+import imgIcon from "@/assets/Images/imgIcon.svg";
 import ImageModal from "@/Components/Pages/Others/ImageModal/ImageModal";
 
 export default function ImageDisplay({
@@ -12,6 +13,7 @@ export default function ImageDisplay({
   showPreview,
   width,
   url,
+  hide,
 }) {
   const [imageModal, setImageModal] = useState(false);
 
@@ -46,7 +48,7 @@ export default function ImageDisplay({
         {(imageDoc?.type?.match(/(jpg|jpeg|png)$/) ||
           url?.match(/(jpg|jpeg|png)$/)) && (
           <img
-            src={url || preview}
+            src={url || preview || imgIcon}
             alt={alt}
             className={`rounded cursor-pointer `}
             onClick={() => setImageModal(true)}
@@ -83,9 +85,13 @@ export default function ImageDisplay({
           />
         )}
       </div>
-      <div className='mb-4 text-center'>
-        <p className='text-red-500 text-xs truncate'>{imageDoc?.name}</p>
-      </div>
+      {!hide ? (
+        <div className='mb-4 text-center'>
+          <p className='text-red-500 text-xs truncate'>{imageDoc?.name}</p>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

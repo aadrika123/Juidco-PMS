@@ -54,7 +54,7 @@ const ViewReceivedInvtById = () => {
   const [imageModal, setImageModal] = useState();
   const [preview, setPreview] = useState();
   const [inventoryData, setInventoryData] = useState();
-  const [product, setProduct] = useState([{}]);
+  const [product, setProduct] = useState([{ quantity: 1, serial_no: "" }]);
   const [procurement_stock_id, setProcurement_stock_id] = useState("");
   const [brand, setBrandName] = useState("");
   const [warrantyClaim, setWarrantyClaim] = useState(false);
@@ -127,7 +127,6 @@ const ViewReceivedInvtById = () => {
     AxiosInterceptors.get(`${url}/${id}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data);
           setInventoryAddData(response?.data?.data);
           const sum =
             (response?.data?.data?.receiving?._sum?.received_quantity || 0) -
@@ -225,13 +224,6 @@ const ViewReceivedInvtById = () => {
         setIsModalOpen(false);
       });
   };
-
-  const validationSchema = yup.object({
-    // procurement_stock_id: yup.string().required("Procurement Item is required"),
-    // brand: yup.string().required("Brand Item is required"),
-    // quantity: yup.number().required("Quantity Item is required"),
-    // serial_no: yup.string().required("Serial No Item is required"),
-  });
 
   // intitial value
   const initialValues = {
@@ -351,7 +343,7 @@ const ViewReceivedInvtById = () => {
   };
 
   const addField = () => {
-    setProduct((prev) => [...prev, {}]);
+    setProduct((prev) => [...prev, { quantity: 1, serial_no: "" }]);
     // console.log(object)
   };
 
@@ -530,7 +522,9 @@ const ViewReceivedInvtById = () => {
                     Status <span className='text-black'>:</span>
                     <span className='font-bold'>
                       {" "}
-                      {applicationFullData?.status == "5" && "All items added"}
+                      {applicationFullData?.status == "7"
+                        ? "All items added"
+                        : "Partial Stocks added"}
                     </span>
                   </h1>
                 </div>
@@ -729,9 +723,9 @@ const ViewReceivedInvtById = () => {
                             <th scope='col' className='px-6 py-3'>
                               Remaining Quantity
                             </th>
-                            <th scope='col' className='px-6 py-3'>
+                            {/* <th scope='col' className='px-6 py-3'>
                               Inventory Status
-                            </th>
+                            </th> */}
                             <th scope='col' className='px-6 py-3'>
                               Remark
                             </th>
@@ -777,7 +771,7 @@ const ViewReceivedInvtById = () => {
                               <td className='px-6 py-4'>
                                 {data?.remaining_quantity}
                               </td>
-                              <td className='px-6 py-4'>
+                              {/* <td className='px-6 py-4'>
                                 {data?.is_added ? (
                                   <p className='text-green-500'>
                                     Added to Inventory
@@ -785,21 +779,11 @@ const ViewReceivedInvtById = () => {
                                 ) : (
                                   <p className='text-violet-600'>Pending</p>
                                 )}
-                              </td>
+                              </td> */}
                               <td className='px-6 py-4'>{data?.remark}</td>
                             </tr>
                           </tbody>
                         ))}
-
-                        <tfoot>
-                          <tr className='font-semibold text-gray-900 dark:text-white'>
-                            <th scope='row' className='px-6 py-3 text-base'>
-                              Total
-                            </th>
-                            <td className='px-6 py-3'>3</td>
-                            <td className='px-6 py-3'>21,000</td>
-                          </tr>
-                        </tfoot>
                       </table>
                     </div>
                   )}
@@ -812,7 +796,7 @@ const ViewReceivedInvtById = () => {
 
           {/* Inventory Details form */}
 
-          {page == "inbox" && applicationFullData?.status !== 5 && (
+          {page == "inbox" && applicationFullData?.status !== 7 && (
             <div className={`${formStyle} mt-8 border border-blue-500`}>
               <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
                 <div className=''>
@@ -845,7 +829,9 @@ const ViewReceivedInvtById = () => {
                               (data, index) => (
                                 <option
                                   value={data?.id}
-                                  disabled={!data?.is_partial}
+                                  disabled={
+                                    data?.total_received === data?.total_added
+                                  }
                                 >
                                   Procurement Item: {index + 1}
                                 </option>
@@ -895,6 +881,7 @@ const ViewReceivedInvtById = () => {
                                   onChange={(e) => {
                                     onchangeField(e, index, "quantity");
                                   }}
+                                  disabled
                                   value={item?.quantity}
                                 />
                               </div>
@@ -973,8 +960,7 @@ const ViewReceivedInvtById = () => {
           )}
 
           {page == "inbox" &&
-            inventoryAddData?.is_valid_for_addition == true &&
-            inventoryAddData?.receiving?._sum?.received_quantity != null && (
+            inventoryAddData?.is_valid_for_addition == true && (
               <div className={`${formStyle} mt-8 border border-blue-500`}>
                 <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
                   <div className=''>
@@ -1109,6 +1095,9 @@ const ViewReceivedInvtById = () => {
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={inventoryHisHandler}
                                 value={inventory}
+                                disabled={applicationFullData?.receivings?.some(
+                                  (data) => data?.is_added === true
+                                )}
                                 // name='invtDetails'
                               >
                                 <option value={""} selected>

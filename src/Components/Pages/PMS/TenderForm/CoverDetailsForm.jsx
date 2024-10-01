@@ -5,13 +5,12 @@ import RadioButtonsGroup from "@/Components/Common/FormMolecules/RadioButtonsGro
 import cdIcon from "@/Components/assets/cd.svg";
 import UploadDoc from "./UploadDoc";
 import toast from "react-hot-toast";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import TenderFormButton from "@/Components/Common/TenderFormButton/TenderFormButton";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
-import { TailSpin } from "react-loader-spinner";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const tabsCover1 = [
@@ -19,6 +18,7 @@ const tabsCover1 = [
     name: "fee/ prequal/ technical/ financial",
     value: "fee/prequal/technical/financial",
     documents: [],
+    docs: [],
   },
 ];
 const tabsCover2 = [
@@ -26,19 +26,25 @@ const tabsCover2 = [
     name: "fee/ prequal/ technical",
     value: "fee/prequal/technical",
     documents: [],
+    docs: [],
   },
-  { name: "financial", value: "financial", documents: [] },
+  { name: "financial", value: "financial", documents: [], docs: [] },
 ];
 const tabsCover3 = [
-  { name: "fee", value: "fee", documents: [] },
-  { name: "prequal/ technical", value: "prequal/technical", documents: [] },
-  { name: "financial", value: "financial", documents: [] },
+  { name: "fee", value: "fee", documents: [], docs: [] },
+  {
+    name: "prequal/ technical",
+    value: "prequal/technical",
+    documents: [],
+    docs: [],
+  },
+  { name: "financial", value: "financial", documents: [], docs: [] },
 ];
 const tabsCover4 = [
-  { name: "fee", value: "fee", documents: [] },
-  { name: "prequal", value: "prequal", documents: [] },
-  { name: "technical", value: "technical", documents: [] },
-  { name: "financial", value: "financial", documents: [] },
+  { name: "fee", value: "fee", documents: [], docs: [] },
+  { name: "prequal", value: "prequal", documents: [], docs: [] },
+  { name: "technical", value: "technical", documents: [], docs: [] },
+  { name: "financial", value: "financial", documents: [], docs: [] },
 ];
 
 const CoverDetailsForm = () => {
@@ -89,28 +95,51 @@ const CoverDetailsForm = () => {
 
       for (const file of data?.documents) {
         let formData = new FormData();
-        formData.append("doc", file);
+        if (file instanceof File) {
+          formData.append("doc", file);
 
-        try {
-          const res = await AxiosInterceptors.post(
-            api_postDocumentUpload,
-            formData,
-            ApiHeader2()
-          );
+          try {
+            const res = await AxiosInterceptors.post(
+              api_postDocumentUpload,
+              formData,
+              ApiHeader2()
+            );
 
-          if (res?.status == 200) {
-            const fileUrl = res?.data?.data; // Assuming the API response contains the uploaded file URL in 'url'
-            uploadedDocs[tabName].push(fileUrl);
-          } else {
-            toast.error(`Failed to upload document for ${tabName}`);
-            console.log(`Failed to upload document for ${tabName}`);
+            if (res?.status == 200) {
+              const fileUrl = res?.data?.data; // Assuming the API response contains the uploaded file URL in 'url'
+              uploadedDocs[tabName].push(fileUrl);
+            } else {
+              toast.error(`Failed to upload document for ${tabName}`);
+              console.log(`Failed to upload document for ${tabName}`);
+            }
+          } catch (err) {
+            toast.error(err);
+            console.log(`Error uploading document for ${tabName}:`, err);
           }
-        } catch (err) {
-          toast.error(err);
-          console.log(`Error uploading document for ${tabName}:`, err);
-        } finally {
-          // setIsLoading(false);
+        } else {
+          uploadedDocs[tabName].push(file);
         }
+
+        // try {
+        //   console.log("called===");
+        //   const res = await AxiosInterceptors.post(
+        //     api_postDocumentUpload,
+        //     formData,
+        //     ApiHeader2()
+        //   );
+
+        //   if (res?.status == 200) {
+        //     const fileUrl = res?.data?.data; // Assuming the API response contains the uploaded file URL in 'url'
+        //     uploadedDocs[tabName].push(fileUrl);
+        //   } else {
+        //     toast.error(`Failed to upload document for ${tabName}`);
+        //     console.log(`Failed to upload document for ${tabName}`);
+        //   }
+        // } catch (err) {
+        //   toast.error(err);
+        //   console.log(`Error uploading document for ${tabName}:`, err);
+        // } finally {
+        // }
       }
     }
 
@@ -160,13 +189,14 @@ const CoverDetailsForm = () => {
   };
 
   const handleSubmit = (values) => {
+    console.log(values, "values");
     values.tabs.forEach((tab) => {
       if (tab?.documents?.length === 0) {
         toast.error(`Please upload valid documents for ${tab.name}`);
         return;
       }
+      submitForm(values);
     });
-    submitForm(values);
   };
 
   //to insert documents into initial values in tabscover data
@@ -192,7 +222,8 @@ const CoverDetailsForm = () => {
       )?.docPath;
       return {
         ...obj,
-        documents: docUrl ? [docUrl] : [],
+        documents: docUrl ? docUrl : null,
+        docs: docUrl ? docUrl : null,
       };
     });
   };
@@ -260,8 +291,10 @@ const CoverDetailsForm = () => {
     )
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data?.data, "data===>>");
           setapplicationFullData(response?.data?.data);
+          if (response?.data?.data?.tendering_type === "qcbs") {
+            setTabData(tabsCover2);
+          }
           setIsLoading(false);
         } else {
           setIsLoading(false);
@@ -280,16 +313,19 @@ const CoverDetailsForm = () => {
   const initialValues = {
     noOfCovers: coverDetails?.noOfCovers
       ? String(coverDetails?.noOfCovers)
-      : // : applicationFullData?.tendering_type === "qcbs"
-        // ? "2"
-        "1",
+      : applicationFullData?.tendering_type === "qcbs"
+      ? "2"
+      : "1",
     tabs: [
-      {
-        name: "fee/ prequal/ technical",
-        value: "fee/prequal/technical",
-        documents: [],
-      },
+      applicationFullData?.tendering_type !== "qcbs"
+        ? {
+            name: "fee/ prequal/ technical",
+            value: "fee/prequal/technical",
+            documents: [],
+          }
+        : tabsCover2,
     ],
+    // tabs: tabData,
     content: coverDetails?.content || "",
   };
 
@@ -334,7 +370,7 @@ const CoverDetailsForm = () => {
                     errors={errors.noOfCovers}
                     touched={touched.noOfCovers}
                     name={"noOfCovers"}
-                    defaultValue={String(coverDetails?.noOfCovers) || "1"}
+                    // defaultValue={String(coverDetails?.noOfCovers) || "1"}
                     setFieldValue={setFieldValue}
                     setTabData={setTabData}
                     autoSelectActiveTab={autoSelectActiveTab}

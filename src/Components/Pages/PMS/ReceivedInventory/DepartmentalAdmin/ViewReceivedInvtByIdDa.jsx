@@ -28,7 +28,6 @@ import { contextVar } from "@/Components/context/contextVar";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
 import ApiHeader2 from "@/Components/api/ApiHeader2";
-import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import { useReactToPrint } from "react-to-print";
 
@@ -152,10 +151,21 @@ const ViewReceivedInvtByIdDa = (props) => {
   ////////////// call remaining quantity and managing rec quantity validation ////////////////
 
   const remainingQuanityCalc = (receivedQuantity) => {
+    const filterredReceivings = applicationFullData?.receivings?.length
+      ? applicationFullData?.receivings?.filter(
+          (item) => item?.procurement_stock_id === procurementItemId
+        )
+      : applicationFullData?.procurement_stocks?.find(
+          (item) => item?.id === procurementItemId
+        );
+
     if (receivedQuantity < 0) {
       toast.error("Amount cannot be negative");
       formik.setFieldValue("received_quantity", 0);
       return;
+    } else if (receivedQuantity > filterredReceivings.quantity) {
+      toast.error("Received Quantity should be less than Total Quantity");
+      formik.setFieldValue("received_quantity", 0);
     }
 
     //setting received quantity
@@ -165,9 +175,12 @@ const ViewReceivedInvtByIdDa = (props) => {
     receivedQuantity && (recQuantity = Number(receivedQuantity) || 0);
 
     if (applicationFullData?.receivings?.length == 0) {
-      formik.setFieldValue("received_quantity", receivedQuantity);
-      const initialReceiveQuantity =
-        formik.values.total_quantity - receivedQuantity;
+      if (receivedQuantity > filterredReceivings.quantity) {
+        toast.error("Received Quantity should be less than Total Quantity");
+        formik.setFieldValue("received_quantity", 0);
+      }
+      // formik.setFieldValue("received_quantity", receivedQuantity);
+      const initialReceiveQuantity = formik.values.total_quantity;
       formik.setFieldValue("remaining_quantity", initialReceiveQuantity);
     } else {
       // const procItem = applicationFullData?.receivings?.find(
@@ -190,7 +203,7 @@ const ViewReceivedInvtByIdDa = (props) => {
         formik.values.total_quantity - procItem - receivedQuantity;
 
       if (initialReceiveQuantity < 0) {
-        toast.error("Received Quantity should less then remaning quantity");
+        toast.error("Received Quantity should be less than Total Quantity");
         formik.setFieldValue("received_quantity", 0);
         formik.setFieldValue(
           "remaining_quantity",
@@ -559,9 +572,9 @@ const ViewReceivedInvtByIdDa = (props) => {
                             <th scope='col' className='px-6 py-3'>
                               Remaining Quantity
                             </th>
-                            <th scope='col' className='px-6 py-3'>
+                            {/* <th scope='col' className='px-6 py-3'>
                               Inventory Status
-                            </th>
+                            </th> */}
                             <th scope='col' className='px-6 py-3'>
                               Remark
                             </th>
@@ -605,7 +618,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                               <td className='px-6 py-4'>
                                 {data?.remaining_quantity}
                               </td>
-                              <td className='px-6 py-4'>
+                              {/* <td className='px-6 py-4'>
                                 {data?.is_added ? (
                                   <p className='text-green-500'>
                                     Added to Inventory
@@ -613,21 +626,11 @@ const ViewReceivedInvtByIdDa = (props) => {
                                 ) : (
                                   <p className='text-violet-600'>Pending</p>
                                 )}
-                              </td>
+                              </td> */}
                               <td className='px-6 py-4'>{data?.remark}</td>
                             </tr>
                           </tbody>
                         ))}
-
-                        <tfoot>
-                          <tr className='font-semibold text-gray-900 dark:text-white'>
-                            <th scope='row' className='px-6 py-3 text-base'>
-                              Total
-                            </th>
-                            <td className='px-6 py-3'>3</td>
-                            <td className='px-6 py-3'>21,000</td>
-                          </tr>
-                        </tfoot>
                       </table>
                     </div>
                   )}

@@ -205,6 +205,7 @@ export default function ProjectApiList() {
     api_iaStockReqNotify: `${baseUrl}/api/pms/ia/stock-request/notify/`,
     api_iaStockReqOubox: `${baseUrl}/api/pms/ia/stock-request/outbox`,
     api_iaStockReqApprove: `${baseUrl}/api/pms/ia/stock-request/approve`,
+    api_distStockReqReturn: `${baseUrl}/api/pms/ia/stock-request/return`,
     api_iaGetProducts: `${baseUrl}/api/pms/ia/stock-request/product`,
 
     api_forwardLevelone: `${baseUrl}/api/pms/ia/pre-procurement/to-level1`,
@@ -230,6 +231,7 @@ export default function ProjectApiList() {
 
     //pre-procure
     api_fetchProcurementById: `${baseUrl}/api/pms/procurement`,
+    api_editProcurementById: `${baseUrl}/api/pms/procurement/edit/stock`,
     api_fetchProcurementDetById: `${baseUrl}/api/pms/pre-tender/details`,
 
     //tendering admin
@@ -271,6 +273,7 @@ export default function ProjectApiList() {
     api_getDaServiceOutbox: `${baseUrl}/api/pms/da/service-request/outbox`,
     api_getIaServiceInbox: `${baseUrl}/api/pms/ia/service-request`,
     api_getIaServiceOutbox: `${baseUrl}/api/pms/ia/service-request/outbox`,
+    api_approveServiceRequestEmpDa: `${baseUrl}/api/pms/dist/service-request/emp/approve`,
 
     //master
     api_getBank: `${baseUrl}/api/pms/master/bank`,
@@ -308,6 +311,8 @@ export default function ProjectApiList() {
     //dashboard
     api_getddDashboard: `${baseUrl}/api/pms/dashboard/dd`,
     api_getiaDashboard: `${baseUrl}/api/pms/dashboard/ia`,
+    api_getTaDashboard: `${baseUrl}/api/pms/dashboard/tender`,
+    api_getLevelDashboard: `${baseUrl}/api/pms/dashboard/level`,
   };
 
   return apiList;

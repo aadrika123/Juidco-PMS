@@ -88,10 +88,6 @@ export default function BoqDetailsById(props) {
     AxiosInterceptors.get(`${api_fetchAllBoqDetailsbyId}/${refNo}`, ApiHeader())
       .then(function (response) {
         setDatalist(response?.data?.data[0]);
-        console.log(
-          response?.data?.data[0]?.estimated_cost,
-          "response?.data?.estimated_cost"
-        );
       })
       .catch(function (error) {
         toast.error("Something went wrong");

@@ -99,7 +99,7 @@ function ServiceRequestModal(props) {
                       />
                       <ListItemText
                         primary={data?.serial_no}
-                        secondary={`Quantity: ${data?.quantity}`}
+                        secondary={`Quantity: ${data?.quantity} (${data?.brand})`}
                       />
                     </MenuItem>
                   ))

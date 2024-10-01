@@ -451,10 +451,12 @@ const ViewInventoryDetailsById = (props) => {
               applicationFullData?.status === 1 ||
               applicationFullData?.status === 81) && (
               <button
-                className={buttonStyle}
-                onClick={() => {
-                  navigate(`/da-edit-pre-procurement/${id}`);
-                }}
+                className=' px-6 py-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]'
+                onClick={() =>
+                  navigate(`/dd-stock-proposal/edit`, {
+                    state: applicationFullData?.stock_handover_no,
+                  })
+                }
               >
                 Edit
               </button>

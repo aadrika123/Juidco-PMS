@@ -18,33 +18,34 @@ import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
-import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
-import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import { useReactToPrint } from "react-to-print";
 import StockRequestTimeline from "@/Components/Common/Timeline/StockRequestTimeline";
 import ServiceRequestModal from "@/Components/Common/Modal/ServiceRequestModal";
+import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
   const notesheetRef = useRef();
   const { id, page } = useParams();
 
-  const [erroState, seterroState] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [applicationFullData, setapplicationFullData] = useState();
   const [productData, setProductData] = useState();
   // const [preview, setPreview] = useState();
   const [serviceRequestModal, setServiceRequestModal] = useState(false);
+  const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [service, setService] = useState("");
   const [serialNo, setserialNo] = useState([]);
   const [remQuantity, setRemQuantity] = useState(0);
+  const [data, setData] = useState({ stock_handover_no: "", remark: "" });
 
   const {
     api_getStockRequetById,
     api_iaStockReqApprove,
     api_iaGetProducts,
     api_iaStockReqNotify,
+    api_distStockReqReturn,
   } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
@@ -74,6 +75,10 @@ const ViewInventoryDetailsById = (props) => {
       .then(function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
+          setData((prev) => ({
+            ...prev,
+            stock_handover_no: [response?.data?.data?.stock_handover_no],
+          }));
         } else {
           toast.error(response?.data?.message);
         }
@@ -140,6 +145,31 @@ const ViewInventoryDetailsById = (props) => {
       });
   };
 
+  //returning stock request back to dd
+  const backToDd = () => {
+    setisLoading(true);
+
+    AxiosInterceptors.post(`${api_distStockReqReturn}`, data, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success(`Assign to Distributor Successfully`);
+          setRejectModalOpen(false);
+          navigate("/inventory-stockRequest?tabNo=1");
+        } else {
+          toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        console.log("errorrr.... ", error);
+        toast.error(error?.response?.data?.error);
+        // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
+        setRejectModalOpen(false);
+      });
+  };
+
   //notification to DA in case rem quantity is zero
   const notifyDaStockReq = () => {
     setisLoading(true);
@@ -180,6 +210,21 @@ const ViewInventoryDetailsById = (props) => {
           service={service}
           quantity={applicationFullData?.allotted_quantity}
           loader={isLoading}
+        />
+      </>
+    );
+  }
+  if (rejectModalOpen) {
+    return (
+      <>
+        <RejectionModalRemark
+          confirmationHandler={backToDd}
+          handleCancel={() => setRejectModalOpen(false)}
+          message={
+            "Are you sure, want to send back to Departmental Distributor? "
+          }
+          setData={setData}
+          loadingState={isLoading}
         />
       </>
     );
@@ -344,6 +389,19 @@ const ViewInventoryDetailsById = (props) => {
                 />
               </div>
             </div>
+            {(applicationFullData?.is_notified == 2 ||
+              applicationFullData?.is_notified == -2) && (
+              <div>
+                <p className='flex items-end justify-end w-full text-green-600 font-semibold'>
+                  Reply - {""}
+                  {applicationFullData?.is_notified == 2
+                    ? "Items are required"
+                    : applicationFullData?.is_notified == -2
+                    ? "Items are not required now"
+                    : ""}
+                </p>
+              </div>
+            )}
           </div>
           <div className='space-x-5 flex justify-end mt-[2rem]'>
             <button className={buttonStyle} onClick={() => navigate(-1)}>
@@ -370,6 +428,17 @@ const ViewInventoryDetailsById = (props) => {
               Print
             </button>
 
+            <button
+              className='mr-1 pb-2 pl-6 pr-6 pt-2 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
+              // onClick={stockAssignedDD}
+              onClick={() => {
+                setRejectModalOpen(true);
+                setService("Service");
+              }}
+            >
+              Back to Departmental Distributor
+            </button>
+
             {page == "inbox" && remQuantity > 0 && (
               <>
                 <button
@@ -387,7 +456,10 @@ const ViewInventoryDetailsById = (props) => {
 
             {page == "inbox" &&
               remQuantity === 0 &&
-              applicationFullData?.is_notified !== 1 && (
+              !(
+                applicationFullData?.is_notified === 1 ||
+                applicationFullData?.is_notified === 2
+              ) && (
                 <>
                   <button
                     className='mr-1 pb-2 pl-6 pr-6 pt-2 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
@@ -400,7 +472,8 @@ const ViewInventoryDetailsById = (props) => {
               )}
             {page == "inbox" &&
               remQuantity === 0 &&
-              applicationFullData?.is_notified === 1 && (
+              (applicationFullData?.is_notified === 1 ||
+                applicationFullData?.is_notified === 2) && (
                 <>
                   <button
                     className='mr-1 pb-2 pl-6 pr-6 pt-2 text-base leading-tight  rounded bg-green-600 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out shadow-xl'

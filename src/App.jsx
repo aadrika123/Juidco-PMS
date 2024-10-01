@@ -100,7 +100,11 @@ import EmployeeServiceById from "./Components/Pages/PMS/EmployeeService/Employee
 import DDEmpServiceReqListTabs from "./Components/Pages/PMS/ServiceRequest/DDEmpServiceReq/DDEmpServiceReqListTabs";
 import DDEmpServiceReqById from "./Components/Pages/PMS/ServiceRequest/DDEmpServiceReq/DDEmpServiceReqById";
 import QcbsFinancialComparison from "./Components/Pages/PMS/Bidding/BiddingAdmin/QcbsFinancialComparison";
-import IaInventoryDashboard from "./Components/Pages/PMS/Dashboards/IaDashboard";
+import IaInventoryDashboard from "./Components/Pages/PMS/Dashboards/IaInventoryDashboard";
+import DinventoryDashboard from "./Components/Pages/PMS/Dashboards/DinventoryDashboard";
+import TaInventoryDashboard from "./Components/Pages/PMS/Dashboards/TaInventoryDashboard";
+import LevelInventoryDashboard from "./Components/Pages/PMS/Dashboards/LevelInventoryDashboard";
+import EditPreProcurementIa from "./Components/Pages/PMS/PrePrecurement/StockReceiver/EditPreProcurement";
 
 const queryClient = new QueryClient();
 
@@ -162,6 +166,17 @@ function App() {
     { path: "/supplierMaster", element: <SupplierMaster /> },
     { path: "/bankMaster", element: <BankMaster /> },
 
+    /////////////////////////{*** Dashboards ***}//////////////////////////////////////
+
+    { path: "/ia-inventory-dashboard", element: <IaInventoryDashboard /> },
+    { path: "/dinventory-dashboard", element: <DinventoryDashboard /> },
+    { path: "/ta-inventory-dashboard", element: <TaInventoryDashboard /> },
+    {
+      path: "/level-inventory-dashboard",
+      element: <LevelInventoryDashboard />,
+    },
+    { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
+
     /////////////////////////{*** Pre-Procurement ***}//////////////////////////////////////
 
     /////////////////////////{*** (DD) Distributer Inventory ***}//////////////////////////////////////
@@ -179,8 +194,6 @@ function App() {
     },
 
     //------------ DA ----------
-
-    { path: "/da-inventory-dashboard", element: <InventoryDashboardDa2 /> },
     {
       path: "/da-inventory-proposal",
       element: <InventoryProposalListTabsDa />,
@@ -259,18 +272,8 @@ function App() {
       element: <BoqDetailsByIdFin />,
     },
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //------- Dashboard -------
-    { path: "/ia-inventory-dashboard", element: <IaInventoryDashboard /> },
-    { path: "/dinventory-dashboard", element: <InventoryDashboard /> },
-    { path: "/dinventory-dashboard", element: <InventoryDashboard /> },
-    { path: "/sr-inventory-dashboard", element: <InventoryDashboard /> },
-    // { path: "/sr-inventory-proposal", element: <InventoryProposalListTabs /> },
-
     { path: "/create-pre-procurement/:page", element: <AddPreProcurement /> },
+    { path: "/edit-pre-procurement", element: <EditPreProcurementIa /> },
     { path: "/sr-edit-pre-procurement/:id", element: <SrEditPreProcurement /> },
     { path: "/sr-rejectedlist", element: <RejectedListTabs /> },
     { path: "/sr-releasedlist", element: <ReleasedListTabs /> },

@@ -7,12 +7,14 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
+import ThemeStyle from "@/Components/Common/ThemeStyle";
 
 export default function QcbsFinancialComparison() {
   const { api_financialComp, api_postWinner, api_finalizeWinner } =
     ProjectApiList();
   const { refNo } = useParams();
   const navigate = useNavigate();
+  const { loading } = ThemeStyle();
   const [isLoading, setIsLoading] = useState();
   const [applicationFullData, setapplicationFullData] = useState([]);
   const [selectedBidder, setSelectedBidder] = useState([]);
@@ -90,7 +92,6 @@ export default function QcbsFinancialComparison() {
   };
 
   const decideWinnerApi = () => {
-    console.log(selectedBidder, "selectedBidder");
     if (selectedBidder?.length == 0) {
       return toast.error("Please Select at Least One Winner");
     }
@@ -288,8 +289,9 @@ export default function QcbsFinancialComparison() {
             <button
               className='bg-[#4338CA]  hover:bg-[#5a50c6]  text-white px-10 py-2 rounded flex'
               onClick={decideWinnerApi}
+              disabled={isLoading}
             >
-              Confirm
+              {isLoading ? <div className={`${loading}`}></div> : "Confirm"}
             </button>
           </div>
         </div>

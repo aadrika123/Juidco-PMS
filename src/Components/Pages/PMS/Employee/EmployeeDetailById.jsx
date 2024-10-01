@@ -136,7 +136,7 @@ const EmployeeDetailById = () => {
       .then(async function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
-          setProductData(response?.data?.data?.stock_req_product);
+          setProductData(response?.data?.data?.emp_service_req_product);
         } else {
           // toast.error(response?.data?.message);
         }
@@ -168,6 +168,10 @@ const EmployeeDetailById = () => {
   const confirmationHandler = () => {
     setConfModal(false);
   };
+
+  const isAvailable = applicationFullData?.stock_req_product?.some(
+    (data) => data.is_available === true
+  );
 
   useEffect(() => {
     getApplicationDetail();
@@ -342,7 +346,10 @@ const EmployeeDetailById = () => {
               </>
             )}
             {applicationFullData?.stock_req_product?.map((data, index) => (
-              <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-4 rounded'>
+              <div
+                className='grid md:grid-cols-5 gap-4 ml-8 bg-slate-50 p-4 rounded'
+                key={index}
+              >
                 <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                   <div className='md:w-auto w-[50%] font-bold '>Serial No</div>
                   <div className='md:w-auto w-[50%] text-gray-800 text-md'>
@@ -372,6 +379,19 @@ const EmployeeDetailById = () => {
                   <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
                   <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                     {nullToNA(data?.quantity)}
+                  </div>
+                </div>
+
+                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>
+                    Service Request
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                    {nullToNA(
+                      data?.is_available
+                        ? "No Request Created"
+                        : "Service Requested"
+                    )}
                   </div>
                 </div>
               </div>
@@ -433,7 +453,7 @@ const EmployeeDetailById = () => {
                     </button>
                   )}
 
-                  {applicationFullData?.status == 41 && (
+                  {applicationFullData?.status === 41 && isAvailable ? (
                     <>
                       <button
                         className={buttonStyle2}
@@ -465,6 +485,8 @@ const EmployeeDetailById = () => {
                         Warranty claims
                       </button>
                     </>
+                  ) : (
+                    <div></div>
                   )}
                 </>
               )}

@@ -302,14 +302,7 @@ const CriticalDateForm = () => {
                 submitForm(values);
               }}
             >
-              {({
-                values,
-                handleChange,
-                errors,
-                touched,
-                setFieldValue,
-                resetForm,
-              }) => (
+              {({ values, errors, touched, setFieldValue, resetForm }) => (
                 <Form>
                   <>
                     <div className='grid grid-cols-2 container mx-auto capitalize'>
@@ -327,6 +320,7 @@ const CriticalDateForm = () => {
                             name='publishingDate'
                             onChange={(value) => {
                               const dateTime = value.format();
+                              console.log(dateTime);
                               setFieldValue("publishingDate", dateTime);
                             }}
                             value={

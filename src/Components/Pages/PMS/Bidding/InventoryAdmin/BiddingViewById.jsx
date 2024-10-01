@@ -72,7 +72,6 @@ const BiddingViewById = () => {
     AxiosInterceptors.get(`${api_fetchProcurementDetById}/${id}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data?.status);
           setapplicationFullData(response?.data?.data);
           setisLoading(false);
         } else {
@@ -526,9 +525,12 @@ const BiddingViewById = () => {
                             Technical Criteria
                           </h1>
 
-                          {biddingData?.techCriteria.map((data) => (
+                          {biddingData?.techCriteria.map((data, index) => (
                             <>
-                              <div className='grid md:grid-rows-4-4 gap-6 ml-8 mb-5 mt-3'>
+                              <div
+                                className='grid md:grid-rows-4-4 gap-6 ml-8 mb-5 mt-3'
+                                key={index}
+                              >
                                 <div className='md:flex-1 md:block flex md:flex-col-reverse justify-between'>
                                   <div className='md:w-auto w-[50%] text-gray-800 '>
                                     Creteria Type:{" "}

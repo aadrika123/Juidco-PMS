@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import * as Yup from "yup";
 import { IoAddSharp } from "react-icons/io5";
-import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { useFormik } from "formik";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
@@ -40,6 +40,11 @@ const BiddingCreteria = (props) => {
     description: "",
   };
 
+  const validationSchema = Yup.object({
+    heading: Yup.string().required("Enter Criteria"),
+    description: Yup.string().required("Enter Description"),
+  });
+
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
@@ -47,6 +52,7 @@ const BiddingCreteria = (props) => {
       setFormValues((prev) => ({ criteria: [...prev["criteria"], values] }));
       resetForm();
     },
+    validationSchema,
   });
 
   const handleOnChange = (e) => {
@@ -210,9 +216,7 @@ const BiddingCreteria = (props) => {
     });
   };
 
-  const confirmationHandler = () => {
-    console.log(formValues);
-  };
+  const confirmationHandler = () => {};
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -240,126 +244,134 @@ const BiddingCreteria = (props) => {
           isLoading ? "blur-[2px]" : ""
         }bg-white border border-blue-500 rounded-lg shadow-xl space-y-5 `}
       >
-        {props.heading !== "Bidder Details" &&
-          props.heading !== "Bidder Amount Details" && (
-            <>
-              <div className='p-7'>
-                <h1 className='text-xl font-medium'>
-                  Enter {props.heading} Criteria{" "}
+        {!(
+          props.heading === "Bidder Details" ||
+          props.heading === "Bidder Amount Details"
+        ) && (
+          <>
+            <div className='p-7'>
+              <h1 className='text-xl font-medium'>
+                Enter {props.heading} Criteria{" "}
+              </h1>
+              <p className='font-extralight text-gray-400'>
+                Include description as necessary
+              </p>
+            </div>
+
+            {/* Heading Button */}
+            <div
+              className='border border-gray-300 rounded-xl flex m-5 cursor-pointer hover:border hover:border-blue-500'
+              onClick={() => setShowFields(true)}
+            >
+              <div className='flex justify-center items-center'>
+                <IoAddSharp className='text-blue-600 bg-blue-100 rounded-full text-[1.5rem] m-5' />
+              </div>
+              <div className='pt-3'>
+                <h1 className=' text-gray-600'>Heading</h1>
+                <h1 className='text-xs font-extralight text-gray-400 '>
+                  Description
                 </h1>
-                <p className='font-extralight text-gray-400'>
-                  Include description as necessary
-                </p>
               </div>
+            </div>
 
-              {/* Heading Button */}
+            <div className='pb-1'></div>
+            {formValues?.criteria?.map((data, index) => (
               <div
-                className='border border-gray-300 rounded-xl flex m-5 cursor-pointer hover:border hover:border-blue-500'
-                onClick={() => setShowFields(true)}
+                key={index}
+                className='border border-gray-300 rounded-xl flex m-5 cursor-pointer hover:border hover:bg-gray-50 hover:border-blue-500'
               >
-                <div className='flex justify-center items-center'>
-                  <IoAddSharp className='text-blue-600 bg-blue-100 rounded-full text-[1.5rem] m-5' />
+                <div className='p-3  w-[5%]'>
+                  <h1>{index + 1}.</h1>
                 </div>
-                <div className='pt-3'>
-                  <h1 className=' text-gray-600'>Heading</h1>
-                  <h1 className='text-xs font-extralight text-gray-400 '>
-                    Description
-                  </h1>
+                <div className='p-3 w-[70%]  '>
+                  <div className='flex space-x-[6.2rem]'>
+                    <div className=''>
+                      <h1 className='text-gray-500 text-sm'>Heading</h1>
+                    </div>
+                    <div className=''>: {data.heading}</div>
+                    <span className='text-red-600 text-xs'></span>
+                  </div>
+                  <div className='flex space-x-[5rem]'>
+                    <div className=''>
+                      <h1 className='text-gray-500 text-sm'>Description </h1>
+                    </div>
+                    <div className=''>: {data.description}</div>
+                    <span className='text-red-600 text-xs'></span>
+                  </div>
                 </div>
-              </div>
 
-              <div className='pb-1'></div>
-
-              {formValues?.criteria?.map((data, index) => (
-                <div
-                  key={index}
-                  className='border border-gray-300 rounded-xl flex m-5 cursor-pointer hover:border hover:bg-gray-50 hover:border-blue-500'
-                >
-                  <div className='p-3  w-[5%]'>
-                    <h1>{index + 1}.</h1>
-                  </div>
-                  <div className='p-3 w-[70%]  '>
-                    <div className='flex space-x-[6.2rem]'>
-                      <div className=''>
-                        <h1 className='text-gray-500 text-sm'>Heading </h1>
-                      </div>
-                      <div className=''>: {data.heading}</div>
-                    </div>
-                    <div className='flex space-x-[5rem]'>
-                      <div className=''>
-                        <h1 className='text-gray-500 text-sm'>Description </h1>
-                      </div>
-                      <div className=''>: {data.description}</div>
-                    </div>
-                  </div>
-
-                  <div className=' flex justify-end items-center space-x-4 w-[20%]'>
-                    {/* <button className='border border-blue-400 bg-blue-100 w-8 h-8 pl-2 rounded-full text-blue-600'>
+                <div className=' flex justify-end items-center space-x-4 w-[20%]'>
+                  {/* <button className='border border-blue-400 bg-blue-100 w-8 h-8 pl-2 rounded-full text-blue-600'>
                     <FaEdit />
                   </button> */}
+                  <button
+                    className='border border-blue-400 bg-blue-100 w-8 h-8 pl-2 rounded-full text-blue-600'
+                    onClick={() => handleDelete(data.heading, data.description)}
+                  >
+                    <AiFillDelete />
+                  </button>
+                </div>
+              </div>
+            ))}
+            {/* <div className="pb-1"></div> */}
+
+            {showFields == true && (
+              <div className=' '>
+                <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
+                  <div className='m-5'>
+                    <div className='pt-3 w-full'>
+                      <input
+                        type='text'
+                        className='text-gray-600 rounded-xl w-full h-16 px-2 outline-none focus:bg-[#e7e7f7] border border-gray-300 focus:border-blue-700 focus:border'
+                        placeholder='Enter Criteria'
+                        name='heading'
+                        onChange={formik.handleChange}
+                        value={formik.values.heading}
+                      />
+                      <span className='text-red-600 text-xs'>
+                        {formik.touched.heading && formik.errors.heading
+                          ? formik.errors.heading
+                          : null}
+                      </span>
+                    </div>
+                  </div>
+                  <div className='m-5'>
+                    <div className=' w-full'>
+                      <textarea
+                        type='text'
+                        className='text-gray-600 rounded-xl w-full h-24 pt-2 px-2 outline-none focus:bg-[#e7e7f7] border border-gray-300 focus:border-blue-700 focus:border'
+                        placeholder='Enter Description'
+                        name='description'
+                        onChange={formik.handleChange}
+                        value={formik.values.description}
+                      />
+                      <span className='text-red-600 text-xs'>
+                        {formik.touched.description && formik.errors.description
+                          ? formik.errors.description
+                          : null}
+                      </span>
+                    </div>
+                  </div>
+                  <div className='flex justify-end mr-5 pb-5'>
                     <button
-                      className='border border-blue-400 bg-blue-100 w-8 h-8 pl-2 rounded-full text-blue-600'
-                      onClick={() =>
-                        handleDelete(data.heading, data.description)
-                      }
+                      className=' border border-[#4338ca] bg-white hover:bg-[#4338ca] hover:text-white px-3 py-2 rounded ml-5'
+                      onClick={() => setShowFields(false)}
+                      type='reset'
                     >
-                      <AiFillDelete />
+                      Close
+                    </button>
+                    <button className=' border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded ml-5'>
+                      Add
                     </button>
                   </div>
-                </div>
-              ))}
-              {/* <div className="pb-1"></div> */}
-
-              {showFields == true && (
-                <div className=' '>
-                  <form
-                    onSubmit={formik.handleSubmit}
-                    onChange={handleOnChange}
-                  >
-                    <div className='m-5'>
-                      <div className='pt-3 w-full'>
-                        <input
-                          type='text'
-                          className='text-gray-600 rounded-xl w-full h-16 px-2 outline-none focus:bg-[#e7e7f7] border border-gray-300 focus:border-blue-700 focus:border'
-                          placeholder='Enter Criteria'
-                          name='heading'
-                          onChange={formik.handleChange}
-                          value={formik.values.heading}
-                        />
-                      </div>
-                    </div>
-                    <div className='m-5'>
-                      <div className=' w-full'>
-                        <textarea
-                          type='text'
-                          className='text-gray-600 rounded-xl w-full h-24 pt-2 px-2 outline-none focus:bg-[#e7e7f7] border border-gray-300 focus:border-blue-700 focus:border'
-                          placeholder='Enter Description'
-                          name='description'
-                          onChange={formik.handleChange}
-                          value={formik.values.description}
-                        />
-                      </div>
-                    </div>
-                    <div className='flex justify-end mr-5 pb-5'>
-                      <button
-                        className=' border border-[#4338ca] bg-white hover:bg-[#4338ca] hover:text-white px-3 py-2 rounded ml-5'
-                        onClick={() => setShowFields(false)}
-                      >
-                        Close
-                      </button>
-                      <button className=' border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded ml-5'>
-                        Add
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              )}
-              {formValues?.criteria?.length > 0 && <div className='pb-1'></div>}
-            </>
-          )}
+                </form>
+              </div>
+            )}
+            {formValues?.criteria?.length > 0 && <div className='pb-1'></div>}
+          </>
+        )}
 
         {/* Bidder Details */}
-
         {props.heading == "Bidder Details" && (
           <div className='p-7'>
             <h1 className='text-xl font-medium'>Bidder’s</h1>
@@ -453,40 +465,55 @@ const BiddingCreteria = (props) => {
           )}
         </div>
 
-        <div className='space-x-4 flex justify-end'>
-          {props?.heading == "Bidder Details" ? (
-            <button
-              className='border border-[rgb(67,56,202)] bg-[rgb(67,56,202)] hover:bg-[#342b96] text-white px-6 py-2 rounded'
-              onClick={() => submitCreteria()}
-              // onClick={() => navigate("/bidding-details?tabNo=1")}
-            >
-              Submit
-            </button>
-          ) : props?.heading == "Bidder Amount Details" ? (
-            <button
-              className='border border-[rgb(67,56,202)] bg-[rgb(67,56,202)] hover:bg-[#342b96] text-white px-6 py-2 rounded'
-              onClick={postBiddingAmtHandler}
-              // onClick={() => navigate("/bidding-details?tabNo=1")}
-            >
-              Submit
-            </button>
-          ) : (
-            <button
-              className='border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded'
-              onClick={() => addCreteria()}
-              // onClick={() =>
-              //   navigate(
-              //     `/bidding-commparision-tabs?tabNo=${props.tabNo + 1}`,
-              //     {
-              //       state: props?.referenceNo,
-              //     }
-              //   )
-              // }
-            >
-              {isLoading ? <div className={`${loading}`}></div> : "Save & Next"}
-              {/* Save & Next */}
-            </button>
-          )}
+        <div className='flex justify-between items-center w-full'>
+          <button
+            className='bg-[#4338ca] px-14 py-2 text-white rounded-md hover:bg-blue-900'
+            onClick={() =>
+              navigate(`/biddingViewById/${props?.referenceNo}/inbox`)
+            }
+          >
+            Back
+          </button>
+
+          <div className='space-x-4 flex justify-end'>
+            {props?.heading == "Bidder Details" ? (
+              <button
+                className='border border-[rgb(67,56,202)] bg-[rgb(67,56,202)] hover:bg-[#342b96] text-white px-6 py-2 rounded'
+                onClick={() => submitCreteria()}
+                // onClick={() => navigate("/bidding-details?tabNo=1")}
+              >
+                Submit
+              </button>
+            ) : props?.heading == "Bidder Amount Details" ? (
+              <button
+                className='border border-[rgb(67,56,202)] bg-[rgb(67,56,202)] hover:bg-[#342b96] text-white px-6 py-2 rounded'
+                onClick={postBiddingAmtHandler}
+                // onClick={() => navigate("/bidding-details?tabNo=1")}
+              >
+                Submit
+              </button>
+            ) : (
+              <button
+                className='border border-[#4338ca] bg-[#4338ca] hover:bg-[#342b96] text-white px-6 py-2 rounded'
+                onClick={() => addCreteria()}
+                // onClick={() =>
+                //   navigate(
+                //     `/bidding-commparision-tabs?tabNo=${props.tabNo + 1}`,
+                //     {
+                //       state: props?.referenceNo,
+                //     }
+                //   )
+                // }
+              >
+                {isLoading ? (
+                  <div className={`${loading}`}></div>
+                ) : (
+                  "Save & Next"
+                )}
+                {/* Save & Next */}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </>

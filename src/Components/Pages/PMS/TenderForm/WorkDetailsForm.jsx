@@ -455,7 +455,11 @@ const WorkDetailsForm = () => {
                         className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-2/3 p-2.5'
                         placeholder='Pin Code'
                         name='pinCode'
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          if (e.target.value.length <= 6) {
+                            handleChange(e);
+                          }
+                        }}
                         value={values.pinCode}
                       />
                       <p className='text-red-500 text-xs '>

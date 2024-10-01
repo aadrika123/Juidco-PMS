@@ -52,7 +52,7 @@ const BiddingComparisionTabs = () => {
 
   const finTechAndTechDone = [
     // { label: "Financial Comparision", tab: 1, value: "financial" },
-    { label: "Bidder Amount Details", tab: 1 },
+    { label: "Bidder Amount Details", tab: 1, value: "abc" },
   ];
 
   const technical = [
@@ -138,16 +138,17 @@ const BiddingComparisionTabs = () => {
   return (
     <>
       {isLoading && <LoaderApi />}
-      <div className=''>
+      {/* <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Bidding Comparision"}
         />
-      </div>
+      </div> */}
 
       <div className={`${isLoading ? "blur-[2px] pointer-events-none" : ""}`}>
         <div className='flex justify-between items-center'>
           <div className='flex mt-2'>
+            {console.log(tabDetails, "tabDetails")}
             {tabDetails?.map((item, index) => (
               <button
                 key={index}

@@ -28,8 +28,6 @@ const BiddingType = () => {
 
   const { state } = useLocation();
 
-  const { titleBarVisibility } = useContext(contextVar);
-
   const getApplicationDetail = () => {
     setIsLoading(true);
     AxiosInterceptors.get(`${api_getBidType}/${state}`, ApiHeader())
@@ -42,7 +40,7 @@ const BiddingType = () => {
             response?.data?.data?.techComparison &&
             !response?.data?.data?.finCriteria?.length
           ) {
-            navigate("/bidding-type", { state });
+            navigate("/bidding-commparision-tabs?tabNo=1", { state });
           } else if (
             response?.data?.data?.bid_type === "abc" &&
             response?.data?.data?.techComparison &&
@@ -370,10 +368,10 @@ const BiddingType = () => {
     <>
       {isLoading && <LoaderApi />}
 
-      <TitleBar
+      {/* <TitleBar
         titleBarVisibility={titleBarVisibility}
         titleText={"Bidding Comparision"}
-      />
+      /> */}
       <div className={` ${isLoading ? "blur-[2px] pointer-events-none" : ""}`}>
         <div className={`px-6`}>
           <div className='flex justify-between gap-4'>
@@ -650,7 +648,15 @@ const BiddingType = () => {
               </div>
             </div>
 
-            <div className='mt-10'>
+            <div className='flex items-center justify-between mt-10'>
+              <div>
+                <button
+                  className='bg-[#4338ca] px-14 py-2 text-white rounded-md hover:bg-blue-900'
+                  onClick={() => navigate(`/biddingViewById/${state}/inbox`)}
+                >
+                  Back
+                </button>
+              </div>
               <div className=' flex justify-end space-x-8'>
                 <button
                   className='border border-blue-800 px-14 py-2  rounded-md hover:bg-[#4338ca] hover:text-white'

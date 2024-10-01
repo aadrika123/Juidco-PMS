@@ -165,6 +165,8 @@ const BiddingDetailForm = (props) => {
     }
     if (props?.bidderData?.bid_type == "technical" && !techImageDoc) {
       return toast.error("Please upload valid Technical document");
+    } else if (props?.bidderData?.bid_type == "abc" && !techImageDoc) {
+      return toast.error("Please upload valid Technical document");
     } else if (props?.bidderData?.bid_type == "financial" && !fincImageDoc) {
       return toast.error("Please upload valid Financial document");
     } else if (
@@ -290,7 +292,11 @@ const BiddingDetailForm = (props) => {
                     className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
                     placeholder='PAN No'
                     name='pan_no'
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 10) {
+                        handleChange(e);
+                      }
+                    }}
                     value={values.pan_no}
                   />
                   {errors.pan_no && touched.pan_no ? (
@@ -311,7 +317,11 @@ const BiddingDetailForm = (props) => {
                     className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
                     placeholder='GST No'
                     name='gst_no'
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 15) {
+                        handleChange(e);
+                      }
+                    }}
                     value={values.gst_no}
                   />
                 </div>
@@ -392,7 +402,11 @@ const BiddingDetailForm = (props) => {
                     className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2.5'
                     placeholder='IFSC Code'
                     name='ifsc'
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 11) {
+                        handleChange(e);
+                      }
+                    }}
                     value={values.ifsc}
                   />
                   {errors.ifsc && touched.ifsc ? (
@@ -697,8 +711,11 @@ const BiddingDetailForm = (props) => {
                     </AccordionSummary>
                     <AccordionDetails>
                       <div className='relative overflow-x-auto'>
-                        {props?.bidderData?.techCriteria.map((data) => (
-                          <div className='border border-gray-300 rounded-xl flex m-5'>
+                        {props?.bidderData?.techCriteria.map((data, index) => (
+                          <div
+                            className='border border-gray-300 rounded-xl flex m-5'
+                            key={index}
+                          >
                             <div className='w-[7%] flex items-center'>
                               <img
                                 src={icon}

@@ -106,7 +106,6 @@ export default function NotificationSidebar() {
     } else if (status == 24) {
       navigate("/da-received-inventory");
     } else {
-      navigate("/sr-inventory-dashboard");
     }
   };
 
@@ -176,8 +175,6 @@ export default function NotificationSidebar() {
         setConfirmationModalOpen(false);
       });
   };
-
-  const timeZone = "Asia/Kolkata";
 
   useEffect(() => {
     getNotification();

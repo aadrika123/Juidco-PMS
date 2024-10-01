@@ -21,7 +21,7 @@ import {
   LowStockAnimation,
   ReorderAnimation,
   IncreaseAnimation,
-} from "@/Components/temp";
+} from "@/Components/Lotties/temp";
 import Lottie from "react-lottie";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import { contextVar } from "@/Components/context/contextVar";
@@ -60,8 +60,6 @@ function InventoryDashboard() {
   };
 
   const setDataAccToActiveTab = () => {
-    console.log("first");
-
     if (activeTab === "monthly") {
       let monthData = [];
       dashboardData[activeTab]?.map((info) => {
