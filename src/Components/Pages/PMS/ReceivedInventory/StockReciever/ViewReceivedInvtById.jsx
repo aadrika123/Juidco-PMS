@@ -356,7 +356,15 @@ const ViewReceivedInvtById = () => {
   };
 
   const onchangeField = (e, index, field) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+
+    if (field === 'quantity') {
+      if (totSum < value) {
+        alert('Provided value has exceeded total received quantity')
+        value = ''
+      }
+    }
+
     let temp = [...product];
 
     temp[index][field] = value;
@@ -860,7 +868,7 @@ const ViewReceivedInvtById = () => {
                               onChange={(e) => {
                                 setBrandName(e.target.value);
                               }}
-                              // value={item?.brand}
+                            // value={item?.brand}
                             />
                           </div>
                         </div>
@@ -881,7 +889,7 @@ const ViewReceivedInvtById = () => {
                                   onChange={(e) => {
                                     onchangeField(e, index, "quantity");
                                   }}
-                                  disabled
+
                                   value={item?.quantity}
                                 />
                               </div>
@@ -991,7 +999,7 @@ const ViewReceivedInvtById = () => {
                                 }}
                                 value={procurement_stock_id}
                                 disabled
-                                // onClick={() => }
+                              // onClick={() => }
                               >
                                 <option value={""}>select</option>
                                 {/* {console.log(applicationFullData)} */}
@@ -1026,7 +1034,7 @@ const ViewReceivedInvtById = () => {
 
                               <p className='text-red-500 text-xs '>
                                 {formik.touched.totalStock &&
-                                formik.errors.totalStock
+                                  formik.errors.totalStock
                                   ? formik.errors.totalStock
                                   : null}
                               </p>
@@ -1051,7 +1059,7 @@ const ViewReceivedInvtById = () => {
 
                               <p className='text-red-500 text-xs '>
                                 {formik.touched.receivedStock &&
-                                formik.errors.receivedStock
+                                  formik.errors.receivedStock
                                   ? formik.errors.receivedStock
                                   : null}
                               </p>
@@ -1076,7 +1084,7 @@ const ViewReceivedInvtById = () => {
 
                               <p className='text-red-500 text-xs '>
                                 {formik.touched.remStock &&
-                                formik.errors.remStock
+                                  formik.errors.remStock
                                   ? formik.errors.remStock
                                   : null}
                               </p>
@@ -1098,7 +1106,7 @@ const ViewReceivedInvtById = () => {
                                 disabled={applicationFullData?.receivings?.some(
                                   (data) => data?.is_added === true
                                 )}
-                                // name='invtDetails'
+                              // name='invtDetails'
                               >
                                 <option value={""} selected>
                                   select
@@ -1118,7 +1126,7 @@ const ViewReceivedInvtById = () => {
 
                               <p className='text-red-500 text-xs '>
                                 {formik.touched.itemsubcategory &&
-                                formik.errors.itemsubcategory
+                                  formik.errors.itemsubcategory
                                   ? formik.errors.itemsubcategory
                                   : null}
                               </p>
@@ -1156,7 +1164,7 @@ const ViewReceivedInvtById = () => {
 
                               <p className='text-red-500 text-xs '>
                                 {formik.touched.dead_stock &&
-                                formik.errors.dead_stock
+                                  formik.errors.dead_stock
                                   ? formik.errors.dead_stock
                                   : null}
                               </p>

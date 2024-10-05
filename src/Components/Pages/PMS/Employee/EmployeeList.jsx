@@ -45,6 +45,13 @@ function EmployeeList(props) {
       ),
     },
     {
+      Header: "Sub-Category",
+      accessor: "subcategory",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.inventory?.subcategory?.name} </div>
+      ),
+    },
+    {
       Header: "Employee Name",
       accessor: "emp_name",
       Cell: ({ cell }) => (

@@ -51,7 +51,7 @@ const SideBar = (props) => {
       <header
         className={
           (toggleBar ? open1 : close1) +
-          ` relative select-none transition-all duration-200 h-full text-${tcolor}-800 pt-2 border-r border-${bg}-200 shadow-xl`
+          ` relative select-none transition-all duration-200 h-full text-${tcolor}-800 pt-2 border-r border-${bg}-200 shadow-xl overflow-y-scroll`
         }
       >
         {
@@ -96,7 +96,7 @@ const SideBar = (props) => {
                   <nav className='relative flex flex-wrap items-center justify-between overflow-x-hidden'>
                     <ul
                       id='side-menu'
-                      className='w-full float-none flex flex-col'
+                      className='w-full float-none flex flex-col '
                     >
                       {props?.menu?.map((item) => (
                         <>

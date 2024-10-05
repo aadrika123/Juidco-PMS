@@ -926,7 +926,7 @@ export default function Reports() {
           <ListTableParent
             // table={tableSelector(props?.page)}
             api={
-              formik.values.reportType === "level_wise"
+              (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type)
                 ? `${api_getInventoryLevelReport}/${formik.values.levels}/${formik.values.module_type}`
                 : urlReport
             }
@@ -935,14 +935,14 @@ export default function Reports() {
                 ? COLUMNS_SM
                 : formik.values.reportType === "pre_procurement"
                 ? COLUMNS_PRO
-                : formik.values.reportType === "level_wise" &&
+                : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
                   formik.values.module_type === "service-request"
                 ? COLUMNS_lEVEL_SERVICE
-                : formik.values.reportType === "level_wise" &&
+                : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
                   formik.values.module_type === "boq" &&
                   formik.values.levels === "finance"
                 ? FINBOQ
-                : formik.values.reportType === "level_wise" &&
+                : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
                   formik.values.module_type !== "service-request"
                 ? COLUMNS_lEVEL
                 : COLUMNS
