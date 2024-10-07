@@ -388,6 +388,153 @@ export default function Reports() {
       ),
     },
 
+
+
+    // {
+    //   Header: "Action",
+    //   accessor: "id",
+    //   Cell: ({ cell }) => (
+    //     <>
+    //       <button
+    //         className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+    //         onClick={() =>
+    //           navigate(
+    //             `/da-viewInventoryDetailsById/${cell.row.values.id}/${props.page}`
+    //           )
+    //         }
+    //       >
+    //         View
+    //       </button>
+    //     </>
+    //   ),
+    // },
+  ];
+
+  const COLUMNS_DEAD = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+    },
+    {
+      Header: "Serial No",
+      accessor: "serial_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.serial_no} </div>
+      ),
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.inventory?.category?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Sub Category",
+      accessor: "subcategory",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.inventory?.subcategory?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Unit",
+      accessor: "unit",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original.inventory?.unit?.name}</div>
+      ),
+    },
+    {
+      Header: "Description",
+      accessor: "description",
+      Cell: (
+        { cell } // console.log(cell.row.values,"===================celllllll")
+      ) => (
+        <div className='pr-2 w-[14rem] truncate'>
+          {cell.row.original.inventory?.description || "N/A"}
+        </div>
+      ),
+    },
+    {
+      Header: "Dead Stock",
+      accessor: "quantity",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.quantity}</div>
+      ),
+    },
+  ];
+
+  const COLUMNS_RECEIVED = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.category?.name} </div>
+      ),
+    },
+    {
+      Header: "Sub Category",
+      accessor: "subcategory",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.subcategory?.name} </div>
+      ),
+    },
+    {
+      Header: "Unit",
+      accessor: "unit",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values?.unit?.name}</div>
+      ),
+    },
+    {
+      Header: "Description",
+      accessor: "description",
+      Cell: (
+        { cell } // console.log(cell.row.values,"===================celllllll")
+      ) => (
+        <div className='pr-2 w-[14rem] truncate'>
+          {cell.row.values.description || "N/A"}
+        </div>
+      ),
+    },
+    {
+      Header: "Warranty Claim",
+      accessor: "warranty",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.values.warranty
+            ? "Warranty Eligible"
+            : "warranty ineligible"}
+        </div>
+      ),
+    },
+    {
+      Header:
+        formik.values.reportType === "total_stock"
+          ? "Total"
+          : "Total Received",
+      accessor:
+        formik.values.reportType === "total_stock"
+          ? "total_quantity"
+          : "quantity",
+      Cell: (
+        { cell } // console.log(cell.row.values,"===================celllllll")
+      ) => (
+        <div className='pr-2'>
+          {formik.values.reportType === "total_stock"
+            ? cell.row.values.total_quantity
+            : cell.row.values.quantity}
+        </div>
+      ),
+    },
+
     // {
     //   Header: "Action",
     //   accessor: "id",
@@ -597,12 +744,12 @@ export default function Reports() {
     formik.values.levels === "da" || formik.values.levels === "dd"
       ? levelwiseModuleDd
       : formik.values.levels === "finance"
-      ? levelwiseModuleFin
-      : formik.values.levels === "level1" || formik.values.levels === "level2"
-      ? levelwiseModule
-      : formik.values.levels === "ta"
-      ? levelwiseModuleTa
-      : levelwiseModuleIa;
+        ? levelwiseModuleFin
+        : formik.values.levels === "level1" || formik.values.levels === "level2"
+          ? levelwiseModule
+          : formik.values.levels === "ta"
+            ? levelwiseModuleTa
+            : levelwiseModuleIa;
 
   useEffect(() => {
     getCategory();
@@ -803,7 +950,7 @@ export default function Reports() {
                 </select>
                 <p className='text-red-500 text-xs '>
                   {formik.touched.postProcurement &&
-                  formik.errors.postProcurement
+                    formik.errors.postProcurement
                     ? formik.errors.postProcurement
                     : null}
                 </p>
@@ -934,18 +1081,25 @@ export default function Reports() {
               formik.values.reportType === "stock_movement"
                 ? COLUMNS_SM
                 : formik.values.reportType === "pre_procurement"
-                ? COLUMNS_PRO
-                : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
-                  formik.values.module_type === "service-request"
-                ? COLUMNS_lEVEL_SERVICE
-                : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
-                  formik.values.module_type === "boq" &&
-                  formik.values.levels === "finance"
-                ? FINBOQ
-                : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
-                  formik.values.module_type !== "service-request"
-                ? COLUMNS_lEVEL
-                : COLUMNS
+                  ? COLUMNS_PRO
+                  : formik.values.reportType === "dead_stock"
+                    ? COLUMNS_DEAD
+                    : formik.values.reportType === "received_stock"
+                      ? COLUMNS_RECEIVED
+                      : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
+                        formik.values.module_type === "service-request"
+                        ? COLUMNS_lEVEL_SERVICE
+                        : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
+                          formik.values.module_type === "boq" &&
+                          formik.values.levels === "finance"
+                          ? FINBOQ
+                          : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
+                            formik.values.module_type == "procurement"
+                            ? COLUMNS_PRO
+                            : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
+                              formik.values.module_type !== "service-request"
+                              ? COLUMNS_lEVEL
+                              : COLUMNS
             }
             from={formik.values.from_date}
             to={formik.values.to_date}
