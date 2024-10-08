@@ -1091,7 +1091,7 @@ export default function Reports() {
                         ? COLUMNS_lEVEL_SERVICE
                         : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
                           formik.values.module_type === "boq" &&
-                          formik.values.levels === "finance"
+                          (formik.values.levels === "finance" || formik.values.levels === "ia")
                           ? FINBOQ
                           : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
                             formik.values.module_type == "procurement"

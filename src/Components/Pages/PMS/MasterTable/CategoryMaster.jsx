@@ -15,6 +15,7 @@ import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 export default function CategoryMaster() {
   const {
     api_itemCategory,
+    api_itemCategoryAll,
     api_categoryStatusUpdate,
     api_itemCategoryUpdate,
     api_postItemCategory,
@@ -55,11 +56,11 @@ export default function CategoryMaster() {
     setIsLoading(true);
     try {
       const response = await AxiosInterceptors.get(
-        api_itemCategory,
+        api_itemCategoryAll,
         ApiHeader()
       );
       // setCategoryData(response?.data?.data?.data);
-      setCategoryData(response?.data?.data);
+      setCategoryData(response?.data?.data?.data);
     } catch (error) {
       console.log("error in category master", error);
       toast.error(error.response.data.message);

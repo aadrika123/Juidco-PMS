@@ -50,10 +50,12 @@ function AddPreProcurement() {
   const {
     api_addProcurement,
     // api_itemCategory,
+    api_getActiveSubCategory,
     api_getActiveCategory,
     api_itemSubCategory,
     api_itemBrand,
     api_getAllunit,
+    api_getActiveUnit,
     api_fetchProcurementById,
     api_getProcItemRateContract,
     api_getActiveDesc,
@@ -225,7 +227,7 @@ function AddPreProcurement() {
     // getDesc(value);
     // console.log(e?.target?.value,"Subcategory");
 
-    AxiosInterceptors.get(`${api_itemSubCategory}/${value}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getActiveSubCategory}/${value}`, ApiHeader())
       .then(function (response) {
         // console.log(response?.data?.data, "res subcT");
         setSubCategory(response?.data?.data);
@@ -266,9 +268,9 @@ function AddPreProcurement() {
   };
 
   const fetchUnits = () => {
-    AxiosInterceptors.get(`${api_getAllunit}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getActiveUnit}`, ApiHeader())
       .then(function (response) {
-        setUnit(response?.data?.data?.data);
+        setUnit(response?.data?.data);
       })
       .catch(function (error) {
         toast.error("Error in fetching Units");
@@ -499,7 +501,7 @@ function AddPreProcurement() {
                         page == "edit" ||
                         is_rate_contract
                       }
-                      // defaultValue={categorySelected || "select"}
+                    // defaultValue={categorySelected || "select"}
                     >
                       <option value='select'>select</option>
 
@@ -596,7 +598,7 @@ function AddPreProcurement() {
                           formik.values.quantity || formData?.length > 0
                         }
                         value={formik.values.supplier}
-                        // defaultValue={categorySelected || "select"}
+                      // defaultValue={categorySelected || "select"}
                       >
                         <option value='select'>select</option>
 
@@ -606,7 +608,7 @@ function AddPreProcurement() {
                               <option
                                 key={index}
                                 value={items?.supplier_master?.id}
-                                // defaultValue={categorySelected || "select"}
+                              // defaultValue={categorySelected || "select"}
                               >
                                 {items?.supplier_master?.name}
                               </option>
@@ -711,8 +713,8 @@ function AddPreProcurement() {
                                 {form.subcategorytxt
                                   ? form.subcategorytxt
                                   : subcategory?.find(
-                                      (subcat) => subcat.id === form.subcategory
-                                    )?.name}
+                                    (subcat) => subcat.id === form.subcategory
+                                  )?.name}
                               </td>
                               <td className='px-6 py-4'>
                                 {form.brandtxt ? form.brandtxt : form?.brand}
@@ -727,8 +729,8 @@ function AddPreProcurement() {
                                 {isDescTextOpen || is_rate_contract
                                   ? form.description
                                   : descrip?.find(
-                                      (data) => data.id === form.description
-                                    )?.description}
+                                    (data) => data.id === form.description
+                                  )?.description}
                               </td>
                               <td className='px-6 py-4 '>{form.quantity}</td>
                               <td className='px-6 py-4 '>
@@ -796,7 +798,7 @@ function AddPreProcurement() {
 
                         <p className='text-red-500 text-xs '>
                           {formik.touched.subcategory &&
-                          formik.errors.subcategory
+                            formik.errors.subcategory
                             ? formik.errors.subcategory
                             : null}
                         </p>
@@ -908,7 +910,7 @@ function AddPreProcurement() {
                                 ? formik.values.proc_item
                                 : formik.values.description
                             }
-                            // disabled={is_rate_contract}
+                          // disabled={is_rate_contract}
                           >
                             <option value={""}>select</option>
                             {descrip?.length &&
@@ -926,7 +928,7 @@ function AddPreProcurement() {
                         )}
                         <p className='text-red-500 text-xs '>
                           {formik.touched.description &&
-                          formik.errors.description
+                            formik.errors.description
                             ? formik.errors.description
                             : null}
                         </p>
@@ -1008,7 +1010,7 @@ function AddPreProcurement() {
                             />
                             <p className='text-red-500 text-xs '>
                               {formik.touched.total_rate &&
-                              formik.errors.total_rate
+                                formik.errors.total_rate
                                 ? formik.errors.total_rate
                                 : null}
                             </p>
