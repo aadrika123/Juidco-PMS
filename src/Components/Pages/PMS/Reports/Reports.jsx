@@ -27,6 +27,7 @@ export default function Reports() {
     api_getInventoryTotalMovementReport,
     api_getInventoryPreProcReport,
     api_getInventoryLevelReport,
+    api_getTenderReport
   } = ProjectApiList();
 
   const [urlReport, setUrlReport] = useState(api_getInventoryTotalReport);
@@ -738,6 +739,61 @@ export default function Reports() {
     },
   ];
 
+  const COLUMNS_TENDER = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+    },
+    {
+      Header: "Reference No",
+      accessor: "reference_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.reference_no} </div>
+      ),
+    },
+    {
+      Header: "Tendering Type",
+      accessor: "tendering_type",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original.tendering_type === 'qcbs' ? 'QCBS' : cell.row.original.tendering_type === 'least_cost' ? 'Least Cost' : 'Rate Contract'}</div>
+      ),
+    },
+    {
+      Header: "Procurement No",
+      accessor: "procurement_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original?.boq?.procurement_no} </div>
+      ),
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original?.boq?.procurement?.procurement_stocks[0]?.category?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Date",
+      accessor: "date",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original?.createdAt.split('T')[0]}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Estimated Amount",
+      accessor: "estimated_cost",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original?.boq?.estimated_cost}{" "}
+        </div>
+      ),
+    },
+  ];
+
   //setting application type on basis of selected levels---
 
   const applicationType =
@@ -1026,7 +1082,7 @@ export default function Reports() {
                   Tender type
                 </label>
                 <select
-                  {...formik.getFieldProps("preProcurement")}
+                  {...formik.getFieldProps("ttype")}
                   className={`${inputStyle} inline-block w-full relative`}
                   onChange={(e) => {
                     formik.handleChange(e);
@@ -1040,8 +1096,8 @@ export default function Reports() {
                   ))}
                 </select>
                 <p className='text-red-500 text-xs '>
-                  {formik.touched.preProcurement && formik.errors.preProcurement
-                    ? formik.errors.preProcurement
+                  {formik.touched.ttype && formik.errors.ttype
+                    ? formik.errors.ttype
                     : null}
                 </p>
               </div>
@@ -1075,7 +1131,14 @@ export default function Reports() {
             api={
               (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type)
                 ? `${api_getInventoryLevelReport}/${formik.values.levels}/${formik.values.module_type}`
-                : urlReport
+                : formik.values.reportType === "tender_type" ?
+                  `${api_getTenderReport}`
+                  : urlReport
+            }
+            qparams={
+              formik.values.reportType === "tender_type" && formik.values.ttype ?
+                `ttype=${formik.values.ttype}`
+                : ''
             }
             columns={
               formik.values.reportType === "stock_movement"
@@ -1099,7 +1162,9 @@ export default function Reports() {
                             : (formik.values.reportType === "level_wise" && formik?.values?.levels && formik?.values?.module_type) &&
                               formik.values.module_type !== "service-request"
                               ? COLUMNS_lEVEL
-                              : COLUMNS
+                              : (formik.values.reportType === "tender_type")
+                                ? COLUMNS_TENDER
+                                : COLUMNS
             }
             from={formik.values.from_date}
             to={formik.values.to_date}

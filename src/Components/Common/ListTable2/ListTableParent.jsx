@@ -92,6 +92,7 @@ const ListTableParent = (props) => {
       &${returnCategoryFilter("category", filter?.category || [])}
       &${returnCategoryFilter("scategory", filter?.subcategory || [])}
       &${returnCategoryFilter("brand", filter?.brand || [])}
+      &${props?.qparams ? props?.qparams : ""}
       `
         .split(" ")
         .join(""),
@@ -231,9 +232,8 @@ const ListTableParent = (props) => {
         const url = window.URL.createObjectURL(new Blob([res.data]));
         const a = document.createElement("a");
         a.href = url;
-        a.download = `${
-          props?.table
-        }-${date.getDate()}${date.getMonth()}${date.getFullYear()}.csv`;
+        a.download = `${props?.table
+          }-${date.getDate()}${date.getMonth()}${date.getFullYear()}.csv`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -311,9 +311,8 @@ const ListTableParent = (props) => {
               </button>
 
               <div
-                className={`flex gap-2 transition-opacity duration-300 ${
-                  isHovered ? "opacity-100 visible" : "opacity-0 invisible"
-                }`}
+                className={`flex gap-2 transition-opacity duration-300 ${isHovered ? "opacity-100 visible" : "opacity-0 invisible"
+                  }`}
               >
                 <button
                   className={`${exportBtnStyle} font-semibold text-xs`}
@@ -326,7 +325,7 @@ const ListTableParent = (props) => {
                       },
                     })
                   }
-                  // onClick={() => window.print()}
+                // onClick={() => window.print()}
                 >
                   PDF
                 </button>
