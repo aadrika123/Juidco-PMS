@@ -330,6 +330,27 @@ export default function Reports() {
         <div className='pr-2'>{cell.row.values.quantity}</div>
       ),
     },
+    {
+      Header: "Employee ID",
+      accessor: "emp_id",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values?.stock_request?.emp_id}</div>
+      ),
+    },
+    {
+      Header: "Employee Name",
+      accessor: "emp_name",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values?.stock_request?.emp_name}</div>
+      ),
+    },
+    {
+      Header: "Handover Date",
+      accessor: "quantity",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.quantity}</div>
+      ),
+    },
 
     // {
     //   Header: "Action",

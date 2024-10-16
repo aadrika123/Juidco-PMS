@@ -205,7 +205,7 @@ const BiddingDetailForm = (props) => {
         console.log("errorrr.... ", error);
         toast.error(
           error?.response?.data?.error ||
-            "Error in submitting form. Please try again"
+          "Error in submitting form. Please try again"
         );
       })
       .finally(() => {
@@ -666,31 +666,32 @@ const BiddingDetailForm = (props) => {
                     </button>
                   </div>
                 </div> */}
+                {values?.emd == "yes" && (
+                  <div className='flex justify-end gap-3 '>
+                    <div className='w-[40%] px-2'>
+                      <ImageDisplay
+                        url={basicDetailData?.doc[0]?.docUrl}
+                        preview={preview}
+                        imageDoc={imageDoc}
+                        alt={"uploaded document"}
+                        showPreview={"hidden"}
+                        width={"[50px]"}
+                      />
+                    </div>
 
-                <div className='flex justify-end gap-3 '>
-                  <div className='w-[40%] px-2'>
-                    <ImageDisplay
-                      url={basicDetailData?.doc[0]?.docUrl}
-                      preview={preview}
-                      imageDoc={imageDoc}
-                      alt={"uploaded document"}
-                      showPreview={"hidden"}
-                      width={"[50px]"}
-                    />
+                    <div className=''>
+                      <FileButton
+                        bg={"[#4338CA]"}
+                        hoverBg={"bg-indigo-300"}
+                        btnLabel={"Upload Reference Document"}
+                        imgRef={inputFileRef}
+                        setImageDoc={setImageDoc}
+                        setPreview={setPreview}
+                        textColor={"white"}
+                      />
+                    </div>
                   </div>
-
-                  <div className=''>
-                    <FileButton
-                      bg={"[#4338CA]"}
-                      hoverBg={"bg-indigo-300"}
-                      btnLabel={"Upload Reference Document"}
-                      imgRef={inputFileRef}
-                      setImageDoc={setImageDoc}
-                      setPreview={setPreview}
-                      textColor={"white"}
-                    />
-                  </div>
-                </div>
+                )}
               </div>
 
               <div className='mt-8 '>
@@ -839,7 +840,7 @@ const BiddingDetailForm = (props) => {
               <TenderFormButton
                 resetForm={"resetForm"}
                 getDetailData={"basicDetailData"}
-                // loading={isLoading}
+              // loading={isLoading}
               />
             </>
           </Form>
