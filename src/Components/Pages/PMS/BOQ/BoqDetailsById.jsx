@@ -402,8 +402,8 @@ export default function BoqDetailsById(props) {
                         <td className='border border-gray-200 px-4 py-2 text-sm'>
                           {indianAmount(
                             row?.total_rate ||
-                              row?.amount ||
-                              Number(row?.quantity) * Number(row?.rate)
+                            row?.amount ||
+                            Number(row?.quantity) * Number(row?.rate)
                           )}
                         </td>
 
@@ -533,6 +533,21 @@ export default function BoqDetailsById(props) {
             >
               Proceed to Pre-Tender
               <MdArrowRightAlt className='text-2xl ml-2' />
+            </button>
+          )}
+
+          {page == "inbox" && (dataList?.status == 41 || dataList?.status == 0) && (
+            <button
+              className={`${colouredBtnStyle} flex gap-2 justify-center items-center`}
+              onClick={() =>
+                navigate(`/create-boq?edit=true`, {
+                  state: {
+                    procurement_no: [dataList?.procurement_stocks[0]?.procurement_no],
+                  },
+                })
+              }
+            >
+              Edit
             </button>
           )}
 

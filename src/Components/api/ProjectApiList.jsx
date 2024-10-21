@@ -129,7 +129,7 @@ export default function ProjectApiList() {
     api_fetchAllBoqDetailsbyId: `${baseUrl}/api/pms/boq/by-ref`,
     api_fetchAllBoqDetailsbyIdFin: `${baseUrl}/api/pms/finance/boq`, // boq by id for finannce
     api_fetchBoqInboxList: `${baseUrl}/api/pms/acc/pre-procurement/boq`,
-    api_postUpdatedBoq: `${baseUrl}/api/pms/boq`, //update boq
+    api_postUpdatedBoq: `${baseUrl}/api/pms/boq/edit`, //update boq
     api_postBacktoAcc: `${baseUrl}/api/pms/da/pre-procurement/boq/return-boq`, //boq back to acc
     api_postForwardBoq: `${baseUrl}/api/pms/da/pre-procurement/boq/approve`, //approve boq
     api_approveBoq: `${baseUrl}/api/pms/finance/boq/approve`, //approve new boq by fin
@@ -253,6 +253,7 @@ export default function ProjectApiList() {
     api_postWinner: `${baseUrl}/api/pms/ta/select-winner`,
     api_finalizeWinner: `${baseUrl}/api/pms/ta/comparison-finalize`,
     api_financialComp: `${baseUrl}/api/pms/ta/comparison-result/financial/`,
+    api_getBidderById: `${baseUrl}/api/pms/bidding/bidder`,
 
     // Post Procurement
     api_fetchPostProcurementDetailSupplierbyId: `${baseUrl}/api/pms/procurement`,

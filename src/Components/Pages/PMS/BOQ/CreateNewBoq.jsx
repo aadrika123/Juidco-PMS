@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import { useEffect, useRef, useState, useContext } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -43,6 +43,10 @@ export default function CreateNewBoq() {
   const { titleBarVisibility } = useContext(contextVar);
   // let isCreatePage = state?.proNos?.length > 0 ? "create" : "edit/view";
   let isCreatePage = state ? "create" : "edit/view";
+
+  const [searchParams] = useSearchParams();
+  const isEdit = searchParams.get('edit') === 'true';
+
   const {
     api_fetchAllBoqDetailsbyId,
     api_fetchProcurementById,
@@ -477,9 +481,8 @@ export default function CreateNewBoq() {
       />
 
       <div
-        className={`container mx-auto bg-white rounded border border-blue-500 mt-10 shadow-xl p-6 mb-10 ${
-          isLoading ? "blur-[2px]" : ""
-        }`}
+        className={`container mx-auto bg-white rounded border border-blue-500 mt-10 shadow-xl p-6 mb-10 ${isLoading ? "blur-[2px]" : ""
+          }`}
       >
         <div className='flex justify-between items-center w-full'>
           <div className='flex gap-1'>
@@ -516,9 +519,8 @@ export default function CreateNewBoq() {
                 COLUMNS?.map((heading, index) => (
                   <th
                     key={index}
-                    className={`border border-gray-300 px-4 py-3 text-bold text-sm ${
-                      heading?.header === "description" ? "w-[7rem]" : "w-auto"
-                    }`}
+                    className={`border border-gray-300 px-4 py-3 text-bold text-sm ${heading?.header === "description" ? "w-[7rem]" : "w-auto"
+                      }`}
                   >
                     {heading?.header}
                   </th>
@@ -598,7 +600,7 @@ export default function CreateNewBoq() {
                     <td className='border border-gray-200 px-4 py-2 text-sm'>
                       {indianAmount(
                         payload?.procurement[index]?.total_rate ||
-                          row?.total_rate
+                        row?.total_rate
                       )}
                     </td>
 
@@ -607,6 +609,7 @@ export default function CreateNewBoq() {
                         placeholder='Enter remarks...'
                         className='outline-indigo-400 text-md px-2 h-[30px] rounded-md w-full'
                         onChange={(e) => addRemarkHandler(e, row?.id)}
+                        defaultValue={row?.remark || ""}
                       />
                     </td>
                   </tr>
@@ -794,13 +797,13 @@ export default function CreateNewBoq() {
               return toast.error("Please add HSN code");
             }
             navigate(
-              "/boqSummary",
+              `/boqSummary${isEdit ? '?edit=true' : ''}`,
               isCreatePage == "create"
                 ? {
-                    state: gstChecked
-                      ? { ...payload, gstChecked }
-                      : { ...payload },
-                  }
+                  state: gstChecked
+                    ? { ...payload, gstChecked }
+                    : { ...payload },
+                }
                 : { state: payload }
             );
           }}

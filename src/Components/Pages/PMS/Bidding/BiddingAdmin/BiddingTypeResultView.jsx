@@ -119,8 +119,8 @@ const BiddingTypeResultView = () => {
             {applicationData?.bid_type == "technical"
               ? "Technical"
               : applicationData?.bid_type == "financial"
-              ? "Financial"
-              : ""}{" "}
+                ? "Financial"
+                : ""}{" "}
             Qualification the Analysis are :-
           </h2>
         </div>
@@ -213,7 +213,7 @@ const BiddingTypeResultView = () => {
                         scope='row'
                         className='px-6 py-5 text-center border-r border-l border-gray-300 font-medium text-gray-900 whitespace-nowrap'
                       >
-                        L{index + 1}
+                        {applicationData?.boq?.pre_tendering_details?.tendering_type === 'qcbs' ? 'FH' : 'L'}{index + 1}
                       </th>
                     </tr>
                   ))}
@@ -249,13 +249,13 @@ const BiddingTypeResultView = () => {
                         applicationData?.bid_type === "abc" &&
                         !applicationData?.finComparison
                       ) && (
-                        <th
-                          scope='col'
-                          className='px-6 py-5 text-center border-r border-gray-300'
-                        >
-                          Bidding Price
-                        </th>
-                      )}
+                          <th
+                            scope='col'
+                            className='px-6 py-5 text-center border-r border-gray-300'
+                          >
+                            Bidding Price
+                          </th>
+                        )}
 
                       <th
                         scope='col'
@@ -285,10 +285,10 @@ const BiddingTypeResultView = () => {
                           applicationData?.bid_type === "abc" &&
                           !applicationData?.finComparison
                         ) && (
-                          <td className='px-6 py-5 text-center border-r border-gray-300'>
-                            {indianAmount(data?.bidding_amount)}
-                          </td>
-                        )}
+                            <td className='px-6 py-5 text-center border-r border-gray-300'>
+                              {indianAmount(data?.bidding_amount)}
+                            </td>
+                          )}
 
                         <td
                           className='px-6 py-5 text-center border-r border-gray-300 cursor-pointer text-blue-800 hover:underline'
@@ -311,7 +311,7 @@ const BiddingTypeResultView = () => {
           {/* {console.log(biddingData?.creationStatus)} */}
 
           {biddingData?.boq?.pre_tendering_details?.is_rate_contract &&
-          biddingData?.creationStatus === 4 ? (
+            biddingData?.creationStatus === 4 ? (
             <button
               className=' bg-[#4338CA] text-white hover:bg-[#362d9d] border border-blue-700 px-7 py-2 rounded flex gap-2'
               onClick={() =>

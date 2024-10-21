@@ -34,7 +34,7 @@ function InventoryProposalList(props) {
       Header: "Procurement No",
       accessor: "procurement_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.procurement_no}</div>
+        <div className='pr-2'>{cell.row.original?.procurement_stocks[0]?.procurement_no}</div>
       ),
     },
     {
@@ -46,7 +46,7 @@ function InventoryProposalList(props) {
     },
     {
       Header: "Category",
-      accessor: "procurement_stocks[0]?.category?.name",
+      accessor: "category",
       Cell: ({ cell }) => (
         <div className='pr-2'>
           {cell.row.original.procurement_stocks[0]?.category?.name}

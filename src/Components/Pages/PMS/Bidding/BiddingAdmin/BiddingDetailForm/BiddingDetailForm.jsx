@@ -16,7 +16,8 @@ import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import ApiHeader from "@/Components/api/ApiHeader";
 
 const BiddingDetailForm = (props) => {
-  const { api_addBidder, api_fetchProcurementDetById } = ProjectApiList();
+  const { api_addBidder, api_fetchProcurementDetById, api_getBidderById } = ProjectApiList();
+  const { tabNo } = props
 
   //regex --
   const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
@@ -37,6 +38,28 @@ const BiddingDetailForm = (props) => {
   const [fincImageDoc, setFincImageDoc] = useState();
   const [isLoading, setisLoading] = useState(false);
   const [applicationFullData, setapplicationFullData] = useState([]);
+  const [initialValues, setInitialValues] = useState({
+    name: "",
+    pan_no: "",
+    gst_no: "",
+    address: "",
+    bank: "",
+    account_no: "",
+    ifsc: "",
+    bidding_amount: "",
+    //
+    emd: applicationFullData?.emd ? "yes" : "no",
+    payment_mode: "online",
+    dd_no: "",
+    dd_bank: "",
+    dd_date: "",
+    bg_no: "",
+    bg_bank: "",
+    bg_date: "",
+    offline_mode: "bg",
+    transaction_no: "",
+    cash_transcNo: "",
+  });
 
   const emdConfirmation = [
     { label: "Yes", value: "yes" },
@@ -105,7 +128,7 @@ const BiddingDetailForm = (props) => {
     }),
   });
 
-  const initialValues = {
+  const emptyinitialValues = {
     // reference_no:"",
     name: "",
     pan_no: "",
@@ -128,6 +151,10 @@ const BiddingDetailForm = (props) => {
     transaction_no: "",
     cash_transcNo: "",
   };
+
+  // let initialValues = emptyinitialValues
+
+
 
   const submitBiddigData = (data) => {
     if (
@@ -160,9 +187,9 @@ const BiddingDetailForm = (props) => {
     ) {
       return toast.error("Bidding Amount should be number");
     }
-    if (!imageDoc) {
-      return toast.error("Please upload valid EMD document");
-    }
+    // if (!imageDoc) {
+    //   return toast.error("Please upload valid EMD document");
+    // }
     if (props?.bidderData?.bid_type == "technical" && !techImageDoc) {
       return toast.error("Please upload valid Technical document");
     } else if (props?.bidderData?.bid_type == "abc" && !techImageDoc) {
@@ -240,6 +267,40 @@ const BiddingDetailForm = (props) => {
   useEffect(() => {
     getApplicationDetail();
   }, []);
+
+  const getBidder = (id) => {
+    setisLoading(true);
+    AxiosInterceptors.get(
+      `${api_getBidderById}/${id}`,
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status) {
+          console.log(response?.data?.data, 'ababababa')
+          setInitialValues(response?.data?.data)
+          setisLoading(false);
+        } else {
+          setisLoading(false);
+          toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error while fetching data");
+        console.log("details by id error...", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (applicationFullData?.boq?.bid_details?.bidder_master?.length !== 0 && applicationFullData?.boq?.bid_details?.bidder_master?.length >= tabNo) {
+      getBidder(applicationFullData?.boq?.bid_details?.bidder_master[tabNo - 1]?.id)
+    } else {
+      setInitialValues(emptyinitialValues)
+    }
+  }, [applicationFullData])
+
 
   // console.log(props?.tabNo)
   return (

@@ -334,21 +334,21 @@ export default function Reports() {
       Header: "Employee ID",
       accessor: "emp_id",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values?.stock_request?.emp_id}</div>
+        <div className='pr-2'>{cell.row.original?.stock_request?.emp_id}</div>
       ),
     },
     {
       Header: "Employee Name",
       accessor: "emp_name",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values?.stock_request?.emp_name}</div>
+        <div className='pr-2'>{cell.row.original?.stock_request?.emp_name}</div>
       ),
     },
     {
       Header: "Handover Date",
-      accessor: "quantity",
+      accessor: "date",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.quantity}</div>
+        <div className='pr-2'>{cell.row.original?.stock_request?.stock_handover[0] ? new Date(cell.row.original?.stock_request?.stock_handover[0]?.createdAt).toISOString().split('T')[0] : 'N/A'}</div>
       ),
     },
 

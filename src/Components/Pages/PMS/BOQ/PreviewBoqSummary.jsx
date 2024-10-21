@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
 import TitleBar from "../../Others/TitleBar";
@@ -21,6 +21,9 @@ export default function PreviewBoqSummary() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { titleBarVisibility, setReferenceNo } = useContext(contextVar);
+
+  const [searchParams] = useSearchParams();
+  const isEdit = searchParams.get('edit') === 'true';
 
   // const { payload } = state;
   const summaryData = state;
@@ -121,7 +124,7 @@ export default function PreviewBoqSummary() {
     formData.append("img", summaryData?.img);
     formData.append("boqData", JSON.stringify(body));
 
-    AxiosInterceptors.put(`${api_postUpdatedBoq}`, formData, ApiHeader2())
+    AxiosInterceptors.post(`${api_postUpdatedBoq}`, formData, ApiHeader2())
       .then(function (response) {
         if (response?.data?.status) {
           toast.success("Successfully Updated the BOQ");
@@ -325,8 +328,9 @@ export default function PreviewBoqSummary() {
             Print
           </button>
           {summaryData?.status === 0 ||
-          summaryData?.status === 1 ||
-          summaryData?.status === -1 ? (
+            summaryData?.status === 1 ||
+            summaryData?.status === -1 ||
+            isEdit ? (
             <button
               className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
               onClick={() => updateBoqChanges(true)}

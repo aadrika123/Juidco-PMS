@@ -333,6 +333,18 @@ const ViewInventoryDetailsById = (props) => {
                       )}
                     </div>
                   </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-semibold '>
+                      Brand
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(
+                        applicationFullData?.inventory?.subcategory?.brand || 'N/A'
+                      )}
+                    </div>
+                  </div>
+
                 </div>
               </>
             )}
@@ -391,17 +403,17 @@ const ViewInventoryDetailsById = (props) => {
             </div>
             {(applicationFullData?.is_notified == 2 ||
               applicationFullData?.is_notified == -2) && (
-              <div>
-                <p className='flex items-end justify-end w-full text-green-600 font-semibold'>
-                  Reply - {""}
-                  {applicationFullData?.is_notified == 2
-                    ? "Items are required"
-                    : applicationFullData?.is_notified == -2
-                    ? "Items are not required now"
-                    : ""}
-                </p>
-              </div>
-            )}
+                <div>
+                  <p className='flex items-end justify-end w-full text-green-600 font-semibold'>
+                    Reply - {""}
+                    {applicationFullData?.is_notified == 2
+                      ? "Items are required"
+                      : applicationFullData?.is_notified == -2
+                        ? "Items are not required now"
+                        : ""}
+                  </p>
+                </div>
+              )}
           </div>
           <div className='space-x-5 flex justify-end mt-[2rem]'>
             <button className={buttonStyle} onClick={() => navigate(-1)}>
