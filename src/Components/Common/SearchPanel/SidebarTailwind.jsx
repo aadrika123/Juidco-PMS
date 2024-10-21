@@ -16,49 +16,16 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import { FiFilter } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 
-
 const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   const [categoryList, setCategoryList] = useState([]);
   const [subCategoryList, setSubCategoryList] = useState([]);
-
-  const statusList = [
-    {
-      name: "Pending",
-      value: 0
-    },
-    {
-      name: "DA's Inbox",
-      value: 1
-    },
-    {
-      name: "Released for Tender",
-      value: 2
-    },
-    {
-      name: "Stock Received",
-      value: 3
-    },
-    {
-      name: "Stock Verified",
-      value: 4
-    },
-    {
-      name: "Back from DA",
-      value: -1
-    },
-    {
-      name: "Rejected",
-      value: -2
-    },
-    {
-      name: "Revised",
-      value: 69
-    },
-  ]
+  const [brandList, setBrandList] = useState([]);
 
   const { api_itemCategory, api_itemSubCategoryAll, api_itemBrand } =
     ProjectApiList();
 
+
+    console.log(categoryList)
   const fetchCategory = async () => {
     AxiosInterceptors.get(
       `${api_itemCategory}`.split(" ").join(""),
@@ -66,7 +33,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
     )
       .then((data) => {
         setCategoryList(data?.data?.data);
-        console.log(data?.data?.data);
+        // console.log(data?.data?.data);
       })
       .catch((err) => {
         console.log(err);
@@ -80,7 +47,17 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
     )
       .then((data) => {
         setSubCategoryList(data?.data?.data);
-        console.log(data?.data?.data);
+        // console.log(data?.data?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const fetchBrand = async () => {
+    AxiosInterceptors.get(`${api_itemBrand}`.split(" ").join(""), ApiHeader())
+      .then((data) => {
+        setBrandList(data?.data?.data);
       })
       .catch((err) => {
         console.log(err);
@@ -90,6 +67,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   useEffect(() => {
     fetchCategory();
     fetchSubCategory();
+    fetchBrand();
   }, []);
 
   const handleOnchange = (fieldName, id) => {
@@ -107,32 +85,43 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
     });
   };
 
-  const abc = () => {
-    console.log(filter);
-  };
+  const abc = () => {};
 
   return (
-    <div className="relative  ">
+    <div className='relative h-full '>
       <div
         className={`h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out w-64 p-4 border border-gray-300 rounded`}
       >
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-thin text-gray-600 flex"><FiFilter className="pt-1 mt-.8" />Filters</h2>
-          <button onClick={() => setIsOpen(false)} className="text-xl hover:bg-[#4338CA] bg-[#4338CA] text-white hover:text-white rounded">
+        <div className='flex justify-between items-center'>
+          <h2 className='text-xl font-thin text-black flex'>
+            <FiFilter className=' mt-1 mr-2 text-black' />
+            Filters
+          </h2>
+          <button
+            onClick={() => setIsOpen(false)}
+            className='text-xl hover:bg-[#4338CA] bg-[#4338CA] text-white hover:text-white rounded'
+          >
             <RxCross2 />
-
           </button>
         </div>
-        <hr class="h-[2px] w-full bg-gray-200 mb-4 border-none" />
+        <hr className='h-[1px] w-full bg-black mt-4 border-none' />
 
         <div>
-          <Accordion  >
+          <Accordion
+            sx={{
+              borderBottom: "1px solid black",
+              boxShadow: "none",
+            }}
+          >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               Category
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails
+              className='rounded-xl bg-[rgb(234,234,246)] mb-2'
+              // sx={{ backgroundColor: "rgb(250,250,255)"}}
+            >
               <FormGroup>
-                {categoryList.map((item, index) => (
+                {categoryList?.map((item, index) => (
                   <FormControlLabel
                     key={index}
                     control={<Checkbox />}
@@ -145,13 +134,29 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
               </FormGroup>
             </AccordionDetails>
           </Accordion>
-          <Accordion>
+
+          <Accordion
+            sx={{
+              borderBottom: "1px solid black",
+              boxShadow: "none",
+            }}
+          >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               Sub Category
             </AccordionSummary>
-            <AccordionDetails>
-              <FormGroup>
-                {subCategoryList.map((item, index) => (
+            <AccordionDetails
+              className='rounded-xl bg-[rgb(234,234,246)] mb-2'
+              // sx={{ backgroundColor: "rgb(250,250,255)"}}
+            >
+              <FormGroup
+                sx={{
+                  height: "150px",
+                  overflowY: "scroll",
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                {subCategoryList?.map((item, index) => (
                   <FormControlLabel
                     key={index}
                     control={<Checkbox />}
@@ -164,19 +169,35 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
               </FormGroup>
             </AccordionDetails>
           </Accordion>
-          <Accordion>
+
+          <Accordion
+            sx={{
+              // borderBottom: "1px solid black",
+              boxShadow: "none",
+            }}
+          >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              Status
+              Brand List
             </AccordionSummary>
-            <AccordionDetails>
-              <FormGroup>
-                {statusList.map((item, index) => (
+            <AccordionDetails
+              className='rounded-xl bg-[rgb(234,234,246)] mb-2'
+              // sx={{ backgroundColor: "rgb(250,250,255)"}}
+            >
+              <FormGroup
+                sx={{
+                  height: "150px",
+                  overflowY: "scroll",
+                  display: "flex-1",
+                  flexDirection: "row",
+                }}
+              >
+                {brandList?.map((item, index) => (
                   <FormControlLabel
                     key={index}
                     control={<Checkbox />}
                     label={item?.name}
                     onChange={() => {
-                      handleOnchange("status", item?.value);
+                      handleOnchange("brand", item?.id);
                     }}
                   />
                 ))}
@@ -185,16 +206,16 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
           </Accordion>
 
           <Button
-
-            variant="outlined"
+            variant='outlined'
             sx={{
               width: "100%",
               mt: "1rem",
-              ':hover': {
-                backgroundColor: '#4338CA',  // Change this to your desired hover color
-                color: 'white',           // Optional: change text color on hover
-                borderColor: 'black',     // Optional: change border color on hover
-              }
+              backgroundColor: "#4338CA",
+              color: "white",
+              ":hover": {
+                backgroundColor: "#09319C", // Change this to your desired hover color
+                borderColor: "black", // Optional: change border color on hover
+              },
             }}
             onClick={useFilter}
           >

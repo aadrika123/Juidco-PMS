@@ -1,27 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Almaash alam
+//    Version - 1.0
+//    Date - 23/05/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - InventoryProposalList
+//    DESCRIPTION - InventoryProposalList
+/////////////////////////////////////////////////////////////////////////////
+
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
+import React, { useState } from "react";
 import * as yup from "yup";
 import moment from "moment";
-
-import ProjectApiList from "@/Components/api/ProjectApiList";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
 import ThemeStyle from "@/Components/Common/ThemeStyle";
-import { RotatingLines } from "react-loader-spinner";
-import { RiFilter2Line } from "react-icons/ri";
 import { useNavigate, useParams } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
-import { GoPlus } from "react-icons/go";
-import { FaChartPie } from "react-icons/fa";
 
 function InventoryProposalList(props) {
   const navigate = useNavigate();
-  const { module } = useParams();
 
-  console.log(props.page, "page========>");
-  // ══════════════════════════════║🔰 Custom style 🔰║═══════════════════════════════════
-
-  const { labelStyle, headingStyle, titleStyle, addButtonColor } = ThemeStyle();
+  // console.log(props.page, "page========>");
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
 
@@ -29,115 +28,146 @@ function InventoryProposalList(props) {
   const [requestBody, setRequestBody] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
-  const [activeButton, setActiveButton] = useState("inbox");
-
-  let testDate = new Date().toLocaleDateString("in-IN");
-  let todayDate = moment(testDate).format("DD-MM-YYYY");
-
-  const validationSchema = yup.object({
-    // fromDate: yup.string().required("Field Required"),
-    // uptoDate: yup.string().required("Field Required"),
-    // key: yup.string().required("Field Required"),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      // fromDate: moment(new Date()).format("yy-MM-DD"),
-      // uptoDate: moment(new Date()).format("yy-MM-DD"),
-      // key: "",
-    },
-    onSubmit: (values) => {
-      console.log("values =>  ", values);
-      fetchResouceList(values);
-
-      // setchangeData((prev) => prev + 1);
-    },
-    validationSchema,
-  });
 
   // ══════════════════════════════║🔰Columns🔰║═══════════════════════════════════
   const COLUMNS = [
     {
       Header: "#",
-      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+      Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
     },
     {
-      Header: "Order No",
-      accessor: "order_no",
+      Header: "Procurement No",
+      accessor: "procurement_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.order_no}</div>
+        <div className="pr-2">{cell.row.values.procurement_no}</div>
       ),
     },
-    {
-      Header: "Category",
-      accessor: "category",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.category.name} </div>
-      ),
-    },
-    {
-      Header: "Sub Category",
-      accessor: "subcategory",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.subcategory.name} </div>
-      ),
-    },
-    {
-      Header: "Brand",
-      accessor: "brand",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.brand || "N/A"}</div>
-      ),
-    },
+    // {
+    //   Header: "Category",
+    //   accessor: "category",
+    //   Cell: ({ cell }) => (
+    //     <div className="pr-2">{cell.row.values.category.name} </div>
+    //   ),
+    // },
+    // {
+    //   Header: "Sub Category",
+    //   accessor: "subcategory",
+    //   Cell: ({ cell }) => (
+    //     <div className="pr-2">{cell.row.values.subcategory.name} </div>
+    //   ),
+    // },
+    // {
+    //   Header: "Brand",
+    //   accessor: "brand",
+    //   Cell: ({ cell }) => (
+    //     <div className="pr-2">{cell.row.values.brand.name || "N/A"}</div>
+    //   ),
+    // },
 
-    {
-      Header: "status",
-      accessor: "status",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>
-          <p className='font-bold text-yellow-800'>
-            {cell.row.values.status.status == -1 && "Back from DA"}
-          </p>
-          <p className='font-bold text-red-500'>
-            {cell.row.values.status.status == -2 && "Rejected"}
-          </p>
-          <p className='font-bold text-blue-800'>
-            {cell.row.values.status.status == 0 && "Pending"}
-          </p>
-          <p className='font-bold text-blue-800'>
-            {cell.row.values.status.status == 1 && "DA's Inbox"}
-          </p>
-          <p className='font-bold text-green-800'>
-            {cell.row.values.status.status == 2 && "Released for Tender"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 3 && "Stock Received"}
-          </p>
-          <p className='font-bold text-green-500'>
-            {cell.row.values.status.status == 4 && "Stock Verified"}
-          </p>
-        </div>
-      ),
-    },
-    {
-      Header: "Remark",
-      accessor: "remark",
-      Cell: ({ cell }) => (
-        <div className='pr-2 text-green-800 truncate'>
-          {cell.row.values.remark || "N/A"}
-        </div>
-      ),
-    },
+    // {
+    //   Header: "status",
+    //   accessor: "status",
+    //   Cell: ({ cell }) => (
+    //     <div className="pr-2">
+    //       {cell.row.values.status.status == 4 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           Incomplete stocks received
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == -1 && (
+    //         <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+    //           Back to SR
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == -2 && (
+    //         <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md">
+    //           Rejected
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == 0 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           Pending
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == 1 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           DA's Inbox
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == 2 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           Release for Tender
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == 3 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           Supplier assigned
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == 5 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           Stocks received
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == 69 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           Revised
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == 71 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           BOQ already created
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == 70 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           Ready for BOQ
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == -70 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           BOQ returned from DA
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == 72 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           Ready for tendering
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == -72 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           Tender back from DA
+    //         </p>
+    //       )}
+    //       {cell.row.values.status.status == 73 && (
+    //         <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+    //           Tender is ready
+    //         </p>
+    //       )}
+
+          
+        // </div>
+      // ),
+    // },
+    // {
+    //   Header: "Remark",
+    //   accessor: "remark",
+    //   Cell: ({ cell }) => (
+    //     <div className='pr-2 text-green-800 truncate'>
+    //       {cell.row.values.remark || "N/A"}
+    //     </div>
+    //   ),
+    // },
     {
       Header: "Action",
       accessor: "id",
       Cell: ({ cell }) => (
         <>
           <button
-            className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
+            className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
             onClick={() =>
               navigate(
-                `/sr-viewPostInvtDetailsById/${cell.row.values.id}/${props.page}`
+                `/sr-post-InvtDetailsById/${cell.row.values.id}/${props.page}`
               )
             }
           >
@@ -154,14 +184,12 @@ function InventoryProposalList(props) {
     setchangeData((prev) => prev + 1);
   };
 
-  // const commonInputStyle = `form-control block w-full px-2 py-1 font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none shadow-md`;
-
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {
     return (
       <>
         <BarLoader />
-        <div className='min-h-screen'></div>
+        <div className="min-h-screen"></div>
       </>
     );
   }
@@ -169,20 +197,20 @@ function InventoryProposalList(props) {
   const tableSelector = (page) => {
     switch (page) {
       case "inbox":
-        return "SRIN";
+        return "POSTSRIN";
       case "outbox":
-        return "SROUT";
+        return "POSTSROUT";
       default:
-        return "SRIN";
+        return "POSTSRIN";
     }
   };
 
   return (
     <>
       {loader && <BarLoader />}
-      <div className='container mx-auto p-4'>
-        <div className='grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 '>
-          <div className='col-span-12'>
+      <div className="container mx-auto p-4">
+        <div className="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 ">
+          <div className="col-span-12">
             <>
               <ListTableParent
                 table={tableSelector(props?.page)}

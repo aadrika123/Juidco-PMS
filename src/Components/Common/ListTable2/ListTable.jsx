@@ -15,18 +15,14 @@ import {
   usePagination,
 } from "react-table";
 import { AiOutlineArrowDown } from "react-icons/ai";
-import { CSVLink } from "react-csv";
-import GlobalFilter from "./GlobalFilter";
-import { format } from "date-fns";
 import { AiOutlineDoubleRight, AiOutlineDoubleLeft } from "react-icons/ai";
-import SideSection from "../SearchPanel/SidebarTailwind";
 
 function ListTable(props) {
   const [bounce, setbounce] = useState("hidden");
-  const columns = useMemo(() => props.columns, []);
+  const columns = useMemo(() => props?.columns, []);
   const data = useMemo(
-    () => props.dataList,
-    [props.dataList, props?.totalCount]
+    () => props?.dataList,
+    [props?.dataList, props?.totalCount]
   );
   const [pageNo, setpageNo] = useState(0);
 
@@ -114,8 +110,9 @@ function ListTable(props) {
           </div>
           <div className='flex-1'>{props.children}</div>
         </div>
-      ) : (<>
-        {/* <div className='flex mb-2 pb-2 items-end max-sm:p-2'>
+      ) : (
+        <>
+          {/* <div className='flex mb-2 pb-2 items-end max-sm:p-2'>
           <div className='flex-initial opacity-50'>
             <GlobalFilter filter={props.searchFilter} setFilter={props.setSearchFilter} />
           </div>
@@ -143,18 +140,16 @@ function ListTable(props) {
       )}
       <div className='flex w-full'>
         <div className='flex-1'>
-        
           <span className='text-gray-600'>Total Result :&nbsp;</span>
-          <span className='font-semibold'>{props?.pagination?.totalResult}</span>{" "}
+          <span className='font-semibold'>
+            {props?.pagination?.totalResult}
+          </span>{" "}
         </div>
       </div>
 
-      {/* <div>
-          <SideSection/>
-        </div> */}
-
-      <div className='px-2 py-2 overflow-x-auto bg-white'>
-        <div className='inline-block min-w-full overflow-hidden bg-white'>
+      <div className='px-2 py-2 bg-white delay-700'>
+        {/* {props?.loader && <p className='text-3xl'>Loading...</p>} */}
+        <div className='inline-block min-w-full overflow-auto bg-white'>
           <table {...getTableBodyProps} className='min-w-full leading-normal'>
             <thead className='font-bold text-left text-sm bg-slate-200'>
               {headerGroups?.map((headerGroup) => (
@@ -185,18 +180,19 @@ function ListTable(props) {
                 prepareRow(row);
                 return (
                   <tr
+                    key={index}
                     {...row.getRowProps()}
                     className='bg-white hover:bg-slate-100 border-b border-gray-200'
                   >
                     {row?.cells?.map((cell, index) => {
                       return (
                         <>
-                        <td
-                          {...cell.getCellProps()}
-                          className='px-2 py-2 text-sm text-left'
-                        >
-                          {cell.render("Cell")}
-                        </td>
+                          <td
+                            {...cell.getCellProps()}
+                            className='px-2 py-2 text-sm text-left'
+                          >
+                            {cell.render("Cell")}
+                          </td>
                         </>
                       );
                     })}
@@ -206,7 +202,6 @@ function ListTable(props) {
               <tr>
                 <td></td>
               </tr>
-             
             </tbody>
           </table>
           <div className='mt-3 grid grid-cols-12 items-center'>
@@ -227,7 +222,7 @@ function ListTable(props) {
                 onClick={() => goToPageFun()}
               >
                 {" "}
-                <span className='font-bold bg-green-300 text-xl px-2 pb-1 rounded-full hover:text-white hover:bg-green-500'>
+                <span className='font-bold bg-blue-600 text-xl px-2 pb-1 rounded-full text-white hover:text-white hover:bg-blue-400'>
                   &#x21E8;
                 </span>{" "}
               </abbr>
@@ -258,7 +253,8 @@ function ListTable(props) {
               <span>
                 page {""}
                 <strong>
-                  {props?.pagination?.currentPage} of {props?.pagination?.totalPage}
+                  {props?.pagination?.currentPage} of{" "}
+                  {props?.pagination?.totalPage}
                 </strong>
                 {""}
               </span>
@@ -289,9 +285,7 @@ function ListTable(props) {
               <abbr title='Next Page'>
                 <button
                   className={
-                    (!props?.pagination?.next
-                      ? "opacity-50"
-                      : "opacity-100") +
+                    (!props?.pagination?.next ? "opacity-50" : "opacity-100") +
                     " text-xl hover:bg-sky-300 hover:text-white cursor-pointer"
                   }
                   onClick={() => nextPageFun()}

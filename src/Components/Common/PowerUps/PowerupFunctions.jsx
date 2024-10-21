@@ -285,12 +285,6 @@ export const checkSizeValidation = (file) => {
   const fileType = file?.name?.split(".")[file?.name?.split(".").length - 1];
   const fileSize = file?.size / (1024 * 1024);
 
-  console.log(
-    "gettting file data in powerupFunction => ",
-    fileType,
-    fileSize + "Mb"
-  );
-
   switch (fileType) {
     case "jpeg": {
       if (fileSize <= 1) {

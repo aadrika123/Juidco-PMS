@@ -1,563 +1,523 @@
-import { useState, useEffect, useContext } from "react";
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Almaash alam
+//    Version - 1.0
+//    Date - 25/05/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - ViewInventoryDetailsById
+//    DESCRIPTION - ViewInventoryDetailsById
+//////////////////////////////////////////////////////////////////////////////////////
+
+import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { nullToNA } from "@/Components/Common/PowerUps/PowerupFunctions";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import ApiHeader from "@/Components/api/ApiHeader";
-import toast from 'react-hot-toast';
-import { MdTag } from "react-icons/md";
-import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
-import { contextVar } from '@/Components/context/contextVar'
+import toast from "react-hot-toast";
+import { contextVar } from "@/Components/context/contextVar";
 import StockReceiverModal from "./StockReceiverModal";
 import ReleaseTenderModal from "./ReleaseTenderModal";
-import DaRejectModal from "./DaRejectModal";
-// import ListTable from "src/Components/Common/ListTable/ListTable";
-// import PaymentHistory from "src/Components/Common/PaymentHistory/PaymentHistory";
+import TitleBar from "@/Components/Pages/Others/TitleBar";
+import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
+import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
+import ApiHeader2 from "@/Components/api/ApiHeader2";
+import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
+import { useReactToPrint } from "react-to-print";
+import StockRequestTimeline from "@/Components/Common/Timeline/StockRequestTimeline";
+import RejectionModalRemark from "@/Components/Common/Modal/RejectionModalRemark";
 
 const ViewInventoryDetailsById = (props) => {
   const navigate = useNavigate();
-  const { id, page} = useParams();
-  console.log("param", id);
+  const notesheetRef = useRef();
 
-  console.log("page========>", page);
-
-  const [erroState, seterroState] = useState(false);
+  const { id, page } = useParams();
   const [isLoading, setisLoading] = useState(false);
   const [applicationFullData, setapplicationFullData] = useState();
-  const [tableData, setTableData] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isModalOpen2, setIsModalOpen2] = useState(false)
-  const [isModalOpen3, setIsModalOpen3] = useState(false)
-  const [remark,setRemark] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const [returnModal, setReturnModal] = useState(false);
+  const [remark, setRemark] = useState({ remark: "" });
+  const [imageDoc, setImageDoc] = useState();
+  const [preview, setPreview] = useState();
 
   const {
-    api_fetchProcurementDADetailByIdinbox,
-    api_fetchProcurementDADetailByIdOutbox,
-    api_postBackToSR,
-    api_postReleaseTender,
-    api_postRejectTender,
-    api_postDaEditTender
+    api_getStockRequetById,
+    api_postBackToDd,
+    api_postForwardtoAcc,
+    api_postRejectStockReq,
+    api_forwardStockReqToI,
   } = ProjectApiList();
 
-     // Accessing context for notifications
-     const { notify } = useContext(contextVar);
+  const { titleBarVisibility } = useContext(contextVar);
 
-  let buttonStyle = ' mr-1 pb-3 pl-6 pr-6 pt-3 border border-indigo-500 text-indigo-500 text-sm leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
+  //Print
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
-  let buttonStyle2 = ' p-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700'
-  
-  let buttonStyle3 = ' pb-2 pl-4 pr-4 pt-2 border border-yellow-400 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-yellow-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-yellow-700'
+  let buttonStyle =
+    " mr-1 pb-3 pl-6 pr-6 pt-3 border border-indigo-500 text-indigo-800 text-md leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
   useEffect(() => {
     getApplicationDetail();
-    
   }, []);
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
-    let url;
-    seterroState(false);
     setisLoading(true);
 
-    if(page == 'inbox'){
-      url = api_fetchProcurementDADetailByIdinbox
+    let url;
+
+    if (page == "inbox") {
+      url = api_getStockRequetById;
     }
-    if(page == 'outbox'){
-      url = api_fetchProcurementDADetailByIdOutbox
+    if (page == "outbox") {
+      url = api_getStockRequetById;
     }
 
-    AxiosInterceptors.get(`${url}/${id}`,{ },ApiHeader())
+    AxiosInterceptors.get(`${url}/${id}`, ApiHeader())
       .then(function (response) {
-        console.log("view water tanker full details ...", response?.data?.data);
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
-          setTableData(response?.data?.data?.tran_dtls);
-          setisLoading(false);
         } else {
-          toast.error("Error while getting details...");
-          seterroState(true);
+          // toast.error("Error while getting details...");
         }
       })
       .catch(function (error) {
         console.log("==2 details by id error...", error);
-        toast.error("Error while getting details...");
-        seterroState(true);
+        toast.error(error?.response?.data?.message);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
+  };
+  const postRejectTenderModal = () => {
+    setIsModalOpen3(true);
+  };
+
+  const rejectStockReqHandler = () => {
+    setisLoading(true);
+
+    AxiosInterceptors.post(
+      `${api_postRejectStockReq}`,
+      { stock_handover_no: [id], remark: remark.remark },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success(response?.data?.message);
+          navigate("/da-inventory-proposal");
+        } else {
+          toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.message);
+        console.log("errorrr.... ", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+        setIsModalOpen3(false);
+      });
+  };
+
+  const backToDdHandler = () => {
+    setisLoading(true);
+
+    AxiosInterceptors.post(
+      `${api_postBackToDd}`,
+      { stock_handover_no: [id], remark: remark.remark },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success(response?.data?.message);
+          navigate("/da-inventory-proposal");
+        } else {
+          toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        toast.error(error?.response?.data?.message);
+        console.log("errorrr.... ", error);
+      })
+      .finally(() => {
         setisLoading(false);
       });
   };
 
-  const postBackToSRModal =()=>{
-    setIsModalOpen(true)
-  }
-  const postReleaseTenderModal =()=>{
-    setIsModalOpen2(true)
-  }
-  const postRejectTenderModal =()=>{
-    setIsModalOpen3(true)
-  }
- 
-  const postRejectTender = () => {
-
-    setisLoading(true);
-    console.log(remark,"Remark==========>>")
-
-    AxiosInterceptors.post(`${api_postRejectTender}`, {"preProcurement":[id],"remark":remark} , ApiHeader())
-      .then(function (response) {
-        console.log("Forwarded to DA", response?.data);
-        console.log(response?.data?.st,"upper Status")
-        if (response?.data?.status == true) {
-          setisLoading(false);
-          toast.success(response?.data?.message,"success");
-          setTimeout(() => {
-            navigate("/da-inventory-proposal");
-          }, 2000);
-         
-
-        } else {
-          setisLoading(false);
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-       
-      });
-
-  };
-  const postBackToSR = () => {
-
-    setisLoading(true);
-    console.log(remark,"Remark==========>>")
-
-    AxiosInterceptors.post(`${api_postBackToSR}`, {"preProcurement":[id],"remark":remark} , ApiHeader())
-      .then(function (response) {
-        console.log("Forwarded to DA", response?.data);
-        console.log(response?.data?.st,"upper Status")
-        if (response?.data?.status == true) {
-          setisLoading(false);
-          toast.success(response?.data?.message,"success");
-          setTimeout(() => {
-            navigate("/da-inventory-proposal");
-          }, 2000);
-         
-
-        } else {
-          setisLoading(false);
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
-          toast(response?.data?.message, "error");
-        }
-      })
-      .catch(function (error) {
-        console.log("errorrr.... ", error);
-       
-      });
-
-  };
-  
   const postReleaseTender = () => {
-    // seterroState(false);
     setisLoading(true);
-  
+    // let preProcurement = [id];
+    let formData = new FormData();
+    formData.append("img", imageDoc);
+    formData.append("preProcurement", JSON.stringify([id]));
 
-    AxiosInterceptors.post(`${api_postReleaseTender}`, {"preProcurement":[id]} , ApiHeader())
+    AxiosInterceptors.post(`${api_postForwardtoAcc}`, formData, ApiHeader2())
       .then(function (response) {
-        console.log("Forwarded to DA", response?.data);
-        console.log(response?.data?.st,"upper Status")
         if (response?.data?.status == true) {
-          setisLoading(false);
-          console.log(response?.data?.message,"-------------->>")
-          toast.success(response?.data?.message,"success");
+          toast.success(response?.data?.message, "success");
           setTimeout(() => {
             navigate("/da-inventory-proposal");
-          }, 2000);
-          console.log(response?.data?.message,"Forwadede to DA--->>")
-
+          }, 1000);
         } else {
-          setisLoading(false);
-          // setdeclarationStatus(false);
-          const errorMsg = Object.keys(response?.data?.data);
-          setErrRes(errorMsg);
-          console.log(errorMsg, "====>>");
+          toast.error(response?.data?.mmessage || "something went wrong");
+          navigate("/da-inventory-proposal");
           toast(response?.data?.message, "error");
         }
       })
       .catch(function (error) {
+        toast.error("Something went wrong");
+        navigate("/da-inventory-proposal");
         console.log("errorrr.... ", error);
         // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
       });
-
   };
 
+  const forwardToIa = () => {
+    setisLoading(true);
+
+    AxiosInterceptors.post(
+      `${api_forwardStockReqToI}`,
+      { stock_handover_no: [id] },
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success("Successfully forwarded to Inventory Admin");
+          navigate("/da-inventory-proposal");
+        } else {
+          // toast.error(response?.data?.mmessage || "something went wrong");
+          // navigate("/da-inventory-proposal");
+          // toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error in forwarding to Inventory Admin");
+        navigate("/da-inventory-proposal");
+        console.log("errorrr.... ", error);
+        // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
+        setIsModalOpen(false);
+      });
+  };
 
   if (isModalOpen3) {
     return (
       <>
-        <DaRejectModal postRejectTender={postRejectTender} setRemark={setRemark} setIsModalOpen3={setIsModalOpen3}/>
+        <RejectionModalRemark
+          confirmationHandler={rejectStockReqHandler}
+          handleCancel={() => setIsModalOpen3(true)}
+          loadingState={isLoading}
+          message={"Are you sure you want to Reject this Stock Request ?"}
+          setData={setRemark}
+        />
       </>
     );
   }
   if (isModalOpen) {
     return (
       <>
-        <StockReceiverModal postBackToSR={postBackToSR} setRemark={setRemark} setIsModalOpen={setIsModalOpen}/>
+        <StockReceiverModal
+          // postBackToSR={postBackToSR}
+          forwardToIa={forwardToIa}
+          setIsModalOpen={setIsModalOpen}
+          loader={isLoading}
+        />
       </>
     );
   }
-  
+
   if (isModalOpen2) {
     return (
       <>
-        <ReleaseTenderModal postReleaseTender={postReleaseTender} setIsModalOpen2={setIsModalOpen2}/>
+        <ReleaseTenderModal
+          postReleaseTender={postReleaseTender}
+          setIsModalOpen2={setIsModalOpen2}
+        />
       </>
     );
   }
- 
+
+  if (returnModal) {
+    return (
+      <>
+        <RejectionModalRemark
+          confirmationHandler={backToDdHandler}
+          handleCancel={() => setReturnModal(true)}
+          loadingState={isLoading}
+          message={
+            "Are you sure you want to return this Stock Request to Departmental Distributor ?"
+          }
+          setData={setRemark}
+        />
+      </>
+    );
+  }
 
   // console.log(applicationFullData)
 
   return (
     <div>
+      {isLoading && (
+        <div className='fixed inset-0 flex items-center justify-center z-50'>
+          <LoaderApi />
+        </div>
+      )}
+
       <div className=''>
-        
+        <TitleBar
+          titleBarVisibility={titleBarVisibility}
+          titleText={"Stock Request Proposal Details"}
+        />
+      </div>
+
+      <>
+        <div className='flex gap-10 m-4 bg-white p-4'></div>
+      </>
+
+      {/* //timeline  */}
+      <div className={`${isLoading ? "blur-[2px]" : ""} mt-10`}>
+        <StockRequestTimeline status={applicationFullData?.status} />
+      </div>
+
+      <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         {/* Basic Details */}
-        <div className=''>
-          <div className='flex justify-between mt-2 bg-white rounded-lg shadow-xl p-4 '>
-            <h2 className='font-semibold text-xl flex justify-start'>
-            <MdTag className='inline pt-1 text-[1.5rem] text-sky-700' /> View Procurement Request{" "}
-            </h2>
+        <div className='mt-6'>
+          <div
+            className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'
+            ref={componentRef}
+          >
+            <div className=''>
+              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+                View Stock Handover Request{" "}
+              </h2>
+            </div>
 
-          
+            <div className='flex justify-between'>
+              <div className='pl-8 pb-5 text-[1.2rem] text-[#4338CA]'>
+                <h1 className='font-bold'>
+                  Stock Handover No <span className='text-black'>:</span>
+                  <span className='font-light'>
+                    {" "}
+                    {nullToNA(applicationFullData?.stock_handover_no)}
+                  </span>
+                </h1>
+              </div>
+            </div>
+
+            <div className='grid md:grid-cols-4 gap-4 ml-8 pb-5'>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold'>Employee Id</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.emp_id)}
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  Employee Name
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.emp_name)}
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>
+                  Quantity Allotted{" "}
+                </div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.allotted_quantity)}
+                </div>
+              </div>
+
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>Date</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.createdAt?.split("T")[0])}
+                </div>
+              </div>
+            </div>
+
+            {applicationFullData?.stock_req_product?.length > 0 ? (
+              <h1 className='pl-8 font-semibold underline text-blue-950'>
+                Products:
+              </h1>
+            ) : (
+              <>
+                <div className='grid md:grid-cols-4 gap-4 ml-8'>
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Category</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(applicationFullData?.inventory?.category?.name)}
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-semibold '>
+                      Sub Categories
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {nullToNA(
+                        applicationFullData?.inventory?.subcategory?.name
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+            {applicationFullData?.stock_req_product?.map((data, index) => (
+              <div
+                key={index}
+                className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-4 rounded'
+              >
+                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>Serial No</div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(data?.serial_no)}
+                  </div>
+                </div>
+
+                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-bold '>Category</div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.inventory?.category?.name)}
+                  </div>
+                </div>
+
+                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                  <div className='md:w-auto w-[50%] font-semibold '>
+                    Sub Categories
+                  </div>
+                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(
+                      applicationFullData?.inventory?.subcategory?.name
+                    )}
+                  </div>
+                </div>
+
+                {/* <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
+                <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                  {nullToNA(data?.quantity)}
+                </div>
+              </div> */}
+              </div>
+            ))}
+
+            <div className='p-5 pl-8'>
+              <h1 className='font-bold '>Description</h1>
+              <p className=' pt-2'>
+                {nullToNA(applicationFullData?.inventory?.description)}
+              </p>
+            </div>
+
+            <div className='flex justify-end mb-4'>
+              <ImageDisplay
+                preview={preview}
+                imageDoc={imageDoc}
+                alt={"Notesheet doc"}
+                showPreview={"hidden"}
+                width={"[100px]"}
+              />
+            </div>
+
+            {/* <div className='h-[30px]'></div> */}
           </div>
-          {/* <h1 className='px-1 font-semibold font-serif  text-gray-500'>
-            <MdTag className='inline' /> Basic Details
-          </h1> */}
-          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5'>
+        </div>
 
-          <div className="pl-8 text-[1rem] text-[#4338CA]">
-            <h1 className="">Procurement request No <span className="text-black">:</span> 
-            <span className="font-bold"> {nullToNA(applicationFullData?.order_no)}</span></h1>
-          </div>
+        <div className='space-x-5 flex justify-end mt-[2rem]'>
+          <button onClick={handlePrint} className={buttonStyle}>
+            Print
+          </button>
 
-          {!applicationFullData?.remark?.length == 0 &&
-          <div className="pb-5 pl-8">
-            <h1 className="font-bold text-base text-red-500">Remark <span className="text-black">:</span> 
-            <span className="text-sm pt-2 font-light text-red-500"> {nullToNA(applicationFullData?.remark)}</span></h1>
-          </div>
-          }
-          
-          <div className='grid grid-cols-4 gap-4 ml-8'>
+          {page == "outbox" && (
+            <button className={buttonStyle} onClick={() => navigate(-1)}>
+              Back
+            </button>
+          )}
 
-{/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {nullToNA(applicationFullData?.category.name)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Item Category
-    </div>
-  </div>
-
-{/* } */}
-
-{/* {applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") &&  */}
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {nullToNA(applicationFullData?.subcategory?.name)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Item Sub Category
-    </div>
-  </div>
-
-{/* } */}
-  
-{applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Safety and Security" ||"Cleaning Supplies" || "Furniture") && 
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {nullToNA(applicationFullData?.brand)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Brand 
-    </div>
-  </div>
-
-}
-  
-
-{applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Cleaning Supplies" || "Furniture") && 
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-semibold '>
-      {nullToNA(applicationFullData?.colour)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Colour 
-    </div>
-  </div>
-
-}
-
-{/* </div> */}
-
-{/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-{applicationFullData?.category?.name == ("Uniforms" || "Maintainance and Repaire" || "Furniture" || "Cleaning Supplies") && 
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {nullToNA(applicationFullData?.material)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Material
-    </div>
-  </div>
-
-}
-
-{applicationFullData?.category?.name == ( "Maintainance and Repaire" || "Safety and Security") && 
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {nullToNA(applicationFullData?.dimension)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Dimension
-    </div>
-  </div>
-
-}
-
-{applicationFullData?.category?.name == ( "Furniture" ) && 
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {nullToNA(applicationFullData?.room_type)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Room Type 
-    </div>
-  </div>
-}
-
-{applicationFullData?.category?.name == ( "Furniture" ) && 
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-semibold '>
-      {nullToNA(applicationFullData?.included_components)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Included Components 
-    </div>
-  </div>
-
-}
-
-{/* </div> */}
-
-{/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-
-{applicationFullData?.category?.name == ( "Furniture" ) && 
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {nullToNA(applicationFullData?.size)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    size
-    </div>
-  </div>
-
-}
-
-{applicationFullData?.category?.name == ( "Cleaning Supplies" ) && 
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {nullToNA(applicationFullData?.recomended_uses)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Recomended Uses
-    </div>
-  </div>
-
-}
-
-{applicationFullData?.category?.name == ( "Cleaning Supplies" ) && 
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {nullToNA(applicationFullData?.bristle)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Bristle 
-    </div>
-  </div>
-
-}
-
-{applicationFullData?.category?.name == ( "Maintainance and Repaire" || "Safety and Security") && 
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-semibold '>
-      {nullToNA(applicationFullData?.weight)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Weight
-    </div>
-  </div>
-
-}
-
-{/* </div> */}
-
-{/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-semibold '>
-      {nullToNA(applicationFullData?.rate)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Rate
-    </div>
-  </div>
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {nullToNA(applicationFullData?.quantity)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Quantity 
-    </div>
-  </div>
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {nullToNA(applicationFullData?.total_rate)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    Total Rate  
-    </div>
-  </div>
-
-  
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {nullToNA(applicationFullData?.number_of_items)}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    No of Items
-    </div>
-  </div>
-
-{/* </div> */}
-
-{/* <div className='flex md:flex-row flex-col gap-y-2 md:space-x-5 pl-4  '> */}
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {/* {nullToNA(applicationFullData?.quantity)} */}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    {/* Quantity  */}
-    </div>
-  </div>
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {/* {nullToNA(applicationFullData?.applicant_name)} */}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    {/* Total Rate   */}
-    </div>
-  </div>
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-bold '>
-      {/* {nullToNA(applicationFullData?.mobile)} */}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    {/* Brand  */}
-    </div>
-  </div>
-
-  <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-    <div className='md:w-auto w-[50%] font-semibold '>
-      {/* {nullToNA(applicationFullData?.email)} */}
-    </div>
-    <div className='md:w-auto w-[50%] text-gray-500 text-sm'>
-    {/* Processor  */}
-    </div>
-  </div>
-
-</div>
-
-          
-
-            <div className="p-5 pl-8">
-            <h1 className="font-bold ">Other Description</h1>
-            <p className=" pt-2">{nullToNA(applicationFullData?.other_description)}</p>
-          </div>
-          
-          <div className="h-[30px]"></div>
-
-          <div className="space-x-5 flex justify-end mt-[6rem]">
-               
-               {page == 'outbox' && 
-                  <button
-                    className={buttonStyle}
-                    onClick={() =>
-                      navigate(-1)
-                    }
-                  >
-                    Back 
-                </button>
+          {page == "inbox" &&
+            (applicationFullData?.status === 2 ||
+              applicationFullData?.status === 1 ||
+              applicationFullData?.status === 81) && (
+              <button
+                className=' px-6 py-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]'
+                onClick={() =>
+                  navigate(`/dd-stock-proposal/edit`, {
+                    state: applicationFullData?.stock_handover_no,
+                  })
                 }
+              >
+                Edit
+              </button>
+            )}
 
-                {page == 'inbox' && 
+          {page == "inbox" &&
+            (applicationFullData?.status === 2 ||
+              applicationFullData?.status === 1 ||
+              applicationFullData?.status === 81) && (
+              <button
+                className={`bg-[#E61818] text-white text-md w-fit rounded-md p-2 px-5 hover:bg-red-500`}
+                onClick={postRejectTenderModal}
+              >
+                Reject
+              </button>
+            )}
 
-            <button className={buttonStyle} onClick={()=>{navigate(`/da-edit-pre-procurement/${id}`)}}>Edit</button>
+          {page == "inbox" &&
+            (applicationFullData?.status === 2 ||
+              applicationFullData?.status === 1 ||
+              applicationFullData?.status === 81) && (
+              <button
+                className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                onClick={() => setReturnModal(true)}
+              >
+                Back to Departmental Distributor
+              </button>
+            )}
 
-          }
-                
-                {page == 'inbox' &&
-                <>                  
-                    <button
-                        className={`${buttonStyle} mr-0`}
-                        onClick={postRejectTenderModal}
-                      >
-                        Reject
-                    </button>
-                    
-                      <button
-                        className={buttonStyle}
-                        onClick={postBackToSRModal}
-                      >
-                        Back To Stock Receiver
-                    </button>
-                    
-                      <button
-                        className={buttonStyle2}
-                        onClick={postReleaseTenderModal}
-                      >
-                        Release For Tender
-                    </button>
+          {page == "inbox" && (
+            <>
+              {page == "inbox" && applicationFullData?.status?.status < 70 && (
+                <>
+                  <div className='bg-[#0F921C] h-full py-2 rounded-md text-md flex items-center justify-center hover:bg-green-800'>
+                    <FileButton
+                      bg={"[#0F921C]"}
+                      hoverBg={"bg-green-800"}
+                      btnLabel={"Upload Notesheet"}
+                      imgRef={notesheetRef}
+                      setImageDoc={setImageDoc}
+                      setPreview={setPreview}
+                      textColor={"white"}
+                      // paddingY={"8"}
+                    />
+                  </div>
                 </>
+              )}
 
-                }
-          </div>
-
-          </div>
-
-          
-        
-          
+              {page === "inbox" &&
+                (applicationFullData?.status === 2 ||
+                  applicationFullData?.status === 1 ||
+                  applicationFullData?.status === 81) && (
+                  <button
+                    className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    Forward to Inventory Admin
+                  </button>
+                )}
+            </>
+          )}
         </div>
       </div>
     </div>

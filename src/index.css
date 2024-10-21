@@ -27,3 +27,114 @@ body {
     width: 9px;
     height: 9px;
   }
+
+
+  @keyframes modal-pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .modal-pop {
+    animation: modal-pop 0.3s ease-out;
+  }
+  
+
+  /* @media print {
+    body * {
+      visibility: hidden;
+    }
+  
+    #printableArea,
+    #printableArea * {
+      visibility: visible;
+    }
+  
+    #printableArea {
+      position: absolute;
+      left: "25%";
+      top: 0;
+      overflow: visible !important;
+    }
+  } */
+
+  /* @media print {
+    body * {
+      visibility: hidden;
+    }
+    #printable-content, #printable-content * {
+      visibility: visible;
+    }
+    #printable-content {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: screen; 
+      overflow: visible; 
+    }
+   
+    header, footer {
+      display: none;
+    }
+    
+    .avoid-page-break {
+      page-break-inside: avoid;
+    }
+    .page-break {
+      page-break-after: always;
+    }
+    .page-break-before {
+      page-break-before: always;
+    }
+    @page {
+      margin: 20mm; 
+    }
+    .page-content {
+      page-break-inside: avoid;
+    }
+    img, table, pre, blockquote {
+      page-break-inside: avoid;
+    }
+  } */
+
+
+
+  
+  @media print 
+  {
+      @page {
+        size: A4; /* DIN A4 standard, Europe */
+        /* margin: 10; */
+      }
+      html, body {
+        margin-left: 10px;
+          width: 200mm;
+          height: 282mm;
+          font-size: 11px;
+          background: #FFF;
+          overflow: visible;
+      }
+      body {
+        /* margin: 10mm; */
+          padding-top: 10mm;
+          padding-bottom: 10mm;
+      }
+  }
+
+
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.blink {
+    /* @apply animate-blink; Tailwind's built-in animation class */
+    animation: blink 1s infinite;
+}

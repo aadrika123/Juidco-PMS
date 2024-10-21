@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//    Author - Almaash alam
+//    Version - 1.0
+//    Date - 21/05/2024
+//    Revision - 1
+//    Project - JUIDCO
+//    Component  - ReleasedListTabs
+//    DESCRIPTION - ReleasedListTabs     
+//////////////////////////////////////////////////////////////////////////////////////
+
 // src/components/ReleasedListTabs.js
 import React, { useState } from 'react';
 import { GoPlus } from "react-icons/go";
@@ -6,7 +16,9 @@ import InventoryProposalList from './InventoryProposalList';
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaChartPie } from "react-icons/fa";
 import { CiMenuBurger } from "react-icons/ci";
-
+import { contextVar } from '@/Components/context/contextVar'
+import { useContext } from 'react'
+import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 const ReleasedListTabs = () => {
   const [activeTab, setActiveTab] = useState('inbox');
@@ -17,8 +29,16 @@ const ReleasedListTabs = () => {
     // api_fetchProcurementDAList,
   } = ProjectApiList();
 
+  const { setheartBeatCounter, settoggleBar, titleBarVisibility, titleText } = useContext(contextVar)
+
   return (
-    <div className="container mx-auto bg-white rounded">
+
+    <>
+       <div className="">
+    <TitleBar titleBarVisibility={titleBarVisibility} titleText={"Released List"} />
+    </div>
+    
+    <div className="container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl">
     <div>
         <h1 className='text-[30px] text-right pb-2 pr-10 pt-5 font-bold'> Released List </h1>
     </div>
@@ -60,6 +80,8 @@ const ReleasedListTabs = () => {
         {/* {activeTab === 'outbox' && <div><InventoryProposalList page='outbox' api={api_fetchProcurementDAList} /></div>} */}
       </div>
     </div>
+
+    </>
   );
 };
 

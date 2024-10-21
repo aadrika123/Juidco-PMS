@@ -7,19 +7,22 @@
 //    Component  - ListTableParent
 //    DESCRIPTION - ListTableParent Component
 //////////////////////////////////////////////////////////////////////////////////////
-import React, { useEffect, useState } from "react";
-// import { useQuery } from "react-query";
+import React, { useEffect, useState, useRef } from "react";
+import { usePDF } from "react-to-pdf"; // import { useQuery } from "react-query";
 import ListTable from "./ListTable";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
 import { CSVDownload } from "react-csv";
 import ShimmerEffectInline from "@/Components/Common/Loaders/ShimmerEffectInline";
 import GlobalFilter from "./GlobalFilter";
-import { AiOutlineArrowDown } from "react-icons/ai";
 import { FiFilter } from "react-icons/fi";
-import SearchPanel from "../SearchPanel/SearchPanel";
 import SideSection from "../SearchPanel/SidebarTailwind";
 import ProjectApiList from "@/Components/api/ProjectApiList";
+import { FaArrowRightLong } from "react-icons/fa6";
+import generatePDF from "react-to-pdf";
+import ExportTableData from "../ExportTable/ExportTableData";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const ListTableParent = (props) => {
   // 👉 State constants 👈
@@ -37,32 +40,30 @@ const ListTableParent = (props) => {
   const [pagination, setPagination] = useState({});
   const [searchFilter, setSearchFilter] = useState("");
   const [bounce, setbounce] = useState("hidden");
-  const [isFilterPanelOpen, setFilterPanelOpen] = useState(false);
-  const [searchPanelItemValues, setSearchPanelItemValues] = useState({});
   const [filter, setFilter] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const { api_exportcsv } = ProjectApiList();
+
+  const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
 
   const searchPanelItems = [
     { name: "project_proposal_no", caption: "Project Proposal Number" },
   ];
 
-  const toggleFilterPanel = () => {
-    setFilterPanelOpen((prevState) => !prevState);
-  };
+  const navigate = useNavigate();
+
+  //animation for open and close filter bar
+  const open1 = `animate__animated animate__slideInLeft animate__faster `;
+  const close1 = `w-0 sm:w-3 animate__animated animate__fadeOutLeft animate__faster transition-all delay-150`;
 
   // console.log(currentPage);
 
   // 👉 Function 1 👈
   const searchOldFun = () => {
-    seterrorState(false);
-
     setloader(true);
-
-    console.log(
-      props?.requestBody,
-      "==============props?.requestBody search old"
-    );
+    seterrorState(false);
 
     if (
       props?.requestBody?.length &&
@@ -71,23 +72,27 @@ const ListTableParent = (props) => {
       typeof props.loader == "function" && props.loader(true);
     }
 
-    const returnCategoryFilter = (fieldName, caragotyFilter) => {
-      if (caragotyFilter?.length === 0) {
+    const returnCategoryFilter = (fieldName, categoryFilter) => {
+      if (categoryFilter?.length === 0) {
         return;
       }
-      const filtered = caragotyFilter.map((item) => [`${fieldName}=${item}`]);
+      const filtered = categoryFilter.map((item) => [`${fieldName}=${item}`]);
       return filtered.join("&");
     };
-    // console.log(returnCategoryFilter());
 
     AxiosInterceptors.get(
       `${props?.api}?
       take=${perPageData}&page=${currentPage}
       &search=${searchFilter}
+      &${props?.from ? `from=${props?.from}` : ""}
+      &${props?.to ? `to=${props?.to}` : ""}
+      &${props?.subcategory ? `scategory=${props?.subcategory}` : ""}
+      &${props?.status ? `status=${props?.status}` : ""}
+      &${props?.category ? `category=${props?.category}` : ""}
       &${returnCategoryFilter("category", filter?.category || [])}
       &${returnCategoryFilter("scategory", filter?.subcategory || [])}
       &${returnCategoryFilter("brand", filter?.brand || [])}
-      &${returnCategoryFilter("status", filter?.status || [])}
+      &${props?.qparams ? props?.qparams : ""}
       `
         .split(" ")
         .join(""),
@@ -96,12 +101,8 @@ const ListTableParent = (props) => {
     )
       .then((res) => {
         if (res?.data?.status == true) {
-          console.log("success getting list => ", res);
-          console.log(
-            "success current page => ",
-            res?.data?.pagination?.currentPage
-          );
           props?.getData && props?.allData(res?.data?.data);
+          // props?.setRefNo(res?.data?.data[0].reference_no)
           setdataList(res?.data?.data);
           setPagination(res?.data?.pagination);
           settotalCount(res?.data?.pagination?.totalPage);
@@ -109,15 +110,10 @@ const ListTableParent = (props) => {
           setlastPage(res?.data?.pagination?.currentTake);
           seterrorState(false);
         } else {
-          console.log("false error while getting list => ", res);
           seterrorState(true);
         }
       })
-      .catch(
-        (err) => (
-          console.log("error while getting list => ", err), seterrorState(true)
-        )
-      )
+      .catch((err) => toast.error("Error in fetching Details"))
       .finally(() => {
         setloader(false);
         if (
@@ -225,7 +221,6 @@ const ListTableParent = (props) => {
     const date = new Date();
     setloader(true);
     setcsvStatus(false);
-    console.log(props?.table);
     AxiosInterceptors.post(
       api_exportcsv,
       {
@@ -237,9 +232,8 @@ const ListTableParent = (props) => {
         const url = window.URL.createObjectURL(new Blob([res.data]));
         const a = document.createElement("a");
         a.href = url;
-        a.download = `${
-          props?.table
-        }-${date.getDate()}${date.getMonth()}${date.getFullYear()}.csv`;
+        a.download = `${props?.table
+          }-${date.getDate()}${date.getMonth()}${date.getFullYear()}.csv`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -258,51 +252,25 @@ const ListTableParent = (props) => {
 
   // 👉 Calling Function 1 on Data change 👈
   useEffect(() => {
-    // if (props?.requestBody != null) {
-    setpageCount(1);
-    // setperPageCount(10);
-    searchOldFun();
-    // }
-  }, [props?.changeData, currentPage, perPageData]);
-
-  // 👉 Calling Function 1 when page no. or data per page change 👈
-  useEffect(() => {
     setloader(true);
-    searchOldFun();
-    // console.log(searchFilter, "searfilter------------>");
-  }, [pageCount, perPageCount, searchFilter]);
+    setpageCount(1);
+    setloader(false);
+  }, [currentPage, perPageData]);
 
-  //=---------------------- Search Panel----------------------------
-  // useEffect(() => {
-  //   console.log(projectProposalData);
-
-  //   setTotalResults(projectProposalData?.count);
-
-  //   //update the items for the table
-  //   setProjectProposals(projectProposalData?.records);
-
-  //   // populate the items to be displayed in the search panel
-  //   const project_proposal_nos = projectProposalData?.project_proposal_no?.map((item) => item.project_proposal_no);
-  //   if (project_proposal_nos) setSearchPanelItemValues({ ...searchPanelItemValues, project_proposal_no: project_proposal_nos });
-
-  // }, [projectProposalData]);
-
-  const onFilterChange = (filters) => {
-    // console.log("Filters updated: ", filters);
-    const q = qs.stringify(filters);
-    setSearchQuery(q);
-  };
-
-  const onRemoveFilter = () => {
-    console.log("Filters removed!");
-    setSearchQuery("");
-  };
-
-  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    //adding debouncing in search query
+    setloader(true);
+    const getData = setTimeout(() => {
+      searchOldFun();
+    }, 500);
+    return () => clearTimeout(getData);
+  }, [pageCount, perPageCount, searchFilter, props?.pageTrigger]);
 
   const useFilter = () => {
     searchOldFun();
   };
+
+  const exportBtnStyle = `bg-green-700 text-white px-2 rounded-md flex items-center gap-1 hover:bg-green-900`;
 
   return (
     <>
@@ -323,100 +291,155 @@ const ListTableParent = (props) => {
       {/* 👉 Download CSV 👈 */}
       {csvStatus && <CSVDownload data={exportData} />}
 
-      <div className='flex flex-col'>
-        <div className='flex mb-2 pb-2 items-end max-sm:p-2 justify-end w-full'>
-          {/* <div hidden={!isFilterPanelOpen} className="w-[25%] h-[75vh] overflow-y-auto overflow-x-hidden hide-scrollbar">
-          <SearchPanel onClose={toggleFilterPanel} items={searchPanelItems} values={searchPanelItemValues} onFilterChange={onFilterChange} onNoFilter={onRemoveFilter} />
-        </div> */}
-
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className='border border-[#4338CA] text-[#4338CA] hover:bg-[#4338CA] hover:text-white px-4 py-2 rounded mr-2'
-          >
-            <FiFilter />
-          </button>
-          <div className='flex-initial opacity-50'>
-            <GlobalFilter filter={searchFilter} setFilter={setSearchFilter} />
-          </div>
-          <div className='flex-initial ml-2'>
-            <button
-              className='bg-green-600 px-3 pr-3  drop-shadow-lg rounded-sm py-1 text-white hover:shadow-2xl hover:bg-slate-600 text-center relative '
-              onMouseEnter={() => setbounce("")}
-              onMouseLeave={() => setbounce("hidden")}
-              onClick={exportDataFun}
+      <div className='space-y-8'>
+        <div className='w-full flex justify-between'>
+          <div className='w-full flex justify-between'>
+            <div
+              className='flex justify-between gap-4 py-2'
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
             >
-              Export
+              <button className='text-red bg-green-700 hover:before:bg-redborder-red-500 relative overflow-hidden border px-2 text-white shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-green-900 before:transition-all before:duration-500 hover:text-white hover:before:left-0 hover:before:w-full rounded-md'>
+                <span className='relative z-10 flex'>
+                  Export{" "}
+                  <FaArrowRightLong
+                    color='white'
+                    size={15}
+                    className='mt-1 ml-3'
+                  />
+                </span>
+              </button>
+
               <div
-                className={
-                  bounce +
-                  " absolute h-full top-3 text-sm left-0 text-center animate-bounce"
-                }
+                className={`flex gap-2 transition-opacity duration-300 ${isHovered ? "opacity-100 visible" : "opacity-0 invisible"
+                  }`}
               >
-                <AiOutlineArrowDown />
+                <button
+                  className={`${exportBtnStyle} font-semibold text-xs`}
+                  // onClick={() => toPDF()}
+                  onClick={() =>
+                    navigate("/print-preview", {
+                      state: {
+                        data: [...dataList],
+                        columns: JSON.stringify(props.columns),
+                      },
+                    })
+                  }
+                // onClick={() => window.print()}
+                >
+                  PDF
+                </button>
+
+                <button
+                  className={`${exportBtnStyle} font-semibold text-xs`}
+                  onClick={exportDataFun}
+                >
+                  CSV
+                </button>
+                <button
+                  className={`${exportBtnStyle} font-semibold text-xs`}
+                  onClick={exportDataFun}
+                >
+                  XLV
+                </button>
               </div>
-            </button>
+            </div>
           </div>
-          <div className='flex-1'>{props.children}</div>
+
+          <div className='flex items-end max-sm:p-2 justify-end'>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className='border border-[#4338CA] text-[#4338CA] hover:bg-[#4338CA] hover:text-white px-4 py-2 rounded mr-2'
+            >
+              <FiFilter />
+            </button>
+            <div className='flex-initial opacity-50'>
+              <GlobalFilter filter={searchFilter} setFilter={setSearchFilter} />
+            </div>
+            {/* <div className='flex-initial ml-2'>
+              <button
+                className='bg-green-600 px-3 pr-3  drop-shadow-lg rounded-sm py-1 text-white hover:shadow-2xl hover:bg-slate-600 text-center relative '
+                onMouseEnter={() => setbounce("")}
+                onMouseLeave={() => setbounce("hidden")}
+                onClick={exportDataFun}
+              >
+                Export
+                <div
+                  className={
+                    bounce +
+                    " absolute h-full top-3 text-sm left-0 text-center animate-bounce"
+                  }
+                >
+                  <AiOutlineArrowDown />
+                </div>
+              </button>
+            </div> */}
+            <div className='flex-1'>{props.children}</div>
+          </div>
         </div>
-
-        {/* 👉 Filter Component 👈 */}
-        {isOpen && (
-          <SideSection
-            setIsOpen={setIsOpen}
-            filter={filter}
-            setFilter={setFilter}
-            useFilter={useFilter}
-          />
-        )}
-
-        <div className='flex'>
-          {/* 👉 Loader 👈 */}
-          {loader && <ShimmerEffectInline />}
-
-          {!loader && dataList?.length > 0 ? (
-            <div className='mb-10 ml-2'>
-              {/* 👉 Listtable 👈 */}
-
-              <ListTable
-                search={props?.search}
-                currentPage={currentPage}
-                lastPage={lastPage}
-                goFirst={firstPageFun}
-                goLast={lastPageFun}
-                count1={totalCount}
-                columns={props?.columns}
-                dataList={dataList}
-                exportStatus={props?.exportStatus}
-                perPage={perPageCount}
-                perPageC={perPageFun}
-                totalCount={totalCount}
-                nextPage={nextPageFun}
-                prevPage={prevPageFun}
-                exportDataF={exportDataFun}
-                exportData={exportData}
-                gotoPage={(val) => gotoPageFun(val)}
-                perPageData={perPageData}
-                setPerPageData={setPerPageData}
-                searchFilter={searchFilter}
-                showDiv={props.showDiv}
-                setSearchFilter={setSearchFilter}
-                pagination={pagination}
+        <div className='flex w-full space-x-2'>
+          {/* 👉 Filter sidebar Component 👈 */}
+          {isOpen && (
+            <div className={`${isOpen ? open1 : close1} mt-2`}>
+              <SideSection
+                setIsOpen={setIsOpen}
+                filter={filter}
+                setFilter={setFilter}
+                useFilter={useFilter}
               />
             </div>
-          ) : (
-            // 👉 When no data available 👈
-            <>
-              {!loader && (
-                <div
-                  className='bg-red-100 border w-full flex justify-center ml-2 items-center border-red-400 text-red-700 pl-4 pr-16 py-3 rounded relative text-center'
-                  role='alert'
-                >
-                  <span className='block sm:inline'>No data available.</span>
-                  <span className='absolute top-0 bottom-0 right-0 px-4 py-3'></span>
-                </div>
-              )}
-            </>
           )}
+          {/* table */}
+          <div className='flex w-full overflow-auto'>
+            {/* 👉 Loader 👈 */}
+            {loader && <ShimmerEffectInline />}
+
+            {!loader && dataList?.length > 0 ? (
+              <div className='mb-10 ml-2' id='printable-content'>
+                {/* 👉 Listtable 👈 */}
+
+                <ListTable
+                  search={props?.search}
+                  currentPage={currentPage}
+                  lastPage={lastPage}
+                  goFirst={firstPageFun}
+                  goLast={lastPageFun}
+                  count1={totalCount}
+                  columns={props?.columns}
+                  dataList={dataList}
+                  exportStatus={props?.exportStatus}
+                  perPage={perPageCount}
+                  perPageC={perPageFun}
+                  totalCount={totalCount}
+                  nextPage={nextPageFun}
+                  prevPage={prevPageFun}
+                  exportDataF={exportDataFun}
+                  exportData={exportData}
+                  gotoPage={(val) => gotoPageFun(val)}
+                  perPageData={perPageData}
+                  setPerPageData={setPerPageData}
+                  searchFilter={searchFilter}
+                  showDiv={props.showDiv}
+                  setSearchFilter={setSearchFilter}
+                  pagination={pagination}
+                  loader={loader}
+                />
+              </div>
+            ) : (
+              // 👉 When no data available 👈
+              <>
+                {!loader && (
+                  <div
+                    className='bg-red-100 border w-full flex justify-center ml-2 items-center border-red-400 text-red-700 py-3 rounded relative text-center'
+                    role='alert'
+                  >
+                    <span className='block sm:inline'>No data available.</span>
+                    <span className='absolute top-0 bottom-0 right-0 px-4 py-3'></span>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </>

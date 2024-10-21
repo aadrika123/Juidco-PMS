@@ -117,16 +117,23 @@ export const allowNumberInput = (currentValue, oldValue, max = null) => {
     return currentValue;
   else return oldValue;
 };
-export const allowNumberCommaInput = (currentValue, oldValue, max = null) => {
+export const allowNumberMultiplyInput = (
+  currentValue,
+  oldValue,
+  max = null
+) => {
   if (currentValue.length > max)
     //stop if max value and return oldvalue
     return oldValue;
 
-  const re = /^[0-9\b,]+$/; //number + comma
-  if (currentValue === "" || re.test(currentValue))
-    //test
+  const re = /^[0-9*]+$/; // Regex to match only numbers and the '*' character
+
+  // If currentValue is empty or matches the regex, return currentValue; otherwise, return oldValue
+  if (currentValue === "" || re.test(currentValue)) {
     return currentValue;
-  else return oldValue;
+  } else {
+    return oldValue;
+  }
 };
 export const allowCharacterCommaInput = (
   currentValue,
@@ -514,12 +521,6 @@ export const checkErrorMessage = (text) => {
   if (foundKeywords?.length == 0) {
     return msg;
   } else {
-    console.log(
-      "%cSQL ERROR MSG ",
-      "color: red; font-size: 1.5em; border: 2px solid red; padding: 5px 20px",
-      "\n",
-      msg
-    );
     return "Error! Please try again later.";
   }
 };
