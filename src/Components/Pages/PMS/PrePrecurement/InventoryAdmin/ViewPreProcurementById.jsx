@@ -250,7 +250,8 @@ const ViewPreProcurementById = () => {
 
     AxiosInterceptors.post(
       `${api_rejectByLevelone}`,
-      { procurement_no: procNo },
+      // { procurement_no: procNo },
+      data,
       ApiHeader()
     )
       .then(function (response) {
@@ -281,7 +282,8 @@ const ViewPreProcurementById = () => {
 
     AxiosInterceptors.post(
       `${api_rejectByLeveltwo}`,
-      { procurement_no: procNo },
+      // { procurement_no: procNo },
+      data,
       ApiHeader()
     )
       .then(function (response) {
@@ -409,7 +411,7 @@ const ViewPreProcurementById = () => {
           handleCancel={handleCancel}
           message={'Sure to Forward to "Level 1" ?'}
           loadingState={isLoading}
-          //   sideMessage={'By clicking your data will proceed'}
+        //   sideMessage={'By clicking your data will proceed'}
         />
       </>
     );
@@ -423,7 +425,7 @@ const ViewPreProcurementById = () => {
           handleCancel={handleCancel}
           message={'Sure to Forward to "Level 2" ?'}
           loadingState={isLoading}
-          //   sideMessage={'By clicking your data will proceed'}
+        //   sideMessage={'By clicking your data will proceed'}
         />
       </>
     );
@@ -439,7 +441,7 @@ const ViewPreProcurementById = () => {
           message={'Are you sure want to" Approve" ?'}
           loadingState={isLoading}
 
-          //   sideMessage={'By clicking your data will proceed'}
+        //   sideMessage={'By clicking your data will proceed'}
         />
       </>
     );
@@ -455,7 +457,7 @@ const ViewPreProcurementById = () => {
           message={'Are you sure want to" Approve" ?'}
           loadingState={isLoading}
 
-          //   sideMessage={'By clicking your data will proceed'}
+        //   sideMessage={'By clicking your data will proceed'}
         />
       </>
     );
@@ -465,13 +467,20 @@ const ViewPreProcurementById = () => {
   if (isModalOpenlReject1) {
     return (
       <>
-        <ConfirmationModal
+        {/* <ConfirmationModal
           confirmationHandler={confirmationHandlerRejectlevelOne}
           handleCancel={handleCancel}
           message={'Are you sure want to " Reject " ?'}
           loadingState={isLoading}
 
-          //   sideMessage={'By clicking your data will proceed'}
+        //   sideMessage={'By clicking your data will proceed'}
+        /> */}
+        <RejectionModalRemark
+          confirmationHandler={confirmationHandlerRejectlevelOne}
+          handleCancel={handleCancel}
+          message={"Are you sure want to Reject ?"}
+          setData={setData}
+          loadingState={isLoading}
         />
       </>
     );
@@ -481,12 +490,19 @@ const ViewPreProcurementById = () => {
   if (isModalOpenlReject2) {
     return (
       <>
-        <ConfirmationModal
+        {/* <ConfirmationModal
           confirmationHandler={confirmationHandlerRejectleveltwo}
           handleCancel={handleCancel}
           message={'Are you sure want to " Reject " ?'}
           loadingState={isLoading}
           //   sideMessage={'By clicking your data will proceed'}
+        /> */}
+        <RejectionModalRemark
+          confirmationHandler={confirmationHandlerRejectleveltwo}
+          handleCancel={handleCancel}
+          message={"Are you sure want to Reject ?"}
+          setData={setData}
+          loadingState={isLoading}
         />
       </>
     );
@@ -798,7 +814,7 @@ const ViewPreProcurementById = () => {
                       setImageDoc={setImageDoc}
                       setPreview={setPreview}
                       textColor={"white"}
-                      // paddingY={"8"}
+                    // paddingY={"8"}
                     />
                   </div>
                 </>
@@ -819,71 +835,71 @@ const ViewPreProcurementById = () => {
                   {(applicationFullData?.status == 10 ||
                     applicationFullData?.status == 13 ||
                     applicationFullData?.status == 21) && (
-                    <button
-                      className={`bg-[#21b031] hover:bg-[#1e6727] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                      // onClick={forwardToIa}
-                      onClick={() => setisModalOpenlAprvl1(true)}
-                    >
-                      Approve
-                    </button>
-                  )}
+                      <button
+                        className={`bg-[#21b031] hover:bg-[#1e6727] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                        // onClick={forwardToIa}
+                        onClick={() => setisModalOpenlAprvl1(true)}
+                      >
+                        Approve
+                      </button>
+                    )}
 
                   {(applicationFullData?.status == 10 ||
                     applicationFullData?.status == 21) && (
-                    <button
-                      className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                      // onClick={forwardToIa}
-                      onClick={() => setisModalOpenlBackToIA(true)}
-                    >
-                      Back To Inventory Admin
-                    </button>
-                  )}
+                      <button
+                        className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                        // onClick={forwardToIa}
+                        onClick={() => setisModalOpenlBackToIA(true)}
+                      >
+                        Back To Inventory Admin
+                      </button>
+                    )}
 
                   {(applicationFullData?.status == 20 ||
                     applicationFullData?.status == 23) && (
-                    <button
-                      className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                      // onClick={forwardToIa}
-                      onClick={() => setisModalOpenlBackToLevel1(true)}
-                    >
-                      Back To Level 1
-                    </button>
-                  )}
+                      <button
+                        className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                        // onClick={forwardToIa}
+                        onClick={() => setisModalOpenlBackToLevel1(true)}
+                      >
+                        Back To Level 1
+                      </button>
+                    )}
 
                   {(applicationFullData?.status == 0 ||
                     applicationFullData?.status == 11) && (
-                    <button
-                      className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                      // onClick={forwardToIa}
-                      onClick={() => setIsModalOpen(true)}
-                    >
-                      Forward to Level 1
-                    </button>
-                  )}
+                      <button
+                        className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                        // onClick={forwardToIa}
+                        onClick={() => setIsModalOpen(true)}
+                      >
+                        Forward to Level 1
+                      </button>
+                    )}
 
                   {(applicationFullData?.status == 10 ||
                     applicationFullData?.status == 21 ||
                     applicationFullData?.status == 13) && (
-                    <button
-                      className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                      // onClick={forwardToIa}
-                      onClick={() => setIsModalOpenlvl2(true)}
-                    >
-                      Forward to Level 2
-                    </button>
-                  )}
+                      <button
+                        className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                        // onClick={forwardToIa}
+                        onClick={() => setIsModalOpenlvl2(true)}
+                      >
+                        Forward to Level 2
+                      </button>
+                    )}
 
                   {/*Approve for level 2 */}
                   {(applicationFullData?.status == 20 ||
                     applicationFullData?.status == 23) && (
-                    <button
-                      className={`bg-[#21b031] hover:bg-[#1e6727] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
-                      // onClick={forwardToIa}
-                      onClick={() => setisModalOpenlAprvl2(true)}
-                    >
-                      Approve
-                    </button>
-                  )}
+                      <button
+                        className={`bg-[#21b031] hover:bg-[#1e6727] px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                        // onClick={forwardToIa}
+                        onClick={() => setisModalOpenlAprvl2(true)}
+                      >
+                        Approve
+                      </button>
+                    )}
                 </>
               )}
             </>
