@@ -40,26 +40,34 @@ const IaServiceReqTabs = () => {
         <div className=''>
           <div className='flex ml-5'>
             <button
-              className={`py-2 px-4 ${
-                activeTab === "inbox"
-                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                  : "text-gray-500"
-              } focus:outline-none flex border border-[#4338ca] rounded`}
+              className={`py-2 px-4 ${activeTab === "inbox"
+                ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
+                : "text-gray-500"
+                } focus:outline-none flex border border-[#4338ca] rounded`}
               onClick={() => setActiveTab("inbox")}
             >
               <FaChartPie className='m-1 text-[1rem]' />
               Inbox
             </button>
             <button
-              className={`ml-4 py-2 px-4 ${
-                activeTab === "outbox"
-                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                  : "text-gray-500"
-              } focus:outline-none flex border border-[#4338ca] rounded`}
+              className={`ml-4 py-2 px-4 ${activeTab === "outbox"
+                ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
+                : "text-gray-500"
+                } focus:outline-none flex border border-[#4338ca] rounded`}
               onClick={() => setActiveTab("outbox")}
             >
               <FaChartPie className='m-1 text-[1rem]' />
               Outbox
+            </button>
+            <button
+              className={`ml-4 py-2 px-4 ${activeTab === "rejected"
+                ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
+                : "text-gray-500"
+                } focus:outline-none flex border border-[#4338ca] rounded`}
+              onClick={() => setActiveTab("rejected")}
+            >
+              <FaChartPie className='m-1 text-[1rem]' />
+              Rejected
             </button>
           </div>
         </div>
@@ -74,6 +82,11 @@ const IaServiceReqTabs = () => {
           {activeTab === "outbox" && (
             <div>
               <ServiceProposalList page='outbox' api={api_getIaServiceOutbox} />
+            </div>
+          )}
+          {activeTab === "rejected" && (
+            <div>
+              <ServiceProposalList page='inbox' api={api_getIaServiceOutbox} rejected={[12,22]} />
             </div>
           )}
         </div>

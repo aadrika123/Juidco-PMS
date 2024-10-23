@@ -60,6 +60,10 @@ const ListTableParent = (props) => {
 
   // console.log(currentPage);
 
+  const statusMerger = (status) => {
+    return status.map(item => `status=${item}`).join('&');
+  }
+
   // 👉 Function 1 👈
   const searchOldFun = () => {
     setloader(true);
@@ -85,6 +89,7 @@ const ListTableParent = (props) => {
       take=${perPageData}&page=${currentPage}
       &search=${searchFilter}
       &${props?.from ? `from=${props?.from}` : ""}
+      &${props?.rejected ? statusMerger(props?.rejected) : ""}
       &${props?.to ? `to=${props?.to}` : ""}
       &${props?.subcategory ? `scategory=${props?.subcategory}` : ""}
       &${props?.status ? `status=${props?.status}` : ""}
