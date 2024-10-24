@@ -77,8 +77,8 @@ export default function ProjectApiList() {
     api_fetchProcurementDetailById: `${baseUrl}/api/pms/sr/pre-procurement`,
     api_fetchOutboxProcurementDetailById: `${baseUrl}/api/pms/sr/pre-procurement/outbox`,
     api_postForwardToDA: `${baseUrl}/api/pms/sr/pre-procurement/to-da`,
-    api_fetchProcurementRejectedList: `${baseUrl}/api/pms/sr/pre-procurement/rejected`,
-    api_fetchProcurementReleasedList: `${baseUrl}/api/pms/sr/pre-procurement/released`,
+    api_fetchProcurementRejectedList: `${baseUrl}/api/pms/ia/pre-procurement/rejected`,
+    api_fetchProcurementReleasedList: `${baseUrl}/api/pms/ia/pre-procurement/released`,
 
     api_fetchProcurementDAListInbox: `${baseUrl}/api/pms/da/pre-procurement`,
     api_fetchProcurementDAListOutbox: `${baseUrl}/api/pms/da/pre-procurement/outbox`,
@@ -177,6 +177,7 @@ export default function ProjectApiList() {
     api_replyNotification: `${baseUrl}/api/pms/da/stock-request/procurement-approval`,
 
     //inventory
+    api_deadSTock: `${baseUrl}/api/pms/dead-stock`,
     api_getDDSRInbox: `${baseUrl}/api/pms/dist/stock-request`,
     api_getDDSROutbox: `${baseUrl}/api/pms/dist/stock-request/outbox`,
     api_getStockRequetById: `${baseUrl}/api/pms/stock-request`,

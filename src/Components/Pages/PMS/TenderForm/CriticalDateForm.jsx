@@ -17,11 +17,12 @@ import ProjectApiList from "@/Components/api/ProjectApiList";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
 const CriticalDateForm = () => {
-  const { api_postCriticalDatesDetails, api_getCriticalDatesDetails } =
+  const { api_postCriticalDatesDetails, api_getCriticalDatesDetails, api_getWorkDetails } =
     ProjectApiList();
   const [isLoading, setIsLoading] = useState(true);
   const [referenceNo, setReferenceNo] = useState();
   const [criticalDateData, setCriticalDateData] = useState();
+  const [workDetailData, setWorkDetailData] = useState();
 
   const navigate = useNavigate();
 
@@ -186,26 +187,26 @@ const CriticalDateForm = () => {
         return true;
       }),
 
-    preBidMettingDate: Yup.string()
-      .required("pre bid meeting is required")
-      .test("preBidMettingDate", (value, validationContex) => {
-        const {
-          createError,
-          parent: { publishingDate, bidOpeningDate },
-        } = validationContex;
-        if (new Date(value) < new Date(publishingDate)) {
-          return createError({
-            message:
-              "pre bid meeting date should be greater than publishing date",
-          });
-        } else if (new Date(value) > new Date(bidOpeningDate)) {
-          return createError({
-            message:
-              "pre bid meeting date should be greater than bid opeining date",
-          });
-        }
-        return true;
-      }),
+    // preBidMettingDate: Yup.string()
+    //   .required("pre bid meeting is required")
+    //   .test("preBidMettingDate", (value, validationContex) => {
+    //     const {
+    //       createError,
+    //       parent: { publishingDate, bidOpeningDate },
+    //     } = validationContex;
+    //     if (new Date(value) < new Date(publishingDate)) {
+    //       return createError({
+    //         message:
+    //           "pre bid meeting date should be greater than publishing date",
+    //       });
+    //     } else if (new Date(value) > new Date(bidOpeningDate)) {
+    //       return createError({
+    //         message:
+    //           "pre bid meeting date should be greater than bid opeining date",
+    //       });
+    //     }
+    //     return true;
+    //   }),
   });
 
   // 2022-04-17T15:30
@@ -271,10 +272,32 @@ const CriticalDateForm = () => {
         setIsLoading(false);
       });
   };
+
+  const getWorkDetail = (refNo) => {
+    setIsLoading(true);
+
+    AxiosInterceptors.get(`${api_getWorkDetails}/${refNo}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setWorkDetailData(response?.data?.data);
+        } else {
+          // toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        toast.error(error?.response?.data?.error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
     setReferenceNo(refNo);
     getApplicationDetail(refNo);
+    getWorkDetail(refNo)
   }, []);
 
   return (
@@ -290,9 +313,8 @@ const CriticalDateForm = () => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer components={["DateTimePicker"]}>
           <div
-            className={`mt-5 container  ${
-              isLoading ? "blur-[2px] pointer-events-none" : ""
-            }`}
+            className={`mt-5 container  ${isLoading ? "blur-[2px] pointer-events-none" : ""
+              }`}
           >
             <Formik
               initialValues={initialValues}
@@ -326,10 +348,10 @@ const CriticalDateForm = () => {
                             value={
                               values.publishingDate
                                 ? dayjs(
-                                    new Date(
-                                      values?.publishingDate
-                                    ).toISOString()
-                                  )
+                                  new Date(
+                                    values?.publishingDate
+                                  ).toISOString()
+                                )
                                 : null
                             }
                           />
@@ -556,36 +578,38 @@ const CriticalDateForm = () => {
                         </div>
                       </div>
 
-                      <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md col-span-2'>
-                        <div className=''>
-                          <label
-                            for='default-input'
-                            className={`block mb-2 text-sm font-medium text-gray-900 `}
-                          >
-                            Pre Bid Meeting Date
-                            <span className='text-red-500'>*</span>
-                          </label>
-                          <DateTimePicker
-                            className='w-3/4'
-                            name='preBidMettingDate'
-                            onChange={(value) => {
-                              const dateTime = value.format();
-                              setFieldValue("preBidMettingDate", dateTime);
-                            }}
-                            value={
-                              values.preBidMettingDate
-                                ? dayjs(values.preBidMettingDate)
-                                : null
-                            }
-                          />
-                          {errors.preBidMettingDate &&
-                            touched.preBidMettingDate && (
-                              <div className='text-red-500 text-sm mt-1'>
-                                {errors.preBidMettingDate}
-                              </div>
-                            )}
+                      {workDetailData?.pre_bid && (
+                        <div className='p-8 space-y-5 mr-4 mb-6 bg-white shadow-xl border border-gray-200 rounded-md col-span-2'>
+                          <div className=''>
+                            <label
+                              for='default-input'
+                              className={`block mb-2 text-sm font-medium text-gray-900 `}
+                            >
+                              Pre Bid Meeting Date
+                              <span className='text-red-500'>*</span>
+                            </label>
+                            <DateTimePicker
+                              className='w-3/4'
+                              name='preBidMettingDate'
+                              onChange={(value) => {
+                                const dateTime = value.format();
+                                setFieldValue("preBidMettingDate", dateTime);
+                              }}
+                              value={
+                                values.preBidMettingDate
+                                  ? dayjs(values.preBidMettingDate)
+                                  : null
+                              }
+                            />
+                            {errors.preBidMettingDate &&
+                              touched.preBidMettingDate && (
+                                <div className='text-red-500 text-sm mt-1'>
+                                  {errors.preBidMettingDate}
+                                </div>
+                              )}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
 
                     <TenderFormButton
