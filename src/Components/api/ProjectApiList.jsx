@@ -177,6 +177,7 @@ export default function ProjectApiList() {
     api_replyNotification: `${baseUrl}/api/pms/da/stock-request/procurement-approval`,
 
     //inventory
+    api_deadSTock: `${baseUrl}/api/pms/dead-stock`,
     api_getDDSRInbox: `${baseUrl}/api/pms/dist/stock-request`,
     api_getDDSROutbox: `${baseUrl}/api/pms/dist/stock-request/outbox`,
     api_getStockRequetById: `${baseUrl}/api/pms/stock-request`,

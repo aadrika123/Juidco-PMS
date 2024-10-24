@@ -106,6 +106,7 @@ import TaInventoryDashboard from "./Components/Pages/PMS/Dashboards/TaInventoryD
 import LevelInventoryDashboard from "./Components/Pages/PMS/Dashboards/LevelInventoryDashboard";
 import EditPreProcurementIa from "./Components/Pages/PMS/PrePrecurement/StockReceiver/EditPreProcurement";
 import RejectedBoq from "./Components/Pages/PMS/BOQ/DA/RejectedBoq";
+import DeadStock from "./Components/Pages/PMS/Inventory/DeadStock/DeadStock";
 
 const queryClient = new QueryClient();
 
@@ -500,6 +501,13 @@ function App() {
       path: "/dd-empServiceById/:id/:page",
       element: <DDEmpServiceReqById />,
     },
+
+    /////////////////////////{*** Employee Section ***}//////////////////////////////////////
+    {
+      path: "/dead-stock",
+      element: <DeadStock />,
+    },
+
   ];
 
   return (
