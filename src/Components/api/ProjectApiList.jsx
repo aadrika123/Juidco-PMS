@@ -312,6 +312,7 @@ export default function ProjectApiList() {
     api_getInventoryPreProcReport: `${baseUrl}/api/pms/report/pre-procurement`,
     api_getInventoryLevelReport: `${baseUrl}/api/pms/report/level-wise`,
     api_getTenderReport: `${baseUrl}/api/pms/report/tender`,
+    api_getStockHistoryReport: `${baseUrl}/api/pms/report/stock-history/list`,
 
     //dashboard
     api_getddDashboard: `${baseUrl}/api/pms/dashboard/dd`,

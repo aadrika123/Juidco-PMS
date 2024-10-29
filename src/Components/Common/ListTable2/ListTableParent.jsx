@@ -98,6 +98,7 @@ const ListTableParent = (props) => {
       &${returnCategoryFilter("scategory", filter?.subcategory || [])}
       &${returnCategoryFilter("brand", filter?.brand || [])}
       &${props?.qparams ? props?.qparams : ""}
+      &service=${props?.serviceFilter || ''}
       `
         .split(" ")
         .join(""),
@@ -108,12 +109,19 @@ const ListTableParent = (props) => {
         if (res?.data?.status == true) {
           props?.getData && props?.allData(res?.data?.data);
           // props?.setRefNo(res?.data?.data[0].reference_no)
+
+
           setdataList(res?.data?.data);
           setPagination(res?.data?.pagination);
           settotalCount(res?.data?.pagination?.totalPage);
           setcurrentPage(res?.data?.pagination?.currentPage);
           setlastPage(res?.data?.pagination?.currentTake);
           seterrorState(false);
+          
+          const flattenedData = res?.data?.data.map((item) => props?.flattenObject(item));
+          props?.setNewExportData(flattenedData);
+          props?.setExportData(res?.data?.data);
+
         } else {
           seterrorState(true);
         }
@@ -298,6 +306,8 @@ const ListTableParent = (props) => {
 
       <div className='space-y-8'>
         <div className='w-full flex justify-between'>
+
+          {/* Export */}
           <div className='w-full flex justify-between'>
             <div
               className='flex justify-between gap-4 py-2'

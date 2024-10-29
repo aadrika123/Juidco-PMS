@@ -173,6 +173,8 @@ function ServiceProposalList(props) {
                 requestBody={requestBody} // sending body
                 changeData={changeData} // send action for new payload
                 rejected={props?.rejected}
+                serviceFilter={props?.serviceFilter}
+                status={props?.serviceStatus}
               />
             </>
           </div>
