@@ -27,7 +27,8 @@ export default function Reports() {
     api_getInventoryTotalMovementReport,
     api_getInventoryPreProcReport,
     api_getInventoryLevelReport,
-    api_getTenderReport
+    api_getTenderReport,
+    api_getWarrantyReport
   } = ProjectApiList();
 
   const [urlReport, setUrlReport] = useState(api_getInventoryTotalReport);
@@ -42,6 +43,7 @@ export default function Reports() {
     { id: 6, label: "Tendering Type", value: "tender_type" },
     { id: 7, label: "Pre-Procurement Stock", value: "pre_procurement" },
     { id: 8, label: "Post-Procurement Stock", value: "post_procurement" },
+    { id: 11, label: "Warranty Claim", value: "warranty_claim" },
   ];
 
   const preProcurement = [
@@ -94,6 +96,12 @@ export default function Reports() {
     { id: 3, label: "Remaining Stock", value: "dead_stock" },
   ];
 
+  const warrantyStatus = [
+    { id: 1, label: "Pending", value: 'pending' },
+    { id: 2, label: "Claimed", value: "claimed" },
+    { id: 3, label: "Rejected", value: "rejected" },
+  ];
+
   const getUrl = (report_type) => {
     switch (report_type) {
       case "total_stock":
@@ -106,6 +114,8 @@ export default function Reports() {
         return api_getInventoryTotalMovementReport;
       case "pre_procurement":
         return api_getInventoryPreProcReport;
+      case "warranty_claim":
+        return api_getWarrantyReport;
       default:
         return api_getInventoryTotalReport;
     }
@@ -815,6 +825,73 @@ export default function Reports() {
     },
   ];
 
+  function getStatusLabel(status) {
+    switch (status) {
+      case 12:
+      case 22:
+        return "rejected";
+      case 23:
+        return "claimed";
+      default:
+        return "in-progress";
+    }
+  }
+
+  const COLUMNS_WC = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
+    },
+    {
+      Header: "Service No",
+      accessor: "service_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.values.service_no} </div>
+      ),
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.inventory?.category?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Sub Category",
+      accessor: "subcategory",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>
+          {cell.row.original.inventory?.subcategory?.name}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Serial No",
+      accessor: "serial_no",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original?.service_req_product
+          ?.map((product) => product.serial_no)
+          .join(', ')}</div>
+      ),
+    },
+    {
+      Header: "Status",
+      accessor: "status",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{getStatusLabel(Number(cell.row.values?.status))}</div>
+      ),
+    },
+    {
+      Header: "Date",
+      accessor: "date",
+      Cell: ({ cell }) => (
+        <div className='pr-2'>{cell.row.original?.createdAt ? new Date(cell.row.original?.createdAt).toISOString().split('T')[0] : 'N/A'}</div>
+      ),
+    },
+  ];
+
   //setting application type on basis of selected levels---
 
   const applicationType =
@@ -1123,6 +1200,33 @@ export default function Reports() {
                 </p>
               </div>
             )}
+
+            {formik.values.reportType === "warranty_claim" && (
+              <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4'>
+                <label className={`${labelStyle} inline-block mb-2 text-sm`}>
+                  Warranty Status
+                </label>
+                <select
+                  {...formik.getFieldProps("warranty_status")}
+                  className={`${inputStyle} inline-block w-full relative`}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                  }}
+                >
+                  <option value={""}>select</option>
+                  {warrantyStatus.map((items) => (
+                    <option key={items.id} value={items?.value}>
+                      {items?.label}
+                    </option>
+                  ))}
+                </select>
+                <p className='text-red-500 text-xs '>
+                  {formik.touched.ttype && formik.errors.ttype
+                    ? formik.errors.ttype
+                    : null}
+                </p>
+              </div>
+            )}
           </div>
 
           <div className='form-group flex-shrink w-full px-4 flex gap-4 justify-end'>
@@ -1185,7 +1289,9 @@ export default function Reports() {
                               ? COLUMNS_lEVEL
                               : (formik.values.reportType === "tender_type")
                                 ? COLUMNS_TENDER
-                                : COLUMNS
+                                : (formik.values.reportType === "warranty_claim")
+                                  ? COLUMNS_WC
+                                  : COLUMNS
             }
             from={formik.values.from_date}
             to={formik.values.to_date}
@@ -1193,6 +1299,7 @@ export default function Reports() {
             subcategory={formik.values.subCategory}
             pageTrigger={pageTrigger}
             status={formik.values.preProcurement}
+            warrantyStatus={formik?.values?.warranty_status}
           />
         </div>
       </div>
