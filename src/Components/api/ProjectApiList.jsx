@@ -178,6 +178,7 @@ export default function ProjectApiList() {
 
     //inventory
     api_deadSTock: `${baseUrl}/api/pms/dead-stock`,
+    api_deadSTockRetrieval: `${baseUrl}/api/pms/dead-stock/retrieve`,
     api_getDDSRInbox: `${baseUrl}/api/pms/dist/stock-request`,
     api_getDDSROutbox: `${baseUrl}/api/pms/dist/stock-request/outbox`,
     api_getStockRequetById: `${baseUrl}/api/pms/stock-request`,
@@ -312,6 +313,7 @@ export default function ProjectApiList() {
     api_getInventoryPreProcReport: `${baseUrl}/api/pms/report/pre-procurement`,
     api_getInventoryLevelReport: `${baseUrl}/api/pms/report/level-wise`,
     api_getTenderReport: `${baseUrl}/api/pms/report/tender`,
+    api_getWarrantyReport: `${baseUrl}/api/pms/report/warranty`,
 
     //dashboard
     api_getddDashboard: `${baseUrl}/api/pms/dashboard/dd`,

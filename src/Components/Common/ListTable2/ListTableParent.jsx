@@ -97,6 +97,7 @@ const ListTableParent = (props) => {
       &${returnCategoryFilter("category", filter?.category || [])}
       &${returnCategoryFilter("scategory", filter?.subcategory || [])}
       &${returnCategoryFilter("brand", filter?.brand || [])}
+      &${props?.warrantyStatus ? `status=${props?.warrantyStatus}` : ""}
       &${props?.qparams ? props?.qparams : ""}
       `
         .split(" ")
@@ -274,6 +275,10 @@ const ListTableParent = (props) => {
   const useFilter = () => {
     searchOldFun();
   };
+
+  useEffect(() => {
+    searchOldFun()
+  }, [props?.refetch])
 
   const exportBtnStyle = `bg-green-700 text-white px-2 rounded-md flex items-center gap-1 hover:bg-green-900`;
 

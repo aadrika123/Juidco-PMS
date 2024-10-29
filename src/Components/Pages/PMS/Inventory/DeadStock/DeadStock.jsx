@@ -9,17 +9,41 @@ import { RotatingLines } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 import ProjectApiList from "@/Components/api/ProjectApiList";
+import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
+import ApiHeader from "@/Components/api/ApiHeader";
+import toast from "react-hot-toast";
 
 function DeadStock(props) {
 
-  const [changeData, setchangeData] = useState(0);
-  const [requestBody, setRequestBody] = useState(null);
+  // const [changeData, setchangeData] = useState(0);
+  // const [requestBody, setRequestBody] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const [loader, setloader] = useState(false);
+  const [refetch, setRefetch] = useState(false);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const { api_deadSTock } = ProjectApiList()
+  const { api_deadSTock, api_deadSTockRetrieval } = ProjectApiList()
+
+  const retrieve = (id) => {
+    AxiosInterceptors.post(
+      api_deadSTockRetrieval,
+      { id: id },
+      ApiHeader()
+    )
+      .then(function (response) {
+        setRefetch(prev => !prev)
+        if (response?.data?.status) {
+          toast.success("Retrieval successful");
+        } else {
+          toast.error("Error in Forwarding to DA. Please try again");
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        toast.error(error?.response?.data?.error);
+      })
+  }
 
   const COLUMNS = [
     {
@@ -55,7 +79,7 @@ function DeadStock(props) {
           <button
             className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]"
             onClick={() =>
-              alert(cell.row.values.id)
+              retrieve(cell.row.values.id)
             }
           >
             Retrieve
@@ -89,6 +113,7 @@ function DeadStock(props) {
                 // requestBody={requestBody}
                 // changeData={changeData}
                 showDiv={true}
+                refetch={refetch}
               />
             </>
           </div>
