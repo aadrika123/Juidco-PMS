@@ -68,7 +68,8 @@ export default function Reports() {
     api_getInventoryLevelReport,
     api_getTenderReport,
     api_getWarrantyReport,
-    api_getStockHistoryReport
+    api_getStockHistoryReport,
+    api_getRateContractReport
   } = ProjectApiList();
 
   const [urlReport, setUrlReport] = useState(api_getInventoryTotalReport);
@@ -157,7 +158,7 @@ export default function Reports() {
       case "pre_procurement":
         return api_getInventoryPreProcReport;
       case "rate_contract":
-        return api_getInventoryTotalMovementReport; // Rate contract api should be added
+        return api_getRateContractReport; // Rate contract api should be added (api added by Anil)
       case "stock_history_report":
         return api_getStockHistoryReport; // Stock History Report api should be added
       case "warranty_claim":
@@ -407,10 +408,10 @@ export default function Reports() {
         <div className="pr-2">
           {cell.row.original?.stock_request?.stock_handover[0]
             ? new Date(
-                cell.row.original?.stock_request?.stock_handover[0]?.createdAt
-              )
-                .toISOString()
-                .split("T")[0]
+              cell.row.original?.stock_request?.stock_handover[0]?.createdAt
+            )
+              .toISOString()
+              .split("T")[0]
             : "N/A"}
         </div>
       ),
@@ -840,8 +841,8 @@ export default function Reports() {
           {cell.row.original.tendering_type === "qcbs"
             ? "QCBS"
             : cell.row.original.tendering_type === "least_cost"
-            ? "Least Cost"
-            : "Rate Contract"}
+              ? "Least Cost"
+              : "Rate Contract"}
         </div>
       ),
     },
@@ -888,41 +889,64 @@ export default function Reports() {
       Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
     },
     {
-      Header: "Reference No",
-      accessor: "reference_no",
-      Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.reference_no} </div>
-      ),
-    },
-    {
-      Header: "Tendering Type",
-      accessor: "tendering_type",
-      Cell: ({ cell }) => (
-        <div className="pr-2">
-          {cell.row.original.tendering_type === "qcbs"
-            ? "QCBS"
-            : cell.row.original.tendering_type === "least_cost"
-            ? "Least Cost"
-            : "Rate Contract"}
-        </div>
-      ),
-    },
-    {
-      Header: "Procurement No",
-      accessor: "procurement_no",
-      Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.original?.boq?.procurement_no} </div>
-      ),
-    },
-    {
       Header: "Category",
       accessor: "category",
       Cell: ({ cell }) => (
         <div className="pr-2">
           {
-            cell.row.original?.boq?.procurement?.procurement_stocks[0]?.category
-              ?.name
+            cell.row.original?.category?.name
           }{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Sub Category",
+      accessor: "subcategory",
+      Cell: ({ cell }) => (
+        <div className="pr-2">
+          {
+            cell.row.original?.subcategory?.name
+          }{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Unit",
+      accessor: "unit",
+      Cell: ({ cell }) => (
+        <div className="pr-2">
+          {
+            cell.row.original?.unit?.name
+          }{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Description",
+      accessor: "description",
+      Cell: ({ cell }) => (
+        <div className="pr-2">
+          {
+            cell.row.original?.description
+          }{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "Start Date",
+      accessor: "start_date",
+      Cell: ({ cell }) => (
+        <div className="pr-2">
+          {cell.row.original?.start_date.split("T")[0]}{" "}
+        </div>
+      ),
+    },
+    {
+      Header: "End Date",
+      accessor: "end_date",
+      Cell: ({ cell }) => (
+        <div className="pr-2">
+          {cell.row.original?.end_date.split("T")[0]}{" "}
         </div>
       ),
     },
@@ -934,16 +958,9 @@ export default function Reports() {
           {cell.row.original?.createdAt.split("T")[0]}{" "}
         </div>
       ),
-    },
-    {
-      Header: "Estimated Amount",
-      accessor: "estimated_cost",
-      Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.original?.boq?.estimated_cost} </div>
-      ),
-    },
+    }
   ];
-  
+
   const COLUMNS_SHR = [
     {
       Header: "#",
@@ -1000,7 +1017,7 @@ export default function Reports() {
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={() =>
               navigate(
-                `/stock-history-reports`,{state: cell.row.values.id}
+                `/stock-history-reports`, { state: cell.row.values.id }
               )
             }
           >
@@ -1119,12 +1136,12 @@ export default function Reports() {
     formik.values.levels === "da" || formik.values.levels === "dd"
       ? levelwiseModuleDd
       : formik.values.levels === "finance"
-      ? levelwiseModuleFin
-      : formik.values.levels === "level1" || formik.values.levels === "level2"
-      ? levelwiseModule
-      : formik.values.levels === "ta"
-      ? levelwiseModuleTa
-      : levelwiseModuleIa;
+        ? levelwiseModuleFin
+        : formik.values.levels === "level1" || formik.values.levels === "level2"
+          ? levelwiseModule
+          : formik.values.levels === "ta"
+            ? levelwiseModuleTa
+            : levelwiseModuleIa;
 
   useEffect(() => {
     getCategory();
@@ -1329,7 +1346,7 @@ export default function Reports() {
                 </select>
                 <p className="text-red-500 text-xs ">
                   {formik.touched.postProcurement &&
-                  formik.errors.postProcurement
+                    formik.errors.postProcurement
                     ? formik.errors.postProcurement
                     : null}
                 </p>
@@ -1506,12 +1523,12 @@ export default function Reports() {
             // table={tableSelector(props?.page)}
             api={
               formik.values.reportType === "level_wise" &&
-              formik?.values?.levels &&
-              formik?.values?.module_type
+                formik?.values?.levels &&
+                formik?.values?.module_type
                 ? `${api_getInventoryLevelReport}/${formik.values.levels}/${formik.values.module_type}`
                 : formik.values.reportType === "tender_type"
-                ? `${api_getTenderReport}`
-                : urlReport
+                  ? `${api_getTenderReport}`
+                  : urlReport
             }
             qparams={
               formik.values.reportType === "tender_type" && formik.values.ttype
@@ -1520,44 +1537,44 @@ export default function Reports() {
             }
             columns={
               formik.values.reportType === "stock_history_report"
-                ? COLUMNS_SHR:
-              formik.values.reportType === "rate_contract"
-                ? COLUMNS_RC:
-              formik.values.reportType === "stock_movement"
-                ? COLUMNS_SM
-                : formik.values.reportType === "pre_procurement"
-                ? COLUMNS_PRO
-                : formik.values.reportType === "dead_stock"
-                ? COLUMNS_DEAD
-                : formik.values.reportType === "received_stock"
-                ? COLUMNS_RECEIVED
-                : formik.values.reportType === "level_wise" &&
-                  formik?.values?.levels &&
-                  formik?.values?.module_type &&
-                  formik.values.module_type === "service-request"
-                ? COLUMNS_lEVEL_SERVICE
-                : formik.values.reportType === "level_wise" &&
-                  formik?.values?.levels &&
-                  formik?.values?.module_type &&
-                  formik.values.module_type === "boq" &&
-                  (formik.values.levels === "finance" ||
-                    formik.values.levels === "ia")
-                ? FINBOQ
-                : formik.values.reportType === "level_wise" &&
-                  formik?.values?.levels &&
-                  formik?.values?.module_type &&
-                  formik.values.module_type == "procurement"
-                ? COLUMNS_PRO
-                : formik.values.reportType === "level_wise" &&
-                  formik?.values?.levels &&
-                  formik?.values?.module_type &&
-                  formik.values.module_type !== "service-request"
-                ? COLUMNS_lEVEL
-                : formik.values.reportType === "tender_type"
-                ? COLUMNS_TENDER
-                                : (formik.values.reportType === "warranty_claim")
-                                  ? COLUMNS_WC
-                  : COLUMNS
+                ? COLUMNS_SHR :
+                formik.values.reportType === "rate_contract"
+                  ? COLUMNS_RC :
+                  formik.values.reportType === "stock_movement"
+                    ? COLUMNS_SM
+                    : formik.values.reportType === "pre_procurement"
+                      ? COLUMNS_PRO
+                      : formik.values.reportType === "dead_stock"
+                        ? COLUMNS_DEAD
+                        : formik.values.reportType === "received_stock"
+                          ? COLUMNS_RECEIVED
+                          : formik.values.reportType === "level_wise" &&
+                            formik?.values?.levels &&
+                            formik?.values?.module_type &&
+                            formik.values.module_type === "service-request"
+                            ? COLUMNS_lEVEL_SERVICE
+                            : formik.values.reportType === "level_wise" &&
+                              formik?.values?.levels &&
+                              formik?.values?.module_type &&
+                              formik.values.module_type === "boq" &&
+                              (formik.values.levels === "finance" ||
+                                formik.values.levels === "ia")
+                              ? FINBOQ
+                              : formik.values.reportType === "level_wise" &&
+                                formik?.values?.levels &&
+                                formik?.values?.module_type &&
+                                formik.values.module_type == "procurement"
+                                ? COLUMNS_PRO
+                                : formik.values.reportType === "level_wise" &&
+                                  formik?.values?.levels &&
+                                  formik?.values?.module_type &&
+                                  formik.values.module_type !== "service-request"
+                                  ? COLUMNS_lEVEL
+                                  : formik.values.reportType === "tender_type"
+                                    ? COLUMNS_TENDER
+                                    : (formik.values.reportType === "warranty_claim")
+                                      ? COLUMNS_WC
+                                      : COLUMNS
             }
             from={formik.values.from_date}
             to={formik.values.to_date}
