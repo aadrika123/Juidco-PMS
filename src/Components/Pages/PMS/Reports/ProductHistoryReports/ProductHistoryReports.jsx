@@ -29,7 +29,7 @@ const ProductHistoryReports = () => {
   const { titleBarVisibility } = useContext(contextVar);
 
   const navigate = useNavigate();
-  const { api_fetchProcurementList, api_fetchProcurementDAList } =
+  const { api_fetchProcurementList, api_fetchProcurementDAList,api_getStockHistoryReport } =
     ProjectApiList();
 
   const location = useLocation();
@@ -44,13 +44,13 @@ const ProductHistoryReports = () => {
       Header: "#",
       Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
     },
-    {
-      Header: "Order No",
-      accessor: "procurement_no",
-      Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.procurement_no}</div>
-      ),
-    },
+    // {
+    //   Header: "Id",
+    //   accessor: "id",
+    //   Cell: ({ cell }) => (
+    //     <div className="pr-2">{cell.row.values.id} </div>
+    //   ),
+    // },
     {
       Header: "Category",
       accessor: "category",
@@ -59,46 +59,44 @@ const ProductHistoryReports = () => {
       ),
     },
     {
-      Header: "Sub Category",
+      Header: "Subcategory",
       accessor: "subcategory",
       Cell: ({ cell }) => (
         <div className="pr-2">{cell.row.values.subcategory.name} </div>
       ),
     },
     {
-      Header: "Brand",
-      accessor: "brand",
-      Cell: (
-        { cell } // console.log(cell.row.values,"===================celllllll")
-      ) => <div className="pr-2">{cell.row.values.brand.name || "N/A"}</div>,
-    },
-
-    // {
-    //   Header: "status",
-    //   accessor: "status",
-    //   Cell: ({ cell }) => (
-    //     <div className='pr-2'>
-    //       <p className='font-bold text-yellow-800'>
-    //         {cell.row.values.status.status == -1 && "Back to SR"}
-    //       </p>
-    //       <p className='font-bold text-red-500'>
-    //         {cell.row.values.status.status == -2 && "Rejected"}
-    //       </p>
-
-    //     </div>
-    //   ),
-    // },
-    {
-      Header: "Action",
-      accessor: "id",
+      Header: "Unit",
+      accessor: "unit",
       Cell: ({ cell }) => (
-        <>
-          <button className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]">
-            View
-          </button>
-        </>
+        <div className="pr-2">{cell.row.values.unit.name} </div>
       ),
     },
+    {
+      Header: "Description",
+      accessor: "description",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.description} </div>
+      ),
+    },
+    {
+      Header: "Quantity",
+      accessor: "quantity",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.quantity} {cell.row.values.unit.abbreviation} </div>
+      ),
+    },
+    // {
+    //   Header: "Action",
+    //   accessor: "id",
+    //   Cell: ({ cell }) => (
+    //     <>
+    //       <button className="bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]">
+    //         View
+    //       </button>
+    //     </>
+    //   ),
+    // },
   ];
 
   const btnDetails = [
@@ -150,7 +148,7 @@ const ProductHistoryReports = () => {
               <div className="p-7">
                 <ListTableParent
                   columns={COLUMNS}
-                  api={api_fetchProcurementList}
+                  api={api_getStockHistoryReport}
                   // table={tableSelector(props?.page)}
                   // requestBody={requestBody} // sending body
                   // changeData={changeData} // send action for new payload
@@ -164,7 +162,7 @@ const ProductHistoryReports = () => {
               <div className="p-7">
                 <ListTableParent
                   columns={COLUMNS}
-                  api={api_fetchProcurementList}
+                  api={api_getStockHistoryReport}
                   // table={tableSelector(props?.page)}
                   // requestBody={requestBody} // sending body
                   // changeData={changeData} // send action for new payload

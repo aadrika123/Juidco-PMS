@@ -314,6 +314,8 @@ export default function ProjectApiList() {
     api_getInventoryLevelReport: `${baseUrl}/api/pms/report/level-wise`,
     api_getTenderReport: `${baseUrl}/api/pms/report/tender`,
     api_getWarrantyReport: `${baseUrl}/api/pms/report/warranty`,
+    api_getStockHistoryReport: `${baseUrl}/api/pms/report/stock-history/list`,
+    api_getStockHistoryReportById: `${baseUrl}/api/pms/report/stock-history`,
 
     //dashboard
     api_getddDashboard: `${baseUrl}/api/pms/dashboard/dd`,

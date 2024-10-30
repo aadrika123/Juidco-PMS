@@ -107,6 +107,8 @@ import LevelInventoryDashboard from "./Components/Pages/PMS/Dashboards/LevelInve
 import EditPreProcurementIa from "./Components/Pages/PMS/PrePrecurement/StockReceiver/EditPreProcurement";
 import RejectedBoq from "./Components/Pages/PMS/BOQ/DA/RejectedBoq";
 import DeadStock from "./Components/Pages/PMS/Inventory/DeadStock/DeadStock";
+import IaWarrantyClaim from "./Components/Pages/PMS/ServiceRequest/IA/IaWarrantyClaim";
+import StockHistoryReportById from "./Components/Pages/PMS/Reports/StockHistoryReport/StockHistoryReportById";
 
 const queryClient = new QueryClient();
 
@@ -391,6 +393,10 @@ function App() {
       path: "/inventory-reports",
       element: <InventoryReports />,
     },
+    {
+      path: "/stock-history-reports",
+      element: <StockHistoryReportById />,
+    },
 
     /////////////////////////{*** Bidding ***}//////////////////////////////////////
     {
@@ -471,10 +477,10 @@ function App() {
       path: "/ia-service-request-byid/:refNo/:page",
       element: <IAServiceRequestById />,
     },
-    // {
-    //   path: "/viewServiceReq",
-    //   element: <IaServiceReqTabs />,
-    // },
+    {
+      path: "/ia-warranty-claim",
+      element: <IaWarrantyClaim />,
+    },
 
     /////////////////////////{*** Employee Section ***}//////////////////////////////////////
     {
