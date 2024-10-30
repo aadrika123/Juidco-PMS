@@ -108,6 +108,7 @@ import EditPreProcurementIa from "./Components/Pages/PMS/PrePrecurement/StockRec
 import RejectedBoq from "./Components/Pages/PMS/BOQ/DA/RejectedBoq";
 import DeadStock from "./Components/Pages/PMS/Inventory/DeadStock/DeadStock";
 import IaWarrantyClaim from "./Components/Pages/PMS/ServiceRequest/IA/IaWarrantyClaim";
+import StockHistoryReportById from "./Components/Pages/PMS/Reports/StockHistoryReport/StockHistoryReportById";
 
 const queryClient = new QueryClient();
 
@@ -391,6 +392,10 @@ function App() {
     {
       path: "/inventory-reports",
       element: <InventoryReports />,
+    },
+    {
+      path: "/stock-history-reports",
+      element: <StockHistoryReportById />,
     },
 
     /////////////////////////{*** Bidding ***}//////////////////////////////////////

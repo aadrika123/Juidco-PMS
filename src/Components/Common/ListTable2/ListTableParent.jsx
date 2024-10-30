@@ -97,6 +97,7 @@ const ListTableParent = (props) => {
       &${returnCategoryFilter("category", filter?.category || [])}
       &${returnCategoryFilter("scategory", filter?.subcategory || [])}
       &${returnCategoryFilter("brand", filter?.brand || [])}
+      &${props?.warrantyStatus ? `status=${props?.warrantyStatus}` : ""}
       &${props?.qparams ? props?.qparams : ""}
       &service=${props?.serviceFilter || ''}
       `
@@ -118,9 +119,9 @@ const ListTableParent = (props) => {
           setlastPage(res?.data?.pagination?.currentTake);
           seterrorState(false);
           
-          const flattenedData = res?.data?.data.map((item) => props?.flattenObject(item));
-          props?.setNewExportData(flattenedData);
-          props?.setExportData(res?.data?.data);
+          // const flattenedData = res?.data?.data.map((item) => props?.flattenObject(item));
+          // props?.setNewExportData(flattenedData);
+          // props?.setExportData(res?.data?.data);
 
         } else {
           seterrorState(true);
@@ -282,6 +283,10 @@ const ListTableParent = (props) => {
   const useFilter = () => {
     searchOldFun();
   };
+
+  useEffect(() => {
+    searchOldFun()
+  }, [props?.refetch])
 
   const exportBtnStyle = `bg-green-700 text-white px-2 rounded-md flex items-center gap-1 hover:bg-green-900`;
 
