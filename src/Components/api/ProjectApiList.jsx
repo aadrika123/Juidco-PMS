@@ -316,6 +316,7 @@ export default function ProjectApiList() {
     api_getWarrantyReport: `${baseUrl}/api/pms/report/warranty`,
     api_getStockHistoryReport: `${baseUrl}/api/pms/report/stock-history/list`,
     api_getStockHistoryReportById: `${baseUrl}/api/pms/report/stock-history`,
+    api_getRateContractReport: `${baseUrl}/api/pms/report/rate-contract`,
 
     //dashboard
     api_getddDashboard: `${baseUrl}/api/pms/dashboard/dd`,
