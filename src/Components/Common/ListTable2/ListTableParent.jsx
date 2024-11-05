@@ -12,7 +12,7 @@ import { usePDF } from "react-to-pdf"; // import { useQuery } from "react-query"
 import ListTable from "./ListTable";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
-import { CSVDownload } from "react-csv";
+import { CSVDownload, CSVLink } from "react-csv";
 import ShimmerEffectInline from "@/Components/Common/Loaders/ShimmerEffectInline";
 import GlobalFilter from "./GlobalFilter";
 import { FiFilter } from "react-icons/fi";
@@ -23,6 +23,8 @@ import generatePDF from "react-to-pdf";
 import ExportTableData from "../ExportTable/ExportTableData";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { flattenAndFilterData } from "../ObjectFlattener";
+import ExportToExcel from "@/Components/Common/ExportTable/ExcelDowload/ExportToExcel";
 
 const ListTableParent = (props) => {
   // 👉 State constants 👈
@@ -120,7 +122,7 @@ const ListTableParent = (props) => {
           setcurrentPage(res?.data?.pagination?.currentPage);
           setlastPage(res?.data?.pagination?.currentTake);
           seterrorState(false);
-          
+
           // const flattenedData = res?.data?.data.map((item) => props?.flattenObject(item));
           // props?.setNewExportData(flattenedData);
           // props?.setExportData(res?.data?.data);
@@ -315,7 +317,7 @@ const ListTableParent = (props) => {
         <div className='w-full flex justify-between'>
 
           {/* Export */}
-          <div className='w-full flex justify-between'>
+          {/* <div className='w-full flex justify-between'>
             <div
               className='flex justify-between gap-4 py-2'
               onMouseEnter={() => setIsHovered(true)}
@@ -365,6 +367,29 @@ const ListTableParent = (props) => {
                   XLV
                 </button>
               </div>
+            </div>
+          </div> */}
+
+          <div className="space-x-2 flex">
+            <div className="">
+              <button
+                onClick={"handlePrint"}
+                className="text-white px-5 py-1.5 rounded hover:bg-[#14452a] bg-[#227447] text-sm"
+              >
+                Pdf
+              </button>
+            </div>
+            <div className="mt-1">
+              <CSVLink
+                data={flattenAndFilterData(dataList, props?.columns)}
+                className=" text-white px-5 py-2 rounded bg-[#227447] text-sm hover:bg-[#14452a]"
+              >
+                CSV
+              </CSVLink>
+            </div>
+
+            <div className="">
+              <ExportToExcel data={flattenAndFilterData(dataList, props?.columns)} />
             </div>
           </div>
 
