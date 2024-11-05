@@ -69,7 +69,8 @@ export default function Reports() {
     api_getTenderReport,
     api_getWarrantyReport,
     api_getStockHistoryReport,
-    api_getRateContractReport
+    api_getRateContractReport,
+    api_getPlacedOrderReport
   } = ProjectApiList();
 
   const [urlReport, setUrlReport] = useState(api_getInventoryTotalReport);
@@ -87,6 +88,7 @@ export default function Reports() {
     { id: 9, label: "Rate Contract", value: "rate_contract" },
     { id: 10, label: "Stock History Report", value: "stock_history_report" },
     { id: 11, label: "Warranty Claim", value: "warranty_claim" },
+    { id: 11, label: "Place Order Report", value: "place_order_report" },
   ];
 
   const preProcurement = [
@@ -158,11 +160,13 @@ export default function Reports() {
       case "pre_procurement":
         return api_getInventoryPreProcReport;
       case "rate_contract":
-        return api_getRateContractReport; // Rate contract api should be added (api added by Anil)
+        return api_getRateContractReport; 
       case "stock_history_report":
-        return api_getStockHistoryReport; // Stock History Report api should be added
+        return api_getStockHistoryReport; 
       case "warranty_claim":
         return api_getWarrantyReport;
+      case "place_order_report":
+        return api_getPlacedOrderReport;
       default:
         return api_getInventoryTotalReport;
     }
@@ -1063,6 +1067,43 @@ export default function Reports() {
     // },
   ];
 
+  const COLUMNS_POR = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
+    },
+    {
+      Header: "Procurement No",
+      accessor: "procurement_no",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.procurement_no} </div>
+      ),
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.category.name} </div>
+      ),
+    },
+   
+    {
+      Header: "Total Rate",
+      accessor: "total_rate",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{indianAmount(cell.row.values.total_rate)} </div>
+      ),
+    },
+    {
+      Header: "Date",
+      accessor: "createdAt",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.createdAt.split("T")[0]} </div>
+      ),
+    },
+    
+  ];
+
   function getStatusLabel(status) {
     switch (status) {
       case 12:
@@ -1536,6 +1577,8 @@ export default function Reports() {
                 : ""
             }
             columns={
+              formik.values.reportType === "place_order_report"
+                ? COLUMNS_POR :
               formik.values.reportType === "stock_history_report"
                 ? COLUMNS_SHR :
                 formik.values.reportType === "rate_contract"

@@ -25,7 +25,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
     ProjectApiList();
 
 
-    console.log(categoryList)
+    // console.log(categoryList)
   const fetchCategory = async () => {
     AxiosInterceptors.get(
       `${api_itemCategory}`.split(" ").join(""),

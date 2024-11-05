@@ -87,19 +87,21 @@ const ListTableParent = (props) => {
     AxiosInterceptors.get(
       `${props?.api}?
       take=${perPageData}&page=${currentPage}
-      &search=${searchFilter}
-      &${props?.from ? `from=${props?.from}` : ""}
-      &${props?.rejected ? statusMerger(props?.rejected) : ""}
-      &${props?.to ? `to=${props?.to}` : ""}
-      &${props?.subcategory ? `scategory=${props?.subcategory}` : ""}
-      &${props?.status ? `status=${props?.status}` : ""}
-      &${props?.category ? `category=${props?.category}` : ""}
+      ${searchFilter ? `&search=${searchFilter}` : ""}
+      ${props?.from ? `&from=${props?.from}` : ""}
+      ${props?.rejected ? `&${statusMerger(props?.rejected)}` : ""}
+      ${props?.to ? `&to=${props?.to}` : ""}
+      ${props?.subcategory ? `&scategory=${props?.subcategory}` : ""}
+      ${props?.status ? `&status=${props?.status}` : ""}
+      ${props?.category ? `&category=${props?.category}` : ""}
       &${returnCategoryFilter("category", filter?.category || [])}
       &${returnCategoryFilter("scategory", filter?.subcategory || [])}
       &${returnCategoryFilter("brand", filter?.brand || [])}
-      &${props?.warrantyStatus ? `status=${props?.warrantyStatus}` : ""}
-      &${props?.qparams ? props?.qparams : ""}
-      &service=${props?.serviceFilter || ''}
+      ${props?.warrantyStatus ? `&status=${props?.warrantyStatus}` : ""}
+      ${props?.qparams ? `&${props?.qparams}` : ""}
+      ${props?.serviceFilter ? `&service=${props?.serviceFilter}` : ''}
+      ${props?.searchValue ? `&${props?.searchValue}` : ""}
+      ${props?.supplierValue ? `&supplier=${props?.supplierValue}` : ""}
       `
         .split(" ")
         .join(""),
