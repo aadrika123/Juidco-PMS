@@ -188,7 +188,6 @@ function InventoryProposalList(props) {
                 columns={COLUMNS}
                 requestBody={requestBody} // sending body
                 changeData={changeData} // send action for new payload
-                status={43}
               />
             </>
           </div>

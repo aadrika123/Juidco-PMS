@@ -317,6 +317,12 @@ export default function ProjectApiList() {
     api_getStockHistoryReport: `${baseUrl}/api/pms/report/stock-history/list`,
     api_getStockHistoryReportById: `${baseUrl}/api/pms/report/stock-history`,
     api_getRateContractReport: `${baseUrl}/api/pms/report/rate-contract`,
+    api_getPlacedOrderReport: `${baseUrl}/api/pms/report/placed-order`,
+
+    // search Inventory
+    api_getActiveSuppliers: `${baseUrl}/api/pms/master/supplier/active`,
+    api_getInventoryList: `${baseUrl}/api/pms/inventory`,
+    api_postServiceRequestInvt: `${baseUrl}/api/pms/ia/service-request/service-by-ia`,
 
     //dashboard
     api_getddDashboard: `${baseUrl}/api/pms/dashboard/dd`,

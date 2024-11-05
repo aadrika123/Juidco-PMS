@@ -109,6 +109,8 @@ import RejectedBoq from "./Components/Pages/PMS/BOQ/DA/RejectedBoq";
 import DeadStock from "./Components/Pages/PMS/Inventory/DeadStock/DeadStock";
 import IaWarrantyClaim from "./Components/Pages/PMS/ServiceRequest/IA/IaWarrantyClaim";
 import StockHistoryReportById from "./Components/Pages/PMS/Reports/StockHistoryReport/StockHistoryReportById";
+import SearchInventoryReports from "./Components/Pages/PMS/Reports/SearchInventory/SearchInventoryReports";
+import SearchInvtById from "./Components/Pages/PMS/Reports/SearchInventory/SearchInvtById";
 
 const queryClient = new QueryClient();
 
@@ -384,6 +386,14 @@ function App() {
     {
       path: "/reports",
       element: <Reports />,
+    },
+    {
+      path: "/search-inventory",
+      element: <SearchInventoryReports />,
+    },
+    {
+      path: "/search-inventoryById/:id",
+      element: <SearchInvtById />,
     },
     {
       path: "/product-history-reports",

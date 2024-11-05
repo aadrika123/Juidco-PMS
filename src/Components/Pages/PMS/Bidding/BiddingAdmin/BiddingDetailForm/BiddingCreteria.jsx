@@ -465,9 +465,9 @@ const BiddingCreteria = (props) => {
           )}
         </div>
 
-        <div className='flex justify-between items-center w-full'>
+        <div className='flex justify-between items-center w-full ml-2'>
           <button
-            className='bg-[#4338ca] px-14 py-2 text-white rounded-md hover:bg-blue-900'
+            className='bg-[#4338ca] px-10 py-2 text-white rounded-md hover:bg-blue-900'
             onClick={() =>
               navigate(`/biddingViewById/${props?.referenceNo}/inbox`)
             }

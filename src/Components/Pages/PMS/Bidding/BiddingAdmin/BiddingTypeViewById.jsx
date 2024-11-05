@@ -25,10 +25,15 @@ const BiddingTypeViewById = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [applicationData, setApplicationData] = useState();
   const [biddingData, setBiddingData] = useState();
+  const [biddingByIdData, setBiddingById] = useState();
   const { titleBarVisibility } = useContext(contextVar);
 
   const [selectedBidder, setSelectedBidder] = useState([]);
   let temp = [];
+
+  // console.log(selectedBidder?.length,"selectedBidder")
+  // console.log(applicationData?.boq?.pre_tendering_details?.min_supplier, "min Supp,")
+  // console.log(applicationData?.boq?.pre_tendering_details?.max_supplier, "max Supp,")
 
   const selectBidderData = (bidderId) => {
     if (!selectedBidder.includes(bidderId)) {
@@ -122,6 +127,31 @@ const BiddingTypeViewById = () => {
       });
   };
 
+  // const selectWinnerPost = async () => {
+  //   if (
+  //     (biddingData?.bid_type === "technical" && biddingData?.techComparison) ||
+  //     (biddingData?.bid_type === "fintech" &&
+  //       biddingData?.finComparison &&
+  //       biddingData?.techComparison) ||
+  //     (biddingData?.bid_type === "abc" && biddingData?.finComparison)
+  //   ) {
+  //     if (!biddingData?.boq?.pre_tendering_details?.is_rate_contract) {
+  //       if (selectedBidder.length > 1) {
+  //         return toast.error("Only one Bidder is allowed if Bidding is not Rate contract.");
+  //       } else {
+  //         decideWinnerApi(selectedBidder);
+  //       }
+  //     } else {
+  //       decideWinnerApi(selectedBidder);
+  //     }
+  //   } else {
+  //     decideWinnerApi(selectedBidder);
+  //   }
+  // };
+
+  console.log(selectedBidder?.length)
+  console.log(applicationData?.boq?.pre_tendering_details?.max_supplier)
+
   const selectWinnerPost = async () => {
     if (
       (biddingData?.bid_type === "technical" && biddingData?.techComparison) ||
@@ -130,11 +160,11 @@ const BiddingTypeViewById = () => {
         biddingData?.techComparison) ||
       (biddingData?.bid_type === "abc" && biddingData?.finComparison)
     ) {
-      if (!biddingData?.boq?.pre_tendering_details?.is_rate_contract) {
+      if (selectedBidder?.length > applicationData?.boq?.pre_tendering_details?.max_supplier) {
+        return toast.error(`Selected Winners cannot be greater than the maximum no of Suppliers : ${applicationData?.boq?.pre_tendering_details?.max_supplier}`);
+      } else if (!biddingData?.boq?.pre_tendering_details?.is_rate_contract) {
         if (selectedBidder.length > 1) {
-          return toast.error(
-            "Only one Bidder is allowed if Bidding is not Rate contract."
-          );
+          return toast.error("Only one Bidder is allowed if Bidding is not Rate contract.");
         } else {
           decideWinnerApi(selectedBidder);
         }
@@ -144,6 +174,7 @@ const BiddingTypeViewById = () => {
     } else {
       decideWinnerApi(selectedBidder);
     }
+    
   };
 
   const finalizeWinner = async () => {
