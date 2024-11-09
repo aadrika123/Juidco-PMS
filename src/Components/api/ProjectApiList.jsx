@@ -153,6 +153,7 @@ export default function ProjectApiList() {
     api_postCriticalDatesDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/critical-dates`,
     api_getCriticalDatesDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/critical-dates`,
 
+    api_getEmpDetailsNew: `${baseUrl}/api/hrms/v1/employee-details`,
     api_postBidOpenerDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/bid-openers`,
     api_getBidOpenerDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender/bid-openers`,
     api_getPreviewDetails: `${baseUrl}/api/pms/acc/pre-procurement/pre-tender`,

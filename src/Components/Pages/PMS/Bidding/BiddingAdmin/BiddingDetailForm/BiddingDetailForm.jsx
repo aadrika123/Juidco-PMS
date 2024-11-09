@@ -276,7 +276,7 @@ const BiddingDetailForm = (props) => {
     )
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data?.data, 'ababababa')
+          // console.log(response?.data?.data, 'ababababa')
           setInitialValues(response?.data?.data)
           setisLoading(false);
         } else {

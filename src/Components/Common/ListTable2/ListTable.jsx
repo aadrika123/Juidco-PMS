@@ -147,10 +147,10 @@ function ListTable(props) {
         </div>
       </div>
 
-      <div className='px-2 py-2 bg-white delay-700'>
+      <div className='px-2 py-2 bg-white delay-700' >
         {/* {props?.loader && <p className='text-3xl'>Loading...</p>} */}
-        <div className='inline-block min-w-full overflow-auto bg-white'>
-          <table {...getTableBodyProps} className='min-w-full leading-normal'>
+        <div className='inline-block min-w-full overflow-auto bg-white' >
+          <table {...getTableBodyProps} className='min-w-full leading-normal' ref={props?.componentRef}>
             <thead className='font-bold text-left text-sm bg-slate-200'>
               {headerGroups?.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
