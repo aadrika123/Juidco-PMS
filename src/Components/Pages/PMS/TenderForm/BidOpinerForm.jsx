@@ -19,6 +19,7 @@ const BidOpinerForm = () => {
   const [imageDoc, setImageDoc] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [bidOpenerDetails, setBidOpenerDetails] = useState();
+  const [empDetails, setEmpDetails] = useState();
   const [referenceNo, setReferenceNo] = useState();
   const [coverDetails, setCoverDetails] = useState({
     preTender: {
@@ -43,8 +44,11 @@ const BidOpinerForm = () => {
     // B02: [],
   });
   const { state } = useLocation();
-  const { api_postBidOpenerDetails, api_getBidOpenerDetails } =
-    ProjectApiList();
+  const {
+    api_postBidOpenerDetails,
+    api_getBidOpenerDetails,
+    api_getEmpDetailsNew,
+  } = ProjectApiList();
 
   const validationSchema = Yup.object({
     preTender: Yup.object({
@@ -222,12 +226,41 @@ const BidOpinerForm = () => {
   };
 
   //name-designation and email form handler
-  const onChangeHandler = (name, value, setFieldValue) => {
-    setCoverDetails((prev) => ({
-      ...prev,
-      preTender: { ...prev.preTender, [name]: value },
-    }));
+  const onChangeHandler = (name, value, setFieldValue, name2) => {
+    // setCoverDetails((prev) => ({
+    //   ...prev,
+    //   preTender: { ...prev.preTender, [name]: value },
+    // }));
 
+    const abc = empDetails?.filter((item) => item?.emp_id === value);
+
+    if (name.includes("NameDesig") && name2) {
+      setCoverDetails((prev) => ({
+        ...prev,
+        preTender: {
+          ...prev.preTender,
+          [name]: abc[0]?.emp_basic_details?.emp_name,
+        },
+      }));
+
+      setFieldValue(
+        `preTender.${[name2]}`,
+        abc[0]?.emp_basic_details?.email
+          ? abc[0]?.emp_basic_details?.email
+          : "N/A"
+      );
+      // setFieldValue(
+      //   `preTender.${[name]}`,
+      //   abc[0]?.emp_basic_details?.emp_name
+      //     ? abc[0]?.emp_basic_details?.emp_name
+      //     : "N/A"
+      // );
+    } else {
+      setCoverDetails((prev) => ({
+        ...prev,
+        preTender: { ...prev.preTender, [name]: value },
+      }));
+    }
     setFieldValue(`preTender.${[name]}`, value);
   };
 
@@ -288,8 +321,33 @@ const BidOpinerForm = () => {
 
     values.preTender = { ...values.preTender, reference_no: referenceNo };
     let formData = new FormData();
+
+    if (values?.preTender?.b01NameDesig) {
+      const abc = empDetails?.filter(
+        (item) => item?.emp_id === values?.preTender?.b01NameDesig
+      );
+      values.preTender.b01NameDesig = abc[0]?.emp_basic_details?.emp_name;
+    }
+
+    if (values?.preTender?.b02NameDesig) {
+      const abc = empDetails?.filter(
+        (item) => item?.emp_id === values?.preTender?.b02NameDesig
+      );
+      values.preTender.b02NameDesig = abc[0]?.emp_basic_details?.emp_name;
+    }
+
+    if (values?.preTender?.b03NameDesig) {
+      const abc = empDetails?.filter(
+        (item) => item?.emp_id === values?.preTender?.b03NameDesig
+      );
+      values.preTender.b03NameDesig = abc[0]?.emp_basic_details?.emp_name;
+    }
+
     values.preTender = JSON.stringify(values.preTender);
     values.doc = JSON.stringify(values.doc);
+
+    // console.log(values?.preTender, "ababab");
+    // setIsLoading(false);
 
     for (let key in values) {
       // Append single file or multiple files
@@ -332,7 +390,6 @@ const BidOpinerForm = () => {
       .then(function (response) {
         if (response?.data?.status) {
           setBidOpenerDetails(response?.data?.data);
-          // setImageDoc(response?.data?.data?.doc[0]?.docUrl);
         } else {
           // toast.error(response?.data?.message);
         }
@@ -346,19 +403,42 @@ const BidOpinerForm = () => {
       });
   };
 
+  const getEmpDetail = () => {
+    setIsLoading(true);
+
+    AxiosInterceptors.get(`${api_getEmpDetailsNew}`, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status) {
+          setEmpDetails(response?.data?.data);
+        } else {
+          // toast.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        console.log(error, "errrrrrrrrrrrrrrrrrrr");
+        toast.error(error?.response?.data?.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  console.log(empDetails, "empDetails");
+
   useEffect(() => {
     let refNo = window.localStorage.getItem("reference_no");
     setReferenceNo(refNo);
     getApplicationDetail(refNo);
+    getEmpDetail();
   }, []);
 
   return (
     <>
       {isLoading && <LoaderApi />}
       {/* Heading  */}
-      <div className='bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl'>
-        <img src={bo} className='pl-2' />
-        <h1 className='pt-1 pl-2 text-xl'>
+      <div className="bg-[#4338ca] text-white w-full rounded p-3 flex shadow-xl">
+        <img src={bo} className="pl-2" />
+        <h1 className="pt-1 pl-2 text-xl">
           Bid Openers Selection : (Minimum 02 or Maximum 03)
         </h1>
       </div>
@@ -388,17 +468,17 @@ const BidOpinerForm = () => {
           }) => (
             <Form>
               <>
-                <div className=' container mx-auto capitalize grid grid-cols-1'>
+                <div className=" container mx-auto capitalize grid grid-cols-1">
                   {bidOpiner?.map((obj, index) => (
-                    <div className='mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex mt-3 w-full'>
-                      <div className='p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded'>
+                    <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex mt-3 w-full">
+                      <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
                         B0{index + 1}
                       </div>
 
-                      <div className=' w-full p-4 flex gap-3'>
-                        <div className='w-full p-3'>
+                      <div className=" w-full p-4 flex gap-3">
+                        <div className="w-full p-3">
                           <label
-                            for='default-input'
+                            for="default-input"
                             className={`block mb-2 text-sm font-medium text-gray-900 ${
                               errors?.preTender?.[obj.name1] &&
                               touched?.preTender?.[obj.name1]
@@ -408,12 +488,10 @@ const BidOpinerForm = () => {
                           >
                             {obj.label_name}
                             {index <= 1 && (
-                              <span className='text-red-500'>*</span>
+                              <span className="text-red-500">*</span>
                             )}
                           </label>
-                          <input
-                            // {console.log(values[])}
-                            // name={`preTender${[obj.name1]}`}
+                          {/* <input
                             type='text'
                             className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
                             placeholder='Name/Designation'
@@ -426,12 +504,33 @@ const BidOpinerForm = () => {
                               )
                             }
                             value={values.preTender[obj?.name1]}
-                          />
+                          /> */}
+                          <select
+                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                            placeholder="Name/Designation"
+                            name={obj.name1}
+                            onChange={(e) =>
+                              onChangeHandler(
+                                obj.name1,
+                                e.target.value,
+                                setFieldValue,
+                                obj?.name2
+                              )
+                            }
+                            value={values.preTender[obj?.name1]}
+                          >
+                            <option defaultValue={"select"}>select</option>
+                            {empDetails?.map((data) => (
+                              <option value={data?.emp_id}>
+                                {data?.emp_basic_details?.emp_name}
+                              </option>
+                            ))}
+                          </select>
                         </div>
 
-                        <div className='w-full p-3'>
+                        <div className="w-full p-3">
                           <label
-                            for='default-input'
+                            for="default-input"
                             className={`block mb-2 text-sm font-medium text-gray-900 ${
                               errors?.preTender?.[obj.name2] &&
                               touched?.preTender?.[obj.name2]
@@ -441,15 +540,14 @@ const BidOpinerForm = () => {
                           >
                             {obj.label_email}
                             {index <= 1 && (
-                              <span className='text-red-500'>*</span>
+                              <span className="text-red-500">*</span>
                             )}
                           </label>
                           <input
-                            type='email'
-                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
-                            placeholder='Email'
+                            type="email"
+                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                            placeholder="Email"
                             name={obj.name2}
-                            // name={`preTender${[obj.name2]}`}
                             onChange={(e) =>
                               onChangeHandler(
                                 obj.name2,
@@ -465,25 +563,25 @@ const BidOpinerForm = () => {
                     </div>
                   ))}
 
-                  <div className='bg-[#4338ca] text-white w-full rounded p-3 shadow-xl mb-5'>
-                    <h1 className='pt-1 pl-2 text-xl'>
+                  <div className="bg-[#4338ca] text-white w-full rounded p-3 shadow-xl mb-5">
+                    <h1 className="pt-1 pl-2 text-xl">
                       Uploading the tender documents
                     </h1>
-                    <p className='text-[11px] pl-3 font-light'>
+                    <p className="text-[11px] pl-3 font-light">
                       {" "}
                       (Only PDF,JPG,XLS & RAR Files Allowed)*
                     </p>
                   </div>
 
                   {bidOpinerDocs?.map((obj, index) => (
-                    <div className='mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex  w-full'>
-                      <div className='p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded'>
+                    <div className="mb-4 bg-white shadow-xl border border-gray-200 rounded-md flex  w-full">
+                      <div className="p-10 w-12 flex items-center shadow-xl justify-center bg-gray-300 rounded">
                         B0{index + 1}
                       </div>
-                      <div className=' w-2/3 p-4 gap-3'>
-                        <div className='w-full '>
+                      <div className=" w-2/3 p-4 gap-3">
+                        <div className="w-full ">
                           <label
-                            for='default-input'
+                            for="default-input"
                             className={`block mb-2 text-sm font-medium ${
                               errors?.doc?.[`B0${index + 1}`]?.[obj.name1] &&
                               touched?.doc?.[`B0${index + 1}`]?.[obj.name1]
@@ -492,12 +590,12 @@ const BidOpinerForm = () => {
                             }`}
                           >
                             {obj.label_name}
-                            <span className='text-red-500'>*</span>
+                            <span className="text-red-500">*</span>
                           </label>
                           <input
-                            type='text'
+                            type="text"
                             className={`bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 $`}
-                            placeholder='Name/Designation'
+                            placeholder="Name/Designation"
                             name={obj.name1}
                             onChange={(e) =>
                               docDataHandler(
@@ -512,7 +610,7 @@ const BidOpinerForm = () => {
                         </div>
 
                         <label
-                          for='default-input'
+                          for="default-input"
                           className={`block mb-2 mt-3 text-sm font-medium text-gray-900 ${
                             errors?.doc?.[`B0${index + 1}`]?.[obj.name2] &&
                             touched?.doc?.[`B0${index + 1}`]?.[obj.name2]
@@ -522,15 +620,15 @@ const BidOpinerForm = () => {
                         >
                           {obj.label_desc}
                           {index <= 1 && (
-                            <span className='text-red-500'>*</span>
+                            <span className="text-red-500">*</span>
                           )}
                         </label>
 
-                        <div className=' relative'>
+                        <div className=" relative">
                           <textarea
-                            type='text'
+                            type="text"
                             className={` bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full h-28 p-2.5 `}
-                            placeholder='Description'
+                            placeholder="Description"
                             name={obj.name2}
                             value={values?.doc?.[`B0${index + 1}`]?.[obj.name2]}
                             onChange={(e) =>
@@ -545,10 +643,10 @@ const BidOpinerForm = () => {
                         </div>
                       </div>
 
-                      <div className='w-1/3 mt-4 mr-5 mb-5'>
-                        <div className='w-full mb-5'>
+                      <div className="w-1/3 mt-4 mr-5 mb-5">
+                        <div className="w-full mb-5">
                           <label
-                            for='default-input'
+                            for="default-input"
                             className={`block mb-2 text-sm font-medium text-gray-900 ${
                               errors?.[`B0${index + 1}`] &&
                               touched?.[`B0${index + 1}`]
@@ -557,12 +655,12 @@ const BidOpinerForm = () => {
                             }`}
                           >
                             Document Size (kb)
-                            <span className='text-red-500'>*</span>
+                            <span className="text-red-500">*</span>
                           </label>
                           <input
-                            type='text'
-                            className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5'
-                            placeholder=''
+                            type="text"
+                            className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
+                            placeholder=""
                             name={obj.nameDocSize}
                             // value={values[obj.nameDocSize]}
                             defaultValue={
@@ -573,8 +671,8 @@ const BidOpinerForm = () => {
                           />
                         </div>
 
-                        <div className='w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 '>
-                          <div className='w-[8rem] mb-2'>
+                        <div className="w-full flex flex-col justify-center items-center border-[3px] rounded border-dotted p-8 ">
+                          <div className="w-[8rem] mb-2">
                             {/* {values[`doc${index + 1}`] && (
                               <img
                                 src={URL.createObjectURL(
@@ -594,8 +692,8 @@ const BidOpinerForm = () => {
                               preview={preview || ""}
                               imageDoc={values?.[`B0${index + 1}`][0]}
                             /> */}
-                            <div className='mb-4 text-center'>
-                              <p className='text-red-500 text-xs '>
+                            <div className="mb-4 text-center">
+                              <p className="text-red-500 text-xs ">
                                 {values?.[`B01`][0]?.name}
                               </p>
                             </div>
@@ -606,10 +704,10 @@ const BidOpinerForm = () => {
                               style={{ width: "100px", height: "auto" }}
                             /> */}
                           </div>
-                          <div className=''>
+                          <div className="">
                             <input
-                              type='file'
-                              className='hidden'
+                              type="file"
+                              className="hidden"
                               ref={(el) => (inputFileRefs.current = el)}
                               onChange={(e) => {
                                 imageHandler(e, setFieldValue);
@@ -622,7 +720,7 @@ const BidOpinerForm = () => {
                               }}
                             />
                             <button
-                              type='button'
+                              type="button"
                               className={`text-white end-6 bg-blue-500 hover:bg-blue-900 rounded text-[12px] px-5 py-[5px]`}
                               onClick={handleUploadDoc}
                             >

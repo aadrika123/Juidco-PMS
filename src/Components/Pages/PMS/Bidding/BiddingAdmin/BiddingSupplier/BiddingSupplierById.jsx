@@ -604,7 +604,6 @@ const BiddingSupplierById = (props) => {
                                 </span>{" "}
                               </label>
                               <select
-                                // {...formik.getFieldProps("proc_item")}
                                 name="proc_item"
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}

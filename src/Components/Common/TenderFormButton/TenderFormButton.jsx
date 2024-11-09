@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-const TenderFormButton = ({ resetForm, getDetailData, loading }) => {
+const TenderFormButton = ({ resetForm, getDetailData, loading, empDetails }) => {
   let [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();

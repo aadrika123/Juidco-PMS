@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { flattenAndFilterData } from "../ObjectFlattener";
 import ExportToExcel from "@/Components/Common/ExportTable/ExcelDowload/ExportToExcel";
+import { useReactToPrint } from "react-to-print";
 
 const ListTableParent = (props) => {
   // 👉 State constants 👈
@@ -294,6 +295,12 @@ const ListTableParent = (props) => {
 
   const exportBtnStyle = `bg-green-700 text-white px-2 rounded-md flex items-center gap-1 hover:bg-green-900`;
 
+   //Print
+   const componentRef = useRef();
+   const handlePrint = useReactToPrint({
+     content: () => componentRef.current,
+   });
+
   return (
     <>
       {/* 👉 When error occured 👈 */}
@@ -373,7 +380,7 @@ const ListTableParent = (props) => {
           <div className="space-x-2 flex">
             <div className="">
               <button
-                onClick={"handlePrint"}
+                onClick={handlePrint}
                 className="text-white px-5 py-1.5 rounded hover:bg-[#14452a] bg-[#227447] text-sm"
               >
                 Pdf
@@ -442,7 +449,7 @@ const ListTableParent = (props) => {
             {loader && <ShimmerEffectInline />}
 
             {!loader && dataList?.length > 0 ? (
-              <div className='mb-10 ml-2' id='printable-content'>
+              <div className='mb-10 ml-2'  >
                 {/* 👉 Listtable 👈 */}
 
                 <ListTable
@@ -470,6 +477,7 @@ const ListTableParent = (props) => {
                   setSearchFilter={setSearchFilter}
                   pagination={pagination}
                   loader={loader}
+                  componentRef={componentRef}
                 />
               </div>
             ) : (
