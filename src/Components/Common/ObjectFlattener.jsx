@@ -13,6 +13,7 @@ export function flattenAndFilterData(data, columns) {
 // Recursive function to flatten based on accessors
 function flattenObjectWithFilter(obj, result, accessors, parentKey = '') {
     for (const key in obj) {
+        if (key === 'id') continue;
         const newKey = parentKey ? `${parentKey}.${key}` : key;
 
         // Check if the full path or the parent path matches an accessor
