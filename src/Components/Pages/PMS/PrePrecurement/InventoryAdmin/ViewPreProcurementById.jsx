@@ -674,7 +674,8 @@ const ViewPreProcurementById = () => {
                       Total Rate
                     </div>
                     <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                      {indianAmount(nullToNA(procData?.total_rate))}
+                      {/* {indianAmount(nullToNA(procData?.total_rate))} */}
+                      {indianAmount(nullToNA(procData?.quantity * procData?.rate ))}
                     </div>
                   </div>
 
