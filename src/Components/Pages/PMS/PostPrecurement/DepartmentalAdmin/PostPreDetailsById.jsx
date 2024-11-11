@@ -27,9 +27,9 @@ import {
 } from "@/Components/Common/PowerUps/PowerupFunctions";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
-import TimeLine from "@/Components/Common/Timeline/TimeLine";
+// import TimeLine from "@/Components/Common/Timeline/TimeLine";
 import ConfirmationModal from "@/Components/Common/Modal/ConfirmationModal";
-import ThemeStyle from "@/Components/Common/ThemeStyle";
+// import ThemeStyle from "@/Components/Common/ThemeStyle";
 import { useReactToPrint } from "react-to-print";
 
 const PostPreDetailsById = (props) => {
@@ -38,17 +38,17 @@ const PostPreDetailsById = (props) => {
 
   // console.log(id)
 
-  const [erroState, seterroState] = useState(false);
+  // const [erroState, seterroState] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [applicationFullData, setapplicationFullData] = useState();
-  const [tableData, setTableData] = useState([]);
+  // const [tableData, setTableData] = useState([]);
   const [isModalOpenInvt, setIsModalOpenInvt] = useState(false);
-  const [isModalOpen2, setIsModalOpen2] = useState(false);
-  const [isGstAdded, setIsGstAdded] = useState(false);
-  const [supplierDetails, setSupplierDetails] = useState([]);
+  // const [isModalOpen2, setIsModalOpen2] = useState(false);
+  // const [isGstAdded, setIsGstAdded] = useState(false);
+  // const [supplierDetails, setSupplierDetails] = useState([]);
 
   // console.log(supplierData)
-  const { inputStyle, labelStyle } = ThemeStyle();
+  // const { inputStyle, labelStyle } = ThemeStyle();
   const { api_fetchPostProcurementDetailSupplierbyId, api_addToReceivedInvt } =
     ProjectApiList();
 
@@ -62,8 +62,8 @@ const PostPreDetailsById = (props) => {
   let buttonStyle2 =
     " mr-2 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-white text-sm sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-indigo-700";
 
-  let gstValidation =
-    /^([0][1-9]|[1-2][0-9]|[3][0-8])[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}/;
+  // let gstValidation =
+  //   /^([0][1-9]|[1-2][0-9]|[3][0-8])[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}/;
 
   // const procItemDetails = [
   //   {
@@ -213,51 +213,51 @@ const PostPreDetailsById = (props) => {
     const newData = val;
     console.log(newData, "new Data");
 
-    setSupplierDetails((prev) => {
-      //   const existingSupplier = prev?.findIndex(
-      //     (supplier) => supplier.supplier_name === newData.supplier_name
-      //   );
+    // setSupplierDetails((prev) => {
+    //   //   const existingSupplier = prev?.findIndex(
+    //   //     (supplier) => supplier.supplier_name === newData.supplier_name
+    //   //   );
 
-      //   if (existingSupplier !== -1) {
-      //     const supplierData = prev[existingSupplier];
+    //   //   if (existingSupplier !== -1) {
+    //   //     const supplierData = prev[existingSupplier];
 
-      //     const updatedSupplier = prev.map((suppData, index) => {
-      //       if (suppData.supplier_name === supplierData.supplier_name) {
-      //         return {
-      //           ...suppData,
-      //           procurement_details: [
-      //             ...suppData.procurement_details,
-      //             { proc_item: val.proc_item, unit_price: val.unit_price },
-      //           ],
-      //         };
-      //       }
-      //       return suppData;
-      //     });
+    //   //     const updatedSupplier = prev.map((suppData, index) => {
+    //   //       if (suppData.supplier_name === supplierData.supplier_name) {
+    //   //         return {
+    //   //           ...suppData,
+    //   //           procurement_details: [
+    //   //             ...suppData.procurement_details,
+    //   //             { proc_item: val.proc_item, unit_price: val.unit_price },
+    //   //           ],
+    //   //         };
+    //   //       }
+    //   //       return suppData;
+    //   //     });
 
-      //     return updatedSupplier;
-      //   } else {
-      //     return [
-      //       ...prev,
-      //       {
-      //         supplier_name: val.supplier_name,
-      //         procurement_details: [
-      //           { proc_item: val.proc_item, unit_price: val.unit_price },
-      //         ],
-      //       },
-      //     ];
-      //   }
-      // });
+    //   //     return updatedSupplier;
+    //   //   } else {
+    //   //     return [
+    //   //       ...prev,
+    //   //       {
+    //   //         supplier_name: val.supplier_name,
+    //   //         procurement_details: [
+    //   //           { proc_item: val.proc_item, unit_price: val.unit_price },
+    //   //         ],
+    //   //       },
+    //   //     ];
+    //   //   }
+    //   // });
 
-      const existingSupplier = prev?.findIndex(
-        (supplier) => supplier.supplier_name === newData.supplier_name
-      );
-    });
+    //   const existingSupplier = prev?.findIndex(
+    //     (supplier) => supplier.supplier_name === newData.supplier_name
+    //   );
+    // });
   };
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
     setisLoading(true);
-    seterroState(false);
+    // seterroState(false);
 
     AxiosInterceptors.get(
       `${api_fetchPostProcurementDetailSupplierbyId}/${id}`,
@@ -267,19 +267,19 @@ const PostPreDetailsById = (props) => {
         // console.log("view post da details by id...", response?.data?.data);
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
-          setTableData(response?.data?.data?.tran_dtls);
+          // setTableData(response?.data?.data?.tran_dtls);
           setisLoading(false);
         } else {
           setisLoading(false);
           toast.error("Error while getting details...");
-          seterroState(true);
+          // seterroState(true);
         }
       })
       .catch(function (error) {
         console.log("==2 details by id error...", error);
         setisLoading(false);
         toast.error("Error while getting details...");
-        seterroState(true);
+        // seterroState(true);
       });
   };
 
@@ -388,12 +388,12 @@ const PostPreDetailsById = (props) => {
 
   // ------------cancel modal-----------------------------
 
-  const openCancelModal = () => {
-    setIsModalOpen2(true);
-  };
+  // const openCancelModal = () => {
+  //   setIsModalOpen2(true);
+  // };
 
   const gstcheckboxHandler = () => {
-    setIsGstAdded((prev) => !prev);
+    // setIsGstAdded((prev) => !prev);
   };
 
   // new Modals-----------------------------------
@@ -405,19 +405,6 @@ const PostPreDetailsById = (props) => {
     addToRecevivedInvt();
   };
 
-  //displaying confirmation message
-  if (isModalOpenInvt) {
-    return (
-      <>
-        <ConfirmationModal
-          confirmationHandler={confirmationHandler}
-          handleCancel={handleCancel}
-          message={'Add to " Received Inventory " ?'}
-          loadingState={isLoading}
-        />
-      </>
-    );
-  }
 
   // console.log(supplierDetails)
 
@@ -436,6 +423,21 @@ const PostPreDetailsById = (props) => {
       }
     }`,
   });
+
+  //displaying confirmation message
+  if (isModalOpenInvt) {
+    return (
+      <>
+        <ConfirmationModal
+          confirmationHandler={confirmationHandler}
+          handleCancel={handleCancel}
+          message={'Add to " Received Inventory " ?'}
+          loadingState={isLoading}
+        />
+      </>
+    );
+  }
+
 
   return (
     <div>
