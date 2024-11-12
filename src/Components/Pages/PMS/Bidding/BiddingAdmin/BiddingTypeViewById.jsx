@@ -160,8 +160,9 @@ const BiddingTypeViewById = () => {
         biddingData?.techComparison) ||
       (biddingData?.bid_type === "abc" && biddingData?.finComparison)
     ) {
-      if (selectedBidder?.length > applicationData?.boq?.pre_tendering_details?.max_supplier) {
+      if (selectedBidder?.length > applicationData?.boq?.pre_tendering_details?.max_supplier && applicationData?.boq?.pre_tendering_details?.is_rate_contract === true ) {
         return toast.error(`Selected Winners cannot be greater than the maximum no of Suppliers : ${applicationData?.boq?.pre_tendering_details?.max_supplier}`);
+
       } else if (!biddingData?.boq?.pre_tendering_details?.is_rate_contract) {
         if (selectedBidder.length > 1) {
           return toast.error("Only one Bidder is allowed if Bidding is not Rate contract.");

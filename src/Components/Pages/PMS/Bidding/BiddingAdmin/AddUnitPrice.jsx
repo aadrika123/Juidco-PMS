@@ -433,7 +433,7 @@ const AddUnitPrice = () => {
 
                       <div className="flex justify-end items-center max-w-full px-4 w-full md:w-1/4 mt-4">
                         <button className={`${buttonStyle2} pl-14 pr-14`}>
-                          Add Suppliers
+                          Add Unit
                         </button>
                       </div>
                     </div>
