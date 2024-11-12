@@ -27,8 +27,8 @@ export default function RadioButtonsGroup({
   tabsCover4,
   differentData,
 }) {
-  console.log(values, "values props");
-  console.log(fields, "fields props");
+  // console.log(values, "values props");
+  // console.log(fields, "fields props");
 
   const handleCoversChange = (event) => {
     const { value } = event.target;

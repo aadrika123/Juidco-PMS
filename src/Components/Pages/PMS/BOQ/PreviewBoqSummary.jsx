@@ -130,7 +130,7 @@ export default function PreviewBoqSummary() {
           toast.success("Successfully Updated the BOQ");
           setTimeout(() => {
             setIsLoading(false);
-            navigate("/boq-search");
+            navigate("/inventoryAdmin-boq");
           }, 2000);
         } else {
           setIsLoading(false);

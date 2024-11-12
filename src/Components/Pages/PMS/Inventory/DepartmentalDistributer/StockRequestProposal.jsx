@@ -146,6 +146,12 @@ const StockRequestProposal = (props) => {
   };
 
   const getDesc = (cat, subCat) => {
+
+    console.log(cat,"cat")
+    console.log(catID,"catID")
+    console.log(subCat,"subCat")
+
+
     AxiosInterceptors.get(
       `${api_getActiveDesc}?category=${cat || catID}&scategory=${
         subCat || subCatID
