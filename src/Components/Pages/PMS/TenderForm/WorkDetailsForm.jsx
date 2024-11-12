@@ -200,11 +200,10 @@ const WorkDetailsForm = () => {
 
   const customOnChange = (e, setFieldValue) => {
     const abc = empDetails?.filter((item) => item?.emp_id === e?.target?.value);
+
     setFieldValue(
       "invstOffName",
-      abc[0]?.emp_basic_details?.emp_name
-        ? abc[0]?.emp_basic_details?.emp_name
-        : "N/A"
+      e?.target?.value ? e?.target?.value : "N/A"
     );
     setFieldValue(
       "invstOffEmail_Ph",
@@ -743,12 +742,11 @@ const WorkDetailsForm = () => {
                         placeholder="Inviting Officer Name"
                         name={"invstOffName"}
                         onChange={(e) => {
-                          // handleChange(e);
                           customOnChange(e, setFieldValue);
                         }}
                         value={values.invstOffName}
                       >
-                        <option defaultValue={"select"}>select</option>
+                        <option value="">Select</option>
                         {empDetails?.map((data) => (
                           <option value={data?.emp_id}>
                             {data?.emp_basic_details?.emp_name}

@@ -648,7 +648,7 @@ const BiddingDetailForm = (props) => {
                                 <span className='text-red-500'>*</span>
                               </label>
                               <input
-                                type='text'
+                                type='date'
                                 className='bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 '
                                 placeholder='Transaction Number'
                                 name='bg_date'

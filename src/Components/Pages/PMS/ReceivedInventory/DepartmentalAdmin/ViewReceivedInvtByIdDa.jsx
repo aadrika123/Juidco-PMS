@@ -150,68 +150,86 @@ const ViewReceivedInvtByIdDa = (props) => {
 
   ////////////// call remaining quantity and managing rec quantity validation ////////////////
 
+  // console.log(applicationFullData,"applicationFullData")
+
   const remainingQuanityCalc = (receivedQuantity) => {
-    const filterredReceivings = applicationFullData?.receivings?.length
-      ? applicationFullData?.receivings?.filter(
-          (item) => item?.procurement_stock_id === procurementItemId
-        )
-      : applicationFullData?.procurement_stocks?.find(
-          (item) => item?.id === procurementItemId
-        );
 
-    if (receivedQuantity < 0) {
-      toast.error("Amount cannot be negative");
-      formik.setFieldValue("received_quantity", 0);
-      return;
-    } else if (receivedQuantity > filterredReceivings.quantity) {
-      toast.error("Received Quantity should be less than Total Quantity");
-      formik.setFieldValue("received_quantity", 0);
-    }
-
-    //setting received quantity
-
-    let recQuantity;
-
-    receivedQuantity && (recQuantity = Number(receivedQuantity) || 0);
 
     if (applicationFullData?.receivings?.length == 0) {
-      if (receivedQuantity > filterredReceivings.quantity) {
-        toast.error("Received Quantity should be less than Total Quantity");
+      let initialRemQty = formik.values.total_quantity - receivedQuantity;
+      formik.setFieldValue("remaining_quantity", initialRemQty);
+
+      if (receivedQuantity < 0) {
+        toast.error("Amount cannot be negative");
         formik.setFieldValue("received_quantity", 0);
-      }
-      // formik.setFieldValue("received_quantity", receivedQuantity);
-      const initialReceiveQuantity = formik.values.total_quantity;
-      formik.setFieldValue("remaining_quantity", initialReceiveQuantity);
-    } else {
-      // const procItem = applicationFullData?.receivings?.find(
-      //   (data) => data?.procurement_stock_id === procurementItemId
-      // );
-
-      const filterredReceivings = applicationFullData?.receivings?.filter(
-        (item) => item?.procurement_stock_id === procurementItemId
-      );
-
-      const procItem = filterredReceivings.reduce(
-        (total, item) => total + item?.received_quantity,
-        0
-      );
-
-      // console.log(procItem,"procItem")
-
-      formik.setFieldValue("received_quantity", receivedQuantity);
-      const initialReceiveQuantity =
-        formik.values.total_quantity - procItem - receivedQuantity;
-
-      if (initialReceiveQuantity < 0) {
-        toast.error("Received Quantity should be less than Total Quantity");
-        formik.setFieldValue("received_quantity", 0);
-        formik.setFieldValue(
-          "remaining_quantity",
-          procItem?.remaining_quantity
-        );
         return;
+      } else if (receivedQuantity > formik.values.total_quantity) {
+        toast.error("Received Quantity should be less than Total Quantity");
+        formik.setFieldValue("remaining_quantity", 0);
       }
-      formik.setFieldValue("remaining_quantity", initialReceiveQuantity);
+
+    } else {
+      const filterredReceivings = applicationFullData?.receivings?.length
+        ? applicationFullData?.receivings?.filter(
+            (item) => item?.procurement_stock_id === procurementItemId
+          )
+        : applicationFullData?.procurement_stocks?.find(
+            (item) => item?.id === procurementItemId
+          );
+
+      if (receivedQuantity < 0) {
+        toast.error("Amount cannot be negative");
+        formik.setFieldValue("received_quantity", 0);
+        return;
+      } else if (receivedQuantity > filterredReceivings.quantity) {
+        toast.error("Received Quantity should be less than Total Quantity");
+        formik.setFieldValue("received_quantity", 0);
+      }
+
+      //setting received quantity
+
+      let recQuantity;
+
+      receivedQuantity && (recQuantity = Number(receivedQuantity) || 0);
+
+      if (applicationFullData?.receivings?.length == 0) {
+        if (receivedQuantity > filterredReceivings.quantity) {
+          toast.error("Received Quantity should be less than Total Quantity");
+          formik.setFieldValue("received_quantity", 0);
+        }
+        // formik.setFieldValue("received_quantity", receivedQuantity);
+        const initialReceiveQuantity = formik.values.total_quantity;
+        formik.setFieldValue("remaining_quantity", initialReceiveQuantity);
+      } else {
+        // const procItem = applicationFullData?.receivings?.find(
+        //   (data) => data?.procurement_stock_id === procurementItemId
+        // );
+
+        const filterredReceivings = applicationFullData?.receivings?.filter(
+          (item) => item?.procurement_stock_id === procurementItemId
+        );
+
+        const procItem = filterredReceivings.reduce(
+          (total, item) => total + item?.received_quantity,
+          0
+        );
+
+        formik.setFieldValue("received_quantity", receivedQuantity);
+
+        const initialReceiveQuantity =
+          formik.values.total_quantity - procItem - receivedQuantity;
+
+        if (initialReceiveQuantity < 0) {
+          toast.error("Received Quantity should be less than Total Quantity");
+          formik.setFieldValue("received_quantity", 0);
+          formik.setFieldValue(
+            "remaining_quantity",
+            procItem?.remaining_quantity
+          );
+          return;
+        }
+        formik.setFieldValue("remaining_quantity", initialReceiveQuantity);
+      }
     }
   };
 
@@ -316,7 +334,7 @@ const ViewReceivedInvtByIdDa = (props) => {
         titleBarVisibility={titleBarVisibility}
         titleText={"Inventory Details"}
       />
-      <div className=''>
+      <div className="">
         {/* //timeline  */}
         {/* <div className={`${isLoading ? "blur-[2px]" : ""}`}>
           <TimeLine status={applicationFullData?.status?.status} />
@@ -327,25 +345,25 @@ const ViewReceivedInvtByIdDa = (props) => {
           className={`mt-6 ${isLoading ? "blur-[2px]" : ""}`}
           ref={componentRef}
         >
-          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
-            <div className=''>
-              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+          <div className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
+            <div className="">
+              <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
                 View Pre Procurement Details{" "}
               </h2>
             </div>
 
-            <div className='flex justify-between'>
-              <div className='pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full'>
-                <h1 className=''>
-                  Procurement No <span className='text-black'>:</span>
-                  <span className='font-bold'>
+            <div className="flex justify-between">
+              <div className="pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full">
+                <h1 className="">
+                  Procurement No <span className="text-black">:</span>
+                  <span className="font-bold">
                     {" "}
                     {nullToNA(applicationFullData?.procurement_no)}
                   </span>
                 </h1>
-                <h1 className='text-black'>
-                  Procurement Total <span className='text-black'>:</span>
-                  <span className='font-bold'>
+                <h1 className="text-black">
+                  Procurement Total <span className="text-black">:</span>
+                  <span className="font-bold">
                     {" "}
                     {indianAmount(nullToNA(applicationFullData?.total_rate))}
                   </span>
@@ -353,11 +371,11 @@ const ViewReceivedInvtByIdDa = (props) => {
               </div>
             </div>
 
-            <div className='flex justify-between'>
-              <div className='pl-8 text-[1rem] text-black flex justify-between w-full'>
-                <h1 className=''>
-                  Category <span className='text-black'>:</span>
-                  <span className='font-bold'>
+            <div className="flex justify-between">
+              <div className="pl-8 text-[1rem] text-black flex justify-between w-full">
+                <h1 className="">
+                  Category <span className="text-black">:</span>
+                  <span className="font-bold">
                     {" "}
                     {nullToNA(applicationFullData?.category?.name)}
                   </span>
@@ -368,62 +386,62 @@ const ViewReceivedInvtByIdDa = (props) => {
             {applicationFullData?.procurement_stocks?.map((procData, index) => (
               <>
                 <div>
-                  <p className='text-xs pl-5'>Procurement Item: {index + 1}</p>
+                  <p className="text-xs pl-5">Procurement Item: {index + 1}</p>
                 </div>
-                <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow'>
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
+                <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow">
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
                       Subcategory
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {procData?.subCategory?.name}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>Unit</div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Unit</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {nullToNA(procData?.unit?.name)}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>Brand</div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Brand</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {nullToNA(procData?.brand?.name)}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {nullToNA(procData?.quantity)}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
                       Per Unit Rate
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {indianAmount(nullToNA(procData?.rate))}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
                       Total Rate
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {indianAmount(nullToNA(procData?.total_rate))}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 col-span-4 mt-4 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
+                  <div className="md:flex-1 col-span-4 mt-4 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
                       Description
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {nullToNA(procData?.description)}
                     </div>
                   </div>
@@ -431,13 +449,13 @@ const ViewReceivedInvtByIdDa = (props) => {
               </>
             ))}
 
-            <div className='h-[30px]'></div>
+            <div className="h-[30px]"></div>
           </div>
           {/* Additional Details */}
           {applicationFullData?.is_rate_contract != true && (
-            <div className='py-6 mt-8 bg-white rounded-lg shadow-xl px-6 border border-blue-500'>
-              <div className=''>
-                <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+            <div className="py-6 mt-8 bg-white rounded-lg shadow-xl px-6 border border-blue-500">
+              <div className="">
+                <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
                   Supplier Details{" "}
                 </h2>
               </div>
@@ -445,80 +463,80 @@ const ViewReceivedInvtByIdDa = (props) => {
               {applicationFullData?.supplier_master?.map(
                 (supplierInfo, index) => (
                   <>
-                    <h1 className='text-xs pt-4'>Supplier {index + 1}</h1>
+                    <h1 className="text-xs pt-4">Supplier {index + 1}</h1>
 
-                    <div className='bg-slate-50 p-5 rounded shadow'>
-                      <div className='md:flex md:justify-between md:items-center p-4'>
-                        <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                          <div className='md:w-auto w-[50%] font-bold capitalize '>
+                    <div className="bg-slate-50 p-5 rounded shadow">
+                      <div className="md:flex md:justify-between md:items-center p-4">
+                        <div className="flex-1 md:block flex flex-row-reverse justify-between">
+                          <div className="md:w-auto w-[50%] font-bold capitalize ">
                             {nullToNA(supplierInfo?.name)}
                           </div>
-                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          <div className="md:w-auto w-[50%] text-gray-800 text-sm">
                             Supplier Name
                           </div>
                         </div>
 
-                        <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                          <div className='md:w-auto w-[50%] font-bold '>
+                        <div className="flex-1 md:block flex flex-row-reverse justify-between">
+                          <div className="md:w-auto w-[50%] font-bold ">
                             {nullToNA(supplierInfo?.reference_no)}
                           </div>
-                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          <div className="md:w-auto w-[50%] text-gray-800 text-sm">
                             Reference Number
                           </div>
                         </div>
 
-                        <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                          <div className='md:w-auto w-[50%] font-bold '>
+                        <div className="flex-1 md:block flex flex-row-reverse justify-between">
+                          <div className="md:w-auto w-[50%] font-bold ">
                             {nullToNA(supplierInfo?.gst_no)}
                           </div>
-                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          <div className="md:w-auto w-[50%] text-gray-800 text-sm">
                             GST No
                           </div>
                         </div>
 
-                        <div className='flex-1 md:block flex flex-row-reverse justify-between'>
-                          <div className='md:w-auto w-[50%] font-bold '>
+                        <div className="flex-1 md:block flex flex-row-reverse justify-between">
+                          <div className="md:w-auto w-[50%] font-bold ">
                             {nullToNA(supplierInfo?.pan_no)}
                           </div>
-                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          <div className="md:w-auto w-[50%] text-gray-800 text-sm">
                             PAN No
                           </div>
                         </div>
                       </div>
 
-                      <div className='md:flex md:justify-between items-center p-4'>
-                        <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                          <div className='md:w-auto w-[50%] font-bold '>
+                      <div className="md:flex md:justify-between items-center p-4">
+                        <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
+                          <div className="md:w-auto w-[50%] font-bold ">
                             {nullToNA(supplierInfo?.address)}
                           </div>
-                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          <div className="md:w-auto w-[50%] text-gray-800 text-sm">
                             Address
                           </div>
                         </div>
 
-                        <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                          <div className='md:w-auto w-[50%] font-bold '>
+                        <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
+                          <div className="md:w-auto w-[50%] font-bold ">
                             {nullToNA(supplierInfo?.bank_name)}
                           </div>
-                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          <div className="md:w-auto w-[50%] text-gray-800 text-sm">
                             Bank Name
                           </div>
                         </div>
 
-                        <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                          <div className='md:w-auto w-[50%] font-bold '>
+                        <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
+                          <div className="md:w-auto w-[50%] font-bold ">
                             {nullToNA(supplierInfo?.account_no)}
                           </div>
-                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          <div className="md:w-auto w-[50%] text-gray-800 text-sm">
                             Account No.
                           </div>
                         </div>
 
-                        <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                          <div className='md:w-auto w-[50%] font-bold '>
+                        <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
+                          <div className="md:w-auto w-[50%] font-bold ">
                             {nullToNA(supplierInfo?.ifsc)}
                           </div>
-                          <div className='md:w-auto w-[50%] text-gray-800 text-sm'>
+                          <div className="md:w-auto w-[50%] text-gray-800 text-sm">
                             IFSC Code
                           </div>
                         </div>
@@ -531,7 +549,7 @@ const ViewReceivedInvtByIdDa = (props) => {
           )}
           {/* Receiving No */}
           {
-            <div className='mt-8 '>
+            <div className="mt-8 ">
               <Accordion defaultExpanded>
                 <AccordionSummary
                   style={{
@@ -539,43 +557,43 @@ const ViewReceivedInvtByIdDa = (props) => {
                     color: "white",
                     borderRadius: "5px",
                   }}
-                  expandIcon={<ExpandMoreIcon className='text-white' />}
-                  aria-controls='panel1-content'
-                  id='panel1-header'
+                  expandIcon={<ExpandMoreIcon className="text-white" />}
+                  aria-controls="panel1-content"
+                  id="panel1-header"
                 >
                   Receiving No
                 </AccordionSummary>
                 <AccordionDetails>
                   {/* table */}
                   {!applicationFullData?.receivings.length ? (
-                    <p className='font-semibold p-4'>No Data Found</p>
+                    <p className="font-semibold p-4">No Data Found</p>
                   ) : (
-                    <div className='relative overflow-x-auto'>
-                      <table className='w-full text-md text-left rtl:text-right'>
-                        <thead className='text-xs uppercase bg-gray-200'>
+                    <div className="relative overflow-x-auto">
+                      <table className="w-full text-md text-left rtl:text-right">
+                        <thead className="text-xs uppercase bg-gray-200">
                           <tr>
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               Date
                             </th>
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               Receiving no
                             </th>
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               Description
                             </th>
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               Received Quantity
                             </th>
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               View Doc
                             </th>
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               Remaining Quantity
                             </th>
                             {/* <th scope='col' className='px-6 py-3'>
                               Inventory Status
                             </th> */}
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               Remark
                             </th>
                           </tr>
@@ -583,9 +601,9 @@ const ViewReceivedInvtByIdDa = (props) => {
 
                         {applicationFullData?.receivings.map((data) => (
                           <tbody>
-                            <tr className='bg-white border-b-2'>
+                            <tr className="bg-white border-b-2">
                               {/* <td className='px-6 py-4'>{data?.date}</td> */}
-                              <td className='px-6 py-4'>
+                              <td className="px-6 py-4">
                                 {data?.date
                                   .split("T")[0]
                                   .split("-")
@@ -593,18 +611,18 @@ const ViewReceivedInvtByIdDa = (props) => {
                                   .join("-")}
                               </td>
 
-                              <td className='px-6 py-4'>
+                              <td className="px-6 py-4">
                                 {data?.receiving_no}
                               </td>
-                              <td className='px-6 py-4 truncate'>
+                              <td className="px-6 py-4 truncate">
                                 {data?.procurement_stock?.description}
                               </td>
-                              <td className='px-6 py-4'>
+                              <td className="px-6 py-4">
                                 {data?.received_quantity}
                               </td>
-                              <td className='px-6 py-4'>
+                              <td className="px-6 py-4">
                                 <p
-                                  className='text-blue-900 underline font-bold cursor-pointer'
+                                  className="text-blue-900 underline font-bold cursor-pointer"
                                   onClick={() => {
                                     setImageUrl(
                                       data?.receiving_image[0]?.imageUrl
@@ -615,7 +633,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                                   View
                                 </p>
                               </td>
-                              <td className='px-6 py-4'>
+                              <td className="px-6 py-4">
                                 {data?.remaining_quantity}
                               </td>
                               {/* <td className='px-6 py-4'>
@@ -627,7 +645,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                                   <p className='text-violet-600'>Pending</p>
                                 )}
                               </td> */}
-                              <td className='px-6 py-4'>{data?.remark}</td>
+                              <td className="px-6 py-4">{data?.remark}</td>
                             </tr>
                           </tbody>
                         ))}
@@ -642,48 +660,48 @@ const ViewReceivedInvtByIdDa = (props) => {
           }
           {/* Additional Details */}
           {page == "outbox" && (
-            <div className='py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 '>
-              <div className=''>
-                <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+            <div className="py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 ">
+              <div className="">
+                <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
                   Received Inventory
                 </h2>
               </div>
 
-              <div className='grid grid-cols-4 gap-4 ml-8'>
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold text-md'>
+              <div className="grid grid-cols-4 gap-4 ml-8">
+                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
+                  <div className="md:w-auto w-[50%] font-bold text-md">
                     Total Quantity
                   </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
                     {applicationFullData?.post_procurement?.total_quantity
                       ? applicationFullData?.post_procurement?.total_quantity
                       : 0}
                   </div>
                 </div>
 
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold text-md'>
+                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
+                  <div className="md:w-auto w-[50%] font-bold text-md">
                     Total Received Quantity
                   </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
                     {applicationFullData?.total_receivings
                       ? applicationFullData?.total_receivings
                       : 0}
                   </div>
                 </div>
 
-                <div className='md:flex-1 md:block flex flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-bold text-md'>
+                <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
+                  <div className="md:w-auto w-[50%] font-bold text-md">
                     Total Remaining Quantity
                   </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  <div className="md:w-auto w-[50%] text-gray-800 text-md">
                     {(applicationFullData?.total_remaining &&
                       Number(applicationFullData?.total_remaining)) ||
                       0}
                   </div>
                 </div>
 
-                <div className='h-[30px]'></div>
+                <div className="h-[30px]"></div>
               </div>
             </div>
           )}
@@ -691,26 +709,26 @@ const ViewReceivedInvtByIdDa = (props) => {
           {page != "outbox" && applicationFullData?.is_partial && (
             <div className={`${formStyle} mt-8 border border-blue-600`}>
               <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-                <div className=''>
-                  <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
-                    <div className='col-span-12  w-full mb-20'>
-                      <div className=' ml-4 p-2 mt-3'>
+                <div className="">
+                  <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
+                    <div className="col-span-12  w-full mb-20">
+                      <div className=" ml-4 p-2 mt-3">
                         <h1
                           className={`${headingStyle} text-left p-2 pl-6 bg-[#4338ca] text-white rounded-md`}
                         >
                           Received Inventory
                         </h1>
                       </div>
-                      <div className='form-group flex-shrink max-w-full px-4 w-full  mb-2 ml-4 flex justify-between items-center'>
-                        <div className='form-group flex-shrink max-w-full px-4 mb-4'>
+                      <div className="form-group flex-shrink max-w-full px-4 w-full  mb-2 ml-4 flex justify-between items-center">
+                        <div className="form-group flex-shrink max-w-full px-4 mb-4">
                           <label className={`${labelStyle} inline-block mb-2`}>
                             Choose Procurement Item
-                            <span className='text-xl text-red-500 pl-1'>
+                            <span className="text-xl text-red-500 pl-1">
                               *
                             </span>{" "}
                           </label>
                           <select
-                            name='procurement_stock_id'
+                            name="procurement_stock_id"
                             className={`${inputStyle} inline-block w-full relative`}
                             onChange={formik.handleChange}
                             // onClick={() => }
@@ -721,13 +739,13 @@ const ViewReceivedInvtByIdDa = (props) => {
                               (data, index) => (
                                 <option
                                   value={data?.id}
-                                  className='p-3'
+                                  className="p-3"
                                   disabled={!data?.is_partial}
                                 >
                                   {/* {console.log(data?.id)} */}
                                   {/* {data?.id} */}
                                   Procurement Item {index + 1}{" "}
-                                  <span className='text-gray-600 text-xs'>
+                                  <span className="text-gray-600 text-xs">
                                     {!data?.is_partial &&
                                       "(Complete Stocks Added)"}
                                   </span>
@@ -735,22 +753,22 @@ const ViewReceivedInvtByIdDa = (props) => {
                               )
                             )}
                           </select>
-                          <p className='text-red-500 text-xs '></p>
+                          <p className="text-red-500 text-xs "></p>
                         </div>
-                        <div className='w-1/2 flex flex-col gap-2'>
-                          <div className='text-sm'>
+                        <div className="w-1/2 flex flex-col gap-2">
+                          <div className="text-sm">
                             <h1>
                               Sub Category:
-                              <span className='font-semibold text-base text-blue-950 pl-2'>
+                              <span className="font-semibold text-base text-blue-950 pl-2">
                                 {procItemData?.subCategory?.name ||
                                   "Select Procurement Item"}
                               </span>
                             </h1>
                           </div>
-                          <div className='text-sm pr-4'>
+                          <div className="text-sm pr-4">
                             <h1>
                               Description:
-                              <span className='font-semibold text-base text-blue-950 pl-2 text-justify'>
+                              <span className="font-semibold text-base text-blue-950 pl-2 text-justify">
                                 {procItemData?.description ||
                                   "Select Procurement Item"}
                               </span>
@@ -758,9 +776,9 @@ const ViewReceivedInvtByIdDa = (props) => {
                           </div>
                         </div>
                       </div>
-                      <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-8'>
-                        <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                          <div className='px-4 w-full mb-4'>
+                      <div className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-8">
+                        <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                          <div className="px-4 w-full mb-4">
                             <label
                               className={`${labelStyle} inline-block mb-2`}
                             >
@@ -768,15 +786,15 @@ const ViewReceivedInvtByIdDa = (props) => {
                             </label>
 
                             <input
-                              type='number'
-                              name='total_quantity'
+                              type="number"
+                              name="total_quantity"
                               className={`${inputStyle} inline-block w-full relative`}
                               onChange={formik.handleChange}
                               value={formik.values.total_quantity}
                               readOnly
                             />
 
-                            <p className='text-red-500 text-xs '>
+                            <p className="text-red-500 text-xs ">
                               {formik.touched.total_quantity &&
                               formik.errors.total_quantity
                                 ? formik.errors.total_quantity
@@ -785,8 +803,8 @@ const ViewReceivedInvtByIdDa = (props) => {
                           </div>
                         </div>
 
-                        <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                          <div className='px-4 w-full mb-4'>
+                        <div className=" form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                          <div className="px-4 w-full mb-4">
                             <label
                               className={`${labelStyle} inline-block mb-2`}
                             >
@@ -794,15 +812,15 @@ const ViewReceivedInvtByIdDa = (props) => {
                             </label>
 
                             <input
-                              type='date'
-                              name='date'
+                              type="date"
+                              name="date"
                               className={`${inputStyle} inline-block w-full relative`}
                               onChange={formik.handleChange}
                               value={formik.values.date}
                               max={new Date().toISOString().split("T")[0]}
                             />
 
-                            <p className='text-red-500 text-xs '>
+                            <p className="text-red-500 text-xs ">
                               {formik.touched.date && formik.errors.date
                                 ? formik.errors.date
                                 : null}
@@ -810,8 +828,8 @@ const ViewReceivedInvtByIdDa = (props) => {
                           </div>
                         </div>
 
-                        <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                          <div className='px-4 w-full mb-4'>
+                        <div className=" form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                          <div className="px-4 w-full mb-4">
                             <label
                               className={`${labelStyle} inline-block mb-2`}
                             >
@@ -819,14 +837,14 @@ const ViewReceivedInvtByIdDa = (props) => {
                             </label>
 
                             <input
-                              type='number'
-                              name='received_quantity'
+                              type="number"
+                              name="received_quantity"
                               className={`${inputStyle} inline-block w-full relative`}
                               onChange={formik.handleChange}
                               value={formik.values.received_quantity}
                             />
 
-                            <p className='text-red-500 text-xs '>
+                            <p className="text-red-500 text-xs ">
                               {formik.touched.received_quantity &&
                               formik.errors.received_quantity
                                 ? formik.errors.received_quantity
@@ -835,8 +853,8 @@ const ViewReceivedInvtByIdDa = (props) => {
                           </div>
                         </div>
 
-                        <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                          <div className='px-4 w-full mb-4'>
+                        <div className=" form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                          <div className="px-4 w-full mb-4">
                             <label
                               className={`${labelStyle} inline-block mb-2`}
                             >
@@ -844,15 +862,15 @@ const ViewReceivedInvtByIdDa = (props) => {
                             </label>
 
                             <input
-                              type='number'
-                              name='remaining_quantity'
+                              type="number"
+                              name="remaining_quantity"
                               disabled
                               className={`${inputStyle} inline-block w-full relative`}
                               onChange={formik.handleChange}
                               value={formik.values.remaining_quantity}
                             />
 
-                            <p className='text-red-500 text-xs '>
+                            <p className="text-red-500 text-xs ">
                               {formik.touched.remaining_quantity &&
                               formik.errors.remaining_quantity
                                 ? formik.errors.remaining_quantity
@@ -862,7 +880,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                         </div>
                       </div>
 
-                      <div className='space-x-5 flex justify-end mr-[3rem]'>
+                      <div className="space-x-5 flex justify-end mr-[3rem]">
                         <button
                           className={buttonStyle}
                           onClick={() => {
@@ -872,7 +890,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                           Cancel
                         </button>
 
-                        <button className={buttonStyle2} type='submit'>
+                        <button className={buttonStyle2} type="submit">
                           Conitnue
                         </button>
                       </div>
@@ -883,8 +901,8 @@ const ViewReceivedInvtByIdDa = (props) => {
             </div>
           )}
           {/* {page == "outbox" && ( */}
-          <div className='space-x-5 flex justify-between mt-[1rem]'>
-            <div className=''>
+          <div className="space-x-5 flex justify-between mt-[1rem]">
+            <div className="">
               <button
                 className={buttonStyle2}
                 onClick={() => {
@@ -894,7 +912,7 @@ const ViewReceivedInvtByIdDa = (props) => {
                 Back
               </button>
             </div>
-            <div className=''>
+            <div className="">
               {page == "outbox" && (
                 <button onClick={handlePrint} className={`${buttonStyle}`}>
                   Print

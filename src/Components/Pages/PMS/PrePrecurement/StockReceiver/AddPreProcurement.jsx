@@ -726,11 +726,12 @@ function AddPreProcurement() {
                                 }
                               </td>
                               <td className='px-6 py-4 w-[5rem] break-words'>
+                                { descrip?.length && <>
                                 {isDescTextOpen || is_rate_contract
                                   ? form.description
                                   : descrip?.find(
-                                    (data) => data.id === form.description
-                                  )?.description}
+                                    (data) => data.id === form?.description
+                                  )?.description}</>}
                               </td>
                               <td className='px-6 py-4 '>{form.quantity}</td>
                               <td className='px-6 py-4 '>

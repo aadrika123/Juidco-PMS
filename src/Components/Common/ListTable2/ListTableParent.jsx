@@ -97,9 +97,9 @@ const ListTableParent = (props) => {
       ${props?.subcategory ? `&scategory=${props?.subcategory}` : ""}
       ${props?.status ? `&status=${props?.status}` : ""}
       ${props?.category ? `&category=${props?.category}` : ""}
-      &${returnCategoryFilter("category", filter?.category || [])}
-      &${returnCategoryFilter("scategory", filter?.subcategory || [])}
-      &${returnCategoryFilter("brand", filter?.brand || [])}
+      ${filter?.category ? `&${returnCategoryFilter("category", filter?.category || [])}` : ""}
+      ${filter?.subcategory ? `&${returnCategoryFilter("scategory", filter?.subcategory || [])}` : ""}
+      ${filter?.brand ? `&${returnCategoryFilter("brand", filter?.brand || [])}` : ""}
       ${props?.warrantyStatus ? `&status=${props?.warrantyStatus}` : ""}
       ${props?.qparams ? `&${props?.qparams}` : ""}
       ${props?.serviceFilter ? `&service=${props?.serviceFilter}` : ''}

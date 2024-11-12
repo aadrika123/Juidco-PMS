@@ -146,6 +146,12 @@ const StockRequestProposal = (props) => {
   };
 
   const getDesc = (cat, subCat) => {
+
+    console.log(cat,"cat")
+    console.log(catID,"catID")
+    console.log(subCat,"subCat")
+
+
     AxiosInterceptors.get(
       `${api_getActiveDesc}?category=${cat || catID}&scategory=${
         subCat || subCatID
@@ -154,6 +160,7 @@ const StockRequestProposal = (props) => {
     )
       .then(function (response) {
         if (response?.data?.status === true) {
+          console.log(response?.data?.data?.data,"-------------->>>")
           setDescrip(response?.data?.data?.data);
           // notify(response?.data?.message, "success");
         } else {
@@ -387,7 +394,8 @@ const StockRequestProposal = (props) => {
                   <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                     <div className='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
-                        Employee Id
+                        Employee Id 
+                        <span className="text-red-600">*</span>
                       </label>
 
                       <Autocomplete
@@ -423,6 +431,7 @@ const StockRequestProposal = (props) => {
                     <div className='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Employee Name
+                        <span className="text-red-600">*</span>
                       </label>
 
                       <input
@@ -445,6 +454,7 @@ const StockRequestProposal = (props) => {
                     <div className='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Categories
+                        <span className="text-red-600">*</span>
                       </label>
 
                       <select
@@ -481,6 +491,7 @@ const StockRequestProposal = (props) => {
                     <div className='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Sub Categories
+                        <span className="text-red-600">*</span>
                       </label>
 
                       <select
@@ -544,7 +555,8 @@ const StockRequestProposal = (props) => {
                   <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
                     <div className='px-4 w-full mb-4'>
                       <label className={`${labelStyle} inline-block mb-2`}>
-                        description
+                        Description
+                        <span className="text-red-600">*</span>
                       </label>
 
                       {/* <select

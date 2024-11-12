@@ -453,9 +453,9 @@ const FeeDetailsForm = () => {
                               setSameEmdFeePayableTo(false);
                             }
                           }}
-                          disabled={
-                            values.emd_exemption == "yes" || sameEmdFeePayableTo
-                          }
+                          // disabled={
+                          //   values.emd_exemption == "yes" || sameEmdFeePayableTo
+                          // }
                         />
                         <label className='text-sm text-gray-500'>
                           Same as Tender Fee Payable To
@@ -503,9 +503,9 @@ const FeeDetailsForm = () => {
                               setSameEmdFeePayableAt(false);
                             }
                           }}
-                          disabled={
-                            values.emd_exemption == "yes" || sameEmdFeePayableAt
-                          }
+                          // disabled={
+                          //   values.emd_exemption == "yes" || sameEmdFeePayableAt
+                          // }
                         />
                         <label className='text-sm text-gray-500'>
                           Same as Tender Fee Payable At
