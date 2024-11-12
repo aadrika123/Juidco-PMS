@@ -187,9 +187,9 @@ const BiddingDetailForm = (props) => {
     ) {
       return toast.error("Bidding Amount should be number");
     }
-    // if (!imageDoc) {
-    //   return toast.error("Please upload valid EMD document");
-    // }
+    if (!imageDoc && Boolean(props?.bidderData?.boq?.pre_tendering_details?.emd)) {
+      return toast.error("Please upload valid EMD document");
+    }
     if (props?.bidderData?.bid_type == "technical" && !techImageDoc) {
       return toast.error("Please upload valid Technical document");
     } else if (props?.bidderData?.bid_type == "abc" && !techImageDoc) {
@@ -507,15 +507,16 @@ const BiddingDetailForm = (props) => {
                     fields={emdConfirmation}
                     title={"EMD"}
                     name={"emd"}
-                    values={values.emd}
+                    values={Boolean(props?.bidderData?.boq?.pre_tendering_details?.emd) ? 'yes' : 'no'}
                     handleChange={handleChange}
                     errors={errors.emd}
                     touched={touched.emd}
                     setFieldValue={setFieldValue}
+                    disabled
                   />
                 </div>
 
-                {values?.emd == "yes" && (
+                {Boolean(props?.bidderData?.boq?.pre_tendering_details?.emd) && (
                   <>
                     <div className='border-r-2 px-2'>
                       <RadioButtonsGroup
