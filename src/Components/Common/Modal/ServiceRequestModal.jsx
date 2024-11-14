@@ -39,7 +39,7 @@ function ServiceRequestModal(props) {
 
   // const { api_postWarrantyClaim } = ProjectApiList();
 
-  // console.log(props?.productData)
+  console.log(props?.productData,"fghj")
 
   const handleChange = (event) => {
     const {
@@ -85,7 +85,7 @@ function ServiceRequestModal(props) {
                 MenuProps={MenuProps}
                 label='Choose Product'
               >
-                {filtered.length > 0 ? (
+                {filtered?.length > 0 ? (
                   filtered?.map((data) => (
                     // console.log(data?.inventoryId)
                     <MenuItem

@@ -70,8 +70,8 @@ const CoverDetailsForm = () => {
   const covers = [
     { label: "Single Cover", value: "1" },
     { label: "Two Cover", value: "2" },
-    { label: "Three Cover", value: "3" },
-    { label: "Four Cover", value: "4" },
+    // { label: "Three Cover", value: "3" },
+    // { label: "Four Cover", value: "4" },
   ];
 
   const autoSelectActiveTab = (tab) => {
@@ -381,6 +381,7 @@ const CoverDetailsForm = () => {
                     differentData={applicationFullData?.tendering_type}
                     // disabled={applicationFullData?.tendering_type === "qcbs" &&  2}
                   />
+                  
                   {/* tabs */}
                   <div className='flex gap-8 px-4 w-full relative z-1'>
                     {tabData &&

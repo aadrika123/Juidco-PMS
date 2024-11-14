@@ -875,6 +875,9 @@ const ViewReceivedInvtById = () => {
 
                         {product.map((item, index) => (
                           <div className='flex gap-2 items-end' key={index}>
+                              <div className="pl-4 text-center pb-1">
+                                {index+1}.
+                              </div>
                             <div className='form-group flex-shrink max-w-full px-4 '>
                               <div className='px-4 w-full'>
                                 <label

@@ -497,7 +497,7 @@ export default function BoqDetailsById(props) {
             )} */}
 
           {page == "inbox" &&
-            dataList?.procurement?.is_rate_contract == true && (
+            dataList?.procurement?.is_rate_contract == true &&  dataList?.status == 42 && (
               <button
                 className={colouredBtnStyle}
                 onClick={forwardforPostProcurement}

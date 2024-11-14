@@ -18,7 +18,7 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 const DdServiceReqTabs = () => {
   const [activeTab, setActiveTab] = useState("inbox");
-  const { api_getDistServiceInbox, api_getDistServiceOutbox } =
+  const { api_approveServiceRequestDD, api_approveServiceRequestDDOutbox } =
     ProjectApiList();
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -69,14 +69,14 @@ const DdServiceReqTabs = () => {
         <div className='mt-4'>
           {activeTab === "inbox" && (
             <div>
-              <ServiceProposalList page='inbox' api={api_getDistServiceInbox} />
+              <ServiceProposalList page='inbox' api={api_approveServiceRequestDD} />
             </div>
           )}
           {activeTab === "outbox" && (
             <div>
               <ServiceProposalList
                 page='outbox'
-                api={api_getDistServiceOutbox}
+                api={api_approveServiceRequestDDOutbox}
               />
             </div>
           )}

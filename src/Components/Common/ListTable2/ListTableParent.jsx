@@ -46,6 +46,7 @@ const ListTableParent = (props) => {
   const [filter, setFilter] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [selectedTenderTypes, setSelectedTenderTypes] = useState([]);
 
   const { api_exportcsv } = ProjectApiList();
 
@@ -79,6 +80,10 @@ const ListTableParent = (props) => {
       typeof props.loader == "function" && props.loader(true);
     }
 
+
+  // console.log(selectedTenderTypes,"selectedTenderTypes")
+
+  
     const returnCategoryFilter = (fieldName, categoryFilter) => {
       if (categoryFilter?.length === 0) {
         return;
@@ -90,6 +95,7 @@ const ListTableParent = (props) => {
     AxiosInterceptors.get(
       `${props?.api}?
       take=${perPageData}&page=${currentPage}
+      ${selectedTenderTypes ? `&tendertype=${selectedTenderTypes}` : ""}
       ${searchFilter ? `&search=${searchFilter}` : ""}
       ${props?.from ? `&from=${props?.from}` : ""}
       ${props?.rejected ? `&${statusMerger(props?.rejected)}` : ""}
@@ -440,6 +446,8 @@ const ListTableParent = (props) => {
                 filter={filter}
                 setFilter={setFilter}
                 useFilter={useFilter}
+                selectedTenderTypes={selectedTenderTypes}
+                setSelectedTenderTypes={setSelectedTenderTypes}
               />
             </div>
           )}

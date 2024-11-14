@@ -28,7 +28,7 @@ const DDServiceRequestById = () => {
   const [applicationFullData, setapplicationFullData] = useState([]);
   const [productData, setProductData] = useState();
   const {
-    api_getempServiceRequestId,
+    api_getServiceRequestId,
     api_approveServiceRequestEmpDa,
     api_approveServiceRequestDD,
   } = ProjectApiList();
@@ -58,7 +58,7 @@ const DDServiceRequestById = () => {
   //get application details
   const getApplicationDetail = () => {
     setisLoading(true);
-    AxiosInterceptors.get(`${api_getempServiceRequestId}/${refNo}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getServiceRequestId}/${refNo}`, ApiHeader())
       .then(async function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
