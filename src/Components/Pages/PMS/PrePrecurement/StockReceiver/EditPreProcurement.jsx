@@ -755,6 +755,7 @@ function EditPreProcurementIa() {
                                       Number(data?.rate) || data.total_rate
                                   )}
                                 </td>
+                                
                                 <td className='px-6 py-4 text-right cursor-pointer'>
                                   {data?.isEditable ? (
                                     <div className='flex gap-3'>
