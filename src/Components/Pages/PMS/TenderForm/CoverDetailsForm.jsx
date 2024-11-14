@@ -381,6 +381,7 @@ const CoverDetailsForm = () => {
                     differentData={applicationFullData?.tendering_type}
                     // disabled={applicationFullData?.tendering_type === "qcbs" &&  2}
                   />
+                  
                   {/* tabs */}
                   <div className='flex gap-8 px-4 w-full relative z-1'>
                     {tabData &&

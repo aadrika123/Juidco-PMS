@@ -39,7 +39,7 @@ const EmployeeDetailById = () => {
 
   const { id, page } = useParams();
 
-  // console.log(applicationFullData?.stock_handover_no)
+  console.log(productData,"fghjkl")
 
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -136,7 +136,7 @@ const EmployeeDetailById = () => {
       .then(async function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
-          setProductData(response?.data?.data?.emp_service_req_product);
+          setProductData(response?.data?.data?.stock_req_product);
         } else {
           // toast.error(response?.data?.message);
         }

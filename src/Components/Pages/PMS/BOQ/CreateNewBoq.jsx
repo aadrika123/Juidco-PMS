@@ -9,7 +9,12 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import { useEffect, useRef, useState, useContext } from "react";
-import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import FileButton from "@/Components/Common/FileButtonUpload/FileButton";
 import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
@@ -45,7 +50,7 @@ export default function CreateNewBoq() {
   let isCreatePage = state ? "create" : "edit/view";
 
   const [searchParams] = useSearchParams();
-  const isEdit = searchParams.get('edit') === 'true';
+  const isEdit = searchParams.get("edit") === "true";
 
   const {
     api_fetchAllBoqDetailsbyId,
@@ -285,7 +290,6 @@ export default function CreateNewBoq() {
 
   //adding gst for each procurement stocks
   const addGstForEachProc = (e, procId) => {
-    // const updatedProcurement = applicationData?.procurement_stocks?.map(
     const updatedProcurement = payload?.procurement?.map((data) => {
       const gstVal = Number(e.target.value);
       if (data.id === procId) {
@@ -481,102 +485,119 @@ export default function CreateNewBoq() {
       />
 
       <div
-        className={`container mx-auto bg-white rounded border border-blue-500 mt-10 shadow-xl p-6 mb-10 ${isLoading ? "blur-[2px]" : ""
-          }`}
+        className={`container mx-auto bg-white rounded border border-blue-500 mt-10 shadow-xl p-6 mb-10 ${
+          isLoading ? "blur-[2px]" : ""
+        }`}
       >
-        <div className='flex justify-between items-center w-full'>
-          <div className='flex gap-1'>
-            <h4 className='text-base font-semibold text-gray-600'>
+        <div className="flex justify-between items-center w-full">
+          <div className="flex gap-1">
+            <h4 className="text-base font-semibold text-gray-600">
               Procurement No -
             </h4>
-            <p className='text-sm'>{applicationData?.procurement_no}</p>
+            <p className="text-sm">{applicationData?.procurement_no}</p>
           </div>
-          <div className='flex justify-end gap-4 my-1 ml-4'>
+          <div className="flex justify-end gap-4 my-1 ml-4">
             <input
-              type='checkbox'
+              type="checkbox"
               onChange={(e) => {
                 const isChecked = e.target.checked;
                 setGstChecked(isChecked);
                 includeGstForProc(isChecked);
               }}
-              className='w-4'
+              className="w-4"
             />
-            <p className='text-md font-semibold'>Add Gst</p>
+            <p className="text-md font-semibold">Add Gst</p>
           </div>
         </div>
 
-        <div className='p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md'>
-          <h2 className='text-2xl '>
+        <div className="p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md">
+          <h2 className="text-2xl ">
             {isCreatePage == "create"
               ? "Enter BOQ for Procurement"
               : "View/Edit BOQ"}
           </h2>
         </div>
-        <div className='shadow-md overflow-y-auto'>
-          <table className='min-w-full bg-white border-collapse border border-gray-200'>
-            <thead className='bg-indigo-50 '>
+        <div className="shadow-md overflow-y-auto">
+          <table className="min-w-full bg-white border-collapse border border-gray-200">
+            <thead className="bg-indigo-50 ">
               {COLUMNS?.length > 0 &&
                 COLUMNS?.map((heading, index) => (
                   <th
                     key={index}
-                    className={`border border-gray-300 px-4 py-3 text-bold text-sm ${heading?.header === "description" ? "w-[7rem]" : "w-auto"
-                      }`}
+                    className={`border border-gray-300 px-4 py-3 text-bold text-sm ${
+                      heading?.header === "description" ? "w-[7rem]" : "w-auto"
+                    }`}
                   >
                     {heading?.header}
                   </th>
                 ))}
             </thead>
 
-            <tbody className='font-normal text-center '>
+            <tbody className="font-normal text-center ">
               {isCreatePage == "create" &&
                 applicationData?.procurement_stocks?.length > 0 &&
                 applicationData?.procurement_stocks?.map((row, index) => (
                   <tr key={row?.procurement_no}>
-                    <td className='border border-gray-200 px-4 py-2'>
+                    <td className="border border-gray-200 px-4 py-2">
                       {row?.subCategory?.name}
                     </td>
                     <Tooltip title={row?.description}>
-                      <td className='border border-gray-200 px-4 py-2 text-sm text-justify'>
+                      <td className="border border-gray-200 px-4 py-2 text-sm text-justify">
                         {row?.description.slice(0, 40)}...
                       </td>
                     </Tooltip>
-                    <td className='border border-gray-200 px-4 py-2 text-sm'>
+                    <td className="border border-gray-200 px-4 py-2 text-sm">
                       {row?.quantity}
                     </td>
-                    <td className='border border-gray-200 px-4 py-2 text-sm'>
+                    <td className="border border-gray-200 px-4 py-2 text-sm">
                       {row?.unit?.name}
                     </td>
-                    <td className='border border-gray-200 text-md px-1'>
+                    <td className="border border-gray-200 text-md px-1">
                       <input
-                        className='outline-indigo-400 text-md px-2 border border-gray-300 rounded-md text-center'
+                        className="outline-indigo-400 text-md px-2 border border-gray-300 rounded-md text-center"
                         defaultValue={row?.rate}
                         onChange={(e) => changeRateAmountHandler(e, row?.id)}
                       />
                     </td>
-                    <td className='border border-gray-200 text-md w-[30px] px-1'>
-                      <div className='flex items-center gap-4 my-1'>
+                    <td className="border border-gray-200 text-md w-[30px] px-1">
+                      <div className="flex items-center gap-4 my-1">
                         {/* <input
-                          type='checkbox'
-                          onChange={(e) => {
-                            const isChecked = e.target.checked;
-                            setGstChecked(isChecked);
-                            estimatedAmountCalc(
-                              payload?.procurement,
-                              isChecked
-                            );
-                          }}
-                        /> */}
-                        {/* <p className='text-xs w-[4rem]'>GST %</p> */}
-                        <input
                           placeholder='Add Gst'
                           className='p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200'
                           onChange={(e) => addGstForEachProc(e, row?.id)}
                           defaultValue={row?.gst}
+                        /> */}
+                        <input
+                          placeholder="Add Gst"
+                          className="p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200"
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            // Only update if value is a number and has at most 2 digits
+                            if (!isNaN(value) && value.length <= 2) {
+                              addGstForEachProc(e, row?.id);
+                            }
+                          }}
+                          onKeyDown={(e) => {
+                            const value = e.target.value;
+                            // Prevent entry if the length is already 2 digits and the key is a number
+                            if (
+                              (value.length >= 2 && /[0-9]/.test(e.key)) ||
+                              (!/[0-9]/.test(e.key) && // Allow only numbers
+                                e.key !== "Backspace" && // Allow Backspace
+                                e.key !== "Tab" && // Allow Tab for navigation
+                                e.key !== "ArrowLeft" && // Allow Left Arrow for navigation
+                                e.key !== "ArrowRight" && // Allow Right Arrow for navigation
+                                e.key !== "Delete") // Allow Delete key
+                            ) {
+                              e.preventDefault();
+                            }
+                          }}
+                          defaultValue={row?.gst}
                         />
                       </div>
                     </td>
-                    <td className='border border-gray-200 text-md w-[30px] px-1'>
-                      <div className='flex items-center gap-4 my-1'>
+                    <td className="border border-gray-200 text-md w-[30px] px-1">
+                      <div className="flex items-center gap-4 my-1">
                         {/* <input
                           type='checkbox'
                           onChange={(e) => {
@@ -590,24 +611,24 @@ export default function CreateNewBoq() {
                         /> */}
                         {/* <p className='text-xs w-[4rem]'>GST %</p> */}
                         <input
-                          placeholder='Add HSN Code'
-                          className='p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200'
+                          placeholder="Add HSN Code"
+                          className="p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200"
                           onChange={(e) => addHsnCodeEach(e, row?.id)}
                           defaultValue={row?.hsn_code}
                         />
                       </div>
                     </td>
-                    <td className='border border-gray-200 px-4 py-2 text-sm'>
+                    <td className="border border-gray-200 px-4 py-2 text-sm">
                       {indianAmount(
                         payload?.procurement[index]?.total_rate ||
-                        row?.total_rate
+                          row?.total_rate
                       )}
                     </td>
 
-                    <td className='border border-gray-200 p-1'>
+                    <td className="border border-gray-200 p-1">
                       <input
-                        placeholder='Enter remarks...'
-                        className='outline-indigo-400 text-md px-2 h-[30px] rounded-md w-full'
+                        placeholder="Enter remarks..."
+                        className="outline-indigo-400 text-md px-2 h-[30px] rounded-md w-full"
                         onChange={(e) => addRemarkHandler(e, row?.id)}
                         defaultValue={row?.remark || ""}
                       />
@@ -619,33 +640,33 @@ export default function CreateNewBoq() {
                 applicationData?.map((data) =>
                   data?.procurements.map((row, index) => (
                     <tr key={row?.id}>
-                      <td className='border border-gray-200 px-4 py-2'>
+                      <td className="border border-gray-200 px-4 py-2">
                         {index + 1}
                       </td>
-                      <td className='border border-gray-200 px-4 py-2 text-sm'>
+                      <td className="border border-gray-200 px-4 py-2 text-sm">
                         {row?.description}
                       </td>
-                      <td className='border border-gray-200 px-4 py-2 text-sm'>
+                      <td className="border border-gray-200 px-4 py-2 text-sm">
                         {row?.quantity}
                       </td>
-                      <td className='border border-gray-200 px-4 py-2 text-sm'>
+                      <td className="border border-gray-200 px-4 py-2 text-sm">
                         {row?.unit}
                       </td>
-                      <td className='border border-gray-200 text-md w-[30px] px-1'>
+                      <td className="border border-gray-200 text-md w-[30px] px-1">
                         <input
-                          className='outline-indigo-400 text-md px-2 h-[30px] border border-gray-300 rounded-md'
+                          className="outline-indigo-400 text-md px-2 h-[30px] border border-gray-300 rounded-md"
                           defaultValue={row?.rate}
                           onChange={(e) => changeRateAmountHandler(e, row?.id)}
                         />
                       </td>
-                      <td className='border border-gray-200 px-4 py-2 text-sm'>
+                      <td className="border border-gray-200 px-4 py-2 text-sm">
                         {row?.amount || payload?.procurement[index]?.total_rate}
                       </td>
 
-                      <td className='border border-gray-200 p-1'>
+                      <td className="border border-gray-200 p-1">
                         <input
-                          placeholder='Enter remarks...'
-                          className='outline-indigo-400 text-md px-2 h-[30px] rounded-md w-full'
+                          placeholder="Enter remarks..."
+                          className="outline-indigo-400 text-md px-2 h-[30px] rounded-md w-full"
                           onChange={(e) => addGstHandler(e, row?.id)}
                           defaultValue={row?.remark || ""}
                         />
@@ -656,8 +677,8 @@ export default function CreateNewBoq() {
             </tbody>
           </table>
 
-          <div className='flex justify-between p-2'>
-            <div className='p-3'>
+          <div className="flex justify-between p-2">
+            <div className="p-3">
               {/* <div className='flex items-center gap-4'>
                 <p className='text-xs w-[4rem] mr-7'>HSN Code</p>
                 <input
@@ -676,9 +697,9 @@ export default function CreateNewBoq() {
               </div> */}
             </div>
 
-            <div className='w-[20%] p-3'>
-              <p className='text-sm font-medium'>Total Amount</p>
-              <p className='font-semibold text-green-600'>
+            <div className="w-[20%] p-3">
+              <p className="text-sm font-medium">Total Amount</p>
+              <p className="font-semibold text-green-600">
                 {indianAmount(
                   payload?.estimated_cost || applicationData?.total_rate || 0
                 )}
@@ -722,12 +743,12 @@ export default function CreateNewBoq() {
         </div>
 
         {/* image upload and view */}
-        <div className='flex justify-between mb-10 p-2'>
-          <div className='flex w-2/3'>
+        <div className="flex justify-between mb-10 p-2">
+          <div className="flex w-2/3">
             <textarea
-              name='sr_remark'
-              className='border border-[#5448dd] rounded w-full mt-5 p-2 outline-indigo-200'
-              placeholder='Enter Remarks...'
+              name="sr_remark"
+              className="border border-[#5448dd] rounded w-full mt-5 p-2 outline-indigo-200"
+              placeholder="Enter Remarks..."
               onChange={(e) =>
                 setPayload((prev) => ({ ...prev, remark: e.target.value }))
               }
@@ -747,8 +768,8 @@ export default function CreateNewBoq() {
             </div>
           )} */}
 
-          <div className='flex justify-end m-5 gap-4'>
-            <div className='flex justify-end mb-4'>
+          <div className="flex justify-end m-5 gap-4">
+            <div className="flex justify-end mb-4">
               <ImageDisplay
                 preview={preview}
                 imageDoc={imageDoc}
@@ -757,7 +778,7 @@ export default function CreateNewBoq() {
                 width={"[100px]"}
               />
             </div>
-            <div className='py-2'>
+            <div className="py-2">
               <FileButton
                 bg={"[#4338CA]"}
                 hoverBg={"bg-indigo-300"}
@@ -772,7 +793,7 @@ export default function CreateNewBoq() {
         </div>
       </div>
 
-      <div className='flex justify-end mb-6 gap-4'>
+      <div className="flex justify-end mb-6 gap-4">
         <button className={buttonStyle} onClick={() => navigate(-1)}>
           Back
         </button>
@@ -797,13 +818,13 @@ export default function CreateNewBoq() {
               return toast.error("Please add HSN code");
             }
             navigate(
-              `/boqSummary${isEdit ? '?edit=true' : ''}`,
+              `/boqSummary${isEdit ? "?edit=true" : ""}`,
               isCreatePage == "create"
                 ? {
-                  state: gstChecked
-                    ? { ...payload, gstChecked }
-                    : { ...payload },
-                }
+                    state: gstChecked
+                      ? { ...payload, gstChecked }
+                      : { ...payload },
+                  }
                 : { state: payload }
             );
           }}

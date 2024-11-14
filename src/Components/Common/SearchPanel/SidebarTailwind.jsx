@@ -16,7 +16,7 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import { FiFilter } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 
-const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
+const SideSection = ({ setIsOpen, filter, setFilter, useFilter,selectedTenderTypes,setSelectedTenderTypes }) => {
   const [categoryList, setCategoryList] = useState([]);
   const [subCategoryList, setSubCategoryList] = useState([]);
   const [brandList, setBrandList] = useState([]);
@@ -24,8 +24,23 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   const { api_itemCategory, api_itemSubCategoryAll, api_itemBrand } =
     ProjectApiList();
 
+  // const [selectedTenderTypes, setSelectedTenderTypes] = useState([]);
 
-    // console.log(categoryList)
+  const handleCheckboxChange = (label) => (e) => {
+    setSelectedTenderTypes((prevSelected) => {
+      if (e.target.checked) {
+        // Add to the array if checked
+        return [...prevSelected, label];
+      } else {
+        // Remove from the array if unchecked
+        return prevSelected.filter((type) => type !== label);
+      }
+    });
+  };
+
+  // console.log(selectedTenderTypes,"selectedTenderTypes")
+
+  // console.log(categoryList)
   const fetchCategory = async () => {
     AxiosInterceptors.get(
       `${api_itemCategory}`.split(" ").join(""),
@@ -88,25 +103,61 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
   const abc = () => {};
 
   return (
-    <div className='relative h-full '>
+    <div className="relative h-full ">
       <div
         className={`h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out w-64 p-4 border border-gray-300 rounded`}
       >
-        <div className='flex justify-between items-center'>
-          <h2 className='text-xl font-thin text-black flex'>
-            <FiFilter className=' mt-1 mr-2 text-black' />
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-thin text-black flex">
+            <FiFilter className=" mt-1 mr-2 text-black" />
             Filters
           </h2>
           <button
             onClick={() => setIsOpen(false)}
-            className='text-xl hover:bg-[#4338CA] bg-[#4338CA] text-white hover:text-white rounded'
+            className="text-xl hover:bg-[#4338CA] bg-[#4338CA] text-white hover:text-white rounded"
           >
             <RxCross2 />
           </button>
         </div>
-        <hr className='h-[1px] w-full bg-black mt-4 border-none' />
+        <hr className="h-[1px] w-full bg-black mt-4 border-none" />
 
         <div>
+          <Accordion
+            sx={{
+              borderBottom: "1px solid black",
+              boxShadow: "none",
+            }}
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              Tender Type
+            </AccordionSummary>
+            <AccordionDetails
+              className="rounded-xl bg-[rgb(234,234,246)] mb-2"
+              // sx={{ backgroundColor: "rgb(250,250,255)"}}
+            >
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={selectedTenderTypes?.includes("least_cost")}
+                      onChange={handleCheckboxChange("least_cost")}
+                    />
+                  }
+                  label="Least Cost"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={selectedTenderTypes?.includes("qcbs")}
+                      onChange={handleCheckboxChange("qcbs")}
+                    />
+                  }
+                  label="QCBS"
+                />
+              </FormGroup>
+            </AccordionDetails>
+          </Accordion>
+
           <Accordion
             sx={{
               borderBottom: "1px solid black",
@@ -117,7 +168,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
               Category
             </AccordionSummary>
             <AccordionDetails
-              className='rounded-xl bg-[rgb(234,234,246)] mb-2'
+              className="rounded-xl bg-[rgb(234,234,246)] mb-2"
               // sx={{ backgroundColor: "rgb(250,250,255)"}}
             >
               <FormGroup>
@@ -145,7 +196,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
               Sub Category
             </AccordionSummary>
             <AccordionDetails
-              className='rounded-xl bg-[rgb(234,234,246)] mb-2'
+              className="rounded-xl bg-[rgb(234,234,246)] mb-2"
               // sx={{ backgroundColor: "rgb(250,250,255)"}}
             >
               <FormGroup
@@ -180,7 +231,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
               Brand List
             </AccordionSummary>
             <AccordionDetails
-              className='rounded-xl bg-[rgb(234,234,246)] mb-2'
+              className="rounded-xl bg-[rgb(234,234,246)] mb-2"
               // sx={{ backgroundColor: "rgb(250,250,255)"}}
             >
               <FormGroup
@@ -206,7 +257,7 @@ const SideSection = ({ setIsOpen, filter, setFilter, useFilter }) => {
           </Accordion>
 
           <Button
-            variant='outlined'
+            variant="outlined"
             sx={{
               width: "100%",
               mt: "1rem",

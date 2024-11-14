@@ -296,15 +296,15 @@ export default function Reports() {
           : "Total remaining",
       accessor:
         formik.values.reportType === "total_stock"
-          ? "total_quantity"
-          : "quantity",
+          ? "quantity"
+          : "total_quantity",
       Cell: (
         { cell } // console.log(cell.row.values,"===================celllllll")
       ) => (
         <div className="pr-2">
           {formik.values.reportType === "total_stock"
-            ? cell.row.values.total_quantity
-            : cell.row.values.quantity}
+            ? cell.row.values.quantity
+            : cell.row.values.total_quantity}
         </div>
       ),
     },
