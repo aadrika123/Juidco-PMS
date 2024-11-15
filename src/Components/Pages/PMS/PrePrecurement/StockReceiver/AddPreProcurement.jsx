@@ -168,7 +168,7 @@ function AddPreProcurement() {
     proc_item: selectedSupplier?.id || "df",
     supplier: supplierDetailsProc?.supplier_master?.id || "",
   };
-  console.log(editProcurementData);
+  // console.log(editProcurementData);
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
@@ -254,7 +254,7 @@ function AddPreProcurement() {
 
   const getDesc = (subCat) => {
     // console.log(newSubCategory,"newSubCategory");
-    console.log(subCat, "subCat", itemCategory, "itemCategory");
+    // console.log(subCat, "subCat", itemCategory, "itemCategory");
 
     AxiosInterceptors.get(
       `${api_getActiveDesc}?category=${itemCategory}&scategory=${subCat}`,
@@ -432,7 +432,7 @@ function AddPreProcurement() {
     setSelectedSupplier(data);
   };
 
-  console.log("object", procItem[0]?.subcategory?.id);
+  // console.log("object", procItem[0]?.subcategory?.id);
 
 const setField = () =>{
   formik.setFieldValue("subcategory", procItem[0]?.subcategory?.id );
@@ -522,7 +522,7 @@ const setField = () =>{
                       }
                       // defaultValue={categorySelected || "select"}
                     >
-                      <option value="select">select</option>
+                      <option value="">select</option>
 
                       {category?.length &&
                         category?.map((items, index) => (
@@ -543,15 +543,19 @@ const setField = () =>{
                     </p>
                   </div>
 
+                  {console.log(itemCategory,"123")}
+
                   <div className="flex items-center gap-2">
                     <div className="flex gap-2 items-center">
                       <input
                         type="checkbox"
                         className="w-6 h-6 cursor-pointer"
+                        disabled={!itemCategory}
                         onChange={() => {
                           setRateContract((prev) => !prev);
                           getProcItemRateContract();
                         }}
+                     
                       />
                       <p className="font-semibold whitespace-nowrap">
                         Applied by Rate Contract
