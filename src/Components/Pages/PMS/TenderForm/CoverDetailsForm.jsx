@@ -163,7 +163,6 @@ const CoverDetailsForm = () => {
   const submitForm = async (values) => {
     setIsLoading(true);
 
-    // setLoading
     const docObj = await uploadDoc(values?.tabs);
     const data = await compareAndAddDocs(values?.tabs, docObj);
     values.tabs = data;
@@ -188,16 +187,35 @@ const CoverDetailsForm = () => {
       });
   };
 
+
+  // =================================================>
+  // const handleSubmit = (values) => {
+  //   console.log(values, "values");
+  //   values.tabs.forEach((tab) => {
+  //     if (tab?.documents?.length === 0) {
+  //       toast.error(`Please upload valid documents for ${tab.name}`);
+  //       return;
+  //     }
+  //     // submitForm(values);
+  //   });
+  // };
+
+
   const handleSubmit = (values) => {
-    console.log(values, "values");
+    let allDocumentsUploaded = true;
+  
     values.tabs.forEach((tab) => {
-      if (tab?.documents?.length === 0) {
+      if (tab.documents.length === 0) {
+        allDocumentsUploaded = false;
         toast.error(`Please upload valid documents for ${tab.name}`);
-        return;
       }
-      submitForm(values);
     });
+  
+    if (allDocumentsUploaded) {
+      submitForm(values);
+    }
   };
+  
 
   //to insert documents into initial values in tabscover data
   // const compareAndAddDocuments = (tabsData, responseData) => {
@@ -381,7 +399,7 @@ const CoverDetailsForm = () => {
                     differentData={applicationFullData?.tendering_type}
                     // disabled={applicationFullData?.tendering_type === "qcbs" &&  2}
                   />
-                  
+
                   {/* tabs */}
                   <div className='flex gap-8 px-4 w-full relative z-1'>
                     {tabData &&
