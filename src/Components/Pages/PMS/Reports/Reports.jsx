@@ -1192,6 +1192,8 @@ export default function Reports() {
     downloadCSV(financeDataExport);
   };
 
+  console.log(formik.values.levels,"levels")
+
   return (
     <div>
       <div className="bg-[#4338ca] p-2 rounded-md px-6">

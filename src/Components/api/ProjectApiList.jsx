@@ -271,7 +271,6 @@ export default function ProjectApiList() {
     api_getempServiceRequestId: `${baseUrl}/api/pms/emp-service`,
     api_approveServiceRequestDA: `${baseUrl}/api/pms/da/service-request/to-ia`,
     api_approveServiceRequestDD: `${baseUrl}/api/pms/dist/service-request`,
-    api_approveServiceRequestDDOutbox: `${baseUrl}/api/pms/dist/service-request/outbox`,
     api_approveServiceRequestIA: `${baseUrl}/api/pms/ia/service-request/approve`,
     api_rejectServiceRequestIA: `${baseUrl}/api/pms/ia/service-request/reject`,
     api_getDistServiceInbox: `${baseUrl}/api/pms/dist/service-request/emp`,
