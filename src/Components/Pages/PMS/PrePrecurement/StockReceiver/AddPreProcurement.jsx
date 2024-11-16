@@ -434,12 +434,12 @@ function AddPreProcurement() {
 
   // console.log("object", procItem[0]?.subcategory?.id);
 
-const setField = () =>{
-  formik.setFieldValue("subcategory", procItem[0]?.subcategory?.id );
-}
+  const setField = () => {
+    formik.setFieldValue("subcategory", procItem[0]?.subcategory?.id);
+  };
 
   useEffect(() => {
-    setField()
+    setField();
   }, [formik.values.proc_item]);
 
   if (isModalOpen) {
@@ -553,7 +553,6 @@ const setField = () =>{
                           setRateContract((prev) => !prev);
                           getProcItemRateContract();
                         }}
-                     
                       />
                       <p className="font-semibold whitespace-nowrap">
                         Applied by Rate Contract
@@ -578,7 +577,7 @@ const setField = () =>{
                           className={`${inputStyle} inline-block w-full relative  `}
                           onChange={(e) => {
                             formik.setFieldValue("proc_item", e.target.value);
-                            getDesc(procItem[0]?.subcategory?.id)
+                            getDesc(procItem[0]?.subcategory?.id);
                             getSupplierName(e.target.value);
                           }}
                           value={formik.values.proc_item}
@@ -602,8 +601,6 @@ const setField = () =>{
                         </Select>
                       </FormControl>
                     </div>
-
-                    {/* {console.log(formik.values.proc_item, "procitem")} */}
 
                     <div className="form-group flex-shrink max-w-full w-1/2 px-4">
                       <label className={`${labelStyle} inline-block mb-2`}>
@@ -748,7 +745,7 @@ const setField = () =>{
                                 }
                               </td>
                               <td className="px-6 py-4 w-[5rem] break-words">
-                                {descrip?.length && (
+                                {/* {descrip?.length && (
                                   <>
                                     {isDescTextOpen || is_rate_contract
                                       ? form.description
@@ -757,7 +754,23 @@ const setField = () =>{
                                             data.id === form?.description
                                         )?.description}
                                   </>
-                                )}
+                                )} */}
+                                <td className="px-6 py-4 w-[5rem] break-words">
+                                  {descrip?.length && (
+                                    <>
+                                      {is_rate_contract
+                                        ? procItem.find(
+                                            (item) => item.id === form.proc_item
+                                          )?.description
+                                        : isDescTextOpen
+                                        ? form.description
+                                        : descrip.find(
+                                            (data) =>
+                                              data.id === form?.description
+                                          )?.description}
+                                    </>
+                                  )}
+                                </td>
                               </td>
                               <td className="px-6 py-4 ">{form.quantity}</td>
                               <td className="px-6 py-4 ">
@@ -896,7 +909,7 @@ const setField = () =>{
                         </p>
                       </div>
 
-                      <div className="form-group flex-shrink max-w-full px-4 w-full md:w-full mb-5">
+                      {/* <div className="form-group flex-shrink max-w-full px-4 w-full md:w-full mb-5">
                         <label className={`${labelStyle} inline-block mb-2`}>
                           Description
                         </label>
@@ -909,10 +922,10 @@ const setField = () =>{
                               onChange={formik.handleChange}
                               value={
                                 is_rate_contract
-                                  ? formik.values.proc_item
+                                  ? formik.values.description
                                   : formik.values.description
                               }
-                              disabled={is_rate_contract}
+                              // disabled={is_rate_contract}
                             />
                             <div onClick={() => setIsDescTextOpen(false)}>
                               <ImCancelCircle
@@ -922,6 +935,7 @@ const setField = () =>{
                             </div>
                           </div>
                         ) : (
+                          <>
                           <select
                             {...formik.getFieldProps("description")}
                             className={`${inputStyle} inline-block w-full relative`}
@@ -937,7 +951,6 @@ const setField = () =>{
                                 ? formik.values.proc_item
                                 : formik.values.description
                             }
-                            // disabled={is_rate_contract}
                           >
                             <option value={""}>select</option>
                             {descrip?.length &&
@@ -952,8 +965,83 @@ const setField = () =>{
                               ))}
                             <option value={"others"}>Others</option>
                           </select>
+                        </>
                         )}
+
                         <p className="text-red-500 text-xs ">
+                          {formik.touched.description &&
+                          formik.errors.description
+                            ? formik.errors.description
+                            : null}
+                        </p>
+                      </div> */}
+
+                      <div className="form-group flex-shrink max-w-full px-4 w-full md:w-full mb-5">
+                        <label className={`${labelStyle} inline-block mb-2`}>
+                          Description
+                        </label>
+
+                        {isDescTextOpen || page === "edit" ? (
+                          <div className="flex gap-0 relative">
+                            <textarea
+                              type="text"
+                              name="description"
+                              className={`${inputStyle} inline-block w-full relative h-24`}
+                              onChange={formik.handleChange}
+                              value={
+                                is_rate_contract
+                                  ? formik.values.description // Use correct value for `is_rate_contract`
+                                  : formik.values.description
+                              }
+                            />
+                            <div onClick={() => setIsDescTextOpen(false)}>
+                              <ImCancelCircle
+                                fontSize={20}
+                                className="absolute right-0 top-[2px]"
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <select
+                              {...formik.getFieldProps("description")}
+                              className={`${inputStyle} inline-block w-full relative`}
+                              onChange={(e) => {
+                                const selectedValue = e.target.value;
+                                if (selectedValue === "others") {
+                                  setIsDescTextOpen(true);
+                                } else {
+                                  formik.setFieldValue(
+                                    is_rate_contract
+                                      ? "description"
+                                      : "description",
+                                    selectedValue
+                                  );
+                                }
+                              }}
+                              value={
+                                is_rate_contract
+                                  ? formik.values.description || "" // Ensure proc_item reflects the correct selection
+                                  : formik.values.description || ""
+                              }
+                            >
+                              <option value="">select</option>
+                              {Array.isArray(descrip) &&
+                                descrip.map((items) => (
+                                  <option
+                                    key={items.id}
+                                    value={items.id}
+                                    className="w-10"
+                                  >
+                                    {items.description}
+                                  </option>
+                                ))}
+                              <option value="others">Others</option>
+                            </select>
+                          </>
+                        )}
+
+                        <p className="text-red-500 text-xs">
                           {formik.touched.description &&
                           formik.errors.description
                             ? formik.errors.description

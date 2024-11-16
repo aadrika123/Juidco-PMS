@@ -76,7 +76,7 @@ const TenderingAdminTabs = () => {
             <div>
               <TenderListings
                 page='outbox'
-                api={api_fetchTAOutbox}
+                api={api_fetchTAInbox}
                 activeTab={activeTab}
               />
             </div>
