@@ -259,6 +259,13 @@ const TabsMenu = (props) => {
               Level 1 Approved
             </p>
           )}
+
+{cell.row.values?.status ==100 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+             Pending at BOQ (IA)
+            </p>
+          )}
+
           {cell.row.values?.status == 20 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Level 2
