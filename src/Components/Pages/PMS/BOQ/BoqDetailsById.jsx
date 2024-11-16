@@ -336,9 +336,13 @@ export default function BoqDetailsById(props) {
 
               <div className=''>
                 <p className='text-lg font-bold'>
+
+                {console.log(dataList?.procurement_stocks,"dataList")}
+
+                <p className='text-lg font-bold'>
                   GST:{" "}
                   <span className='font-semibold text-gray-500'>
-                    {/* {dataList?.gst}% */}
+
                     {(dataList?.gstchecked? "GST Included": "GST Not Included")}
                   </span>
                 </p>
