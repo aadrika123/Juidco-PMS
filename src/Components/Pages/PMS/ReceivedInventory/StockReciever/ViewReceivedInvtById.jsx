@@ -357,7 +357,6 @@ const ViewReceivedInvtById = () => {
 
   const onchangeField = (e, index, field) => {
     let { name, value } = e.target;
-
     if (field === 'quantity') {
       if (totSum < value) {
         alert('Provided value has exceeded total received quantity')
@@ -894,6 +893,11 @@ const ViewReceivedInvtById = () => {
                                   }}
 
                                   value={item?.quantity}
+
+                                  type="number"
+                                  max={totSum}
+                                  min={1}
+                                  step={1}
                                 />
                               </div>
                             </div>
