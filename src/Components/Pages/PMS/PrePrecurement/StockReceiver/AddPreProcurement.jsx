@@ -543,8 +543,6 @@ const setField = () =>{
                     </p>
                   </div>
 
-                  {console.log(itemCategory,"123")}
-
                   <div className="flex items-center gap-2">
                     <div className="flex gap-2 items-center">
                       <input
