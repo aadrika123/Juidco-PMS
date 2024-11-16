@@ -62,6 +62,7 @@ export default function Reports() {
     api_getActiveCategory,
     api_getActiveSubCategory,
     api_getInventoryTotalReport,
+    api_getInventoryRemaningReport,
     api_getInventoryTotalDeadReport,
     api_getInventoryTotalMovementReport,
     api_getInventoryPreProcReport,
@@ -152,7 +153,7 @@ export default function Reports() {
       case "total_stock":
         return api_getInventoryTotalReport;
       case "remaining_stock":
-        return api_getInventoryTotalReport;
+        return api_getInventoryRemaningReport;
       case "dead_stock":
         return api_getInventoryTotalDeadReport;
       case "stock_movement":
@@ -297,14 +298,14 @@ export default function Reports() {
       accessor:
         formik.values.reportType === "total_stock"
           ? "quantity"
-          : "total_quantity",
+          : "remaining_quantity",
       Cell: (
         { cell } // console.log(cell.row.values,"===================celllllll")
       ) => (
         <div className="pr-2">
           {formik.values.reportType === "total_stock"
             ? cell.row.values.quantity
-            : cell.row.values.total_quantity}
+            : cell.row.values.remaining_quantity}
         </div>
       ),
     },
