@@ -335,9 +335,6 @@ export default function BoqDetailsById(props) {
               </div>
 
               <div className=''>
-                <p className='text-lg font-bold'>
-
-                {console.log(dataList?.procurement_stocks,"dataList")}
 
                 <p className='text-lg font-bold'>
                   GST:{" "}
