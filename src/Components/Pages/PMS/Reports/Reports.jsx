@@ -1173,6 +1173,9 @@ export default function Reports() {
 
   //setting application type on basis of selected levels---
 
+
+  console.log(formik.values.levels,"levels")
+
   const applicationType =
     formik.values.levels === "da" || formik.values.levels === "dd"
       ? levelwiseModuleDd
@@ -1631,6 +1634,7 @@ export default function Reports() {
             flattenObject={flattenObject}
             setNewExportData={setNewExportData}
             warrantyStatus={formik?.values?.warranty_status}
+            levels={formik?.values?.levels}
           />
         </div>
       </div>

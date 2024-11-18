@@ -85,11 +85,6 @@ function ServiceProposalList(props) {
               Rejected from Departmental Admin
             </p>
           )}
-          {cell.row.values.status == 10 && (
-            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Waiting to be Approved
-            </p>
-          )}
           {cell.row.values.status == 0 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Pending
@@ -115,6 +110,11 @@ function ServiceProposalList(props) {
               Approved
             </p>
           )}
+          {cell.row.values.status == 10 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
+              Forwarded To DA
+            </p>
+          )}
           
          
         </div>
@@ -129,12 +129,16 @@ function ServiceProposalList(props) {
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={
               () =>
+
+                props?.page == "emp_request" ?
+                
+                navigate(
+                  `/employeeServiceById/${cell.row.values.service_no}/${props.page}`
+                ):
                 navigate(
                   `/dd-service-request-byid/${cell.row.values.service_no}/${props?.page}`
                 )
-              // navigate(`/create-boq`, {
-              //   state: cell.row.values.reference_no,
-              // })
+                
             }
           >
             View
@@ -143,6 +147,8 @@ function ServiceProposalList(props) {
       ),
     },
   ];
+
+ 
 
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {
@@ -165,6 +171,7 @@ function ServiceProposalList(props) {
     }
   };
 
+  // console.log(props?.page,"page");
   return (
     <>
       {loader && <BarLoader />}

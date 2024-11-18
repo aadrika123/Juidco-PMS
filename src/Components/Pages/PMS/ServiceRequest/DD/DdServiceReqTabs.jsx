@@ -18,7 +18,7 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 const DdServiceReqTabs = () => {
   const [activeTab, setActiveTab] = useState("inbox");
-  const { api_approveServiceRequestDD, api_approveServiceRequestDDOutbox } =
+  const { api_approveServiceRequestDD, api_approveServiceRequestDDOutbox ,api_employeeServiceOutbox} =
     ProjectApiList();
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -51,7 +51,7 @@ const DdServiceReqTabs = () => {
               <FaChartPie className='m-1 text-[1rem]' />
               Inbox
             </button>
-            <button
+            {/* <button
               className={`ml-4 py-2 px-4 ${
                 activeTab === "outbox"
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
@@ -61,6 +61,17 @@ const DdServiceReqTabs = () => {
             >
               <FaChartPie className='m-1 text-[1rem]' />
               Outbox
+            </button> */}
+            <button
+              className={`ml-4 py-2 px-4 ${
+                activeTab === "emp_request"
+                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
+                  : "text-gray-500"
+              } focus:outline-none flex border border-[#4338ca] rounded`}
+              onClick={() => setActiveTab("emp_request")}
+            >
+              <FaChartPie className='m-1 text-[1rem]' />
+              Employee Requests
             </button>
           </div>
         </div>
@@ -72,11 +83,19 @@ const DdServiceReqTabs = () => {
               <ServiceProposalList page='inbox' api={api_approveServiceRequestDD} />
             </div>
           )}
-          {activeTab === "outbox" && (
+          {/* {activeTab === "outbox" && (
             <div>
               <ServiceProposalList
                 page='outbox'
                 api={api_approveServiceRequestDDOutbox}
+              />
+            </div>
+          )} */}
+          {activeTab === "emp_request" && (
+            <div>
+              <ServiceProposalList
+                page='emp_request'
+                api={api_employeeServiceOutbox}
               />
             </div>
           )}
