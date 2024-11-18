@@ -309,6 +309,8 @@ export default function ProjectApiList() {
 
     //reports
     api_getInventoryTotalReport: `${baseUrl}/api/pms/report/inventory/total`,
+    api_getInventoryRemaningReport: `${baseUrl}/api/pms/report/inventory/remainingstock`,
+    api_getInventoryStatuswise: `${baseUrl}/api/pms/report/inventory/statuswise`,
     api_getInventoryTotalDeadReport: `${baseUrl}/api/pms/report/inventory/dead`,
     api_getInventoryTotalMovementReport: `${baseUrl}/api/pms/report/inventory/movement`,
     api_getInventoryPreProcReport: `${baseUrl}/api/pms/report/pre-procurement`,

@@ -173,6 +173,7 @@ function AddPreProcurement() {
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values, { resetForm }) => {
+      console.log("valuesvalues",values)
       const brandName = getBrandName(values.brand);
       setCategorySelected(values.itemCategory);
       values = { ...values, brand: brandName };
@@ -381,6 +382,8 @@ function AddPreProcurement() {
   const handleOnChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
+    console.log("name",name)
+    console.log("value",value)
 
     // {
     //   name == "itemCategory" && setNewSubCategory(value,"one");
@@ -481,6 +484,7 @@ function AddPreProcurement() {
   }
 
   // console.log(formData)
+  console.log("applicationFullDataapplicationFullData",formData)
 
   return (
     <>
