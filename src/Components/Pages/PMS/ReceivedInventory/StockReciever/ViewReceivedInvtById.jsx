@@ -394,6 +394,7 @@ const ViewReceivedInvtById = () => {
         procurement_no: applicationFullData?.procurement_no,
         product,
         sub_category:applicationFullData?.id,
+        category:applicationFullData?.category?.id,
       },
       ApiHeader()
     )

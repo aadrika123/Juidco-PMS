@@ -63,6 +63,7 @@ export default function Reports() {
     api_getActiveSubCategory,
     api_getInventoryTotalReport,
     api_getInventoryRemaningReport,
+    api_getInventoryStatuswise,
     api_getInventoryTotalDeadReport,
     api_getInventoryTotalMovementReport,
     api_getInventoryPreProcReport,
@@ -168,6 +169,9 @@ export default function Reports() {
         return api_getWarrantyReport;
       case "place_order_report":
         return api_getPlacedOrderReport;
+      case "level_wise":
+        return api_getInventoryStatuswise;
+        
       default:
         return api_getInventoryTotalReport;
     }
@@ -1068,6 +1072,36 @@ export default function Reports() {
     // },
   ];
 
+  const COLUMNS_LEVEL = [
+    {
+      Header: "#",
+      Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
+    },
+    {
+      Header: "Category",
+      accessor: "category",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.category.name} </div>
+      ),
+    },
+   
+    {
+      Header: "Description",
+      accessor: "procurement_stocks",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.procurement_stocks[0].description} </div>
+      ),
+    },
+    {
+      Header: "Status",
+      accessor: "status",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.status} </div>
+      ),
+    },
+    
+  ];
+ 
   const COLUMNS_POR = [
     {
       Header: "#",
@@ -1580,6 +1614,8 @@ export default function Reports() {
                 : ""
             }
             columns={
+              formik.values.reportType === "level_wise"
+                ? COLUMNS_LEVEL :
               formik.values.reportType === "place_order_report"
                 ? COLUMNS_POR :
               formik.values.reportType === "stock_history_report"
