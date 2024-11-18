@@ -34,6 +34,7 @@ import ImageDisplay from "@/Components/Common/FileButtonUpload/ImageDisplay";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 import { indianAmount } from "@/Components/Common/PowerupFunctions";
 import { IoMdAddCircleOutline } from "react-icons/io";
+import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 
 const ViewReceivedInvtById = () => {
   const navigate = useNavigate();
@@ -78,6 +79,9 @@ const ViewReceivedInvtById = () => {
 
   // Accessing context for notifications
   const { titleBarVisibility } = useContext(contextVar);
+
+  console.log(applicationFullData?.category?.id,"category")
+  console.log(applicationFullData?.id,"sub")
 
   let buttonStyle =
     "pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-md leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
@@ -389,6 +393,7 @@ const ViewReceivedInvtById = () => {
         brand,
         procurement_no: applicationFullData?.procurement_no,
         product,
+        sub_category:applicationFullData?.id,
       },
       ApiHeader()
     )
