@@ -1020,6 +1020,13 @@ export default function Reports() {
       ),
     },
     {
+      Header: "Status",
+      accessor: "status",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.status} </div>
+      ),
+    },
+    {
       Header: "Action",
       accessor: "id",
       Cell: ({ cell }) => (
