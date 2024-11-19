@@ -483,8 +483,7 @@ function AddPreProcurement() {
     );
   }
 
-  // console.log(formData)
-  console.log("applicationFullDataapplicationFullData",formData)
+  
 
   return (
     <>
@@ -749,18 +748,8 @@ function AddPreProcurement() {
                                 }
                               </td>
                               <td className="px-6 py-4 w-[5rem] break-words">
-                                {/* {descrip?.length && (
-                                  <>
-                                    {isDescTextOpen || is_rate_contract
-                                      ? form.description
-                                      : descrip?.find(
-                                          (data) =>
-                                            data.id === form?.description
-                                        )?.description}
-                                  </>
-                                )} */}
                                 <td className="px-6 py-4 w-[5rem] break-words">
-                                  {descrip?.length && (
+                               {descrip?.length && (
                                     <>
                                       {is_rate_contract
                                         ? procItem.find(
@@ -774,6 +763,7 @@ function AddPreProcurement() {
                                           )?.description}
                                     </>
                                   )}
+                           
                                 </td>
                               </td>
                               <td className="px-6 py-4 ">{form.quantity}</td>

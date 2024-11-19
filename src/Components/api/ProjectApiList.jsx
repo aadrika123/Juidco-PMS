@@ -56,7 +56,7 @@ export default function ProjectApiList() {
     api_itemSubCategoryAll: `${baseUrl}/api/pms/master/sub-category/active`,
     api_postSubCategory: `${baseUrl}/api/pms/master/sub-category`,
     api_itemSubCategoryUpdate: `${baseUrl}/api/pms/master/sub-category/update`,
-    api_itemBrand: `${baseUrl}/api/pms/master/brand/active`,
+    api_itemBrand: `${baseUrl}/api/pms/master/by-subcategory`,
     api_getAllunit: `${baseUrl}/api/pms/master/unit`,
     api_getActiveUnit: `${baseUrl}/api/pms/master/unit/active`,
     api_getAllSupplier: `${baseUrl}/api/pms/master/supplier`,
