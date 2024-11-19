@@ -101,13 +101,13 @@ export default function Reports() {
   ];
 
   const levels = [
-    { id: 1, label: "Inventory Admin", value: "ia" },
-    { id: 2, label: "Departmental Distributor", value: "dd" },
-    { id: 3, label: "Departmental Admin", value: "da" },
-    { id: 4, label: "Tendering Admin", value: "ta" },
-    { id: 5, label: "Finance", value: "finance" },
-    { id: 6, label: "Level 1", value: "level1" },
-    { id: 6, label: "Level 2", value: "level2" },
+    { id: 1, label: "Inventory Admin", value: "14" },
+    { id: 2, label: "Departmental Distributor", value: "0" },
+    { id: 3, label: "Departmental Admin", value: "2" },
+    { id: 4, label: "Tendering Admin", value: "0" },
+    { id: 5, label: "Finance", value: "40" },
+    { id: 6, label: "Level 1", value: "10" },
+    { id: 6, label: "Level 2", value: "20" },
   ];
 
   const levelwiseModuleDd = [
@@ -150,6 +150,7 @@ export default function Reports() {
   ];
 
   const getUrl = (report_type) => {
+    console.log("report_type",report_type)
     switch (report_type) {
       case "total_stock":
         return api_getInventoryTotalReport;
@@ -162,16 +163,16 @@ export default function Reports() {
       case "pre_procurement":
         return api_getInventoryPreProcReport;
       case "rate_contract":
-        return api_getRateContractReport; 
+        return api_getRateContractReport;
       case "stock_history_report":
-        return api_getStockHistoryReport; 
+        return api_getStockHistoryReport;
       case "warranty_claim":
         return api_getWarrantyReport;
       case "place_order_report":
         return api_getPlacedOrderReport;
       case "level_wise":
         return api_getInventoryStatuswise;
-        
+
       default:
         return api_getInventoryTotalReport;
     }
@@ -238,6 +239,7 @@ export default function Reports() {
     enableReinitialize: true,
     onSubmit: (values) => {
       // setFormData(values);
+      console.log("values",values)
       const reportUrl = getUrl(values.reportType);
       setUrlReport(reportUrl);
       setPageTrigger((prev) => prev + 1);
@@ -1018,6 +1020,13 @@ export default function Reports() {
       ),
     },
     {
+      Header: "Status",
+      accessor: "status",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.status} </div>
+      ),
+    },
+    {
       Header: "Action",
       accessor: "id",
       Cell: ({ cell }) => (
@@ -1084,7 +1093,7 @@ export default function Reports() {
         <div className="pr-2">{cell.row.values.category.name} </div>
       ),
     },
-   
+
     {
       Header: "Description",
       accessor: "procurement_stocks",
@@ -1096,12 +1105,212 @@ export default function Reports() {
       Header: "Status",
       accessor: "status",
       Cell: ({ cell }) => (
-        <div className="pr-2">{cell.row.values.status} </div>
+        // <div className="pr-2">{cell.row.values.status} </div>
+        <>
+
+          {cell.row.values.status == 70 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Ready for BOQ
+            </p>
+          )}
+          {cell.row.values.status == -70 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              BOQ returned from DA
+            </p>
+          )}
+          {cell.row.values.status == 72 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Ready for tendering
+            </p>
+          )}
+          {cell.row.values.status == -72 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Tender back from DA
+            </p>
+          )}
+          {cell.row.values.status == 73 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Tender is ready
+            </p>
+          )}
+          {cell.row.values.status == -1 && (
+            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1 rounded-md">
+              Returned
+            </p>
+          )}
+          {cell.row.values.status == -2 && (
+            <p className="text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1 rounded-md">
+              Rejected
+            </p>
+          )}
+          {cell.row.values.status == 0 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Pending
+            </p>
+          )}
+          {cell.row.values.status == 1 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Revised from DA
+            </p>
+          )}
+          {cell.row.values.status == 2 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Forwarded to DA
+            </p>
+          )}
+          {cell.row.values.status == 80 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Pending
+            </p>
+          )}
+          {cell.row.values.status == 81 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Returned from Inventory Admin
+            </p>
+          )}
+          {cell.row.values.status == 82 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Inventory Admin Rejected
+            </p>
+          )}
+          {cell.row.values.status == 3 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Approved
+            </p>
+          )}
+          {cell.row.values.status == 4 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Handover Pending
+            </p>
+          )}
+          {cell.row.values.status == 41 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Alloted
+            </p>
+          )}
+          {cell.row.values.status == 5 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Return Pending
+            </p>
+          )}
+          {cell.row.values.status == 51 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Returned to Inventory
+            </p>
+          )}
+          {cell.row.values.status == 52 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Returned to DD
+            </p>
+          )}
+          {cell.row.values.status == -5 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Rejected
+            </p>
+          )}
+          {cell.row.values.status == 6 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Dead stock pending
+            </p>
+          )}
+          {cell.row.values.status == 61 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Added to dead stock
+            </p>
+          )}
+          {cell.row.values.status == 62 && (
+            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md">
+              Returned to DD
+            </p>
+          )}
+          {cell.row.values.status == 11 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1 rounded-md'>
+              Returned from Departmental Admin
+            </p>
+          )}
+          {cell.row.values.status == 12 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1 rounded-md'>
+              Rejected from Inventory Admin
+            </p>
+          )}
+
+           {cell.row.values.status == 14 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+             pending at IA
+            </p>
+          )}
+          {cell.row.values.status == 10 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Waiting to be Approved
+            </p>
+          )}
+          {cell.row.values.status == 20 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Pending at level 2
+            </p>
+          )}
+          {cell.row.values.status == 21 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1 rounded-md'>
+              Returned from Inventory Admin
+            </p>
+          )}
+          {cell.row.values.status == 23 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Approved
+            </p>
+          )}
+          {cell.row.values.status == 43 && (
+            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1 rounded-md'>
+              Rejected from Finance
+            </p>
+          )}
+          {cell.row.values.status == 41 && (
+            <p className='text-orange-400 text-center bg-status_reject_bg border-orange-400 border-[1px] px-1 py-1 rounded-md'>
+              Returned from Finance
+            </p>
+          )}
+          {cell.row.values.status == 40 && (
+            <p className='text-yellow-400 text-center bg-yellow-50 border-yellow-400 border-[1px] px-1 py-1 rounded-md'>
+              Finance Approval Pending
+            </p>
+          )}
+          {cell.row.values.status == 42 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Approved by Finance
+            </p>
+          )}
+          {cell.row.values.status == 50 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Basic Pre Tender Details Completed
+            </p>
+          )}
+          {cell.row.values.status == 60 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Pre-Tender Form Submitted
+            </p>
+          )}
+          {cell.row.values.status == 69 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Revised
+            </p>
+          )}
+          {cell.row.values.status == 70 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Tendering Admin Inbox
+            </p>
+          )}
+          {cell.row.values.status == 100 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1 rounded-md'>
+              Approved BOQ by Finance
+            </p>
+          )}
+
+        </>
       ),
     },
-    
+
   ];
- 
+
   const COLUMNS_POR = [
     {
       Header: "#",
@@ -1121,7 +1330,7 @@ export default function Reports() {
         <div className="pr-2">{cell.row.values.category.name} </div>
       ),
     },
-   
+
     {
       Header: "Total Rate",
       accessor: "total_rate",
@@ -1136,7 +1345,7 @@ export default function Reports() {
         <div className="pr-2">{cell.row.values.createdAt.split("T")[0]} </div>
       ),
     },
-    
+
   ];
 
   function getStatusLabel(status) {
@@ -1230,7 +1439,7 @@ export default function Reports() {
     downloadCSV(financeDataExport);
   };
 
-  console.log(formik.values.levels,"levels")
+  console.log(formik.values.levels, "levels")
 
   return (
     <div>
@@ -1444,6 +1653,7 @@ export default function Reports() {
                   {...formik.getFieldProps("levels")}
                   className={`${inputStyle} inline-block w-full relative`}
                   onChange={(e) => {
+                    console.log("eeeeeee",e.target.value)
                     formik.handleChange(e);
                   }}
                 >
@@ -1464,7 +1674,7 @@ export default function Reports() {
               </div>
             )}
 
-            {formik.values.reportType === "level_wise" && (
+            {/* {formik.values.reportType === "level_wise" && (
               <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
                 <label className={`${labelStyle} inline-block mb-2 text-sm`}>
                   Application Type
@@ -1488,14 +1698,8 @@ export default function Reports() {
                     </option>
                   ))}
                 </select>
-                {/* <p className='text-red-500 text-xs '>
-                  {formik.touched.postProcurement &&
-                  formik.errors.postProcurement
-                    ? formik.errors.postProcurement
-                    : null}
-                </p> */}
               </div>
-            )}
+            )} */}
 
             {formik.values.reportType === "tender_type" && (
               <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
@@ -1619,47 +1823,47 @@ export default function Reports() {
             columns={
               formik.values.reportType === "level_wise"
                 ? COLUMNS_LEVEL :
-              formik.values.reportType === "place_order_report"
-                ? COLUMNS_POR :
-              formik.values.reportType === "stock_history_report"
-                ? COLUMNS_SHR :
-                formik.values.reportType === "rate_contract"
-                  ? COLUMNS_RC :
-                  formik.values.reportType === "stock_movement"
-                    ? COLUMNS_SM
-                    : formik.values.reportType === "pre_procurement"
-                      ? COLUMNS_PRO
-                      : formik.values.reportType === "dead_stock"
-                        ? COLUMNS_DEAD
-                        : formik.values.reportType === "received_stock"
-                          ? COLUMNS_RECEIVED
-                          : formik.values.reportType === "level_wise" &&
-                            formik?.values?.levels &&
-                            formik?.values?.module_type &&
-                            formik.values.module_type === "service-request"
-                            ? COLUMNS_lEVEL_SERVICE
-                            : formik.values.reportType === "level_wise" &&
-                              formik?.values?.levels &&
-                              formik?.values?.module_type &&
-                              formik.values.module_type === "boq" &&
-                              (formik.values.levels === "finance" ||
-                                formik.values.levels === "ia")
-                              ? FINBOQ
+                formik.values.reportType === "place_order_report"
+                  ? COLUMNS_POR :
+                  formik.values.reportType === "stock_history_report"
+                    ? COLUMNS_SHR :
+                    formik.values.reportType === "rate_contract"
+                      ? COLUMNS_RC :
+                      formik.values.reportType === "stock_movement"
+                        ? COLUMNS_SM
+                        : formik.values.reportType === "pre_procurement"
+                          ? COLUMNS_PRO
+                          : formik.values.reportType === "dead_stock"
+                            ? COLUMNS_DEAD
+                            : formik.values.reportType === "received_stock"
+                              ? COLUMNS_RECEIVED
                               : formik.values.reportType === "level_wise" &&
                                 formik?.values?.levels &&
                                 formik?.values?.module_type &&
-                                formik.values.module_type == "procurement"
-                                ? COLUMNS_PRO
+                                formik.values.module_type === "service-request"
+                                ? COLUMNS_lEVEL_SERVICE
                                 : formik.values.reportType === "level_wise" &&
                                   formik?.values?.levels &&
                                   formik?.values?.module_type &&
-                                  formik.values.module_type !== "service-request"
-                                  ? COLUMNS_lEVEL
-                                  : formik.values.reportType === "tender_type"
-                                    ? COLUMNS_TENDER
-                                    : (formik.values.reportType === "warranty_claim")
-                                      ? COLUMNS_WC
-                                      : COLUMNS
+                                  formik.values.module_type === "boq" &&
+                                  (formik.values.levels === "finance" ||
+                                    formik.values.levels === "ia")
+                                  ? FINBOQ
+                                  : formik.values.reportType === "level_wise" &&
+                                    formik?.values?.levels &&
+                                    formik?.values?.module_type &&
+                                    formik.values.module_type == "procurement"
+                                    ? COLUMNS_PRO
+                                    : formik.values.reportType === "level_wise" &&
+                                      formik?.values?.levels &&
+                                      formik?.values?.module_type &&
+                                      formik.values.module_type !== "service-request"
+                                      ? COLUMNS_lEVEL
+                                      : formik.values.reportType === "tender_type"
+                                        ? COLUMNS_TENDER
+                                        : (formik.values.reportType === "warranty_claim")
+                                          ? COLUMNS_WC
+                                          : COLUMNS
             }
             from={formik.values.from_date}
             to={formik.values.to_date}
@@ -1671,7 +1875,7 @@ export default function Reports() {
             flattenObject={flattenObject}
             setNewExportData={setNewExportData}
             warrantyStatus={formik?.values?.warranty_status}
-            levels={formik?.values?.levels}
+            status_level={formik?.values?.levels}
           />
         </div>
       </div>

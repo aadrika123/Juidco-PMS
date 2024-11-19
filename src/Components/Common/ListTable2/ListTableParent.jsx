@@ -97,7 +97,7 @@ const ListTableParent = (props) => {
       take=${perPageData}&page=${currentPage}
       ${selectedTenderTypes ? `&tendertype=${selectedTenderTypes}` : ""}
       ${searchFilter ? `&search=${searchFilter}` : ""}
-      ${props?.levels ? `&levels=${props?.levels}` : ""}
+      ${props?.status_level ? `&status_level=${props?.status_level}` : ""}
       ${props?.from ? `&from=${props?.from}` : ""}
       ${props?.rejected ? `&${statusMerger(props?.rejected)}` : ""}
       ${props?.to ? `&to=${props?.to}` : ""}
