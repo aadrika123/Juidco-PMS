@@ -567,6 +567,113 @@ function AddPreProcurement() {
 
                 {is_rate_contract && (
                   <div className="flex gap-2 items-center px-8 mt-4">
+                    <div className="form-group flex-shrink max-w-full w-1/2 px-4">
+                      <label className={`${labelStyle} inline-block mb-2`}>
+                        Select Supplier
+                        <span className="text-xl text-red-500 pl-1">
+                          *
+                        </span>{" "}
+                      </label>
+                      <select
+                        {...formik.getFieldProps("supplier")}
+                        className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
+                        disabled={
+                          formik.values.quantity || formData?.length > 0
+                        }
+                        value={formik.values.supplier}
+                      >
+                        <option value="select">select</option>
+
+                        {selectedSupplier?.rate_contract_supplier?.length &&
+                          selectedSupplier?.rate_contract_supplier?.map(
+                            (items, index) => (
+                              <option
+                                key={index}
+                                value={items?.supplier_master?.id}
+                              >
+                                {items?.supplier_master?.name}
+                              </option>
+                            )
+                          )}
+                      </select>
+                    </div>
+
+                    {/* <div className="form-group flex-shrink max-w-full w-1/2 px-4 ">
+                      <label className={`${labelStyle} inline-block mb-2`}>
+                        Choose Item
+                        <span className="text-xl text-red-500 pl-1">
+                          *
+                        </span>{" "}
+                      </label>
+                      <FormControl fullWidth>
+                        <Select
+                          {...formik.getFieldProps("proc_item")}
+                          name="proc_item"
+                          className={`${inputStyle} inline-block w-full relative  `}
+                          onChange={(e) => {
+                            formik.setFieldValue("proc_item", e.target.value);
+                            getDesc(procItem[0]?.subcategory?.id);
+                            getSupplierName(e.target.value);
+                          }}
+                          value={formik.values.proc_item}
+                        >
+                          <MenuItem value="df">select</MenuItem>
+
+                          {procItem?.length &&
+                            procItem?.map((items, index) => (
+                              <MenuItem
+                                id={items?.id}
+                                key={items?.id}
+                                value={items?.id}
+                                className=""
+                              >
+                                <Tooltip title={items?.description}>
+                                  {items?.subcategory?.name} (
+                                  {items?.description.slice(0, 63)})
+                                </Tooltip>
+                              </MenuItem>
+                            ))}
+                        </Select>
+                      </FormControl>
+                    </div> */}
+                  </div>
+                )}
+
+                {is_rate_contract && (
+                  <div className="flex gap-2 items-center px-8 mt-4">
+                    {/* <div className="form-group flex-shrink max-w-full w-1/2 px-4">
+                      <label className={`${labelStyle} inline-block mb-2`}>
+                        Select Supplier
+                        <span className="text-xl text-red-500 pl-1">
+                          *
+                        </span>{" "}
+                      </label>
+                      <select
+                        {...formik.getFieldProps("supplier")}
+                        className={`${inputStyle} inline-block w-full relative`}
+                        onChange={formik.handleChange}
+                        disabled={
+                          formik.values.quantity || formData?.length > 0
+                        }
+                        value={formik.values.supplier}
+                      >
+                        <option value="select">select</option>
+
+                        {selectedSupplier?.rate_contract_supplier?.length &&
+                          selectedSupplier?.rate_contract_supplier?.map(
+                            (items, index) => (
+                              <option
+                                key={index}
+                                value={items?.supplier_master?.id}
+                              >
+                                {items?.supplier_master?.name}
+                              </option>
+                            )
+                          )}
+                      </select>
+                    </div> */}
+
                     <div className="form-group flex-shrink max-w-full w-1/2 px-4 ">
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Choose Item
@@ -604,41 +711,6 @@ function AddPreProcurement() {
                             ))}
                         </Select>
                       </FormControl>
-                    </div>
-
-                    <div className="form-group flex-shrink max-w-full w-1/2 px-4">
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                        Select Supplier
-                        <span className="text-xl text-red-500 pl-1">
-                          *
-                        </span>{" "}
-                      </label>
-                      <select
-                        {...formik.getFieldProps("supplier")}
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
-                        disabled={
-                          formik.values.quantity || formData?.length > 0
-                        }
-                        value={formik.values.supplier}
-                        // defaultValue={categorySelected || "select"}
-                      >
-                        <option value="select">select</option>
-
-                        {selectedSupplier?.rate_contract_supplier?.length &&
-                          selectedSupplier?.rate_contract_supplier?.map(
-                            (items, index) => (
-                              <option
-                                key={index}
-                                value={items?.supplier_master?.id}
-                                // defaultValue={categorySelected || "select"}
-                              >
-                                {items?.supplier_master?.name}
-                              </option>
-                            )
-                          )}
-                        {/* <option>others</option> */}
-                      </select>
                     </div>
                   </div>
                 )}

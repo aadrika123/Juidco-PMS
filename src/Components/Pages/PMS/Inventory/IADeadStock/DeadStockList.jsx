@@ -4,8 +4,8 @@
 //    Date - 23/05/2024
 //    Revision - 1
 //    Project - JUIDCO
-//    Component  - ServiceProposalList
-//    DESCRIPTION - ServiceProposalList
+//    Component  - DeadStockList
+//    DESCRIPTION - DeadStockList
 /////////////////////////////////////////////////////
 
 import React, { useState } from "react";
@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import ListTableParent from "@/Components/Common/ListTable2/ListTableParent";
 import { indianAmount } from "@/Components/Common/PowerUps/PowerupFunctions";
 
-function ServiceProposalList(props) {
+function DeadStockList(props) {
   const navigate = useNavigate();
 
   // ══════════════════════════════║🔰Usestate🔰║═══════════════════════════════════
@@ -31,24 +31,17 @@ function ServiceProposalList(props) {
       Cell: ({ row }) => <div className='pr-2'>{row.index + 1}</div>,
     },
     {
-      Header: "Handover No",
-      accessor: "stock_handover_no",
+      Header: "Procurement No",
+      accessor: "procurement_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.stock_handover_no}</div>
+        <div className='pr-2'>{cell.row.original?.procurement_stocks[0]?.procurement_no}</div>
       ),
     },
     {
-      Header: "Service No",
-      accessor: "service_no",
+      Header: "Reference No",
+      accessor: "reference_no",
       Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.service_no}</div>
-      ),
-    },
-    {
-      Header: "Service",
-      accessor: "service",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>{cell.row.values.service}</div>
+        <div className='pr-2'>{cell.row.values.reference_no}</div>
       ),
     },
     {
@@ -56,33 +49,32 @@ function ServiceProposalList(props) {
       accessor: "category",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {cell.row.original?.inventory?.category?.name}
+          {cell.row.original.procurement_stocks[0]?.category?.name}
         </div>
       ),
     },
     {
-      Header: "Sub Category",
-      accessor: "subcategory",
+      Header: "Estimated cost",
+      accessor: "estimated_cost",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {cell.row.original?.inventory?.subcategory?.name}
+          {indianAmount(cell.row.values.estimated_cost)}{" "}
         </div>
       ),
     },
-    
     {
       Header: <p className='text-center'>Status</p>,
       accessor: "status",
       Cell: ({ cell }) => (
         <div className='pr-2'>
-          {cell.row.values.status == 11 && (
+          {cell.row.values.status == 43 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Returned from Departmental Admin
+              Rejected from Finance
             </p>
           )}
-          {cell.row.values.status == 12 && (
-            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Rejected from Departmental Admin
+          {cell.row.values.status == 41 && (
+            <p className='text-orange-400 text-center bg-status_reject_bg border-orange-400 border-[1px] px-1 py-1  rounded-md'>
+              Returned from Finance
             </p>
           )}
           {cell.row.values.status == 0 && (
@@ -90,33 +82,46 @@ function ServiceProposalList(props) {
               Pending
             </p>
           )}
-          {cell.row.values.status == 20 && (
+          {cell.row.values.status == 40 && (
             <p className='text-yellow-400 text-center bg-yellow-50 border-yellow-400 border-[1px] px-1 py-1  rounded-md'>
-               Forwarded to Inventory Admin
+              Finance Approval Pending
             </p>
           )}
-          {cell.row.values.status == 21 && (
-            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Returned from Inventory Admin
-            </p>
-          )}
-          {cell.row.values.status == 21 && (
-            <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Rejected from Inventory Admin
-            </p>
-          )}
-          {cell.row.values.status == 23 && (
+          {cell.row.values.status == 42 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
-              Approved
+              Approved by Finance
             </p>
           )}
-          {cell.row.values.status == 10 && (
-            <p className="text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md">
-              Forwarded To DA
+          {cell.row.values.status == 50 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Basic Pre Tender Details Completed
             </p>
           )}
-          
-         
+          {cell.row.values.status == 60 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Pre-Tender Form Submitted
+            </p>
+          )}
+          {cell.row.values.status == 70 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Tendering Admin Inbox
+            </p>
+          )}
+          {cell.row.values.status == 69 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Revised
+            </p>
+          )}
+          {cell.row.values.status == -72 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Tender back from DA
+            </p>
+          )}
+          {cell.row.values.status == 73 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Tender is ready
+            </p>
+          )}
         </div>
       ),
     },
@@ -129,16 +134,12 @@ function ServiceProposalList(props) {
             className='bg-[#4338CA] text-white px-2 py-1 rounded hover:bg-[#373081]'
             onClick={
               () =>
-
-                props?.page == "emp_request" ?
-                
                 navigate(
-                  `/employeeServiceById/${cell.row.values.service_no}/${props.page}`
-                ):
-                navigate(
-                  `/dd-service-request-byid/${cell.row.values.service_no}/${props?.page}`
+                  `/ia-dead-stock-byId/${cell.row.values.reference_no}/${props?.page}`
                 )
-                
+              // navigate(`/create-boq`, {
+              //   state: cell.row.values.reference_no,
+              // })
             }
           >
             View
@@ -147,8 +148,6 @@ function ServiceProposalList(props) {
       ),
     },
   ];
-
- 
 
   // ══════════════════════════════║🔰Loader🔰║═══════════════════════════════════
   if (isLoading) {
@@ -171,7 +170,6 @@ function ServiceProposalList(props) {
     }
   };
 
-  // console.log(props?.page,"page");
   return (
     <>
       {loader && <BarLoader />}
@@ -199,4 +197,4 @@ function ServiceProposalList(props) {
   );
 }
 
-export default ServiceProposalList;
+export default DeadStockList;
