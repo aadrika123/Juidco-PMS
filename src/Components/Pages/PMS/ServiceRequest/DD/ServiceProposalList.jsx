@@ -85,6 +85,11 @@ function ServiceProposalList(props) {
               Rejected from Departmental Admin
             </p>
           )}
+          {cell.row.values.status == 61 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Added To Dead Stock
+            </p>
+          )}
           {cell.row.values.status == 10 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Waiting to be Approved

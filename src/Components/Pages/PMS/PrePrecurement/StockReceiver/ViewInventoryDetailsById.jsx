@@ -126,6 +126,7 @@ const ViewInventoryDetailsById = (props) => {
 
     AxiosInterceptors.post(`${api_iaStockReqApprove}`, body, ApiHeader())
       .then(function (response) {
+        console.log("response",resposne)
         if (response?.data?.status == true) {
           toast.success(`Assign to Distributor Successfully`);
           setServiceRequestModal(false);
