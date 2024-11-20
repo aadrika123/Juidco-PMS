@@ -136,7 +136,8 @@ const ViewInventoryDetailsById = (props) => {
       })
       .catch(function (error) {
         console.log("errorrr.... ", error);
-        toast.error(error?.response?.data?.error);
+        // toast.error(error?.response?.data?.error);
+        toast.error("Available quantity not sufficient");
         // setdeclarationStatus(false);
       })
       .finally(() => {
