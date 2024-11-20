@@ -173,7 +173,6 @@ function AddPreProcurement() {
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values, { resetForm }) => {
-      console.log("valuesvalues",values)
       const brandName = getBrandName(values.brand);
       setCategorySelected(values.itemCategory);
       values = { ...values, brand: brandName };
@@ -483,7 +482,9 @@ function AddPreProcurement() {
     );
   }
 
-  
+  // console.log(formData)
+  // console.log("applicationFullDataapplicationFullData",formData)
+  console.log("formik.values",formik.values)
 
   return (
     <>
@@ -748,8 +749,18 @@ function AddPreProcurement() {
                                 }
                               </td>
                               <td className="px-6 py-4 w-[5rem] break-words">
+                                {/* {descrip?.length && (
+                                  <>
+                                    {isDescTextOpen || is_rate_contract
+                                      ? form.description
+                                      : descrip?.find(
+                                          (data) =>
+                                            data.id === form?.description
+                                        )?.description}
+                                  </>
+                                )} */}
                                 <td className="px-6 py-4 w-[5rem] break-words">
-                               {descrip?.length && (
+                                  {descrip?.length && (
                                     <>
                                       {is_rate_contract
                                         ? procItem.find(
@@ -763,7 +774,6 @@ function AddPreProcurement() {
                                           )?.description}
                                     </>
                                   )}
-                           
                                 </td>
                               </td>
                               <td className="px-6 py-4 ">{form.quantity}</td>
@@ -1005,12 +1015,13 @@ function AddPreProcurement() {
                                 if (selectedValue === "others") {
                                   setIsDescTextOpen(true);
                                 } else {
-                                  formik.setFieldValue(
-                                    is_rate_contract
-                                      ? "description"
-                                      : "description",
-                                    selectedValue
-                                  );
+                                  // formik.setFieldValue(
+                                  //   is_rate_contract
+                                  //     ? "description"
+                                  //     : "description",
+                                  //   selectedValue
+                                  // );
+                                  formik.setFieldValue("description", selectedValue);
                                 }
                               }}
                               value={
