@@ -111,6 +111,8 @@ import IaWarrantyClaim from "./Components/Pages/PMS/ServiceRequest/IA/IaWarranty
 import StockHistoryReportById from "./Components/Pages/PMS/Reports/StockHistoryReport/StockHistoryReportById";
 import SearchInventoryReports from "./Components/Pages/PMS/Reports/SearchInventory/SearchInventoryReports";
 import SearchInvtById from "./Components/Pages/PMS/Reports/SearchInventory/SearchInvtById";
+import InvtAdminDeadStock from "./Components/Pages/PMS/Inventory/IADeadStock/InvtAdminDeadStock";
+import InvtAdminDeadStockbyId from "./Components/Pages/PMS/Inventory/IADeadStock/InvtAdminDeadStockbyId";
 
 const queryClient = new QueryClient();
 
@@ -522,6 +524,14 @@ function App() {
     {
       path: "/dead-stock",
       element: <DeadStock />,
+    },
+    {
+      path: "/ia-dead-stock",
+      element: <InvtAdminDeadStock />,
+    },
+    {
+      path: "/ia-dead-stock-byId/:id/:page",
+      element: <InvtAdminDeadStockbyId />,
     },
 
   ];
