@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import ServiceRequestModal from "../../../../Common/Modal/ServiceRequestModal";
+import RemoveQtyModal from "./RemoveQtyModal";
 
 const InvtAdminDeadStockbyId = () => {
   const [isLoading, setisLoading] = useState(false);
@@ -31,11 +32,15 @@ const InvtAdminDeadStockbyId = () => {
   const [serialNo, setserialNo] = useState([]);
   const [productData, setProductData] = useState();
   const [invtId, setInvtId] = useState();
+  const [inputValue, setValue] = useState();
+
+  console.log(inputValue,"inputValue")
 
   const {
     api_postHandoverReq,
     api_getStockRequetById,
     api_postSrerviceRequest,
+    api_iaDeadStockReqById
   } = ProjectApiList();
 
   const { id, page } = useParams();
@@ -131,7 +136,7 @@ const InvtAdminDeadStockbyId = () => {
   //get application details
   const getApplicationDetail = () => {
     setisLoading(true);
-    AxiosInterceptors.get(`${api_getStockRequetById}/${id}`, ApiHeader())
+    AxiosInterceptors.get(`${api_iaDeadStockReqById}/${id}`, ApiHeader())
       .then(async function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
@@ -172,44 +177,41 @@ const InvtAdminDeadStockbyId = () => {
   if (serviceRequestModal) {
     return (
       <>
-        <ServiceRequestModal
+        <RemoveQtyModal
           submit={serviceRequestHandler}
-          setserialNo={setserialNo}
-          serialNo={serialNo}
-          productData={productData}
           setServiceRequestModal={setServiceRequestModal}
-          service={service}
-          setInvtId={setInvtId}
+          setValue={setValue}
+          availableQuantity={applicationFullData?.quantity}
         />
       </>
     );
   }
 
-  if (confModal) {
-    return (
-      <>
-        <ConfirmationModal
-          confirmationHandler={handoverHandler}
-          handleCancel={handleCancel}
-          message={'Are you sure you want to "Handover" ?'}
-          //   sideMessage={'By clicking your data will proceed'}
-        />
-      </>
-    );
-  }
+  // if (confModal) {
+  //   return (
+  //     <>
+  //       <ConfirmationModal
+  //         confirmationHandler={handoverHandler}
+  //         handleCancel={handleCancel}
+  //         message={'Are you sure you want to "Handover" ?'}
+  //       //   sideMessage={'By clicking your data will proceed'}
+  //       />
+  //     </>
+  //   );
+  // }
 
-  if (successModal) {
-    return (
-      <>
-        <SuccessModal
-          confirmationHandler={confirmationHandler2}
-          message={"Your Request has been Handover Successfully"}
-          requestNoMsg={"Handover No:-"}
-          refNo={id}
-        />
-      </>
-    );
-  }
+  // if (successModal) {
+  //   return (
+  //     <>
+  //       <SuccessModal
+  //         confirmationHandler={confirmationHandler2}
+  //         message={"Your Request has been Handover Successfully"}
+  //         requestNoMsg={"Handover No:-"}
+  //         refNo={id}
+  //       />
+  //     </>
+  //   );
+  // }
   return (
     <>
       {isLoading && <LoaderApi />}
@@ -251,43 +253,56 @@ const InvtAdminDeadStockbyId = () => {
 
             <div className='grid md:grid-cols-4 gap-4 ml-8 pb-5'>
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold'>Employee Id</div>
+                <div className='md:w-auto w-[50%] font-bold'>Serial No</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.emp_id)}
+                  {nullToNA(applicationFullData?.serial_no)}
                 </div>
               </div>
 
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  Employee Name
+                  Category
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.emp_name)}
+                  {nullToNA(applicationFullData?.category)}
                 </div>
               </div>
 
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
                 <div className='md:w-auto w-[50%] font-bold '>
-                  Quantity Allotted{" "}
+                  Sub Category
                 </div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                  {nullToNA(applicationFullData?.allotted_quantity)}
+                  {nullToNA(applicationFullData?.subcategory)}
+                </div>
+              </div>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.quantity)}
                 </div>
               </div>
 
               <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>Date</div>
+                <div className='md:w-auto w-[50%] font-bold '>Created Date</div>
                 <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                   {nullToNA(applicationFullData?.createdAt?.split("T")[0])}
                 </div>
               </div>
+              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                <div className='md:w-auto w-[50%] font-bold '>Last Update</div>
+                <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  {nullToNA(applicationFullData?.updatedAt?.split("T")[0])}
+                </div>
+              </div>
+
             </div>
 
-            <h1 className='pl-8 font-semibold underline text-blue-950'>
+            {/* <h1 className='pl-8 font-semibold underline text-blue-950'>
               Assigned Products:
-            </h1>
+            </h1> */}
 
-            {applicationFullData?.stock_req_product?.map((data, index) => (
+            {/* {applicationFullData?.stock_req_product?.map((data, index) => (
               <div
                 key={index}
                 className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-4 rounded'
@@ -324,12 +339,12 @@ const InvtAdminDeadStockbyId = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            ))} */}
 
             <div className='p-5 pl-8'>
               <h1 className='font-bold '>Description</h1>
               <p className=' pt-2'>
-                {nullToNA(applicationFullData?.inventory?.description)}
+                {nullToNA(applicationFullData?.description)}
               </p>
             </div>
             <div className='flex justify-end w-full mb-5'>
@@ -362,72 +377,18 @@ const InvtAdminDeadStockbyId = () => {
             </div>
 
             <div className='space-x-3 flex items-end justify-center'>
-              {page == "inbox" && (
-                <>
-                  {/* {applicationFullData?.status === 0 && (
-                    <button
-                      className=' p-2 border border-indigo-500 text-white text-md sm:text-sm leading-tight rounded  hover:bg-white  hover:text-indigo-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#4338CA] active:shadow-lg transition duration-150 ease-in-out shadow-xl bg-[#4338CA]'
-                      onClick={forwardDAModal}
-                    >
-                      Forward to Departmental Admin
-                    </button>
-                  )} */}
 
-                  {((applicationFullData?.stock_req_product?.length === 1 &&
-                    applicationFullData?.stock_req_product[0]?.is_available) ||
-                    (applicationFullData?.stock_req_product?.length > 1 &&
-                      applicationFullData?.stock_req_product?.some(
-                        (data) => data.is_available === true
-                      ))) && (
-                    <>
-                      <div className='bg-[#359F6E] h-full rounded-md text-md flex items-center justify-center hover:bg-green-700'>
-                        <FileButton
-                          bg={"[#359F6E]"}
-                          hoverBg={"bg-green-700"}
-                          btnLabel={"Upload References"}
-                          imgRef={notesheetRef}
-                          setImageDoc={setImageDoc}
-                          setPreview={setPreview}
-                          textColor={"white"}
-                        />
-                      </div>
 
-                      <button
-                        className={buttonStyle}
-                        onClick={() => {
-                          setServiceRequestModal(true);
-                          setService("dead");
-                        }}
-                      >
-                        Dead Stock
-                      </button>
-
-                      {/* <button
-                        className={buttonStyle}
-                        onClick={() => {
-                          setServiceRequestModal(true);
-                          setService("return");
-                        }}
-                      >
-                        Return
-                      </button> */}
-
-                      {/* <button
-                        className={buttonStyle}
-                        onClick={() => {
-                          setServiceRequestModal(true);
-                          setService("warranty");
-                        }}
-                      >
-                        Warranty claims
-                      </button> */}
-                      {/* <button className={buttonStyle2} onClick={handoverModal}>
-                        Handover
-                      </button> */}
-                    </>
-                  )}
-                </>
-              )}
+              <button
+                className={buttonStyle}
+                onClick={() => {
+                  setServiceRequestModal(true);
+                  setService("dead");
+                }}
+              >
+                Add To Dead Stock
+              </button>
+              
             </div>
           </div>
         </div>

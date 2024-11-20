@@ -18,7 +18,7 @@ import TitleBar from "@/Components/Pages/Others/TitleBar";
 
 const InvtAdminDeadStock = () => {
   const [activeTab, setActiveTab] = useState("inbox");
-  const { api_fetchDaBoqListInbox, api_fetchDaBoqListOutbox } =
+  const { api_iaDeadStockReq, api_fetchDaBoqListOutbox, } =
     ProjectApiList();
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -27,14 +27,14 @@ const InvtAdminDeadStock = () => {
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
-          titleText={"Inventory Proposal"}
+          titleText={"Dead Stock"}
         />
       </div>
 
       <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
         <div>
           <h1 className='text-[35px] text-right pb-5 pr-5 font-bold pt-5'>
-            Inventory Proposal
+            Dead Stock
           </h1>
         </div>
 
@@ -71,7 +71,7 @@ const InvtAdminDeadStock = () => {
             <div>
               <DeadStockList
                 page='inbox'
-                api={api_fetchDaBoqListInbox}
+                api={api_iaDeadStockReq}
               />
             </div>
           )}

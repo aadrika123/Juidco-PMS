@@ -207,6 +207,8 @@ export default function ProjectApiList() {
 
     api_forwardStockReqToI: `${baseUrl}/api/pms/da/stock-request/to-ia`,
     api_iaStockReqInbox: `${baseUrl}/api/pms/ia/stock-request/`,
+    api_iaDeadStockReq: `${baseUrl}/api/pms/ia/deadstock`,
+    api_iaDeadStockReqById: `${baseUrl}/api/pms/ia/deadstockby`,
     api_iaStockReqNotify: `${baseUrl}/api/pms/ia/stock-request/notify/`,
     api_iaStockReqOubox: `${baseUrl}/api/pms/ia/stock-request/outbox`,
     api_iaStockReqApprove: `${baseUrl}/api/pms/ia/stock-request/approve`,
