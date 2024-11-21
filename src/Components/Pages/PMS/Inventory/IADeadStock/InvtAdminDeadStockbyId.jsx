@@ -40,7 +40,8 @@ const InvtAdminDeadStockbyId = () => {
     api_postHandoverReq,
     api_getStockRequetById,
     api_postSrerviceRequest,
-    api_iaDeadStockReqById
+    api_iaDeadStockReqById,
+    api_iaDeadStockUpdateReqById
   } = ProjectApiList();
 
   const { id, page } = useParams();
@@ -111,17 +112,14 @@ const InvtAdminDeadStockbyId = () => {
       return  false;
     }
     let body = {
-      products: serialNo,
-      service: service,
-      stock_handover_no: id,
-      inventoryId: applicationFullData?.stock_req_product[0]?.inventoryId,
+      quantity:inputValue
     };
 
-    AxiosInterceptors.post(`${api_postSrerviceRequest}`, body, ApiHeader())
+    AxiosInterceptors.post(`${api_iaDeadStockUpdateReqById}/${id}`, body, ApiHeader())
       .then(function (response) {
         if (response?.data?.status == true) {
           toast.success(`Request created successfully`);
-          navigate(`/dd-handover`);
+          getApplicationDetail()
         } else {
           toast(response?.data?.message, "error");
         }
@@ -391,7 +389,7 @@ const InvtAdminDeadStockbyId = () => {
                   setService("dead");
                 }}
               >
-                Add To Dead Stock
+                Update To Dead Stock
               </button>
               
             </div>

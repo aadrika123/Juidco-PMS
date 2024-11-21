@@ -66,7 +66,7 @@ function RemoveQtyModal({availableQuantity,value,setValue,setServiceRequestModal
               onClick={() => submit()}
               disabled={loader}
             >
-              Add
+              Update
             </button>
           </div>
         </div>
