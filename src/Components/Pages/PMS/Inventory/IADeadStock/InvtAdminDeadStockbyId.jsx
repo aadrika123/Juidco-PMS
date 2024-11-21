@@ -106,6 +106,10 @@ const InvtAdminDeadStockbyId = () => {
 
   const serviceRequestHandler = () => {
     setisLoading(true);
+    if(inputValue?.length == 0 ){
+      toast.error("Please Give Some Value");
+      return  false;
+    }
     let body = {
       products: serialNo,
       service: service,
@@ -181,6 +185,7 @@ const InvtAdminDeadStockbyId = () => {
           submit={serviceRequestHandler}
           setServiceRequestModal={setServiceRequestModal}
           setValue={setValue}
+          value={inputValue}
           availableQuantity={applicationFullData?.quantity}
         />
       </>

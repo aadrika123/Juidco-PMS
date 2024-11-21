@@ -13,7 +13,7 @@ import ThemeStyle from "@/Components/Common/ThemeStyle";
 import * as React from "react";
 
 
-function RemoveQtyModal(props) {
+function RemoveQtyModal({availableQuantity,value,setValue,setServiceRequestModal,submit,loader}) {
   const { labelStyle, loading } = ThemeStyle();
 
   let buttonStyle2 =
@@ -21,6 +21,7 @@ function RemoveQtyModal(props) {
   let inputStyle2 =
     " w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 darks:text-gray-300 darks:bg-gray-700 darks:border-gray-700 darks:focus:border-gray-600";
 
+    console.log("availableQuantity",availableQuantity)
   return (
     <>
       <div></div>
@@ -36,24 +37,34 @@ function RemoveQtyModal(props) {
             >
               Enter No of Quantity
             </label>
-            <input
-              className={inputStyle2}
-              type='number'
-              onChange={(e) => props?.setValue(e.target.value)}
-            />
+          <input
+  className={inputStyle2}
+  type="number"
+  value={value || ""}
+  onChange={(e) => {
+    const enteredValue = e.target.value;
+    if (enteredValue <= availableQuantity) {
+     setValue(enteredValue);
+    } else {
+      setValue(availableQuantity);
+    }
+  }}
+  min={0} 
+/>
+
 
           </div>
           <div className='flex justify-between mt-10 m-3'>
             <button
               className={`${buttonStyle2} pl-14 pr-14`}
-              onClick={() => props?.setServiceRequestModal(false)}
+              onClick={() => setServiceRequestModal(false)}
             >
               Cancel
             </button>
             <button
               className={`${buttonStyle2} pl-14 pr-14`}
-              onClick={() => props?.submit()}
-              disabled={props?.loader}
+              onClick={() => submit()}
+              disabled={loader}
             >
               Add
             </button>
