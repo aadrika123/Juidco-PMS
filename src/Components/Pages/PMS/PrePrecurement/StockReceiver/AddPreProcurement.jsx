@@ -44,9 +44,6 @@ function AddPreProcurement() {
   const { state } = useLocation();
 
   const { page } = useParams();
-
-  // console.log(page)
-
   const {
     api_addProcurement,
     // api_itemCategory,
@@ -100,7 +97,7 @@ function AddPreProcurement() {
       (data) => data?.id == id
     );
     setEditProcurementData(data);
-    // console.log(data?.category?.id)
+
     fetchSubCategory(data?.category?.id);
   };
 
@@ -111,7 +108,6 @@ function AddPreProcurement() {
       ApiHeader()
     )
       .then(function (response) {
-        // console.log(response?.data?.data, "res subcT");
         setProcItem(response?.data?.data);
       })
       .catch(function (error) {
@@ -122,7 +118,6 @@ function AddPreProcurement() {
   const applicationFullDataLength = applicationFullData
     ? Object.keys(applicationFullData).length
     : 0;
-  // console.log(applicationFullDataLength);
 
   // ══════════════════════════════║🔰 validationSchema 🔰║═══════════════════════════════════
 
@@ -168,20 +163,53 @@ function AddPreProcurement() {
     proc_item: selectedSupplier?.id || "df",
     supplier: supplierDetailsProc?.supplier_master?.id || "",
   };
-  // console.log(editProcurementData);
+  // const formik = useFormik({
+  //   initialValues: initialValues,
+  //   enableReinitialize: true,
+  //   onSubmit: (values, { resetForm }) => {
+  //     const brandName = getBrandName(values.brand);
+  //     setCategorySelected(values.itemCategory);
+  //     values = { ...values, brand: brandName };
+  //     setFormData((prev) => [...prev, values]);
+  //     resetForm();
+  //   },
+  //   validationSchema,
+  // });
+
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values, { resetForm }) => {
       const brandName = getBrandName(values.brand);
-      setCategorySelected(values.itemCategory);
-      values = { ...values, brand: brandName };
-      // console.log(values,"val in onsubmit")
-      setFormData((prev) => [...prev, values]);
-      resetForm();
+  
+      // Find the description text by matching the id
+      const selectedDescription = descrip.find(
+        (desc) => desc.id === values.description
+      );
+  
+      // Normalize data
+      const normalizedData = {
+        ...values,
+        brand: brandName,
+        brandtxt: values.brandtxt || "",
+        subcategory: values.subcategory?.id || values.subcategory,
+        subcategorytxt: values.subcategory?.name || "",
+        description: values.description?.id || values.description, // Keep id of description
+        descriptionname: selectedDescription ? selectedDescription.description : "", // Save description name
+        itemCategory: values.itemCategory?.id || values.itemCategory,
+        total_rate: values.quantity * values.rate,
+        unit: values.unit?.id || values.unit,
+        proc_item: values.proc_item || "",
+        supplier: values.supplier || "",
+      };
+  
+      setFormData((prev) => [...prev, normalizedData]); // Add normalized data to formData
+      // resetForm(); // Reset form after submission
     },
     validationSchema,
   });
+  
+  
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
@@ -195,7 +223,6 @@ function AddPreProcurement() {
         }
       })
       .catch(function (error) {
-        console.log("==2 details by id error...", error);
         toast.error(error?.response?.data?.message);
         // seterroState(true);
       })
@@ -222,18 +249,14 @@ function AddPreProcurement() {
       });
   };
 
-  // console.log(itemCategory,"itemCategory")
 
   const fetchSubCategory = (value) => {
     // setCategorySelected(value);
-    // console.log(value,"fetchSubCategory")
     setItemCategory(value);
     // getDesc(value);
-    // console.log(e?.target?.value,"Subcategory");
 
     AxiosInterceptors.get(`${api_getActiveSubCategory}/${value}`, ApiHeader())
       .then(function (response) {
-        // console.log(response?.data?.data, "res subcT");
         setSubCategory(response?.data?.data);
       })
       .catch(function (error) {
@@ -253,8 +276,6 @@ function AddPreProcurement() {
   };
 
   const getDesc = (subCat) => {
-    // console.log(newSubCategory,"newSubCategory");
-    // console.log(subCat, "subCat", itemCategory, "itemCategory");
 
     AxiosInterceptors.get(
       `${api_getActiveDesc}?category=${itemCategory}&scategory=${subCat}`,
@@ -285,7 +306,6 @@ function AddPreProcurement() {
 
   // submit form
   const submitForm = () => {
-    // console.log("data in form", formData);
     setisLoading(true);
     let requestBody = {
       category: itemCategory,
@@ -293,7 +313,6 @@ function AddPreProcurement() {
       procurement: formData,
       is_rate_contract,
     };
-    // console.log(requestBody, "requestBody");
     let url;
     // let requestBody;
 
@@ -381,8 +400,7 @@ function AddPreProcurement() {
   const handleOnChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("name",name)
-    console.log("value",value)
+
 
     // {
     //   name == "itemCategory" && setNewSubCategory(value,"one");
@@ -424,7 +442,6 @@ function AddPreProcurement() {
   };
 
   const getSupplierName = (id) => {
-    // console.log(id, "id");
     // formik.setFieldValue("proc_item", String(id));
     // const data = procItem[id];
 
@@ -434,7 +451,6 @@ function AddPreProcurement() {
     setSelectedSupplier(data);
   };
 
-  // console.log("object", procItem[0]?.subcategory?.id);
 
   const setField = () => {
     formik.setFieldValue("subcategory", procItem[0]?.subcategory?.id);
@@ -482,9 +498,19 @@ function AddPreProcurement() {
     );
   }
 
-  // console.log(formData)
-  // console.log("applicationFullDataapplicationFullData",formData)
-  console.log("formik.values",formik.values)
+
+
+  const handleAddDescription = () => {
+    if (selectedCategory && description) {
+      onAddDescription({ category: selectedCategory, description });
+      setDescription(""); // Clear the description for future entries
+    }
+  };
+
+
+  console.log("make changes here ",descrip)
+  console.log("make changes in the data main ",formData)
+
 
   return (
     <>
@@ -832,20 +858,17 @@ function AddPreProcurement() {
                                   </>
                                 )} */}
                                 <td className="px-6 py-4 w-[5rem] break-words">
-                                  {descrip?.length && (
+                                  {/* {descrip?.length && (
                                     <>
                                       {is_rate_contract
-                                        ? procItem.find(
-                                            (item) => item.id === form.proc_item
-                                          )?.description
+                                        ? procItem.find((item) => item.id === form.proc_item)?.description
                                         : isDescTextOpen
-                                        ? form.description
-                                        : descrip.find(
-                                            (data) =>
-                                              data.id === form?.description
-                                          )?.description}
+                                          ? form.description || descrip.find((data) => data.id === form.description)?.description
+                                          : descrip.find((data) => data.id === form.description)?.description
+                                      }
                                     </>
-                                  )}
+                                  )} */}
+                                  {form.descriptionname}
                                 </td>
                               </td>
                               <td className="px-6 py-4 ">{form.quantity}</td>
@@ -1054,7 +1077,7 @@ function AddPreProcurement() {
 
                       <div className="form-group flex-shrink max-w-full px-4 w-full md:w-full mb-5">
                         <label className={`${labelStyle} inline-block mb-2`}>
-                          Description
+                          Description 
                         </label>
 
                         {isDescTextOpen || page === "edit" ? (
@@ -1079,7 +1102,7 @@ function AddPreProcurement() {
                           </div>
                         ) : (
                           <>
-                            <select
+                             <select
                               {...formik.getFieldProps("description")}
                               className={`${inputStyle} inline-block w-full relative`}
                               onChange={(e) => {
@@ -1246,7 +1269,6 @@ function AddPreProcurement() {
                     <button
                       type="button"
                       onClick={() => setIsModalOpen(true)}
-                      // onClick={() => console.log(formData)}
                       className={`bg-[#4338CA] border-blue-900 border hover:bg-[#4478b7] px-7 py-3 text-white font-semibold rounded leading-5 shadow-lg float-right
                       `}
                       disabled={isLoading}
