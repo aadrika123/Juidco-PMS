@@ -9,16 +9,16 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 import React, { useState } from "react";
-import ServiceProposalList from "./ServiceProposalList";
+import DeadStockList from "./DeadStockList";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import { FaChartPie } from "react-icons/fa";
 import { contextVar } from "@/Components/context/contextVar";
 import { useContext } from "react";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
 
-const DdServiceReqTabs = () => {
+const InvtAdminDeadStock = () => {
   const [activeTab, setActiveTab] = useState("inbox");
-  const { api_approveServiceRequestDD, api_approveServiceRequestDDOutbox ,api_employeeServiceOutbox} =
+  const { api_iaDeadStockReq, api_fetchDaBoqListOutbox, } =
     ProjectApiList();
   const { titleBarVisibility } = useContext(contextVar);
 
@@ -27,14 +27,14 @@ const DdServiceReqTabs = () => {
       <div className=''>
         <TitleBar
           titleBarVisibility={titleBarVisibility}
-          titleText={"Inventory Proposal"}
+          titleText={"Dead Stock"}
         />
       </div>
 
       <div className='container mx-auto bg-white rounded border border-blue-500 mt-6 shadow-xl'>
         <div>
           <h1 className='text-[35px] text-right pb-5 pr-5 font-bold pt-5'>
-            Inventory Proposal
+            Dead Stock
           </h1>
         </div>
 
@@ -51,7 +51,7 @@ const DdServiceReqTabs = () => {
               <FaChartPie className='m-1 text-[1rem]' />
               Inbox
             </button>
-            {/* <button
+            <button
               className={`ml-4 py-2 px-4 ${
                 activeTab === "outbox"
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
@@ -61,17 +61,6 @@ const DdServiceReqTabs = () => {
             >
               <FaChartPie className='m-1 text-[1rem]' />
               Outbox
-            </button> */}
-            <button
-              className={`ml-4 py-2 px-4 ${
-                activeTab === "emp_request"
-                  ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
-                  : "text-gray-500"
-              } focus:outline-none flex border border-[#4338ca] rounded`}
-              onClick={() => setActiveTab("emp_request")}
-            >
-              <FaChartPie className='m-1 text-[1rem]' />
-              Employee Requests
             </button>
           </div>
         </div>
@@ -80,22 +69,17 @@ const DdServiceReqTabs = () => {
         <div className='mt-4'>
           {activeTab === "inbox" && (
             <div>
-              <ServiceProposalList page='inbox' api={api_approveServiceRequestDD} />
-            </div>
-          )}
-          {/* {activeTab === "outbox" && (
-            <div>
-              <ServiceProposalList
-                page='outbox'
-                api={api_approveServiceRequestDDOutbox}
+              <DeadStockList
+                page='inbox'
+                api={api_iaDeadStockReq}
               />
             </div>
-          )} */}
-          {activeTab === "emp_request" && (
+          )}
+          {activeTab === "outbox" && (
             <div>
-              <ServiceProposalList
-                page='emp_request'
-                api={api_employeeServiceOutbox}
+              <DeadStockList
+                page='outbox'
+                api={api_fetchDaBoqListOutbox}
               />
             </div>
           )}
@@ -105,4 +89,4 @@ const DdServiceReqTabs = () => {
   );
 };
 
-export default DdServiceReqTabs;
+export default InvtAdminDeadStock;

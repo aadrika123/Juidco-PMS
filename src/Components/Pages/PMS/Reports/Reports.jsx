@@ -1417,6 +1417,9 @@ export default function Reports() {
 
   //setting application type on basis of selected levels---
 
+
+  console.log(formik.values.levels,"levels")
+
   const applicationType =
     formik.values.levels === "da" || formik.values.levels === "dd"
       ? levelwiseModuleDd

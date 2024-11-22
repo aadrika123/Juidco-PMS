@@ -126,6 +126,7 @@ const ViewInventoryDetailsById = (props) => {
 
     AxiosInterceptors.post(`${api_iaStockReqApprove}`, body, ApiHeader())
       .then(function (response) {
+        console.log("response",response)
         if (response?.data?.status == true) {
           toast.success(`Assign to Distributor Successfully`);
           setServiceRequestModal(false);
@@ -136,7 +137,8 @@ const ViewInventoryDetailsById = (props) => {
       })
       .catch(function (error) {
         console.log("errorrr.... ", error);
-        toast.error(error?.response?.data?.error);
+        // toast.error(error?.response?.data?.error);
+        toast.error("Available quantity not sufficient");
         // setdeclarationStatus(false);
       })
       .finally(() => {

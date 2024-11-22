@@ -1,6 +1,6 @@
 // 👉 Importing Packages 👈
 import "animate.css";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
@@ -111,6 +111,8 @@ import IaWarrantyClaim from "./Components/Pages/PMS/ServiceRequest/IA/IaWarranty
 import StockHistoryReportById from "./Components/Pages/PMS/Reports/StockHistoryReport/StockHistoryReportById";
 import SearchInventoryReports from "./Components/Pages/PMS/Reports/SearchInventory/SearchInventoryReports";
 import SearchInvtById from "./Components/Pages/PMS/Reports/SearchInventory/SearchInvtById";
+import InvtAdminDeadStock from "./Components/Pages/PMS/Inventory/IADeadStock/InvtAdminDeadStock";
+import InvtAdminDeadStockbyId from "./Components/Pages/PMS/Inventory/IADeadStock/InvtAdminDeadStockbyId";
 
 const queryClient = new QueryClient();
 
@@ -133,10 +135,18 @@ function App() {
   ); // toggle state for Side Bar
 
   // 👉 Manage sidebar to hide and show for responsiveness 👈
-  window.addEventListener("resize", function () {
-    window.innerWidth <= 763 && settoggleBar(false);
-    window.innerWidth >= 1280 && settoggleBar(true);
-  });
+  // window.addEventListener("resize", function () {
+  //   window.innerWidth <= 763 && settoggleBar(false);
+  //   window.innerWidth >= 1280 && settoggleBar(true);
+  // });
+
+  useEffect(() => {
+    const handleResize = () => {
+      settoggleBar(window.innerWidth > 763);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // 👉 Context data used globally 👈
   const contextData = {
@@ -522,6 +532,14 @@ function App() {
     {
       path: "/dead-stock",
       element: <DeadStock />,
+    },
+    {
+      path: "/ia-dead-stock",
+      element: <InvtAdminDeadStock />,
+    },
+    {
+      path: "/ia-dead-stock-byId/:id/:page",
+      element: <InvtAdminDeadStockbyId />,
     },
 
   ];

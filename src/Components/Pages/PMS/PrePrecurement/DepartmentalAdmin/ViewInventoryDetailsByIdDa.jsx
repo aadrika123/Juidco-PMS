@@ -37,6 +37,7 @@ const ViewInventoryDetailsById = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const [isModalOpen4, setIsModalOpen4] = useState(false);
   const [returnModal, setReturnModal] = useState(false);
   const [remark, setRemark] = useState({ remark: "" });
   const [imageDoc, setImageDoc] = useState();
@@ -48,6 +49,7 @@ const ViewInventoryDetailsById = (props) => {
     api_postForwardtoAcc,
     api_postRejectStockReq,
     api_forwardStockReqToI,
+    api_forwardStockDeadReqToI
   } = ProjectApiList();
 
   const { titleBarVisibility } = useContext(contextVar);
@@ -180,12 +182,25 @@ const ViewInventoryDetailsById = (props) => {
       });
   };
 
+  let arr = [];
+  const getSerilNo = () => {
+    for (let i = 0; i < applicationFullData?.emp_service_request.length; i++) {
+      arr.push(applicationFullData?.emp_service_request[i]?.service_no)
+    }
+  }
+
+  getSerilNo()
+  // console.log("arrarr", arr)
+
   const forwardToIa = () => {
     setisLoading(true);
-
+    // getSerilNo()
     AxiosInterceptors.post(
       `${api_forwardStockReqToI}`,
-      { stock_handover_no: [id] },
+      {
+        stock_handover_no: [id],
+        service_no: arr
+      },
       ApiHeader()
     )
       .then(function (response) {
@@ -210,6 +225,46 @@ const ViewInventoryDetailsById = (props) => {
       });
   };
 
+  const forwardToIaDead = () => {
+    setisLoading(true);
+  
+    const dataToSend = {
+      stock_handover_no: [id],
+      inventoryId: applicationFullData?.inventory?.id  
+    };
+  
+    if (arr && arr.length > 0) {
+      dataToSend.service_no = arr;
+    }
+
+  
+    AxiosInterceptors.post(
+      `${api_forwardStockDeadReqToI}`,
+      dataToSend, 
+      ApiHeader()
+    )
+      .then(function (response) {
+        if (response?.data?.status === true) {
+          toast.success("Successfully forwarded to Inventory Admin");
+          navigate("/da-inventory-proposal");
+        } else {
+          // Handle failure if needed
+          toast.error(response?.data?.message || "Something went wrong");
+        }
+      })
+      .catch(function (error) {
+        toast.error("Error in forwarding to Inventory Admin");
+        navigate("/da-inventory-proposal");
+        console.log("Error:", error);
+      })
+      .finally(() => {
+        setisLoading(false);
+        setIsModalOpen(false);
+      });
+  };
+  
+
+
   if (isModalOpen3) {
     return (
       <>
@@ -219,6 +274,18 @@ const ViewInventoryDetailsById = (props) => {
           loadingState={isLoading}
           message={"Are you sure you want to Reject this Stock Request ?"}
           setData={setRemark}
+        />
+      </>
+    );
+  }
+  if (isModalOpen4) {
+    return (
+      <>
+        <StockReceiverModal
+          // postBackToSR={postBackToSR}
+          forwardToIa={forwardToIaDead}
+          setIsModalOpen={setIsModalOpen}
+          loader={isLoading}
         />
       </>
     );
@@ -302,13 +369,22 @@ const ViewInventoryDetailsById = (props) => {
               </h2>
             </div>
 
-            <div className='flex justify-between'>
+            <div className=''>
               <div className='pl-8 pb-5 text-[1.2rem] text-[#4338CA]'>
                 <h1 className='font-bold'>
                   Stock Handover No <span className='text-black'>:</span>
                   <span className='font-light'>
                     {" "}
                     {nullToNA(applicationFullData?.stock_handover_no)}
+                  </span>
+                </h1>
+              </div>
+              <div className='pl-8 pb-5 text-[1.2rem] text-[#4338CA]'>
+                <h1 className='font-bold'>
+                  Service <span className='text-black'>:</span>
+                  <span className='font-light capitalize'>
+                    {" "}
+                    {nullToNA(applicationFullData?.emp_service_request[0]?.service)}
                   </span>
                 </h1>
               </div>
@@ -499,7 +575,7 @@ const ViewInventoryDetailsById = (props) => {
                       setImageDoc={setImageDoc}
                       setPreview={setPreview}
                       textColor={"white"}
-                      // paddingY={"8"}
+                    // paddingY={"8"}
                     />
                   </div>
                 </>
@@ -512,6 +588,16 @@ const ViewInventoryDetailsById = (props) => {
                   <button
                     className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
                     onClick={() => setIsModalOpen(true)}
+                  >
+                    Forward to Inventory Admin
+                  </button>
+                )}
+
+              {page === "inbox" &&
+                (applicationFullData?.status === 6) && (
+                  <button
+                    className={`bg-[#4338ca] hover:bg-blue-900 px-7 py-2 text-white font-semibold rounded leading-5 shadow-lg float-right `}
+                    onClick={() => setIsModalOpen4(true)}
                   >
                     Forward to Inventory Admin
                   </button>
