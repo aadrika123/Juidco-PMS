@@ -57,6 +57,7 @@ function AddPreProcurement() {
     api_getProcItemRateContract,
     api_getActiveDesc,
     api_editProcurementById,
+    api_getallProcItemRateContract
   } = ProjectApiList();
 
   const [isLoading, setisLoading] = useState(false);
@@ -77,6 +78,8 @@ function AddPreProcurement() {
   );
   const [procItem, setProcItem] = useState([]);
   const [formData, setFormData] = useState([]);
+  const [chooseItems, setChooseItems] = useState([]);
+  const [supplierData, setSupplierData] = useState([]);
   const [categorySelected, setCategorySelected] = useState();
   const [editProcurementData, setEditProcurementData] = useState();
   const [selectedSupplier, setSelectedSupplier] = useState();
@@ -102,13 +105,33 @@ function AddPreProcurement() {
   };
 
   //if rate contract selected then,to chose items
-  const getProcItemRateContract = () => {
+  const getProcItemRateContract = (data) => {
     AxiosInterceptors.get(
       `${api_getProcItemRateContract}/${itemCategory}`,
       ApiHeader()
     )
       .then(function (response) {
         setProcItem(response?.data?.data);
+        console.log("response?.data?.data",response?.data?.data)
+
+if(response?.data?.data){
+        setSubCategoryData(data,response?.data?.data)
+}
+  
+      })
+      .catch(function (error) {
+        toast.error("Something went wrong");
+      });
+  };
+
+  const getAllProcItemRateContract = () => {
+    AxiosInterceptors.get(
+      `${api_getallProcItemRateContract}/${itemCategory}`,
+      ApiHeader()
+    )
+      .then(function (response) {
+        console.log("response?.data?.data?.dataresponse?.data?.data?.data",response?.data?.data?.data)
+        setSupplierData(response?.data?.data?.data);
       })
       .catch(function (error) {
         toast.error("Something went wrong");
@@ -181,12 +204,12 @@ function AddPreProcurement() {
     enableReinitialize: true,
     onSubmit: (values, { resetForm }) => {
       const brandName = getBrandName(values.brand);
-  
+
       // Find the description text by matching the id
       const selectedDescription = descrip.find(
         (desc) => desc.id === values.description
       );
-  
+
       // Normalize data
       const normalizedData = {
         ...values,
@@ -202,14 +225,14 @@ function AddPreProcurement() {
         proc_item: values.proc_item || "",
         supplier: values.supplier || "",
       };
-  
+
       setFormData((prev) => [...prev, normalizedData]); // Add normalized data to formData
       // resetForm(); // Reset form after submission
     },
     validationSchema,
   });
-  
-  
+
+
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
@@ -396,15 +419,23 @@ function AddPreProcurement() {
     const name = brand?.find((obj) => obj.id === id)?.name;
     return name;
   };
+  console.log("formik",formik)
 
   const handleOnChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
+    console.log("datatatatat",name,"asdasdas",value)
 
 
     // {
     //   name == "itemCategory" && setNewSubCategory(value,"one");
     // }
+    {
+      name == "supplier" && setSubCategoryData(value);
+    }
+    {
+      name == "supplier" && getProcItemRateContract();
+    }
     {
       name == "itemCategory" && value != "others" && fetchSubCategory(value);
     }
@@ -436,15 +467,13 @@ function AddPreProcurement() {
           allowNumberInput(value, formik.values.total_rate, 100)
         );
     }
-    {
-      name == "supplier" && setSupplierDetails(value);
-    }
+   
   };
 
   const getSupplierName = (id) => {
     // formik.setFieldValue("proc_item", String(id));
     // const data = procItem[id];
-    console.log("procItem",procItem)
+    console.log("procItem", procItem)
 
     const data = procItem?.find((data) => data.id === id);
 
@@ -509,9 +538,23 @@ function AddPreProcurement() {
   };
 
 
-  console.log("make changes here ",descrip)
-  console.log("make changes in the data main ",formData)
 
+  // console.log("supplierData",supplierData)
+
+
+  const setSubCategoryData =async (data,procItem) => {
+
+console.log("desired data",data)
+    console.log("procItem",procItem)
+    const filteredData = procItem?.filter(item =>
+      item?.rate_contract_supplier?.some(supplier => supplier?.id === data)
+    );
+const vallll = filteredData;
+console.log("vallllvallll",vallll)
+console.log("vallllvallll",filteredData)
+    setChooseItems(filteredData);
+
+  }
 
   return (
     <>
@@ -551,7 +594,7 @@ function AddPreProcurement() {
                         page == "edit" ||
                         is_rate_contract
                       }
-                      // defaultValue={categorySelected || "select"}
+                    // defaultValue={categorySelected || "select"}
                     >
                       <option value="">select</option>
 
@@ -582,7 +625,8 @@ function AddPreProcurement() {
                         disabled={!itemCategory}
                         onChange={() => {
                           setRateContract((prev) => !prev);
-                          getProcItemRateContract();
+                          // getProcItemRateContract();
+                          getAllProcItemRateContract();
                         }}
                       />
                       <p className="font-semibold whitespace-nowrap">
@@ -604,7 +648,7 @@ function AddPreProcurement() {
                       <select
                         {...formik.getFieldProps("supplier")}
                         className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
+                        onChange={(e)=>{formik.handleChange;getProcItemRateContract(e.target.value);}}
                         disabled={
                           formik.values.quantity || formData?.length > 0
                         }
@@ -612,7 +656,18 @@ function AddPreProcurement() {
                       >
                         <option value="select">select</option>
 
-                        {selectedSupplier?.rate_contract_supplier?.length &&
+                        {supplierData?.length &&
+                          supplierData?.map(
+                            (items, index) => (
+                              <option
+                                key={index}
+                                value={items?.id}
+                              >
+                                {items?.supplier_master?.name}
+                              </option>
+                            )
+                          )}
+                        {/* {selectedSupplier?.rate_contract_supplier?.length &&
                           selectedSupplier?.rate_contract_supplier?.map(
                             (items, index) => (
                               <option
@@ -622,7 +677,7 @@ function AddPreProcurement() {
                                 {items?.supplier_master?.name}
                               </option>
                             )
-                          )}
+                          )} */}
                       </select>
                     </div>
 
@@ -684,14 +739,14 @@ function AddPreProcurement() {
                           onChange={(e) => {
                             formik.setFieldValue("proc_item", e.target.value);
                             getDesc(procItem[0]?.subcategory?.id);
-                            getSupplierName(e.target.value);
+                            // getSupplierName(e.target.value);
                           }}
                           value={formik.values.proc_item}
                         >
                           <MenuItem value="df">select</MenuItem>
 
-                          {procItem?.length &&
-                            procItem?.map((items, index) => (
+                          {chooseItems?.length &&
+                            chooseItems?.map((items, index) => (
                               <MenuItem
                                 id={items?.id}
                                 key={items?.id}
@@ -800,8 +855,8 @@ function AddPreProcurement() {
                                 {form.subcategorytxt
                                   ? form.subcategorytxt
                                   : subcategory?.find(
-                                      (subcat) => subcat.id === form.subcategory
-                                    )?.name}
+                                    (subcat) => subcat.id === form.subcategory
+                                  )?.name}
                               </td>
                               <td className="px-6 py-4">
                                 {form.brandtxt ? form.brandtxt : form?.brand}
@@ -883,7 +938,7 @@ function AddPreProcurement() {
 
                         <p className="text-red-500 text-xs ">
                           {formik.touched.subcategory &&
-                          formik.errors.subcategory
+                            formik.errors.subcategory
                             ? formik.errors.subcategory
                             : null}
                         </p>
@@ -955,7 +1010,7 @@ function AddPreProcurement() {
 
                       <div className="form-group flex-shrink max-w-full px-4 w-full md:w-full mb-5">
                         <label className={`${labelStyle} inline-block mb-2`}>
-                          Description 
+                          Description
                         </label>
 
                         {isDescTextOpen || page === "edit" ? (
@@ -967,7 +1022,7 @@ function AddPreProcurement() {
                               onChange={formik.handleChange}
                               value={
                                 is_rate_contract
-                                  ? formik.values.description 
+                                  ? formik.values.description
                                   : formik.values.description
                               }
                             />
@@ -980,7 +1035,7 @@ function AddPreProcurement() {
                           </div>
                         ) : (
                           <>
-                             <select
+                            <select
                               {...formik.getFieldProps("description")}
                               className={`${inputStyle} inline-block w-full relative`}
                               onChange={(e) => {
@@ -993,7 +1048,7 @@ function AddPreProcurement() {
                               }}
                               value={
                                 is_rate_contract
-                                  ? formik.values.description || "" 
+                                  ? formik.values.description || ""
                                   : formik.values.description || ""
                               }
                             >
@@ -1015,7 +1070,7 @@ function AddPreProcurement() {
 
                         <p className="text-red-500 text-xs">
                           {formik.touched.description &&
-                          formik.errors.description
+                            formik.errors.description
                             ? formik.errors.description
                             : null}
                         </p>
@@ -1097,7 +1152,7 @@ function AddPreProcurement() {
                             />
                             <p className="text-red-500 text-xs ">
                               {formik.touched.total_rate &&
-                              formik.errors.total_rate
+                                formik.errors.total_rate
                                 ? formik.errors.total_rate
                                 : null}
                             </p>
