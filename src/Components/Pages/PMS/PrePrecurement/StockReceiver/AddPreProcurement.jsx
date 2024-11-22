@@ -444,6 +444,7 @@ function AddPreProcurement() {
   const getSupplierName = (id) => {
     // formik.setFieldValue("proc_item", String(id));
     // const data = procItem[id];
+    console.log("procItem",procItem)
 
     const data = procItem?.find((data) => data.id === id);
 
@@ -668,38 +669,6 @@ function AddPreProcurement() {
 
                 {is_rate_contract && (
                   <div className="flex gap-2 items-center px-8 mt-4">
-                    {/* <div className="form-group flex-shrink max-w-full w-1/2 px-4">
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                        Select Supplier
-                        <span className="text-xl text-red-500 pl-1">
-                          *
-                        </span>{" "}
-                      </label>
-                      <select
-                        {...formik.getFieldProps("supplier")}
-                        className={`${inputStyle} inline-block w-full relative`}
-                        onChange={formik.handleChange}
-                        disabled={
-                          formik.values.quantity || formData?.length > 0
-                        }
-                        value={formik.values.supplier}
-                      >
-                        <option value="select">select</option>
-
-                        {selectedSupplier?.rate_contract_supplier?.length &&
-                          selectedSupplier?.rate_contract_supplier?.map(
-                            (items, index) => (
-                              <option
-                                key={index}
-                                value={items?.supplier_master?.id}
-                              >
-                                {items?.supplier_master?.name}
-                              </option>
-                            )
-                          )}
-                      </select>
-                    </div> */}
-
                     <div className="form-group flex-shrink max-w-full w-1/2 px-4 ">
                       <label className={`${labelStyle} inline-block mb-2`}>
                         Choose Item
@@ -771,9 +740,6 @@ function AddPreProcurement() {
                             Total Rate
                           </th>
                           <th scope="col" className="px-6 py-3">
-                            {/* <span className=' hover:text-red-500'>
-                              <MdOutlineDelete />
-                            </span> */}
                           </th>
                         </tr>
                       </thead>
@@ -847,27 +813,7 @@ function AddPreProcurement() {
                                 }
                               </td>
                               <td className="px-6 py-4 w-[5rem] break-words">
-                                {/* {descrip?.length && (
-                                  <>
-                                    {isDescTextOpen || is_rate_contract
-                                      ? form.description
-                                      : descrip?.find(
-                                          (data) =>
-                                            data.id === form?.description
-                                        )?.description}
-                                  </>
-                                )} */}
                                 <td className="px-6 py-4 w-[5rem] break-words">
-                                  {/* {descrip?.length && (
-                                    <>
-                                      {is_rate_contract
-                                        ? procItem.find((item) => item.id === form.proc_item)?.description
-                                        : isDescTextOpen
-                                          ? form.description || descrip.find((data) => data.id === form.description)?.description
-                                          : descrip.find((data) => data.id === form.description)?.description
-                                      }
-                                    </>
-                                  )} */}
                                   {form.descriptionname}
                                 </td>
                               </td>
@@ -973,7 +919,6 @@ function AddPreProcurement() {
                       <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/3 mb-4">
                         <label className={`${labelStyle} inline-block mb-2`}>
                           Brand
-                          {/* <span className='text-xl text-red-500 pl-1'>*</span> */}
                         </label>
 
                         {formik.values.itemCategory == "others" ? (
@@ -1008,73 +953,6 @@ function AddPreProcurement() {
                         </p>
                       </div>
 
-                      {/* <div className="form-group flex-shrink max-w-full px-4 w-full md:w-full mb-5">
-                        <label className={`${labelStyle} inline-block mb-2`}>
-                          Description
-                        </label>
-                        {isDescTextOpen || page === "edit" ? (
-                          <div className="flex gap-0 relative">
-                            <textarea
-                              type="text"
-                              name="description"
-                              className={`${inputStyle} inline-block w-full relative h-24`}
-                              onChange={formik.handleChange}
-                              value={
-                                is_rate_contract
-                                  ? formik.values.description
-                                  : formik.values.description
-                              }
-                              // disabled={is_rate_contract}
-                            />
-                            <div onClick={() => setIsDescTextOpen(false)}>
-                              <ImCancelCircle
-                                fontSize={20}
-                                className="absolute right-0 top-[2px]"
-                              />
-                            </div>
-                          </div>
-                        ) : (
-                          <>
-                          <select
-                            {...formik.getFieldProps("description")}
-                            className={`${inputStyle} inline-block w-full relative`}
-                            onChange={(e) => {
-                              if (e.target.value === "others") {
-                                setIsDescTextOpen(true);
-                              } else {
-                                formik.handleChange(e);
-                              }
-                            }}
-                            value={
-                              is_rate_contract
-                                ? formik.values.proc_item
-                                : formik.values.description
-                            }
-                          >
-                            <option value={""}>select</option>
-                            {descrip?.length &&
-                              descrip?.map((items) => (
-                                <option
-                                  key={items?.id}
-                                  value={items?.id}
-                                  className="w-10"
-                                >
-                                  {items?.description}
-                                </option>
-                              ))}
-                            <option value={"others"}>Others</option>
-                          </select>
-                        </>
-                        )}
-
-                        <p className="text-red-500 text-xs ">
-                          {formik.touched.description &&
-                          formik.errors.description
-                            ? formik.errors.description
-                            : null}
-                        </p>
-                      </div> */}
-
                       <div className="form-group flex-shrink max-w-full px-4 w-full md:w-full mb-5">
                         <label className={`${labelStyle} inline-block mb-2`}>
                           Description 
@@ -1089,7 +967,7 @@ function AddPreProcurement() {
                               onChange={formik.handleChange}
                               value={
                                 is_rate_contract
-                                  ? formik.values.description // Use correct value for `is_rate_contract`
+                                  ? formik.values.description 
                                   : formik.values.description
                               }
                             />
@@ -1110,18 +988,12 @@ function AddPreProcurement() {
                                 if (selectedValue === "others") {
                                   setIsDescTextOpen(true);
                                 } else {
-                                  // formik.setFieldValue(
-                                  //   is_rate_contract
-                                  //     ? "description"
-                                  //     : "description",
-                                  //   selectedValue
-                                  // );
                                   formik.setFieldValue("description", selectedValue);
                                 }
                               }}
                               value={
                                 is_rate_contract
-                                  ? formik.values.description || "" // Ensure proc_item reflects the correct selection
+                                  ? formik.values.description || "" 
                                   : formik.values.description || ""
                               }
                             >

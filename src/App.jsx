@@ -1,6 +1,6 @@
 // 👉 Importing Packages 👈
 import "animate.css";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
@@ -135,10 +135,18 @@ function App() {
   ); // toggle state for Side Bar
 
   // 👉 Manage sidebar to hide and show for responsiveness 👈
-  window.addEventListener("resize", function () {
-    window.innerWidth <= 763 && settoggleBar(false);
-    window.innerWidth >= 1280 && settoggleBar(true);
-  });
+  // window.addEventListener("resize", function () {
+  //   window.innerWidth <= 763 && settoggleBar(false);
+  //   window.innerWidth >= 1280 && settoggleBar(true);
+  // });
+
+  useEffect(() => {
+    const handleResize = () => {
+      settoggleBar(window.innerWidth > 763);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // 👉 Context data used globally 👈
   const contextData = {
