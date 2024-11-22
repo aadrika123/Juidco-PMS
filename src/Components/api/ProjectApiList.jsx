@@ -269,6 +269,7 @@ export default function ProjectApiList() {
     api_addUnitPrice: `${baseUrl}/api/pms/ta/add-unit-price`,
     api_getUnitPrice: `${baseUrl}/api/pms/bidding/procurement-details`,
     api_getProcItemRateContract: `${baseUrl}/api/pms/bidding/rate-contract-details`,
+    api_getallProcItemRateContract: `${baseUrl}/api/pms/bidding/all-rate-contract-details`,
 
     //service request
     api_getServiceRequestId: `${baseUrl}/api/pms/service-request`,
