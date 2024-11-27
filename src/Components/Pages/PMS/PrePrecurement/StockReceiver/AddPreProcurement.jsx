@@ -156,12 +156,15 @@ if(response?.data?.data){
   });
 
   const setSupplierDetails = (value) => {
+    console.log("calleed at 159",value)
     const supplierUnitPrice = selectedSupplier?.rate_contract_supplier?.find(
       (supplier) => supplier?.supplier_master?.id === value
     );
+    console.log("supplierUnitPricesupplierUnitPrice",supplierUnitPrice)
     setSupplierDetailsProc(supplierUnitPrice);
     // formik.setFieldValue("rate", supplierUnitPrice);
   };
+  console.log("supplierUnitPricesupplierUnitPrice",supplierDetailsProc)
 
   // intitial value
   const initialValues = {
@@ -180,7 +183,7 @@ if(response?.data?.data){
     description:
       selectedSupplier?.description || editProcurementData?.description || "",
     quantity: editProcurementData?.quantity || "",
-    rate: supplierDetailsProc?.unit_price || editProcurementData?.rate || "",
+    rate: supplierDetailsProc?.rate_contract_supplier[0]?.unit_price || editProcurementData?.rate || "",
     subcategorytxt: editProcurementData?.subcategorytxt || "",
     brandtxt: editProcurementData?.brandtxt || "",
     proc_item: selectedSupplier?.id || "df",
@@ -256,8 +259,8 @@ if(response?.data?.data){
 
   // ══════════════════════════════║🔰calculate the total rate🔰║═══════════════════════════════════
   const calculateTotalRate = () => {
-    const rate = Number(formik.values.rate) || 0;
-    const quantity = Number(formik.values.quantity) || 0;
+    const rate = Number(formik?.values?.rate) || 0;
+    const quantity = Number(formik?.values?.quantity) || 0;
     const total_rate = rate * quantity;
     formik.setFieldValue("total_rate", total_rate);
   };
@@ -404,7 +407,7 @@ if(response?.data?.data){
 
   useEffect(() => {
     calculateTotalRate();
-  }, [formik.values.quantity, formik.values.rate]);
+  }, [formik?.values?.quantity, formik?.values?.rate]);
 
   useEffect(() => {
     page == "edit" && getApplicationDetail();
@@ -422,8 +425,8 @@ if(response?.data?.data){
   console.log("formik",formik)
 
   const handleOnChange = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
+    let name = e?.target?.name;
+    let value = e?.target?.value;
     console.log("datatatatat",name,"asdasdas",value)
 
 
@@ -450,25 +453,27 @@ if(response?.data?.data){
       name == "quantity" &&
         formik.setFieldValue(
           "quantity",
-          allowNumberInput(value, formik.values.quantity, 100)
+          allowNumberInput(value, formik?.values?.quantity, 100)
         );
     }
     {
       name == "rate" &&
         formik.setFieldValue(
           "rate",
-          allowNumberInput(value, formik.values.rate, 100)
+          allowNumberInput(value, formik?.values?.rate, 100)
         );
     }
     {
       name == "total_rate" &&
         formik.setFieldValue(
           "total_rate",
-          allowNumberInput(value, formik.values.total_rate, 100)
+          allowNumberInput(value, formik?.values?.total_rate, 100)
         );
     }
    
   };
+
+  console.log("formik.values.proc_item",formik?.values?.proc_item)
 
   const getSupplierName = (id) => {
     // formik.setFieldValue("proc_item", String(id));
@@ -477,9 +482,11 @@ if(response?.data?.data){
 
     const data = procItem?.find((data) => data.id === id);
 
-    getDesc(formik.values.subcategory);
+    getDesc(formik?.values?.subcategory);
     setSelectedSupplier(data);
   };
+
+  console.log("formik.valuesformik.values",formik?.values)
 
 
   const setField = () => {
@@ -488,7 +495,7 @@ if(response?.data?.data){
 
   useEffect(() => {
     setField();
-  }, [formik.values.proc_item]);
+  }, [formik?.values?.proc_item]);
 
   if (isModalOpen) {
     return (
@@ -648,11 +655,14 @@ console.log("vallllvallll",filteredData)
                       <select
                         {...formik.getFieldProps("supplier")}
                         className={`${inputStyle} inline-block w-full relative`}
-                        onChange={(e)=>{formik.handleChange;getProcItemRateContract(e.target.value);}}
+                        onChange={(e)=>{
+                          formik.handleChange;
+                          getProcItemRateContract(e?.target?.value);
+                          }}
                         disabled={
-                          formik.values.quantity || formData?.length > 0
+                          formik?.values?.quantity || formData?.length > 0
                         }
-                        value={formik.values.supplier}
+                        value={formik?.values?.supplier}
                       >
                         <option value="select">select</option>
 
@@ -737,11 +747,12 @@ console.log("vallllvallll",filteredData)
                           name="proc_item"
                           className={`${inputStyle} inline-block w-full relative  `}
                           onChange={(e) => {
-                            formik.setFieldValue("proc_item", e.target.value);
+                            formik.setFieldValue("proc_item", e?.target?.value);
                             getDesc(procItem[0]?.subcategory?.id);
-                            // getSupplierName(e.target.value);
+                            getSupplierName(e?.target?.value);
+                            setSupplierDetails(e?.target?.value)
                           }}
-                          value={formik.values.proc_item}
+                          value={formik?.values?.proc_item}
                         >
                           <MenuItem value="df">select</MenuItem>
 
@@ -907,7 +918,7 @@ console.log("vallllvallll",filteredData)
                           <span className="text-xl text-red-500 pl-1">*</span>
                         </label>
 
-                        {formik.values.itemCategory == "others" ? (
+                        {formik?.values?.itemCategory == "others" ? (
                           <input
                             type="text"
                             name="subcategorytxt"
@@ -915,7 +926,7 @@ console.log("vallllvallll",filteredData)
                             onChange={(e) => {
                               formik.handleChange;
                             }}
-                            value={formik.values.subcategorytxt}
+                            value={formik?.values?.subcategorytxt}
                             disabled={is_rate_contract}
                           />
                         ) : (
@@ -976,13 +987,13 @@ console.log("vallllvallll",filteredData)
                           Brand
                         </label>
 
-                        {formik.values.itemCategory == "others" ? (
+                        {formik?.values?.itemCategory == "others" ? (
                           <input
                             type="text"
                             name="brandtxt"
                             className={`${inputStyle} inline-block w-full relative`}
                             onChange={formik.handleChange}
-                            value={formik.values.brandtxt}
+                            value={formik?.values?.brandtxt}
                           />
                         ) : (
                           <select
@@ -1022,8 +1033,8 @@ console.log("vallllvallll",filteredData)
                               onChange={formik.handleChange}
                               value={
                                 is_rate_contract
-                                  ? formik.values.description
-                                  : formik.values.description
+                                  ? formik?.values?.description
+                                  : formik?.values?.description
                               }
                             />
                             <div onClick={() => setIsDescTextOpen(false)}>
@@ -1039,7 +1050,7 @@ console.log("vallllvallll",filteredData)
                               {...formik.getFieldProps("description")}
                               className={`${inputStyle} inline-block w-full relative`}
                               onChange={(e) => {
-                                const selectedValue = e.target.value;
+                                const selectedValue = e?.target?.value;
                                 if (selectedValue === "others") {
                                   setIsDescTextOpen(true);
                                 } else {
@@ -1048,8 +1059,8 @@ console.log("vallllvallll",filteredData)
                               }}
                               value={
                                 is_rate_contract
-                                  ? formik.values.description || ""
-                                  : formik.values.description || ""
+                                  ? formik?.values?.description || ""
+                                  : formik?.values?.description || ""
                               }
                             >
                               <option value="">select</option>
@@ -1100,9 +1111,9 @@ console.log("vallllvallll",filteredData)
                                 formik.handleChange(e);
                                 calculateTotalRate();
                               }}
-                              value={formik.values.rate}
+                              value={formik?.values?.rate}
                               placeholder="Rate"
-                              disabled={formik.values.supplier}
+                              disabled={formik?.values?.supplier}
                             />
                             <p className="text-red-500 text-xs ">
                               {formik.touched.rate && formik.errors.rate
@@ -1125,7 +1136,7 @@ console.log("vallllvallll",filteredData)
                                 formik.handleChange(e);
                                 calculateTotalRate();
                               }}
-                              value={formik.values.quantity}
+                              value={formik?.values?.quantity}
                               placeholder="Quantity"
                             />
                             <p className="text-red-500 text-xs ">
@@ -1146,7 +1157,7 @@ console.log("vallllvallll",filteredData)
                               name="total_rate"
                               className={`${inputStyle} inline-block w-full relative`}
                               // onChange={formik.handleChange}
-                              value={formik.values.total_rate}
+                              value={formik?.values?.total_rate}
                               placeholder="Total Rate"
                               disabled
                             />
