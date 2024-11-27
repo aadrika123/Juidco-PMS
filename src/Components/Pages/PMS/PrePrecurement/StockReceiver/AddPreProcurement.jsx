@@ -57,7 +57,7 @@ function AddPreProcurement() {
     api_getProcItemRateContract,
     api_getActiveDesc,
     api_editProcurementById,
-    api_getallProcItemRateContract
+    api_getallProcItemRateContract,
   } = ProjectApiList();
 
   const [isLoading, setisLoading] = useState(false);
@@ -112,12 +112,11 @@ function AddPreProcurement() {
     )
       .then(function (response) {
         setProcItem(response?.data?.data);
-        console.log("response?.data?.data",response?.data?.data)
+        console.log("response?.data?.data", response?.data?.data);
 
-if(response?.data?.data){
-        setSubCategoryData(data,response?.data?.data)
-}
-  
+        if (response?.data?.data) {
+          setSubCategoryData(data, response?.data?.data);
+        }
       })
       .catch(function (error) {
         toast.error("Something went wrong");
@@ -130,7 +129,10 @@ if(response?.data?.data){
       ApiHeader()
     )
       .then(function (response) {
-        console.log("response?.data?.data?.dataresponse?.data?.data?.data",response?.data?.data?.data)
+        console.log(
+          "response?.data?.data?.dataresponse?.data?.data?.data",
+          response?.data?.data?.data
+        );
         setSupplierData(response?.data?.data?.data);
       })
       .catch(function (error) {
@@ -221,7 +223,9 @@ if(response?.data?.data){
         subcategory: values.subcategory?.id || values.subcategory,
         subcategorytxt: values.subcategory?.name || "",
         description: values.description?.id || values.description, // Keep id of description
-        descriptionname: selectedDescription ? selectedDescription.description : "", // Save description name
+        descriptionname: selectedDescription
+          ? selectedDescription.description
+          : "", // Save description name
         itemCategory: values.itemCategory?.id || values.itemCategory,
         total_rate: values.quantity * values.rate,
         unit: values.unit?.id || values.unit,
@@ -234,8 +238,6 @@ if(response?.data?.data){
     },
     validationSchema,
   });
-
-
 
   ///////////{*** APPLICATION FULL DETAIL ***}/////////
   const getApplicationDetail = () => {
@@ -275,7 +277,6 @@ if(response?.data?.data){
       });
   };
 
-
   const fetchSubCategory = (value) => {
     // setCategorySelected(value);
     setItemCategory(value);
@@ -302,7 +303,6 @@ if(response?.data?.data){
   };
 
   const getDesc = (subCat) => {
-
     AxiosInterceptors.get(
       `${api_getActiveDesc}?category=${itemCategory}&scategory=${subCat}`,
       ApiHeader()
@@ -422,13 +422,12 @@ if(response?.data?.data){
     const name = brand?.find((obj) => obj.id === id)?.name;
     return name;
   };
-  console.log("formik",formik)
+
 
   const handleOnChange = (e) => {
-    let name = e?.target?.name;
-    let value = e?.target?.value;
-    console.log("datatatatat",name,"asdasdas",value)
-
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log("datatatatat", name, "asdasdas", value);
 
     // {
     //   name == "itemCategory" && setNewSubCategory(value,"one");
@@ -470,24 +469,19 @@ if(response?.data?.data){
           allowNumberInput(value, formik?.values?.total_rate, 100)
         );
     }
-   
   };
 
-  console.log("formik.values.proc_item",formik?.values?.proc_item)
+  // console.log()
 
   const getSupplierName = (id) => {
     // formik.setFieldValue("proc_item", String(id));
     // const data = procItem[id];
-    console.log("procItem", procItem)
 
     const data = procItem?.find((data) => data.id === id);
 
     getDesc(formik?.values?.subcategory);
     setSelectedSupplier(data);
   };
-
-  console.log("formik.valuesformik.values",formik?.values)
-
 
   const setField = () => {
     formik.setFieldValue("subcategory", procItem[0]?.subcategory?.id);
@@ -535,8 +529,6 @@ if(response?.data?.data){
     );
   }
 
-
-
   const handleAddDescription = () => {
     if (selectedCategory && description) {
       onAddDescription({ category: selectedCategory, description });
@@ -544,24 +536,15 @@ if(response?.data?.data){
     }
   };
 
+  console.log("chooseItems",chooseItems)
 
+  const setSubCategoryData = async (data, procItem) => {
 
-  // console.log("supplierData",supplierData)
-
-
-  const setSubCategoryData =async (data,procItem) => {
-
-console.log("desired data",data)
-    console.log("procItem",procItem)
-    const filteredData = procItem?.filter(item =>
-      item?.rate_contract_supplier?.some(supplier => supplier?.id === data)
+    const filteredData = procItem?.filter((item) =>
+      item?.rate_contract_supplier?.some((supplier) => supplier?.id === data)
     );
-const vallll = filteredData;
-console.log("vallllvallll",vallll)
-console.log("vallllvallll",filteredData)
     setChooseItems(filteredData);
-
-  }
+  };
 
   return (
     <>
@@ -601,7 +584,7 @@ console.log("vallllvallll",filteredData)
                         page == "edit" ||
                         is_rate_contract
                       }
-                    // defaultValue={categorySelected || "select"}
+                      // defaultValue={categorySelected || "select"}
                     >
                       <option value="">select</option>
 
@@ -655,10 +638,10 @@ console.log("vallllvallll",filteredData)
                       <select
                         {...formik.getFieldProps("supplier")}
                         className={`${inputStyle} inline-block w-full relative`}
-                        onChange={(e)=>{
-                          formik.handleChange;
-                          getProcItemRateContract(e?.target?.value);
-                          }}
+                        onChange={(e) => {
+                          formik.handleChange(e);
+                          getProcItemRateContract(e.target.value);
+                        }}
                         disabled={
                           formik?.values?.quantity || formData?.length > 0
                         }
@@ -667,16 +650,11 @@ console.log("vallllvallll",filteredData)
                         <option value="select">select</option>
 
                         {supplierData?.length &&
-                          supplierData?.map(
-                            (items, index) => (
-                              <option
-                                key={index}
-                                value={items?.id}
-                              >
-                                {items?.supplier_master?.name}
-                              </option>
-                            )
-                          )}
+                          supplierData?.map((items, index) => (
+                            <option key={index} value={items?.id}>
+                              {items?.supplier_master?.name}
+                            </option>
+                          ))}
                         {/* {selectedSupplier?.rate_contract_supplier?.length &&
                           selectedSupplier?.rate_contract_supplier?.map(
                             (items, index) => (
@@ -805,8 +783,7 @@ console.log("vallllvallll",filteredData)
                           <th scope="col" className="px-6 py-3">
                             Total Rate
                           </th>
-                          <th scope="col" className="px-6 py-3">
-                          </th>
+                          <th scope="col" className="px-6 py-3"></th>
                         </tr>
                       </thead>
 
@@ -866,8 +843,8 @@ console.log("vallllvallll",filteredData)
                                 {form.subcategorytxt
                                   ? form.subcategorytxt
                                   : subcategory?.find(
-                                    (subcat) => subcat.id === form.subcategory
-                                  )?.name}
+                                      (subcat) => subcat.id === form.subcategory
+                                    )?.name}
                               </td>
                               <td className="px-6 py-4">
                                 {form.brandtxt ? form.brandtxt : form?.brand}
@@ -949,7 +926,7 @@ console.log("vallllvallll",filteredData)
 
                         <p className="text-red-500 text-xs ">
                           {formik.touched.subcategory &&
-                            formik.errors.subcategory
+                          formik.errors.subcategory
                             ? formik.errors.subcategory
                             : null}
                         </p>
@@ -1054,7 +1031,10 @@ console.log("vallllvallll",filteredData)
                                 if (selectedValue === "others") {
                                   setIsDescTextOpen(true);
                                 } else {
-                                  formik.setFieldValue("description", selectedValue);
+                                  formik.setFieldValue(
+                                    "description",
+                                    selectedValue
+                                  );
                                 }
                               }}
                               value={
@@ -1081,7 +1061,7 @@ console.log("vallllvallll",filteredData)
 
                         <p className="text-red-500 text-xs">
                           {formik.touched.description &&
-                            formik.errors.description
+                          formik.errors.description
                             ? formik.errors.description
                             : null}
                         </p>
@@ -1113,7 +1093,7 @@ console.log("vallllvallll",filteredData)
                               }}
                               value={formik?.values?.rate}
                               placeholder="Rate"
-                              disabled={formik?.values?.supplier}
+                              // disabled={formik?.values?.supplier}
                             />
                             <p className="text-red-500 text-xs ">
                               {formik.touched.rate && formik.errors.rate
@@ -1163,7 +1143,7 @@ console.log("vallllvallll",filteredData)
                             />
                             <p className="text-red-500 text-xs ">
                               {formik.touched.total_rate &&
-                                formik.errors.total_rate
+                              formik.errors.total_rate
                                 ? formik.errors.total_rate
                                 : null}
                             </p>
