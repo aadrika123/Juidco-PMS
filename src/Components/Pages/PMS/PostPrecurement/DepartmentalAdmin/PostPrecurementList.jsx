@@ -66,6 +66,11 @@ function PostPrecurementList(props) {
               Rejected
             </p>
           )}
+          {cell.row.values.status == 100 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Pre Procurement Completed
+            </p>
+          )}
           {cell.row.values.status == 1 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Pending
