@@ -32,6 +32,7 @@ import TenderFormViewDetails from "./TenderFormViewDetails";
 
 const TenderForm = () => {
   let [searchParams, setSearchParams] = useSearchParams();
+  let [bidMeetingData, setBidMeetingData] = useState();
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -53,6 +54,8 @@ const TenderForm = () => {
     { label: "Bid Openers", tab: 6, img: bo },
     { label: "Preview", tab: 7, img: prev },
   ];
+
+console.log(bidMeetingData,"bidMeetingData22")
 
   return (
     <>
@@ -167,7 +170,7 @@ const TenderForm = () => {
 
         {tabNo === 3 && (
           <div className={`${tabNo >= 2 ? "" : "disabled:bg-red-300"}`}>
-            <WorkDetailsForm />
+            <WorkDetailsForm setBidMeetingData={setBidMeetingData} />
           </div>
         )}
 
@@ -179,7 +182,7 @@ const TenderForm = () => {
 
         {tabNo === 5 && (
           <div className={`${tabNo >= 2 ? "" : "disabled:bg-red-300"}`}>
-            <CriticalDateForm />
+            <CriticalDateForm  />
           </div>
         )}
 

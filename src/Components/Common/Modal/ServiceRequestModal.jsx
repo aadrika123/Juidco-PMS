@@ -39,7 +39,9 @@ function ServiceRequestModal(props) {
 
   // const { api_postWarrantyClaim } = ProjectApiList();
 
-  console.log(props?.productData,"fghj")
+  // console.log(props?.productData,"fghj")
+  console.log(props?.serialNo,"serialNo")
+  
 
   const handleChange = (event) => {
     const {
