@@ -275,7 +275,8 @@ function EditPreProcurementIa() {
       unit: procData?.unit?.id || procData?.unit,
       description: procData?.description,
       rate: procData?.rate,
-      total_rate: procData?.total_rate,
+      total_rate: Number(procData?.quantity) *
+      Number(procData?.rate)||procData?.total_rate,
       quantity: procData?.quantity,
     };
 
