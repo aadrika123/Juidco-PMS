@@ -83,26 +83,59 @@ function Login() {
             "roleId",
             response?.data?.data?.userDetails?.roleId
           );
-          if (
-            response?.data?.data?.userDetails?.name ===
-              "Departmental Distributor" ||
-            response?.data?.data?.userDetails?.name === "Departmental Admin"
-          ) {
-            navigate("/dinventory-dashboard");
-          } else if (
-            response?.data?.data?.userDetails?.name === "Tendering Admin"
-          ) {
-            navigate("/ta-inventory-dashboard");
-          } else if (
-            response?.data?.data?.userDetails?.name === "Inventory Admin"
-          ) {
-            navigate("/ia-inventory-dashboard");
-          } else if (
-            response?.data?.data?.userDetails?.name === "Level 1" ||
-            response?.data?.data?.userDetails?.name === "Level 2"
-          ) {
-            navigate("/level-inventory-dashboard");
-          }
+          // if (
+          //   response?.data?.data?.userDetails?.name ===
+          //     "Departmental Distributor" ||
+          //   response?.data?.data?.userDetails?.name === "Departmental Admin"
+          // ) {
+          //   navigate("/dinventory-dashboard");
+          // } else if (
+          //   response?.data?.data?.userDetails?.name === "Tendering Admin"
+          // ) {
+          //   navigate("/ta-inventory-dashboard");
+          // } else if (
+          //   response?.data?.data?.userDetails?.name === "Inventory Admin"
+          // ) {
+          //   navigate("/ia-inventory-dashboard");
+          // } else if (
+          //   response?.data?.data?.userDetails?.name === "Level 1" ||
+          //   response?.data?.data?.userDetails?.name === "Level 2"
+          // ) {
+          //   navigate("/level-inventory-dashboard");
+          // }
+
+          // const userName = response?.data?.data?.userDetails?.name;
+          // const nameParts = userName?.split(" "); 
+          // const role = nameParts?.[0]; 
+          // const location = nameParts?.[nameParts.length - 1] || ''; 
+          // if (role === "Departmental" && (nameParts?.[1] === "Distributor" || nameParts?.[1] === "Admin")) {
+          //   if (location) {
+          //     navigate(`sr-inventory-dashboard`);
+          //   } else {
+          //     navigate("/dinventory-dashboard"); 
+          //   }
+          // } else if (role === "Tendering" && nameParts?.[1] === "Admin") {
+          //   if (location) {
+          //     navigate(`sr-inventory-dashboard`);
+          //   } else {
+          //     navigate("/ta-inventory-dashboard");
+          //   }
+          // } else if (role === "Inventory" && nameParts?.[1] === "Admin") {
+          //   if (location) {
+          //     navigate(`/sr-inventory-dashboard`);
+          //   } else {
+          //     navigate("/ia-inventory-dashboard"); 
+          //   }
+          // } else if (role === "Level" && (nameParts?.[1] === "1" || nameParts?.[1] === "2")) {
+          //   if (location) {
+          //     navigate(`sr-inventory-dashboard`);
+          //   } else {
+          //     navigate("/level-inventory-dashboard");
+          //   }
+          // }
+
+          navigate(`sr-inventory-dashboard`);
+
 
           fetchMenuList();
           setheartBeatCounter((prev) => prev + 1);

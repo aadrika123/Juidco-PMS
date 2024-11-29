@@ -109,26 +109,26 @@ const EmployeeDetailById = () => {
       subcategory:applicationFullData?.inventory?.subcategory?.name,
     };
 
-    console.log(body)
+    // console.log(body)
 
-    // AxiosInterceptors.post(`${api_employeeServiceRequest}`, body, ApiHeader())
-    //   .then(function (response) {
-    //     if (response?.data?.status == true) {
-    //       toast.success(`Request created successfully`);
-    //       navigate(`/employee`);
-    //       setServiceRequestModal(false);
-    //     } else {
-    //       toast(response?.data?.message, "error");
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     console.log("errorrr.... ", error);
-    //     toast.error(error?.response?.data?.error);
-    //     // setdeclarationStatus(false);
-    //   })
-    //   .finally(() => {
-    //     setisLoading(false);
-    //   });
+    AxiosInterceptors.post(`${api_employeeServiceRequest}`, body, ApiHeader())
+      .then(function (response) {
+        if (response?.data?.status == true) {
+          toast.success(`Request created successfully`);
+          navigate(`/employee`);
+          setServiceRequestModal(false);
+        } else {
+          toast(response?.data?.message, "error");
+        }
+      })
+      .catch(function (error) {
+        console.log("errorrr.... ", error);
+        toast.error(error?.response?.data?.error);
+        // setdeclarationStatus(false);
+      })
+      .finally(() => {
+        setisLoading(false);
+      });
   };
 
   //get application details

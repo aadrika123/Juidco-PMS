@@ -158,12 +158,15 @@ function AddPreProcurement() {
   });
 
   const setSupplierDetails = (value) => {
+    console.log("calleed at 159",value)
     const supplierUnitPrice = selectedSupplier?.rate_contract_supplier?.find(
       (supplier) => supplier?.supplier_master?.id === value
     );
+    console.log("supplierUnitPricesupplierUnitPrice",supplierUnitPrice)
     setSupplierDetailsProc(supplierUnitPrice);
     // formik.setFieldValue("rate", supplierUnitPrice);
   };
+  console.log("supplierUnitPricesupplierUnitPrice",supplierDetailsProc)
 
   // intitial value
   const initialValues = {
@@ -182,7 +185,7 @@ function AddPreProcurement() {
     description:
       selectedSupplier?.description || editProcurementData?.description || "",
     quantity: editProcurementData?.quantity || "",
-    rate: supplierDetailsProc?.unit_price || editProcurementData?.rate || "",
+    rate: supplierDetailsProc?.rate_contract_supplier[0]?.unit_price || editProcurementData?.rate || "",
     subcategorytxt: editProcurementData?.subcategorytxt || "",
     brandtxt: editProcurementData?.brandtxt || "",
     proc_item: selectedSupplier?.id || "df",
@@ -722,9 +725,10 @@ function AddPreProcurement() {
                           name="proc_item"
                           className={`${inputStyle} inline-block w-full relative  `}
                           onChange={(e) => {
-                            formik.setFieldValue("proc_item", e.target.value);
+                            formik.setFieldValue("proc_item", e?.target?.value);
                             getDesc(procItem[0]?.subcategory?.id);
-                            // getSupplierName(e.target.value);
+                            getSupplierName(e?.target?.value);
+                            setSupplierDetails(e?.target?.value)
                           }}
                           value={formik?.values?.proc_item}
                         >
@@ -1023,7 +1027,7 @@ function AddPreProcurement() {
                               {...formik.getFieldProps("description")}
                               className={`${inputStyle} inline-block w-full relative`}
                               onChange={(e) => {
-                                const selectedValue = e.target.value;
+                                const selectedValue = e?.target?.value;
                                 if (selectedValue === "others") {
                                   setIsDescTextOpen(true);
                                 } else {
