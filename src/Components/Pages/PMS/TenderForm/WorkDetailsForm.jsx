@@ -12,7 +12,7 @@ import ApiHeader from "@/Components/api/ApiHeader";
 import { useEffect, useState } from "react";
 import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 
-const WorkDetailsForm = () => {
+const WorkDetailsForm = (props) => {
   const navigate = useNavigate();
 
   // const formik1 = useFormik()
@@ -140,6 +140,7 @@ const WorkDetailsForm = () => {
     )
       .then(function (response) {
         if (response?.data?.status) {
+          
           toast.success("Work Details data Submitted successfully");
           navigate(`/tendering?tabNo=${4}`, { state });
         } else {
@@ -163,6 +164,7 @@ const WorkDetailsForm = () => {
     AxiosInterceptors.get(`${api_getWorkDetails}/${refNo}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
+          props?.setBidMeetingData(response?.data?.data?.pre_bid)
           setWorkDetailData(response?.data?.data);
         } else {
           // toast.error(response?.data?.message);
