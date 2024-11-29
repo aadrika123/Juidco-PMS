@@ -52,13 +52,13 @@ function ReceivedInvtList(props) {
         <div className='pr-2'>{indianAmount(cell.row.values.total_rate)} </div>
       ),
     },
-    {
-      Header: "Remark",
-      accessor: "remark",
-      Cell: ({ cell }) => (
-        <div className='pr-2'>{nullToNA(cell.row.values.remark)} </div>
-      ),
-    },
+    // {
+    //   Header: "Remark",
+    //   accessor: "remark",
+    //   Cell: ({ cell }) => (
+    //     <div className='pr-2'>{nullToNA(cell.row.values.remark)} </div>
+    //   ),
+    // },
     {
       Header: <p className='text-center'>Status</p>,
       accessor: "status",

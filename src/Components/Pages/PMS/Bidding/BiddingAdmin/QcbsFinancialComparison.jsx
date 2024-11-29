@@ -103,6 +103,20 @@ export default function QcbsFinancialComparison() {
         "More than one bidder is selected in case of Rate contract type"
       );
     }
+    if (
+        selectedBidder?.length > applicationFullData?.boq?.pre_tendering_details?.max_supplier &&
+        applicationFullData?.boq?.pre_tendering_details?.is_rate_contract === true
+      ) {
+        return toast.error(
+          `Selected Winners cannot be greater than the maximum no of Suppliers : ${applicationFullData?.boq?.pre_tendering_details?.max_supplier}`
+        );
+      } else if (
+        selectedBidder?.length < applicationFullData?.boq?.pre_tendering_details?.min_supplier &&
+        applicationFullData?.boq?.pre_tendering_details?.is_rate_contract === true
+      ) {
+        return toast.error(
+          `Selected Winners cannot be less than the minimum no of Suppliers : ${applicationFullData?.boq?.pre_tendering_details?.min_supplier}`
+        ); }
     setIsLoading(true);
     let payload = { reference_no: refNo, winners: selectedBidder };
 
