@@ -8,16 +8,16 @@
 //    DESCRIPTION - ImageModal
 //////////////////////////////////////////////////////////////////////////////////////
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useReactToPrint } from "react-to-print";
 
 function ImageModal(props) {
-  const handleCancilClick = () => {
+  const handleCancelClick = () => {
     props?.setImageModal(false);
   };
 
-  //Print
+  // Print functionality
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -26,35 +26,38 @@ function ImageModal(props) {
   return (
     <>
       <div
-        className={`fixed inset-0 flex flex-col items-center justify-center bg-gray-800 bg-opacity-50 transition-opacity ${
-          props.imageModal ? "opacity-100" : "opacity-0 pointer-events-none"
-        } z-[1000]`}
+        className={`fixed inset-0 z-[1000] flex items-center justify-center bg-gray-800 bg-opacity-50 transition-opacity duration-300 ${
+          props.imageModal ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
       >
         <div
-          className={`bg-transparent rounded-lg transform transition-transform ${
-            props.imageModal ? "scale-100 modal-pop" : "scale-95"
+          className={`relative bg-transparent rounded-lg transform transition-transform duration-300 ${
+            props.imageModal ? "scale-100" : "scale-95"
           }`}
           ref={componentRef}
+          style={{
+            width: "40rem",
+            height: "30rem",
+            overflow: "hidden",
+          }}
         >
+          {/* Close Button */}
           <AiOutlineCloseCircle
-            onClick={handleCancilClick}
-            className='relative bottom-[2rem] float-right text-3xl text-white cursor-pointer hover:text-black'
+            onClick={handleCancelClick}
+            className="absolute top-2 right-2 text-3xl text-white cursor-pointer hover:text-black"
           />
-          {/* <button
-            className='absolute top-1 right-1 text-white bg-transparent border border-white hover:bg-indigo-600 pl-2 pr-2 rounded-lg'
-            onClick={handleCancilClick}
-          >
-            <p className='text-3xl'>&times;</p>
-          </button> */}
 
-          {/* to display image */}
+          {/* Display Image */}
           {(props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) ||
             props?.imageUrl?.match(/(jpg|jpeg|png)$/)) && (
-            <img className='w-[40rem]' src={props?.imageUrl} alt='alt title' />
+            <img
+              className="w-full h-full object-contain"
+              src={props?.imageUrl}
+              alt="Preview"
+            />
           )}
 
-          {/* to display other than iimage */}
-
+          {/* Display Other File Types */}
           {(props?.imageDoc?.type === "application/pdf" ||
             props?.imageDoc?.type === "text/csv" ||
             props?.imageDoc?.type ===
@@ -64,19 +67,14 @@ function ImageModal(props) {
             props?.imageUrl?.includes(".csv")) && (
             <iframe
               src={props?.imageUrl}
-              title='File Preview'
-              className='h-[480px]'
+              title="File Preview"
+              className="w-full h-full"
             />
           )}
-          {/* {!props?.imageDoc?.type?.match(/(jpg|jpeg|png)$/) && (
-            <iframe
-              src={props?.imageUrl}
-              alt='Image Preview'
-              className='h-[480px]'
-            />
-          )} */}
         </div>
-        <div className='flex'>
+
+        {/* Print Button */}
+        <div className="mt-4">
           {!(
             props?.imageDoc?.type === "application/pdf" ||
             props?.imageDoc?.type === "text/csv" ||
@@ -88,7 +86,7 @@ function ImageModal(props) {
           ) && (
             <button
               onClick={handlePrint}
-              className={`w-96 border mt-4 bg-indigo-700 text-white border-blue-950 pl-5 pr-5 pt-1 pb-1 rounded hover:bg-indigo-500 `}
+              className="px-5 py-2 bg-indigo-700 text-white rounded hover:bg-indigo-500"
             >
               Print
             </button>
@@ -100,3 +98,4 @@ function ImageModal(props) {
 }
 
 export default ImageModal;
+

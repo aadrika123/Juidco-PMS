@@ -23,11 +23,13 @@ export default function PreviewBoqSummary() {
   const { titleBarVisibility, setReferenceNo } = useContext(contextVar);
 
   const [searchParams] = useSearchParams();
-  const isEdit = searchParams.get('edit') === 'true';
+  const isEdit = searchParams.get("edit") === "true";
 
   // const { payload } = state;
   const summaryData = state;
   const { api_postForwardAndCreateBoq, api_postUpdatedBoq } = ProjectApiList();
+
+  // console.log(summaryData, "summaryData");
 
   //Print
   const componentRef = useRef();
@@ -69,15 +71,19 @@ export default function PreviewBoqSummary() {
   let buttonStyle =
     " mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-indigo-500 text-base leading-tight  rounded  hover:bg-indigo-700 hover:text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl";
 
+
+  
+
   //only to create boq
   const createAndForwardBoq = async () => {
     setIsLoading(true);
-    if (!summaryData?.gstChecked) {
-      summaryData.procurement = summaryData.procurement.map((data) => ({
-        ...data,
-        gst: "",
-      }));
-    }
+    // console.log(summaryData,"summaryData")
+    // if (!summaryData?.gstChecked) {
+    //   summaryData.procurement = summaryData.procurement.map((data) => ({
+    //     ...data,
+    //     gst: "",
+    //   }));
+    // }
     let body = {
       ...summaryData,
       ulb_id: uldId,
@@ -199,18 +205,18 @@ export default function PreviewBoqSummary() {
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         <div
           ref={componentRef}
-          className=' bg-white rounded font-sans mb-10 border border-[#4338ca] shadow-lg px-4'
+          className=" bg-white rounded font-sans mb-10 border border-[#4338ca] shadow-lg px-4"
         >
-          <div className='p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md'>
-            <h2 className='text-xl '>BOQ Summary</h2>
+          <div className="p-2 bg-[#4338CA] text-white text-center mt-6 rounded-t-md">
+            <h2 className="text-xl ">BOQ Summary</h2>
           </div>
-          <div className=''>
+          <div className="">
             <div>
-              <div className='flex mb-4 p-4 shadow-md justify-between px-6'>
+              <div className="flex mb-4 p-4 shadow-md justify-between px-6">
                 <div>
-                  <p className='text-lg font-bold mb-2'>
+                  <p className="text-lg font-bold mb-2">
                     Category:{" "}
-                    <span className='font-semibold text-gray-500'>
+                    <span className="font-semibold text-gray-500">
                       {summaryData?.category}
                     </span>
                   </p>
@@ -222,9 +228,9 @@ export default function PreviewBoqSummary() {
                   </p> */}
                 </div>
                 <div>
-                  <p className='text-lg font-bold mb-2'>
+                  <p className="text-lg font-bold mb-2">
                     Gst:{" "}
-                    <span className='font-semibold text-gray-500'>
+                    <span className="font-semibold text-gray-500">
                       {summaryData?.gstChecked
                         ? "Gst included"
                         : "Gst not included"}
@@ -242,50 +248,51 @@ export default function PreviewBoqSummary() {
               </div>
             </div>
 
-            <div className='shaodow-md rounded-md overflow-auto'>
-              <table className='min-w-full bg-white border-collapse border border-gray-200 rounded-md'>
-                <thead className='bg-indigo-100 text-black rounded-md'>
+            <div className="shaodow-md rounded-md overflow-auto">
+              <table className="min-w-full bg-white border-collapse border border-gray-200 rounded-md">
+                <thead className="bg-indigo-100 text-black rounded-md">
                   {COLUMNS?.length > 0 &&
                     COLUMNS?.map((heading, index) => (
                       <th
                         key={index}
-                        className='border border-gray-200 px-4 py-2'
+                        className="border border-gray-200 px-4 py-2"
                       >
                         {heading?.header}
                       </th>
                     ))}
                 </thead>
-                <tbody className='font-normal text-center '>
+                <tbody className="font-normal text-center ">
                   {summaryData?.procurement?.length > 0 &&
                     summaryData?.procurement?.map((row, index) => (
                       <tr key={row?.procurement_no}>
-                        <td className='border border-gray-200 px-4 py-2'>
+                        <td className="border border-gray-200 px-4 py-2">
                           {index + 1}
                         </td>
-                        <td className='border border-gray-200 px-4 py-2 text-sm text-justify'>
+                        <td className="border border-gray-200 px-4 py-2 text-sm text-justify">
                           {row?.description}
                         </td>
-                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                        <td className="border border-gray-200 px-4 py-2 text-sm">
                           {row?.quantity}
                         </td>
-                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                        <td className="border border-gray-200 px-4 py-2 text-sm">
                           {row?.category?.name == "Cleaning Appliances"
                             ? "L"
                             : "kg"}
                         </td>
-                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                        <td className="border border-gray-200 px-4 py-2 text-sm">
                           {row?.rate}
                         </td>
-                        <td className='border border-gray-200 px-4 py-2 text-sm'>
-                          {summaryData?.gstChecked ? row?.gst : "-"}
+                        <td className="border border-gray-200 px-4 py-2 text-sm">
+                          {/* {summaryData?.gstChecked ? row?.gst : "-"} */}
+                          {row?.gst}
                         </td>
-                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                        <td className="border border-gray-200 px-4 py-2 text-sm">
                           {row?.hsn_code}
                         </td>
-                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                        <td className="border border-gray-200 px-4 py-2 text-sm">
                           {indianAmount(row?.total_rate)}
                         </td>
-                        <td className='border border-gray-200 px-4 py-2 text-sm'>
+                        <td className="border border-gray-200 px-4 py-2 text-sm">
                           {row?.remark}
                         </td>
                       </tr>
@@ -294,21 +301,21 @@ export default function PreviewBoqSummary() {
               </table>
             </div>
 
-            <div className='p-2 px-8 bg-[#4338CA] text-white flex justify-between mt-6 rounded-t-md '>
-              <h2 className='text-xl'>Estimated Cost</h2>
-              <h2 className='text-xl'>
+            <div className="p-2 px-8 bg-[#4338CA] text-white flex justify-between mt-6 rounded-t-md ">
+              <h2 className="text-xl">Estimated Cost</h2>
+              <h2 className="text-xl">
                 {indianAmount(summaryData?.estimated_cost)}
               </h2>
             </div>
 
-            <div className='m-4'>
-              <p className='text-lg font-semibold px-2'>
+            <div className="m-4">
+              <p className="text-lg font-semibold px-2">
                 Remark -{" "}
-                <span className='text-gray-400'>
+                <span className="text-gray-400">
                   {summaryData?.remark || "No remark added"}
                 </span>{" "}
               </p>
-              <div className='flex justify-end mb-4'>
+              <div className="flex justify-end mb-4">
                 <ImageDisplay
                   preview={
                     summaryData?.img && URL.createObjectURL(summaryData?.img)
@@ -323,14 +330,14 @@ export default function PreviewBoqSummary() {
           </div>
         </div>
 
-        <div className='flex justify-end mb-10 gap-4'>
+        <div className="flex justify-end mb-10 gap-4">
           <button className={buttonStyle} onClick={handlePrint}>
             Print
           </button>
           {summaryData?.status === 0 ||
-            summaryData?.status === 1 ||
-            summaryData?.status === -1 ||
-            isEdit ? (
+          summaryData?.status === 1 ||
+          summaryData?.status === -1 ||
+          isEdit ? (
             <button
               className={`bg-[#1A4D8C] text-sm px-8 py-2 text-white  rounded leading-5 shadow-lg disabled:bg-indigo-300`}
               onClick={() => updateBoqChanges(true)}

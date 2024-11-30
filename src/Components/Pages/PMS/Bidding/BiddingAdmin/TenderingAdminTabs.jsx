@@ -47,7 +47,7 @@ const TenderingAdminTabs = () => {
               Inbox
             </button>
 
-            <button
+            {/* <button
               className={` py-2 px-4 ${
                 activeTab === "outbox"
                   ? "border-b-2 border-blue-500 text-white bg-[#4338CA]"
@@ -57,7 +57,7 @@ const TenderingAdminTabs = () => {
             >
               <FaChartPie className='m-1 text-[1rem]' />
               Outbox
-            </button>
+            </button> */}
           </div>
         </div>
 

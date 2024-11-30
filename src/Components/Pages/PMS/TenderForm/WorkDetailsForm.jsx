@@ -15,6 +15,9 @@ import LoaderApi from "@/Components/Common/Loaders/LoaderApi";
 const WorkDetailsForm = (props) => {
   const navigate = useNavigate();
 
+    // get item from localstorage
+    const ulbId = localStorage.getItem('ulbId');
+
   // const formik1 = useFormik()
 
   const { api_postWorkDetails, api_getWorkDetails, api_getEmpDetailsNew } =
@@ -182,7 +185,7 @@ const WorkDetailsForm = (props) => {
   const getEmpDetail = () => {
     setIsLoading(true);
 
-    AxiosInterceptors.get(`${api_getEmpDetailsNew}`, ApiHeader())
+    AxiosInterceptors.get(`${api_getEmpDetailsNew}?ulb_id=${ulbId}`, ApiHeader())
       .then(function (response) {
         if (response?.data?.status) {
           setEmpDetails(response?.data?.data);
@@ -731,14 +734,7 @@ const WorkDetailsForm = (props) => {
                         Inviting Officer Name
                         <span className="text-red-500">*</span>
                       </label>
-                      {/* <input
-                        type="text"
-                        className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full  p-2.5"
-                        placeholder="Inviting Officer Name"
-                        name="invstOffName"
-                        onChange={handleChange}
-                        value={values.invstOffName}
-                      /> */}
+                     
                       <select
                         className="bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
                         placeholder="Inviting Officer Name"
