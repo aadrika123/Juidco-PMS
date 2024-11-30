@@ -63,6 +63,7 @@ function AddPreProcurement() {
   const [isLoading, setisLoading] = useState(false);
   const [itemCategory, setItemCategory] = useState();
   const [applicationFullData, setapplicationFullData] = useState();
+  const [brandId, setBrandId] = useState();
 
   const [category, setCategory] = useState();
   const [subcategory, setSubCategory] = useState();
@@ -215,6 +216,7 @@ function AddPreProcurement() {
       const normalizedData = {
         ...values,
         brand: brandName,
+        brandId: brandId,
         brandtxt: values.brandtxt || "",
         subcategory: values.subcategory?.id || values.subcategory,
         subcategorytxt: values.subcategory?.name || "",
@@ -420,14 +422,15 @@ function AddPreProcurement() {
   };
 
 
+
   const handleOnChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     console.log("datatatatat", name, "asdasdas", value);
 
-    // {
-    //   name == "itemCategory" && setNewSubCategory(value,"one");
-    // }
+    {
+      name == "brand" && setBrandId(value);
+    }
     {
       name == "supplier" && setSubCategoryData(value);
     }
