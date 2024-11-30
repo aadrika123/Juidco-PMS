@@ -39,7 +39,7 @@ const EmployeeDetailById = () => {
 
   const { id, page } = useParams();
 
-  console.log(productData, "fghjkl");
+  // console.log(productData, "fghjkl");
 
   const { titleBarVisibility } = useContext(contextVar);
 
