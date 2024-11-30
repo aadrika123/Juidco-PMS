@@ -540,6 +540,15 @@ const ViewReceivedInvtByIdDa = (props) => {
                             IFSC Code
                           </div>
                         </div>
+
+                        <div className="md:flex-1 md:block flex flex-row-reverse justify-between">
+                          <div className="md:w-auto w-[50%] font-bold ">
+                            {nullToNA(supplierInfo?.bidding_amount)}
+                          </div>
+                          <div className="md:w-auto w-[50%] text-gray-800 text-sm">
+                            Bidding Amount
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </>

@@ -153,7 +153,7 @@ function AddPreProcurement() {
     brand: yup.string(),
     description: yup.string().required("Description is required"),
     rate: yup.number().required("Rate is required"),
-    quantity: yup.number().required("Quantity is required"),
+    quantity: yup.number().required("Quantity is required").moreThan(0, 'Quantity must be greater than 0'),
     // proc_item: yup.string(),
   });
 
@@ -337,9 +337,8 @@ function AddPreProcurement() {
       procurement: formData,
       is_rate_contract,
     };
-    let url;
-    // let requestBody;
 
+    let url;
     url = api_addProcurement;
 
     AxiosInterceptors.post(`${url}`, requestBody, ApiHeader())
@@ -347,13 +346,9 @@ function AddPreProcurement() {
         if (response?.data?.status === true) {
           setisLoading(false);
           setSuccessModal(true);
-          // notify(response?.data?.message, "success");
           setProcurement_no(response?.data?.procurement_no);
-          // navigate("/sr-inventory-proposal");
         } else {
           setisLoading(false);
-          // notify(response?.data?.message, "error");
-          // navigate("/sr-inventory-proposal");
         }
       })
       .catch(function (error) {

@@ -204,7 +204,8 @@ const ViewReceivedInvtById = () => {
       formDataPayload.append(key, body[key]);
     }
 
-    // console.log(formDataPayload)
+    // console.log(body,"formDataPayload")
+
     AxiosInterceptors.post(
       `${api_postSrAddInvt}`,
       formDataPayload,
@@ -701,6 +702,13 @@ const ViewReceivedInvtById = () => {
                       <div className='md:w-auto w-[50%] font-bold '>IFSC</div>
                       <div className='md:w-auto w-[50%] text-gray-800 text-md'>
                         {nullToNA(data?.ifsc)}
+                      </div>
+                    </div>
+                    
+                    <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                      <div className='md:w-auto w-[50%] font-bold '>Bidding Amount</div>
+                      <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                        {indianAmount(nullToNA(data?.bidding_amount))}
                       </div>
                     </div>
                   </>

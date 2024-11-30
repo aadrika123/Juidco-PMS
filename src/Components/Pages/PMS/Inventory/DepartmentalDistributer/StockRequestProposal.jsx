@@ -58,8 +58,8 @@ const StockRequestProposal = (props) => {
   const [subCatID, setSubCatId] = useState("");
   const [applicationFullData, setapplicationFullData] = useState("");
 
-  // console.log(empDetails);
 
+  
   //activating notification
   const notify = (toastData, type) => {
     toast.dismiss();
@@ -71,9 +71,13 @@ const StockRequestProposal = (props) => {
     }
   };
 
+  // get item from localstorage
+  const ulbId = localStorage.getItem('ulbId');
+
   const getEmpdetails = () => {
     AxiosInterceptors.get(
-      `https://aadrikainfomedia.com/auth/api/hrms/v1/employee/get?limit=100000000000&page=1`,
+      // `https://aadrikainfomedia.com/auth/api/hrms/v1/employee/get?limit=100000000000&page=1`,
+      `https://aadrikainfomedia.com/auth/api/hrms/v1/employee-details?ulb_id=${ulbId}`,
       {
         timeout: 60000,
         headers: {
@@ -86,8 +90,8 @@ const StockRequestProposal = (props) => {
     )
       .then(function (response) {
         if (response?.data?.status === true) {
-          setEmpdetails(response?.data?.data?.data);
-          formatEmp(response?.data?.data?.data);
+          setEmpdetails(response?.data?.data);
+          formatEmp(response?.data?.data);
           // notify(response?.data?.message, "success");
         } else {
           // notify(response?.data?.message, "error");

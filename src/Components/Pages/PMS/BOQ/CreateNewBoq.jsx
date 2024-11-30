@@ -175,6 +175,8 @@ export default function CreateNewBoq() {
       });
   };
 
+  // console.log(payload,"-------------------------------->")
+
   //forward to DA
   const forwardToDA = () => {
     setisLoading(true);
@@ -398,44 +400,61 @@ export default function CreateNewBoq() {
   // };
 
   //triggered on is gst included clicked
+  // const includeGstForProc = (checkStatus) => {
+  //   if (checkStatus) {
+  //     const updatedGstValue = applicationData?.procurement_stocks?.map(
+  //       (data) => {
+  //         const gstValue = 1 + Number(data?.gst) / 100;
+  //         return {
+  //           ...data,
+  //           total_rate: gstValue * Number(data?.total_rate), 
+  //         };
+  //       }
+  //     );
+
+  //     setPayload((prev) => ({
+  //       ...prev,
+  //       procurement: updatedGstValue,
+  //     }));
+
+  //     estimatedAmountCalc(updatedGstValue);
+  //   } else {
+  //     const updatedGstValue = applicationData?.procurement_stocks?.map(
+  //       (data) => ({
+  //         ...data,
+  //         total_rate: data?.total_rate,
+  //       })
+  //     );
+
+  //     setPayload((prev) => ({
+  //       ...prev,
+  //       procurement: updatedGstValue,
+  //     }));
+  //     estimatedAmountCalc(updatedGstValue);
+  //   }
+  // };
+
+
   const includeGstForProc = (checkStatus) => {
-    if (checkStatus) {
-      const updatedGstValue = applicationData?.procurement_stocks?.map(
-        (data) => {
-          const gstValue = 1 + Number(data?.gst) / 100;
-          return {
-            ...data,
-            total_rate: gstValue * Number(data?.total_rate), // Corrected reference to data.total_rate
-          };
-        }
-      );
-
-      setPayload((prev) => ({
-        ...prev,
-        procurement: updatedGstValue,
-      }));
-
-      // setApplicationData((prev) => ({
-      //   ...prev,
-      //   procurement_stocks: updatedGstValue,
-      // }));
-
-      estimatedAmountCalc(updatedGstValue);
-    } else {
-      const updatedGstValue = applicationData?.procurement_stocks?.map(
-        (data) => ({
-          ...data,
-          total_rate: data?.total_rate,
-        })
-      );
-
-      setPayload((prev) => ({
-        ...prev,
-        procurement: updatedGstValue,
-      }));
-      estimatedAmountCalc(updatedGstValue);
-    }
+    const updatedGstValue = applicationData?.procurement_stocks?.map((data) => {
+      const gstRate = 1 + Number(data?.gst) / 100; // GST multiplier
+      const totalWithGst = gstRate * Number(data?.total_rate); // Total rate with GST applied
+  
+      return {
+        ...data,
+        total_rate: checkStatus ? totalWithGst : Number(data?.total_rate), // Apply GST if checked
+        gst_value: totalWithGst - Number(data?.total_rate), // Always calculate GST difference
+      };
+    });
+  
+    setPayload((prev) => ({
+      ...prev,
+      procurement: updatedGstValue,
+    }));
+  
+    estimatedAmountCalc(updatedGstValue);
   };
+
 
   //send to da fn
   const confirmationHandlertoDa = () => {
@@ -572,22 +591,21 @@ export default function CreateNewBoq() {
                           className="p-1 text-base rounded-md outline-indigo-200 text-center border border-indigo-200"
                           onChange={(e) => {
                             const value = e.target.value;
-                            // Only update if value is a number and has at most 2 digits
                             if (!isNaN(value) && value.length <= 2) {
                               addGstForEachProc(e, row?.id);
                             }
                           }}
                           onKeyDown={(e) => {
                             const value = e.target.value;
-                            // Prevent entry if the length is already 2 digits and the key is a number
+                           
                             if (
                               (value.length >= 2 && /[0-9]/.test(e.key)) ||
-                              (!/[0-9]/.test(e.key) && // Allow only numbers
-                                e.key !== "Backspace" && // Allow Backspace
-                                e.key !== "Tab" && // Allow Tab for navigation
-                                e.key !== "ArrowLeft" && // Allow Left Arrow for navigation
-                                e.key !== "ArrowRight" && // Allow Right Arrow for navigation
-                                e.key !== "Delete") // Allow Delete key
+                              (!/[0-9]/.test(e.key) && 
+                                e.key !== "Backspace" && 
+                                e.key !== "Tab" && 
+                                e.key !== "ArrowLeft" && 
+                                e.key !== "ArrowRight" && 
+                                e.key !== "Delete")
                             ) {
                               e.preventDefault();
                             }
@@ -823,7 +841,7 @@ export default function CreateNewBoq() {
                 ? {
                     state: gstChecked
                       ? { ...payload, gstChecked }
-                      : { ...payload },
+                      : { ...payload, },
                   }
                 : { state: payload }
             );

@@ -11,7 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import BiddingViewModal from "./BiddingViewModal";
 import TitleBar from "@/Components/Pages/Others/TitleBar";
-import { indianAmount } from "@/Components/Common/PowerupFunctions";
+import { indianAmount, nullToNA } from "@/Components/Common/PowerupFunctions";
 import { MdArrowRightAlt } from "react-icons/md";
 import toast from "react-hot-toast";
 
@@ -31,7 +31,7 @@ const BiddingViewById = () => {
   const navigate = useNavigate();
   const { id, page } = useParams();
 
-  // console.log(page)
+  // console.log(applicationFullData?.boqData,"applicationFullData---------->")
 
   const {
     api_postForwardtoSR,
@@ -363,12 +363,173 @@ const BiddingViewById = () => {
       />
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
-        {/* <div className="flex justify-end"></div> */}
-        {/* Basic Details */}
-        <div className=''>
+
+
+        {/* ----------------------------------------- */}
+
+        <div className='mt-6'>
+          <div
+            className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'
+            // ref={componentRef}
+          >
+            <div className=''>
+              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+                View Pre Procurement Details{" "}
+              </h2>
+            </div>
+
+            <div className='flex justify-between'>
+              <div className='pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full'>
+                <h1 className=''>
+                  Procurement No <span className='text-black'>:</span>
+                  <span className='font-bold'>
+                    {" "}
+                    {nullToNA(applicationFullData?.boqData?.procurement_no)}
+                  </span>
+                </h1>
+                {/* <h1 className='text-black'>
+                  Procurement Total <span className='text-black'>:</span>
+                  <span className='font-bold'>
+                    {" "}
+                  </span>
+                </h1> */}
+              </div>
+            </div>
+
+            <div className='flex justify-between'>
+              <div className='pl-8 text-[1rem] text-black flex justify-between w-full'>
+                <h1 className=''>
+                  Category <span className='text-black'>:</span>
+                  <span className='font-bold'>
+                    {" "}
+                    {nullToNA(applicationFullData?.categoryDescription?.name)}
+                  </span>
+                </h1>
+              </div>
+              {/* {applicationFullData?.is_rate_contract && ( */}
+                <div className='text-[1rem] text-black flex justify-end w-full'>
+                  <h1 className='text-green-600'>
+                    <span className='font-bold'>
+                      {" "}
+                      {/* {applicationFullData?.is_rate_contract &&
+                        "Applied through Rate Contract"} */}
+                    </span>
+                  </h1>
+                </div>
+              {/* )} */}
+
+              {/* {applicationFullData?.remark && ( */}
+                <div className='text-[1rem] text-black flex justify-end w-full'>
+                  <h1 className='text-red-400'>
+                    Remark <span className='text-black'>:</span>
+                    <span className='font-bold'>
+                      {" "}
+                      {nullToNA(applicationFullData?.boqData?.remark)}
+                    </span>
+                  </h1>
+                </div>
+              {/* )} */}
+            </div>
+
+            {/* {applicationFullData?.procurement_stocks?.map((procData, index) => ( */}
+              <>
+                <div>
+                  {/* <p className='text-xs pl-5'>Procurement Item: {index + 1}</p> */}
+                </div>
+                <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow'>
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
+                      Subcategory
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.subCategoryDescription?.name)}
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Unit</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Brand</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      {/* {nullToNA(procData?.brand?.name)} */}
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.boqData?.quantity)}
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
+                      Per Unit Rate
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.boqData?.rate)}
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
+                    <div className='md:w-auto w-[50%] font-bold '>
+                      Total Rate
+                    </div>
+                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.boqData?.total_rate)}
+                    </div>
+                  </div>
+
+                  <div className='md:flex-1 md:col-span-4 md:block flex md:flex-row-reverse justify-between mt-5'>
+                    <div className='md:w-auto w-[100%] font-bold '>
+                      Description
+                    </div>
+                    <div className='md:w-auto w-[100%] text-gray-800 text-md'>
+                    {nullToNA(applicationFullData?.boqData?.description)}
+                    </div>
+                  </div>
+                </div>
+              </>
+            {/* ))} */}
+
+            {/* <div className='flex justify-end mb-4'>
+              <ImageDisplay
+                preview={preview}
+                imageDoc={imageDoc}
+                alt={"Notesheet doc"}
+                showPreview={"hidden"}
+                width={"[100px]"}
+              />
+            </div> */}
+
+            {/* <div className='h-[30px]'></div> */}
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {/* ----------------------------------------- */}
+        {/* Tendring Basic Details */}
+        <div className=' mt-5'>
           <div className=''>
             <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md'>
-              Basic Pre-Tendering Info{" "}
+              Basic Pre-Tendering Info
             </h2>
           </div>
           <div
