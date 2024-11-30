@@ -63,6 +63,7 @@ function AddPreProcurement() {
   const [isLoading, setisLoading] = useState(false);
   const [itemCategory, setItemCategory] = useState();
   const [applicationFullData, setapplicationFullData] = useState();
+  const [brandId, setBrandId] = useState();
 
   const [category, setCategory] = useState();
   const [subcategory, setSubCategory] = useState();
@@ -112,9 +113,8 @@ function AddPreProcurement() {
     )
       .then(function (response) {
         setProcItem(response?.data?.data);
-        console.log("response?.data?.data", response?.data?.data);
 
-        if (response?.data?.data) {
+        if (response?.data?.data && data) {
           setSubCategoryData(data, response?.data?.data);
         }
       })
@@ -130,7 +130,7 @@ function AddPreProcurement() {
     )
       .then(function (response) {
         console.log(
-          "response?.data?.data?.dataresponse?.data?.data?.data",
+          "res",
           response?.data?.data?.data
         );
         setSupplierData(response?.data?.data?.data);
@@ -158,15 +158,12 @@ function AddPreProcurement() {
   });
 
   const setSupplierDetails = (value) => {
-    console.log("calleed at 159",value)
     const supplierUnitPrice = selectedSupplier?.rate_contract_supplier?.find(
       (supplier) => supplier?.supplier_master?.id === value
     );
-    console.log("supplierUnitPricesupplierUnitPrice",supplierUnitPrice)
     setSupplierDetailsProc(supplierUnitPrice);
     // formik.setFieldValue("rate", supplierUnitPrice);
   };
-  console.log("supplierUnitPricesupplierUnitPrice",supplierDetailsProc)
 
   // intitial value
   const initialValues = {
@@ -219,6 +216,7 @@ function AddPreProcurement() {
       const normalizedData = {
         ...values,
         brand: brandName,
+        brandId: brandId,
         brandtxt: values.brandtxt || "",
         subcategory: values.subcategory?.id || values.subcategory,
         subcategorytxt: values.subcategory?.name || "",
@@ -419,14 +417,15 @@ function AddPreProcurement() {
   };
 
 
+
   const handleOnChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     console.log("datatatatat", name, "asdasdas", value);
 
-    // {
-    //   name == "itemCategory" && setNewSubCategory(value,"one");
-    // }
+    {
+      name == "brand" && setBrandId(value);
+    }
     {
       name == "supplier" && setSubCategoryData(value);
     }
@@ -465,8 +464,6 @@ function AddPreProcurement() {
         );
     }
   };
-
-  // console.log()
 
   const getSupplierName = (id) => {
     // formik.setFieldValue("proc_item", String(id));
@@ -531,15 +528,14 @@ function AddPreProcurement() {
     }
   };
 
-  console.log("chooseItems",chooseItems)
 
   const setSubCategoryData = async (data, procItem) => {
-
     const filteredData = procItem?.filter((item) =>
       item?.rate_contract_supplier?.some((supplier) => supplier?.id === data)
     );
     setChooseItems(filteredData);
   };
+
 
   return (
     <>

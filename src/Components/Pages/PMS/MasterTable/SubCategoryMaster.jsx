@@ -59,11 +59,11 @@ export default function CategoryMaster() {
       Cell: ({ cell }) => (
         <div
           className='pr-2 text-indigo-700 font-medium underline cursor-pointer hover:text-indigo-400'
-          // onClick={() =>
-          //   navigate(`/brandMaster/${cell.row.values.id}`, {
-          //     state: cell.row.values.name,
-          //   })
-          // }
+          onClick={() =>
+            navigate(`/brandMaster/${cell.row.values.id}`, {
+              state: cell.row.values.name,
+            })
+          }
         >
           View Brands
         </div>
