@@ -355,33 +355,44 @@ const ViewReceivedInvtById = () => {
 
   const removeField = () => {
     setProduct((prev) => {
-      const updatedProducts = [...prev]; // Create a shallow copy of the array
-      updatedProducts.pop(); // Remove the last element from the copied array
-      return updatedProducts; // Return the updated array to set the state
+      const updatedProducts = [...prev];
+      updatedProducts.pop(); 
+      return updatedProducts; 
     });
   };
 
+  const getTotalQuantity = () => {
+    let total = 0;
+    product.forEach(item => {
+      total += Number(item.quantity || 0);
+    });
+    return total;
+  };
+
   const onchangeField = (e, index, field) => {
-    let sum = 0;
+    let sum = 0; 
     let { name, value } = e.target;
+
     if (field === 'quantity') {
-      value = Number(value); 
+      value = Number(value);
     }
     let temp = [...product];
     temp[index][field] = value;
     for (let i = 0; i < temp.length; i++) {
-      sum += Number(temp[i].quantity || 0); 
+      sum += Number(temp[i].quantity || 0);
     }
     if (field === 'quantity') {
       const currentQuantity = product[index]?.quantity || 0;
-      const updatedSum = sum;
+      const updatedSum = sum; 
       if (updatedSum > totSum) {
-        alert('Provided value has exceeded total received quantity');
-        return;  
+        alert(`Provided value has exceeded the total available quantity of ${totSum}`);
+        return; 
       }
     }
     setProduct(temp);
   };
+  
+  
   
   
   
@@ -892,72 +903,69 @@ const ViewReceivedInvtById = () => {
                         </div>
 
                         {product.map((item, index) => (
-      <div className='flex gap-2 items-end' key={index}>
-        <div className="pl-4 text-center pb-1">
-          {index + 1}.
-        </div>
+  <div className='flex gap-2 items-end' key={index}>
+    <div className="pl-4 text-center pb-1">
+      {index + 1}.
+    </div>
+    <div className='form-group flex-shrink max-w-full px-4'>
+      <div className='px-4 w-full'>
+        <label className={`${labelStyle} inline-block mb-2`}>
+          Quantity
+        </label>
+        <input
+          name='quantity'
+          className={`${inputStyle} inline-block w-full relative`}
+          onChange={(e) => {
+            onchangeField(e, index, "quantity");
+          }}
+          value={item?.quantity}
+          type="number"
+          max={totSum}  
+          min={1}
+          step={1}
+        />
+      </div>
+    </div>
 
-        {/* Quantity Input */}
-        <div className='form-group flex-shrink max-w-full px-4'>
-          <div className='px-4 w-full'>
-            <label className={`${labelStyle} inline-block mb-2`}>
-              Quantity
-            </label>
-            <input
-              name='quantity'
-              className={`${inputStyle} inline-block w-full relative`}
-              onChange={(e) => {
-                onchangeField(e, index, "quantity");
-              }}
-              value={item?.quantity}
-              type="number"
-              max={totSum}
-              min={1}
-              step={1}
-            />
-          </div>
-        </div>
 
-        {/* Serial Number Input */}
-        <div className='form-group flex-shrink max-w-full px-4'>
-          <div className='px-4 w-full'>
-            <label className={`${labelStyle} inline-block mb-2`}>
-              Serial Number
-            </label>
-            <input
-              name='serial_no'
-              className={`${inputStyle} inline-block w-full relative`}
-              onChange={(e) => {
-                onchangeField(e, index, "serial_no");
-              }}
-              value={item?.serial_no}  // Ensure serial_no is a string
-              type="text"  // Change to text to allow string input
-            />
-          </div>
-        </div>
-
-        {/* Add/Remove Rows Button */}
-        {product.length - 1 === index && (
-          <div className='form-group flex-shrink flex gap-2 max-w-full px-1'>
-            <button
-              className={`${buttonStyle2} flex gap-2`}
-              onClick={addField}
-            >
-              <IoMdAddCircleOutline className='text-xl' /> Rows
-            </button>
-
-            {product?.length > 1 && (
-              <button
-                className={`${buttonStyle}`}
-                onClick={removeField}
-              >
-                Remove
-              </button>
-            )}
-          </div>
+    <div className='form-group flex-shrink max-w-full px-4'>
+      <div className='px-4 w-full'>
+        <label className={`${labelStyle} inline-block mb-2`}>
+          Serial Number
+        </label>
+        <input
+          name='serial_no'
+          className={`${inputStyle} inline-block w-full relative`}
+          onChange={(e) => {
+            onchangeField(e, index, "serial_no");
+          }}
+          value={item?.serial_no} 
+          type="text" 
+        />
+      </div>
+    </div>
+    {product.length - 1 === index && (
+      <div className='form-group flex-shrink flex gap-2 max-w-full px-1'>
+        <button
+          className={`${buttonStyle2} flex gap-2`}
+          onClick={addField}
+          disabled={getTotalQuantity() >= totSum}
+        >
+          <IoMdAddCircleOutline className='text-xl' /> Rows
+        </button>
+        {product?.length > 1 && (
+          <button
+            className={`${buttonStyle}`}
+            onClick={removeField}
+          >
+            Remove
+          </button>
         )}
       </div>
-    ))}
+    )}
+  </div>
+))}
+
 
                       </div>
 
