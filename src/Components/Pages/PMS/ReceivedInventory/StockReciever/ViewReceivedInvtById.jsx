@@ -362,20 +362,31 @@ const ViewReceivedInvtById = () => {
   };
 
   const onchangeField = (e, index, field) => {
+    let sum = 0;
     let { name, value } = e.target;
     if (field === 'quantity') {
-      if (totSum < value) {
-        alert('Provided value has exceeded total received quantity')
-        value = ''
+      value = Number(value); 
+    }
+    let temp = [...product];
+    temp[index][field] = value;
+    for (let i = 0; i < temp.length; i++) {
+      sum += Number(temp[i].quantity || 0); 
+    }
+    if (field === 'quantity') {
+      const currentQuantity = product[index]?.quantity || 0;
+      const updatedSum = sum;
+      if (updatedSum > totSum) {
+        alert('Provided value has exceeded total received quantity');
+        return;  
       }
     }
-
-    let temp = [...product];
-
-    temp[index][field] = value;
-
     setProduct(temp);
   };
+  
+  
+  
+  
+
 
   const addProduct = () => {
     if (product.length > totSum) {
@@ -881,80 +892,73 @@ const ViewReceivedInvtById = () => {
                         </div>
 
                         {product.map((item, index) => (
-                          <div className='flex gap-2 items-end' key={index}>
-                              <div className="pl-4 text-center pb-1">
-                                {index+1}.
-                              </div>
-                            <div className='form-group flex-shrink max-w-full px-4 '>
-                              <div className='px-4 w-full'>
-                                <label
-                                  className={`${labelStyle} inline-block mb-2`}
-                                >
-                                  Quantity
-                                </label>
+      <div className='flex gap-2 items-end' key={index}>
+        <div className="pl-4 text-center pb-1">
+          {index + 1}.
+        </div>
 
-                                <input
-                                  name='quantity'
-                                  className={`${inputStyle} inline-block w-full relative`}
-                                  onChange={(e) => {
-                                    onchangeField(e, index, "quantity");
-                                  }}
+        {/* Quantity Input */}
+        <div className='form-group flex-shrink max-w-full px-4'>
+          <div className='px-4 w-full'>
+            <label className={`${labelStyle} inline-block mb-2`}>
+              Quantity
+            </label>
+            <input
+              name='quantity'
+              className={`${inputStyle} inline-block w-full relative`}
+              onChange={(e) => {
+                onchangeField(e, index, "quantity");
+              }}
+              value={item?.quantity}
+              type="number"
+              max={totSum}
+              min={1}
+              step={1}
+            />
+          </div>
+        </div>
 
-                                  value={item?.quantity}
+        {/* Serial Number Input */}
+        <div className='form-group flex-shrink max-w-full px-4'>
+          <div className='px-4 w-full'>
+            <label className={`${labelStyle} inline-block mb-2`}>
+              Serial Number
+            </label>
+            <input
+              name='serial_no'
+              className={`${inputStyle} inline-block w-full relative`}
+              onChange={(e) => {
+                onchangeField(e, index, "serial_no");
+              }}
+              value={item?.serial_no}  // Ensure serial_no is a string
+              type="text"  // Change to text to allow string input
+            />
+          </div>
+        </div>
 
-                                  type="number"
-                                  max={totSum}
-                                  min={1}
-                                  step={1}
-                                />
-                              </div>
-                            </div>
+        {/* Add/Remove Rows Button */}
+        {product.length - 1 === index && (
+          <div className='form-group flex-shrink flex gap-2 max-w-full px-1'>
+            <button
+              className={`${buttonStyle2} flex gap-2`}
+              onClick={addField}
+            >
+              <IoMdAddCircleOutline className='text-xl' /> Rows
+            </button>
 
-                            <div className=' form-group flex-shrink max-w-full px-4 '>
-                              <div className='px-4 w-full'>
-                                <label
-                                  className={`${labelStyle} inline-block mb-2`}
-                                >
-                                  Serial Number
-                                </label>
+            {product?.length > 1 && (
+              <button
+                className={`${buttonStyle}`}
+                onClick={removeField}
+              >
+                Remove
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    ))}
 
-                                <input
-                                  name='serial_no'
-                                  className={`${inputStyle} inline-block w-full relative`}
-                                  onChange={(e) => {
-                                    onchangeField(e, index, "serial_no");
-                                  }}
-                                  value={item?.serial_no}
-                                />
-                              </div>
-                            </div>
-
-                            {product.length - 1 === index && (
-                              <div className=' form-group flex-shrink flex gap-2 max-w-full px-1'>
-                                {/* <div className="px-4 w-full"> */}
-
-                                <button
-                                  className={`${buttonStyle2} flex gap-2`}
-                                  onClick={addField}
-                                >
-                                  <IoMdAddCircleOutline className='text-xl' />{" "}
-                                  rows
-                                </button>
-
-                                {product?.length > 1 && (
-                                  <button
-                                    className={`${buttonStyle}`}
-                                    onClick={removeField}
-                                  >
-                                    remove
-                                  </button>
-                                )}
-
-                                {/* </div> */}
-                              </div>
-                            )}
-                          </div>
-                        ))}
                       </div>
 
                       <div className='space-x-5 flex justify-end mr-3 mt-14'>
