@@ -293,6 +293,7 @@ const BiddingDetailForm = (props) => {
       });
   };
 
+
   useEffect(() => {
     if (applicationFullData?.boq?.bid_details?.bidder_master?.length !== 0 && applicationFullData?.boq?.bid_details?.bidder_master?.length >= tabNo) {
       getBidder(applicationFullData?.boq?.bid_details?.bidder_master[tabNo - 1]?.id)

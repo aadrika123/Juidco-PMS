@@ -381,10 +381,10 @@ const BiddingViewById = () => {
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
         {/* ----------------------------------------- */}
 
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <div
             className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500"
-            // ref={componentRef}
+           
           >
             <div className="">
               <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
@@ -524,9 +524,9 @@ const BiddingViewById = () => {
               />
             </div>
 
-            {/* <div className='h-[30px]'></div> */}
+       
           </div>
-        </div>
+        </div> */}
 
         {/* ----------------------------------------- */}
         {/* Tendring Basic Details */}
