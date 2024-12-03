@@ -304,14 +304,14 @@ export default function Reports() {
       accessor:
         formik.values.reportType === "total_stock"
           ? "quantity"
-          : "remaining_quantity",
+          : "quantity",
       Cell: (
         { cell } // console.log(cell.row.values,"===================celllllll")
       ) => (
         <div className="pr-2">
           {formik.values.reportType === "total_stock"
             ? cell.row.values.quantity
-            : cell.row.values.remaining_quantity}
+            : cell.row.values.quantity}
         </div>
       ),
     },

@@ -783,7 +783,7 @@ const BiddingViewById = () => {
                     <>
                       {/* <h1 className="font-bold ">Technical Criteria</h1> */}
 
-                      {biddingData?.bidder_master.map((data, index) => (
+                      {biddingData?.bidder_master?.map((data, index) => (
                         <>
                           <div className="grid md:grid-rows-4-4 gap-6 mb-5 bg-slate-100 rounded-xl">
                             <h1 className="p-3 bg-slate-300 rounded ">

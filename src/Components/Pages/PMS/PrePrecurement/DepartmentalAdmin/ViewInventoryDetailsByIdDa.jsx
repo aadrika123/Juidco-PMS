@@ -583,6 +583,7 @@ const ViewInventoryDetailsById = (props) => {
 
               {page === "inbox" &&
                 (applicationFullData?.status === 2 ||
+                  applicationFullData?.status === -1 ||
                   applicationFullData?.status === 1 ||
                   applicationFullData?.status === 81) && (
                   <button

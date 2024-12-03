@@ -77,7 +77,7 @@ function InventoryProposalList(props) {
         <div className='pr-2 w-[12rem]'>
           {cell.row.values.status == -1 && (
             <p className='text-status_reject_text text-center bg-status_reject_bg border-status_reject_border border-[1px] px-1 py-1  rounded-md'>
-              Returned from Department Admin
+              Returned from Inventory Admin
             </p>
           )}
           {cell.row.values.status == -2 && (
