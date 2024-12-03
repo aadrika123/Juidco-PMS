@@ -398,7 +398,7 @@ const BiddingViewById = () => {
                   Procurement No <span className="text-black">:</span>
                   <span className="font-bold">
                     {" "}
-                    {nullToNA(applicationFullData?.procurement_no)}
+                    {nullToNA(applicationFullboq?.procurement_no)}
                   </span>
                 </h1>
                 <h1 className="text-black">
