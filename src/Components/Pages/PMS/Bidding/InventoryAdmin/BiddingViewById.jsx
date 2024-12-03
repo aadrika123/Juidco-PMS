@@ -666,8 +666,8 @@ const BiddingViewById = () => {
           </div>
 
           {/* Bidding Comparision Details */}
-          {biddingData?.techCriteria.length > 0 ||
-            (biddingData?.finCriteria.length > 0 && (
+          {biddingData?.techCriteria?.length > 0 ||
+            (biddingData?.finCriteria?.length > 0 && (
               <>
                 <div className=''>
                   <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10'>
@@ -763,7 +763,7 @@ const BiddingViewById = () => {
             ))}
 
           {/* Bidding Master Details */}
-          {biddingData?.bidder_master.length > 0 && (
+          {biddingData?.bidder_master?.length > 0 && (
             <>
               <div className=''>
                 <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10'>
@@ -775,16 +775,16 @@ const BiddingViewById = () => {
                 ref={componentRef}
               >
                 <div className='mt-5'>
-                  {biddingData?.bidder_master.length > 0 && (
+                  {biddingData?.bidder_master?.length > 0 && (
                     <>
                       {/* <h1 className="font-bold ">Technical Criteria</h1> */}
 
-                      {biddingData?.bidder_master.map((data, index) => (
+                      {biddingData?.bidder_master?.map((data, index) => (
                         <>
                           <div className='grid md:grid-rows-4-4 gap-6 mb-5 bg-slate-100 rounded-xl'>
                             <h1 className='p-3 bg-slate-300 rounded '>
                               Bidder {index + 1}{" "}
-                              {biddingData?.bidder_master.length === 1 && (
+                              {biddingData?.bidder_master?.length === 1 && (
                                 <span className='text-gray-600 font-semibold'>
                                   (Selected Winner)
                                 </span>
