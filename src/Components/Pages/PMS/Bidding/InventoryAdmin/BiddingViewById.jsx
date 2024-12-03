@@ -22,6 +22,12 @@ const BiddingViewById = () => {
   const [imageDoc, setImageDoc] = useState(false);
   const [preview, setPreview] = useState();
   const [applicationFullData, setapplicationFullData] = useState();
+  const [applicationFullboqData, setapplicationFullBoqData] = useState();
+  const [applicationFullboq, setapplicationFullBoq] = useState();
+  const [applicationBoqCategoryData, setapplicationBoqCategoryData] =
+    useState();
+  const [applicationBoqSubCategoryData, setapplicationBoqSubCategoryData] =
+    useState();
   const [biddingData, setBiddingData] = useState();
   const [previewData, setPreviewData] = useState();
   const [showModal, setShowModal] = useState(false);
@@ -31,7 +37,7 @@ const BiddingViewById = () => {
   const navigate = useNavigate();
   const { id, page } = useParams();
 
-  // console.log(applicationFullData?.boqData,"applicationFullData---------->")
+  // console.log(applicationFullData[0]?.boqData,"applicationFullData---------->")
 
   const {
     api_postForwardtoSR,
@@ -73,6 +79,16 @@ const BiddingViewById = () => {
       .then(function (response) {
         if (response?.data?.status) {
           setapplicationFullData(response?.data?.data);
+          // console.log(response?.data?.data[0]?.boqData,"{{{{");
+          setapplicationFullBoqData(response?.data?.data[0]?.boqData);
+          
+          setapplicationBoqCategoryData(
+            response?.data?.data[0]?.categoryDescriptions[0]
+          );
+          setapplicationBoqSubCategoryData(
+            response?.data?.data[0]?.subCategoryDescriptions
+          );
+          setapplicationFullBoq(response?.data?.data[0]?.boq);
           setisLoading(false);
         } else {
           setisLoading(false);
@@ -363,140 +379,142 @@ const BiddingViewById = () => {
       />
 
       <div className={`${isLoading ? "blur-[2px]" : ""}`}>
-
-
         {/* ----------------------------------------- */}
 
-        <div className='mt-6'>
+        <div className="mt-6">
           <div
-            className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'
+            className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500"
             // ref={componentRef}
           >
-            <div className=''>
-              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+            <div className="">
+              <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
                 View Pre Procurement Details{" "}
               </h2>
             </div>
 
-            <div className='flex justify-between'>
-              <div className='pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full'>
-                <h1 className=''>
-                  Procurement No <span className='text-black'>:</span>
-                  <span className='font-bold'>
+            <div className="flex justify-between">
+              <div className="pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full">
+                <h1 className="">
+                  Procurement No <span className="text-black">:</span>
+                  <span className="font-bold">
                     {" "}
-                    {nullToNA(applicationFullData?.boqData?.procurement_no)}
+                    {nullToNA(applicationFullData?.procurement_no)}
                   </span>
                 </h1>
-                {/* <h1 className='text-black'>
-                  Procurement Total <span className='text-black'>:</span>
-                  <span className='font-bold'>
+                <h1 className="text-black">
+                  Procurement Total <span className="text-black">:</span>
+                  <span className="font-bold">
                     {" "}
-                  </span>
-                </h1> */}
-              </div>
-            </div>
-
-            <div className='flex justify-between'>
-              <div className='pl-8 text-[1rem] text-black flex justify-between w-full'>
-                <h1 className=''>
-                  Category <span className='text-black'>:</span>
-                  <span className='font-bold'>
-                    {" "}
-                    {nullToNA(applicationFullData?.categoryDescription?.name)}
+                    
+                    {indianAmount(nullToNA(applicationFullboq?.estimated_cost))}
                   </span>
                 </h1>
               </div>
-              {/* {applicationFullData?.is_rate_contract && ( */}
-                <div className='text-[1rem] text-black flex justify-end w-full'>
-                  <h1 className='text-green-600'>
-                    <span className='font-bold'>
-                      {" "}
-                      {/* {applicationFullData?.is_rate_contract &&
-                        "Applied through Rate Contract"} */}
-                    </span>
-                  </h1>
-                </div>
-              {/* )} */}
-
-              {/* {applicationFullData?.remark && ( */}
-                <div className='text-[1rem] text-black flex justify-end w-full'>
-                  <h1 className='text-red-400'>
-                    Remark <span className='text-black'>:</span>
-                    <span className='font-bold'>
-                      {" "}
-                      {nullToNA(applicationFullData?.boqData?.remark)}
-                    </span>
-                  </h1>
-                </div>
-              {/* )} */}
             </div>
 
-            {/* {applicationFullData?.procurement_stocks?.map((procData, index) => ( */}
+            <div className="flex justify-between">
+              <div className="pl-8 text-[1rem] text-black flex justify-between w-full">
+                <h1 className="">
+                  Category <span className="text-black">:</span>
+                  <span className="font-bold">
+                    {" "}
+                    {nullToNA(applicationBoqCategoryData)}
+                  </span>
+                </h1>
+              </div>
+              {applicationFullData?.is_rate_contract && (
+                <div className="text-[1rem] text-black flex justify-end w-full">
+                  <h1 className="text-green-600">
+                    <span className="font-bold">
+                      {" "}
+                      {applicationFullData?.is_rate_contract &&
+                        "Applied through Rate Contract"}
+                    </span>
+                  </h1>
+                </div>
+              )}
+              {applicationFullData?.remark && (
+                <div className="text-[1rem] text-black flex justify-end w-full">
+                  <h1 className="text-red-400">
+                    Remark <span className="text-black">:</span>
+                    <span className="font-bold">
+                      {" "}
+                      {nullToNA(applicationFullData?.remark)}
+                    </span>
+                  </h1>
+                </div>
+              )}
+            </div>
+
+            {applicationFullboqData?.map((procData, index) => (
               <>
                 <div>
-                  {/* <p className='text-xs pl-5'>Procurement Item: {index + 1}</p> */}
+                  <p className="text-xs pl-5">Procurement Item: {index + 1}</p>
                 </div>
-                <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow'>
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
+                <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow">
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
                       Subcategory
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.subCategoryDescription?.name)}
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(applicationBoqSubCategoryData?.[index])}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>Unit</div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Unit</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(procData?.unit?.name)}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>Brand</div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                      {/* {nullToNA(procData?.brand?.name)} */}
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Brand</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(procData?.brand?.name)}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.boqData?.quantity)}
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {nullToNA(procData?.quantity)}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
                       Per Unit Rate
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.boqData?.rate)}
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {indianAmount(nullToNA(procData?.rate))}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
                       Total Rate
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.boqData?.total_rate)}
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
+                      {indianAmount(
+                        nullToNA(procData?.quantity * procData?.rate)
+                      )}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:col-span-4 md:block flex md:flex-row-reverse justify-between mt-5'>
-                    <div className='md:w-auto w-[100%] font-bold '>
+                  <div className="md:flex-1 md:col-span-4 md:block flex md:flex-row-reverse justify-between mt-5">
+                    <div className="md:w-auto w-[100%] font-bold ">
                       Description
                     </div>
-                    <div className='md:w-auto w-[100%] text-gray-800 text-md'>
-                    {nullToNA(applicationFullData?.boqData?.description)}
+                    <div className="md:w-auto w-[100%] text-gray-800 text-md">
+                      {nullToNA(procData?.description)}
                     </div>
                   </div>
                 </div>
               </>
-            {/* ))} */}
+            ))}
 
-            {/* <div className='flex justify-end mb-4'>
+            <div className="flex justify-end mb-4">
               <ImageDisplay
                 preview={preview}
                 imageDoc={imageDoc}
@@ -504,61 +522,47 @@ const BiddingViewById = () => {
                 showPreview={"hidden"}
                 width={"[100px]"}
               />
-            </div> */}
+            </div>
 
             {/* <div className='h-[30px]'></div> */}
           </div>
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         {/* ----------------------------------------- */}
         {/* Tendring Basic Details */}
-        <div className=' mt-5'>
-          <div className=''>
-            <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md'>
+        <div className=" mt-5">
+          <div className="">
+            <h2 className=" text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md">
               Basic Pre-Tendering Info
             </h2>
           </div>
           <div
-            className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'
+            className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500"
             ref={componentRef}
           >
-            <div className='flex justify-between'></div>
-            <div className='grid md:grid-rows-4-4 gap-6 ml-8'>
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold'>
+            <div className="flex justify-between"></div>
+            <div className="grid md:grid-rows-4-4 gap-6 ml-8">
+              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold">
                   EMD Excemption
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-800 '>
+                <div className="md:w-auto w-[50%] text-gray-800 ">
                   {applicationFullData?.emd == true ? "Yes" : "No"}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex md:flex-col-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>
+              <div className="md:flex-1 md:block flex md:flex-col-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">
                   Tender Estimated Amount
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-800 '>
+                <div className="md:w-auto w-[50%] text-gray-800 ">
                   {indianAmount(applicationFullData?.estimated_amount)}
                 </div>
               </div>
 
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-bold '>EMD Amount </div>
-                <div className='md:w-auto w-[50%] text-gray-800 '>
+              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-bold ">EMD Amount </div>
+                <div className="md:w-auto w-[50%] text-gray-800 ">
                   {applicationFullData?.emd_type === "percentage"
                     ? `${applicationFullData?.emd_value}%  (${indianAmount(
                         (applicationFullData?.emd_value *
@@ -571,12 +575,12 @@ const BiddingViewById = () => {
                   })`}
                 </div>
               </div>
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-semibold '>
+              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-semibold ">
                   PBG Amount{" "}
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-800 '>
-                  <span className='text-sm text-gray-500'>
+                <div className="md:w-auto w-[50%] text-gray-800 ">
+                  <span className="text-sm text-gray-500">
                     {applicationFullData?.pbg_type == "percentage"
                       ? applicationFullData?.pbg_value
                       : indianAmount(applicationFullData?.pbg_value)}
@@ -586,11 +590,11 @@ const BiddingViewById = () => {
                     : " (Fixed)"}{" "}
                 </div>
               </div>
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-semibold '>
+              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-semibold ">
                   Tendering Type{" "}
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-800'>
+                <div className="md:w-auto w-[50%] text-gray-800">
                   {applicationFullData?.tendering_type === "qcbs"
                     ? "Quality And Cost Based Selection"
                     : applicationFullData?.tendering_type === "least_cost"
@@ -601,22 +605,22 @@ const BiddingViewById = () => {
                     : ""}
                 </div>
               </div>
-              <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                <div className='md:w-auto w-[50%] font-semibold '>
+              <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                <div className="md:w-auto w-[50%] font-semibold ">
                   Cover Details{" "}
                 </div>
-                <div className='md:w-auto w-[50%] text-gray-800 '>
+                <div className="md:w-auto w-[50%] text-gray-800 ">
                   {previewData?.cover_details?.noOfCovers
                     ? `${previewData?.cover_details?.noOfCovers} Cover`
                     : "No Cover Selected yet"}
                 </div>
               </div>
               {applicationFullData?.is_rate_contract && (
-                <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                  <div className='md:w-auto w-[50%] font-semibold '>
+                <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                  <div className="md:w-auto w-[50%] font-semibold ">
                     Rate Contract{" "}
                   </div>
-                  <div className='md:w-auto w-[50%] text-gray-800 '>
+                  <div className="md:w-auto w-[50%] text-gray-800 ">
                     {applicationFullData?.is_rate_contract &&
                       "Is Rate Contract"}
                   </div>
@@ -624,36 +628,36 @@ const BiddingViewById = () => {
               )}
 
               {applicationFullData?.is_rate_contract && (
-                <div className='grid md:grid-cols-3 gap-4'>
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>Tenure </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 '>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Tenure </div>
+                    <div className="md:w-auto w-[50%] text-gray-800 ">
                       {applicationFullData?.tenure || 0} Years
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold'>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold">
                       Minimum Supplier{" "}
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 '>
+                    <div className="md:w-auto w-[50%] text-gray-800 ">
                       {applicationFullData?.min_supplier || 0}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold'>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold">
                       Maximum Supplier{" "}
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800'>
+                    <div className="md:w-auto w-[50%] text-gray-800">
                       {applicationFullData?.max_supplier || 0}
                     </div>
                   </div>
                 </div>
               )}
             </div>
-            <div className='flex justify-end w-full mb-5'>
-              <div className='w-[100px]'>
+            <div className="flex justify-end w-full mb-5">
+              <div className="w-[100px]">
                 <ImageDisplay
                   preview={preview}
                   imageDoc={imageDoc}
@@ -666,48 +670,48 @@ const BiddingViewById = () => {
           </div>
 
           {/* Bidding Comparision Details */}
-          {biddingData?.techCriteria.length > 0 ||
-            (biddingData?.finCriteria.length > 0 && (
+          {biddingData?.techCriteria?.length > 0 ||
+            (biddingData?.finCriteria?.length > 0 && (
               <>
-                <div className=''>
-                  <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10'>
+                <div className="">
+                  <h2 className=" text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10">
                     Criteria type Info
                   </h2>
                 </div>
                 <div
-                  className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 flex w-full justify-between'
+                  className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 flex w-full justify-between"
                   ref={componentRef}
                 >
-                  {biddingData?.techCriteria.length > 0 && (
-                    <div className='mt-5 w-[45%] '>
+                  {biddingData?.techCriteria?.length > 0 && (
+                    <div className="mt-5 w-[45%] ">
                       <>
-                        <div className='bg-slate-100 w-full'>
-                          <h1 className='font-bold p-3 text-center bg-slate-300 rounded'>
+                        <div className="bg-slate-100 w-full">
+                          <h1 className="font-bold p-3 text-center bg-slate-300 rounded">
                             Technical Criteria
                           </h1>
 
                           {biddingData?.techCriteria.map((data, index) => (
                             <>
                               <div
-                                className='grid md:grid-rows-4-4 gap-6 ml-8 mb-5 mt-3'
+                                className="grid md:grid-rows-4-4 gap-6 ml-8 mb-5 mt-3"
                                 key={index}
                               >
-                                <div className='md:flex-1 md:block flex md:flex-col-reverse justify-between'>
-                                  <div className='md:w-auto w-[50%] text-gray-800 '>
+                                <div className="md:flex-1 md:block flex md:flex-col-reverse justify-between">
+                                  <div className="md:w-auto w-[50%] text-gray-800 ">
                                     Creteria Type:{" "}
-                                    <span className='font-bold'>
+                                    <span className="font-bold">
                                       {data?.criteria_type}
                                     </span>
                                   </div>
-                                  <div className='md:w-auto w-[50%] text-gray-800 '>
+                                  <div className="md:w-auto w-[50%] text-gray-800 ">
                                     Heading:{" "}
-                                    <span className='font-bold'>
+                                    <span className="font-bold">
                                       {data?.heading}
                                     </span>
                                   </div>
-                                  <div className='md:w-auto w-[50%] text-gray-800 '>
+                                  <div className="md:w-auto w-[50%] text-gray-800 ">
                                     Description:{" "}
-                                    <span className='font-bold'>
+                                    <span className="font-bold">
                                       {data?.description}
                                     </span>
                                   </div>
@@ -720,33 +724,33 @@ const BiddingViewById = () => {
                     </div>
                   )}
 
-                  {biddingData?.finCriteria.length > 0 && (
-                    <div className='w-[45%]'>
+                  {biddingData?.finCriteria?.length > 0 && (
+                    <div className="w-[45%]">
                       <>
-                        <div className='bg-slate-100 w-full'>
-                          <h1 className='font-bold p-3 text-center bg-slate-300 rounded '>
+                        <div className="bg-slate-100 w-full">
+                          <h1 className="font-bold p-3 text-center bg-slate-300 rounded ">
                             Financial Criteria
                           </h1>
 
                           {biddingData?.finCriteria.map((data) => (
                             <>
-                              <div className='grid md:grid-rows-4-4 gap-6 ml-8 mb-5 mt-3'>
-                                <div className='md:flex-1 md:block flex md:flex-col-reverse justify-between'>
-                                  <div className='md:w-auto w-[50%] text-gray-800 '>
+                              <div className="grid md:grid-rows-4-4 gap-6 ml-8 mb-5 mt-3">
+                                <div className="md:flex-1 md:block flex md:flex-col-reverse justify-between">
+                                  <div className="md:w-auto w-[50%] text-gray-800 ">
                                     Creteria Type:{" "}
-                                    <span className='font-bold'>
+                                    <span className="font-bold">
                                       {data?.criteria_type}
                                     </span>
                                   </div>
-                                  <div className='md:w-auto w-[50%] text-gray-800 '>
+                                  <div className="md:w-auto w-[50%] text-gray-800 ">
                                     Heading:{" "}
-                                    <span className='font-bold'>
+                                    <span className="font-bold">
                                       {data?.heading}
                                     </span>
                                   </div>
-                                  <div className='md:w-auto w-[50%] text-gray-800 '>
+                                  <div className="md:w-auto w-[50%] text-gray-800 ">
                                     Description:{" "}
-                                    <span className='font-bold'>
+                                    <span className="font-bold">
                                       {data?.description}
                                     </span>
                                   </div>
@@ -763,166 +767,166 @@ const BiddingViewById = () => {
             ))}
 
           {/* Bidding Master Details */}
-          {biddingData?.bidder_master.length > 0 && (
+          {biddingData?.bidder_master?.length > 0 && (
             <>
-              <div className=''>
-                <h2 className=' text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10'>
+              <div className="">
+                <h2 className=" text-xl pl-7 pt-3 pb-3 flex justify-start bg-[#4338ca] text-white rounded-md mt-10">
                   Bidding Master Info{" "}
                 </h2>
               </div>
               <div
-                className='py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 '
+                className="py-6 mt-4 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 "
                 ref={componentRef}
               >
-                <div className='mt-5'>
-                  {biddingData?.bidder_master.length > 0 && (
+                <div className="mt-5">
+                  {biddingData?.bidder_master?.length > 0 && (
                     <>
                       {/* <h1 className="font-bold ">Technical Criteria</h1> */}
 
                       {biddingData?.bidder_master.map((data, index) => (
                         <>
-                          <div className='grid md:grid-rows-4-4 gap-6 mb-5 bg-slate-100 rounded-xl'>
-                            <h1 className='p-3 bg-slate-300 rounded '>
+                          <div className="grid md:grid-rows-4-4 gap-6 mb-5 bg-slate-100 rounded-xl">
+                            <h1 className="p-3 bg-slate-300 rounded ">
                               Bidder {index + 1}{" "}
-                              {biddingData?.bidder_master.length === 1 && (
-                                <span className='text-gray-600 font-semibold'>
+                              {biddingData?.bidder_master?.length === 1 && (
+                                <span className="text-gray-600 font-semibold">
                                   (Selected Winner)
                                 </span>
                               )}
                             </h1>
                             {data?.bidding_amount && (
-                              <div className='w-full flex justify-end items-end px-3 py-2'>
+                              <div className="w-full flex justify-end items-end px-3 py-2">
                                 <p>Bidding Amount - </p>
-                                <p className='text-lg font-semibold'>
+                                <p className="text-lg font-semibold">
                                   {""}
                                   {indianAmount(data?.bidding_amount)}
                                 </p>
                               </div>
                             )}
 
-                            <div className='flex justify-between mb-2 px-4 pb-0'>
-                              <div className=''>
-                                <div className=' text-gray-800 pb-1 '>
-                                  <span className='text-sm'>
+                            <div className="flex justify-between mb-2 px-4 pb-0">
+                              <div className="">
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">
                                     Bidder Name :{" "}
                                   </span>
-                                  <span className='font-bold '>
+                                  <span className="font-bold ">
                                     {data?.name}
                                   </span>
                                 </div>
 
-                                <div className=' text-gray-800 pb-1 '>
-                                  <span className='text-sm'>Pan No: </span>
-                                  <span className='font-bold'>
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">Pan No: </span>
+                                  <span className="font-bold">
                                     {data?.pan_no}
                                   </span>
                                 </div>
 
-                                <div className=' text-gray-800 pb-1 '>
-                                  <span className='text-sm'>Address: </span>
-                                  <span className='font-bold'>
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">Address: </span>
+                                  <span className="font-bold">
                                     {data?.address}
                                   </span>
                                 </div>
 
-                                <div className=' text-gray-800 pb-1 '>
-                                  <span className='text-sm'>Bank Name: </span>
-                                  <span className='font-bold'>
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">Bank Name: </span>
+                                  <span className="font-bold">
                                     {data?.bank}
                                   </span>
                                 </div>
 
-                                <div className=' text-gray-800 pb-1 '>
-                                  <span className='text-sm'>Bank Acc No: </span>
-                                  <span className='font-bold'>
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">Bank Acc No: </span>
+                                  <span className="font-bold">
                                     {data?.account_no}
                                   </span>
                                 </div>
 
-                                <div className=' text-gray-800 pb-1 '>
-                                  <span className='text-sm'>IFSC Code: </span>
-                                  <span className='font-bold'>
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">IFSC Code: </span>
+                                  <span className="font-bold">
                                     {data?.ifsc}
                                   </span>
                                 </div>
                               </div>
 
-                              <div className=''>
-                                <span className='text-sm'></span>{" "}
-                                <div className=' text-gray-800 pb-1 '>
-                                  <span className='text-sm'>Gst No: </span>
-                                  <span className='font-bold'>
+                              <div className="">
+                                <span className="text-sm"></span>{" "}
+                                <div className=" text-gray-800 pb-1 ">
+                                  <span className="text-sm">Gst No: </span>
+                                  <span className="font-bold">
                                     {data?.gst_no}
                                   </span>
                                 </div>
-                                <div className='md:w-auto w-[50%] text-gray-800 pb-1 '>
-                                  <span className='text-sm'>EMD : </span>
-                                  <span className='font-bold'>
+                                <div className="md:w-auto w-[50%] text-gray-800 pb-1 ">
+                                  <span className="text-sm">EMD : </span>
+                                  <span className="font-bold">
                                     {data?.emd == true ? "Yes" : "No"}
                                   </span>
                                 </div>
-                                <div className='md:w-auto w-[50%] text-gray-800 pb-1 '>
-                                  <span className='text-sm'>
+                                <div className="md:w-auto w-[50%] text-gray-800 pb-1 ">
+                                  <span className="text-sm">
                                     Payment Mode :{" "}
                                   </span>
-                                  <span className='font-bold'>
+                                  <span className="font-bold">
                                     {(data?.payment_mode).toUpperCase()}
                                   </span>
                                 </div>
-                                <div className='md:w-auto w-[50%] text-gray-800 pb-1 '>
-                                  <span className='text-sm'>
+                                <div className="md:w-auto w-[50%] text-gray-800 pb-1 ">
+                                  <span className="text-sm">
                                     Offline Mode :{" "}
                                   </span>
-                                  <span className='font-bold'>
+                                  <span className="font-bold">
                                     {data?.offline_mode.toUpperCase()}
                                   </span>
                                 </div>
                                 {data?.offline_mode == "dd" && (
-                                  <div className='md:w-auto w-[50%] text-gray-800 pb-1 '>
-                                    <span className='text-sm'>DD no : </span>
-                                    <span className='font-bold'>
+                                  <div className="md:w-auto w-[50%] text-gray-800 pb-1 ">
+                                    <span className="text-sm">DD no : </span>
+                                    <span className="font-bold">
                                       {data?.dd_no || ""}
                                     </span>
                                   </div>
                                 )}
                                 {data?.transaction_no && (
-                                  <div className='md:w-auto w-[50%] text-gray-800 pb-1 '>
-                                    <span className='text-sm'>
+                                  <div className="md:w-auto w-[50%] text-gray-800 pb-1 ">
+                                    <span className="text-sm">
                                       {" "}
                                       Transaction no :{" "}
                                     </span>
-                                    <span className='font-bold'>
+                                    <span className="font-bold">
                                       {data?.transaction_no}
                                     </span>
                                   </div>
                                 )}
                               </div>
-                              <div className=''>
-                                <h1 className='font-bold pb-5'>
+                              <div className="">
+                                <h1 className="font-bold pb-5">
                                   Bidder Documents
                                 </h1>
-                                <div className='flex justify-between space-x-5'>
-                                  <div className='w-[100px]'>
+                                <div className="flex justify-between space-x-5">
+                                  <div className="w-[100px]">
                                     <ImageDisplay
                                       url={data?.emd_doc}
-                                      className='w-20 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer'
+                                      className="w-20 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
                                       alt={"uploaded doc"}
                                       preview={""}
                                     />
-                                    <h1 className='text-sm text-center'>
+                                    <h1 className="text-sm text-center">
                                       Emd Document
                                     </h1>
                                   </div>
 
                                   {data?.bidder_doc?.map((bidDoc) => (
-                                    <div className='w-[100px]'>
+                                    <div className="w-[100px]">
                                       <ImageDisplay
                                         url={bidDoc?.doc_path}
-                                        className='w-20 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer'
+                                        className="w-20 rounded transition duration-300 ease-in-out hover:scale-105 cursor-pointer"
                                         alt={"uploaded doc"}
                                         preview={""}
                                       />
-                                      <h1 className='text-sm text-center'>
+                                      <h1 className="text-sm text-center">
                                         {bidDoc?.criteria_type} Document
                                       </h1>
                                     </div>
@@ -942,9 +946,9 @@ const BiddingViewById = () => {
 
           {/* Buttons */}
 
-          <div className='space-x-5 flex justify-between mt-[2rem]'>
-            <div className='flex flex-1 justify-between'>
-              <div className='space-x-3 flex items-end justify-center'>
+          <div className="space-x-5 flex justify-between mt-[2rem]">
+            <div className="flex flex-1 justify-between">
+              <div className="space-x-3 flex items-end justify-center">
                 <button
                   className={buttonStyle}
                   onClick={() =>
@@ -956,19 +960,19 @@ const BiddingViewById = () => {
 
                 <button
                   onClick={handlePrint}
-                  className='mr-1 pb-2 pl-9 pr-9 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
+                  className="mr-1 pb-2 pl-9 pr-9 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl"
                 >
                   Print
                 </button>
               </div>
-              <div className='space-x-3 flex'>
+              <div className="space-x-3 flex">
                 {page === "inbox" && (
                   <button
                     onClick={() => btnNavigate(biddingData?.creationStatus)}
-                    className='mr-1 pb-2 pl-7 pr-7 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl flex gap-2 justify-center items-center '
+                    className="mr-1 pb-2 pl-7 pr-7 pt-2 border border-indigo-500 text-base leading-tight  rounded hover:bg-indigo-500 bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl flex gap-2 justify-center items-center "
                   >
                     {btnLabel(biddingData?.creationStatus)}
-                    <MdArrowRightAlt className='text-2xl ' />
+                    <MdArrowRightAlt className="text-2xl " />
                   </button>
                 )}
               </div>

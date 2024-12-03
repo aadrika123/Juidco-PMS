@@ -350,23 +350,23 @@ const StockRequestProposal = (props) => {
       // totQuant: Number(formValues?.totQuant),
     };
 
-    console.log(requestBody,"requestBody")
+    // console.log(requestBody,"requestBody")
 
-    // AxiosInterceptors.post(`${api}`, requestBody, ApiHeader())
-    //   .then(function (res) {
-    //     if (res?.data?.status === true) {
-    //       toast.success(res?.data?.message, "success");
-    //     } else {
-    //       toast.error(res?.data?.message, "error");
-    //     }
-    //   })
-    //   .catch(function (res) {
-    //     toast.error("Something went wrong!");
-    //   })
-    //   .finally(() => {
-    //     setIsLoading(false);
-    //     setConfModal(false);
-    //   });
+    AxiosInterceptors.post(`${api}`, requestBody, ApiHeader())
+      .then(function (res) {
+        if (res?.data?.status === true) {
+          toast.success(res?.data?.message, "success");
+        } else {
+          toast.error(res?.data?.message, "error");
+        }
+      })
+      .catch(function (res) {
+        toast.error("Something went wrong!");
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setConfModal(false);
+      });
   };
 
   const handleOnChange = (e) => {};
