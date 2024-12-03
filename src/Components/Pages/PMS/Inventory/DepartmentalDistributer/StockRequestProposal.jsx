@@ -31,6 +31,7 @@ const StockRequestProposal = (props) => {
     api_getActiveCategory,
     api_getActiveSubCategory,
     api_getActiveBrand,
+    api_getActiveUnit,
     api_getActiveQty,
     api_getActiveDesc,
     api_getSrStockRequetById,
@@ -52,6 +53,7 @@ const StockRequestProposal = (props) => {
   const [subCategory, setSubCategory] = useState("");
   const [brand, setBarnd] = useState("");
   const [descrip, setDescrip] = useState("");
+  const [units, setUnit] = useState();
   // const [quantity, setQnty] = useState("");
 
   const [catID, setCatId] = useState("");
@@ -146,6 +148,16 @@ const StockRequestProposal = (props) => {
       })
       .catch(function (res) {
         notify("Something went wrong!");
+      });
+  };
+
+  const fetchUnits = () => {
+    AxiosInterceptors.get(`${api_getActiveUnit}`, ApiHeader())
+      .then(function (response) {
+        setUnit(response?.data?.data);
+      })
+      .catch(function (error) {
+        toast.error("Error in fetching Units");
       });
   };
 
@@ -272,6 +284,7 @@ const StockRequestProposal = (props) => {
 
     getCategory();
     getEmpdetails();
+    fetchUnits();
   }, []);
 
   const initialValues = {
@@ -331,26 +344,29 @@ const StockRequestProposal = (props) => {
       category: formValues?.category,
       subcategory: formValues?.subCategory,
       brand: formValues?.brand,
+      unit: formValues?.unit,
       allotted_quantity: Number(formValues?.quantAlot) || 1,
       inventory: formValues?.description,
       // totQuant: Number(formValues?.totQuant),
     };
 
-    AxiosInterceptors.post(`${api}`, requestBody, ApiHeader())
-      .then(function (res) {
-        if (res?.data?.status === true) {
-          toast.success(res?.data?.message, "success");
-        } else {
-          toast.error(res?.data?.message, "error");
-        }
-      })
-      .catch(function (res) {
-        toast.error("Something went wrong!");
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setConfModal(false);
-      });
+    console.log(requestBody,"requestBody")
+
+    // AxiosInterceptors.post(`${api}`, requestBody, ApiHeader())
+    //   .then(function (res) {
+    //     if (res?.data?.status === true) {
+    //       toast.success(res?.data?.message, "success");
+    //     } else {
+    //       toast.error(res?.data?.message, "error");
+    //     }
+    //   })
+    //   .catch(function (res) {
+    //     toast.error("Something went wrong!");
+    //   })
+    //   .finally(() => {
+    //     setIsLoading(false);
+    //     setConfModal(false);
+    //   });
   };
 
   const handleOnChange = (e) => {};
@@ -595,19 +611,6 @@ const StockRequestProposal = (props) => {
                         value={formik?.values?.description}
                       >
                         <MenuItem value=''>select</MenuItem>
-                        {/* 
-                        {descrip?.length &&
-                          descrip?.map((items) => (
-                            <Tooltip title={items?.description}>
-                              <option
-                                key={items?.id}
-                                value={items?.id}
-                                className='w-10'
-                              >
-                                {items?.description}
-                              </option>
-                            </Tooltip>
-                          ))} */}
 
                         {descrip?.length &&
                           descrip?.map((items, index) => (
@@ -656,6 +659,36 @@ const StockRequestProposal = (props) => {
                       </p>
                     </div>
                   </div>
+
+                  {/* <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                    <div className='px-4 w-full mb-4'>
+                      <label className={`${labelStyle} inline-block mb-2`}>
+                        Unit
+                      </label>
+
+                      <select
+                        {...formik.getFieldProps("unit")}
+                        className={`${inputStyle} inline-block w-full relative`}
+                        onChange={(e) => {
+                          formik.handleChange(e);
+                        }}
+                      >
+                        <option defaultValue={"select"}>select</option>
+
+                        {units?.length &&
+                            units?.map((items) => (
+                              <option key={items?.id} value={items?.id}>
+                                {items?.name}
+                              </option>
+                            ))}
+                      </select>
+                      <p className='text-red-500 text-xs '>
+                        {formik.touched.brand && formik.errors.brand
+                          ? formik.errors.brand
+                          : null}
+                      </p>
+                    </div>
+                  </div> */}
                 </div>
 
                 <div className='float-right pt-10 mr-8 space-x-5'>
