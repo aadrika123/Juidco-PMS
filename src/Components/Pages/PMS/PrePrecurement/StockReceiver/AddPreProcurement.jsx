@@ -114,7 +114,7 @@ function AddPreProcurement() {
     )
       .then(function (response) {
         setProcItem(response?.data?.data);
-
+console.log("data line 177", response?.data?.data)
         if (response?.data?.data && data) {
           setSubCategoryData(data, response?.data?.data);
         }
@@ -124,16 +124,15 @@ function AddPreProcurement() {
       });
   };
 
+  // console.log('subcategorysubcategory',subcategory)
+
   const getAllProcItemRateContract = () => {
     AxiosInterceptors.get(
       `${api_getallProcItemRateContract}/${itemCategory}`,
       ApiHeader()
     )
       .then(function (response) {
-        console.log(
-          "res",
-          response?.data?.data?.data
-        );
+        // console.log("res", response?.data?.data?.data);
         setSupplierData(response?.data?.data?.data);
       })
       .catch(function (error) {
@@ -154,7 +153,10 @@ function AddPreProcurement() {
     brand: yup.string(),
     description: yup.string().required("Description is required"),
     rate: yup.number().required("Rate is required"),
-    quantity: yup.number().required("Quantity is required").moreThan(0, 'Quantity must be greater than 0'),
+    quantity: yup
+      .number()
+      .required("Quantity is required")
+      .moreThan(0, "Quantity must be greater than 0"),
     // proc_item: yup.string(),
   });
 
@@ -183,7 +185,10 @@ function AddPreProcurement() {
     description:
       selectedSupplier?.description || editProcurementData?.description || "",
     quantity: editProcurementData?.quantity || "",
-    rate: supplierDetailsProc?.rate_contract_supplier[0]?.unit_price || editProcurementData?.rate || "",
+    rate:
+      supplierDetailsProc?.rate_contract_supplier[0]?.unit_price ||
+      editProcurementData?.rate ||
+      "",
     subcategorytxt: editProcurementData?.subcategorytxt || "",
     brandtxt: editProcurementData?.brandtxt || "",
     proc_item: selectedSupplier?.id || "df",
@@ -206,16 +211,15 @@ function AddPreProcurement() {
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values, { resetForm }) => {
-
       const isDuplicateDescription = formData.some(
         (data) => data.description === values.description
       );
-  
+
       if (isDuplicateDescription) {
         toast.error("This Product already exists in the list!");
         return;
       }
-  
+
       const brandName = getBrandName(values.brand);
 
       // Find the description text by matching the id
@@ -231,10 +235,10 @@ function AddPreProcurement() {
         brandtxt: values.brandtxt || "",
         subcategory: values.subcategory?.id || values.subcategory,
         subcategorytxt: values.subcategory?.name || "",
-        description: values.description?.id || values.description, 
+        description: values.description?.id || values.description,
         descriptionname: selectedDescription
           ? selectedDescription.description
-          : "", 
+          : "",
         itemCategory: values.itemCategory?.id || values.itemCategory,
         total_rate: values.quantity * values.rate,
         unit: values.unit?.id || values.unit,
@@ -242,7 +246,7 @@ function AddPreProcurement() {
         supplier: values.supplier || "",
       };
 
-      setFormData((prev) => [...prev, normalizedData]); 
+      setFormData((prev) => [...prev, normalizedData]);
       // resetForm(); // Reset form after submission
     },
     validationSchema,
@@ -427,12 +431,10 @@ function AddPreProcurement() {
     return name;
   };
 
-
-
   const handleOnChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("datatatatat", name, "asdasdas", value);
+    // console.log("datatatatat", name, "asdasdas", value);
 
     {
       name == "brand" && setBrandId(value);
@@ -447,7 +449,7 @@ function AddPreProcurement() {
       name == "itemCategory" && value != "others" && fetchSubCategory(value);
     }
     {
-      name == "proc_item" && getSupplierName(value);
+      // name == "proc_item" && getSupplierName(value);
     }
 
     {
@@ -539,14 +541,12 @@ function AddPreProcurement() {
     }
   };
 
-
   const setSubCategoryData = async (data, procItem) => {
     const filteredData = procItem?.filter((item) =>
       item?.rate_contract_supplier?.some((supplier) => supplier?.id === data)
     );
     setChooseItems(filteredData);
   };
-
 
   return (
     <>
@@ -670,45 +670,6 @@ function AddPreProcurement() {
                           )} */}
                       </select>
                     </div>
-
-                    {/* <div className="form-group flex-shrink max-w-full w-1/2 px-4 ">
-                      <label className={`${labelStyle} inline-block mb-2`}>
-                        Choose Item
-                        <span className="text-xl text-red-500 pl-1">
-                          *
-                        </span>{" "}
-                      </label>
-                      <FormControl fullWidth>
-                        <Select
-                          {...formik.getFieldProps("proc_item")}
-                          name="proc_item"
-                          className={`${inputStyle} inline-block w-full relative  `}
-                          onChange={(e) => {
-                            formik.setFieldValue("proc_item", e.target.value);
-                            getDesc(procItem[0]?.subcategory?.id);
-                            getSupplierName(e.target.value);
-                          }}
-                          value={formik.values.proc_item}
-                        >
-                          <MenuItem value="df">select</MenuItem>
-
-                          {procItem?.length &&
-                            procItem?.map((items, index) => (
-                              <MenuItem
-                                id={items?.id}
-                                key={items?.id}
-                                value={items?.id}
-                                className=""
-                              >
-                                <Tooltip title={items?.description}>
-                                  {items?.subcategory?.name} (
-                                  {items?.description.slice(0, 63)})
-                                </Tooltip>
-                              </MenuItem>
-                            ))}
-                        </Select>
-                      </FormControl>
-                    </div> */}
                   </div>
                 )}
 
@@ -725,12 +686,21 @@ function AddPreProcurement() {
                         <Select
                           {...formik.getFieldProps("proc_item")}
                           name="proc_item"
-                          className={`${inputStyle} inline-block w-full relative  `}
+                          className={`${inputStyle} inline-block w-full relative`}
                           onChange={(e) => {
+                            // Preserve supplier value explicitly
+                            const currentSupplier = formik.values.supplier;
+
                             formik.setFieldValue("proc_item", e?.target?.value);
+
+                            // Maintain the current supplier value after related updates
+                            setTimeout(() => {
+                              formik.setFieldValue("supplier", currentSupplier);
+                            }, 0);
+
                             getDesc(procItem[0]?.subcategory?.id);
                             getSupplierName(e?.target?.value);
-                            setSupplierDetails(e?.target?.value)
+                            setSupplierDetails(e?.target?.value);
                           }}
                           value={formik?.values?.proc_item}
                         >
@@ -913,7 +883,7 @@ function AddPreProcurement() {
                             {...formik.getFieldProps("subcategory")}
                             className={`${inputStyle} inline-block w-full relative`}
                             onChange={formik.handleChange}
-                            disabled={is_rate_contract}
+                            // disabled={is_rate_contract}
                           >
                             <option value={""}>select</option>
 

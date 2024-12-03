@@ -350,7 +350,7 @@ const StockRequestProposal = (props) => {
       // totQuant: Number(formValues?.totQuant),
     };
 
-    console.log(requestBody,"requestBody")
+    // console.log(requestBody,"requestBody")
 
     AxiosInterceptors.post(`${api}`, requestBody, ApiHeader())
       .then(function (res) {
