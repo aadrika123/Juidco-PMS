@@ -70,7 +70,8 @@ const FeeDetailsForm = () => {
   });
 
   // console.log(biddingData[0]?.emd,"biddingData?.emd,",feeDetailData,"feeDetailData?.emd_exemption")
-
+  const biddingDatas = Array.isArray(biddingData) && biddingData.length > 0 ? biddingData[0]?.emd : null;
+  
   const initialValues = {
     reference_no: referenceNo,
     tenderFee: feeDetailData?.tenderFee || "",
@@ -85,7 +86,7 @@ const FeeDetailsForm = () => {
         ? feeDetailData?.emdPercentage
         : "" || biddingData?.emd_value,
     emd_exemption:
-      biddingData[0]?.emd || feeDetailData?.emd_exemption === true ? "yes" : "no",
+    biddingDatas|| feeDetailData?.emd_exemption === true ? "yes" : "no",
     emd_fee: biddingData?.emd_type || feeDetailData?.emd_fee || "",
     emdFeePayableAt: feeDetailData?.emdFeePayableAt || "",
     emdFeePayableTo: feeDetailData?.emdFeePayableTo || "",
