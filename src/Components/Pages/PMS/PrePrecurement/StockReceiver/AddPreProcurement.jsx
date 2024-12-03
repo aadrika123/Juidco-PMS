@@ -14,7 +14,8 @@ import { useFormik } from "formik";
 
 import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
 import ApiHeader from "@/Components/api/ApiHeader";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import PreProcurementSubmittedScreen from "./PreProcurementSubmittedScreen";
 import * as yup from "yup";
 import { allowNumberInput } from "@/Components/Common/PowerUps/PowerupFunctions";
@@ -205,6 +206,16 @@ function AddPreProcurement() {
     initialValues: initialValues,
     enableReinitialize: true,
     onSubmit: (values, { resetForm }) => {
+
+      const isDuplicateDescription = formData.some(
+        (data) => data.description === values.description
+      );
+  
+      if (isDuplicateDescription) {
+        toast.error("This Product already exists in the list!");
+        return;
+      }
+  
       const brandName = getBrandName(values.brand);
 
       // Find the description text by matching the id
@@ -220,10 +231,10 @@ function AddPreProcurement() {
         brandtxt: values.brandtxt || "",
         subcategory: values.subcategory?.id || values.subcategory,
         subcategorytxt: values.subcategory?.name || "",
-        description: values.description?.id || values.description, // Keep id of description
+        description: values.description?.id || values.description, 
         descriptionname: selectedDescription
           ? selectedDescription.description
-          : "", // Save description name
+          : "", 
         itemCategory: values.itemCategory?.id || values.itemCategory,
         total_rate: values.quantity * values.rate,
         unit: values.unit?.id || values.unit,
@@ -231,7 +242,7 @@ function AddPreProcurement() {
         supplier: values.supplier || "",
       };
 
-      setFormData((prev) => [...prev, normalizedData]); // Add normalized data to formData
+      setFormData((prev) => [...prev, normalizedData]); 
       // resetForm(); // Reset form after submission
     },
     validationSchema,

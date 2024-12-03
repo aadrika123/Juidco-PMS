@@ -1087,6 +1087,13 @@ export default function Reports() {
       Cell: ({ row }) => <div className="pr-2">{row.index + 1}</div>,
     },
     {
+      Header: "Procurement No",
+      accessor: "procurement_no",
+      Cell: ({ cell }) => (
+        <div className="pr-2">{cell.row.values.procurement_stocks[0].procurement_no} </div>
+      ),
+    },
+    {
       Header: "Category",
       accessor: "category",
       Cell: ({ cell }) => (

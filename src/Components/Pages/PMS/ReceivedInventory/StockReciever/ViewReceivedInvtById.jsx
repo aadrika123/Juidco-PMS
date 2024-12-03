@@ -533,11 +533,18 @@ const ViewReceivedInvtById = () => {
                     {nullToNA(applicationFullData?.procurement_no)}
                   </span>
                 </h1>
-                <h1 className='text-black'>
+                {/* <h1 className='text-black'>
                   Procurement Total <span className='text-black'>:</span>
                   <span className='font-bold'>
                     {" "}
                     {indianAmount(nullToNA(applicationFullData?.total_rate))}
+                  </span>
+                </h1> */}
+                <h1 className='text-black'>
+                  Bidder Amount <span className='text-black'>:</span>
+                  <span className='font-bold'>
+                    {" "}
+                    {indianAmount(nullToNA(applicationFullData?.supplier_master[0]?.bidding_amount))}
                   </span>
                 </h1>
               </div>
