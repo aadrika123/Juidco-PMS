@@ -43,7 +43,7 @@ const FeeDetailsForm = () => {
     surcharges: Yup.string(),
     otherCharges: Yup.string(),
     emdAmount: Yup.string().required(),
-    emd_fee: Yup.string().required(),
+    emd_fee: Yup.string(),
     emd_exemption: Yup.string().required(),
     emdAmount: Yup.string().when(["emd_exemption", "emd_fee"], {
       is: (emd_exemption, emd_fee) =>
@@ -69,7 +69,7 @@ const FeeDetailsForm = () => {
     }),
   });
 
-  // console.log(biddingData?.emd_value)
+  // console.log(biddingData[0]?.emd,"biddingData?.emd,",feeDetailData,"feeDetailData?.emd_exemption")
 
   const initialValues = {
     reference_no: referenceNo,
@@ -85,7 +85,7 @@ const FeeDetailsForm = () => {
         ? feeDetailData?.emdPercentage
         : "" || biddingData?.emd_value,
     emd_exemption:
-      biddingData?.emd || feeDetailData?.emd_exemption === true ? "yes" : "no",
+      biddingData[0]?.emd || feeDetailData?.emd_exemption === true ? "yes" : "no",
     emd_fee: biddingData?.emd_type || feeDetailData?.emd_fee || "",
     emdFeePayableAt: feeDetailData?.emdFeePayableAt || "",
     emdFeePayableTo: feeDetailData?.emdFeePayableTo || "",
