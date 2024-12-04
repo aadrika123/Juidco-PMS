@@ -77,6 +77,16 @@ function EmployeeList(props) {
               Rejected
             </p>
           )}
+          {cell.row.values.status == 2 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Forwarded to DA
+            </p>
+          )}
+          {cell.row.values.status == 61 && (
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+              Forwarded to DA
+            </p>
+          )}
           {cell.row.values.status == 4 && (
             <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
               Ready to Acknowledge
