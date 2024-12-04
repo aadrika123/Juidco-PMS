@@ -355,14 +355,14 @@ const IAServiceRequestById = () => {
                       Approve
                     </button>
                   )}
-                  {applicationFullData?.status === 20 && (
+                  {/* {applicationFullData?.status === 20 && (
                     <button
                       className='mr-1 pb-2 pl-6 pr-6 pt-2 border border-indigo-500 text-base leading-tight  rounded bg-indigo-700 text-white hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-indigo-800 active:shadow-lg transition duration-150 ease-in-out shadow-xl'
                       onClick={() => setIsRejectModalOpen(true)}
                     >
                       Reject
                     </button>
-                  )}
+                  )} */}
 
                   {/* {applicationFullData?.status >= 3 && (
                 <>
