@@ -91,8 +91,8 @@ function ServiceProposalList(props) {
             </p>
           )}
           {cell.row.values.status == 20 && (
-            <p className='text-yellow-400 text-center bg-yellow-50 border-yellow-400 border-[1px] px-1 py-1  rounded-md'>
-               Forwarded to Inventory Admin
+            <p className='text-status_aprv_text text-center bg-status_aprv_bg border-status_aprv_border border-[1px] px-1 py-1  rounded-md'>
+               Forwarded to DA
             </p>
           )}
           {cell.row.values.status == 21 && (

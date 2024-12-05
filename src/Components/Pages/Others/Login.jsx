@@ -48,7 +48,7 @@ function Login() {
   useEffect(() => {
     getLocalStorageItem("token") != "null" &&
       getLocalStorageItem("token") != null &&
-      navigate("/sr-inventory-dashboard");
+      navigate("/ia-inventory-dashboard");
   }, []);
 
   const header = {
@@ -105,14 +105,14 @@ function Login() {
           // }
 
           // const userName = response?.data?.data?.userDetails?.name;
-          // const nameParts = userName?.split(" "); 
-          // const role = nameParts?.[0]; 
-          // const location = nameParts?.[nameParts.length - 1] || ''; 
+          // const nameParts = userName?.split(" ");
+          // const role = nameParts?.[0];
+          // const location = nameParts?.[nameParts.length - 1] || '';
           // if (role === "Departmental" && (nameParts?.[1] === "Distributor" || nameParts?.[1] === "Admin")) {
           //   if (location) {
           //     navigate(`sr-inventory-dashboard`);
           //   } else {
-          //     navigate("/dinventory-dashboard"); 
+          //     navigate("/dinventory-dashboard");
           //   }
           // } else if (role === "Tendering" && nameParts?.[1] === "Admin") {
           //   if (location) {
@@ -124,7 +124,7 @@ function Login() {
           //   if (location) {
           //     navigate(`/sr-inventory-dashboard`);
           //   } else {
-          //     navigate("/ia-inventory-dashboard"); 
+          //     navigate("/ia-inventory-dashboard");
           //   }
           // } else if (role === "Level" && (nameParts?.[1] === "1" || nameParts?.[1] === "2")) {
           //   if (location) {
@@ -134,8 +134,19 @@ function Login() {
           //   }
           // }
 
-          navigate(`sr-inventory-dashboard`);
-
+          if (response?.data?.data?.userDetails?.email == "ia@gmail.com") {
+            navigate(`/ia-inventory-dashboard`);
+          } else if (
+            response?.data?.data?.userDetails?.email == "dist@gmail.com"
+          ) {
+            navigate(`/dinventory-dashboard`);
+          } else if (
+            response?.data?.data?.userDetails?.email == "ta@gmail.com"
+          ) {
+            navigate(`/ta-inventory-dashboard`);
+          } else {
+            navigate(`/sr-inventory-dashboard`);
+          }
 
           fetchMenuList();
           setheartBeatCounter((prev) => prev + 1);
@@ -204,28 +215,28 @@ function Login() {
 
   return (
     <>
-      <header className='py-3 border-b border-gray-200 bg-white darks:bg-gray-800 darks:border-gray-800'>
-        <div className='container mx-auto xl:max-w-6xl  '>
+      <header className="py-3 border-b border-gray-200 bg-white darks:bg-gray-800 darks:border-gray-800">
+        <div className="container mx-auto xl:max-w-6xl  ">
           {/* Navbar */}
           <nav
-            className='flex flex-row flex-nowrap items-center justify-between  '
-            id='desktop-menu'
+            className="flex flex-row flex-nowrap items-center justify-between  "
+            id="desktop-menu"
           >
             {/* logo */}
-            <a className=' py-2 text-xl'>
-              <div className=''>
+            <a className=" py-2 text-xl">
+              <div className="">
                 {" "}
-                <span className='font-bold text-xl uppercase'>
+                <span className="font-bold text-xl uppercase">
                   {/* //  {`${ulb_data().ulb_name}`} // */}Login - Procurement
                   Management System
                 </span>{" "}
-                <span className='hidden text-gray-700 darks:text-gray-200'>{`${
+                <span className="hidden text-gray-700 darks:text-gray-200">{`${
                   ulb_data().ulb_name
                 }`}</span>
               </div>
             </a>
             {/* menu */}
-            <ul className='flex ltr:ml-auto rtl:mr-auto mt-2'>
+            <ul className="flex ltr:ml-auto rtl:mr-auto mt-2">
               {/* Customizer (Only for demo purpose) */}
               {/* <li x-data='{ open: false }' className='relative'>
                 <a
@@ -452,49 +463,49 @@ function Login() {
           </nav>
         </div>
       </header>
-      <main className='h-[80vh] bg-gray-100 flex justify-center items-center'>
-        <div className=' bg-gray-100 darks:bg-gray-900 darks:bg-opacity-40'>
-          <div className='container mx-auto px-4 xl:max-w-6xl '>
-            <div className='flex flex-wrap -mx-4 flex-row '>
-              <div className='flex-shrink max-w-full px-4 w-full lg:w-1/2 '>
+      <main className="h-[80vh] bg-gray-100 flex justify-center items-center">
+        <div className=" bg-gray-100 darks:bg-gray-900 darks:bg-opacity-40">
+          <div className="container mx-auto px-4 xl:max-w-6xl ">
+            <div className="flex flex-wrap -mx-4 flex-row ">
+              <div className="flex-shrink max-w-full px-4 w-full lg:w-1/2 ">
                 {/* login form */}
-                <div className='max-w-full w-full px-2 sm:px-12 lg:pr-20 mb-12 lg:mb-0  '>
-                  <div className='relative'>
-                    <div className='p-6 sm:py-8 sm:px-12 rounded-lg bg-white darks:bg-gray-800 shadow-xl'>
+                <div className="max-w-full w-full px-2 sm:px-12 lg:pr-20 mb-12 lg:mb-0  ">
+                  <div className="relative">
+                    <div className="p-6 sm:py-8 sm:px-12 rounded-lg bg-white darks:bg-gray-800 shadow-xl">
                       <form onSubmit={formik.handleSubmit}>
-                        <div className='text-center'>
-                          <h1 className='text-2xl leading-normal mb-3 font-bold text-gray-800 darks:text-gray-300 text-center'>
+                        <div className="text-center">
+                          <h1 className="text-2xl leading-normal mb-3 font-bold text-gray-800 darks:text-gray-300 text-center">
                             Welcome Back
                           </h1>
                         </div>
-                        <hr className='block w-12 h-0.5 mx-auto my-5 bg-gray-700 border-gray-700' />
-                        <div className='mb-6'>
+                        <hr className="block w-12 h-0.5 mx-auto my-5 bg-gray-700 border-gray-700" />
+                        <div className="mb-6">
                           <label
-                            htmlFor='inputemail'
-                            className='inline-block mb-2'
+                            htmlFor="inputemail"
+                            className="inline-block mb-2"
                           >
                             Username
                           </label>
                           <input
                             {...formik.getFieldProps("username")}
-                            className='w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 darks:text-gray-300 darks:bg-gray-700 darks:border-gray-700 darks:focus:border-gray-600'
+                            className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 darks:text-gray-300 darks:bg-gray-700 darks:border-gray-700 darks:focus:border-gray-600"
                             defaultValue
-                            aria-label='email'
-                            type='email'
+                            aria-label="email"
+                            type="email"
                             required
                           />
-                          <span className='text-red-600 text-xs'>
+                          <span className="text-red-600 text-xs">
                             {formik.touched.username && formik.errors.username
                               ? formik.errors.username
                               : null}
                           </span>
                         </div>
-                        <div className='mb-6'>
-                          <div className='flex flex-wrap flex-row'>
-                            <div className='flex-shrink max-w-full w-1/2'>
+                        <div className="mb-6">
+                          <div className="flex flex-wrap flex-row">
+                            <div className="flex-shrink max-w-full w-1/2">
                               <label
-                                htmlFor='inputpass'
-                                className='inline-block mb-2'
+                                htmlFor="inputpass"
+                                className="inline-block mb-2"
                               >
                                 Password
                               </label>
@@ -502,13 +513,13 @@ function Login() {
                           </div>
                           <input
                             {...formik.getFieldProps("password")}
-                            className='w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 darks:text-gray-300 darks:bg-gray-700 darks:border-gray-700 darks:focus:border-gray-600'
-                            aria-label='password'
-                            type='password'
+                            className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 darks:text-gray-300 darks:bg-gray-700 darks:border-gray-700 darks:focus:border-gray-600"
+                            aria-label="password"
+                            type="password"
                             defaultValue
                             required
                           />
-                          <span className='text-red-600 text-xs'>
+                          <span className="text-red-600 text-xs">
                             {formik.touched.password && formik.errors.password
                               ? formik.errors.password
                               : null}
@@ -520,35 +531,35 @@ function Login() {
                                                             Remember me
                                                         </label>
                                                     </div> */}
-                        <div className='grid'>
+                        <div className="grid">
                           {loaderStatus ? (
-                            <div className='flex justify-center'>
+                            <div className="flex justify-center">
                               <RotatingLines
-                                strokeColor='grey'
-                                strokeWidth='5'
-                                animationDuration='0.75'
-                                width='25'
+                                strokeColor="grey"
+                                strokeWidth="5"
+                                animationDuration="0.75"
+                                width="25"
                                 visible={true}
                               />
                             </div>
                           ) : (
                             <button
-                              type='submit'
-                              className='py-2 px-4 inline-block text-center rounded leading-normal text-gray-100 bg-indigo-500 border border-indigo-500 hover:text-white hover:bg-indigo-600 hover:ring-0 hover:border-indigo-600 focus:bg-indigo-600 focus:border-indigo-600 focus:outline-none focus:ring-0'
+                              type="submit"
+                              className="py-2 px-4 inline-block text-center rounded leading-normal text-gray-100 bg-indigo-500 border border-indigo-500 hover:text-white hover:bg-indigo-600 hover:ring-0 hover:border-indigo-600 focus:bg-indigo-600 focus:border-indigo-600 focus:outline-none focus:ring-0"
                             >
                               <svg
-                                xmlnsXlink='http://www.w3.org/2000/svg'
-                                fill='currentColor'
-                                className='inline-block w-4 h-4 ltr:mr-2 rtl:ml-2 bi bi-box-arrow-in-right'
-                                viewBox='0 0 16 16'
+                                xmlnsXlink="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                className="inline-block w-4 h-4 ltr:mr-2 rtl:ml-2 bi bi-box-arrow-in-right"
+                                viewBox="0 0 16 16"
                               >
                                 <path
-                                  fillRule='evenodd'
-                                  d='M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z'
+                                  fillRule="evenodd"
+                                  d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"
                                 />
                                 <path
-                                  fillRule='evenodd'
-                                  d='M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z'
+                                  fillRule="evenodd"
+                                  d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
                                 />
                               </svg>
                               Login
@@ -557,10 +568,10 @@ function Login() {
                         </div>
                       </form>
                       {/* =========buttons for change and reset password========= */}
-                      <div className='my-4'>
-                        <div className='flex flex-col items-center justify-center flex-wrap gapx-x-2 gap-y-2 w-full poppins'>
+                      <div className="my-4">
+                        <div className="flex flex-col items-center justify-center flex-wrap gapx-x-2 gap-y-2 w-full poppins">
                           <span
-                            className='text-gray-700 text-sm font-semibold cursor-pointer w-full text-center'
+                            className="text-gray-700 text-sm font-semibold cursor-pointer w-full text-center"
                             onClick={() => setmobileCardStatus(true)}
                           >
                             Forgot Password
@@ -573,18 +584,18 @@ function Login() {
                   </div>
                 </div>
               </div>
-              <div className='flex-shrink max-w-full px-4 w-full lg:w-1/2'>
-                <div className='text-center mt-6 lg:mt-0'>
+              <div className="flex-shrink max-w-full px-4 w-full lg:w-1/2">
+                <div className="text-center mt-6 lg:mt-0">
                   {/* <img src={img} alt="welcome" className="max-w-full h-auto mx-auto" /> */}
                   {/* <img src="https://res.cloudinary.com/djkewhhqs/image/upload/v1708499439/JUIDCO_IMAGE/Juidco%20svg%20file/Trade_Blue_4_qy3kj6.svg" alt="welcome" className="w-full h-72" /> */}
 
                   <Lottie options={loginAnimation} height={300} width={500} />
 
-                  <div className='px-4 mt-2'>
-                    <h1 className='text-bold text-2xl mb-2'>
+                  <div className="px-4 mt-2">
+                    <h1 className="text-bold text-2xl mb-2">
                       Serve Citizen Services with Ease of Access
                     </h1>
-                    <p className='text-base mb-4 text-gray-500'>
+                    <p className="text-base mb-4 text-gray-500">
                       Manage citizen government services with easy of access and
                       serve them in no time.{" "}
                     </p>
@@ -595,37 +606,37 @@ function Login() {
           </div>
         </div>
       </main>
-      <footer className=' h-[10vh] bg-white py-6 border-t border-gray-200 darks:bg-gray-800 darks:border-gray-800'>
-        <div className='container mx-auto px-4 xl:max-w-6xl '>
-          <div className='mx-auto px-4'>
-            <div className='flex flex-wrap flex-row -mx-4'>
-              <div className='flex-shrink max-w-full px-4 w-full md:w-1/2 text-center md:ltr:text-left md:rtl:text-right'>
-                <ul className='ltr:pl-0 rtl:pr-0 space-x-4'>
-                  <li className='inline-block ltr:mr-3 rtl:ml-3'>
-                    <a className='hover:text-indigo-500' href='#'>
+      <footer className=" h-[10vh] bg-white py-6 border-t border-gray-200 darks:bg-gray-800 darks:border-gray-800">
+        <div className="container mx-auto px-4 xl:max-w-6xl ">
+          <div className="mx-auto px-4">
+            <div className="flex flex-wrap flex-row -mx-4">
+              <div className="flex-shrink max-w-full px-4 w-full md:w-1/2 text-center md:ltr:text-left md:rtl:text-right">
+                <ul className="ltr:pl-0 rtl:pr-0 space-x-4">
+                  <li className="inline-block ltr:mr-3 rtl:ml-3">
+                    <a className="hover:text-indigo-500" href="#">
                       Support |
                     </a>
                   </li>
-                  <li className='inline-block ltr:mr-3 rtl:ml-3'>
-                    <a className='hover:text-indigo-500' href='#'>
+                  <li className="inline-block ltr:mr-3 rtl:ml-3">
+                    <a className="hover:text-indigo-500" href="#">
                       Help Center |
                     </a>
                   </li>
-                  <li className='inline-block ltr:mr-3 rtl:ml-3'>
-                    <a className='hover:text-indigo-500' href='#'>
+                  <li className="inline-block ltr:mr-3 rtl:ml-3">
+                    <a className="hover:text-indigo-500" href="#">
                       Privacy |
                     </a>
                   </li>
-                  <li className='inline-block ltr:mr-3 rtl:ml-3'>
-                    <a className='hover:text-indigo-500' href='#'>
+                  <li className="inline-block ltr:mr-3 rtl:ml-3">
+                    <a className="hover:text-indigo-500" href="#">
                       Terms of Service
                     </a>
                   </li>
                 </ul>
               </div>
-              <div className='flex-shrink max-w-full px-4 w-full md:w-1/2 text-center md:ltr:text-right md:rtl:text-left'>
-                <p className='mb-0 mt-3 md:mt-0'>
-                  <a href='#' className='hover:text-indigo-500'>
+              <div className="flex-shrink max-w-full px-4 w-full md:w-1/2 text-center md:ltr:text-right md:rtl:text-left">
+                <p className="mb-0 mt-3 md:mt-0">
+                  <a href="#" className="hover:text-indigo-500">
                     {/* {`${ulb_data().ulb_name}`} */}
                     UD&HD
                   </a>{" "}
