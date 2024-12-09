@@ -357,24 +357,24 @@ const ViewReceivedInvtById = () => {
   const removeField = () => {
     setProduct((prev) => {
       const updatedProducts = [...prev];
-      updatedProducts.pop(); 
-      return updatedProducts; 
+      updatedProducts.pop();
+      return updatedProducts;
     });
   };
 
   const getTotalQuantity = () => {
     let total = 0;
-    product.forEach(item => {
+    product.forEach((item) => {
       total += Number(item.quantity || 0);
     });
     return total;
   };
 
   const onchangeField = (e, index, field) => {
-    let sum = 0; 
+    let sum = 0;
     let { name, value } = e.target;
 
-    if (field === 'quantity') {
+    if (field === "quantity") {
       value = Number(value);
     }
     let temp = [...product];
@@ -382,23 +382,18 @@ const ViewReceivedInvtById = () => {
     for (let i = 0; i < temp.length; i++) {
       sum += Number(temp[i].quantity || 0);
     }
-    if (field === 'quantity') {
+    if (field === "quantity") {
       const currentQuantity = product[index]?.quantity || 0;
-      const updatedSum = sum; 
+      const updatedSum = sum;
       if (updatedSum > totSum) {
-        alert(`Provided value has exceeded the total available quantity of ${totSum}`);
-        return; 
+        alert(
+          `Provided value has exceeded the total available quantity of ${totSum}`
+        );
+        return;
       }
     }
     setProduct(temp);
   };
-  
-  
-  
-  
-  
-  
-
 
   const addProduct = () => {
     if (product.length > totSum) {
@@ -418,8 +413,8 @@ const ViewReceivedInvtById = () => {
         brand,
         procurement_no: applicationFullData?.procurement_no,
         product,
-        sub_category:applicationFullData?.id,
-        category:applicationFullData?.category?.id,
+        sub_category: applicationFullData?.id,
+        category: applicationFullData?.category?.id,
       },
       ApiHeader()
     )
@@ -502,7 +497,7 @@ const ViewReceivedInvtById = () => {
     <div>
       {isLoading && <LoaderApi />}
 
-      <div className=''>
+      <div className="">
         <TitleBar
           titleBarVisibility={titleBarVisibility}
           titleText={"Inventory Proposal Details"}
@@ -514,21 +509,21 @@ const ViewReceivedInvtById = () => {
         <TimeLine status={applicationFullData?.status} />
       </div> */}
 
-      <div className='' id='printable-content'>
+      <div className="" id="printable-content">
         {/* Basic Details */}
         <div className={`mt-6 ${isLoading ? "blur-[2px]" : ""}`}>
-          <div className='py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500'>
-            <div className=''>
-              <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+          <div className="py-6 mt-2 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500">
+            <div className="">
+              <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
                 View Pre Procurement Details{" "}
               </h2>
             </div>
 
-            <div className='flex justify-between'>
-              <div className='pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full'>
-                <h1 className=''>
-                  Procurement No <span className='text-black'>:</span>
-                  <span className='font-bold'>
+            <div className="flex justify-between">
+              <div className="pl-8 text-[1rem] text-[#4338CA] flex justify-between w-full">
+                <h1 className="">
+                  Procurement No <span className="text-black">:</span>
+                  <span className="font-bold">
                     {" "}
                     {nullToNA(applicationFullData?.procurement_no)}
                   </span>
@@ -540,21 +535,25 @@ const ViewReceivedInvtById = () => {
                     {indianAmount(nullToNA(applicationFullData?.total_rate))}
                   </span>
                 </h1> */}
-                <h1 className='text-black'>
-                  Bidder Amount <span className='text-black'>:</span>
-                  <span className='font-bold'>
+                <h1 className="text-black">
+                  Bidder Amount <span className="text-black">:</span>
+                  <span className="font-bold">
                     {" "}
-                    {indianAmount(nullToNA(applicationFullData?.supplier_master[0]?.bidding_amount))}
+                    {indianAmount(
+                      nullToNA(
+                        applicationFullData?.supplier_master[0]?.bidding_amount
+                      )
+                    )}
                   </span>
                 </h1>
               </div>
             </div>
 
-            <div className='flex justify-between w-full'>
-              <div className='pl-8 text-[1rem] text-black flex justify-between w-full'>
-                <h1 className=''>
-                  Category <span className='text-black'>:</span>
-                  <span className='font-bold'>
+            <div className="flex justify-between w-full">
+              <div className="pl-8 text-[1rem] text-black flex justify-between w-full">
+                <h1 className="">
+                  Category <span className="text-black">:</span>
+                  <span className="font-bold">
                     {" "}
                     {nullToNA(applicationFullData?.category?.name)}
                   </span>
@@ -562,10 +561,10 @@ const ViewReceivedInvtById = () => {
               </div>
 
               {applicationFullData?.status == "5" && (
-                <div className='pl-8 text-[1rem] text-black flex w-full justify-end'>
-                  <h1 className='text-lg'>
-                    Status <span className='text-black'>:</span>
-                    <span className='font-bold'>
+                <div className="pl-8 text-[1rem] text-black flex w-full justify-end">
+                  <h1 className="text-lg">
+                    Status <span className="text-black">:</span>
+                    <span className="font-bold">
                       {" "}
                       {applicationFullData?.status == "7"
                         ? "All items added"
@@ -579,149 +578,151 @@ const ViewReceivedInvtById = () => {
             {applicationFullData?.procurement_stocks?.map((procData, index) => (
               <>
                 <div>
-                  <p className='text-xs pl-5'>Procurement Item: {index + 1}</p>
+                  <p className="text-xs pl-5">Procurement Item: {index + 1}</p>
                 </div>
-                <div className='grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow'>
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
+                <div className="grid md:grid-cols-4 gap-4 ml-8 bg-slate-50 p-5 rounded shadow">
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
                       Subcategory
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {procData?.subCategory?.name}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>Unit</div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Unit</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {nullToNA(procData?.unit?.name)}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>Brand</div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Brand</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {nullToNA(procData?.brand?.name)}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>Quantity</div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">Quantity</div>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {nullToNA(procData?.quantity)}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
                       Per Unit Rate
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {indianAmount(nullToNA(procData?.rate))}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
+                  <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
                       Total Rate
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {indianAmount(nullToNA(procData?.total_rate))}
                     </div>
                   </div>
 
-                  <div className='md:flex-1 md:block col-span-4 mt-4 flex md:flex-row-reverse justify-between'>
-                    <div className='md:w-auto w-[50%] font-bold '>
+                  <div className="md:flex-1 md:block col-span-4 mt-4 flex md:flex-row-reverse justify-between">
+                    <div className="md:w-auto w-[50%] font-bold ">
                       Description
                     </div>
-                    <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    <div className="md:w-auto w-[50%] text-gray-800 text-md">
                       {nullToNA(procData?.description)}
                     </div>
                   </div>
                 </div>
               </>
             ))}
-            <div className='h-[30px]'></div>
+            <div className="h-[30px]"></div>
           </div>
 
           {applicationFullData?.is_rate_contract != true && (
-            <div className='py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 '>
-              <div className=''>
-                <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+            <div className="py-6 mt-8 bg-white rounded-lg shadow-xl p-4 space-y-5 border border-blue-500 ">
+              <div className="">
+                <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
                   Supplier Details
                 </h2>
               </div>
 
-              <div className='grid md:grid-cols-4 gap-4 ml-9'>
+              <div className="grid md:grid-cols-4 gap-4 ml-9">
                 {applicationFullData?.supplier_master.map((data) => (
                   <>
-                    <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                      <div className='md:w-auto w-[50%] font-bold '>
+                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                      <div className="md:w-auto w-[50%] font-bold ">
                         Supplier Name
                       </div>
-                      <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
                         {nullToNA(data?.name)}
                       </div>
                     </div>
 
-                    <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                      <div className='md:w-auto w-[50%] font-bold '>GST No</div>
-                      <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                      <div className="md:w-auto w-[50%] font-bold ">GST No</div>
+                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
                         {nullToNA(data?.gst_no)}
                       </div>
                     </div>
 
-                    <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                      <div className='md:w-auto w-[50%] font-bold '>Pan No</div>
-                      <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                      <div className="md:w-auto w-[50%] font-bold ">Pan No</div>
+                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
                         {nullToNA(data?.pan_no)}
                       </div>
                     </div>
 
-                    <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                      <div className='md:w-auto w-[50%] font-bold '>
+                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                      <div className="md:w-auto w-[50%] font-bold ">
                         Address
                       </div>
-                      <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
                         {nullToNA(data?.address)}
                       </div>
                     </div>
 
-                    <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                      <div className='md:w-auto w-[50%] font-bold '>
+                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                      <div className="md:w-auto w-[50%] font-bold ">
                         Bank Name
                       </div>
-                      <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
                         {nullToNA(data?.bank_name)}
                       </div>
                     </div>
 
-                    <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                      <div className='md:w-auto w-[50%] font-bold '>
+                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                      <div className="md:w-auto w-[50%] font-bold ">
                         Account No
                       </div>
-                      <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
                         {nullToNA(data?.account_no)}
                       </div>
                     </div>
 
-                    <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                      <div className='md:w-auto w-[50%] font-bold '>IFSC</div>
-                      <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                      <div className="md:w-auto w-[50%] font-bold ">IFSC</div>
+                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
                         {nullToNA(data?.ifsc)}
                       </div>
                     </div>
-                    
-                    <div className='md:flex-1 md:block flex md:flex-row-reverse justify-between'>
-                      <div className='md:w-auto w-[50%] font-bold '>Bidding Amount</div>
-                      <div className='md:w-auto w-[50%] text-gray-800 text-md'>
+
+                    <div className="md:flex-1 md:block flex md:flex-row-reverse justify-between">
+                      <div className="md:w-auto w-[50%] font-bold ">
+                        Bidding Amount
+                      </div>
+                      <div className="md:w-auto w-[50%] text-gray-800 text-md">
                         {indianAmount(nullToNA(data?.bidding_amount))}
                       </div>
                     </div>
                   </>
                 ))}
 
-                <div className='h-[40px]'></div>
+                <div className="h-[40px]"></div>
               </div>
             </div>
           )}
@@ -729,7 +730,7 @@ const ViewReceivedInvtById = () => {
           {/* Receiving No */}
 
           {
-            <div className='mt-8 '>
+            <div className="mt-8 ">
               <Accordion defaultExpanded>
                 <AccordionSummary
                   style={{
@@ -737,56 +738,56 @@ const ViewReceivedInvtById = () => {
                     color: "white",
                     borderRadius: "5px",
                   }}
-                  expandIcon={<ExpandMoreIcon className='text-white' />}
-                  aria-controls='panel1-content'
-                  id='panel1-header'
+                  expandIcon={<ExpandMoreIcon className="text-white" />}
+                  aria-controls="panel1-content"
+                  id="panel1-header"
                 >
                   Receiving No
                 </AccordionSummary>
                 <AccordionDetails>
                   {/* table */}
                   {!applicationFullData?.receivings?.length ? (
-                    <p className='font-semibold p-4'>No Data Found</p>
+                    <p className="font-semibold p-4">No Data Found</p>
                   ) : (
-                    <div className='relative overflow-x-auto'>
-                      <table className='w-full text-md text-left rtl:text-right'>
-                        <thead className='text-xs uppercase bg-gray-200'>
+                    <div className="relative overflow-x-auto">
+                      <table className="w-full text-md text-left rtl:text-right">
+                        <thead className="text-xs uppercase bg-gray-200">
                           <tr>
-                            <th scope='col' className='px-10 py-3'>
+                            <th scope="col" className="px-10 py-3">
                               Date
                             </th>
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               Receiving no
                             </th>
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               Sub Category
                             </th>
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               Description
                             </th>
 
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               Received Quantity
                             </th>
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               View Doc
                             </th>
 
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               Remaining Quantity
                             </th>
                             {/* <th scope='col' className='px-6 py-3'>
                               Inventory Status
                             </th> */}
-                            <th scope='col' className='px-6 py-3'>
+                            <th scope="col" className="px-6 py-3">
                               Remark
                             </th>
                           </tr>
                         </thead>
                         {applicationFullData?.receivings.map((data) => (
                           <tbody>
-                            <tr className='bg-white border-b-2'>
-                              <td className='px-2 py-4'>
+                            <tr className="bg-white border-b-2">
+                              <td className="px-2 py-4">
                                 {data?.date
                                   .split("T")[0]
                                   .split("-")
@@ -794,22 +795,22 @@ const ViewReceivedInvtById = () => {
                                   .join("-")}
                               </td>
 
-                              <td className='px-6 py-4'>
+                              <td className="px-6 py-4">
                                 {data?.receiving_no}
                               </td>
-                              <td className='px-6 py-4'>
+                              <td className="px-6 py-4">
                                 {data?.procurement_stock?.subCategory?.name}
                               </td>
-                              <td className='px-6 py-4 text-justify'>
+                              <td className="px-6 py-4 text-justify">
                                 {data?.procurement_stock?.description}
                               </td>
 
-                              <td className='px-6 py-4'>
+                              <td className="px-6 py-4">
                                 {data?.received_quantity}
                               </td>
-                              <td className='px-6 py-4'>
+                              <td className="px-6 py-4">
                                 <p
-                                  className='text-blue-900 underline font-bold cursor-pointer'
+                                  className="text-blue-900 underline font-bold cursor-pointer"
                                   onClick={() => {
                                     setImageUrl(
                                       data?.receiving_image[0]?.imageUrl
@@ -820,7 +821,7 @@ const ViewReceivedInvtById = () => {
                                   View
                                 </p>
                               </td>
-                              <td className='px-6 py-4'>
+                              <td className="px-6 py-4">
                                 {data?.remaining_quantity}
                               </td>
                               {/* <td className='px-6 py-4'>
@@ -832,7 +833,7 @@ const ViewReceivedInvtById = () => {
                                   <p className='text-violet-600'>Pending</p>
                                 )}
                               </td> */}
-                              <td className='px-6 py-4'>{data?.remark}</td>
+                              <td className="px-6 py-4">{data?.remark}</td>
                             </tr>
                           </tbody>
                         ))}
@@ -851,25 +852,25 @@ const ViewReceivedInvtById = () => {
           {page == "inbox" && applicationFullData?.status !== 7 && (
             <div className={`${formStyle} mt-8 border border-blue-500`}>
               <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-                <div className=''>
-                  <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
-                    <div className='col-span-12  w-full mb-10'>
-                      <div className='p-4'>
-                        <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+                <div className="">
+                  <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
+                    <div className="col-span-12  w-full mb-10">
+                      <div className="p-4">
+                        <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
                           Add products
                         </h2>
                       </div>
 
-                      <div className='p-2 -mt-4 valid-form flex gap-2 flex-wrap justify-start mb-5'>
-                        <div className='form-group flex-shrink max-w-full px-2 ml-4 mb-5 w-[20rem]'>
+                      <div className="p-2 -mt-4 valid-form flex gap-2 flex-wrap justify-start mb-5">
+                        <div className="form-group flex-shrink max-w-full px-2 ml-4 mb-5 w-[20rem]">
                           <label className={`${labelStyle} inline-block mb-2`}>
                             Choose Procurement Item
-                            <span className='text-xl text-red-500 pl-1'>
+                            <span className="text-xl text-red-500 pl-1">
                               *
                             </span>{" "}
                           </label>
                           <select
-                            name='procurement_stock_id'
+                            name="procurement_stock_id"
                             className={`${inputStyle} inline-block w-full relative`}
                             onChange={(e) => {
                               setProcurement_stock_id(e.target.value);
@@ -891,15 +892,15 @@ const ViewReceivedInvtById = () => {
                             )}
                           </select>
                           {/* <p className="text-red-500 text-xs "></p> */}
-                          <p className='text-sm px-1 text-green-700 mt-1'>
+                          <p className="text-sm px-1 text-green-700 mt-1">
                             {totSum == 0
                               ? "No Quantity to Add"
                               : `Quantity to add - ${totSum}`}
                           </p>
                         </div>
 
-                        <div className=' form-group flex-shrink max-w-full px-4 w-[20rem] '>
-                          <div className='px-4 w-full'>
+                        <div className=" form-group flex-shrink max-w-full px-4 w-[20rem] ">
+                          <div className="px-4 w-full">
                             <label
                               className={`${labelStyle} inline-block mb-2`}
                             >
@@ -907,84 +908,86 @@ const ViewReceivedInvtById = () => {
                             </label>
 
                             <input
-                              name='brand'
+                              name="brand"
                               className={`${inputStyle} inline-block w-full relative`}
                               onChange={(e) => {
                                 setBrandName(e.target.value);
                               }}
-                            // value={item?.brand}
+                              value={brand}
                             />
                           </div>
                         </div>
 
                         {product.map((item, index) => (
-  <div className='flex gap-2 items-end' key={index}>
-    <div className="pl-4 text-center pb-1">
-      {index + 1}.
-    </div>
-    <div className='form-group flex-shrink max-w-full px-4'>
-      <div className='px-4 w-full'>
-        <label className={`${labelStyle} inline-block mb-2`}>
-          Quantity
-        </label>
-        <input
-          name='quantity'
-          className={`${inputStyle} inline-block w-full relative`}
-          onChange={(e) => {
-            onchangeField(e, index, "quantity");
-          }}
-          value={item?.quantity}
-          type="number"
-          max={totSum}  
-          min={1}
-          step={1}
-        />
-      </div>
-    </div>
+                          <div className="flex gap-2 items-end" key={index}>
+                            <div className="pl-4 text-center pb-1">
+                              {index + 1}.
+                            </div>
+                            <div className="form-group flex-shrink max-w-full px-4">
+                              <div className="px-4 w-full">
+                                <label
+                                  className={`${labelStyle} inline-block mb-2`}
+                                >
+                                  Quantity
+                                </label>
+                                <input
+                                  name="quantity"
+                                  className={`${inputStyle} inline-block w-full relative`}
+                                  onChange={(e) => {
+                                    onchangeField(e, index, "quantity");
+                                  }}
+                                  value={item?.quantity}
+                                  type="number"
+                                  max={totSum}
+                                  min={1}
+                                  step={1}
+                                />
+                              </div>
+                            </div>
 
-
-    <div className='form-group flex-shrink max-w-full px-4'>
-      <div className='px-4 w-full'>
-        <label className={`${labelStyle} inline-block mb-2`}>
-          Serial Number
-        </label>
-        <input
-          name='serial_no'
-          className={`${inputStyle} inline-block w-full relative`}
-          onChange={(e) => {
-            onchangeField(e, index, "serial_no");
-          }}
-          value={item?.serial_no} 
-          type="text" 
-        />
-      </div>
-    </div>
-    {product.length - 1 === index && (
-      <div className='form-group flex-shrink flex gap-2 max-w-full px-1'>
-        <button
-          className={`${buttonStyle2} flex gap-2`}
-          onClick={addField}
-          disabled={getTotalQuantity() >= totSum}
-        >
-          <IoMdAddCircleOutline className='text-xl' /> Rows
-        </button>
-        {product?.length > 1 && (
-          <button
-            className={`${buttonStyle}`}
-            onClick={removeField}
-          >
-            Remove
-          </button>
-        )}
-      </div>
-    )}
-  </div>
-))}
-
-
+                            <div className="form-group flex-shrink max-w-full px-4">
+                              <div className="px-4 w-full">
+                                <label
+                                  className={`${labelStyle} inline-block mb-2`}
+                                >
+                                  Serial Number
+                                </label>
+                                <input
+                                  name="serial_no"
+                                  className={`${inputStyle} inline-block w-full relative`}
+                                  onChange={(e) => {
+                                    onchangeField(e, index, "serial_no");
+                                  }}
+                                  value={item?.serial_no}
+                                  type="text"
+                                />
+                              </div>
+                            </div>
+                            {product.length - 1 === index && (
+                              <div className="form-group flex-shrink flex gap-2 max-w-full px-1">
+                                <button
+                                  className={`${buttonStyle2} flex gap-2`}
+                                  onClick={addField}
+                                  disabled={getTotalQuantity() >= totSum}
+                                >
+                                  <IoMdAddCircleOutline className="text-xl" />{" "}
+                                  Rows
+                                </button>
+                                {product?.length > 1 && (
+                                  <button
+                                    className={`${buttonStyle}`}
+                                    onClick={removeField}
+                                  >
+                                    Remove
+                                  </button>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ))}
                       </div>
 
-                      <div className='space-x-5 flex justify-end mr-3 mt-14'>
+                      <div className="space-x-5 flex justify-end mr-3 mt-14">
                         <button
                           className={buttonStyle}
                           onClick={() => {
@@ -997,7 +1000,7 @@ const ViewReceivedInvtById = () => {
                         <button
                           onClick={addProduct}
                           className={buttonStyle2}
-                          type='button'
+                          type="button"
                         >
                           Add Products
                         </button>
@@ -1013,35 +1016,35 @@ const ViewReceivedInvtById = () => {
             inventoryAddData?.is_valid_for_addition == true && (
               <div className={`${formStyle} mt-8 border border-blue-500`}>
                 <form onSubmit={formik.handleSubmit} onChange={handleOnChange}>
-                  <div className=''>
-                    <div className=' grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize'>
-                      <div className='col-span-12  w-full mb-20'>
-                        <div className='p-4'>
-                          <h2 className='font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md'>
+                  <div className="">
+                    <div className=" grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 container mx-auto capitalize">
+                      <div className="col-span-12  w-full mb-20">
+                        <div className="p-4">
+                          <h2 className="font-semibold text-2xl pl-7 pt-2 pb-2 flex justify-start bg-[#4338ca] text-white rounded-md">
                             Inventory Details
                           </h2>
                         </div>
 
-                        <div className='p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4'>
-                          <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                            <div className='px-4 w-full mb-4'>
+                        <div className="p-12 -mt-4 valid-form flex flex-wrap flex-row -mx-4">
+                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                            <div className="px-4 w-full mb-4">
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
                                 Choose Procurement Item
-                                <span className='text-xl text-red-500 pl-1'>
+                                <span className="text-xl text-red-500 pl-1">
                                   *
                                 </span>{" "}
                               </label>
                               <select
-                                name='procurement_stock_id'
+                                name="procurement_stock_id"
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={(e) => {
                                   setProcurement_stock_id(e.target.value);
                                 }}
                                 value={procurement_stock_id}
                                 disabled
-                              // onClick={() => }
+                                // onClick={() => }
                               >
                                 <option value={""}>select</option>
                                 {/* {console.log(applicationFullData)} */}
@@ -1055,11 +1058,11 @@ const ViewReceivedInvtById = () => {
                                   )
                                 )}
                               </select>
-                              <p className='text-red-500 text-xs '></p>
+                              <p className="text-red-500 text-xs "></p>
                             </div>
                           </div>
-                          <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                            <div className='px-4 w-full mb-4'>
+                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                            <div className="px-4 w-full mb-4">
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
@@ -1068,23 +1071,23 @@ const ViewReceivedInvtById = () => {
 
                               <input
                                 disabled
-                                name='totalStock'
+                                name="totalStock"
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
                                 value={formik.values.totalStock}
                               />
 
-                              <p className='text-red-500 text-xs '>
+                              <p className="text-red-500 text-xs ">
                                 {formik.touched.totalStock &&
-                                  formik.errors.totalStock
+                                formik.errors.totalStock
                                   ? formik.errors.totalStock
                                   : null}
                               </p>
                             </div>
                           </div>
 
-                          <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                            <div className='px-4 w-full mb-4'>
+                          <div className=" form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                            <div className="px-4 w-full mb-4">
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
@@ -1092,24 +1095,24 @@ const ViewReceivedInvtById = () => {
                               </label>
 
                               <input
-                                name='receivedStock'
+                                name="receivedStock"
                                 disabled
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
                                 value={formik.values.receivedStock}
                               />
 
-                              <p className='text-red-500 text-xs '>
+                              <p className="text-red-500 text-xs ">
                                 {formik.touched.receivedStock &&
-                                  formik.errors.receivedStock
+                                formik.errors.receivedStock
                                   ? formik.errors.receivedStock
                                   : null}
                               </p>
                             </div>
                           </div>
 
-                          <div className=' form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                            <div className='px-4 w-full mb-4'>
+                          <div className=" form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                            <div className="px-4 w-full mb-4">
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
@@ -1118,23 +1121,23 @@ const ViewReceivedInvtById = () => {
 
                               <input
                                 disabled
-                                name='remStock'
+                                name="remStock"
                                 className={`${inputStyle} inline-block w-full relative`}
                                 onChange={formik.handleChange}
                                 value={formik.values.remStock}
                               />
 
-                              <p className='text-red-500 text-xs '>
+                              <p className="text-red-500 text-xs ">
                                 {formik.touched.remStock &&
-                                  formik.errors.remStock
+                                formik.errors.remStock
                                   ? formik.errors.remStock
                                   : null}
                               </p>
                             </div>
                           </div>
 
-                          <div className='relative form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                            <div className='form-group flex-shrink max-w-full px-4 w-full mb-4'>
+                          <div className="relative form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                            <div className="form-group flex-shrink max-w-full px-4 w-full mb-4">
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
@@ -1148,7 +1151,7 @@ const ViewReceivedInvtById = () => {
                                 disabled={applicationFullData?.receivings?.some(
                                   (data) => data?.is_added === true
                                 )}
-                              // name='invtDetails'
+                                // name='invtDetails'
                               >
                                 <option value={""} selected>
                                   select
@@ -1159,24 +1162,24 @@ const ViewReceivedInvtById = () => {
                                     <option
                                       key={items?.id}
                                       value={items?.id}
-                                      className='py-2'
+                                      className="py-2"
                                     >
                                       {items?.description}
                                     </option>
                                   ))}
                               </select>
 
-                              <p className='text-red-500 text-xs '>
+                              <p className="text-red-500 text-xs ">
                                 {formik.touched.itemsubcategory &&
-                                  formik.errors.itemsubcategory
+                                formik.errors.itemsubcategory
                                   ? formik.errors.itemsubcategory
                                   : null}
                               </p>
                             </div>
                           </div>
 
-                          <div className='relative form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
-                            <div className=' relative px-4 w-full mb-4'>
+                          <div className="relative form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
+                            <div className=" relative px-4 w-full mb-4">
                               <label
                                 className={`${labelStyle} inline-block mb-2`}
                               >
@@ -1184,13 +1187,13 @@ const ViewReceivedInvtById = () => {
                               </label>
 
                               <input
-                                name='dead_stock'
+                                name="dead_stock"
                                 className={`${inputStyle} inline-block w-full`}
                                 onChange={formik.handleChange}
                                 value={formik.values.dead_stock}
                               />
                               {formik.values.dead_stock > 0 && (
-                                <div className='absolute left-[63%] top-[37px] w-full'>
+                                <div className="absolute left-[63%] top-[37px] w-full">
                                   <FileButton
                                     btnLabel={"Upload Reference Image"}
                                     bg={"[#4338CA]"}
@@ -1204,9 +1207,9 @@ const ViewReceivedInvtById = () => {
                                 </div>
                               )}
 
-                              <p className='text-red-500 text-xs '>
+                              <p className="text-red-500 text-xs ">
                                 {formik.touched.dead_stock &&
-                                  formik.errors.dead_stock
+                                formik.errors.dead_stock
                                   ? formik.errors.dead_stock
                                   : null}
                               </p>
@@ -1214,7 +1217,7 @@ const ViewReceivedInvtById = () => {
                             <div></div>
                           </div>
 
-                          <div className='form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                          <div className="form-group flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
                             {/* <div className=''> */}
                             {/* <div className="w-20 mt-5">
                               <ImageDisplay
@@ -1229,11 +1232,11 @@ const ViewReceivedInvtById = () => {
                             {/* </div> */}
                           </div>
 
-                          <div className='form-group flex justify-between flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4'>
+                          <div className="form-group flex justify-between flex-shrink max-w-full px-4 w-full md:w-1/2 mb-4">
                             <div>
                               <input
-                                className='ml-4'
-                                type='checkbox'
+                                className="ml-4"
+                                type="checkbox"
                                 onChange={() =>
                                   setWarrantyClaim((prev) => !prev)
                                 }
@@ -1244,8 +1247,8 @@ const ViewReceivedInvtById = () => {
                                 Warranty claim
                               </label>
                             </div>
-                            <div className=''>
-                              <div className='w-20 mr-5 '>
+                            <div className="">
+                              <div className="w-20 mr-5 ">
                                 <ImageDisplay
                                   preview={preview}
                                   imageDoc={imageDoc}
@@ -1258,21 +1261,21 @@ const ViewReceivedInvtById = () => {
                             </div>
                           </div>
 
-                          <div className='form-group flex-shrink max-w-full px-8 w-full md:w-full mb-4'>
+                          <div className="form-group flex-shrink max-w-full px-8 w-full md:w-full mb-4">
                             <label
                               className={`${labelStyle} inline-block mb-2`}
                             >
                               Remarks
                             </label>
                             <textarea
-                              type='text'
-                              name='remarks'
+                              type="text"
+                              name="remarks"
                               className={`${inputStyle} inline-block w-full relative h-20`}
                               onChange={formik.handleChange}
                               value={formik.values.remarks}
                             />
 
-                            <p className='text-red-500 text-xs '>
+                            <p className="text-red-500 text-xs ">
                               {formik.touched.remarks && formik.errors.remarks
                                 ? formik.errors.remarks
                                 : null}
@@ -1280,7 +1283,7 @@ const ViewReceivedInvtById = () => {
                           </div>
                         </div>
 
-                        <div className='space-x-5 flex justify-end mr-[3rem]'>
+                        <div className="space-x-5 flex justify-end mr-[3rem]">
                           <button
                             className={buttonStyle}
                             onClick={() => {
@@ -1290,7 +1293,7 @@ const ViewReceivedInvtById = () => {
                             Cancel
                           </button>
 
-                          <button className={buttonStyle2} type='submit'>
+                          <button className={buttonStyle2} type="submit">
                             Add To Inventory
                           </button>
                         </div>
@@ -1301,7 +1304,7 @@ const ViewReceivedInvtById = () => {
               </div>
             )}
           {/* {page == "outbox" && ( */}
-          <div className='space-x-5 flex justify-end mt-[1rem]'>
+          <div className="space-x-5 flex justify-end mt-[1rem]">
             {page == "outbox" && (
               <button onClick={handlePrint} className={`${buttonStyle}`}>
                 Print
