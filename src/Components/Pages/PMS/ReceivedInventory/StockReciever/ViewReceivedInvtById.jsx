@@ -133,7 +133,7 @@ const ViewReceivedInvtById = () => {
         if (response?.data?.status) {
           setInventoryAddData(response?.data?.data);
           const sum =
-            (response?.data?.data?.receiving?._sum?.remaining_quantity || 0) -
+            (response?.data?.data?.receiving?._sum?.received_quantity || 0) -
             (response?.data?.data?.product?.total_quantity || 0);
           setTotSum(sum);
           setisLoading(false);
