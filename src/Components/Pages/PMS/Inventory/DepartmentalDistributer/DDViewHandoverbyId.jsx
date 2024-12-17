@@ -372,6 +372,11 @@ const DDViewHandoverbyId = () => {
                       Forward to Departmental Admin
                     </button>
                   )}
+                  {applicationFullData?.status === 7 && (
+                   <button className={buttonStyle2} onClick={handoverModal}>
+                   Handover
+                 </button>
+                  )}
 
                   {((applicationFullData?.stock_req_product?.length === 1 &&
                     applicationFullData?.stock_req_product[0]?.is_available) ||
