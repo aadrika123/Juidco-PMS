@@ -472,6 +472,7 @@ const BiddingInitialForm = () => {
                       value={formik.values.tenure}
                       placeholder='Please Write Tenure year'
                       className='border flex-col rounded-md p-2'
+                      required={isRateContract}
                     />
                   </div>
                   <div>
@@ -504,6 +505,7 @@ const BiddingInitialForm = () => {
                       value={formik.values.min_supplier}
                       placeholder=''
                       className='border flex-col rounded-md p-2'
+                      required={isRateContract} 
                     />
                   </div>
                   <div>
@@ -536,6 +538,7 @@ const BiddingInitialForm = () => {
                       value={formik.values.max_supplier}
                       placeholder=''
                       className='border flex-col rounded-md p-2'
+                      required={isRateContract}
                     />
                   </div>
                   <div>
