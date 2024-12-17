@@ -882,9 +882,9 @@ const ViewReceivedInvtById = () => {
                               (data, index) => (
                                 <option
                                   value={data?.id}
-                                  // disabled={
-                                  //   data?.total_received === data?.total_added
-                                  // }
+                                  disabled={
+                                    data?.total_received === data?.total_added
+                                  }
                                 >
                                   Procurement Item: {index + 1}
                                 </option>
