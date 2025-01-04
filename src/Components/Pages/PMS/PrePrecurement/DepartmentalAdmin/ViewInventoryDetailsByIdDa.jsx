@@ -270,7 +270,7 @@ const ViewInventoryDetailsById = (props) => {
       <>
         <RejectionModalRemark
           confirmationHandler={rejectStockReqHandler}
-          handleCancel={() => setIsModalOpen3(true)}
+          handleCancel={() => setIsModalOpen3(false)}
           loadingState={isLoading}
           message={"Are you sure you want to Reject this Stock Request ?"}
           setData={setRemark}
@@ -319,7 +319,7 @@ const ViewInventoryDetailsById = (props) => {
       <>
         <RejectionModalRemark
           confirmationHandler={backToDdHandler}
-          handleCancel={() => setReturnModal(true)}
+          handleCancel={() => setReturnModal(false)}
           loadingState={isLoading}
           message={
             "Are you sure you want to return this Stock Request to Departmental Distributor ?"
