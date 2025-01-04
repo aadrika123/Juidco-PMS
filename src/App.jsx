@@ -113,10 +113,12 @@ import SearchInventoryReports from "./Components/Pages/PMS/Reports/SearchInvento
 import SearchInvtById from "./Components/Pages/PMS/Reports/SearchInventory/SearchInvtById";
 import InvtAdminDeadStock from "./Components/Pages/PMS/Inventory/IADeadStock/InvtAdminDeadStock";
 import InvtAdminDeadStockbyId from "./Components/Pages/PMS/Inventory/IADeadStock/InvtAdminDeadStockbyId";
+import useModulePermission from "./Components/Common/Hooks/useModulePermission";
 
 const queryClient = new QueryClient();
 
 function App() {
+  useModulePermission()
   // 👉 State constants 👈
   const [menuList, setmenuList] = useState(
     getLocalStorageItemJsonParsed("menuList")
