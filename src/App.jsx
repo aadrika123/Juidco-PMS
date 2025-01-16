@@ -114,10 +114,13 @@ import SearchInvtById from "./Components/Pages/PMS/Reports/SearchInventory/Searc
 import InvtAdminDeadStock from "./Components/Pages/PMS/Inventory/IADeadStock/InvtAdminDeadStock";
 import InvtAdminDeadStockbyId from "./Components/Pages/PMS/Inventory/IADeadStock/InvtAdminDeadStockbyId";
 import useModulePermission from "./Components/Common/Hooks/useModulePermission";
+import { UseServiceCheck } from "./Components/Common/Hooks/UseServiceCheck";
+import ServiceRestrictionLayout from "./Components/Common/Error/ServiceRestrictionLayout";
 
 const queryClient = new QueryClient();
 
 function App() {
+  UseServiceCheck()
   useModulePermission()
   // 👉 State constants 👈
   const [menuList, setmenuList] = useState(
@@ -543,6 +546,12 @@ function App() {
       path: "/ia-dead-stock-byId/:id/:page",
       element: <InvtAdminDeadStockbyId />,
     },
+    {
+      path: "/service-restriction",
+      element:  <ServiceRestrictionLayout/>,
+    },
+
+   
 
   ];
 

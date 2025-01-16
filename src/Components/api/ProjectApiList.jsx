@@ -337,6 +337,10 @@ export default function ProjectApiList() {
     api_getiaDashboard: `${baseUrl}/api/pms/dashboard/ia`,
     api_getTaDashboard: `${baseUrl}/api/pms/dashboard/tender`,
     api_getLevelDashboard: `${baseUrl}/api/pms/dashboard/level`,
+
+
+    checkPropertyService: `${baseUrl}/api/get/services-by-module`,
+    getPermittedServiceList: `${baseUrl}/api/get/services-b-ulb-id`,
   };
 
   return apiList;
