@@ -10,6 +10,9 @@ export default function ProjectApiList() {
     //WARD LIST
     api_login: `${baseUrl}/api/login`,
 
+    // API MODULE LIST
+    api_moduleList: `${baseUrl}/api/user-managment/v2/crud/module/list`,
+
     // 19 API TO GET WORKFLOW BASIC INFO LIKE PERMISSIONS/WORKFLOW-CANDIDATES
     api_workflowInfo: `${baseUrl}/api/workflow/role-map/workflow-info`,
 

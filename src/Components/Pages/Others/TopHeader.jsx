@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "react-modal";
 import { FiAlertCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,8 @@ import { Tooltip } from "react-tooltip";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { getLocalStorageItemJsonParsed } from "@/Components/Common/localstorage";
 import NotificationSidebar from "./SideBar/NotificationSidebar";
+import ProjectApiList from "@/Components/api/ProjectApiList";
+import axios from "axios";
 
 const TopHeader = (props) => {
   const [userDetailss, setuserDetails] = useState(
@@ -21,9 +23,9 @@ const TopHeader = (props) => {
   const [isLoading, setisLoading] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
   const { toggleBar, settoggleBar, userDetails } = useContext(contextVar);
-
+  const [permittedModuleList, setpermittedModuleList] = useState([])
   const { brand_tag } = ulb_data();
-
+  const { api_moduleList } = ProjectApiList();
   const navigate = useNavigate();
 
   function openModal2() {
@@ -48,6 +50,22 @@ const TopHeader = (props) => {
     closeModal();
     logoutCallback();
   };
+
+  const fetchModuleList = () => {
+    axios
+     .post(api_moduleList, {})
+     .then((res) => {
+      console.log("module list: ", res);
+      setpermittedModuleList(res?.data?.data);
+     });
+   };
+  
+   useEffect(() => {
+    fetchModuleList();
+    setIsOpen(false);
+   }, []);
+  
+  
 
   return (
     <>
@@ -150,7 +168,8 @@ const TopHeader = (props) => {
         className='z-20 h-screen w-screen backdrop-blur-sm flex flex-row justify-center items-center overflow-auto'
         contentLabel='Example Modal'
       >
-        <PermittedModuleCard closeModuleModal={closeModal} />
+        {/* <PermittedModuleCard closeModuleModal={closeModal} /> */}
+        <PermittedModuleCard closeModuleModal={closeModal} permittedModuleList={permittedModuleList}/>
       </Modal>
     </>
   );
