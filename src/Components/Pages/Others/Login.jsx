@@ -19,13 +19,15 @@ import { checkErrorMessage } from "@/Components/Common/PowerupFunctions";
 import { contextVar } from "@/Components/context/contextVar";
 import { Login1 } from "@/Components/Lotties/temp";
 import Lottie from "react-lottie";
+import UseCaptchaGenerator from "@/Components/Common/Hooks/UseCaptchaGenerator";
 
 const { api_login, api_getFreeMenuList } = ProjectApiList();
 
 const validationSchema = Yup.object({
   username: Yup.string().required("Enter Username"),
   password: Yup.string().required("Enter Password"),
- 
+  captcha: Yup.string().required("Captcha Required"),
+
 });
 
 function Login() {
@@ -37,9 +39,26 @@ function Login() {
     initialValues: {
       username: "",
       password: "",
+      captcha: "",
     },
-    onSubmit: (values) => {
-      authUser();
+    onSubmit: async (values, { resetForm }) => {
+      setIsFormSubmitted(true);
+      const isvalidcaptcha = verifyCaptcha(values?.captcha, resetForm);
+      if (isvalidcaptcha) {
+        try {
+          // Call your authentication function (authUser()) here
+          await authUser(values.username, values.password);
+          console.log("Form submitted:", values);
+          setIsFormSubmitted(false);
+        } catch (error) {
+          // Handle authentication error if needed
+          console.error("Authentication failed:", error);
+          setIsFormSubmitted(false); // Reset the form submission status on authentication failure
+        }
+      } else {
+        // alert("Invalid captcha")
+        toast.error("Invalid captcha");
+      }
     },
     validationSchema,
   });
@@ -48,7 +67,8 @@ function Login() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const message = searchParams.get("msg") || "";
-
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const { captchaInputField, captchaImage, verifyCaptcha, generateRandomCaptcha } = UseCaptchaGenerator();
   useEffect(() => {
     getLocalStorageItem("token") != "null" &&
       getLocalStorageItem("token") != null &&
@@ -162,12 +182,16 @@ function Login() {
           console.log("false...");
           setLoaderStatus(false);
           toast.error(response?.data?.message);
+          generateRandomCaptcha();
+          formik?.setFieldValue("captcha", "");
         }
       })
       .catch(function (error) {
         setLoaderStatus(false);
         console.log("--2--login error...", error);
         toast.error("Server Error");
+        generateRandomCaptcha();
+        formik?.setFieldValue("captcha", "");
       });
   };
 
@@ -241,9 +265,8 @@ function Login() {
                   {/* //  {`${ulb_data().ulb_name}`} // */}Login - Procurement
                   Management System
                 </span>{" "}
-                <span className="hidden text-gray-700 darks:text-gray-200">{`${
-                  ulb_data().ulb_name
-                }`}</span>
+                <span className="hidden text-gray-700 darks:text-gray-200">{`${ulb_data().ulb_name
+                  }`}</span>
               </div>
             </a>
             {/* menu */}
@@ -535,6 +558,25 @@ function Login() {
                               ? formik.errors.password
                               : null}
                           </span>
+                        </div>
+                        <div className="mb-2 ">
+                          <div className="flex justify-between items-center">
+                            <div className=" rounded-sm">
+                              <img src={captchaImage} className="border rounded w-44 h-14" />
+                            </div>
+                            <div>
+                              <button
+                                type="button"
+                                onClick={generateRandomCaptcha}
+                                className="text-xs text-blue-400"
+                              >
+                                Reload Captcha
+                              </button>
+                            </div>
+                          </div>
+                          <div className="mt-4">
+                            {captchaInputField(formik)}
+                          </div>
                         </div>
                         {/* <div className="mb-6">
                                                         <input className="form-checkbox h-5 w-5 text-indigo-500 darks:bg-gray-700 border border-gray-300 darks:border-gray-700 rounded focus:outline-none" type="checkbox" defaultValue id="remember" />
