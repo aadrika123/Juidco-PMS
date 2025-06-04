@@ -20,6 +20,7 @@ import { contextVar } from "@/Components/context/contextVar";
 import { Login1 } from "@/Components/Lotties/temp";
 import Lottie from "react-lottie";
 import UseCaptchaGenerator from "@/Components/Common/Hooks/UseCaptchaGenerator";
+import CryptoJS from "crypto-js";
 
 const { api_login, api_getFreeMenuList } = ProjectApiList();
 
@@ -27,7 +28,6 @@ const validationSchema = Yup.object({
   username: Yup.string().required("Enter Username"),
   password: Yup.string().required("Enter Password"),
   captcha: Yup.string().required("Captcha Required"),
-
 });
 
 function Login() {
@@ -68,12 +68,37 @@ function Login() {
   const searchParams = new URLSearchParams(location.search);
   const message = searchParams.get("msg") || "";
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const { captchaInputField, captchaImage, verifyCaptcha, generateRandomCaptcha } = UseCaptchaGenerator();
+  const {
+    captchaInputField,
+    captchaImage,
+    verifyCaptcha,
+    generateRandomCaptcha,
+  } = UseCaptchaGenerator();
   useEffect(() => {
     getLocalStorageItem("token") != "null" &&
       getLocalStorageItem("token") != null &&
       navigate("/ia-inventory-dashboard");
   }, []);
+
+  function encryptPassword(plainPassword) {
+    const secretKey =
+      "c2ec6f788fb85720bf48c8cc7c2db572596c585a15df18583e1234f147b1c2897aad12e7bebbc4c03c765d0e878427ba6370439d38f39340d7e";
+
+    const key = CryptoJS.enc.Latin1.parse(
+      CryptoJS.SHA256(secretKey).toString(CryptoJS.enc.Latin1)
+    );
+
+    const ivString = CryptoJS.SHA256(secretKey).toString().substring(0, 16);
+    const iv = CryptoJS.enc.Latin1.parse(ivString);
+
+    const encrypted = CryptoJS.AES.encrypt(plainPassword, key, {
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7,
+    });
+
+    return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
+  }
 
   const header = {
     headers: {
@@ -86,7 +111,7 @@ function Login() {
     setLoaderStatus(true);
     let requestBody = {
       email: formik.values.username,
-      password: formik.values.password,
+      password: encryptPassword(formik.values.password),
       moduleId: 17,
     };
     console.log("--1--before login send...", requestBody);
@@ -265,8 +290,9 @@ function Login() {
                   {/* //  {`${ulb_data().ulb_name}`} // */}Login - Procurement
                   Management System
                 </span>{" "}
-                <span className="hidden text-gray-700 darks:text-gray-200">{`${ulb_data().ulb_name
-                  }`}</span>
+                <span className="hidden text-gray-700 darks:text-gray-200">{`${
+                  ulb_data().ulb_name
+                }`}</span>
               </div>
             </a>
             {/* menu */}
@@ -526,6 +552,10 @@ function Login() {
                             defaultValue
                             aria-label="email"
                             type="email"
+                            autoComplete="new-Username"
+                            onCopy={(e) => e.preventDefault()}
+                            onPaste={(e) => e.preventDefault()}
+                            onCut={(e) => e.preventDefault()}
                             required
                           />
                           <span className="text-red-600 text-xs">
@@ -540,6 +570,10 @@ function Login() {
                               <label
                                 htmlFor="inputpass"
                                 className="inline-block mb-2"
+                                autoComplete="new-Username"
+                                onCopy={(e) => e.preventDefault()}
+                                onPaste={(e) => e.preventDefault()}
+                                onCut={(e) => e.preventDefault()}
                               >
                                 Password
                               </label>
@@ -562,7 +596,10 @@ function Login() {
                         <div className="mb-2 ">
                           <div className="flex justify-between items-center">
                             <div className=" rounded-sm">
-                              <img src={captchaImage} className="border rounded w-44 h-14" />
+                              <img
+                                src={captchaImage}
+                                className="border rounded w-44 h-14"
+                              />
                             </div>
                             <div>
                               <button
