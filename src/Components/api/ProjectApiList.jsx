@@ -9,6 +9,7 @@ export default function ProjectApiList() {
     api_getFreeMenuList: `${baseUrl}/api/menu/by-module`,
     //WARD LIST
     api_login: `${baseUrl}/api/login`,
+    api_captcha: `${baseUrl}/api/login-Captcha`,
 
     // API MODULE LIST
     api_moduleList: `${baseUrl}/api/user-managment/v2/crud/module/list`,

@@ -20,6 +20,7 @@ import { contextVar } from "@/Components/context/contextVar";
 import { Login1 } from "@/Components/Lotties/temp";
 import Lottie from "react-lottie";
 import UseCaptchaGenerator from "@/Components/Common/Hooks/UseCaptchaGenerator";
+import useSystemUniqueID from "@/Components/Common/Hooks/useSystemUniqueId";
 import CryptoJS from "crypto-js";
 
 const { api_login, api_getFreeMenuList } = ProjectApiList();
@@ -43,22 +44,8 @@ function Login() {
     },
     onSubmit: async (values, { resetForm }) => {
       setIsFormSubmitted(true);
-      const isvalidcaptcha = verifyCaptcha(values?.captcha, resetForm);
-      if (isvalidcaptcha) {
-        try {
-          // Call your authentication function (authUser()) here
-          await authUser(values.username, values.password);
-          console.log("Form submitted:", values);
-          setIsFormSubmitted(false);
-        } catch (error) {
-          // Handle authentication error if needed
-          console.error("Authentication failed:", error);
-          setIsFormSubmitted(false); // Reset the form submission status on authentication failure
-        }
-      } else {
-        // alert("Invalid captcha")
-        toast.error("Invalid captcha");
-      }
+      authUser();
+      setIsFormSubmitted(false);
     },
     validationSchema,
   });
@@ -68,12 +55,19 @@ function Login() {
   const searchParams = new URLSearchParams(location.search);
   const message = searchParams.get("msg") || "";
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [captcha, setCaptcha] = useState("");
+  const [captchaError, setCaptchaError] = useState(null);
+  const [mobileCardStatus, setmobileCardStatus] = useState(false);
+
   const {
     captchaInputField,
     captchaImage,
-    verifyCaptcha,
     generateRandomCaptcha,
+    getCaptchaData,
+    getEncryptedCaptcha,
   } = UseCaptchaGenerator();
+  
+  const { fingerprint } = useSystemUniqueID();
   useEffect(() => {
     getLocalStorageItem("token") != "null" &&
       getLocalStorageItem("token") != null &&
@@ -109,10 +103,14 @@ function Login() {
   //authUser function which authenticate user credentials
   const authUser = (e) => {
     setLoaderStatus(true);
+    const captchaData = getCaptchaData();
     let requestBody = {
       email: formik.values.username,
       password: encryptPassword(formik.values.password),
       moduleId: 17,
+      captcha_code: getEncryptedCaptcha(formik.values.captcha),
+      captcha_id: captchaData.captcha_id,
+      systemUniqueId: fingerprint,
     };
     console.log("--1--before login send...", requestBody);
     AxiosInterceptors.post(api_login, requestBody, header)
@@ -248,12 +246,10 @@ function Login() {
         } else {
           console.log("false menu list => ", response?.data?.message);
           setLoaderStatus(false);
-          seterrorMsg(checkErrorMessage(response.data.message));
         }
       })
       .catch(function (error) {
         setLoaderStatus(false);
-        seterroState(true);
         console.log("--2--login error...", error);
       });
   };
@@ -612,7 +608,22 @@ function Login() {
                             </div>
                           </div>
                           <div className="mt-4">
-                            {captchaInputField(formik)}
+                            <input
+                              {...formik.getFieldProps("captcha")}
+                              type="text"
+                              autoComplete="off"
+                              spellCheck="false"
+                              className="w-full p-2 border rounded"
+                              onPaste={(e) => e.preventDefault()}
+                              onCopy={(e) => e.preventDefault()}
+                              onCut={(e) => e.preventDefault()}
+                              placeholder="Enter Captcha"
+                            />
+                            <span className="text-red-600 text-xs">
+                              {formik.touched.captcha && formik.errors.captcha
+                                ? formik.errors.captcha
+                                : null}
+                            </span>
                           </div>
                         </div>
                         {/* <div className="mb-6">
@@ -658,7 +669,7 @@ function Login() {
                         </div>
                       </form>
                       {/* =========buttons for change and reset password========= */}
-                      <div className="my-4">
+                      {/* <div className="my-4">
                         <div className="flex flex-col items-center justify-center flex-wrap gapx-x-2 gap-y-2 w-full poppins">
                           <span
                             className="text-gray-700 text-sm font-semibold cursor-pointer w-full text-center"
@@ -666,10 +677,10 @@ function Login() {
                           >
                             Forgot Password
                           </span>
-                          {/* <span className='text-gray-700 text-sm font-semibold cursor-pointer w-full text-center' onClick={() => setchange(true)}>Change Password</span> */}
+                         
                         </div>
-                        {/* <p className="text-center mb-2">Don't have an account? <a className="hover:text-indigo-500" href="#">Register</a></p> */}
-                      </div>
+                        
+                      </div> */}
                     </div>
                   </div>
                 </div>
