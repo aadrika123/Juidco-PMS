@@ -567,9 +567,9 @@ function App() {
 
             <Route
               element={
-                // <AuthGaurd>
+                <AuthGaurd>
                   <ProtectedRoutes />
-                //  </AuthGaurd>
+                </AuthGaurd>
               }
             >
               {allRoutes?.map((elem, index) => (
