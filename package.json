@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
+    "build:clean": "vite build && node scripts/clean-build.js",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview --host",
     "build:staging": "rmdir /s /q staging_build && copy env_staging.txt .env && vite build && rename dist staging_build && copy env_original.txt .env",
