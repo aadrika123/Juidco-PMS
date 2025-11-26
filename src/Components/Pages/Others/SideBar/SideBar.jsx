@@ -21,6 +21,7 @@ import { FcBusinessman } from "react-icons/fc";
 const SideBar = (props) => {
   // 👉 Context constants 👈
   const { toggleBar, settoggleBar, userDetails } = useContext(contextVar);
+   const filterMenu = props?.menu?.filter((item) => item.is_sidebar) || [];
 
   // 👉 State constants 👈
   const [dropDown, setdropDown] = useState(false);
@@ -98,7 +99,7 @@ const SideBar = (props) => {
                       id='side-menu'
                       className='w-full float-none flex flex-col '
                     >
-                      {props?.menu?.map((item) => (
+                      {filterMenu?.map((item) => (
                         <>
                           <li
                             className='relative cursor-pointer mb-4'

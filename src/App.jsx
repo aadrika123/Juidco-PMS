@@ -1,6 +1,6 @@
 // 👉 Importing Packages 👈
 import "animate.css";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import { contextVar } from "@/Components/context/contextVar";
@@ -116,12 +116,13 @@ import InvtAdminDeadStockbyId from "./Components/Pages/PMS/Inventory/IADeadStock
 import useModulePermission from "./Components/Common/Hooks/useModulePermission";
 import { UseServiceCheck } from "./Components/Common/Hooks/UseServiceCheck";
 import ServiceRestrictionLayout from "./Components/Common/Error/ServiceRestrictionLayout";
+import AuthGaurd from "./Components/Pages/Others/AuthGuard";
 
 const queryClient = new QueryClient();
 
 function App() {
-  UseServiceCheck()
-  useModulePermission()
+  UseServiceCheck();
+  useModulePermission();
   // 👉 State constants 👈
   const [menuList, setmenuList] = useState(
     getLocalStorageItemJsonParsed("menuList")
@@ -548,11 +549,8 @@ function App() {
     },
     {
       path: "/service-restriction",
-      element:  <ServiceRestrictionLayout/>,
+      element: <ServiceRestrictionLayout />,
     },
-
-   
-
   ];
 
   return (
@@ -567,13 +565,18 @@ function App() {
           <Routes>
             <Route index element={<Login />} />
 
-            <Route element={<ProtectedRoutes />}>
+            <Route
+              element={
+                // <AuthGaurd>
+                  <ProtectedRoutes />
+                //  </AuthGaurd>
+              }
+            >
               {allRoutes?.map((elem, index) => (
                 <Route key={index} path={elem?.path} element={elem?.element} />
               ))}
             </Route>
-
-            <Route path='*' element={<ErrorPage />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </contextVar.Provider>
       </>

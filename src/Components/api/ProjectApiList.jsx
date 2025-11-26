@@ -10,6 +10,7 @@ export default function ProjectApiList() {
     //WARD LIST
     api_login: `${baseUrl}/api/login`,
     api_captcha: `${baseUrl}/api/login-Captcha`,
+    api_ChangePassword: `${baseUrl}/api/change-password`,
 
     // API MODULE LIST
     api_moduleList: `${baseUrl}/api/user-managment/v2/crud/module/list`,
