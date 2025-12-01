@@ -22,6 +22,8 @@ import Lottie from "react-lottie";
 import UseCaptchaGenerator from "@/Components/Common/Hooks/UseCaptchaGenerator";
 import useSystemUniqueID from "@/Components/Common/Hooks/useSystemUniqueId";
 import CryptoJS from "crypto-js";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { Eye } from "lucide-react";
 
 const { api_login, api_getFreeMenuList } = ProjectApiList();
 
@@ -58,6 +60,7 @@ function Login() {
   const [captcha, setCaptcha] = useState("");
   const [captchaError, setCaptchaError] = useState(null);
   const [mobileCardStatus, setmobileCardStatus] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     captchaInputField,
@@ -66,7 +69,7 @@ function Login() {
     getCaptchaData,
     getEncryptedCaptcha,
   } = UseCaptchaGenerator();
-  
+
   const { fingerprint } = useSystemUniqueID();
   useEffect(() => {
     getLocalStorageItem("token") != "null" &&
@@ -575,14 +578,23 @@ function Login() {
                               </label>
                             </div>
                           </div>
-                          <input
-                            {...formik.getFieldProps("password")}
-                            className="w-full leading-5 relative py-2 px-4 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 darks:text-gray-300 darks:bg-gray-700 darks:border-gray-700 darks:focus:border-gray-600"
-                            aria-label="password"
-                            type="password"
-                            defaultValue
-                            required
-                          />
+                          <div className="relative">
+                            <input
+                              {...formik.getFieldProps("password")}
+                              className="w-full leading-5 relative py-2 px-4 pr-10 rounded text-gray-800 bg-white border border-gray-300 overflow-x-auto focus:outline-none focus:border-gray-400 focus:ring-0 darks:text-gray-300 darks:bg-gray-700 darks:border-gray-700 darks:focus:border-gray-600"
+                              aria-label="password"
+                              type={showPassword ? "text" : "password"}
+                              defaultValue
+                              required
+                            />
+                            <button
+                              type="button"
+                              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                              onClick={() => setShowPassword(!showPassword)}
+                            >
+                              {showPassword ? <BsEyeSlash /> : <BsEye />}
+                            </button>
+                          </div>
                           <span className="text-red-600 text-xs">
                             {formik.touched.password && formik.errors.password
                               ? formik.errors.password
