@@ -13,7 +13,7 @@ export default function AuthGuard({ children }) {
   const token = localStorage.getItem("token");
   const [requestedLocation, setRequestedLocation] = useState(null);
   const menuItems = JSON.parse(localStorage.getItem("menuList"));
-  console.log("menuItems", menuItems);
+
   const flattenedMenu = menuItems?.flatMap((item) => [
     { ...item, children: item?.children?.map((c) => c?.id) },
     ...item?.children,
@@ -60,9 +60,12 @@ export default function AuthGuard({ children }) {
     );
   }
 
-  const wildCard = path?.find((item) => item?.endsWith("/*"));
+  const wildCards = path?.filter((item) => item?.endsWith("/*"));
 
-  const allowed = pathname.startsWith(wildCard?.replace("/*", ""));
+  const allowed = wildCards?.some((wc) => {
+    const base = wc.replace("/*", "");
+    return pathname.startsWith(base);
+  });
 
   if (!path?.includes(pathname) && !allowed && token) {
     return (
