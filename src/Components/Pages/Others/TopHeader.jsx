@@ -1,54 +1,59 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import Modal from "react-modal";
-import { FiAlertCircle } from "react-icons/fi";
+import { FiAlertCircle, FiKey } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { contextVar } from "@/Components/context/contextVar";
 import BarLoader from "@/Components/Common/Loaders/BarLoader";
 import { localstorageRemoveEntire } from "@/Components/Common/localstorage";
 import ulb_data from "@/Components/Common/DynamicData";
-import { BiLogOutCircle } from "react-icons/bi";
 import PermittedModuleCard from "./PermittedModuleCard";
 import { Tooltip } from "react-tooltip";
-import { BiMenuAltLeft } from "react-icons/bi";
-import { getLocalStorageItemJsonParsed } from "@/Components/Common/localstorage";
-import NotificationSidebar from "./SideBar/NotificationSidebar";
+import NotificationComponent from "./NotificationComponent";
 import ProjectApiList from "@/Components/api/ProjectApiList";
 import axios from "axios";
-import { RiLockPasswordLine } from "react-icons/ri";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { toast } from "react-hot-toast";
-import CryptoJS from "crypto-js";
-import AxiosInterceptors from "@/Components/Common/AxiosInterceptors";
-import ApiHeader from "@/Components/api/ApiHeader";
+import { HiOutlineUserCircle } from "react-icons/hi";
+import { BsBell } from "react-icons/bs";
+import { BiLogOutCircle } from "react-icons/bi";
 
-const TopHeader = (props) => {
-  const [userDetailss, setuserDetails] = useState(
-    getLocalStorageItemJsonParsed("userDetails")
-  ); // to store user details
+const TopHeader = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [isLoading, setisLoading] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
-  const [changePasswordModal, setChangePasswordModal] = useState(false);
-  const { toggleBar, settoggleBar, userDetails } = useContext(contextVar);
-  const [permittedModuleList, setpermittedModuleList] = useState([])
+  const [notificationState, setnotificationState] = useState(false);
+  const [permittedModuleList, setpermittedModuleList] = useState([]);
+  const [isLoading, setisLoading] = useState(false);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const userDropdownRef = useRef(null);
+
+  const { toggleBar, settoggleBar } = useContext(contextVar);
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  const { api_moduleList } = ProjectApiList();
   const { brand_tag } = ulb_data();
-  const { api_moduleList, api_ChangePassword } = ProjectApiList();
+
   const navigate = useNavigate();
+  const userName = userDetails?.userName || "User";
 
-  function openModal2() {
-    setIsOpen2(true);
-  }
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+  const closeModal2 = () => setIsOpen2(false);
 
-  function openModal() {
-    setIsOpen(true);
-  }
-  function closeModal() {
-    setIsOpen(false);
-    setIsOpen2(false);
-    setChangePasswordModal(false);
-  }
-  // CALLBACK FUNCTION
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      border: "none",
+      borderRadius: "12px",
+      padding: "0",
+    },
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      zIndex: 1000,
+    },
+  };
+
   const logoutCallback = () => {
     setisLoading(false);
     localstorageRemoveEntire();
@@ -56,273 +61,268 @@ const TopHeader = (props) => {
   };
 
   const LogOutUser = () => {
-    closeModal();
+    setIsOpen(false);
     logoutCallback();
   };
 
   const fetchModuleList = () => {
-    axios
-     .post(api_moduleList, {})
-     .then((res) => {
-      console.log("module list: ", res);
-      setpermittedModuleList(res?.data?.data);
-     });
-   };
-  
-   useEffect(() => {
-    fetchModuleList();
-    setIsOpen(false);
-   }, []);
-
-  function encryptPassword(plainPassword) {
-    const secretKey =
-      "c2ec6f788fb85720bf48c8cc7c2db572596c585a15df18583e1234f147b1c2897aad12e7bebbc4c03c765d0e878427ba6370439d38f39340d7e";
-
-    const key = CryptoJS.enc.Latin1.parse(
-      CryptoJS.SHA256(secretKey).toString(CryptoJS.enc.Latin1)
-    );
-
-    const ivString = CryptoJS.SHA256(secretKey).toString().substring(0, 16);
-    const iv = CryptoJS.enc.Latin1.parse(ivString);
-
-    const encrypted = CryptoJS.AES.encrypt(plainPassword, key, {
-      iv: iv,
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7,
+    axios.post(api_moduleList, {}).then((res) => {
+      setpermittedModuleList(res?.data?.data || []);
     });
+  };
 
-    return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
-  }
+  useEffect(() => {
+    fetchModuleList();
+  }, []);
 
-  const changePasswordFormik = useFormik({
-    initialValues: {
-      oldPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    },
-    validationSchema: Yup.object({
-      oldPassword: Yup.string().required("Old password is required"),
-      newPassword: Yup.string().min(6, "Password must be at least 6 characters").required("New password is required"),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref("newPassword")], "Passwords must match")
-        .required("Confirm password is required"),
-    }),
-    onSubmit: (values) => {
-      const payload = {
-        password: encryptPassword(values.oldPassword),
-        newPassword: encryptPassword(values.newPassword),
-      };
-      
-      AxiosInterceptors.post(api_ChangePassword, payload, ApiHeader())
-        .then((response) => {
-          if (response.data.status) {
-            toast.success("Password changed successfully");
-            setChangePasswordModal(false);
-            changePasswordFormik.resetForm();
-          } else {
-            toast.error(response.data.message || "Failed to change password");
-          }
-        })
-        .catch((error) => {
-          toast.error("Error changing password");
-          console.error(error);
-        });
-    },
-  });
-  
-  
+  const getUserInitials = () =>
+    userDetails?.userName
+      ?.split(" ")
+      .map((w) => w[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase() || "U";
 
   return (
     <>
       {isLoading && <BarLoader />}
-      <div className='bg-white flex flex-row justify-between px-2 sm:px-6 border shadow-sm print:hidden py-3'>
-        <div className='flex gap-4'>
-          <div className='flex items-center md:w-[15rem] justify-between gap-2 sm:gap-4'>
-            <div className=''>
-              <p className='font-semibold text-xl '>{brand_tag}</p>
-              <p className='text-xs '>{userDetailss?.ulb}</p>
+      {/* ================= HEADER ================= */}
+      <header className="bg-white border-b shadow-sm px-4 py-2 flex items-center justify-between print:hidden">
+        {/* LEFT */}
+        <div className="flex items-center gap-4">
+          {/* Brand */}
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-lg bg-[#1a4d8c] text-white flex items-center justify-center font-bold">
+              UD
             </div>
-
-            <div
-              onClick={() => {
-                settoggleBar(!toggleBar);
-              }}
-              className='ml-2'
-            >
-              <span className='cursor-pointer text-gray-700 text-xl'>
-                <BiMenuAltLeft className='text-2xl' />
-              </span>
+            <div>
+              <p className="font-semibold leading-tight">{brand_tag}</p>
+              <p className="text-xs text-gray-500">Urban Development</p>
             </div>
           </div>
-          <div className='flex gap-2 items-center'>
-            <div className='flex '>
-              <span
-                onClick={() => openModal2()}
-                className='bg-gray-200 px-4 py-1 cursor-pointer hover:shadow-md flex justify-center items-center'
+
+          {/* Sidebar Toggle */}
+          <button
+            onClick={() => settoggleBar(!toggleBar)}
+            className="ml-2 p-2 rounded hover:bg-gray-100"
+          >
+            <svg
+              className="w-5 h-5 text-gray-700"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h16v2H4z" />
+            </svg>
+          </button>
+
+          {/* Modules Button */}
+          <button
+            onClick={() => setIsOpen2(true)}
+            className="ml-4 bg-[#1a4d8c] text-white px-4 py-1.5 rounded-lg text-sm flex items-center gap-2"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z" />
+            </svg>
+            Modules
+          </button>
+
+          {/* ULB Name */}
+          <div className="ml-4 flex items-center gap-2 text-gray-800 font-medium">
+            <svg
+              className="w-4 h-4 text-[#1a4d8c]"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M12 2L3 7v2h18V7l-9-5zM5 10v9h3v-6h2v6h4v-6h2v6h3v-9H5z" />
+            </svg>
+            {userDetails?.ulb || "No Ulb Specified"}
+          </div>
+        </div>
+
+        {/* RIGHT */}
+        <div className="flex items-center gap-4">
+          {/* Notification */}
+
+          {/* User */}
+          <div className="flex items-center space-x-4">
+            {/* Notifications */}
+
+            {/* User Profile */}
+            <div className="relative" ref={userDropdownRef}>
+              <button
+                onClick={() => setShowUserDropdown(!showUserDropdown)}
+                className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200  group"
               >
-                Modules
-              </span>
+                <div className="relative">
+                  <div className="w-10 h-10 bg-[#1a4d8c] rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+                    {getUserInitials()}
+                  </div>
+                </div>
+                <div className="hidden md:block text-left">
+                  <p className="font-semibold text-gray-800">{userName}</p>
+                </div>
+                <svg
+                  className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                    showUserDropdown ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+
+              {/* User Dropdown Menu */}
+              {showUserDropdown && (
+                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50 animate-fadeIn">
+                  {/* Menu Items */}
+                  <div className="py-2">
+                    <button
+                      onClick={() =>
+                        window.location.replace("/settings/dashboard/home")
+                      }
+                      className="w-full px-4 py-3 flex items-center space-x-3 hover:bg-blue-50 transition-colors duration-150 text-left"
+                    >
+                      <HiOutlineUserCircle className="w-5 h-5 text-blue-600" />
+                      <div>
+                        <p className="font-medium text-gray-800">My Profile</p>
+                        <p className="text-sm text-gray-500">
+                          View your profile
+                        </p>
+                      </div>
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        window.location.replace(
+                          "/settings/dashboard/change-password"
+                        )
+                      }
+                      className="w-full px-4 py-3 flex items-center space-x-3 hover:bg-blue-50 transition-colors duration-150 text-left border-t border-gray-100"
+                    >
+                      <FiKey className="w-5 h-5 text-green-600" />
+                      <div>
+                        <p className="font-medium text-gray-800">
+                          Change Password
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          Update your password
+                        </p>
+                      </div>
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        window.location.replace(
+                          "/settings/dashboard/notification"
+                        )
+                      }
+                      className="w-full px-4 py-3 flex items-center space-x-3 hover:bg-blue-50 transition-colors duration-150 text-left border-t border-gray-100"
+                    >
+                      <BsBell className="w-5 h-5 text-orange-600" />
+                      <div>
+                        <p className="font-medium text-gray-800">
+                          Notifications
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          Read notifications
+                        </p>
+                      </div>
+                      {/* {notificationCount > 0 && (
+                            <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                              {notificationCount}
+                            </span>
+                          )} */}
+                    </button>
+
+                    <button
+                      onClick={openModal}
+                      className="w-full px-4 py-3 flex items-center space-x-3 hover:bg-red-50 transition-colors duration-150 text-left border-t border-gray-100"
+                    >
+                      <BiLogOutCircle className="w-5 h-5 text-red-600" />
+                      <div>
+                        <p className="font-medium text-gray-800">Logout</p>
+                        <p className="text-sm text-gray-500">
+                          Sign out from system
+                        </p>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
-            <h1 className='font-bold text-[1.3rem]'>
-              Procurement Management System
-            </h1>
           </div>
         </div>
-        <div className='flex items-center sm:gap-4 gap-2'>
-          <span className='sm:visible flex items-center '>
-            <Tooltip anchorId='change-password' className='z-50' />
-            <button
-              id='change-password'
-              data-tooltip-content='Change Password'
-              onClick={() => setChangePasswordModal(true)}
-              className='text-2xl font-semibold bg-[#323fb3] text-white rounded-md p-1'
-            >
-              <RiLockPasswordLine />
-            </button>
-          </span>
-          <span className='sm:visible flex items-center '>
-            <Tooltip anchorId='logout' className='z-50' />
-            <button
-              id='logout'
-              data-tooltip-content='Log Out'
-              onClick={() => openModal()}
-              className='text-2xl font-semibold bg-[#4338CA] text-white rounded-md p-1'
-            >
-              <BiLogOutCircle />
-            </button>
-          </span>
-          <Tooltip anchorId='notification_icon' className='z-50' />
-
-          <NotificationSidebar />
-        </div>
-      </div>
-
-      {/* =========== MODAL========= */}
+      </header>
+      {/* ================= MODALS ================= */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        className='h-screen w-screen flex items-center justify-center'
-        contentLabel='Logout Modal'
+        style={customStyles}
+        contentLabel="Logout Confirmation"
       >
-        <div
-          className='bg-black absolute h-screen w-screen opacity-50 z-0 '
-          onClick={closeModal}
-        ></div>
-
-        <div className='border bg-white z-50 px-6 py-4 flex flex-col gap-4 animate__animated animate__slideInLeft animate__faster rounded-md'>
-          <div className='flex items-center gap-6'>
-            <div className='flex flex-col gap-2'>
-              <span className='text-red-500  block rounded-full drop-shadow-md shadow-red-300 ml-24'>
-                <FiAlertCircle size={25} />
-              </span>
-              <span className='text-xl font-semibold border-b pb-1 text-center'>
-                Confirmation
-              </span>
-              <span className='text-base'>Are you sure want to log out ?</span>
-            </div>
-          </div>
-          <div className='flex justify-end gap-2'>
-            <button
-              className='text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2 text-sm rounded-md'
-              onClick={closeModal}
-            >
-              No
-            </button>
-            <button
-              className='text-white bg-red-500 hover:bg-red-600 px-4 py-2 text-sm rounded-md'
-              onClick={LogOutUser}
-            >
-              Yes
-            </button>
-          </div>
-        </div>
-      </Modal>
-
-      <Modal
-        isOpen={modalIsOpen2}
-        onRequestClose={closeModal}
-        className='z-20 h-screen w-screen backdrop-blur-sm flex flex-row justify-center items-center overflow-auto'
-        contentLabel='Example Modal'
-      >
-        {/* <PermittedModuleCard closeModuleModal={closeModal} /> */}
-        <PermittedModuleCard closeModuleModal={closeModal} permittedModuleList={permittedModuleList}/>
-      </Modal>
-
-      {/* Change Password Modal */}
-      <Modal
-        isOpen={changePasswordModal}
-        onRequestClose={closeModal}
-        className='h-screen w-screen flex items-center justify-center'
-        contentLabel='Change Password Modal'
-      >
-        <div
-          className='bg-black absolute h-screen w-screen opacity-50 z-0'
-          onClick={closeModal}
-        ></div>
-
-        <div className='border bg-white z-50 px-6 py-4 flex flex-col gap-4 animate__animated animate__slideInLeft animate__faster rounded-md w-96'>
-          <div className='text-center'>
-            <h2 className='text-xl font-semibold border-b pb-2'>Change Password</h2>
-          </div>
-          
-          <form onSubmit={changePasswordFormik.handleSubmit} className='flex flex-col gap-4'>
-            <div>
-              <label className='block text-sm font-medium mb-1'>Old Password</label>
-              <input
-                type='password'
-                {...changePasswordFormik.getFieldProps('oldPassword')}
-                className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+        <div className="relative p-6">
+          <button
+            onClick={closeModal}
+            type="button"
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fillRule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clipRule="evenodd"
               />
-              {changePasswordFormik.touched.oldPassword && changePasswordFormik.errors.oldPassword && (
-                <span className='text-red-500 text-xs'>{changePasswordFormik.errors.oldPassword}</span>
-              )}
+            </svg>
+          </button>
+          <div className="text-center">
+            <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4">
+              <FiAlertCircle className="h-10 w-10 text-red-600" />
             </div>
-            
-            <div>
-              <label className='block text-sm font-medium mb-1'>New Password</label>
-              <input
-                type='password'
-                {...changePasswordFormik.getFieldProps('newPassword')}
-                className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-              />
-              {changePasswordFormik.touched.newPassword && changePasswordFormik.errors.newPassword && (
-                <span className='text-red-500 text-xs'>{changePasswordFormik.errors.newPassword}</span>
-              )}
-            </div>
-            
-            <div>
-              <label className='block text-sm font-medium mb-1'>Confirm Password</label>
-              <input
-                type='password'
-                {...changePasswordFormik.getFieldProps('confirmPassword')}
-                className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-              />
-              {changePasswordFormik.touched.confirmPassword && changePasswordFormik.errors.confirmPassword && (
-                <span className='text-red-500 text-xs'>{changePasswordFormik.errors.confirmPassword}</span>
-              )}
-            </div>
-            
-            <div className='flex justify-end gap-2 mt-4'>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">
+              Confirm Logout
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to logout? You'll need to login again to
+              access your account.
+            </p>
+            <div className="flex justify-center space-x-4">
               <button
-                type='button'
                 onClick={closeModal}
-                className='px-4 py-2 text-sm bg-gray-500 text-white rounded-md hover:bg-gray-600'
+                className="px-6 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-200"
               >
                 Cancel
               </button>
               <button
-                type='submit'
-                className='px-4 py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600'
+                onClick={LogOutUser}
+                className="px-6 py-2.5 bg-red-600  text-white font-medium rounded-lg hover:bg-red-700 hover:to-red-800 transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
               >
-                Change Password
+                Yes, Logout
               </button>
             </div>
-          </form>
+          </div>
         </div>
+      </Modal>
+      <Modal
+        isOpen={modalIsOpen2}
+        onRequestClose={closeModal2}
+        className="z-20 h-screen w-screen backdrop-blur-sm flex items-center justify-center overflow-auto"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+        contentLabel="Modules"
+      >
+        <PermittedModuleCard
+          closeModuleModal={closeModal2}
+          permittedModuleList={permittedModuleList}
+        />
       </Modal>
     </>
   );
 };
 
-// export default HeaderIcons
 export default TopHeader;
