@@ -30,7 +30,7 @@ const TopHeader = () => {
   const { brand_tag } = ulb_data();
 
   const navigate = useNavigate();
-  const userName = userDetails?.userName || "User";
+  const userName = userDetails?.user_name || "User";
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
@@ -76,7 +76,7 @@ const TopHeader = () => {
   }, []);
 
   const getUserInitials = () =>
-    userDetails?.userName
+    userName
       ?.split(" ")
       .map((w) => w[0])
       .join("")
@@ -127,16 +127,20 @@ const TopHeader = () => {
           </button>
 
           {/* ULB Name */}
-          <div className="ml-4 flex items-center gap-2 text-gray-800 font-medium">
+          <h2 className="ml-4 flex items-center gap-2 text-xl font-bold text-gray-800">
             <svg
-              className="w-4 h-4 text-[#1a4d8c]"
+              className="w-5 h-5 text-[#1a4d8c]"
               viewBox="0 0 24 24"
               fill="currentColor"
             >
-              <path d="M12 2L3 7v2h18V7l-9-5zM5 10v9h3v-6h2v6h4v-6h2v6h3v-9H5z" />
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
             </svg>
-            {userDetails?.ulb || "No Ulb Specified"}
-          </div>
+
+            <span className="relative">
+              {userDetails?.ulbName || "No Ulb Specified"}
+              <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#1a4d8c] rounded"></span>
+            </span>
+          </h2>
         </div>
 
         {/* RIGHT */}
@@ -185,7 +189,7 @@ const TopHeader = () => {
                   <div className="py-2">
                     <button
                       onClick={() =>
-                        window.location.replace("/settings/dashboard/home")
+                        window.open("/settings/dashboard/home", "_blank")
                       }
                       className="w-full px-4 py-3 flex items-center space-x-3 hover:bg-blue-50 transition-colors duration-150 text-left"
                     >
@@ -200,8 +204,9 @@ const TopHeader = () => {
 
                     <button
                       onClick={() =>
-                        window.location.replace(
-                          "/settings/dashboard/change-password"
+                        window.open(
+                          "/settings/dashboard/change-password",
+                          "_blank"
                         )
                       }
                       className="w-full px-4 py-3 flex items-center space-x-3 hover:bg-blue-50 transition-colors duration-150 text-left border-t border-gray-100"
@@ -219,8 +224,9 @@ const TopHeader = () => {
 
                     <button
                       onClick={() =>
-                        window.location.replace(
-                          "/settings/dashboard/notification"
+                        window.open(
+                          "/settings/dashboard/notification",
+                          "_blank"
                         )
                       }
                       className="w-full px-4 py-3 flex items-center space-x-3 hover:bg-blue-50 transition-colors duration-150 text-left border-t border-gray-100"
