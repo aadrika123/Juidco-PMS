@@ -30,7 +30,7 @@ const TopHeader = () => {
   const { brand_tag } = ulb_data();
 
   const navigate = useNavigate();
-  const userName = userDetails?.user_name || "User";
+  const userName = userDetails?.user_name || userDetails?.userName || "User";
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
@@ -137,7 +137,7 @@ const TopHeader = () => {
             </svg>
 
             <span className="relative">
-              {userDetails?.ulbName || "No Ulb Specified"}
+              {userDetails?.ulbName || userDetails?.ulb || "No Ulb Specified"}
               <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#1a4d8c] rounded"></span>
             </span>
           </h2>
